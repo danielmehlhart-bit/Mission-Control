@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .bg-linear-grid {
+    background-image:
+      radial-gradient(1200px 800px at 20% -10%, rgba(69, 122, 255, 0.15), transparent 60%),
+      radial-gradient(900px 600px at 90% 10%, rgba(91, 209, 183, 0.12), transparent 55%),
+      linear-gradient(180deg, rgba(10, 16, 24, 0.9), rgba(10, 16, 24, 0.98)),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: auto, auto, auto, 60px 60px, 60px 60px;
+    background-position: center, center, center, 0 0, 0 0;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 220 40% 8%;
+    --foreground: 210 15% 92%;
+    --card: 222 40% 10%;
+    --card-foreground: 210 20% 96%;
+    --popover: 222 40% 12%;
+    --popover-foreground: 210 20% 96%;
+    --primary: 164 70% 54%;
+    --primary-foreground: 220 25% 10%;
+    --secondary: 220 20% 20%;
+    --secondary-foreground: 210 20% 96%;
+    --muted: 220 20% 18%;
+    --muted-foreground: 215 12% 68%;
+    --accent: 210 30% 22%;
+    --accent-foreground: 210 20% 96%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 210 20% 96%;
+    --border: 220 20% 18%;
+    --input: 220 20% 18%;
+    --ring: 210 20% 75%;
+    --radius: 0.9rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+}
