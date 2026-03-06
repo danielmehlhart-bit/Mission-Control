@@ -46,6 +46,30 @@ export default function DocsPage() {
     load();
   }, [selected]);
 
+  // Sort newest first (by filename date prefix)
+  const sortedFiles = [...files].sort((a, b) => b.name.localeCompare(a.name));
+
+  // Human-readable label: "2026-03-05-alles-auf-aktien.html" → "Alles auf Aktien · 5. Mär"
+  function friendlyName(name: string): { title: string; date: string } {
+    const match = name.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.html$/);
+    if (!match) return { title: name, date: "" };
+    const [, year, month, day, slug] = match;
+    const title = slug
+      .split("-")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+    const dateObj = new Date(`${year}-${month}-${day}`);
+    const date = dateObj.toLocaleDateString("de-DE", { day: "numeric", month: "short" });
+    return { title, date };
+  }
+
+  function openInNewTab() {
+    if (!content) return;
+    const blob = new Blob([content], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    window.open(url, "_blank");
+  }
+
   return (
     <div className="space-y-6">
       <header className="flex flex-wrap items-center justify-between gap-4">
@@ -68,25 +92,28 @@ export default function DocsPage() {
           <div className="mt-3 space-y-2">
             {loading ? (
               <div className="text-sm text-slate-400">Loading…</div>
-            ) : files.length === 0 ? (
+            ) : sortedFiles.length === 0 ? (
               <div className="text-sm text-slate-500">
                 No HTML briefings found.
               </div>
             ) : (
-              files.map((file) => (
-                <button
-                  key={file.path}
-                  className={`w-full rounded-lg border px-3 py-2 text-left text-sm transition ${
-                    selected?.path === file.path
-                      ? "border-emerald-400/50 bg-emerald-400/10 text-emerald-100"
-                      : "border-slate-800/70 text-slate-300 hover:border-slate-700"
-                  }`}
-                  onClick={() => setSelected(file)}
-                >
-                  <div className="font-medium">{file.name}</div>
-                  <div className="text-xs text-slate-500">{file.modified}</div>
-                </button>
-              ))
+              sortedFiles.map((file) => {
+                const { title, date } = friendlyName(file.name);
+                return (
+                  <button
+                    key={file.path}
+                    className={`w-full rounded-lg border px-3 py-2 text-left text-sm transition ${
+                      selected?.path === file.path
+                        ? "border-emerald-400/50 bg-emerald-400/10 text-emerald-100"
+                        : "border-slate-800/70 text-slate-300 hover:border-slate-700"
+                    }`}
+                    onClick={() => setSelected(file)}
+                  >
+                    <div className="font-medium">{title}</div>
+                    <div className="text-xs text-slate-500">{date}</div>
+                  </button>
+                );
+              })
             )}
           </div>
         </Card>
@@ -98,21 +125,28 @@ export default function DocsPage() {
                 Preview
               </div>
               <div className="mt-1 text-sm text-slate-300">
-                {selected?.name ?? "Nothing selected"}
+                {selected ? friendlyName(selected.name).title : "Nothing selected"}
               </div>
             </div>
-            <Button variant="outline" className="border-slate-700 text-slate-200">
+            <Button
+              variant="outline"
+              className="border-slate-700 text-slate-200"
+              disabled={!content}
+              onClick={openInNewTab}
+            >
               Open in new tab
             </Button>
           </div>
-          <div className="mt-4 rounded-xl border border-slate-800/60 bg-slate-950/50 p-4">
+          <div className="mt-4 rounded-xl border border-slate-800/60 overflow-hidden" style={{ height: "calc(100vh - 280px)" }}>
             {content ? (
-              <div
-                className="prose prose-invert max-w-none text-sm"
-                dangerouslySetInnerHTML={{ __html: content }}
+              <iframe
+                srcDoc={content}
+                className="w-full h-full border-0"
+                sandbox="allow-same-origin allow-popups"
+                title="Briefing Preview"
               />
             ) : (
-              <div className="text-sm text-slate-500">
+              <div className="flex items-center justify-center h-full text-sm text-slate-500">
                 Select a briefing to preview.
               </div>
             )}
