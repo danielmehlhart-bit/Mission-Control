@@ -2,56 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  .bg-linear-grid {
-    background-image:
-      radial-gradient(1200px 800px at 20% -10%, rgba(69, 122, 255, 0.15), transparent 60%),
-      radial-gradient(900px 600px at 90% 10%, rgba(91, 209, 183, 0.12), transparent 55%),
-      linear-gradient(180deg, rgba(10, 16, 24, 0.9), rgba(10, 16, 24, 0.98)),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-    background-size: auto, auto, auto, 60px 60px, 60px 60px;
-    background-position: center, center, center, 0 0, 0 0;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-base:     #0d0f12;
+  --bg-surface:  #141720;
+  --bg-elevated: #1a1d27;
+  --border:      #1e2128;
+  --border-muted:#16191f;
+  --text-primary:   #f0f2f5;
+  --text-secondary: #8b90a0;
+  --text-muted:     #4a5068;
+  --accent:      #10B981;
+  --accent-dim:  rgba(16, 185, 129, 0.12);
+  --radius: 12px;
+  --nav-h: 52px;
 }
 
-@layer base {
-  :root {
-    --background: 220 40% 8%;
-    --foreground: 210 15% 92%;
-    --card: 222 40% 10%;
-    --card-foreground: 210 20% 96%;
-    --popover: 222 40% 12%;
-    --popover-foreground: 210 20% 96%;
-    --primary: 164 70% 54%;
-    --primary-foreground: 220 25% 10%;
-    --secondary: 220 20% 20%;
-    --secondary-foreground: 210 20% 96%;
-    --muted: 220 20% 18%;
-    --muted-foreground: 215 12% 68%;
-    --accent: 210 30% 22%;
-    --accent-foreground: 210 20% 96%;
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 210 20% 96%;
-    --border: 220 20% 18%;
-    --input: 220 20% 18%;
-    --ring: 210 20% 75%;
-    --radius: 0.9rem;
-  }
-
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-    font-family: var(--font-body), ui-sans-serif, system-ui, -apple-system, sans-serif;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display), ui-sans-serif, system-ui, -apple-system, sans-serif;
-  }
+html, body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #2a2d38; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #3a3d4a; }
+
+/* Selection */
+::selection { background: rgba(16, 185, 129, 0.2); }

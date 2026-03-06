@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card } from "@/components/ui/card";
 import { detectCategory, CATEGORY_META } from "@/lib/categories";
 
 type BriefingFile = { name: string; path: string; modified: string };
@@ -25,131 +24,137 @@ export default function HomePage() {
   const [showToast, setShowToast] = useState(false);
   const [newCount, setNewCount] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [now, setNow] = useState("");
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 1024);
+    const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener("resize", check);
+    const d = new Date();
+    const h = d.getHours();
+    const greeting = h < 12 ? "Guten Morgen" : h < 18 ? "Guten Tag" : "Guten Abend";
+    setNow(`${greeting}, Daniel. ${d.toLocaleDateString("de-DE", { weekday: "long", day: "numeric", month: "long" })}`);
     return () => window.removeEventListener("resize", check);
   }, []);
 
   useEffect(() => {
     const ts = parseInt(localStorage.getItem("lastSeenTimestamp") ?? "0", 10);
     setLastSeen(ts);
-
     const load = async () => {
       try {
         const res = await fetch("/api/briefings", { cache: "no-store" });
         const data = await res.json();
-        const sorted = (data.files ?? []).sort((a: BriefingFile, b: BriefingFile) =>
-          b.name.localeCompare(a.name)
-        ).slice(0, 8);
+        const sorted = (data.files ?? []).sort((a: BriefingFile, b: BriefingFile) => b.name.localeCompare(a.name)).slice(0, 8);
         setBriefings(sorted);
-
         const count = sorted.filter((f: BriefingFile) => new Date(f.modified).getTime() > ts).length;
         setNewCount(count);
-
-        // Mobile toast — once per session
-        if (count > 0 && isMobile && !sessionStorage.getItem("toastShown")) {
+        if (count > 0 && window.innerWidth < 768 && !sessionStorage.getItem("toastShown")) {
           setShowToast(true);
           sessionStorage.setItem("toastShown", "1");
         }
       } catch {}
     };
     load();
-  }, [isMobile]);
+  }, []);
 
-  const goToDocs = (file?: BriefingFile) => {
-    setShowToast(false);
-    if (file) router.push(`/docs?file=${encodeURIComponent(file.name)}`);
-    else router.push("/docs");
+  const isNew = (f: BriefingFile) => new Date(f.modified).getTime() > lastSeen;
+
+  const card = {
+    background: "#141720", border: "1px solid #1e2128",
+    borderRadius: 12, padding: "16px 20px",
   };
 
-  const isNew = (file: BriefingFile) => new Date(file.modified).getTime() > lastSeen;
-
   return (
-    <div className="space-y-6">
-      <header>
-        <h1 className="text-3xl font-semibold text-slate-50">Dashboard</h1>
-        <p className="mt-2 text-sm text-slate-400">Dein persönliches Mission Control.</p>
-      </header>
+    <div style={{ padding: "20px 24px", maxWidth: 960, margin: "0 auto" }}>
+      {/* Hero */}
+      <div style={{ marginBottom: 24 }}>
+        <h1 style={{ fontSize: isMobile ? 22 : 28, fontWeight: 700, letterSpacing: "-0.5px", color: "#f0f2f5" }}>{now}</h1>
+        <p style={{ fontSize: 14, color: "#8b90a0", marginTop: 4 }}>Dein persönliches Ops-Dashboard.</p>
+      </div>
 
-      {/* Fresh Briefings Card */}
+      {/* Quick Actions */}
+      <div style={{ display: "flex", gap: 8, marginBottom: 24, flexWrap: "wrap" }}>
+        {[
+          { label: "+ Task", onClick: () => router.push("/tasks") },
+          { label: "💬 Hatti", onClick: () => router.push("/hatti") },
+          { label: "📄 Briefings", onClick: () => router.push("/docs") },
+        ].map(a => (
+          <button key={a.label} onClick={a.onClick} style={{
+            padding: "7px 16px", borderRadius: 999, fontSize: 13, fontWeight: 500,
+            background: "#1a1d27", border: "1px solid #1e2128", color: "#c8ccd6",
+            cursor: "pointer", transition: "all 0.15s",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = "#22263a"; e.currentTarget.style.color = "#f0f2f5"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "#1a1d27"; e.currentTarget.style.color = "#c8ccd6"; }}>
+            {a.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Stats */}
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(3, 1fr)", gap: 12, marginBottom: 24 }}>
+        {[
+          { label: "Neue Briefings", value: newCount > 0 ? String(newCount) : "–", sub: "seit letztem Besuch", accent: newCount > 0 },
+          { label: "Mission Control", value: "Online", sub: "mc.mehlhart.de", accent: true },
+          { label: "Briefings gesamt", value: String(briefings.length), sub: "im Archiv" },
+        ].map(s => (
+          <div key={s.label} style={{ ...card }}>
+            <div style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "#4a5068", marginBottom: 8 }}>{s.label}</div>
+            <div style={{ fontSize: 26, fontWeight: 700, color: s.accent ? "#10B981" : "#f0f2f5", lineHeight: 1 }}>{s.value}</div>
+            <div style={{ fontSize: 11, color: "#4a5068", marginTop: 6 }}>{s.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Fresh Briefings */}
       {briefings.length > 0 && (
-        <Card className="border-slate-800/60 bg-slate-900/40 p-5">
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-xs uppercase tracking-[0.3em] text-slate-500">Neueste Briefings</div>
-            <button
-              onClick={() => goToDocs()}
-              className="text-xs text-emerald-400 hover:text-emerald-300 transition"
-            >
-              Alle anzeigen →
+        <div style={card}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+            <span style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "#4a5068" }}>Neueste Briefings</span>
+            <button onClick={() => router.push("/docs")} style={{ fontSize: 12, color: "#10B981", background: "none", border: "none", cursor: "pointer" }}>
+              Alle →
             </button>
           </div>
-          <div className="space-y-2">
-            {briefings.map(file => {
-              const { title, date } = formatFilename(file.name);
-              const cat = detectCategory(file.name);
+          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            {briefings.map(f => {
+              const { title, date } = formatFilename(f.name);
+              const cat = detectCategory(f.name);
               return (
-                <button
-                  key={file.path}
-                  onClick={() => goToDocs(file)}
-                  className="w-full flex items-center gap-3 rounded-lg border border-slate-800/60 bg-slate-950/30 px-3 py-2.5 text-left hover:border-slate-700/60 hover:bg-slate-900/60 transition"
-                >
-                  <span className="text-base">{CATEGORY_META[cat].emoji}</span>
-                  <span className="flex-1 text-sm text-slate-200 font-medium truncate">{title}</span>
-                  <div className="flex items-center gap-2 shrink-0">
-                    {isNew(file) && (
-                      <span className="rounded-full bg-red-500/20 border border-red-500/30 px-1.5 py-0.5 text-[10px] text-red-300 font-bold">NEU</span>
-                    )}
-                    <span className="text-xs text-slate-500">{date}</span>
-                    <span className="text-slate-600 text-xs">→</span>
-                  </div>
+                <button key={f.path} onClick={() => router.push(`/docs?file=${encodeURIComponent(f.name)}`)} style={{
+                  display: "flex", alignItems: "center", gap: 10,
+                  padding: "9px 12px", borderRadius: 8, textAlign: "left",
+                  background: "none", border: "none", cursor: "pointer", width: "100%",
+                  transition: "background 0.12s",
+                }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#1a1d27"}
+                  onMouseLeave={e => e.currentTarget.style.background = "none"}>
+                  <span style={{ fontSize: 16, flexShrink: 0 }}>{CATEGORY_META[cat].emoji}</span>
+                  <span style={{ flex: 1, fontSize: 13.5, fontWeight: 500, color: "#c8ccd6", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{title}</span>
+                  {isNew(f) && <span style={{ fontSize: 10, fontWeight: 700, color: "#f87171", background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 999, padding: "2px 6px", flexShrink: 0 }}>NEU</span>}
+                  <span style={{ fontSize: 11, color: "#4a5068", flexShrink: 0 }}>{date}</span>
+                  <span style={{ fontSize: 12, color: "#2a2d38" }}>→</span>
                 </button>
               );
             })}
           </div>
-        </Card>
+        </div>
       )}
-
-      {/* Stats row */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-        <Card className="border-slate-800/60 bg-slate-900/40 p-4">
-          <div className="text-xs uppercase tracking-[0.3em] text-slate-500">Briefings</div>
-          <div className="mt-2 text-2xl font-semibold text-slate-50">{briefings.length > 0 ? "✓" : "–"}</div>
-          <div className="mt-1 text-xs text-slate-500">Live aus Dashboard-Repo</div>
-        </Card>
-        <Card className="border-slate-800/60 bg-slate-900/40 p-4">
-          <div className="text-xs uppercase tracking-[0.3em] text-slate-500">Mission Control</div>
-          <div className="mt-2 text-2xl font-semibold text-emerald-400">Online</div>
-          <div className="mt-1 text-xs text-slate-500">mc.mehlhart.de</div>
-        </Card>
-        <Card className="border-slate-800/60 bg-slate-900/40 p-4 col-span-2 sm:col-span-1">
-          <div className="text-xs uppercase tracking-[0.3em] text-slate-500">Neue Briefings</div>
-          <div className="mt-2 text-2xl font-semibold text-slate-50">{newCount > 0 ? newCount : "–"}</div>
-          <div className="mt-1 text-xs text-slate-500">seit letztem Besuch</div>
-        </Card>
-      </div>
 
       {/* Mobile Toast */}
       {showToast && isMobile && (
-        <div className="fixed bottom-6 left-4 right-4 z-50 flex items-center justify-between gap-3 rounded-2xl border border-slate-700/60 bg-slate-800/95 px-4 py-3 shadow-2xl backdrop-blur animate-in slide-in-from-bottom-4">
-          <span className="text-sm text-slate-200">
-            📄 <strong>{newCount} neue</strong> Briefing{newCount !== 1 ? "s" : ""} seit deinem letzten Besuch
-          </span>
-          <div className="flex gap-2 shrink-0">
-            <button
-              onClick={() => goToDocs()}
-              className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white"
-            >
+        <div style={{
+          position: "fixed", bottom: 20, left: 16, right: 16, zIndex: 200,
+          display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
+          padding: "12px 16px", borderRadius: 14,
+          background: "rgba(20,23,32,0.97)", border: "1px solid #2a2d38",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
+        }}>
+          <span style={{ fontSize: 13, color: "#c8ccd6" }}>📄 <strong style={{ color: "#f0f2f5" }}>{newCount} neue</strong> Briefing{newCount !== 1 ? "s" : ""}</span>
+          <div style={{ display: "flex", gap: 8 }}>
+            <button onClick={() => { setShowToast(false); router.push("/docs"); }} style={{ padding: "6px 12px", borderRadius: 8, background: "#10B981", border: "none", color: "white", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
               Anzeigen
             </button>
-            <button
-              onClick={() => setShowToast(false)}
-              className="rounded-lg border border-slate-700 px-2 py-1.5 text-xs text-slate-400"
-            >
-              ✕
-            </button>
+            <button onClick={() => setShowToast(false)} style={{ padding: "6px 10px", borderRadius: 8, background: "#1e2128", border: "none", color: "#8b90a0", fontSize: 12, cursor: "pointer" }}>✕</button>
           </div>
         </div>
       )}
