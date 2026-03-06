@@ -11,10 +11,28 @@ type BriefingFile = {
   modified: string;
 };
 
+function formatFilename(name: string): { title: string; date: string } {
+  // Pattern: YYYY-MM-DD-some-title.html
+  const match = name.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.html$/);
+  if (match) {
+    const [, dateStr, slug] = match;
+    const date = new Date(dateStr).toLocaleDateString("de-DE", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+    const title = slug
+      .split("-")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+    return { title, date };
+  }
+  return { title: name.replace(".html", ""), date: "" };
+}
+
 export default function DocsPage() {
   const [files, setFiles] = useState<BriefingFile[]>([]);
   const [selected, setSelected] = useState<BriefingFile | null>(null);
-  const [content, setContent] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -22,9 +40,13 @@ export default function DocsPage() {
       try {
         const res = await fetch("/api/briefings", { cache: "no-store" });
         const data = await res.json();
-        setFiles(data.files ?? []);
-        if (data.files?.length) {
-          setSelected(data.files[0]);
+        // Sort newest first
+        const sorted = (data.files ?? []).sort((a: BriefingFile, b: BriefingFile) =>
+          b.name.localeCompare(a.name)
+        );
+        setFiles(sorted);
+        if (sorted.length) {
+          setSelected(sorted[0]);
         }
       } finally {
         setLoading(false);
@@ -33,42 +55,9 @@ export default function DocsPage() {
     load();
   }, []);
 
-  useEffect(() => {
-    if (!selected) {
-      setContent("");
-      return;
-    }
-    const load = async () => {
-      const res = await fetch(`/api/briefings?file=${encodeURIComponent(selected.path)}`);
-      const data = await res.json();
-      setContent(data.content ?? "");
-    };
-    load();
-  }, [selected]);
-
-  // Sort newest first (by filename date prefix)
-  const sortedFiles = [...files].sort((a, b) => b.name.localeCompare(a.name));
-
-  // Human-readable label: "2026-03-05-alles-auf-aktien.html" → "Alles auf Aktien · 5. Mär"
-  function friendlyName(name: string): { title: string; date: string } {
-    const match = name.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.html$/);
-    if (!match) return { title: name, date: "" };
-    const [, year, month, day, slug] = match;
-    const title = slug
-      .split("-")
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(" ");
-    const dateObj = new Date(`${year}-${month}-${day}`);
-    const date = dateObj.toLocaleDateString("de-DE", { day: "numeric", month: "short" });
-    return { title, date };
-  }
-
-  function openInNewTab() {
-    if (!content) return;
-    const blob = new Blob([content], { type: "text/html" });
-    const url = URL.createObjectURL(blob);
-    window.open(url, "_blank");
-  }
+  const rawUrl = selected
+    ? `/api/briefings?file=${encodeURIComponent(selected.path)}&raw=1`
+    : null;
 
   return (
     <div className="space-y-6">
@@ -84,21 +73,20 @@ export default function DocsPage() {
         </Badge>
       </header>
 
-      <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
+      <div className="grid gap-4 lg:grid-cols-[260px_1fr]">
+        {/* File list */}
         <Card className="border-slate-800/60 bg-slate-900/40 p-4">
           <div className="text-xs uppercase tracking-[0.3em] text-slate-500">
             Briefings
           </div>
-          <div className="mt-3 space-y-2">
+          <div className="mt-3 space-y-2 max-h-[calc(100vh-220px)] overflow-y-auto pr-1">
             {loading ? (
               <div className="text-sm text-slate-400">Loading…</div>
-            ) : sortedFiles.length === 0 ? (
-              <div className="text-sm text-slate-500">
-                No HTML briefings found.
-              </div>
+            ) : files.length === 0 ? (
+              <div className="text-sm text-slate-500">No HTML briefings found.</div>
             ) : (
-              sortedFiles.map((file) => {
-                const { title, date } = friendlyName(file.name);
+              files.map((file) => {
+                const { title, date } = formatFilename(file.name);
                 return (
                   <button
                     key={file.path}
@@ -110,7 +98,7 @@ export default function DocsPage() {
                     onClick={() => setSelected(file)}
                   >
                     <div className="font-medium">{title}</div>
-                    <div className="text-xs text-slate-500">{date}</div>
+                    {date && <div className="text-xs text-slate-500">{date}</div>}
                   </button>
                 );
               })
@@ -118,32 +106,32 @@ export default function DocsPage() {
           </div>
         </Card>
 
-        <Card className="border-slate-800/60 bg-slate-900/30 p-4">
-          <div className="flex items-center justify-between">
+        {/* Preview */}
+        <Card className="border-slate-800/60 bg-slate-900/30 p-4 flex flex-col">
+          <div className="flex items-center justify-between mb-3">
             <div>
-              <div className="text-xs uppercase tracking-[0.3em] text-slate-500">
-                Preview
-              </div>
+              <div className="text-xs uppercase tracking-[0.3em] text-slate-500">Preview</div>
               <div className="mt-1 text-sm text-slate-300">
-                {selected ? friendlyName(selected.name).title : "Nothing selected"}
+                {selected ? formatFilename(selected.name).title : "Nothing selected"}
               </div>
             </div>
             <Button
               variant="outline"
               className="border-slate-700 text-slate-200"
-              disabled={!content}
-              onClick={openInNewTab}
+              disabled={!rawUrl}
+              onClick={() => rawUrl && window.open(rawUrl, "_blank")}
             >
-              Open in new tab
+              Open in new tab ↗
             </Button>
           </div>
-          <div className="mt-4 rounded-xl border border-slate-800/60 overflow-hidden" style={{ height: "calc(100vh - 280px)" }}>
-            {content ? (
+          <div className="flex-1 rounded-xl overflow-hidden border border-slate-800/60 bg-white" style={{ minHeight: "calc(100vh - 260px)" }}>
+            {rawUrl ? (
               <iframe
-                srcDoc={content}
-                className="w-full h-full border-0"
-                sandbox="allow-same-origin allow-popups"
-                title="Briefing Preview"
+                key={rawUrl}
+                src={rawUrl}
+                className="w-full h-full"
+                style={{ height: "calc(100vh - 260px)", border: "none" }}
+                title={selected?.name}
               />
             ) : (
               <div className="flex items-center justify-center h-full text-sm text-slate-500">
