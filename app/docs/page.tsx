@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -29,6 +29,14 @@ function formatFilename(name: string): { title: string; date: string } {
 const CATEGORY_TABS: CategoryKey[] = ["all", "morning", "podcast", "projekt", "research", "training", "security", "sonstige"];
 
 export default function DocsPage() {
+  return (
+    <Suspense fallback={<div className="text-sm text-slate-400 p-6">Loading…</div>}>
+      <DocsPageInner />
+    </Suspense>
+  );
+}
+
+function DocsPageInner() {
   const searchParams = useSearchParams();
 
   const [files, setFiles] = useState<BriefingFile[]>([]);
