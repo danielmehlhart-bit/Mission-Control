@@ -5,13 +5,15 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { NavBadge } from "@/components/nav-badge";
 
 const navItems = [
   { href: "/", label: "Home Dashboard", hint: "Overview" },
   { href: "/tasks", label: "Task Board", hint: "Kanban" },
-  { href: "/docs", label: "Docs Browser", hint: "HTML Briefings" },
+  { href: "/docs", label: "Docs Browser", hint: "HTML Briefings", badge: true },
   { href: "/memory", label: "Memory Viewer", hint: "MEMORY.md + Logs" },
   { href: "/cron", label: "Cron Jobs", hint: "Schedules" },
+  { href: "/hatti", label: "💬 Hatti", hint: "Anweisungen geben" },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -57,6 +59,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                       <Badge className="border-slate-700 bg-slate-800 text-slate-200">
                         Active
                       </Badge>
+                    ) : item.badge ? (
+                      <NavBadge />
                     ) : null}
                   </Link>
                 );
@@ -64,7 +68,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </nav>
           </ScrollArea>
           <div className="border-t border-slate-800/60 px-5 py-4 text-xs text-slate-500">
-            Status: <span className="text-slate-300">Local MVP</span>
+            Status: <span className="text-slate-300">mc.mehlhart.de</span>
           </div>
         </aside>
 
