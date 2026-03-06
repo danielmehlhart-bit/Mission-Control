@@ -19,7 +19,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-linear-grid text-slate-100">
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-6 px-4 pb-10 pt-8 md:grid-cols-[240px_1fr]">
+      <div className="mx-auto grid w-full max-w-screen-2xl grid-cols-1 gap-6 px-4 pb-10 pt-8 md:grid-cols-[220px_1fr] xl:grid-cols-[200px_1fr]">
         <aside className="rounded-2xl border border-slate-800/60 bg-slate-900/60 backdrop-blur">
           <div className="px-5 pt-5">
             <div className="text-xs uppercase tracking-[0.3em] text-slate-500">

@@ -135,7 +135,7 @@ export default function DocsPage() {
         </div>
       ) : (
         /* Desktop: split layout */
-        <div className="grid gap-4 lg:grid-cols-[260px_1fr]">
+        <div className="grid gap-4 lg:grid-cols-[240px_1fr] xl:grid-cols-[200px_1fr] 2xl:grid-cols-[180px_1fr]">
           <Card className="border-slate-800/60 bg-slate-900/40 p-4">
             <div className="text-xs uppercase tracking-[0.3em] text-slate-500">Briefings</div>
             <div className="mt-3 space-y-2 max-h-[calc(100vh-220px)] overflow-y-auto pr-1">
@@ -189,14 +189,14 @@ export default function DocsPage() {
             </div>
             <div
               className="flex-1 rounded-xl overflow-hidden border border-slate-800/60 bg-white"
-              style={{ height: "calc(100vh - 260px)" }}
+              style={{ height: "calc(100vh - 210px)" }}
             >
               {rawUrl ? (
                 <iframe
                   key={rawUrl}
                   src={rawUrl}
                   className="w-full h-full"
-                  style={{ border: "none" }}
+                  style={{ height: "calc(100vh - 210px)", border: "none" }}
                   title={selected?.name}
                 />
               ) : (
