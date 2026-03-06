@@ -30,7 +30,7 @@ export default function PeoplePage() {
     fetch("/api/people").then(r => r.json()).then(d => { setPeople(d.people ?? []); setLoading(false); });
   }, []);
 
-  const projects = ["All", ...Array.from(new Set(people.map(p => p.project).filter(Boolean)))];
+  const projects = ["All", ...Array.from(new Set(people.map(p => p.project).filter((p): p is string => Boolean(p))))];
   const filtered = people.filter(p => {
     const matchSearch = !search || p.name.toLowerCase().includes(search.toLowerCase()) || p.company.toLowerCase().includes(search.toLowerCase());
     const matchFilter = filter === "All" || p.project === filter;
