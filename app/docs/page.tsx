@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -30,7 +30,6 @@ const CATEGORY_TABS: CategoryKey[] = ["all", "morning", "podcast", "projekt", "r
 
 export default function DocsPage() {
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   const [files, setFiles] = useState<BriefingFile[]>([]);
   const [selected, setSelected] = useState<BriefingFile | null>(null);
