@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
+import path from 'path';
 
 const FILE = process.env.PEOPLE_FILE || '/data/briefings/people.json';
 const FALLBACK = '/tmp/mc-people.json';
 
 function getFile() {
   try {
-    const dir = require('path').dirname(FILE);
+    const dir = path.dirname(FILE);
     if (fs.existsSync(dir)) { fs.accessSync(dir, fs.constants.W_OK); return FILE; }
   } catch {}
   return FALLBACK;
