@@ -7,6 +7,8 @@ type Person = {
   email?: string; phone?: string; project?: string; notes?: string;
 };
 
+const EMPTY: Omit<Person, "id"> = { name: "", company: "", role: "", email: "", phone: "", project: "", notes: "" };
+
 const PROJECT_COLORS: Record<string, string> = {
   "ModulAI": "#8B5CF6",
   "HAM / ModulAI": "#8B5CF6",
@@ -15,20 +17,28 @@ const PROJECT_COLORS: Record<string, string> = {
   "Concord": "#10B981",
 };
 
-const s = {
-  page: { padding: "20px 24px", maxWidth: 900 },
-  card: { background: "#141720", border: "1px solid #1e2128", borderRadius: 12, padding: "20px 24px" },
+const INPUT_STYLE = {
+  width: "100%", padding: "8px 12px", borderRadius: 8,
+  border: "1px solid #1e2128", background: "#0d0f12",
+  color: "#f0f2f5", fontSize: 13, outline: "none",
+  boxSizing: "border-box" as const,
 };
+
+const LABEL_STYLE = { fontSize: 11, color: "#8b90a0", marginBottom: 4, display: "block" as const };
 
 export default function PeoplePage() {
   const [people, setPeople] = useState<Person[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
+  const [modal, setModal] = useState<null | "add" | "edit">(null);
+  const [editing, setEditing] = useState<Person | null>(null);
+  const [form, setForm] = useState<Omit<Person, "id">>(EMPTY);
+  const [saving, setSaving] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetch("/api/people").then(r => r.json()).then(d => { setPeople(d.people ?? []); setLoading(false); });
-  }, []);
+  const load = () => fetch("/api/people").then(r => r.json()).then(d => { setPeople(d.people ?? []); setLoading(false); });
+  useEffect(() => { load(); }, []);
 
   const projects = ["All", ...Array.from(new Set(people.map(p => p.project).filter((p): p is string => Boolean(p))))];
   const filtered = people.filter(p => {
@@ -37,11 +47,45 @@ export default function PeoplePage() {
     return matchSearch && matchFilter;
   });
 
+  const openAdd = () => { setForm(EMPTY); setEditing(null); setModal("add"); };
+  const openEdit = (p: Person) => { setForm({ name: p.name, company: p.company, role: p.role ?? "", email: p.email ?? "", phone: p.phone ?? "", project: p.project ?? "", notes: p.notes ?? "" }); setEditing(p); setModal("edit"); };
+  const closeModal = () => { setModal(null); setEditing(null); };
+
+  const save = async () => {
+    if (!form.name.trim() || !form.company.trim()) return;
+    setSaving(true);
+    if (modal === "add") {
+      await fetch("/api/people", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+    } else if (modal === "edit" && editing) {
+      await fetch(`/api/people?id=${editing.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+    }
+    await load();
+    setSaving(false);
+    closeModal();
+  };
+
+  const deletePerson = async (id: string) => {
+    await fetch(`/api/people?id=${id}`, { method: "DELETE" });
+    setDeleteConfirm(null);
+    load();
+  };
+
   return (
-    <div style={s.page}>
-      <div style={{ marginBottom: 20 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 700, letterSpacing: "-0.3px" }}>People</h1>
-        <p style={{ fontSize: 13, color: "#8b90a0", marginTop: 4 }}>Projekt-Kontakte auf einen Blick.</p>
+    <div style={{ padding: "20px 24px", maxWidth: 960 }}>
+      {/* Header */}
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+        <div>
+          <h1 style={{ fontSize: 22, fontWeight: 700, letterSpacing: "-0.3px" }}>People</h1>
+          <p style={{ fontSize: 13, color: "#8b90a0", marginTop: 4 }}>Projekt-Kontakte auf einen Blick.</p>
+        </div>
+        <button onClick={openAdd} style={{
+          display: "flex", alignItems: "center", gap: 6,
+          padding: "8px 16px", borderRadius: 8, border: "none",
+          background: "#10B981", color: "#fff", fontSize: 13, fontWeight: 600,
+          cursor: "pointer",
+        }}>
+          + Person
+        </button>
       </div>
 
       {/* Search + Filter */}
@@ -63,59 +107,99 @@ export default function PeoplePage() {
         </div>
       </div>
 
-      {/* People Grid */}
+      {/* Grid */}
       {loading ? <p style={{ color: "#8b90a0" }}>Loading…</p> : (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12 }}>
           {filtered.map(person => {
             const color = PROJECT_COLORS[person.project ?? ""] ?? "#4a5068";
             return (
-              <div key={person.id} style={{ ...s.card, position: "relative", overflow: "hidden" }}>
-                {/* Color accent bar */}
+              <div key={person.id} style={{ background: "#141720", border: "1px solid #1e2128", borderRadius: 12, padding: "20px 20px 14px", position: "relative", overflow: "hidden" }}>
                 <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: color, borderRadius: "12px 12px 0 0" }} />
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 14, marginTop: 4 }}>
-                  {/* Avatar */}
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginTop: 4 }}>
                   <div style={{
-                    width: 40, height: 40, borderRadius: "50%", flexShrink: 0,
+                    width: 38, height: 38, borderRadius: "50%", flexShrink: 0,
                     background: `${color}25`, border: `1.5px solid ${color}50`,
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 16, fontWeight: 700, color,
+                    fontSize: 15, fontWeight: 700, color,
                   }}>
                     {person.name.charAt(0)}
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: 14, fontWeight: 600, color: "#f0f2f5" }}>{person.name}</div>
-                    <div style={{ fontSize: 12, color: "#8b90a0", marginTop: 1 }}>{person.role ?? ""} {person.role && person.company ? "·" : ""} {person.company}</div>
+                    <div style={{ fontSize: 12, color: "#8b90a0", marginTop: 1 }}>{[person.role, person.company].filter(Boolean).join(" · ")}</div>
                     {person.project && (
-                      <span style={{
-                        display: "inline-block", marginTop: 6,
-                        padding: "2px 8px", borderRadius: 999, fontSize: 11, fontWeight: 500,
-                        background: `${color}18`, border: `1px solid ${color}40`, color,
-                      }}>{person.project}</span>
+                      <span style={{ display: "inline-block", marginTop: 6, padding: "2px 8px", borderRadius: 999, fontSize: 11, fontWeight: 500, background: `${color}18`, border: `1px solid ${color}40`, color }}>{person.project}</span>
                     )}
                   </div>
                 </div>
-
-                {/* Contact details */}
-                <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 5 }}>
-                  {person.email && (
-                    <a href={`mailto:${person.email}`} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#8b90a0", textDecoration: "none" }}
-                      onMouseEnter={e => e.currentTarget.style.color = "#10B981"}
-                      onMouseLeave={e => e.currentTarget.style.color = "#8b90a0"}>
-                      <span style={{ fontSize: 13 }}>✉</span> {person.email}
-                    </a>
-                  )}
-                  {person.phone && (
-                    <a href={`tel:${person.phone}`} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#8b90a0", textDecoration: "none" }}>
-                      <span style={{ fontSize: 13 }}>📞</span> {person.phone}
-                    </a>
-                  )}
-                  {person.notes && (
-                    <p style={{ fontSize: 11, color: "#4a5068", marginTop: 4, lineHeight: 1.5 }}>{person.notes}</p>
+                <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 4 }}>
+                  {person.email && <a href={`mailto:${person.email}`} style={{ fontSize: 12, color: "#8b90a0", textDecoration: "none" }}>✉ {person.email}</a>}
+                  {person.phone && <a href={`tel:${person.phone}`} style={{ fontSize: 12, color: "#8b90a0", textDecoration: "none" }}>📞 {person.phone}</a>}
+                  {person.notes && <p style={{ fontSize: 11, color: "#4a5068", marginTop: 4, lineHeight: 1.5 }}>{person.notes}</p>}
+                </div>
+                {/* Actions */}
+                <div style={{ display: "flex", gap: 6, marginTop: 14, paddingTop: 12, borderTop: "1px solid #1e2128" }}>
+                  <button onClick={() => openEdit(person)} style={{ flex: 1, padding: "5px 0", borderRadius: 6, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 12, cursor: "pointer" }}>
+                    ✏️ Bearbeiten
+                  </button>
+                  {deleteConfirm === person.id ? (
+                    <>
+                      <button onClick={() => deletePerson(person.id)} style={{ flex: 1, padding: "5px 0", borderRadius: 6, border: "1px solid #ef4444", background: "#ef444420", color: "#ef4444", fontSize: 12, cursor: "pointer", fontWeight: 600 }}>Löschen?</button>
+                      <button onClick={() => setDeleteConfirm(null)} style={{ padding: "5px 10px", borderRadius: 6, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 12, cursor: "pointer" }}>✕</button>
+                    </>
+                  ) : (
+                    <button onClick={() => setDeleteConfirm(person.id)} style={{ padding: "5px 10px", borderRadius: 6, border: "1px solid #1e2128", background: "transparent", color: "#4a5068", fontSize: 12, cursor: "pointer" }}>🗑</button>
                   )}
                 </div>
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* Modal */}
+      {modal && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, padding: 20 }} onClick={closeModal}>
+          <div style={{ background: "#141720", border: "1px solid #1e2128", borderRadius: 16, padding: 24, width: "100%", maxWidth: 480, maxHeight: "90vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+            <h2 style={{ fontSize: 17, fontWeight: 700, marginBottom: 20 }}>{modal === "add" ? "Person hinzufügen" : "Person bearbeiten"}</h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {([
+                ["name", "Name *"],
+                ["company", "Firma *"],
+                ["role", "Rolle"],
+                ["project", "Projekt"],
+                ["email", "Email"],
+                ["phone", "Telefon"],
+                ["notes", "Notizen"],
+              ] as [keyof typeof form, string][]).map(([key, label]) => (
+                <div key={key}>
+                  <label style={LABEL_STYLE}>{label}</label>
+                  {key === "notes" ? (
+                    <textarea
+                      value={form[key] ?? ""}
+                      onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                      rows={3}
+                      style={{ ...INPUT_STYLE, resize: "vertical" }}
+                    />
+                  ) : (
+                    <input
+                      value={form[key] ?? ""}
+                      onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                      style={INPUT_STYLE}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+            <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
+              <button onClick={closeModal} style={{ flex: 1, padding: "9px 0", borderRadius: 8, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 13, cursor: "pointer" }}>Abbrechen</button>
+              <button onClick={save} disabled={saving || !form.name.trim() || !form.company.trim()} style={{
+                flex: 2, padding: "9px 0", borderRadius: 8, border: "none",
+                background: saving ? "#0d7a5f" : "#10B981", color: "#fff",
+                fontSize: 13, fontWeight: 600, cursor: saving ? "default" : "pointer",
+              }}>{saving ? "Speichern…" : "Speichern"}</button>
+            </div>
+          </div>
         </div>
       )}
     </div>
