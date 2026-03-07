@@ -32,8 +32,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <span style={{ display: "flex", gap: 4 }}>Mission <span style={{ color: "#10B981" }}>Control</span></span>
         </Link>
 
-        {/* Nav Items */}
-        <div style={{ display: "flex", alignItems: "center", gap: 2, flex: 1, overflowX: "auto" }}>
+        {/* Nav Items — desktop only (hidden on mobile via CSS) */}
+        <div className="top-nav-items" style={{ alignItems: "center", gap: 2, flex: 1, overflowX: "auto" }}>
           {navItems.map(item => {
             const active = pathname === item.href;
             return (
@@ -53,8 +53,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           })}
         </div>
 
-        {/* Right */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginLeft: 12, flexShrink: 0 }}>
+        {/* Right — desktop only */}
+        <div className="top-nav-right" style={{ alignItems: "center", gap: 10, marginLeft: 12, flexShrink: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: "#8b90a0" }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981", display: "inline-block" }} />
             Online
@@ -65,6 +65,20 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </nav>
+
+      {/* Bottom Nav — mobile only (shown via CSS) */}
+      <nav className="bottom-nav">
+        {navItems.map(item => {
+          const active = pathname === item.href;
+          return (
+            <Link key={item.href} href={item.href} className={active ? "active" : ""}>
+              <span className="icon">{item.icon}</span>
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
+
       <main style={{ paddingTop: 52, minHeight: "100vh" }}>{children}</main>
     </div>
   );

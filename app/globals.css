@@ -34,3 +34,49 @@ html, body {
 
 /* Selection */
 ::selection { background: rgba(16, 185, 129, 0.2); }
+
+/* Mobile nav */
+.top-nav-items { display: flex; }
+.bottom-nav { display: none; }
+.top-nav-right { display: flex; }
+
+@media (max-width: 640px) {
+  .top-nav-items { display: none; }
+  .top-nav-right { display: none; }
+  .bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: rgba(13,15,18,0.97);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid #1e2128;
+    z-index: 100;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 4px;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 8px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 500;
+    color: #8b90a0;
+    flex: 1;
+    transition: color 0.15s;
+  }
+  .bottom-nav a.active {
+    color: #10B981;
+  }
+  .bottom-nav a span.icon {
+    font-size: 18px;
+    line-height: 1;
+  }
+  main { padding-bottom: calc(60px + env(safe-area-inset-bottom)) !important; }
+}
