@@ -1,0 +1,16 @@
+name: Autodeploy → Coolify
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Coolify Deploy
+        run: |
+          curl -s -X GET \
+            "http://46.224.119.191:8000/api/v1/deploy?uuid=kccsg0gcwkgo44wsk0wwkok0&force=false" \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}" \
+            -H "Accept: application/json"
