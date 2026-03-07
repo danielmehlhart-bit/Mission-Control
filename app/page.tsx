@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { detectCategory, CATEGORY_META } from "@/lib/categories";
+import { CapturePill } from "@/components/capture-pill";
 
 type BriefingFile = { name: string; path: string; modified: string };
 
@@ -25,6 +26,7 @@ export default function HomePage() {
   const [newCount, setNewCount] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [now, setNow] = useState("");
+  const [showCapture, setShowCapture] = useState(false);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -73,23 +75,40 @@ export default function HomePage() {
       </div>
 
       {/* Quick Actions */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 24, flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: 8, marginBottom: showCapture ? 12 : 24, flexWrap: "wrap" }}>
         {[
-          { label: "+ Task", onClick: () => router.push("/tasks") },
+          { label: "+ Task", onClick: () => setShowCapture(v => !v) },
           { label: "💬 Hatti", onClick: () => router.push("/hatti") },
           { label: "📄 Briefings", onClick: () => router.push("/docs") },
         ].map(a => (
           <button key={a.label} onClick={a.onClick} style={{
             padding: "7px 16px", borderRadius: 999, fontSize: 13, fontWeight: 500,
-            background: "#1a1d27", border: "1px solid #1e2128", color: "#c8ccd6",
+            background: a.label === "+ Task" && showCapture ? "#10B98120" : "#1a1d27",
+            border: `1px solid ${a.label === "+ Task" && showCapture ? "#10B98150" : "#1e2128"}`,
+            color: a.label === "+ Task" && showCapture ? "#10B981" : "#c8ccd6",
             cursor: "pointer", transition: "all 0.15s",
           }}
             onMouseEnter={e => { e.currentTarget.style.background = "#22263a"; e.currentTarget.style.color = "#f0f2f5"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "#1a1d27"; e.currentTarget.style.color = "#c8ccd6"; }}>
+            onMouseLeave={e => {
+              e.currentTarget.style.background = a.label === "+ Task" && showCapture ? "#10B98120" : "#1a1d27";
+              e.currentTarget.style.color = a.label === "+ Task" && showCapture ? "#10B981" : "#c8ccd6";
+            }}>
             {a.label}
           </button>
         ))}
       </div>
+
+      {/* Capture Pill */}
+      {showCapture && (
+        <div style={{ marginBottom: 24 }}>
+          <CapturePill
+            onSave={async (title, project) => {
+              await fetch("/api/tasks", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title, project }) });
+            }}
+            onClose={() => setShowCapture(false)}
+          />
+        </div>
+      )}
 
       {/* Stats */}
       <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(3, 1fr)", gap: 12, marginBottom: 24 }}>
