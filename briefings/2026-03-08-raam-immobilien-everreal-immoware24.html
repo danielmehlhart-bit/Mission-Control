@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research Briefing: EverReal × Immoware24 — Raam Immobilien</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7f8fa;
+      color: #1a1a2e;
+      line-height: 1.6;
+    }
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+      color: white;
+      padding: 60px 40px 48px;
+    }
+    .hero-meta {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #7fa7d4;
+      margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .hero .subtitle {
+      font-size: 16px;
+      color: #a8c0dd;
+      max-width: 600px;
+    }
+    .hero .tag {
+      display: inline-block;
+      background: rgba(127, 167, 212, 0.2);
+      border: 1px solid rgba(127, 167, 212, 0.4);
+      color: #7fa7d4;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-top: 20px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #7fa7d4;
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: #1a1a2e;
+    }
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #1a1a2e;
+    }
+
+    /* Callout-Box oben */
+    .callout {
+      background: #fff8e8;
+      border-left: 4px solid #f5a623;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 48px;
+      font-size: 15px;
+      color: #333;
+      font-style: italic;
+    }
+    .callout strong { color: #d4830a; font-style: normal; }
+
+    /* Tool-Karten */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+    @media (max-width: 680px) { .tools-grid { grid-template-columns: 1fr; } }
+
+    .tool-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border-top: 4px solid;
+    }
+    .tool-card.everreal { border-color: #3b82f6; }
+    .tool-card.immoware { border-color: #10b981; }
+
+    .tool-logo {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .tool-card.everreal .tool-logo { color: #3b82f6; }
+    .tool-card.immoware .tool-logo { color: #10b981; }
+
+    .tool-tagline {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 20px;
+    }
+    .tool-focus {
+      background: #f0f4ff;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin-bottom: 20px;
+    }
+    .tool-card.immoware .tool-focus { background: #f0faf6; }
+
+    .feature-list {
+      list-style: none;
+      margin-bottom: 20px;
+    }
+    .feature-list li {
+      font-size: 14px;
+      color: #444;
+      padding: 5px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    .feature-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #3b82f6;
+      font-weight: 700;
+    }
+    .tool-card.immoware .feature-list li::before { color: #10b981; }
+
+    /* Stats Row */
+    .stats-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px 28px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      flex: 1;
+      min-width: 140px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 32px;
+      font-weight: 800;
+      color: #1a1a2e;
+      line-height: 1.1;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    /* Pricing Karten */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+    @media (max-width: 680px) { .pricing-grid { grid-template-columns: 1fr; } }
+
+    .pricing-card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .pricing-card h3 { margin-bottom: 4px; }
+    .pricing-card .price {
+      font-size: 28px;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin: 12px 0 4px;
+    }
+    .pricing-card .price-note {
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 16px;
+    }
+    .pricing-tier {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    .pricing-tier:last-child { border-bottom: none; }
+    .pricing-tier .tier-name { color: #555; }
+    .pricing-tier .tier-price { font-weight: 700; color: #1a1a2e; }
+
+    /* Hybrid Vision */
+    .hybrid-section {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      margin-bottom: 48px;
+    }
+
+    .flow {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin: 32px 0;
+      flex-wrap: wrap;
+    }
+
+    .flow-step {
+      flex: 1;
+      min-width: 120px;
+      text-align: center;
+      padding: 20px 16px;
+      border-radius: 12px;
+      position: relative;
+    }
+    .flow-step.trigger { background: #fef3c7; }
+    .flow-step.everreal-step { background: #dbeafe; }
+    .flow-step.gap-step { background: #fce7f3; }
+    .flow-step.immoware-step { background: #d1fae5; }
+
+    .flow-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #ccc;
+      padding: 0 6px;
+    }
+
+    .flow-step .step-icon { font-size: 24px; margin-bottom: 8px; }
+    .flow-step .step-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #888; margin-bottom: 4px; }
+    .flow-step .step-name { font-size: 13px; font-weight: 700; color: #1a1a2e; }
+    .flow-step .step-tool { font-size: 11px; color: #3b82f6; margin-top: 4px; font-weight: 600; }
+    .flow-step.immoware-step .step-tool { color: #10b981; }
+    .flow-step.gap-step .step-tool { color: #ec4899; }
+
+    /* Points of Sale */
+    .pos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .pos-card {
+      background: #f8f9fb;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .pos-card .pos-icon { font-size: 28px; margin-bottom: 8px; }
+    .pos-card .pos-name { font-size: 13px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+    .pos-card .pos-desc { font-size: 12px; color: #888; }
+
+    /* Case Studies */
+    .cases-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+    @media (max-width: 680px) { .cases-grid { grid-template-columns: 1fr; } }
+
+    .case-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .case-card .case-company { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .case-card .case-result { font-size: 28px; font-weight: 800; color: #1a1a2e; line-height: 1.1; }
+    .case-card .case-detail { font-size: 13px; color: #555; margin-top: 8px; }
+    .case-card .case-tool { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-top: 12px; }
+    .case-card .everreal-tag { background: #dbeafe; color: #3b82f6; }
+    .case-card .immoware-tag { background: #d1fae5; color: #10b981; }
+
+    /* Bewertung / Empfehlung */
+    .verdict {
+      background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 40px;
+      margin-bottom: 48px;
+    }
+    .verdict h2 { color: white; }
+    .verdict .verdict-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+    @media (max-width: 680px) { .verdict .verdict-grid { grid-template-columns: 1fr; } }
+
+    .verdict-item {
+      background: rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .verdict-item h4 { color: #7fa7d4; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .verdict-item p { font-size: 14px; color: #ccc; line-height: 1.6; }
+
+    /* Quellen */
+    .sources {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .sources h3 { font-size: 14px; color: #888; margin-bottom: 12px; }
+    .source-link {
+      display: block;
+      font-size: 13px;
+      color: #3b82f6;
+      text-decoration: none;
+      padding: 4px 0;
+    }
+    .source-link:hover { text-decoration: underline; }
+
+    .divider { height: 1px; background: #eee; margin: 48px 0; }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-meta">Research Briefing · 08. März 2026 · Projekt: Raam Immobilien</div>
+  <h1>EverReal × Immoware24<br>Die Hybrid-Lösung für Hausverwaltung</h1>
+  <div class="subtitle">Analyse zweier PropTech-Tools und wie sie zusammen den vollständigen Vermietungsprozess — von der Kündigung bis zum neuen Mietvertrag — digitalisieren und automatisieren.</div>
+  <div class="tag">🏢 Proptech · Hausverwaltung · Digitalisierung</div>
+</div>
+
+<div class="container">
+
+  <!-- KONTEXT / CALLOUT -->
+  <div class="callout">
+    <strong>Eduard Raabs These:</strong> „Kündigung zum Tralala eingeben — und bis zum nächsten Vermietungsprozess muss alles automatisiert werden. Beim Onboarding des Kunden könntest du direkt Strom, Versicherung, Internet buchen — du hast ja alle Daten. Das sind Points of Sale, die im Hintergrund parallel vorlaufen."
+    <br><br>Diese Analyse prüft: Wie nah kommen EverReal und Immoware24 an diese Vision heran — und wo bleibt noch Raum?
+  </div>
+
+  <!-- KPI STATS -->
+  <div class="section-label">Zahlen, die zählen</div>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">80%</div>
+      <div class="stat-label">Zeitersparnis pro Mieterwechsel (EverReal)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">11h → 2h</div>
+      <div class="stat-label">Vermietungszeit vorher/nachher (EverReal-Praxis)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">70%</div>
+      <div class="stat-label">Weniger Anrufe &amp; E-Mails (EverReal)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">1,8 Mio</div>
+      <div class="stat-label">Verwaltete Einheiten (Immoware24)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">4.000+</div>
+      <div class="stat-label">Kunden-Hausverwaltungen (Immoware24)</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- DIE ZWEI TOOLS -->
+  <div class="section-label">Die Tools im Detail</div>
+  <h2>Was machen EverReal und Immoware24?</h2>
+
+  <div class="tools-grid">
+
+    <!-- EVERREAL -->
+    <div class="tool-card everreal">
+      <div class="tool-logo">EverReal</div>
+      <div class="tool-tagline">Gegründet: ~2019 · DACH-Fokus · 200+ Immobilienunternehmen</div>
+      <div class="tool-focus">🎯 FOKUS: Vermietungs- &amp; Verkaufsprozess (Front-End)</div>
+      <p style="font-size:14px;color:#444;margin-bottom:16px;">EverReal digitalisiert den gesamten Prozess des Mieterwechsels — von der Anzeige bis zur Schlüsselübergabe. Das Tool setzt beim Ereignis „Einheit wird frei" an und führt automatisiert durch jeden Schritt, bis der neue Mieter eingezogen ist.</p>
+      <ul class="feature-list">
+        <li>1-Klick-Inserat auf allen Portalen (ImmoScout, etc.)</li>
+        <li>Smart Mieter-Matching — Software filtert Bewerber vor</li>
+        <li>Automatische Online-Terminbuchung für Besichtigungen</li>
+        <li>Selbstauskunft automatisch nach jeder Besichtigung</li>
+        <li>SCHUFA-Bonitätsprüfung integriert</li>
+        <li>Mietvertrag aus Vorlagen + E-Signatur (rechtssicher)</li>
+        <li>Digitale Wohnungsübergabe per App (Fotos, Zählerstände, Protokoll)</li>
+        <li>PriceHubble-Integration: Echtzeit-Marktpreisanalyse</li>
+      </ul>
+      <p style="font-size:12px;color:#888;">Schnittstellen zu: iX-Haus, Aareon, casavi — prinzipiell API-offen für weitere ERP-Systeme</p>
+    </div>
+
+    <!-- IMMOWARE24 -->
+    <div class="tool-card immoware">
+      <div class="tool-logo">Immoware24</div>
+      <div class="tool-tagline">Gegründet: 2013 · Halle (Saale) · ISO 27001 zertifiziert</div>
+      <div class="tool-focus">🎯 FOKUS: Laufende Hausverwaltung (Back-End / Operations)</div>
+      <p style="font-size:14px;color:#444;margin-bottom:16px;">Immoware24 ist das Verwaltungs-ERP — die operative Basis für alles, was nach dem Einzug passiert. Buchhaltung, Abrechnungen, WEG-Verwaltung, Kommunikation mit Mietern und Eigentümern, Mahnwesen. Die „always-on"-Plattform für den Verwalteralltag.</p>
+      <ul class="feature-list">
+        <li>Mietverwaltung, WEG-Verwaltung, Sondereigentumsverwaltung</li>
+        <li>GoBD-konforme doppelte Buchführung</li>
+        <li>SEPA-Zahlungsverkehr + automatisierter Kontoauszugsimport</li>
+        <li>DATEV-Schnittstelle für Steuerberater</li>
+        <li>Betriebskostenabrechnung vollautomatisiert</li>
+        <li>KI-Posteingang: Dokumente erkennen &amp; zuweisen</li>
+        <li>Portal24: Mieter/Eigentümer-Self-Service-Portal + App</li>
+        <li>KI-Anrufbeantworter &amp; KI-Chatbot für Standardanfragen</li>
+        <li>Hybride Eigentümerversammlungen online</li>
+        <li>Ticketsystem für Schadensmeldungen</li>
+      </ul>
+      <p style="font-size:12px;color:#888;">Keine direkte EverReal-Schnittstelle bekannt — API-Integration wäre projektbezogen möglich</p>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PRICING -->
+  <div class="section-label">Kosten</div>
+  <h2>Pricing im Überblick</h2>
+  <div class="pricing-grid">
+
+    <div class="pricing-card">
+      <h3 style="color:#3b82f6;">EverReal</h3>
+      <p style="font-size:13px;color:#888;margin-bottom:16px;">Pay-per-Transaction oder Jahres-Abo (ab ~60 Transaktionen/Jahr)</p>
+      <div class="pricing-tier">
+        <span class="tier-name">Starter</span>
+        <span class="tier-price">€49 / Transaktion</span>
+      </div>
+      <div class="pricing-tier">
+        <span class="tier-name">Professional</span>
+        <span class="tier-price">€79 / Transaktion</span>
+      </div>
+      <div class="pricing-tier">
+        <span class="tier-name">Abo (große Bestände)</span>
+        <span class="tier-price">Individuell (≥60/Jahr)</span>
+      </div>
+      <div class="pricing-tier">
+        <span class="tier-name">Professional enthält extra</span>
+        <span class="tier-price">Mietvertragsvorlagen, E-Sign, Übergabe-App</span>
+      </div>
+      <p style="font-size:12px;color:#888;margin-top:12px;">Geeignet ab 25 Transaktionen/Jahr. 30 Tage kostenlose Testphase.</p>
+    </div>
+
+    <div class="pricing-card">
+      <h3 style="color:#10b981;">Immoware24</h3>
+      <p style="font-size:13px;color:#888;margin-bottom:16px;">SaaS-Abomodell — skaliert mit Bestand</p>
+      <div class="pricing-tier">
+        <span class="tier-name">Basisgebühr</span>
+        <span class="tier-price">ab €15 / Monat</span>
+      </div>
+      <div class="pricing-tier">
+        <span class="tier-name">Pro Einheit</span>
+        <span class="tier-price">€0,29 – €0,39 / Monat</span>
+      </div>
+      <div class="pricing-tier">
+        <span class="tier-name">Zusatzmodule</span>
+        <span class="tier-price">ab €5 / Monat</span>
+      </div>
+      <div class="pricing-tier">
+        <span class="tier-name">Beispiel: 100 Einheiten</span>
+        <span class="tier-price">ca. €44 – €54 / Monat</span>
+      </div>
+      <p style="font-size:12px;color:#888;margin-top:12px;">30 Tage kostenlose Testphase. Optimal ab ~50 Einheiten.</p>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- HYBRID VISION -->
+  <div class="hybrid-section">
+    <div class="section-label">Edus Vision in der Realität</div>
+    <h2>Die Hybrid-Lösung: So würde der vollständige Prozessfluss aussehen</h2>
+    <p style="font-size:15px;color:#555;margin-bottom:8px;">Eduard Raab hat intuitiv erkannt, was viele PropTech-Anbieter auch sehen: Kein einzelnes Tool deckt den gesamten Lifecycle ab. Die Kombination EverReal (Front-End Mieterwechsel) + Immoware24 (laufende Verwaltung) ergibt zusammen einen End-to-End-Flow.</p>
+
+    <div class="flow">
+      <div class="flow-step trigger">
+        <div class="step-icon">📋</div>
+        <div class="step-label">Trigger</div>
+        <div class="step-name">Kündigung eingeht</div>
+        <div class="step-tool">Immoware24</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step everreal-step">
+        <div class="step-icon">📣</div>
+        <div class="step-label">EverReal</div>
+        <div class="step-name">Auto-Inserat auf Portalen</div>
+        <div class="step-tool">EverReal</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step everreal-step">
+        <div class="step-icon">🗓️</div>
+        <div class="step-label">EverReal</div>
+        <div class="step-name">Besichtigung + Matching</div>
+        <div class="step-tool">EverReal</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step everreal-step">
+        <div class="step-icon">✍️</div>
+        <div class="step-label">EverReal</div>
+        <div class="step-name">Vertrag + E-Signatur</div>
+        <div class="step-tool">EverReal</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step gap-step">
+        <div class="step-icon">⚡</div>
+        <div class="step-label">Opportunity</div>
+        <div class="step-name">Onboarding-PoS<br>(Strom, Netz, Versicherung)</div>
+        <div class="step-tool">→ Gap / Eigenentwicklung</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step immoware-step">
+        <div class="step-icon">🏠</div>
+        <div class="step-label">Immoware24</div>
+        <div class="step-name">Neues Mietverhältnis<br>in Verwaltung</div>
+        <div class="step-tool">Immoware24</div>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:#888;margin-top:16px;">⚠️ Noch keine native EverReal ↔ Immoware24 Schnittstelle. EverReal bietet aber offene APIs (bestehende Integrationen: iX-Haus, casavi, Aareon) — eine projektbezogene Integration wäre technisch machbar, analog zur casavi-Partnerschaft.</p>
+
+    <div class="divider" style="margin: 32px 0;"></div>
+
+    <h3>💡 Die Points of Sale beim Mieter-Onboarding — Edus Idee</h3>
+    <p style="font-size:14px;color:#555;margin: 12px 0;">Du hast beim Onboarding alle Mieterdaten. Das ist tatsächlich ein unbenutzter Goldschatz. Diese Dienstleistungen laufen so oder so an — die Frage ist nur, wer den Deal vermittelt:</p>
+
+    <div class="pos-grid">
+      <div class="pos-card">
+        <div class="pos-icon">⚡</div>
+        <div class="pos-name">Stromanbieter</div>
+        <div class="pos-desc">Auto-Anmeldung mit Ausweisdaten + Einzugsdatum</div>
+      </div>
+      <div class="pos-card">
+        <div class="pos-icon">🌐</div>
+        <div class="pos-name">Internet / Telekommunikation</div>
+        <div class="pos-desc">Adress-basierte Verfügbarkeit prüfen + buchen</div>
+      </div>
+      <div class="pos-card">
+        <div class="pos-icon">🛡️</div>
+        <div class="pos-name">Hausrat- &amp; Haftpflicht-Versicherung</div>
+        <div class="pos-desc">Fläche + Haushaltsgröße bekannt → Angebot sofort möglich</div>
+      </div>
+      <div class="pos-card">
+        <div class="pos-icon">📦</div>
+        <div class="pos-name">Umzugsservice</div>
+        <div class="pos-desc">Einzugsdatum bekannt → direkte Vermittlung</div>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:#555;margin-top:16px;font-style:italic;">Beide Tools decken dieses PoS-Onboarding aktuell <strong>nicht</strong>. Das ist echter White-Space — und eine Differenzierungschance, falls Raam einen eigenen Workflow oder eine Partnerschaft aufbaut.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CASE STUDIES -->
+  <div class="section-label">Praxisbelege</div>
+  <h2>Case Studies &amp; Testimonials</h2>
+  <div class="cases-grid">
+
+    <div class="case-card">
+      <div class="case-company">Lewento (EverReal-Partner)</div>
+      <div class="case-result">11h → 2h</div>
+      <div class="case-detail">Vermietungszeit pro Einheit von ~11 Stunden auf 2–3 Stunden gesenkt. 80% Zeitreduktion in der Praxis gemessen.</div>
+      <span class="case-tool everreal-tag">EverReal</span>
+    </div>
+
+    <div class="case-card">
+      <div class="case-company">casavi × EverReal (Schnittstellen-Case)</div>
+      <div class="case-result">80% schnellerer Mieterwechsel</div>
+      <div class="case-detail">Integration casavi + EverReal zeigt: Wenn Stammdaten automatisch synchronisiert werden, startet der Vermarktungsprozess nahezu in Echtzeit nach Kündigung.</div>
+      <span class="case-tool everreal-tag">EverReal</span>
+    </div>
+
+    <div class="case-card">
+      <div class="case-company">VOW Immobilienmanagement GmbH</div>
+      <div class="case-result">25.000+ Einheiten</div>
+      <div class="case-detail">"Dank E-Postbrief-Funktion sparen wir eine Menge Zeit und Geld. Die Verwaltung unserer 25.000+ Einheiten läuft deutlich effizienter." — Matthias Kühn, GF</div>
+      <span class="case-tool immoware-tag">Immoware24</span>
+    </div>
+
+    <div class="case-card">
+      <div class="case-company">Schönian &amp; Heymann oHG</div>
+      <div class="case-result">KI-Posteingang</div>
+      <div class="case-detail">"Der KI-basierte Posteingang, in dem Dokumente automatisch analysiert und weiterverarbeitet werden, steigert unsere Effizienz erheblich." — Moritz Schönian, GF</div>
+      <span class="case-tool immoware-tag">Immoware24</span>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- VERDICT / EMPFEHLUNG -->
+  <div class="verdict">
+    <div class="section-label" style="color:#7fa7d4;">Hattis Einschätzung</div>
+    <h2>Fazit für Raam Immobilien</h2>
+
+    <div class="verdict-grid">
+      <div class="verdict-item">
+        <h4>✅ Was stimmt an Edus Vision</h4>
+        <p>Die Hybrid-Architektur ist absolut valide. EverReal + Immoware24 decken zusammen den gesamten Lifecycle ab — Kündigung bis laufende Verwaltung. Beide sind API-fähig. Der casavi-EverReal-Precedent zeigt: solche Integrationen funktionieren und bringen messbare KPIs.</p>
+      </div>
+      <div class="verdict-item">
+        <h4>⚠️ Was noch fehlt</h4>
+        <p>Keine native EverReal ↔ Immoware24 Schnittstelle. Das PoS-Onboarding (Strom, Netz, Versicherung) ist echter White-Space — aktuell deckt das kein Tool ab. Hier wäre eine eigene Lösung oder eine Partnerstrategie nötig.</p>
+      </div>
+      <div class="verdict-item">
+        <h4>💰 Kosten-Realität</h4>
+        <p>EverReal kostet €49–79 pro Mieterwechsel (oder Abo). Immoware24 ab ~€44/Monat für 100 Einheiten. Zusammen für eine mittelgroße Verwaltung mit ~50 Einheiten und 20 Wechseln/Jahr: ca. €1.500–2.500/Jahr — vs. dem Zeitwert der gesparten Arbeit. ROI sehr positiv.</p>
+      </div>
+      <div class="verdict-item">
+        <h4>🎯 Nächster Schritt</h4>
+        <p>Demo-Calls mit beiden Anbietern. EverReal explizit nach einer Immoware24-Schnittstelle fragen — oder prüfen, ob eine mittlere Lösung (casavi als Brücke) passt. Das PoS-Onboarding-Konzept weiterdenken: Da steckt echter Business-Value drin.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUELLEN -->
+  <div class="sources">
+    <h3>📎 Quellen</h3>
+    <a class="source-link" href="https://de.everreal.co" target="_blank">EverReal — Offizielle Website</a>
+    <a class="source-link" href="https://de.everreal.co/business/anwendung/vermieter-software" target="_blank">EverReal — Vermieter-Software Features</a>
+    <a class="source-link" href="https://omr.com/de/reviews/product/everreal/pricing" target="_blank">OMR Reviews — EverReal Pricing 2025</a>
+    <a class="source-link" href="https://www.lewento.de/mediathek/beitraege/von-elf-auf-zwei-stunden-wie-everreal-den-vermietungsalltag-revolutioniert" target="_blank">Lewento Case Study — Von 11 auf 2 Stunden (Jan 2026)</a>
+    <a class="source-link" href="https://casavi.com/de/everreal/" target="_blank">casavi × EverReal Schnittstellen-Seite</a>
+    <a class="source-link" href="https://www.immoware24.de" target="_blank">Immoware24 — Offizielle Website</a>
+    <a class="source-link" href="https://www.immoware24.de/hausverwaltung-software/" target="_blank">Immoware24 — Hausverwaltungssoftware Features</a>
+    <a class="source-link" href="https://systemhaus.com/hausverwaltungssoftware/immoware24" target="_blank">Systemhaus.com — Immoware24 Analyse &amp; Pricing</a>
+  </div>
+
+  <p style="text-align:center;font-size:12px;color:#ccc;margin-top:32px;">Erstellt von Hatti 🏔️ · 08. März 2026 · Projekt: Raam Immobilien</p>
+</div>
+
+</body>
+</html>
