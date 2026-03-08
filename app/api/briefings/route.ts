@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { listBriefings, readBriefing } from "@/lib/fs";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const file = searchParams.get("file");

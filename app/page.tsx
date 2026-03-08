@@ -46,7 +46,11 @@ export default function HomePage() {
       try {
         const res = await fetch("/api/briefings", { cache: "no-store" });
         const data = await res.json();
-        const sorted = (data.files ?? []).sort((a: BriefingFile, b: BriefingFile) => b.name.localeCompare(a.name)).slice(0, 8);
+        const DATED = /^\d{4}-\d{2}-\d{2}-.*\.html?$/i;
+      const sorted = (data.files ?? [])
+        .filter((f: BriefingFile) => DATED.test(f.name))
+        .sort((a: BriefingFile, b: BriefingFile) => b.name.localeCompare(a.name))
+        .slice(0, 8);
         setBriefings(sorted);
         const count = sorted.filter((f: BriefingFile) => new Date(f.modified).getTime() > ts).length;
         setNewCount(count);
