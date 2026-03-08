@@ -80,3 +80,17 @@ html, body {
   }
   main { padding-bottom: calc(60px + env(safe-area-inset-bottom)) !important; }
 }
+
+/* TipTap Editor */
+.ProseMirror { outline: none; }
+.ProseMirror p.is-editor-empty:first-child::before { content: attr(data-placeholder); float: left; color: #4a5068; pointer-events: none; height: 0; font-style: italic; }
+.ProseMirror ul, .ProseMirror ol { padding-left: 22px; }
+.ProseMirror li { margin-bottom: 3px; }
+.ProseMirror h1 { font-size: 18px; font-weight: 700; color: #f0f2f5; margin: 12px 0 6px; }
+.ProseMirror h2 { font-size: 15px; font-weight: 600; color: #f0f2f5; margin: 10px 0 4px; }
+.ProseMirror strong { color: #f0f2f5; }
+.ProseMirror hr { border: none; border-top: 1px solid #1e2128; margin: 12px 0; }
+.ProseMirror ul[data-type="taskList"] { list-style: none; padding-left: 4px; }
+.ProseMirror ul[data-type="taskList"] li { display: flex; align-items: flex-start; gap: 8px; }
+.ProseMirror ul[data-type="taskList"] li > label { margin-top: 2px; }
+.ProseMirror ul[data-type="taskList"] li > label input { width: 14px; height: 14px; border-radius: 3px; cursor: pointer; }

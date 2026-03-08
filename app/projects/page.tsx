@@ -45,9 +45,9 @@ export default function ProjectsPage() {
             const todoCount = getTaskCount(project.name);
             const color = project.color;
             return (
-              <div key={project.id} style={{
+              <div key={project.id} onClick={() => router.push(`/projects/${project.id}`)} style={{
                 background: "#141720", border: "1px solid #1e2128", borderRadius: 14,
-                overflow: "hidden", cursor: "default",
+                overflow: "hidden", cursor: "pointer",
               }}>
                 {/* Header bar */}
                 <div style={{ height: 4, background: color }} />

@@ -63,7 +63,38 @@ function initSchema(db: Database.Database): void {
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       done_at    TEXT
     );
+
+    CREATE TABLE IF NOT EXISTS project_notes (
+      project_id TEXT PRIMARY KEY,
+      content    TEXT NOT NULL DEFAULT '{}',
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS meetings (
+      id            TEXT PRIMARY KEY,
+      project_id    TEXT NOT NULL,
+      title         TEXT NOT NULL,
+      type          TEXT NOT NULL DEFAULT 'call',
+      date          TEXT NOT NULL,
+      duration_min  INTEGER,
+      participants  TEXT NOT NULL DEFAULT '[]',
+      notes         TEXT,
+      summary       TEXT,
+      drive_link    TEXT,
+      action_items  TEXT NOT NULL DEFAULT '[]',
+      status        TEXT NOT NULL DEFAULT 'planned',
+      created_at    TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    -- Opportunity fields auf projects (migration-safe: ignoriert falls schon existiert)
   `);
+
+  // Spalten nachträglich hinzufügen (ALTER TABLE IF NOT EXISTS column nicht in SQLite → try/catch)
+  const addCol = (sql: string) => { try { db.exec(sql); } catch {} };
+  addCol("ALTER TABLE projects ADD COLUMN stage TEXT NOT NULL DEFAULT 'lead'");
+  addCol("ALTER TABLE projects ADD COLUMN opportunity_value TEXT");
+
+  db.exec("SELECT 1"); // flush
 
   // Seed Projekte falls Tabelle leer
   const projectCount = (db.prepare("SELECT COUNT(*) as c FROM projects").get() as { c: number }).c;
