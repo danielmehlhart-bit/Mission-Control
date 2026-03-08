@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cron Job Übersicht — Mission Control</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f7f7f7; color: #222; padding: 32px 16px; }
+    h1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+    .subtitle { color: #888; font-size: 14px; margin-bottom: 32px; }
+    .section { margin-bottom: 32px; }
+    .section-title { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin-bottom: 12px; }
+    .card { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 18px 20px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 16px; }
+    .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+    .icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+    .content { flex: 1; }
+    .name { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+    .schedule { font-size: 13px; color: #555; margin-bottom: 6px; font-family: 'SF Mono', monospace; }
+    .meta { display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
+    .badge-green { background: #e6f9f0; color: #1a7a4a; }
+    .badge-red { background: #fde8e8; color: #c0392b; }
+    .badge-gray { background: #f0f0f0; color: #666; }
+    .badge-blue { background: #e8f0fd; color: #1a4a9a; }
+    .status { flex-shrink: 0; text-align: right; min-width: 60px; }
+    .status-ok { color: #27ae60; font-size: 18px; }
+    .status-error { color: #e74c3c; font-size: 18px; }
+    .status-off { color: #ccc; font-size: 18px; }
+    .path { font-size: 11px; color: #aaa; margin-top: 5px; font-family: 'SF Mono', monospace; word-break: break-all; }
+    .last-run { font-size: 11px; color: #aaa; margin-top: 3px; }
+    .divider { border: none; border-top: 1px solid #eee; margin: 8px 0; }
+    .legend { display: flex; gap: 16px; margin-bottom: 24px; font-size: 12px; color: #888; align-items: center; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 4px; }
+  </style>
+</head>
+<body>
+  <h1>⚙️ Cron Job Übersicht</h1>
+  <p class="subtitle">Stand: 08.03.2026 — Mission Control / Pi (hartner)</p>
+
+  <div class="legend">
+    <span class="legend-item">✅ OK</span>
+    <span class="legend-item">❌ Error</span>
+    <span class="legend-item">⭕ Disabled</span>
+  </div>
+
+  <!-- MORGEN BRIEFINGS -->
+  <div class="section">
+    <div class="section-title">🌅 Morgen-Briefings</div>
+
+    <div class="card">
+      <div class="icon">⚽</div>
+      <div class="content">
+        <div class="name">Eintracht Frankfurt</div>
+        <div class="schedule">35 6 * * * (täglich 06:35)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-gray">fr.de RSS → HTML → MC</span>
+        </div>
+        <div class="path">→ mission-control/briefings/YYYY-MM-DD-eintracht.html</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">📈</div>
+      <div class="content">
+        <div class="name">Tagesschau Marktbericht</div>
+        <div class="schedule">0 8 * * 1-5 (Mo–Fr 08:00)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-gray">tagesschau.de → HTML → MC</span>
+        </div>
+        <div class="path">→ mission-control/briefings/YYYY-MM-DD-marktbericht.html</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">🎤</div>
+      <div class="content">
+        <div class="name">Alles auf Aktien</div>
+        <div class="schedule">20 6 * * 1-5 (Mo–Fr 06:20)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-gray">YouTube Subtitles → Summary → HTML → MC</span>
+        </div>
+        <div class="path">→ mission-control/briefings/YYYY-MM-DD-alles-auf-aktien.html</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">☀️</div>
+      <div class="content">
+        <div class="name">Morning Update</div>
+        <div class="schedule">5 8 * * 1-5 (Mo–Fr 08:05)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-gray">Wetter + Kalender + Briefings pushen</span>
+        </div>
+        <div class="path">→ Telegram-Ping + git push origin master</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">☔</div>
+      <div class="content">
+        <div class="name">Commute-Wetter</div>
+        <div class="schedule">30 6 * * 1-5 (Mo–Fr 06:30)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-gray">wttr.in Oberursel → Telegram</span>
+        </div>
+        <div class="path">→ Pendler-Ping (Morgen 7–10h, Abend 17–19h)</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+  </div>
+
+  <!-- GMAIL -->
+  <div class="section">
+    <div class="section-title">📧 Gmail Briefings</div>
+
+    <div class="card">
+      <div class="icon">📧</div>
+      <div class="content">
+        <div class="name">Gmail Morgen</div>
+        <div class="schedule">0 7 * * * (täglich 07:00)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-blue">gws</span>
+        </div>
+        <div class="path">→ Ungelesene Mails → kategorisiert → Telegram</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">📧</div>
+      <div class="content">
+        <div class="name">Gmail Mittag</div>
+        <div class="schedule">0 12 * * * (täglich 12:00)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-blue">gws</span>
+        </div>
+        <div class="path">→ Ungelesene Mails → kategorisiert → Telegram</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">📧</div>
+      <div class="content">
+        <div class="name">Gmail Abend</div>
+        <div class="schedule">0 18 * * * (täglich 18:00)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-blue">gws</span>
+        </div>
+        <div class="path">→ Ungelesene Mails + Tages-Zusammenfassung → Telegram</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+  </div>
+
+  <!-- KALENDER & SPORT -->
+  <div class="section">
+    <div class="section-title">📅 Kalender & Sport</div>
+
+    <div class="card">
+      <div class="icon">📅</div>
+      <div class="content">
+        <div class="name">Kalender-Briefing morgen</div>
+        <div class="schedule">0 20 * * * (täglich 20:00)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-blue">gws calendar</span>
+        </div>
+        <div class="path">→ Lynn & Daniel Kalender → Termine für morgen → Telegram</div>
+        <div class="last-run">⚠️ Letzter Run: Timeout (60s zu knapp)</div>
+      </div>
+      <div class="status"><span class="status-error">❌</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">📅</div>
+      <div class="content">
+        <div class="name">Kalender-Änderungen Check</div>
+        <div class="schedule">0 9,12,15,18 * * * (4x täglich)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-blue">gws calendar</span>
+        </div>
+        <div class="path">→ Neue Events in 7 Tagen → nur bei Änderungen Telegram-Alert</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">🚴</div>
+      <div class="content">
+        <div class="name">Post-Ride Report</div>
+        <div class="schedule">0 7,12,17,20 * * * (4x täglich)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-gray">Strava API</span>
+        </div>
+        <div class="path">→ Neue Aktivität in letzten 6h → Ride Report → Telegram</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">🚴</div>
+      <div class="content">
+        <div class="name">Wöchentlicher Trainingsreport</div>
+        <div class="schedule">0 20 * * 0 (So 20:00)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-gray">Strava API</span>
+        </div>
+        <div class="path">→ 7-Tage-Summary + Eschborn-Frankfurt Kontext → Telegram</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+  </div>
+
+  <!-- SECURITY & SYSTEM -->
+  <div class="section">
+    <div class="section-title">🔒 Security & System</div>
+
+    <div class="card">
+      <div class="icon">🔒</div>
+      <div class="content">
+        <div class="name">Hourly Security Monitor</div>
+        <div class="schedule">0 * * * * (stündlich)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-gray">security-monitor.sh</span>
+        </div>
+        <div class="path">→ SECURITY-ALERT.md → nur Alert bei Fund</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">🔒</div>
+      <div class="content">
+        <div class="name">Weekly Security Audit</div>
+        <div class="schedule">0 10 * * 1 (Mo 10:00)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-gray">ss, ufw, journalctl, apt</span>
+        </div>
+        <div class="path">→ mission-control/briefings/security-audit-weekly.html</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">🔑</div>
+      <div class="content">
+        <div class="name">Weekly Token Health Check</div>
+        <div class="schedule">30 9 * * 1 (Mo 09:30)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-gray">Google / Strava / Supabase</span>
+        </div>
+        <div class="path">→ API-Token validieren → Alert bei FAIL</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">🔄</div>
+      <div class="content">
+        <div class="name">OpenClaw Update Check</div>
+        <div class="schedule">0 20 * * * (täglich 20:00)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-gray">GitHub Releases Atom Feed</span>
+        </div>
+        <div class="path">→ Neue Version? → Daniel fragen ob updaten</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">🏥</div>
+      <div class="content">
+        <div class="name">Daily Cron Health Check</div>
+        <div class="schedule">0 21 * * * (täglich 21:00)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+        </div>
+        <div class="path">→ Alle Crons prüfen → Alert wenn überfällig</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+  </div>
+
+  <!-- BUSINESS -->
+  <div class="section">
+    <div class="section-title">🧭 Business & Selbstständigkeit</div>
+
+    <div class="card">
+      <div class="icon">🧭</div>
+      <div class="content">
+        <div class="name">Selbstständigkeit Leitplanken</div>
+        <div class="schedule">0 12 * * * (täglich 12:00)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+        </div>
+        <div class="path">→ selbststaendigkeit-leitplanken.md → Telegram-Ping</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">📚</div>
+      <div class="content">
+        <div class="name">Arion Nachhilfe-Reminder</div>
+        <div class="schedule">0 18 * * 0 (So 18:00)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+        </div>
+        <div class="path">→ WhatsApp-Erinnerung + letzte Session-Zusammenfassung</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">🔮</div>
+      <div class="content">
+        <div class="name">Quarterly Company Prediction</div>
+        <div class="schedule">0 10 1 5,8,11 * (quartalsweise)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+        </div>
+        <div class="path">→ Prognose von Feb 2026 checken: Quo vadis Drooms?</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+
+    <div class="card">
+      <div class="icon">📊</div>
+      <div class="content">
+        <div class="name">MQL Snapshot Refresh</div>
+        <div class="schedule">0 23 * * * (täglich 23:00)</div>
+        <div class="meta">
+          <span class="badge badge-green">aktiv</span>
+          <span class="badge badge-gray">Supabase lead-sla</span>
+        </div>
+        <div class="path">→ Perioden 30/60/90/180/365d refreshen → kein Telegram</div>
+      </div>
+      <div class="status"><span class="status-ok">✅</span></div>
+    </div>
+  </div>
+
+  <!-- DISABLED -->
+  <div class="section">
+    <div class="section-title">⭕ Deaktiviert</div>
+
+    <div class="card" style="opacity:0.5">
+      <div class="icon">🚨</div>
+      <div class="content">
+        <div class="name">Tagesschau Eilmeldungen</div>
+        <div class="schedule">*/30 6-23 * * * (alle 30 Min)</div>
+        <div class="meta"><span class="badge badge-gray">disabled</span><span class="badge badge-red">Timeout-Probleme</span></div>
+      </div>
+      <div class="status"><span class="status-off">⭕</span></div>
+    </div>
+
+    <div class="card" style="opacity:0.5">
+      <div class="icon">🐦</div>
+      <div class="content">
+        <div class="name">X/Twitter AI Digest (Grok)</div>
+        <div class="schedule">0 12 * * *</div>
+        <div class="meta"><span class="badge badge-gray">disabled</span></div>
+      </div>
+      <div class="status"><span class="status-off">⭕</span></div>
+    </div>
+
+    <div class="card" style="opacity:0.5">
+      <div class="icon">📋</div>
+      <div class="content">
+        <div class="name">Discovery Playbook Review</div>
+        <div class="schedule">0 15 * * * — heute deaktiviert</div>
+        <div class="meta"><span class="badge badge-gray">disabled</span></div>
+      </div>
+      <div class="status"><span class="status-off">⭕</span></div>
+    </div>
+  </div>
+
+  <p style="color:#ccc; font-size:11px; text-align:center; margin-top:24px;">Generiert von Hatti 🏔️ • 08.03.2026 • mc.mehlhart.de</p>
+</body>
+</html>
