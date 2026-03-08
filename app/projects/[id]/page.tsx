@@ -57,8 +57,8 @@ function TB({ onClick, active, children }: { onClick: () => void; active?: boole
 }
 
 // ─── Meeting Modal ─────────────────────────────────────────────────────────────
-function MeetingModal({ projectId, people, onClose, onSaved, editing }: {
-  projectId: string; people: Person[]; onClose: () => void; onSaved: () => void; editing?: Meeting | null;
+function MeetingModal({ project, people, onClose, onSaved, editing }: {
+  project: Project; people: Person[]; onClose: () => void; onSaved: () => void; editing?: Meeting | null;
 }) {
   const [form, setForm] = useState(editing ? {
     title: editing.title, type: editing.type, date: editing.date,
@@ -71,7 +71,7 @@ function MeetingModal({ projectId, people, onClose, onSaved, editing }: {
     if (!form.title.trim() || !form.date) return;
     setSaving(true);
     const body = {
-      projectId, title: form.title, type: form.type, date: form.date,
+      projectId: project.id, title: form.title, type: form.type, date: form.date,
       durationMin: form.durationMin ? parseInt(form.durationMin) : null,
       driveLink: form.driveLink || null, summary: form.summary || null,
       participants: form.participants,
@@ -87,6 +87,11 @@ function MeetingModal({ projectId, people, onClose, onSaved, editing }: {
 
   const IS = { width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #1e2128", background: "#0d0f12", color: "#f0f2f5", fontSize: 13, outline: "none" };
   const LS = { fontSize: 11, color: "#8b90a0", marginBottom: 4, display: "block" as const };
+
+  const projectPeople = people.filter(p =>
+    (p.project && p.project.toLowerCase().includes(project.name.toLowerCase())) ||
+    (p.company && p.company.toLowerCase().includes(project.client.toLowerCase()))
+  );
 
   return (
     <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 300, padding: 20 }} onClick={onClose}>
@@ -110,7 +115,7 @@ function MeetingModal({ projectId, people, onClose, onSaved, editing }: {
           <div>
             <label style={LS}>Teilnehmer</label>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
-              {people.filter(p => p.project?.includes(form.title.slice(0, 3)) || true).map(p => {
+              {projectPeople.map(p => {
                 const sel = form.participants.includes(p.name);
                 return (
                   <button key={p.id} onClick={() => setForm(f => ({ ...f, participants: sel ? f.participants.filter(x => x !== p.name) : [...f.participants, p.name] }))}
@@ -411,9 +416,9 @@ export default function ProjectDetailPage() {
       </div>
 
       {/* Meeting Modal */}
-      {meetingModal && (
+      {meetingModal && project && (
         <MeetingModal
-          projectId={id} people={people}
+          project={project} people={people}
           editing={editingMeeting}
           onClose={() => { setMeetingModal(false); setEditingMeeting(null); }}
           onSaved={() => { setMeetingModal(false); setEditingMeeting(null); load(); }}
