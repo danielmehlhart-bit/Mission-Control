@@ -79,6 +79,7 @@ function initSchema(db: Database.Database): void {
       insert.run({ id: "4", name: "Concord", client: "Intern", status: "active", description: "Persönliches Leadership OS", repo: "danielmehlhart-bit/concordv3", color: "#10B981" });
       insert.run({ id: "5", name: "Hamm-Architekten — Workflow-Modul", client: "HAM Architekten", status: "active", description: "Discovery abgeschlossen 04.03. · 8 Kern-Features · Ziel: +20% Effizienz · ~120–160h, 6–8 Wochen", repo: "", color: "#EC4899" });
       insert.run({ id: "6", name: "Mission Control", client: "Intern", status: "active", description: "Daniels persönliches Ops-Dashboard", repo: "danielmehlhart-bit/Mission-Control", color: "#06B6D4" });
+      insert.run({ id: "7", name: "Raab Immobilien", client: "Raab Immobilien", status: "active", description: "Discovery-Phase — Eduard Raab Call Mo 10.03.", repo: "", color: "#F97316" });
     });
     seedProjects();
   }

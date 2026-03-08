@@ -107,44 +107,51 @@ export default function PeoplePage() {
         </div>
       </div>
 
-      {/* Grid */}
+      {/* List */}
       {loading ? <p style={{ color: "#8b90a0" }}>Loading…</p> : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12 }}>
-          {filtered.map(person => {
+        <div style={{ background: "#141720", border: "1px solid #1e2128", borderRadius: 12, overflow: "hidden" }}>
+          {filtered.length === 0 && (
+            <p style={{ padding: 20, color: "#4a5068", fontSize: 13 }}>Keine Personen gefunden.</p>
+          )}
+          {filtered.map((person, i) => {
             const color = PROJECT_COLORS[person.project ?? ""] ?? "#4a5068";
             return (
-              <div key={person.id} style={{ background: "#141720", border: "1px solid #1e2128", borderRadius: 12, padding: "20px 20px 14px", position: "relative", overflow: "hidden" }}>
-                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: color, borderRadius: "12px 12px 0 0" }} />
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginTop: 4 }}>
-                  <div style={{
-                    width: 38, height: 38, borderRadius: "50%", flexShrink: 0,
-                    background: `${color}25`, border: `1.5px solid ${color}50`,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 15, fontWeight: 700, color,
-                  }}>
-                    {person.name.charAt(0)}
+              <div key={person.id} style={{
+                display: "flex", alignItems: "center", gap: 14,
+                padding: "12px 16px",
+                borderTop: i > 0 ? "1px solid #1e2128" : "none",
+              }}>
+                {/* Avatar */}
+                <div style={{
+                  width: 34, height: 34, borderRadius: "50%", flexShrink: 0,
+                  background: `${color}22`, border: `1.5px solid ${color}55`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 13, fontWeight: 700, color,
+                }}>
+                  {person.name.charAt(0)}
+                </div>
+
+                {/* Name + Meta */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: "#f0f2f5" }}>{person.name}</span>
+                    <span style={{ fontSize: 12, color: "#4a5068" }}>{[person.role, person.company].filter(Boolean).join(" · ")}</span>
                   </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: "#f0f2f5" }}>{person.name}</div>
-                    <div style={{ fontSize: 12, color: "#8b90a0", marginTop: 1 }}>{[person.role, person.company].filter(Boolean).join(" · ")}</div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 3, flexWrap: "wrap" }}>
                     {person.project && (
-                      <span style={{ display: "inline-block", marginTop: 6, padding: "2px 8px", borderRadius: 999, fontSize: 11, fontWeight: 500, background: `${color}18`, border: `1px solid ${color}40`, color }}>{person.project}</span>
+                      <span style={{ padding: "1px 7px", borderRadius: 999, fontSize: 11, fontWeight: 500, background: `${color}18`, border: `1px solid ${color}40`, color }}>{person.project}</span>
                     )}
+                    {person.email && <a href={`mailto:${person.email}`} style={{ fontSize: 11, color: "#8b90a0", textDecoration: "none" }}>{person.email}</a>}
+                    {person.phone && <span style={{ fontSize: 11, color: "#4a5068" }}>{person.phone}</span>}
                   </div>
                 </div>
-                <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 4 }}>
-                  {person.email && <a href={`mailto:${person.email}`} style={{ fontSize: 12, color: "#8b90a0", textDecoration: "none" }}>✉ {person.email}</a>}
-                  {person.phone && <a href={`tel:${person.phone}`} style={{ fontSize: 12, color: "#8b90a0", textDecoration: "none" }}>📞 {person.phone}</a>}
-                  {person.notes && <p style={{ fontSize: 11, color: "#4a5068", marginTop: 4, lineHeight: 1.5 }}>{person.notes}</p>}
-                </div>
+
                 {/* Actions */}
-                <div style={{ display: "flex", gap: 6, marginTop: 14, paddingTop: 12, borderTop: "1px solid #1e2128" }}>
-                  <button onClick={() => openEdit(person)} style={{ flex: 1, padding: "5px 0", borderRadius: 6, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 12, cursor: "pointer" }}>
-                    ✏️ Bearbeiten
-                  </button>
+                <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+                  <button onClick={() => openEdit(person)} style={{ padding: "5px 10px", borderRadius: 6, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 12, cursor: "pointer" }}>✏️</button>
                   {deleteConfirm === person.id ? (
                     <>
-                      <button onClick={() => deletePerson(person.id)} style={{ flex: 1, padding: "5px 0", borderRadius: 6, border: "1px solid #ef4444", background: "#ef444420", color: "#ef4444", fontSize: 12, cursor: "pointer", fontWeight: 600 }}>Löschen?</button>
+                      <button onClick={() => deletePerson(person.id)} style={{ padding: "5px 10px", borderRadius: 6, border: "1px solid #ef4444", background: "#ef444420", color: "#ef4444", fontSize: 12, cursor: "pointer", fontWeight: 600 }}>Löschen?</button>
                       <button onClick={() => setDeleteConfirm(null)} style={{ padding: "5px 10px", borderRadius: 6, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 12, cursor: "pointer" }}>✕</button>
                     </>
                   ) : (
