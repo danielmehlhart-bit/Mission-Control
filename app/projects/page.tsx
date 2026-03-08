@@ -81,7 +81,7 @@ export default function ProjectsPage() {
                       <span style={{ color: todoCount > 0 ? color : "#4a5068", fontWeight: 700 }}>{todoCount}</span>
                       offene Tasks
                     </button>
-                    <button onClick={() => router.push(`/docs`)} style={{
+                    <button onClick={() => router.push(`/docs?project=${encodeURIComponent(project.name)}`)} style={{
                       display: "flex", alignItems: "center", gap: 6, padding: "5px 12px",
                       borderRadius: 8, border: "1px solid #1e2128", background: "#1a1d27",
                       cursor: "pointer", color: "#c8ccd6", fontSize: 12,

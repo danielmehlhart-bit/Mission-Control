@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { detectCategory, CATEGORY_META, type CategoryKey } from "@/lib/categories";
+import { briefingMatchesProject } from "@/lib/projects";
 
 type BriefingFile = { name: string; path: string; modified: string };
+type Project = { id: string; name: string; color: string };
 
 function formatFilename(name: string): { title: string; date: string } {
   const match = name.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.html$/);
@@ -28,11 +30,14 @@ export default function DocsPage() {
 }
 
 function DocsPageInner() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [files, setFiles] = useState<BriefingFile[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [selected, setSelected] = useState<BriefingFile | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<CategoryKey>("all");
+  const [activeProject, setActiveProject] = useState<string>("all");
   const [lastSeen, setLastSeen] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [listWidth, setListWidth] = useState(280);
@@ -54,13 +59,24 @@ function DocsPageInner() {
     const ts = parseInt(localStorage.getItem("lastSeenTimestamp") ?? "0", 10);
     setLastSeen(ts);
     localStorage.setItem("lastSeenTimestamp", Date.now().toString());
+
     const load = async () => {
       try {
-        const res = await fetch("/api/briefings", { cache: "no-store" });
-        const data = await res.json();
+        const [briefRes, projRes] = await Promise.all([
+          fetch("/api/briefings", { cache: "no-store" }),
+          fetch("/api/projects", { cache: "no-store" }),
+        ]);
+        const data = await briefRes.json();
+        const projData = await projRes.json();
         const sorted = (data.files ?? []).sort((a: BriefingFile, b: BriefingFile) => b.name.localeCompare(a.name));
         setFiles(sorted);
+        setProjects(projData.projects ?? []);
+
+        // URL params
         const fileParam = searchParams.get("file");
+        const projectParam = searchParams.get("project");
+        if (projectParam) setActiveProject(projectParam);
+
         const found = fileParam ? sorted.find((f: BriefingFile) => f.name === fileParam) : null;
         setSelected(found ?? sorted[0] ?? null);
       } finally { setLoading(false); }
@@ -68,7 +84,7 @@ function DocsPageInner() {
     load();
   }, [searchParams]);
 
-  // Drag handle logic
+  // Drag handle
   const onDragStart = (e: React.MouseEvent) => {
     e.preventDefault();
     dragging.current = true;
@@ -84,8 +100,7 @@ function DocsPageInner() {
       dragging.current = false;
       document.body.style.cursor = "";
       document.body.style.userSelect = "";
-      const w = listWidth;
-      localStorage.setItem("docsListWidth", String(w));
+      localStorage.setItem("docsListWidth", String(listWidth));
       document.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseup", onUp);
     };
@@ -93,23 +108,45 @@ function DocsPageInner() {
     document.addEventListener("mouseup", onUp);
   };
 
-  const filtered = activeTab === "all" ? files : files.filter(f => detectCategory(f.name) === activeTab);
-  const counts = TABS.reduce((a, t) => { a[t] = t === "all" ? files.length : files.filter(f => detectCategory(f.name) === t).length; return a; }, {} as Record<CategoryKey, number>);
+  // Filtering
+  const byCategory = activeTab === "all" ? files : files.filter(f => detectCategory(f.name) === activeTab);
+  const filtered = activeProject === "all"
+    ? byCategory
+    : byCategory.filter(f => briefingMatchesProject(f.name, activeProject));
+
+  const counts = TABS.reduce((a, t) => {
+    const base = t === "all" ? files : files.filter(f => detectCategory(f.name) === t);
+    a[t] = activeProject === "all" ? base.length : base.filter(f => briefingMatchesProject(f.name, activeProject)).length;
+    return a;
+  }, {} as Record<CategoryKey, number>);
+
+  const projectCount = (name: string) =>
+    name === "all" ? files.length : files.filter(f => briefingMatchesProject(f.name, name)).length;
+
   const rawUrl = selected ? `/api/briefings?file=${encodeURIComponent(selected.path)}&raw=1` : null;
   const isNew = (f: BriefingFile) => new Date(f.modified).getTime() > lastSeen;
 
+  const setProject = (name: string) => {
+    setActiveProject(name);
+    // Update URL without full navigation
+    const params = new URLSearchParams(searchParams.toString());
+    if (name === "all") params.delete("project");
+    else params.set("project", name);
+    router.replace(`/docs?${params.toString()}`, { scroll: false });
+  };
+
   const s = {
-    page: { padding: "16px 20px", height: "calc(100vh - 52px)", display: "flex", flexDirection: "column" as const, gap: 10 },
+    page: { padding: "16px 20px", height: "calc(100vh - 52px)", display: "flex", flexDirection: "column" as const, gap: 8 },
     header: { display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 },
     title: { fontSize: 22, fontWeight: 700, letterSpacing: "-0.3px" },
     count: { fontSize: 12, color: "#8b90a0", background: "#141720", border: "1px solid #1e2128", borderRadius: 999, padding: "2px 10px" },
-    tabs: { display: "flex", flexWrap: "wrap" as const, gap: 6, flexShrink: 0 },
-    tab: (active: boolean) => ({
-      display: "flex", alignItems: "center", gap: 5,
-      padding: "5px 12px", borderRadius: 999, fontSize: 12.5, fontWeight: 500,
-      border: `1px solid ${active ? "rgba(16,185,129,0.4)" : "#1e2128"}`,
-      background: active ? "rgba(16,185,129,0.1)" : "#141720",
-      color: active ? "#6ee7b7" : "#8b90a0",
+    filterRow: { display: "flex", flexWrap: "wrap" as const, gap: 5, flexShrink: 0 },
+    chip: (active: boolean, color?: string) => ({
+      display: "flex", alignItems: "center", gap: 4,
+      padding: "4px 11px", borderRadius: 999, fontSize: 12, fontWeight: 500,
+      border: `1px solid ${active ? (color ? color + "80" : "rgba(16,185,129,0.4)") : "#1e2128"}`,
+      background: active ? (color ? color + "18" : "rgba(16,185,129,0.1)") : "#141720",
+      color: active ? (color ?? "#6ee7b7") : "#8b90a0",
       cursor: "pointer", transition: "all 0.15s",
     }),
     splitContainer: { flex: 1, display: "flex", minHeight: 0, borderRadius: 12, overflow: "hidden", border: "1px solid #1e2128" },
@@ -129,13 +166,27 @@ function DocsPageInner() {
       <div style={s.page}>
         <div style={s.header}>
           <span style={s.title}>Docs</span>
-          <span style={s.count}>{files.length}</span>
+          <span style={s.count}>{filtered.length}</span>
         </div>
-        <div style={s.tabs}>
+        {/* Project filter — mobile */}
+        <div style={s.filterRow}>
+          <button style={s.chip(activeProject === "all")} onClick={() => setProject("all")}>
+            Alle Projekte
+          </button>
+          {projects.map(p => (
+            <button key={p.id} style={s.chip(activeProject === p.name, p.color)} onClick={() => setProject(p.name)}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: p.color, flexShrink: 0 }} />
+              {p.name.split("—")[0].trim()}
+              <span style={{ color: "#4a5068", fontSize: 11 }}>{projectCount(p.name)}</span>
+            </button>
+          ))}
+        </div>
+        {/* Category tabs — mobile */}
+        <div style={s.filterRow}>
           {TABS.filter(t => counts[t] > 0 || t === "all").map(t => (
-            <button key={t} style={s.tab(activeTab === t)} onClick={() => { setActiveTab(t); localStorage.setItem("docsTab", t); }}>
+            <button key={t} style={s.chip(activeTab === t)} onClick={() => { setActiveTab(t); localStorage.setItem("docsTab", t); }}>
               {CATEGORY_META[t].emoji} {CATEGORY_META[t].label}
-              {counts[t] > 0 && <span style={{ color: "#4a5068", marginLeft: 2 }}>{counts[t]}</span>}
+              <span style={{ color: "#4a5068", fontSize: 11 }}>{counts[t]}</span>
             </button>
           ))}
         </div>
@@ -164,15 +215,29 @@ function DocsPageInner() {
       {/* Header */}
       <div style={s.header}>
         <span style={s.title}>Docs Browser</span>
-        <span style={s.count}>{files.length} Briefings</span>
+        <span style={s.count}>{filtered.length} Briefings</span>
       </div>
 
-      {/* Filter Tabs */}
-      <div style={s.tabs}>
+      {/* Project filter */}
+      <div style={s.filterRow}>
+        <button style={s.chip(activeProject === "all")} onClick={() => setProject("all")}>
+          📁 Alle Projekte
+        </button>
+        {projects.map(p => (
+          <button key={p.id} style={s.chip(activeProject === p.name, p.color)} onClick={() => setProject(p.name)}>
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: p.color, flexShrink: 0 }} />
+            {p.name.split("—")[0].trim()}
+            <span style={{ color: "#4a5068", fontSize: 11, marginLeft: 1 }}>{projectCount(p.name)}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Category tabs */}
+      <div style={s.filterRow}>
         {TABS.filter(t => counts[t] > 0 || t === "all").map(t => (
-          <button key={t} style={s.tab(activeTab === t)} onClick={() => { setActiveTab(t); localStorage.setItem("docsTab", t); }}>
+          <button key={t} style={s.chip(activeTab === t)} onClick={() => { setActiveTab(t); localStorage.setItem("docsTab", t); }}>
             {CATEGORY_META[t].emoji} {CATEGORY_META[t].label}
-            {counts[t] > 0 && <span style={{ marginLeft: 4, background: "#1a1d27", borderRadius: 999, padding: "0 5px", fontSize: 11, color: "#4a5068" }}>{counts[t]}</span>}
+            {counts[t] > 0 && <span style={{ marginLeft: 2, background: "#1a1d27", borderRadius: 999, padding: "0 5px", fontSize: 11, color: "#4a5068" }}>{counts[t]}</span>}
           </button>
         ))}
       </div>
@@ -181,9 +246,12 @@ function DocsPageInner() {
       <div ref={containerRef} style={s.splitContainer}>
         {/* List */}
         <div style={{ ...s.list, width: listWidth }}>
-          <div style={s.listHeader}>Briefings</div>
+          <div style={s.listHeader}>
+            {activeProject !== "all" ? `${activeProject.split("—")[0].trim()} · ${filtered.length}` : `Alle · ${filtered.length}`}
+          </div>
           {loading ? <p style={{ padding: "12px 14px", color: "#8b90a0", fontSize: 13 }}>Loading…</p>
-            : filtered.length === 0 ? <p style={{ padding: "12px 14px", color: "#4a5068", fontSize: 13 }}>Keine Briefings.</p>
+            : filtered.length === 0
+            ? <p style={{ padding: "12px 14px", color: "#4a5068", fontSize: 13 }}>Keine Briefings für dieses Projekt.</p>
             : filtered.map(f => {
               const { title, date } = formatFilename(f.name);
               const active = selected?.path === f.path;
