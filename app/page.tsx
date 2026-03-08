@@ -68,6 +68,11 @@ export default function HomePage() {
       } catch {}
     };
     load();
+
+    // Re-fetch wenn Tab wieder aktiv wird (Router Cache Workaround + Hintergrund-Updates)
+    const onVisible = () => { if (document.visibilityState === "visible") load(); };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
   }, []);
 
   const isNew = (f: BriefingFile) => new Date(f.modified).getTime() > lastSeen;
