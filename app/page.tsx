@@ -6,6 +6,7 @@ import { detectCategory, CATEGORY_META } from "@/lib/categories";
 import { CapturePill } from "@/components/capture-pill";
 
 type BriefingFile = { name: string; path: string; modified: string };
+type Project = { id: string; name: string; color: string };
 
 function formatFilename(name: string): { title: string; date: string } {
   const match = name.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.html$/);
@@ -21,6 +22,7 @@ function formatFilename(name: string): { title: string; date: string } {
 export default function HomePage() {
   const router = useRouter();
   const [briefings, setBriefings] = useState<BriefingFile[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [lastSeen, setLastSeen] = useState(0);
   const [showToast, setShowToast] = useState(false);
   const [newCount, setNewCount] = useState(0);
@@ -44,8 +46,13 @@ export default function HomePage() {
     setLastSeen(ts);
     const load = async () => {
       try {
-        const res = await fetch("/api/briefings", { cache: "no-store" });
+        const [res, projRes] = await Promise.all([
+          fetch("/api/briefings", { cache: "no-store" }),
+          fetch("/api/projects", { cache: "no-store" }),
+        ]);
         const data = await res.json();
+        const projData = await projRes.json();
+        setProjects(projData.projects ?? []);
         const DATED = /^\d{4}-\d{2}-\d{2}-.*\.html?$/i;
       const sorted = (data.files ?? [])
         .filter((f: BriefingFile) => DATED.test(f.name))
@@ -110,6 +117,7 @@ export default function HomePage() {
               await fetch("/api/tasks", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title, project }) });
             }}
             onClose={() => setShowCapture(false)}
+            projects={["Allgemein", ...projects.map(p => p.name)]}
           />
         </div>
       )}

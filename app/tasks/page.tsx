@@ -8,20 +8,26 @@ type Task = {
   status: "todo" | "done"; createdAt: string; doneAt?: string; notes?: string;
 };
 
-const PROJECTS = ["Allgemein", "ModulAI", "Architekt Connect", "BPP", "Concord"];
-
-const PROJECT_COLORS: Record<string, string> = {
-  "ModulAI": "border-purple-500/30 bg-purple-500/10 text-purple-300",
-  "Architekt Connect": "border-blue-500/30 bg-blue-500/10 text-blue-300",
-  "BPP": "border-yellow-500/30 bg-yellow-500/10 text-yellow-300",
-  "Concord": "border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
-  "Allgemein": "border-slate-600/50 bg-slate-700/30 text-slate-300",
+type Project = {
+  id: string; name: string; color: string; status: string;
 };
 
-const EMPTY_EDIT = { title: "", project: "Allgemein", notes: "" };
+const DEFAULT_COLOR = "#64748b";
+const ALLGEMEIN = "Allgemein";
+
+function hexToStyle(hex: string) {
+  return {
+    borderColor: hex + "55",
+    backgroundColor: hex + "22",
+    color: hex,
+  };
+}
+
+const EMPTY_EDIT = { title: "", project: ALLGEMEIN, notes: "" };
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("All");
   const [showCapture, setShowCapture] = useState(false);
@@ -30,11 +36,23 @@ export default function TasksPage() {
   const [editSaving, setEditSaving] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
+  const projectNames = [ALLGEMEIN, ...projects.map(p => p.name)];
+
+  function getProjectStyle(name: string) {
+    const p = projects.find(p => p.name === name);
+    return hexToStyle(p?.color ?? DEFAULT_COLOR);
+  }
+
   const load = async () => {
     try {
-      const res = await fetch("/api/tasks", { cache: "no-store" });
-      const data = await res.json();
-      setTasks(data.tasks ?? []);
+      const [tasksRes, projectsRes] = await Promise.all([
+        fetch("/api/tasks", { cache: "no-store" }),
+        fetch("/api/projects", { cache: "no-store" }),
+      ]);
+      const tasksData = await tasksRes.json();
+      const projectsData = await projectsRes.json();
+      setTasks(tasksData.tasks ?? []);
+      setProjects(projectsData.projects ?? []);
     } finally { setLoading(false); }
   };
   useEffect(() => { load(); }, []);
@@ -80,6 +98,7 @@ export default function TasksPage() {
 
   const TaskRow = ({ task }: { task: Task }) => {
     const done = task.status === "done";
+    const badgeStyle = getProjectStyle(task.project);
     return (
       <div className={`group flex flex-col rounded-lg border px-3 py-2.5 transition ${
         done ? "border-slate-800/40 bg-slate-900/20" : "border-slate-800/60 bg-slate-900/40 hover:border-slate-700/60"
@@ -91,7 +110,10 @@ export default function TasksPage() {
             {done && <span className="text-xs">✓</span>}
           </button>
           <span className={`flex-1 text-sm ${done ? "line-through text-slate-500" : "text-slate-200"}`}>{task.title}</span>
-          <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-medium ${PROJECT_COLORS[task.project] ?? PROJECT_COLORS["Allgemein"]}`}>{task.project}</span>
+          <span style={{ ...badgeStyle, borderWidth: 1, borderStyle: "solid" }}
+            className="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium">
+            {task.project}
+          </span>
           {/* Actions — visible on hover */}
           <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
             <button onClick={() => openEdit(task)} className="rounded p-1 text-slate-500 hover:text-slate-200 hover:bg-slate-700/50 transition text-xs" title="Bearbeiten">✏️</button>
@@ -128,16 +150,16 @@ export default function TasksPage() {
       </header>
 
       {showCapture && (
-        <CapturePill onSave={addTask} onClose={() => setShowCapture(false)} />
+        <CapturePill onSave={addTask} onClose={() => setShowCapture(false)} projects={projectNames} />
       )}
 
       {/* Project filter */}
       <div className="flex flex-wrap gap-1.5">
-        {["All", ...PROJECTS].map(p => (
+        {["All", ...projectNames].map(p => (
           <button key={p} onClick={() => setFilter(p)} className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
             filter === p ? "border-emerald-400/50 bg-emerald-400/10 text-emerald-200" : "border-slate-700/60 text-slate-400 hover:border-slate-600 hover:text-slate-200"
           }`}>
-            {p}{p !== "All" && <span className="ml-1.5 text-slate-500">{tasks.filter(t => t.project === p && t.status === "todo").length}</span>}
+            {p}{p !== "All" && p !== ALLGEMEIN && <span className="ml-1.5 text-slate-500">{tasks.filter(t => t.project === p && t.status === "todo").length}</span>}
           </button>
         ))}
       </div>
@@ -178,7 +200,7 @@ export default function TasksPage() {
                 <label style={{ fontSize: 11, color: "#8b90a0", marginBottom: 4, display: "block" }}>Projekt</label>
                 <select value={editForm.project} onChange={e => setEditForm(f => ({ ...f, project: e.target.value }))}
                   style={{ width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #1e2128", background: "#0d0f12", color: "#f0f2f5", fontSize: 13, outline: "none" }}>
-                  {PROJECTS.map(p => <option key={p} value={p}>{p}</option>)}
+                  {projectNames.map(p => <option key={p} value={p}>{p}</option>)}
                 </select>
               </div>
               <div>
