@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>Leads — Mobile Preview</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f7f7f7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 1rem; max-width: 390px; }
+  h2 { font-size: 1.15rem; font-weight: 700; color: #222; margin: 1rem 0 0.75rem; }
+  .badge { background: #f0f0f0; color: #555; border-radius: 999px; font-size: 0.78rem; padding: 0.15rem 0.55rem; font-weight: 600; margin-left: 0.3rem; }
+  .leads-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  .lead-card { background: #fff; border-radius: 16px; padding: 1.3rem 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 6px 16px rgba(0,0,0,0.04); }
+  .lead-name { font-size: 1rem; font-weight: 700; color: #222; margin-bottom: 0.15rem; }
+  .lead-firm { font-size: 0.85rem; color: #717171; margin-bottom: 0.6rem; }
+  .lead-row { font-size: 0.82rem; color: #444; margin-bottom: 0.3rem; }
+  .lead-label { color: #999; font-size: 0.78rem; margin-right: 0.2rem; }
+  .lead-context { font-size: 0.82rem; color: #717171; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid #f5f5f5; line-height: 1.5; }
+  a.lead-email { color: #1565c0; text-decoration: none; }
+  .status { border-radius: 8px; padding: 0.2rem 0.7rem; font-size: 0.78rem; font-weight: 600; display: inline-block; }
+  .status.new { background: #e3f2fd; color: #1565c0; }
+</style>
+</head>
+<body>
+<h2>🎯 Leads <span class="badge">3</span></h2>
+<div class="leads-grid">
+  <div class="lead-card">
+    <div class="lead-name">Stavros Alexandros Gavalas</div>
+    <div class="lead-firm">HAMM Architekten · Interner Kontakt</div>
+    <div class="lead-row"><span class="lead-label">Email:</span><a class="lead-email" href="mailto:a.gavalas@hammarchitekten.de">a.gavalas@hammarchitekten.de</a></div>
+    <div class="lead-row"><span class="lead-label">Quelle:</span>Warm Intro von Alex Hamm (04.03.2026)</div>
+    <div class="lead-context">Arbeitet direkt bei HAM Architekten. Potentiell zuständig für technische Themen/IT im Büro.</div>
+    <div style="margin-top: 0.8rem;"><span class="status new">Neu — Kontakt aufnehmen</span></div>
+  </div>
+  <div class="lead-card">
+    <div class="lead-name">Eduard Raab</div>
+    <div class="lead-firm">Raab Immobilien GmbH · Geschäftsführung</div>
+    <div class="lead-row"><span class="lead-label">Email:</span><a class="lead-email" href="mailto:e.raab@raabimmobilien.com">e.raab@raabimmobilien.com</a></div>
+    <div class="lead-row"><span class="lead-label">Tel:</span>+49 6772 95491 16</div>
+    <div class="lead-row"><span class="lead-label">Adresse:</span>Bahnhofsallee 2, 56355 Nastätten</div>
+    <div class="lead-row"><span class="lead-label">Web:</span><a class="lead-email" href="https://raabimmobilien.com">raabimmobilien.com</a></div>
+    <div class="lead-row"><span class="lead-label">Quelle:</span>Warm Intro von Alex Hamm (04.03.2026)</div>
+    <div class="lead-context">Von Alex als "sehr interessiert" beschrieben. Pains: Projekt-Management, Email-Overload.</div>
+    <div style="margin-top: 0.8rem;"><span class="status" style="background:#fff3e0;color:#e65100;border-radius:8px;padding:0.2rem 0.7rem;font-size:0.78rem;font-weight:600;">📅 Call Mo 10.03. 10:00</span></div>
+  </div>
+  <div class="lead-card">
+    <div class="lead-name">Jens Burchard</div>
+    <div class="lead-firm">Miebach Consulting · Kumpel</div>
+    <div class="lead-row"><span class="lead-label">Email:</span><a class="lead-email" href="mailto:burchard@miebach.com">burchard@miebach.com</a></div>
+    <div class="lead-row"><span class="lead-label">Quelle:</span>Persönlicher Kontakt · Warm Lead</div>
+    <div class="lead-context">Alter Kumpel. Miebach = Supply Chain Consulting. Potentiell interessiert an KI-Automatisierung.</div>
+    <div style="margin-top: 0.8rem;"><span class="status new">Neu — Gespräch vereinbaren</span></div>
+  </div>
+</div>
+</body>
+</html>

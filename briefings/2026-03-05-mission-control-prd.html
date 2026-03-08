@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRD: OpenClaw Mission Control Dashboard</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header {
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #212529;
+            margin-bottom: 0.5rem;
+        }
+        h2 {
+            font-size: 1.8rem;
+            color: #495057;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        h3 {
+            font-size: 1.4rem;
+            color: #495057;
+            margin-top: 30px;
+        }
+        .meta-info {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        p, li {
+            font-size: 1rem;
+        }
+        code {
+            background-color: #e9ecef;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        }
+        .badge {
+            display: inline-block;
+            padding: .35em .65em;
+            font-size: .75em;
+            font-weight: 700;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: .25rem;
+        }
+        .badge-tech { background-color: #007bff; }
+        .badge-ui { background-color: #6f42c1; }
+        .badge-feature { background-color: #28a745; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Product Requirements Document: OpenClaw Mission Control</h1>
+            <p class="meta-info">Version: 1.0 | Datum: 05.03.2026 | Basierend auf dem Video von Alex Finn</p>
+        </header>
+
+        <section id="summary">
+            <h2>Executive Summary</h2>
+            <p>Dieses Dokument definiert die Anforderungen für das "Mission Control" Dashboard, eine web-basierte Benutzeroberfläche für die OpenClaw-Plattform. Das Dashboard dient als zentrale Anlaufstelle zur Verwaltung, Überwachung und Interaktion mit OpenClaw-Agenten und deren Aufgaben. Es soll die Transparenz, Organisation und Effizienz bei der Arbeit mit OpenClaw erhöhen. Das Projekt wird als Next.js-Anwendung realisiert, lokal gehostet und erfordert keine Programmierkenntnisse vom Endbenutzer, da der Aufbau durch OpenClaw selbst mittels Prompts erfolgen kann.</p>
+        </section>
+
+        <section id="vision">
+            <h2>Vision & Goals</h2>
+            <p><strong>Vision:</strong> Jedem OpenClaw-Nutzer ein leistungsstarkes, intuitives und personalisierbares "Mission Control" zur Verfügung zu stellen, das die Superkräfte von OpenClaw entfesselt und die Interaktion von einer reinen Kommandozeile zu einer visuellen, organisierten Erfahrung erweitert.</p>
+            <h3>Goals:</h3>
+            <ul>
+                <li><strong>Transparenz schaffen:</strong> Nutzern jederzeit einen klaren Überblick über die Aktivitäten, Aufgaben und Pläne ihrer OpenClaw-Agenten geben.</li>
+                <li><strong>Proaktivität ermöglichen:</strong> Ein Werkzeug bereitstellen, um geplante Aufgaben (Cron Jobs) zu visualisieren und zu verwalten.</li>
+                <li><strong>Organisation verbessern:</strong> Alle von Agenten generierten Dokumente, Projekte und Erinnerungen an einem zentralen Ort bündeln.</li>
+                <li><strong>Effizienz steigern:</strong> Die Verwaltung von Agenten, Sub-Agenten und deren Aufgaben vereinfachen.</li>
+                <li><strong>Spaßfaktor erhöhen:</strong> Eine ansprechende und interaktive Oberfläche schaffen, die die Nutzung von OpenClaw zu einer Freude macht.</li>
+            </ul>
+        </section>
+
+        <section id="user-stories">
+            <h2>User Stories</h2>
+            <ul>
+                <li>Als OpenClaw-Nutzer möchte ich ein Kanban-Board sehen, um den Status aller Aufgaben (meiner und der des Agenten) zu verfolgen und neue Aufgaben einfach hinzuzufügen.</li>
+                <li>Als OpenClaw-Nutzer möchte ich einen Kalender sehen, der alle geplanten Cron-Jobs und automatisierten Tasks anzeigt, damit ich die Proaktivität meines Agenten überprüfen kann.</li>
+                <li>Als OpenClaw-Nutzer möchte ich eine Projektübersicht haben, um den Fortschritt meiner Hauptprojekte zu verfolgen und mich zu fokussieren.</li>
+                <li>Als OpenClaw-Nutzer möchte ich auf eine durchsuchbare Datenbank aller vergangenen Konversationen ("Memories") zugreifen, um wichtige Informationen schnell wiederzufinden.</li>
+                <li>Als OpenClaw-Nutzer möchte ich alle von meinem Agenten erstellten Dokumente an einem zentralen, durchsuchbaren Ort finden, anstatt meinen Chatverlauf durchsuchen zu müssen.</li>
+                <li>Als OpenClaw-Nutzer möchte ich eine Übersicht meines "Agenten-Teams" (inklusive Sub-Agenten) sehen, um deren Rollen und Struktur zu verstehen.</li>
+            </ul>
+        </section>
+
+        <section id="functional-requirements">
+            <h2>Functional Requirements</h2>
+            
+            <h3>Core Dashboard</h3>
+            <ul>
+                <li>Das Dashboard soll als Web-Anwendung über einen lokalen Host erreichbar sein.</li>
+                <li>Eine Navigationsleiste auf der linken Seite ermöglicht den Zugriff auf alle Tools.</li>
+                <li>Das Design soll sich am "Linear-Style" orientieren: sauber, modern und minimalistisch.</li>
+                <li>Alle Tools werden als einzelne "Screens" oder Ansichten innerhalb des Dashboards dargestellt.</li>
+            </ul>
+
+            <h3>1. Task Board <span class="badge badge-feature">Core Feature</span></h3>
+            <ul>
+                <li><strong>Kanban-Board Ansicht:</strong> Darstellung von Aufgaben in Spalten wie "Backlog", "In Progress", "Review" und "Done".</li>
+                <li><strong>Aufgaben-Karten:</strong> Jede Karte repräsentiert eine Aufgabe und zeigt eine Beschreibung und den zugewiesenen Bearbeiter (Nutzer oder Agent).</li>
+                <li><strong>Zuweisung:</strong> Aufgaben können dem Nutzer (z.B. "A" für Alex) oder dem OpenClaw-Agenten (z.B. "H" für Henry) zugewiesen werden.</li>
+                <li><strong>Automatisches Task-Handling:</strong> Der OpenClaw-Agent soll in jedem Heartbeat-Zyklus das Board prüfen und neue, ihm zugewiesene Aufgaben aus dem Backlog automatisch starten.</li>
+                <li><strong>Status-Updates:</strong> Der Agent verschiebt die Aufgaben-Karten selbstständig auf dem Board, um den Fortschritt zu visualisieren.</li>
+                <li><strong>Live Activity Feed:</strong> Eine separate Spalte oder ein Bereich, der in Echtzeit detailliert anzeigt, woran der Agent gerade arbeitet.</li>
+                <li><strong>Manuelles Hinzufügen:</strong> Ein Button "New Task" ermöglicht dem Nutzer das schnelle Erstellen und Zuweisen neuer Aufgaben.</li>
+            </ul>
+
+            <h3>2. Calendar <span class="badge badge-feature">Core Feature</span></h3>
+            <ul>
+                <li><strong>Monats-/Wochenansicht:</strong> Visualisierung aller geplanten und wiederkehrenden Aufgaben (Cron Jobs) in einem Kalenderformat.</li>
+                <li><strong>Eintragsdetails:</strong> Jeder Eintrag zeigt den Namen der Aufgabe und den Ausführungszeitpunkt.</li>
+                <li><strong>Verifizierungs-Tool:</strong> Dient als "Source of Truth", um zu bestätigen, dass vom Agenten angenommene, geplante Aufgaben tatsächlich als Cron Job eingetragen wurden.</li>
+                <li><strong>Keine manuelle Erstellung:</strong> Der Kalender ist eine reine Lese-Ansicht der vom OpenClaw-Agenten verwalteten Cron Jobs.</li>
+            </ul>
+
+            <h3>3. Project Screen</h3>
+            <ul>
+                <li><strong>Projektübersicht:</strong> Eine Ansicht, die alle Hauptprojekte des Nutzers darstellt.</li>
+                <li><strong>Fortschrittsanzeige:</strong> Jedes Projekt hat eine visuelle Fortschrittsanzeige (z.B. Prozentbalken).</li>
+                <li><strong>Verknüpfungen:</strong> Projekte können mit spezifischen Aufgaben (aus dem Task Board), Memories und Dokumenten verknüpft werden, um alle relevanten Informationen zu bündeln.</li>
+                <li><strong>Fokus-Hilfe:</strong> Dient als Ankerpunkt, um sich auf die wichtigsten, übergeordneten Ziele zu konzentrieren.</li>
+            </ul>
+            
+            <h3>4. Memory Screen</h3>
+            <ul>
+                <li><strong>Journal-Ansicht:</strong> Stellt die OpenClaw-Memory-Dateien in einer organisierten, tagebuchähnlichen Ansicht dar.</li>
+                <li><strong>Organisation nach Datum:</strong> Erinnerungen sind chronologisch nach Tagen gruppiert und leicht navigierbar.</li>
+                <li><strong>Langzeit-Gedächtnis:</strong> Ein separater Bereich zur Anzeige der kuratierten "long-term memory".</li>
+                <li><strong>Durchsuchbarkeit:</strong> Bietet eine Funktion, um alle Erinnerungen nach Schlüsselwörtern zu durchsuchen.</li>
+            </ul>
+
+            <h3>5. Docs Screen</h3>
+            <ul>
+                <li><strong>Dokumenten-Bibliothek:</strong> Ein zentraler Ort für alle von OpenClaw erstellten Dokumente (z.B. PRDs, Newsletter-Entwürfe, Architekturpläne).</li>
+                <li><strong>Formatierte Ansicht:</strong> Zeigt Dokumente in einer sauberen, lesbaren Form an, anstatt als reinen Text-Block im Chat.</li>
+                <li><strong>Kategorisierung:</strong> Dokumente werden automatisch kategorisiert (z.B. nach Dateityp oder Inhalt).</li>
+                <li><strong>Globale Suche:</strong> Eine leistungsstarke Suchfunktion, um Dokumente basierend auf ihrem Inhalt schnell zu finden.</li>
+            </ul>
+
+            <h3>6. Team Screen</h3>
+            <ul>
+                <li><strong>Organigramm:</strong> Eine visuelle Darstellung der Agenten-Hierarchie, inklusive des Haupt-Agenten und aller Sub-Agenten.</li>
+                <li><strong>Agenten-Profile:</strong> Jede "Person" im Organigramm zeigt Name, Rolle (z.B. "Engineer", "Researcher"), das zugrundeliegende Modell (z.B. "Claude", "ChatGPT") und das Gerät, auf dem es läuft.</li>
+                <li><strong>Mission Statement:</strong> Ein gut sichtbarer Bereich am oberen Rand, der die übergeordnete Mission für alle Agenten definiert. Dies dient als Leitlinie für proaktive Task-Vorschläge.</li>
+            </ul>
+            
+            <h3>7. Office Screen <span class="badge badge-ui">Fun Feature</span></h3>
+            <ul>
+                <li><strong>2D Pixel Art Visualisierung:</strong> Eine spielerische Ansicht eines Büros, in dem jeder Agent als Charakter dargestellt wird.</li>
+                <li><strong>Live-Status-Visualisierung:</strong> Wenn ein Agent eine Aufgabe bearbeitet, bewegt sich sein Charakter an seinen Schreibtisch.</li>
+                <li><strong>Interaktionen:</strong> Agenten können sich zur Interaktion am "Wasserkühler" treffen.</li>
+                <li><strong>Zweck:</strong> Dient der schnellen visuellen Erfassung der Agenten-Aktivitäten und erhöht den "Fun Factor" der Anwendung.</li>
+            </ul>
+        </section>
+
+        <section id="non-functional-reqs">
+            <h2>Non-Functional Requirements</h2>
+            <ul>
+                <li><strong>Performance:</strong> Die Anwendung muss schnell laden und flüssig reagieren, da sie lokal gehostet wird.</li>
+                <li><strong>Stabilität:</strong> Die Anwendung muss stabil laufen und darf nicht abstürzen.</li>
+                <li><strong>Sicherheit:</strong> Da die Anwendung lokal läuft, ist die Sicherheit weniger kritisch, aber es sollten keine sensiblen Daten ungeschützt preisgegeben werden.</li>
+                <li><strong>Benutzerfreundlichkeit:</strong> Die Oberfläche muss intuitiv und ohne Einarbeitung verständlich sein.</li>
+            </ul>
+        </section>
+        
+        <section id="tech-architecture">
+            <h2>Technical Architecture</h2>
+            <ul>
+                <li><strong>Framework:</strong> <span class="badge badge-tech">Next.js</span></li>
+                <li><strong>Hosting:</strong> <span class="badge badge-tech">Localhost</span></li>
+                <li><strong>Datenquelle:</strong> Direkte Interaktion mit den Konfigurations- und Memory-Dateien von OpenClaw im Dateisystem.</li>
+                <li><strong>Entwicklungsprozess:</strong> Das gesamte Dashboard wird von einem OpenClaw-Agenten auf Basis von textuellen Prompts des Nutzers erstellt. Es ist keine manuelle Programmierung durch den Nutzer erforderlich.</li>
+            </ul>
+        </section>
+
+        <section id="ui-ux-reqs">
+            <h2>UI/UX Requirements</h2>
+            <ul>
+                <li><strong>Design-Sprache:</strong> <span class="badge badge-ui">Linear-Style</span> – sauber, hohe Kontraste, großzügiger Weißraum, gut lesbare Typografie.</li>
+                <li><strong>Layout:</strong> Eine feste Seitenleiste für die Navigation und ein Hauptinhaltsbereich für die ausgewählte Tool-Ansicht.</li>
+                <li><strong>Interaktivität:</strong> Elemente wie das Kanban-Board sollten per Drag-and-Drop bedienbar sein (obwohl dies im Video nicht explizit erwähnt wird, ist es eine Standarderwartung für solche Boards).</li>
+            </ul>
+        </section>
+
+        <section id="integration">
+            <h2>Integration Points</h2>
+            <ul>
+                <li><strong>Dateisystem:</strong> Das Dashboard muss Lese- und Schreibzugriff auf das OpenClaw-Workspace-Verzeichnis haben, insbesondere auf:
+                    <ul>
+                        <li>Memory-Dateien (täglich und Langzeit)</li>
+                        <li>Vom Agenten generierte Dokumente</li>
+                        <li>Eine Konfigurationsdatei oder Datenbank für Tasks und Projekte</li>
+                    </ul>
+                </li>
+                <li><strong>OpenClaw Heartbeat:</strong> Der Agent muss über den Heartbeat-Mechanismus getriggert werden können, um das Task Board zu prüfen und Aufgaben zu übernehmen.</li>
+                <li><strong>Cron-System:</strong> Das Dashboard muss die System-Cron-Jobs auslesen können, um den Kalender zu befüllen.</li>
+            </ul>
+        </section>
+
+        <section id="metrics">
+            <h2>Success Metrics</h2>
+            <ul>
+                <li><strong>Adoption:</strong> Der Nutzer verwendet das Dashboard täglich zur Verwaltung seiner OpenClaw-Aufgaben.</li>
+                <li><strong>Effizienz:</strong> Die Zeit, die benötigt wird, um den Status einer Aufgabe zu ermitteln oder ein altes Dokument zu finden, wird signifikant reduziert.</li>
+                <li><strong>Nutzer-Feedback:</strong> Der Nutzer berichtet von einem besseren Überblick und mehr Kontrolle über seine OpenClaw-Agenten.</li>
+                <li><strong>Proaktive Nutzung:</strong> Die Anzahl der über den Kalender verfolgten, erfolgreich abgeschlossenen Cron Jobs steigt.</li>
+            </ul>
+        </section>
+
+    </div>
+</body>
+</html>

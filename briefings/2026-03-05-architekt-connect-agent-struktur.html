@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏗️ Architekt Connect — Agent-Struktur & Prompts</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white;
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 1.05rem;
+      opacity: 0.75;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .header .meta {
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 48px 0 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #e8e8e8;
+    }
+
+    .section-number {
+      background: #ff385c;
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .section-header h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+
+    /* Cards */
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card p {
+      color: #555;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+
+    /* ============ FLOW DIAGRAM ============ */
+    .flow-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 36px 32px;
+      margin-bottom: 20px;
+    }
+
+    .flow-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      align-items: center;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 780px;
+      position: relative;
+    }
+
+    .flow-input {
+      background: #f0f4ff;
+      border: 2px solid #c7d2fe;
+      border-radius: 10px;
+      padding: 10px 16px;
+      min-width: 160px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: #3730a3;
+      font-weight: 600;
+    }
+
+    .flow-arrow {
+      color: #aaa;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .flow-agent {
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: white;
+      flex: 1;
+      text-align: center;
+      min-width: 180px;
+    }
+
+    .agent-analyzer  { background: linear-gradient(135deg, #667eea, #764ba2); }
+    .agent-prd       { background: linear-gradient(135deg, #f093fb, #c471ed); }
+    .agent-builder   { background: linear-gradient(135deg, #4facfe, #00f2fe); color: #0a4a6b; }
+    .agent-reviewer  { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #0a4a2e; }
+    .agent-challenger{ background: linear-gradient(135deg, #f7971e, #ffd200); color: #5a3e00; }
+    .agent-daniel    { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+    .agent-input     { background: linear-gradient(135deg, #a8edea, #fed6e3); color: #444; }
+
+    .flow-output {
+      background: #f8fffe;
+      border: 2px solid #a7f3d0;
+      border-radius: 10px;
+      padding: 10px 16px;
+      min-width: 160px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: #065f46;
+      font-weight: 600;
+    }
+
+    .flow-connector {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 32px;
+      width: 100%;
+      max-width: 780px;
+    }
+
+    .flow-connector-line {
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(180deg, #e0e0e0, #e0e0e0);
+      border-radius: 2px;
+      position: relative;
+    }
+
+    .flow-connector-line::after {
+      content: '▼';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #aaa;
+      font-size: 0.8rem;
+    }
+
+    .flow-role-label {
+      font-size: 0.72rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 3px;
+    }
+
+    /* Color legend */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: #555;
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ============ CODE BLOCKS ============ */
+    .code-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #e8eaf0;
+      padding: 8px 16px;
+      border-radius: 10px 10px 0 0;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #555;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .code-block {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 0 0 10px 10px;
+      padding: 20px 22px;
+      font-family: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', Menlo, Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: #1f2937;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+
+    .code-wrapper {
+      margin: 16px 0;
+    }
+
+    /* Prompt cards for sub-agents */
+    .agent-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .agent-card-header {
+      padding: 20px 28px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .agent-icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .agent-card-title h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+
+    .agent-card-title .when-label {
+      font-size: 0.82rem;
+      color: #888;
+      font-weight: 500;
+    }
+
+    .agent-card-title .when-text {
+      font-size: 0.88rem;
+      color: #555;
+    }
+
+    .agent-card-body {
+      padding: 20px 28px 24px;
+    }
+
+    .timeout-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      color: #856404;
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 12px;
+    }
+
+    .output-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #d1fae5;
+      border: 1px solid #6ee7b7;
+      color: #065f46;
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    /* ============ FILE TREE ============ */
+    .file-tree {
+      background: #1e1e2e;
+      border-radius: 12px;
+      padding: 24px 28px;
+      font-family: 'SF Mono', Menlo, Consolas, monospace;
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: #cdd6f4;
+    }
+
+    .file-tree .dir  { color: #89b4fa; font-weight: 600; }
+    .file-tree .file { color: #a6e3a1; }
+    .file-tree .comment { color: #6c7086; font-style: italic; }
+    .file-tree .important { color: #fab387; font-weight: 600; }
+
+    /* ============ DASHBOARD SECTION ============ */
+    .integration-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .integration-grid { grid-template-columns: 1fr; }
+    }
+
+    .integration-card {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      padding: 20px 22px;
+    }
+
+    .integration-card h4 {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+
+    .integration-card p, .integration-card li {
+      font-size: 0.88rem;
+      color: #444;
+      line-height: 1.6;
+    }
+
+    .integration-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .integration-card ul li::before {
+      content: '→ ';
+      color: #ff385c;
+      font-weight: 700;
+    }
+
+    .flow-arrow-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    .flow-pill {
+      background: #f0f4ff;
+      border: 2px solid #c7d2fe;
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #3730a3;
+      white-space: nowrap;
+    }
+
+    .flow-pill.green { background: #d1fae5; border-color: #6ee7b7; color: #065f46; }
+    .flow-pill.orange { background: #fff3cd; border-color: #ffc107; color: #856404; }
+
+    .flow-arrow-small {
+      color: #aaa;
+      font-size: 1.1rem;
+      padding: 0 8px;
+    }
+
+    /* ============ TIMELINE ============ */
+    .timeline {
+      position: relative;
+      padding-left: 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 80px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, #e0e0e0, #e0e0e0);
+      border-radius: 2px;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 8px;
+      position: relative;
+      align-items: flex-start;
+    }
+
+    .timeline-time {
+      min-width: 60px;
+      text-align: right;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #888;
+      padding-top: 10px;
+      flex-shrink: 0;
+    }
+
+    .timeline-dot-wrapper {
+      position: relative;
+      width: 20px;
+      display: flex;
+      justify-content: center;
+      flex-shrink: 0;
+      padding-top: 10px;
+    }
+
+    .timeline-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 3px solid white;
+      box-shadow: 0 0 0 2px #ddd;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .dot-auto    { background: #34d399; box-shadow: 0 0 0 2px #6ee7b7; }
+    .dot-daniel  { background: #60a5fa; box-shadow: 0 0 0 2px #93c5fd; }
+    .dot-agent   { background: #fb923c; box-shadow: 0 0 0 2px #fdba74; }
+    .dot-done    { background: #a78bfa; box-shadow: 0 0 0 2px #c4b5fd; }
+
+    .timeline-content {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      padding: 10px 16px;
+      flex: 1;
+      font-size: 0.88rem;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    .timeline-content.auto    { border-left: 4px solid #34d399; }
+    .timeline-content.daniel  { border-left: 4px solid #60a5fa; }
+    .timeline-content.agent   { border-left: 4px solid #fb923c; }
+    .timeline-content.done    { border-left: 4px solid #a78bfa; }
+
+    .timeline-actor {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 3px;
+    }
+
+    .timeline-actor.auto    { color: #059669; }
+    .timeline-actor.daniel  { color: #2563eb; }
+    .timeline-actor.agent   { color: #ea580c; }
+    .timeline-actor.done    { color: #7c3aed; }
+
+    .timeline-legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      padding: 14px 18px;
+      background: #f9fafb;
+      border-radius: 10px;
+    }
+
+    .tl-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: #555;
+    }
+
+    .tl-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    /* Highlight code keywords */
+    code {
+      background: #f0f0f0;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-family: 'SF Mono', Menlo, Consolas, monospace;
+      font-size: 0.85em;
+      color: #c0392b;
+    }
+
+    .path-code {
+      background: #eef2ff;
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-family: 'SF Mono', Menlo, Consolas, monospace;
+      font-size: 0.82em;
+      color: #3730a3;
+      font-weight: 600;
+    }
+
+    /* Separator */
+    .separator {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #e0e0e0, transparent);
+      margin: 40px 0;
+    }
+
+    /* Info box */
+    .info-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      color: #1e40af;
+      margin: 16px 0;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .info-icon { flex-shrink: 0; font-size: 1rem; }
+
+    /* Responsive */
+    @media (max-width: 680px) {
+      .header h1 { font-size: 1.6rem; }
+      .card { padding: 20px; }
+      .agent-card-body { padding: 16px 20px 20px; }
+      .flow-step { flex-direction: column; align-items: flex-start; }
+      .timeline::before { left: 74px; }
+      .code-block { font-size: 0.75rem; }
+    }
+
+    .toc {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 24px 28px;
+      margin-bottom: 32px;
+    }
+
+    .toc h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #888;
+      margin-bottom: 14px;
+    }
+
+    .toc ol {
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin-bottom: 6px;
+    }
+
+    .toc a {
+      color: #ff385c;
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+
+    .toc a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<!-- ======== HEADER ======== -->
+<div class="header">
+  <h1>🏗️ Architekt Connect</h1>
+  <p>Agent-Struktur &amp; Prompts — Vollständige Dokumentation des Multi-Agent-Systems</p>
+  <div class="meta">
+    <span class="badge">📅 2026-03-05</span>
+    <span class="badge">🔧 5 Sub-Agents</span>
+    <span class="badge">📦 Lovable + Supabase</span>
+    <span class="badge">👤 Pilot: Weber Architekten</span>
+  </div>
+</div>
+
+<!-- ======== MAIN CONTENT ======== -->
+<div class="container">
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <h3>📋 Inhalt</h3>
+    <ol>
+      <li><a href="#s1">Architektur-Übersicht — Artifact Flow</a></li>
+      <li><a href="#s2">Channel System Prompt</a></li>
+      <li><a href="#s3">Sub-Agent Prompts (5 Agents)</a></li>
+      <li><a href="#s4">Context Files im Repo</a></li>
+      <li><a href="#s5">Dashboard Integration</a></li>
+      <li><a href="#s6">Beispiel-Sequenz (End-to-End)</a></li>
+    </ol>
+  </div>
+
+  <!-- ======== SECTION 1: ARCHITEKTUR ======== -->
+  <div id="s1">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <h2>Architektur-Übersicht — Artifact Flow</h2>
+    </div>
+
+    <div class="flow-container">
+      <div class="flow-diagram">
+
+        <!-- Step 0: Input -->
+        <div class="flow-step">
+          <div class="flow-input">🎤 Meeting / Voice-Memo<div class="flow-role-label">Input</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-agent agent-input" style="background:linear-gradient(135deg,#667eea,#764ba2);">🎙️ Transkript Analyzer</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-output">📝 Summary +<br>Action Items</div>
+        </div>
+
+        <div class="flow-connector">
+          <div class="flow-connector-line"></div>
+        </div>
+
+        <!-- Step 1: PRD -->
+        <div class="flow-step">
+          <div class="flow-input">📝 Summary +<br>Action Items<div class="flow-role-label">Input</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-agent agent-prd">📋 PRD Writer</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-output">📄 PRD (HTML)</div>
+        </div>
+
+        <div class="flow-connector">
+          <div class="flow-connector-line"></div>
+        </div>
+
+        <!-- Step 2: Builder -->
+        <div class="flow-step">
+          <div class="flow-input">📄 PRD (approved)<div class="flow-role-label">Input</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-agent agent-builder">🔨 Builder</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-output">💻 Code +<br>Feature Branch</div>
+        </div>
+
+        <div class="flow-connector">
+          <div class="flow-connector-line"></div>
+        </div>
+
+        <!-- Step 3: Reviewer -->
+        <div class="flow-step">
+          <div class="flow-input">💻 Feature Branch<div class="flow-role-label">Input</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-agent agent-reviewer">🔍 Reviewer</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-output">📊 Review Report</div>
+        </div>
+
+        <div class="flow-connector">
+          <div class="flow-connector-line"></div>
+        </div>
+
+        <!-- Step 4: Challenger -->
+        <div class="flow-step">
+          <div class="flow-input">📊 Review Report<div class="flow-role-label">Input</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-agent agent-challenger">⚔️ Challenger</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-output">⚠️ Challenge Report</div>
+        </div>
+
+        <div class="flow-connector">
+          <div class="flow-connector-line"></div>
+        </div>
+
+        <!-- Step 5: Daniel -->
+        <div class="flow-step">
+          <div class="flow-input">⚠️ Challenge Report<div class="flow-role-label">Input</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-agent agent-daniel">👤 Daniels Approval</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-output">🚀 Merge +<br>Release</div>
+        </div>
+
+      </div>
+
+      <!-- Legend -->
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(135deg,#667eea,#764ba2)"></div> Transkript Analyzer</div>
+        <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(135deg,#f093fb,#c471ed)"></div> PRD Writer</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4facfe"></div> Builder</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#43e97b"></div> Reviewer</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f7971e"></div> Adversarial Challenger</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ee5a24"></div> Daniels Entscheidung</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="separator"></div>
+
+  <!-- ======== SECTION 2: CHANNEL SYSTEM PROMPT ======== -->
+  <div id="s2">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <h2>Channel System Prompt</h2>
+    </div>
+
+    <div class="card">
+      <h3>🤖 Basis-System-Prompt — Architekt Connect Topic</h3>
+      <p>Dieser Prompt wird als Basis-Kontext für das Architekt Connect Topic gesetzt. Er definiert die Rolle des Channel-Agents und seine Aufgaben.</p>
+
+      <div class="code-wrapper">
+        <div class="code-label">
+          <span>SYSTEM PROMPT — Channel Agent</span>
+          <span style="color:#aaa;font-weight:400;">copy-paste ready</span>
+        </div>
+        <div class="code-block">Du bist der Projekt-Agent für Architekt Connect — ein PM-Tool für Architekturbüros.
+
+## Projekt-Kontext
+- Repo: /home/hartner/architekt-connect/
+- GitHub: github.com/danielmehlhart-bit/architekt-connect
+- Supabase: emughyvcixctalfgczjd
+- Pilot-Kunde: Weber Architekten (Kim &amp; Paul)
+- Tech-Stack: Lovable + Supabase + Edge Functions
+- Features: Dashboard, Projekte, Tasks (Kanban), Dokumente, Zeiterfassung,
+            Voice-to-Task, Gantt-Chart, HOAI-Phasen
+
+## Deine Aufgaben
+1. Meeting-Transkripte analysieren und Insights extrahieren
+2. PRDs erstellen aus Kunden-Feedback
+3. Features bauen via Builder Sub-Agent
+4. Code Reviews via Reviewer Sub-Agent
+5. Adversarial Reviews bei größeren Changes
+6. Dashboard-Briefings erstellen und verlinken
+
+## Regeln
+- Lies CLAUDE.md im Repo beim Start für aktuellen Kontext
+- Alle Reports/PRDs als HTML nach /home/hartner/dashboard/briefings/
+- Nach HTML-Erstellung: Link in Dashboard index.html updaten + git push
+- Sub-Agents bekommen maximal 3 Min (Builder) bzw. 2 Min (Reviewer)
+- Sub-Agent Output: NUR 1 Satz mit Dateipfad, keine Walls
+- Bei größeren Änderungen IMMER Reviewer + Challenger drüberlassen
+- Frage Daniel vor dem Pushen bei neuen Features</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="separator"></div>
+
+  <!-- ======== SECTION 3: SUB-AGENT PROMPTS ======== -->
+  <div id="s3">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <h2>Sub-Agent Prompts</h2>
+    </div>
+
+    <!-- 3.1 Transkript Analyzer -->
+    <div class="agent-card">
+      <div class="agent-card-header">
+        <div class="agent-icon">🎙️</div>
+        <div class="agent-card-title">
+          <h3>Transkript Analyzer</h3>
+          <div class="when-label">WANN SPAWNEN:</div>
+          <div class="when-text">Daniel schickt ein Meeting-Transkript (Text oder Voice-Transkription) in den Channel</div>
+        </div>
+      </div>
+      <div class="agent-card-body">
+        <div class="code-wrapper">
+          <div class="code-label">
+            <span>PROMPT — Transkript Analyzer Sub-Agent</span>
+          </div>
+          <div class="code-block">Du bist ein Meeting-Analyst für das Projekt Architekt Connect (PM-Tool für Architekturbüros).
+
+## Deine Aufgabe
+Analysiere das folgende Meeting-Transkript und erstelle eine strukturierte Zusammenfassung.
+
+## Output-Format (HTML-Datei, Airbnb-Style)
+Erstelle eine HTML-Datei mit folgenden Sections:
+
+### 1. Meeting-Überblick
+- Datum, Teilnehmer, Dauer (wenn erkennbar)
+- Kontext: Worum ging es?
+
+### 2. Key Insights (Top 3-5)
+- Wichtigste Erkenntnisse, priorisiert nach Business Impact
+- Jeweils mit Zitat aus dem Transkript als Beleg
+
+### 3. Feature Requests / Änderungswünsche
+Tabelle mit:
+| Feature | Beschreibung | Priorität (Hoch/Mittel/Niedrig) | Aufwand-Schätzung | Begründung aus Gespräch |
+
+### 4. Pain Points
+- Was funktioniert nicht? Was nervt den Kunden?
+- Konkretes Zitat + Interpretation
+
+### 5. Action Items
+Tabelle mit:
+| # | Action Item | Owner (Daniel/Agent/Kunde) | Deadline | Status |
+
+### 6. Offene Fragen
+- Was muss noch geklärt werden?
+- Wer muss antworten?
+
+### 7. Nächster Termin / Follow-Up
+- Was wurde vereinbart?
+
+## Regeln
+- Sei präzise, keine Füllwörter
+- Zitate aus dem Transkript in Anführungszeichen
+- Priorisiere nach Business Impact, nicht nach Reihenfolge im Gespräch
+- Wenn etwas unklar ist: als "Offene Frage" markieren, nicht raten
+
+## Transkript:
+{TRANSKRIPT_HIER}</div>
+        </div>
+        <div>
+          <span class="output-badge">📄 Output: <span class="path-code" style="margin-left:6px;">/home/hartner/dashboard/briefings/YYYY-MM-DD-architekt-connect-meeting.html</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.2 PRD Writer -->
+    <div class="agent-card">
+      <div class="agent-card-header">
+        <div class="agent-icon">📋</div>
+        <div class="agent-card-title">
+          <h3>PRD Writer</h3>
+          <div class="when-label">WANN SPAWNEN:</div>
+          <div class="when-text">Nach Transkript-Analyse, wenn Features gebaut werden sollen</div>
+        </div>
+      </div>
+      <div class="agent-card-body">
+        <div class="code-wrapper">
+          <div class="code-label">
+            <span>PROMPT — PRD Writer Sub-Agent</span>
+          </div>
+          <div class="code-block">Du bist ein Product Requirements Analyst für Architekt Connect.
+
+## Kontext
+- Repo: /home/hartner/architekt-connect/
+- Lies CLAUDE.md für den aktuellen Stand des Projekts
+- Lies die Meeting-Zusammenfassung: {MEETING_SUMMARY_PATH}
+
+## Deine Aufgabe
+Erstelle ein Product Requirements Document (PRD) als HTML-Datei
+für die identifizierten Features/Änderungen.
+
+## Output-Format (HTML-Datei, Airbnb-Style)
+
+### 1. Problem Statement
+- Was ist das Problem? (1-2 Sätze)
+- Wer ist betroffen?
+- Warum ist es wichtig?
+
+### 2. Proposed Solution
+- Lösungsansatz in 2-3 Sätzen
+- Warum dieser Ansatz?
+
+### 3. User Stories
+Format: "Als [Rolle] möchte ich [Aktion], damit [Nutzen]"
+- Mindestens 3 User Stories
+- Priorisiert (Must-Have / Should-Have / Nice-to-Have)
+
+### 4. Functional Requirements
+Nummerierte Liste:
+- FR-001: [Requirement] — [Akzeptanzkriterium]
+- FR-002: ...
+
+### 5. Non-Functional Requirements
+- Performance, Security, Accessibility, Mobile-Responsiveness
+
+### 6. Out of Scope
+- Was wird NICHT gebaut (explizit!)
+
+### 7. Technical Approach
+- Welche Tabellen/APIs/Components sind betroffen?
+- Migration nötig?
+- Edge Functions nötig?
+- Abhängigkeiten?
+
+### 8. Task Breakdown
+Tabelle:
+| # | Task | Typ (Frontend/Backend/DB) | Geschätzte Komplexität | Abhängigkeit |
+
+### 9. Success Metrics
+- Woran messen wir ob das Feature erfolgreich ist?
+
+### 10. Risks &amp; Open Questions
+- Bekannte Risiken
+- Offene Entscheidungen
+
+## Regeln
+- Sei konkret und technisch — der Builder muss damit arbeiten können
+- Keine vagen Beschreibungen ("verbessere die UX")
+- Jedes Requirement hat ein Akzeptanzkriterium
+- Referenziere existierende Codebase wo relevant</div>
+        </div>
+        <div>
+          <span class="output-badge">📄 Output: <span class="path-code" style="margin-left:6px;">/home/hartner/dashboard/briefings/YYYY-MM-DD-architekt-connect-prd-&lt;feature&gt;.html</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.3 Builder -->
+    <div class="agent-card">
+      <div class="agent-card-header">
+        <div class="agent-icon">🔨</div>
+        <div class="agent-card-title">
+          <h3>Builder</h3>
+          <div class="when-label">WANN SPAWNEN:</div>
+          <div class="when-text">PRD approved, Daniel sagt "Bau das"</div>
+        </div>
+      </div>
+      <div class="agent-card-body">
+        <div class="code-wrapper">
+          <div class="code-label">
+            <span>PROMPT — Builder Sub-Agent</span>
+          </div>
+          <div class="code-block">Du bist ein Senior Full-Stack Developer für Architekt Connect.
+
+## Kontext
+- Repo: /home/hartner/architekt-connect/
+- Lies CLAUDE.md für Projekt-Kontext und Coding-Standards
+- PRD: {PRD_PATH}
+
+## Deine Aufgabe
+Implementiere die Features laut PRD.
+
+## Regeln
+- Arbeite im Feature-Branch: git checkout -b feature/&lt;feature-name&gt;
+- Schreibe sauberen, typisierten Code (TypeScript)
+- Befolge die Coding-Standards aus CLAUDE.md
+- Erstelle Migrations wenn DB-Änderungen nötig
+- Committe mit aussagekräftigen Messages
+- Pushe den Branch (NICHT in main mergen!)
+- Am Ende: git diff main..HEAD &gt; /tmp/diff.txt für den Reviewer
+
+## Output
+Deine Antwort: NUR 1 Satz mit Branch-Name und was implementiert wurde.
+Beispiel: "Feature implementiert auf Branch feature/gantt-chart,
+           3 Dateien geändert, Migration erstellt."</div>
+        </div>
+        <span class="timeout-badge">⏱️ Timeout: 180 Sekunden</span>
+      </div>
+    </div>
+
+    <!-- 3.4 Reviewer -->
+    <div class="agent-card">
+      <div class="agent-card-header">
+        <div class="agent-icon">🔍</div>
+        <div class="agent-card-title">
+          <h3>Reviewer</h3>
+          <div class="when-label">WANN SPAWNEN:</div>
+          <div class="when-text">Builder ist fertig — automatisch oder auf Daniels Anfrage</div>
+        </div>
+      </div>
+      <div class="agent-card-body">
+        <div class="code-wrapper">
+          <div class="code-label">
+            <span>PROMPT — Reviewer Sub-Agent</span>
+          </div>
+          <div class="code-block">Du bist ein Senior Code Reviewer für Architekt Connect.
+
+## Kontext
+- Repo: /home/hartner/architekt-connect/
+- Branch: {BRANCH_NAME}
+- PRD: {PRD_PATH}
+
+## Deine Aufgabe
+Führe ein Code Review durch. Prüfe den Diff zwischen main und dem Feature-Branch.
+
+## Review-Kriterien
+1. Korrektheit:       Erfüllt der Code die PRD Requirements?
+2. Security:          SQL Injection, XSS, Auth Bypass, RLS Policies?
+3. Performance:       N+1 Queries, unnötige Re-Renders, große Bundle-Sizes?
+4. Code Quality:      TypeScript Types, Error Handling, Edge Cases?
+5. Architektur:       Passt es zur bestehenden Struktur? Breaking Changes?
+6. Tests:             Gibt es Tests? Fehlen welche?
+7. Migration Safety:  Ist die Migration reversibel? Daten-Verlust möglich?
+
+## Output-Format (HTML-Datei, Airbnb-Style)
+- Verdict: ✅ Approved / ⚠️ Approved with Comments / ❌ Changes Requested
+- Findings als nummerierte Liste mit Severity:
+    🔴 Critical / 🟡 Warning / 🔵 Info
+- Für jedes Finding: Datei, Zeile, Problem, Vorschlag
+- Summary: 2-3 Sätze Gesamteindruck
+
+## Regeln
+- Erstelle die Review als HTML:
+  /home/hartner/dashboard/briefings/YYYY-MM-DD-architekt-connect-review-&lt;feature&gt;.html
+- Deine Antwort: NUR 1 Satz mit Verdict und Dateipfad</div>
+        </div>
+        <span class="timeout-badge">⏱️ Timeout: 120 Sekunden</span>
+      </div>
+    </div>
+
+    <!-- 3.5 Adversarial Challenger -->
+    <div class="agent-card">
+      <div class="agent-card-header">
+        <div class="agent-icon">⚔️</div>
+        <div class="agent-card-title">
+          <h3>Adversarial Challenger</h3>
+          <div class="when-label">WANN SPAWNEN:</div>
+          <div class="when-text">Bei größeren Features — immer vor dem Merge</div>
+        </div>
+      </div>
+      <div class="agent-card-body">
+        <div class="code-wrapper">
+          <div class="code-label">
+            <span>PROMPT — Adversarial Challenger Sub-Agent</span>
+          </div>
+          <div class="code-block">Du bist ein Adversarial Reviewer — dein Job ist es, Schwachstellen zu finden
+die der normale Reviewer übersieht.
+
+## Kontext
+- Repo: /home/hartner/architekt-connect/
+- PRD: {PRD_PATH}
+- Branch: {BRANCH_NAME}
+- Review Report: {REVIEW_PATH}
+
+## Deine Aufgabe
+Challenge alles: PRD, Implementation, und den Review selbst.
+
+## Fokus-Bereiche
+1. Missing Edge Cases:    Was passiert bei leeren Daten? Concurrent Access? Offline?
+2. Alternative Approaches: Gibt es einen einfacheren Weg?
+3. Systemic Risks:        Wie beeinflusst das Feature andere Teile der App?
+4. Second-Order Effects:  Was passiert wenn 100 User das gleichzeitig nutzen?
+5. Tenant Isolation:      Können User eines Tenants Daten anderer sehen?
+6. Rollback Plan:         Wie machen wir das rückgängig wenn es schiefgeht?
+7. Review Quality:        Hat der Reviewer was übersehen?
+
+## Output-Format (HTML-Datei)
+- Risk Assessment: 🟢 Low / 🟡 Medium / 🔴 High
+- Findings mit Severity und konkreten Szenarien
+- Empfehlung: Ship it / Fix first / Redesign needed
+
+## Regeln
+- Erstelle als HTML:
+  /home/hartner/dashboard/briefings/YYYY-MM-DD-architekt-connect-challenge-&lt;feature&gt;.html
+- Deine Antwort: NUR 1 Satz mit Risk Assessment und Dateipfad</div>
+        </div>
+        <span class="timeout-badge">⏱️ Timeout: 300 Sekunden</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="separator"></div>
+
+  <!-- ======== SECTION 4: CONTEXT FILES ======== -->
+  <div id="s4">
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <h2>Context Files im Repo</h2>
+    </div>
+
+    <div class="card">
+      <h3>📁 Empfohlene Repo-Struktur</h3>
+      <p>Diese Dateien sollten im Repo existieren, damit Agents den richtigen Kontext haben:</p>
+
+      <div class="file-tree">
+<span class="dir">architekt-connect/</span>
+├── <span class="important">CLAUDE.md</span>              <span class="comment">← Projekt-Kontext für Agents (Tech Stack, DB Schema, Conventions)</span>
+├── <span class="important">knowledge.md</span>           <span class="comment">← Business-Kontext (Kunden, Entscheidungen, Roadmap)</span>
+├── <span class="dir">docs/</span>
+│   ├── <span class="dir">decisions/</span>         <span class="comment">← Architecture Decision Records (ADRs)</span>
+│   │   └── <span class="file">ADR-001-supabase-rls.md</span>
+│   ├── <span class="dir">prds/</span>              <span class="comment">← Product Requirements Documents (Referenz)</span>
+│   │   └── <span class="file">PRD-001-gantt-chart.md</span>
+│   └── <span class="dir">meetings/</span>          <span class="comment">← Meeting Summaries (Referenz)</span>
+│       └── <span class="file">2026-03-05-weber-architekten.md</span>
+├── <span class="dir">src/</span>                   <span class="comment">← Lovable-generierter Code</span>
+├── <span class="dir">supabase/</span>
+│   └── <span class="dir">migrations/</span>        <span class="comment">← DB-Migrations</span>
+└── <span class="file">package.json</span></div>
+    </div>
+
+    <div class="integration-grid">
+      <div class="integration-card">
+        <h4>📄 CLAUDE.md — Inhalt</h4>
+        <ul>
+          <li>Tech Stack (Lovable, Supabase, Edge Functions)</li>
+          <li>Supabase Project ID + relevante Tabellen</li>
+          <li>DB Schema Übersicht (Tabellen, Relations)</li>
+          <li>Coding Conventions (TypeScript-Stil, Naming)</li>
+          <li>Komponenten-Struktur im Frontend</li>
+          <li>Aktuell laufende Feature-Branches</li>
+          <li>Known Issues / Tech Debt</li>
+          <li>Deployment-Prozess</li>
+        </ul>
+      </div>
+      <div class="integration-card">
+        <h4>📚 knowledge.md — Inhalt</h4>
+        <ul>
+          <li>Pilot-Kunde: Weber Architekten (Kim &amp; Paul)</li>
+          <li>Produkt-Roadmap (Prioritäten)</li>
+          <li>Getroffene Produkt-Entscheidungen</li>
+          <li>HOAI-Phasen Kontext</li>
+          <li>Bisherige Kundenfeedbacks</li>
+          <li>Offene strategische Fragen</li>
+          <li>Preismodell / Business Model</li>
+          <li>Wettbewerber-Überblick</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-icon">💡</div>
+      <div>Beide Dateien sollten von Daniel manuell gepflegt und bei wichtigen Entscheidungen aktualisiert werden. Agents lesen sie — schreiben aber nur wenn explizit angewiesen. Die Kombination aus CLAUDE.md (technisch) + knowledge.md (fachlich) gibt Agents den vollen Kontext ohne Rückfragen.</div>
+    </div>
+  </div>
+
+  <div class="separator"></div>
+
+  <!-- ======== SECTION 5: DASHBOARD INTEGRATION ======== -->
+  <div id="s5">
+    <div class="section-header">
+      <div class="section-number">5</div>
+      <h2>Dashboard Integration</h2>
+    </div>
+
+    <div class="card">
+      <h3>🗂️ Ablageort &amp; Naming Convention</h3>
+      <p>Alle Artefakte landen im Dashboard-Briefings-Verzeichnis, einheitlich benannt:</p>
+      <div class="code-wrapper">
+        <div class="code-label"><span>DATEINAME-SCHEMA</span></div>
+        <div class="code-block">/home/hartner/dashboard/briefings/
+
+YYYY-MM-DD-architekt-connect-meeting.html           ← Transkript-Analyse
+YYYY-MM-DD-architekt-connect-prd-&lt;feature&gt;.html     ← PRD
+YYYY-MM-DD-architekt-connect-review-&lt;feature&gt;.html  ← Code Review
+YYYY-MM-DD-architekt-connect-challenge-&lt;feature&gt;.html ← Challenge Report</div>
+      </div>
+    </div>
+
+    <div class="integration-grid">
+      <div class="integration-card">
+        <h4>📊 Dashboard Section</h4>
+        <ul>
+          <li>Neue Section "Projekt-Artefakte" in index.html</li>
+          <li>Gruppiert nach Projekt (Architekt Connect)</li>
+          <li>Sortiert nach Datum (neueste zuerst)</li>
+          <li>Typ-Icon pro Artefakt-Typ</li>
+          <li>Link öffnet direkt die HTML-Datei</li>
+        </ul>
+      </div>
+      <div class="integration-card">
+        <h4>🔧 Skill: dashboard-update</h4>
+        <ul>
+          <li>Sub-Agent erstellt HTML-Datei</li>
+          <li>Channel-Agent ruft dashboard-update auf</li>
+          <li>Skill updated index.html automatisch</li>
+          <li>git add + commit + push</li>
+          <li>Telegram-Ping mit Link</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔄 Integration Flow</h3>
+      <div class="flow-arrow-row">
+        <div class="flow-pill">Sub-Agent erstellt HTML</div>
+        <div class="flow-arrow-small">→</div>
+        <div class="flow-pill orange">dashboard-update Skill</div>
+        <div class="flow-arrow-small">→</div>
+        <div class="flow-pill">Link in index.html</div>
+        <div class="flow-arrow-small">→</div>
+        <div class="flow-pill green">git push</div>
+        <div class="flow-arrow-small">→</div>
+        <div class="flow-pill green">📱 Telegram Ping</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="separator"></div>
+
+  <!-- ======== SECTION 6: BEISPIEL-SEQUENZ ======== -->
+  <div id="s6">
+    <div class="section-header">
+      <div class="section-number">6</div>
+      <h2>Beispiel-Sequenz — End-to-End</h2>
+    </div>
+
+    <div class="card" style="margin-bottom:24px;">
+      <h3>🎬 Szenario</h3>
+      <p style="font-size:1rem;color:#333;">Kim (Weber Architekten) schickt Voice-Memo: <em style="color:#ff385c;font-style:normal;font-weight:600;">"Wir brauchen eine Möglichkeit, Bauphasen-Zeitpläne als Gantt-Chart zu sehen"</em></p>
+    </div>
+
+    <div class="card">
+      <div class="timeline-legend">
+        <div class="tl-legend-item"><div class="tl-dot" style="background:#34d399"></div> Automatisch (Agent)</div>
+        <div class="tl-legend-item"><div class="tl-dot" style="background:#60a5fa"></div> Daniel</div>
+        <div class="tl-legend-item"><div class="tl-dot" style="background:#fb923c"></div> Sub-Agent Output</div>
+        <div class="tl-legend-item"><div class="tl-dot" style="background:#a78bfa"></div> Milestone / Done</div>
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:00</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-daniel"></div></div>
+          <div class="timeline-content daniel">
+            <div class="timeline-actor daniel">Daniel</div>
+            Schickt Voice-Memo / Transkript in den Architekt Connect Channel
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:01</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-daniel"></div></div>
+          <div class="timeline-content daniel">
+            <div class="timeline-actor daniel">Daniel</div>
+            "Analysiere das und sag mir was sie wollen"
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:01</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-auto"></div></div>
+          <div class="timeline-content auto">
+            <div class="timeline-actor auto">Channel-Agent (Automatisch)</div>
+            Spawnt <strong>Transkript Analyzer</strong> Sub-Agent mit dem Transkript
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:02</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-agent"></div></div>
+          <div class="timeline-content agent">
+            <div class="timeline-actor agent">Transkript Analyzer</div>
+            Liefert HTML: <code>2026-03-05-architekt-connect-meeting.html</code><br>
+            → Gantt-Chart als Top-Feature-Request identifiziert
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:02</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-auto"></div></div>
+          <div class="timeline-content auto">
+            <div class="timeline-actor auto">Channel-Agent (Automatisch)</div>
+            Updated Dashboard + Telegram-Ping mit Link
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:05</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-daniel"></div></div>
+          <div class="timeline-content daniel">
+            <div class="timeline-actor daniel">Daniel</div>
+            Reviewed Summary → "Erstell ein PRD für das Gantt-Chart Feature"
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:05</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-auto"></div></div>
+          <div class="timeline-content auto">
+            <div class="timeline-actor auto">Channel-Agent (Automatisch)</div>
+            Spawnt <strong>PRD Writer</strong> Sub-Agent mit Meeting-Summary-Pfad
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:07</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-agent"></div></div>
+          <div class="timeline-content agent">
+            <div class="timeline-actor agent">PRD Writer</div>
+            Liefert HTML: <code>2026-03-05-architekt-connect-prd-gantt-chart.html</code><br>
+            → 10 Sections, FR-001 bis FR-008, Task Breakdown mit 6 Tasks
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:07</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-auto"></div></div>
+          <div class="timeline-content auto">
+            <div class="timeline-actor auto">Channel-Agent (Automatisch)</div>
+            Updated Dashboard + Telegram-Ping mit Link
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:15</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-daniel"></div></div>
+          <div class="timeline-content daniel">
+            <div class="timeline-actor daniel">Daniel</div>
+            Reviewed PRD → "Sieht gut aus, bau das"
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:15</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-auto"></div></div>
+          <div class="timeline-content auto">
+            <div class="timeline-actor auto">Channel-Agent (Automatisch)</div>
+            Spawnt <strong>Builder</strong> Sub-Agent (3 Min Timeout) mit PRD-Pfad
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:18</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-agent"></div></div>
+          <div class="timeline-content agent">
+            <div class="timeline-actor agent">Builder</div>
+            "Feature implementiert auf Branch <code>feature/gantt-chart</code>, 8 Dateien geändert, Migration erstellt."
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:18</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-auto"></div></div>
+          <div class="timeline-content auto">
+            <div class="timeline-actor auto">Channel-Agent (Automatisch)</div>
+            Spawnt <strong>Reviewer</strong> Sub-Agent (2 Min Timeout) mit Branch + PRD
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:19</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-agent"></div></div>
+          <div class="timeline-content agent">
+            <div class="timeline-actor agent">Reviewer</div>
+            "✅ Approved — Review: <code>2026-03-05-architekt-connect-review-gantt-chart.html</code>"
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:19</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-auto"></div></div>
+          <div class="timeline-content auto">
+            <div class="timeline-actor auto">Channel-Agent (Automatisch)</div>
+            Spawnt <strong>Challenger</strong> Sub-Agent (5 Min Timeout)
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:22</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-agent"></div></div>
+          <div class="timeline-content agent">
+            <div class="timeline-actor agent">Adversarial Challenger</div>
+            "🟡 Medium Risk — Tenant-Isolation bei shared Gantt-Daten prüfen — Challenge: <code>2026-03-05-architekt-connect-challenge-gantt-chart.html</code>"
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:22</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-auto"></div></div>
+          <div class="timeline-content auto">
+            <div class="timeline-actor auto">Channel-Agent (Automatisch)</div>
+            "Review + Challenge fertig. 1 Medium-Risk Finding (Tenant Isolation). Links auf dem Dashboard. Soll ich das fixen?"
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:25</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-daniel"></div></div>
+          <div class="timeline-content daniel">
+            <div class="timeline-actor daniel">Daniel</div>
+            "Fix das Medium-Risk Finding und merge"
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-time">10:28</div>
+          <div class="timeline-dot-wrapper"><div class="timeline-dot dot-done"></div></div>
+          <div class="timeline-content done">
+            <div class="timeline-actor done">✅ Done</div>
+            <strong>Gantt-Chart Feature live.</strong> PR merged, Release Notes erstellt, Dashboard updated. Gesamtdauer: 28 Minuten.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;margin-top:48px;padding-top:24px;border-top:1px solid #e8e8e8;color:#aaa;font-size:0.82rem;">
+    🏗️ Architekt Connect — Agent-Struktur &amp; Prompts · Erstellt 2026-03-05 · Hatti für Daniel
+  </div>
+
+</div>
+</body>
+</html>

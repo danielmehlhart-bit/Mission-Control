@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Audit Report - 2026-03-04</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f7f7f7;
+            line-height: 1.6;
+            color: #222;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-top: 20px;
+        }
+        
+        .status-yellow {
+            background-color: #ffd60a;
+            color: #594100;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e1e5e9;
+        }
+        
+        .card h2 {
+            color: #1a1a1a;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .status-good {
+            border-left: 4px solid #22c55e;
+        }
+        
+        .status-warning {
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .status-critical {
+            border-left: 4px solid #ef4444;
+        }
+        
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9em;
+            line-height: 1.4;
+            border: 1px solid #e9ecef;
+        }
+        
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+        }
+        
+        .metric-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .metric-value {
+            color: #222;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .highlight h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        li::before {
+            content: "•";
+            color: #667eea;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .timestamp {
+            text-align: right;
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ Security Audit Report</h1>
+            <p class="subtitle">Weekly Security Review • Mittwoch, 04. März 2026</p>
+            <div class="status-badge status-yellow">GELB • Guter Zustand mit Updates empfohlen</div>
+        </div>
+        
+        <div class="grid">
+            <div class="card status-good">
+                <h2>🔥 Firewall Status</h2>
+                <div class="metric">
+                    <span class="metric-label">Status:</span>
+                    <span class="metric-value">✅ Aktiv</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Default Policy:</span>
+                    <span class="metric-value">✅ Deny Incoming</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Logging:</span>
+                    <span class="metric-value">✅ Enabled (low)</span>
+                </div>
+                <pre>Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), disabled (routed)</pre>
+            </div>
+            
+            <div class="card status-good">
+                <h2>🚫 SSH Security</h2>
+                <div class="metric">
+                    <span class="metric-label">Fail2Ban:</span>
+                    <span class="metric-value">✅ Aktiv</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Failed Logins (7d):</span>
+                    <span class="metric-value">✅ Keine</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">SSH Port:</span>
+                    <span class="metric-value">⚠️ 22 (öffentlich)</span>
+                </div>
+                <p style="margin-top: 15px; color: #059669; font-weight: 500;">
+                    Keine verdächtigen Login-Versuche in der letzten Woche. Fail2Ban bietet guten Schutz.
+                </p>
+            </div>
+            
+            <div class="card status-warning">
+                <h2>📦 System Updates</h2>
+                <div class="metric">
+                    <span class="metric-label">Verfügbare Updates:</span>
+                    <span class="metric-value">⚠️ 13 Pakete</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Auto-Updates:</span>
+                    <span class="metric-value">✅ Aktiv</span>
+                </div>
+                <div style="margin-top: 15px;">
+                    <strong>Wichtige Updates:</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>Chromium Security Update (145.0.7632.116)</li>
+                        <li>Raspberry Pi EEPROM (28.14)</li>
+                        <li>Raspberry Pi Utils (20260304)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card status-good">
+                <h2>💽 Speicher & Services</h2>
+                <div class="metric">
+                    <span class="metric-label">Root Partition:</span>
+                    <span class="metric-value">✅ 17% belegt (16G/96G)</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Boot Partition:</span>
+                    <span class="metric-value">✅ 16% belegt (79M/510M)</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Laufende Services:</span>
+                    <span class="metric-value">✅ 26 Services</span>
+                </div>
+                <p style="margin-top: 15px; color: #059669; font-weight: 500;">
+                    Gute Speichernutzung. Alle kritischen Services laufen stabil.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>🔌 Offene Ports & Netzwerk</h2>
+            <pre>State  Port      Service
+LISTEN :22        SSH (öffentlich)
+LISTEN :8080      Node.js (lokal)
+LISTEN :18789-92  OpenClaw Gateway (lokal)
+LISTEN :51679     Tailscale
+LISTEN :40699     Tailscale (IPv6)</pre>
+            
+            <div style="margin-top: 20px;">
+                <strong>Sicherheitsbewertung:</strong>
+                <ul style="margin-top: 10px;">
+                    <li>SSH auf Port 22 öffentlich zugänglich (durch Fail2Ban geschützt)</li>
+                    <li>Tailscale VPN aktiv für sicheren Fernzugriff</li>
+                    <li>OpenClaw Gateway nur lokal erreichbar</li>
+                    <li>Node.js Service nur lokal gebunden</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>🕐 Aktuelle Sitzungen</h2>
+            <pre>USER     TTY      LOGIN
+hartner  seat0    Feb 13 21:26
+hartner  tty1     Feb 13 21:26</pre>
+            
+            <p style="margin-top: 15px; color: #059669; font-weight: 500;">
+                Nur autorisierte Benutzer-Sitzungen aktiv. Letzten Sudo-Aktivitäten nur heute für diesen Security Audit.
+            </p>
+        </div>
+        
+        <div class="highlight">
+            <h3>📋 Empfohlene Aktionen</h3>
+            <ul>
+                <li><strong>Updates installieren:</strong> Chromium und Raspberry Pi Tools aktualisieren</li>
+                <li><strong>SSH absichern:</strong> Port ändern oder Tailscale-only konfigurieren</li>
+                <li><strong>Monitoring:</strong> Fail2ban Logs regelmäßig prüfen</li>
+                <li><strong>Backup-Status:</strong> Überprüfen ob automatische Backups konfiguriert sind</li>
+            </ul>
+            
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.1);">
+                <strong>Nächster Audit:</strong> 11. März 2026 (automatisch via Cron)
+            </div>
+        </div>
+        
+        <div class="timestamp">
+            Report generiert: Mittwoch, 4. März 2026 um 22:29 Uhr (Europe/Berlin)<br>
+            Host: hartner • OS: Linux 6.12.62+rpt-rpi-2712 (arm64)
+        </div>
+    </div>
+</body>
+</html>

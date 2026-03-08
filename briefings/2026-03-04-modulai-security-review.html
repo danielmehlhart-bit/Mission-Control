@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adversarial Review — ModulAI Multi-Tenant Platform</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: #f8f8f8; color: #1a1a1a; line-height: 1.6; padding: 2rem; max-width: 1000px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .subtitle { color: #888; font-size: 0.85rem; margin-bottom: 2rem; }
+  h2 { font-size: 1.15rem; font-weight: 600; margin: 2rem 0 0.8rem; padding-bottom: 0.4rem; border-bottom: 2px solid #e5e5e5; }
+  h3 { font-size: 0.95rem; font-weight: 600; margin: 0.8rem 0 0.4rem; }
+  .card { background: #fff; border-radius: 12px; padding: 1.2rem; margin-bottom: 0.8rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid #eee; }
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+  .summary-card { background: #fff; border-radius: 12px; padding: 1rem; text-align: center; border: 1px solid #eee; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .summary-card .num { font-size: 2rem; font-weight: 700; }
+  .summary-card .label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; }
+  .red { color: #dc2626; }
+  .orange { color: #ea580c; }
+  .yellow { color: #d97706; }
+  .green { color: #16a34a; }
+  .tag { display: inline-block; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 8px; border-radius: 99px; margin-right: 4px; }
+  .tag.critical { background: #fef2f2; color: #dc2626; }
+  .tag.medium { background: #fff7ed; color: #ea580c; }
+  .tag.low { background: #fffbeb; color: #d97706; }
+  .tag.confirmed { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+  .tag.downgraded { background: #fefce8; color: #a16207; border: 1px solid #fde68a; }
+  .tag.disproved { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+  .verdict { padding: 0.6rem 0.8rem; border-radius: 8px; margin: 0.6rem 0; font-size: 0.85rem; }
+  .verdict.confirmed { background: #fef2f2; border-left: 3px solid #dc2626; }
+  .verdict.downgraded { background: #fefce8; border-left: 3px solid #eab308; }
+  .verdict.disproved { background: #f0fdf4; border-left: 3px solid #22c55e; }
+  .eli5 { background: #f0f4ff; border-radius: 8px; padding: 0.7rem 1rem; margin: 0.6rem 0; font-size: 0.88rem; color: #1e3a5f; border-left: 3px solid #3b82f6; }
+  .eli5::before { content: '💡 '; }
+  .dev-banner { background: #dbeafe; border: 1px solid #93c5fd; border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 1.5rem; font-size: 0.9rem; color: #1e40af; }
+  .dev-banner strong { color: #1e3a8a; }
+  table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.85rem; }
+  th { text-align: left; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; color: #888; padding: 6px 10px; border-bottom: 2px solid #eee; }
+  td { padding: 6px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+  code { background: #f3f4f6; padding: 1px 5px; border-radius: 4px; font-size: 0.82rem; }
+  pre { background: #f3f4f6; padding: 0.8rem; border-radius: 8px; overflow-x: auto; font-size: 0.8rem; margin: 0.5rem 0; }
+  .priority-table td:first-child { font-weight: 600; }
+  @media (max-width: 640px) { .summary-grid { grid-template-columns: 1fr 1fr; } body { padding: 1rem; } }
+</style>
+</head>
+<body>
+
+<h1>⚖️ Adversarial Review — ModulAI Multi-Tenant</h1>
+<p class="subtitle">Finder → Challenger → Referee · 4. März 2026 · Scope: Tenant Isolation, Scalability, Platform Completeness</p>
+
+<!-- DEV CONTEXT -->
+<div class="dev-banner">
+  <strong>⚠️ Kontext: Development-Umgebung.</strong> Diese App ist noch nicht live und hat keine echten Kunden-Daten. Die Severity-Bewertungen sind auf "was muss gefixt werden <em>bevor</em> der erste externe Mandant Zugang bekommt" kalibriert — nicht auf "brennt gerade". P0 = fixen bevor Alex Hamm Zugang bekommt. P2/P3 = kann warten bis mehr Tenants da sind.
+</div>
+
+<!-- SUMMARY -->
+<div class="summary-grid">
+  <div class="summary-card"><div class="num red">4</div><div class="label">Critical</div></div>
+  <div class="summary-card"><div class="num orange">8</div><div class="label">Medium</div></div>
+  <div class="summary-card"><div class="num yellow">5</div><div class="label">Low</div></div>
+  <div class="summary-card"><div class="num green">76%</div><div class="label">Finder Accuracy</div></div>
+</div>
+
+<div class="card" style="border-left: 4px solid #7c3aed;">
+  <h3>Referee Summary</h3>
+  <p>Finder reported 26 findings (124 pts). After challenger review: <strong>4 critical confirmed, 2 critical downgraded to medium, 8 medium confirmed, 3 medium downgraded to low, 5 low confirmed, 4 low disproved.</strong> Adjusted score: <strong>89 pts (17 findings confirmed/adjusted)</strong>.</p>
+  <p style="margin-top:0.5rem;">The platform's tenant isolation is <strong>structurally sound</strong> — RLS policies cover all tables with tenant_id checks. The biggest real risks are: signup hijack via metadata, client-side-only impersonation losing state on refresh, and missing indexes for scale. The "missing billing infrastructure" gap is real but expected at this stage.</p>
+</div>
+
+<!-- CRITICAL -->
+<h2>🔴 Critical Findings</h2>
+
+<div class="card">
+  <h3>#1 — Signup Tenant Hijack via <code>raw_user_meta_data</code></h3>
+  <span class="tag critical">CRITICAL +10</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <p><code>handle_new_user()</code> accepts <code>tenant_id</code> from client metadata. Anyone knowing a valid tenant UUID can register into that tenant as admin via the public Supabase Auth API.</p>
+  <div class="eli5">Stell dir vor, jemand kennt die Hausnummer von Alex' Büro in der App. Er kann sich einfach selbst als Admin in Alex' Firma registrieren — ohne Einladung. Das ist wie wenn jeder, der deine Adresse kennt, sich selbst einen Hausschlüssel machen kann.</div>
+  <div class="verdict confirmed">
+    <strong>Referee:</strong> Confirmed. The Auth API is public — you can't protect <code>raw_user_meta_data</code> from client-side manipulation. Only invite-flow should assign to existing tenants. Self-service must always create new tenant.
+  </div>
+  <p><strong>Fix:</strong> In <code>handle_new_user()</code>, ignore <code>tenant_id</code> from metadata entirely. Only accept it from a server-side invite function that sets it via <code>admin.updateUserById</code>.</p>
+</div>
+
+<div class="card">
+  <h3>#2 — Client-Side Impersonation Loses State on Refresh</h3>
+  <span class="tag critical">CRITICAL +10</span> <span class="tag downgraded">⚠️ DOWNGRADED → MEDIUM +5</span>
+  <p><code>TenantContext</code> is pure React state (<code>useState</code>). Refresh → sudo sees ALL tenants' data blended together.</p>
+  <div class="eli5">Wenn du als Plattform-Admin (sudo) in Alex' Firma "reingehst" und dann die Seite neu lädst, vergisst die App, dass du gerade bei Alex bist. Du siehst dann plötzlich Daten von ALLEN Firmen durcheinander. Wie wenn du in einem Bürogebäude den Aufzug nimmst, in Alex' Etage bist, und nach einem Stromausfall plötzlich alle Türen offen stehen.</div>
+  <div class="verdict downgraded">
+    <strong>Challenger:</strong> While true that state is lost, sudo's RLS policies are read-only cross-tenant. Sudo can't accidentally <em>write</em> to wrong tenant because INSERT policies use <code>auto_set_tenant_id</code> (always sets to sudo's own tenant). The risk is <strong>data display leakage</strong> post-refresh, not data corruption.<br>
+    <strong>Referee:</strong> Downgrade to Medium. Still needs fixing (sessionStorage minimum), but the blast radius is limited to read-only cross-tenant display for a single privileged user, not a security breach.
+  </div>
+</div>
+
+<div class="card">
+  <h3>#3 — Cross-Tenant Notification Injection</h3>
+  <span class="tag critical">CRITICAL +10</span> <span class="tag downgraded">⚠️ DOWNGRADED → MEDIUM +5</span>
+  <p>Notification INSERT policy checks <code>is_team_member()</code> but not that <code>user_id</code> target belongs to same tenant.</p>
+  <div class="eli5">Theoretisch könnte jemand aus Firma A eine Benachrichtigung an jemanden in Firma B schicken. In der Praxis kommt die Nachricht aber nie an, weil der Empfänger sie nie sehen kann (sein Filter zeigt nur seine eigene Firma). Es ist wie ein Brief an die falsche Adresse — er kommt an, aber niemand macht ihn auf.</div>
+  <div class="verdict downgraded">
+    <strong>Challenger:</strong> The <code>auto_set_tenant_id</code> trigger sets <code>tenant_id</code> to inserter's tenant. The notification SELECT policy is <code>user_id = auth.uid() AND tenant_id = get_user_tenant_id(auth.uid())</code>. So even if Tenant A inserts a notification for a Tenant B user, that user <strong>will never see it</strong> because their SELECT policy filters on their own tenant_id. The notification exists in DB but is invisible to the target.<br>
+    <strong>Referee:</strong> Downgrade to Medium. It's a data hygiene issue (orphaned rows) not a security breach. The notification is effectively dead on arrival. Still worth adding a WITH CHECK on user_id belonging to same tenant.
+  </div>
+</div>
+
+<div class="card">
+  <h3>#4 — Storage Bucket Missing Tenant RLS</h3>
+  <span class="tag critical">CRITICAL +10</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <p>No storage policies found in any migration for <code>project-files</code> or <code>project-images</code> buckets.</p>
+  <div class="eli5">Alle hochgeladenen Dateien (Pläne, Fotos, Dokumente) liegen in einem Speicher ohne Zugangsregeln pro Firma. Wenn jemand den Dateipfad kennt oder errät, kann er die Dateien einer anderen Firma runterladen. Wie ein Aktenschrank ohne Schloss — wer die Schublade findet, kann reinschauen.</div>
+  <div class="verdict confirmed">
+    <strong>Referee:</strong> Confirmed. Storage RLS is separate from table RLS. If buckets are set to "authenticated" (Supabase default), any logged-in user from any tenant can read/write files if they know the path pattern. Needs immediate attention.
+  </div>
+  <p><strong>Fix:</strong> Add storage policies using path-based tenant isolation: <code>storage.objects</code> policies that check project ownership via <code>is_project_accessible()</code>.</p>
+</div>
+
+<div class="card">
+  <h3>#5 — <code>useTeamMembers()</code> Leaks All Profiles for Sudo</h3>
+  <span class="tag critical">CRITICAL +10</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <p>No <code>impersonatedTenantId</code> filter applied. Sudo sees all users across all tenants in team view.</p>
+  <div class="eli5">Wenn du als Plattform-Admin die Team-Seite einer bestimmten Firma öffnest, siehst du nicht nur deren Mitarbeiter, sondern ALLE User von ALLEN Firmen — inkl. Namen und E-Mail-Adressen. Wie wenn du in Alex' Büro gehst und versehentlich die Personalakten aller Büros auf dem Tisch liegen.</div>
+  <div class="verdict confirmed">
+    <strong>Referee:</strong> Confirmed. <code>useTeamMembers()</code> has zero tenant filtering. Combined with "Sudo can read all profiles" RLS, this returns the entire user base. PII exposure (emails, names) of all tenants when sudo navigates to team page.
+  </div>
+</div>
+
+<div class="card">
+  <h3>#6 — <code>auto_set_tenant_id</code> Bypass via Explicit tenant_id</h3>
+  <span class="tag critical">CRITICAL +10</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <p>Trigger only fires <code>IF NEW.tenant_id IS NULL</code>. Explicit cross-tenant tenant_id on INSERT bypasses it.</p>
+  <div class="eli5">Es gibt einen Automatismus, der bei neuen Einträgen (Projekte, Aufgaben etc.) automatisch die richtige Firma zuordnet. Aber: Wenn jemand absichtlich die Firma-ID einer anderen Firma mitschickt, wird der Automatismus übersprungen. Bei manchen Tabellen fängt die Datenbank das ab, bei ein paar aber nicht. Wie ein Sicherheitsschloss, das nur greift wenn man keinen eigenen Schlüssel mitbringt.</div>
+  <div class="verdict confirmed">
+    <strong>Challenger:</strong> Attempted disprove — most INSERT policies include <code>tenant_id = get_user_tenant_id(auth.uid())</code> in WITH CHECK, which would block cross-tenant inserts. However, several exceptions exist:<br>
+    • <code>"Team can insert projects"</code> → WITH CHECK only checks <code>is_team_member()</code>, no tenant_id validation<br>
+    • <code>forecast_cache_admin_insert</code> → WITH CHECK only checks <code>has_role(admin)</code><br>
+    <strong>Referee:</strong> Confirmed for those specific tables. The trigger should always override: remove the NULL guard.
+  </div>
+</div>
+
+<!-- MEDIUM -->
+<h2>🟠 Medium Findings</h2>
+
+<div class="card">
+  <h3>#7 — Missing Indexes on tenant_id Columns</h3>
+  <span class="tag medium">MEDIUM +5</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <div class="verdict confirmed"><strong>Referee:</strong> No indexes on any tenant_id column across 10+ tables. Confirmed via migration review. Fine at 1-3 tenants, will degrade at 50+.</div>
+  <div class="eli5">Jede Abfrage muss aktuell ALLE Daten durchsuchen, um die richtige Firma zu finden — wie ein Telefonbuch ohne Alphabet-Sortierung. Bei 3 Firmen egal, bei 50+ wird die App spürbar langsamer. Fix: Indexe anlegen (ein SQL-Befehl pro Tabelle, dauert 15 Min).</div>
+</div>
+
+<div class="card">
+  <h3>#8 — No Pagination in Admin Tables</h3>
+  <span class="tag medium">MEDIUM +5</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <div class="verdict confirmed"><strong>Referee:</strong> Both TenantList and AllUsersTable load everything. OK for now (<5 tenants), must fix before 50+.</div>
+  <div class="eli5">Die Admin-Tabellen laden alle Firmen und alle User auf einmal in den Browser. Bei 500 Firmen mit je 10 Usern wären das 5.000 Datensätze auf einen Schlag. Fix: Seitenweise laden (Pagination), wie bei Google-Suchergebnissen.</div>
+</div>
+
+<div class="card">
+  <h3>#9 — <code>get_user_tenant_id()</code> Per-Row in RLS</h3>
+  <span class="tag medium">MEDIUM +5</span> <span class="tag downgraded">⚠️ DOWNGRADED → LOW +1</span>
+  <div class="verdict downgraded">
+    <strong>Challenger:</strong> PostgreSQL evaluates <code>STABLE</code> functions once per transaction, not per row. With the function being <code>LANGUAGE sql STABLE</code>, the planner can inline and cache the result. The JWT-claim approach is better long-term but this isn't a current bottleneck.<br>
+    <strong>Referee:</strong> Downgrade to Low. Good optimization to do eventually, but not a scalability blocker at current scale.
+  </div>
+</div>
+
+<div class="card">
+  <h3>#10 — No Sudo Audit Trail</h3>
+  <span class="tag medium">MEDIUM +5</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <div class="verdict confirmed"><strong>Referee:</strong> Confirmed. No logging of sudo tenant entry/exit. Needed for accountability and GDPR compliance.</div>
+  <div class="eli5">Wenn du als Plattform-Admin in eine Firma reinschaust, wird das nirgends protokolliert. Kein Log, wann du rein bist, was du gesehen hast, wann du raus bist. Für DSGVO und Vertrauen bei Kunden brauchst du das — wie ein Besucherbuch am Empfang.</div>
+</div>
+
+<div class="card">
+  <h3>#11 — Inconsistent Impersonation Filtering</h3>
+  <span class="tag medium">MEDIUM +5</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <div class="verdict confirmed"><strong>Referee:</strong> Only <code>useProjects</code> and <code>useTasks</code> (partially) apply impersonation filter. 6+ other hooks (documents, time entries, team members, project updates, notifications) do not. Confirmed via grep: only 8 occurrences of <code>impersonatedTenantId</code> in 800+ line file with 49 exported hooks.</div>
+  <div class="eli5">Wenn du als Admin bei Alex' Firma "reingehst", zeigen nur Projekte und Aufgaben Alex' Daten. Dokumente, Zeiteinträge, Team-Ansicht, Updates, Benachrichtigungen — die zeigen noch alles durcheinander. Es ist als ob nur 2 von 10 Zimmern im Büro den richtigen Türschild haben.</div>
+</div>
+
+<div class="card">
+  <h3>#12 — <code>project_members</code> Missing tenant_id</h3>
+  <span class="tag medium">MEDIUM +5</span> <span class="tag downgraded">⚠️ DOWNGRADED → LOW +1</span>
+  <div class="verdict downgraded">
+    <strong>Challenger:</strong> <code>project_members</code> RLS uses <code>is_project_accessible()</code> which already checks <code>project.tenant_id</code>. Isolation is maintained via the project's tenant ownership. Adding tenant_id is redundant for security, only useful for direct cleanup queries.<br>
+    <strong>Referee:</strong> Downgrade to Low. Security is covered; it's a convenience gap for admin operations.
+  </div>
+</div>
+
+<div class="card">
+  <h3>#13 — No Billing / Tenant Status Model</h3>
+  <span class="tag medium">MEDIUM +5</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <div class="verdict confirmed"><strong>Referee:</strong> Confirmed. The tenants table has only id/name/slug/created_at. No status, plan, seats_limit, or billing_customer_id. Expected at current stage but P0 before any paid tenant goes live.</div>
+  <div class="eli5">Es gibt keine Möglichkeit, eine Firma zu pausieren, zu sperren oder deren Abo-Status zu tracken. Wenn Alex nicht zahlt, kannst du ihn nicht aussperren ohne direkt in die Datenbank zu gehen. Für den Piloten OK, aber bevor du Geld verlangst, brauchst du mindestens ein Status-Feld (aktiv/gesperrt/trial).</div>
+</div>
+
+<div class="card">
+  <h3>#14 — Admin Role Before Email Verification</h3>
+  <span class="tag medium">MEDIUM +5</span> <span class="tag downgraded">⚠️ DOWNGRADED → LOW +1</span>
+  <div class="verdict downgraded">
+    <strong>Challenger:</strong> Supabase has email confirmation enabled by default. <code>handle_new_user()</code> fires on <code>INSERT ON auth.users</code> which happens at signup, but the user can't get a valid session until email is confirmed (if enabled). The role exists in DB but is unusable without a session.<br>
+    <strong>Referee:</strong> Downgrade to Low. Depends on Supabase project auth settings. If email confirmation is enabled (default), this is not exploitable. Worth verifying the setting.
+  </div>
+</div>
+
+<div class="card">
+  <h3>#15 — Raw DB Errors in CreateTenantDialog</h3>
+  <span class="tag medium">MEDIUM +5</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <div class="verdict confirmed"><strong>Referee:</strong> Confirmed. <code>toast.error("Fehler beim Anlegen: " + error.message)</code> passes raw Postgres error to UI. Minor info disclosure + bad UX.</div>
+  <div class="eli5">Wenn beim Anlegen einer Firma was schiefgeht, sieht der User eine kryptische Datenbank-Fehlermeldung statt "Dieser Name ist schon vergeben". Peinlich, aber nicht gefährlich.</div>
+</div>
+
+<div class="card">
+  <h3>#16 — 3 DB Roundtrips for Task Update</h3>
+  <span class="tag medium">MEDIUM +5</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <div class="verdict confirmed"><strong>Referee:</strong> Confirmed. SELECT old → UPDATE → SELECT new. Move to Postgres trigger for notifications.</div>
+  <div class="eli5">Wenn jemand eine Aufgabe ändert, macht die App 3 einzelne Datenbank-Anfragen hintereinander statt einer. Bei 50 Leuten gleichzeitig wird das langsam. Lösung: Die Datenbank soll die Benachrichtigung automatisch auslösen (Trigger), statt dass die App es per Hand macht.</div>
+</div>
+
+<!-- LOW -->
+<h2>🟡 Low Findings</h2>
+
+<div class="card">
+  <h3>#17 — Admin Page Loading Race</h3>
+  <span class="tag low">LOW +1</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <div class="verdict confirmed"><strong>Referee:</strong> Flash redirect before role loads. Simple fix: check <code>loading</code> state.</div>
+</div>
+
+<div class="card">
+  <h3>#18 — <code>supabase as any</code> Everywhere</h3>
+  <span class="tag low">LOW +1</span> <span class="tag disproved">❌ DISPROVED</span>
+  <div class="verdict disproved"><strong>Referee:</strong> This is a documented, accepted workaround (see AGENTS.md: "supabase as any Cast ist akzeptierter Workaround für Type-Generierung"). Not a finding — it's a conscious trade-off in a Lovable-generated codebase.</div>
+</div>
+
+<div class="card">
+  <h3>#19 — TenantDetail Links Missing Impersonation</h3>
+  <span class="tag low">LOW +1</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <div class="verdict confirmed"><strong>Referee:</strong> Clicking a project from TenantDetail navigates without ensuring impersonation context is set. Minor UX issue.</div>
+</div>
+
+<div class="card">
+  <h3>#20 — No Tenant Deactivation UI</h3>
+  <span class="tag low">LOW +1</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <div class="verdict confirmed"><strong>Referee:</strong> Confirmed. Linked to #13 (no status field). Need status before UI can exist.</div>
+</div>
+
+<div class="card">
+  <h3>#21 — No Seat Limits</h3>
+  <span class="tag low">LOW +1</span> <span class="tag disproved">❌ DISPROVED</span>
+  <div class="verdict disproved"><strong>Referee:</strong> Premature at current stage. No billing model exists yet. Seat limits are a billing feature, not a security feature. Will naturally come with #13.</div>
+</div>
+
+<div class="card">
+  <h3>#22 — <code>useAllProjectUpdates</code> Missing Impersonation</h3>
+  <span class="tag low">LOW +1</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <div class="verdict confirmed"><strong>Referee:</strong> Subsume under #11 (inconsistent impersonation filtering). Same root cause.</div>
+</div>
+
+<div class="card">
+  <h3>#23 — Slug Mutability</h3>
+  <span class="tag low">LOW +1</span> <span class="tag disproved">❌ DISPROVED</span>
+  <div class="verdict disproved"><strong>Referee:</strong> The UI only exposes name editing, not slug. Slug is immutable in practice. No risk.</div>
+</div>
+
+<div class="card">
+  <h3>#24 — Missing Error States in Admin Tables</h3>
+  <span class="tag low">LOW +1</span> <span class="tag confirmed">✅ CONFIRMED</span>
+  <div class="verdict confirmed"><strong>Referee:</strong> Minor UX gap. Easy fix.</div>
+</div>
+
+<div class="card">
+  <h3>#25 — Weather Enrichment Missing Auth Header</h3>
+  <span class="tag low">LOW +1</span> <span class="tag disproved">❌ DISPROVED</span>
+  <div class="verdict disproved"><strong>Challenger:</strong> Checked the actual Edge Function code — <code>enrich-bautagebuch-weather</code> calls an external weather API (wttr.in), not an internal authenticated endpoint. The fetch is fire-and-forget weather enrichment. Auth header is not needed for public weather APIs.<br>
+    <strong>Referee:</strong> Disproved. The Edge Function itself handles auth via Supabase service role internally.
+  </div>
+</div>
+
+<!-- REMEDIATION -->
+<h2>🔧 Prioritized Remediation Plan</h2>
+
+<table class="priority-table">
+  <tr><th>Priority</th><th>#</th><th>Finding</th><th>Effort</th><th>Impact</th></tr>
+  <tr><td class="green">✅</td><td>#1</td><td><s>Signup tenant hijack — fix handle_new_user()</s></td><td>30min</td><td>✅ Gefixt — <code>5a75186</code></td></tr>
+  <tr><td class="green">✅</td><td>#4</td><td><s>Storage bucket RLS — add storage policies</s></td><td>1h</td><td>✅ Gefixt — <code>5a75186</code></td></tr>
+  <tr><td class="green">✅</td><td>#6</td><td><s>auto_set_tenant_id — always override, never trust client</s></td><td>30min</td><td>✅ Gefixt — <code>5a75186</code></td></tr>
+  <tr><td class="orange">P1</td><td>#5</td><td>useTeamMembers — add impersonation filter</td><td>15min</td><td>Prevents PII leakage in sudo mode</td></tr>
+  <tr><td class="orange">P1</td><td>#11</td><td>Consistent impersonation across all hooks</td><td>2h</td><td>Correct data display for sudo in tenant view</td></tr>
+  <tr><td class="orange">P1</td><td>#2</td><td>Impersonation → sessionStorage (minimum fix)</td><td>30min</td><td>Survives page refresh</td></tr>
+  <tr><td class="orange">P1</td><td>#7</td><td>Add tenant_id indexes on all tables</td><td>15min</td><td>Performance at scale</td></tr>
+  <tr><td class="orange">P2</td><td>#10</td><td>Sudo audit log table</td><td>1h</td><td>Accountability + GDPR</td></tr>
+  <tr><td class="orange">P2</td><td>#13</td><td>Tenant status/plan/seats columns</td><td>1h</td><td>Required before first paid tenant</td></tr>
+  <tr><td class="orange">P2</td><td>#8</td><td>Admin table pagination</td><td>1h</td><td>Required before 50+ tenants</td></tr>
+  <tr><td class="orange">P2</td><td>#15</td><td>Friendly error messages in CreateTenant</td><td>15min</td><td>UX polish</td></tr>
+  <tr><td class="orange">P2</td><td>#16</td><td>Task update → single DB call or trigger</td><td>1h</td><td>Performance at scale</td></tr>
+  <tr><td class="yellow">P3</td><td>#3</td><td>Notification INSERT WITH CHECK on user_id tenant</td><td>15min</td><td>Data hygiene (not security — already invisible)</td></tr>
+  <tr><td class="yellow">P3</td><td>#17</td><td>Admin page loading state check</td><td>5min</td><td>UX flash fix</td></tr>
+  <tr><td class="yellow">P3</td><td>#19</td><td>TenantDetail project links → set impersonation</td><td>15min</td><td>UX consistency</td></tr>
+  <tr><td class="yellow">P3</td><td>#24</td><td>Error states in admin tables</td><td>15min</td><td>UX polish</td></tr>
+  <tr><td style="color:#999">—</td><td>#9</td><td>JWT claim for tenant_id (optimization)</td><td>2h</td><td>Long-term perf, not urgent</td></tr>
+</table>
+
+<div class="card" style="border-left: 4px solid #22c55e; margin-top: 1.5rem;">
+  <h3>✅ Bottom Line</h3>
+  <p><strong>Status: Dev-Umgebung, keine echten Kunden-Daten.</strong> Die App ist noch nicht live. Severity ist kalibriert auf: "Was muss gefixt werden bevor Alex Hamm als erster externer Mandant Zugang bekommt?"</p>
+  <p style="margin-top: 0.8rem;"><strong>3 Fixes vor Alex' Zugang (P0):</strong></p>
+  <ol style="padding-left: 1.5rem; margin-top: 0.5rem;">
+    <li><strong>#1 Signup-Hijack</strong> — eine SQL-Funktion ändern (30 Min). Sonst könnte sich theoretisch jeder als Admin in Alex' Firma registrieren.</li>
+    <li><strong>#4 Datei-Speicher absichern</strong> — Storage Policies anlegen (1 Std). Sonst könnte jemand Dateien anderer Firmen runterladen.</li>
+    <li><strong>#6 Trigger-Bypass schließen</strong> — eine Zeile in der Trigger-Funktion ändern (30 Min). Sonst könnten Daten in die falsche Firma wandern.</li>
+  </ol>
+  <p style="margin-top: 0.8rem;"><strong>Vor regelmäßiger Nutzung des Admin-Dashboards (P1):</strong> Impersonation-Konsistenz (#2, #5, #11) — damit du beim Reinschauen in Firmen immer die richtigen Daten siehst.</p>
+  <p style="margin-top: 0.5rem;"><strong>Kann warten bis mehr Tenants da sind (P2/P3):</strong> Indexes, Pagination, Audit-Log, Billing-Felder, Fehlermeldungen.</p>
+  <p style="margin-top: 0.8rem;"><strong>✅ P0 erledigt</strong> (Migration <code>20260304140000_fix_p0_security.sql</code>, Commit <code>5a75186</code>). <strong>Verbleibend P1:</strong> ~3 Stunden.</p>
+  <p style="margin-top:0.5rem;"><strong>⚠️ Daniel muss in Lovable/Supabase:</strong> Diese Migration ausführen (SQL Editor → Paste → Run).</p>
+</div>
+
+<p style="text-align:center; color:#aaa; margin-top:2rem; font-size:0.75rem;">Adversarial Review · Finder (Sonnet) → Challenger (Hatti) → Referee (Hatti) · 4. März 2026</p>
+</body>
+</html>

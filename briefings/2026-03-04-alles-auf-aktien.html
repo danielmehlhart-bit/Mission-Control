@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alles auf Aktien — 4. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem 1rem;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        .header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 2.5rem 2rem;
+        }
+        .section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .section h2 {
+            color: #1e3c72;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section h3 {
+            color: #2a5298;
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .section p, .section li {
+            color: #555;
+            font-size: 1.05rem;
+            margin-bottom: 0.8rem;
+        }
+        .section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .section li {
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .section li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+        .positive {
+            color: #10b981;
+            font-weight: 600;
+        }
+        .negative {
+            color: #ef4444;
+            font-weight: 600;
+        }
+        .neutral {
+            color: #6b7280;
+            font-weight: 600;
+        }
+        .card {
+            background: white;
+            border-left: 4px solid #667eea;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+        }
+        .tldr {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            color: #2d3436;
+            border-left: none;
+        }
+        .footer {
+            background: #1e3c72;
+            color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .emoji {
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎙️ Alles auf Aktien</h1>
+            <p class="subtitle">Morning Briefing — Mittwoch, 4. März 2026</p>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2><span class="emoji">📊</span> Märkte</h2>
+                <ul>
+                    <li><strong>DAX:</strong> <span class="negative">-3,4%</span> (intraday), Schluss bei 23.790 Punkten</li>
+                    <li><strong>US-Indizes:</strong> Nasdaq 100 <span class="negative">-1,1%</span>, S&P 500 <span class="negative">-0,9%</span>, Dow Jones <span class="negative">-0,8%</span></li>
+                    <li><strong>Auslöser:</strong> Sorge vor Eskalation im Nahost-Konflikt (Angriffe auf Energie/Infrastruktur)</li>
+                    <li><strong>Erholung:</strong> US-Präsident Trump stellt Eskortierung von Öl-/Gastankern im Golf in Aussicht</li>
+                </ul>
+                
+                <h3>Top-Mover</h3>
+                <div class="card">
+                    <strong>DAX:</strong>
+                    <ul>
+                        <li>Beiersdorf: <span class="negative">-20%</span> (schwacher Wachstumsausblick)</li>
+                        <li>Deutsche Börse: <span class="positive">+2,1%</span> (Marktschwankungen, Kaufempfehlungen)</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <strong>SDAX:</strong>
+                    <ul>
+                        <li>Schaeffler: <span class="negative">-22%</span> (enttäuschender Jahresausblick)</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <strong>Weitere:</strong>
+                    <ul>
+                        <li>Palantir: <span class="negative">-2,5%</span> (Insiderverkauf Peter Thiel: 2 Mio. Anteile, 280 Mio. $)</li>
+                        <li>Gold: <span class="negative">-4%</span> auf 5.089 $/Unze (Inflationssorgen, Zinsausblick)</li>
+                        <li>Silber: <span class="negative">-7%</span> auf 83 $ (höhere Zinsen = Gift für Edelmetalle)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><span class="emoji">🏭</span> Thema des Tages: Schaeffler</h2>
+                <div class="card">
+                    <h3>Zukunftsstory vs. Realität</h3>
+                    <p>Die Aktie brach nach enttäuschendem Jahresausblick 2025 um <span class="negative">-22%</span> ein, trotz ambitionierter Pläne in Robotik, Defense und Space.</p>
+                    <ul>
+                        <li><strong>Umsatz:</strong> 23,5 Mrd. € (Rückgang durch Autokrise)</li>
+                        <li><strong>Operatives Ergebnis:</strong> 936 Mio. € (Steigerung)</li>
+                        <li><strong>Nettoverlust:</strong> <span class="negative">424 Mio. €</span> (Verbesserung um 208 Mio. € zum Vorjahr)</li>
+                        <li><strong>Verschuldung:</strong> <span class="negative">4,9 Mrd. €</span> nach Vitesco-Übernahme</li>
+                        <li><strong>Stellenabbau:</strong> 4.700 Jobs (zur Hälfte durch)</li>
+                        <li><strong>E-Auto-Geschäft:</strong> Frühestens 2028 profitabel</li>
+                        <li><strong>Zukunftsfelder:</strong> Erst 2035 sollen 10% des Umsatzes aus Robotik, Defense, Space stammen</li>
+                        <li><strong>Dividende:</strong> Von 25 Cent auf 30 Cent erhöht (aber historisch volatil)</li>
+                    </ul>
+                    <p><strong>Analystenmeinung:</strong> UBS-Kursziel 6,20 € (aktuell ~8 €), Konsens bei 8,80 €. Schaeffler ist eine <em>story-getriebene Aktie</em> — Zahlen müssen jetzt nachziehen.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><span class="emoji">⚠️</span> Märkte im Krisenmodus</h2>
+                <div class="card">
+                    <h3>Ölpreisrisiko</h3>
+                    <p>Geopolitische Spannungen im Iran führen zu Risiko-Aversion und Inflationssorgen.</p>
+                    <ul>
+                        <li><strong>JP Morgan Prognose:</strong> Brent 80-85 $/Barrel (gestern: 84 $, WTI: 77 $)</li>
+                        <li><strong>Worst Case:</strong> Bei anhaltender Blockade der Straße von Hormuz sind <span class="negative">100-120 $/Barrel</span> möglich</li>
+                        <li><strong>Faktoren:</strong> Dauer der Störungen, OPEC-Reaktion, Logistik-/Versicherungsrisiken</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3>Anleihenrenditen & Inflation</h3>
+                    <p>Steigende Anleihenrenditen spiegeln Inflationssorgen wider, überlagern den "sicheren Hafen"-Effekt. Höhere Energiepreise = höhere Inflation = weniger Zinssenkungen.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Zentralbanken: Dilemma verschärft</h3>
+                    <p>Hohe Energiepreise erhöhen Inflationsdruck (→ restriktive Geldpolitik), wirken aber gleichzeitig wachstumsdämmend (→ Lockerung). Goldman Sachs: Abwarten plausibel, solange Preisschock temporär ist.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Historische Einordnung</h3>
+                    <p><strong>"Kaufen, wenn die Kanonen donnern"</strong> — kontextabhängig!</p>
+                    <ul>
+                        <li><strong>Positiv:</strong> Kubakrise 1962, Irakkrieg 2003 → schnelle Erholung</li>
+                        <li><strong>Negativ:</strong> 1970er Jahre (Ölpreisschock + Inflation + Instabilität) → <span class="negative">-40%</span> Markteinbruch</li>
+                        <li><strong>Jamie Dimon (JP Morgan) warnt:</strong> Vor allzu großer Gelassenheit</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3>Was Anleger jetzt beobachten sollten</h3>
+                    <ul>
+                        <li><strong>Energiefluss:</strong> Straße von Hormuz (kritisch ab 1 Woche Blockade)</li>
+                        <li><strong>Politische Signale:</strong> Washington (Dauer/Intensität des Konflikts)</li>
+                        <li><strong>Stabilisierungsmaßnahmen:</strong> Freigabe strategischer Reserven</li>
+                        <li><strong>Makrodaten:</strong> Inflationserwartungen, Zinsfahrerwartung der Notenbanken</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><span class="emoji">🔍</span> Weitere Highlights</h2>
+                <div class="card">
+                    <h3>Cathie Wood: ARK Innovation ETF Umschichtung</h3>
+                    <ul>
+                        <li><strong>Einstieg:</strong> Robinhood (massiv), Figma (neue Position)</li>
+                        <li><strong>Ausstieg:</strong> Draftkings (komplett)</li>
+                        <li><strong>Ausbau:</strong> Coinbase, Circle, Tempus AI (Krypto-Infrastruktur + KI im Gesundheitswesen)</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3>Vincorion: Wehrtechnik-IPO rückt näher</h3>
+                    <p>Der Wehrtechnik-Spezialist aus Wedel plant IPO in Frankfurt (bis <strong>1,5 Mrd. € Bewertung</strong>). Liefert Komponenten für Patriot-Abwehrsystem, Leopard 2, Puma. Auftragsbücher durch globale Aufrüstung prall gefüllt. Intention to Float könnte noch diese Woche kommen.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Weitere News</h3>
+                    <ul>
+                        <li><strong>Siemens Energy:</strong> Ersetzt Diageo im Stoxx Europe 50 (Fast-Entry-Regel, 23. März)</li>
+                        <li><strong>On Running:</strong> Rekordumsatz 2,4 Mrd. CHF (2025), aber konservativer Ausblick 2026 → Aktie zweistellig eingebrochen. Bruttomarge: 60%</li>
+                        <li><strong>PolyMarket:</strong> Verdächtige Wetten vor US-Angriff im Iran (330.000 $ Gewinn) → Debatte über Marktmissbrauch</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><span class="emoji">💡</span> Picks & Ideas</h2>
+                <ul>
+                    <li><strong>Deutsche Börse:</strong> Profitiert von Marktvolatilität, Kaufempfehlungen</li>
+                    <li><strong>Vincorion:</strong> Wehrtechnik-Spezialist, potenzieller IPO-Star durch volle Auftragsbücher</li>
+                    <li><strong>Schaeffler:</strong> Story-getrieben, Zahlen müssen nachziehen; hohe Verschuldung beachten</li>
+                    <li><strong>Edelmetalle (Gold, Silber):</strong> Unter Druck durch Inflationssorgen und steigende Zinsen</li>
+                </ul>
+            </div>
+
+            <div class="section tldr">
+                <h2><span class="emoji">⚡</span> TL;DR</h2>
+                <p><strong>Geopolitische Spannungen</strong> im Iran belasten die Märkte und treiben Inflationssorgen, was Edelmetalle unter Druck setzt. <strong>Schaeffler</strong> stürzt nach enttäuschendem Ausblick ab, da die Zukunftsstory von Robotik und Defense noch nicht in den Zahlen sichtbar ist. Anleger sollten <strong>Energiefluss, politische Signale und Inflationserwartungen</strong> genau beobachten, da die "Kaufen, wenn Kanonen donnern"-Weisheit kontextabhängig ist.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>📊 Erstellt mit OpenClaw · <a href="https://danielmehlhart-bit.github.io/dashboard/" style="color: #ffeaa7;">Dashboard Home</a></p>
+            <p style="opacity: 0.8; margin-top: 0.5rem;">Quelle: Alles auf Aktien (Welt) · Mittwoch, 4. März 2026</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eintracht-Briefing - 5. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #e60012 0%, #000000 100%);
+            color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(230, 0, 18, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .article-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #e60012;
+            text-decoration: none;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .article-title:hover {
+            color: #b30010;
+            text-decoration: underline;
+        }
+
+        .article-summary {
+            color: #555;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #e60012, #ff4757);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #e60012;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🦅 Eintracht Frankfurt Briefing</h1>
+            <p>Nachrichten vom 4. März 2026</p>
+        </div>
+
+        <div class="articles-grid">
+            <div class="article-card">
+                <a href="https://www.fr.de/eintracht-frankfurt/brisante-details-zur-toppmoeller-entlassung-bei-der-eintracht-enthuellt-zr-94198651.html" class="article-title" target="_blank">
+                    Brisante Details zur Toppmöller-Entlassung enthüllt
+                </a>
+                <div class="article-summary">
+                    Neue Spekulationen über Dino Toppmöllers Entlassung: Angeblich mangelte es ihm an <span class="highlight">Autorität</span> gegenüber Spielern und Staff. Unpünktlichkeit, fehlende Dress-Code-Einhaltung und Grenzüberschreitungen beim Funktionsstab sollen Probleme gewesen sein. Kritiker erwarteten härteres Durchgreifen vom Ex-Coach.
+                </div>
+            </div>
+
+            <div class="article-card">
+                <a href="https://www.fr.de/eintracht-frankfurt/riera-feilt-am-pressing-die-eintracht-will-noch-grosses-schaffen-94198356.html" class="article-title" target="_blank">
+                    Riera feilt am Pressing – die SGE will noch Großes schaffen
+                </a>
+                <div class="article-summary">
+                    Albert Riera arbeitet intensiv am <span class="highlight">Angriffspressing</span> und will mit der Eintracht eine Aufholjagd starten. Die nächsten vier Spiele werden über die Europapokal-Teilnahme entscheiden. Mehrere verletzte Stars wie Theate, Batshuayi und Can Uzun stehen vor der Rückkehr.
+                </div>
+            </div>
+
+            <div class="article-card">
+                <a href="https://www.fr.de/eintracht-frankfurt/der-sportliche-erfolg-bringt-die-eintracht-in-wirtschaftliche-schwierigkeiten-zr-94198318.html" class="article-title" target="_blank">
+                    Der sportliche Erfolg bringt die Eintracht in wirtschaftliche Schwierigkeiten
+                </a>
+                <div class="article-summary">
+                    Paradoxe Situation: Eintrachts Europapokal-Erfolge führen zu <span class="highlight">finanziellen Problemen</span>. Schulden stiegen auf 71,8 Mio Euro, trotz 390 Mio Umsatz gab es 8 Mio Verlust. Grund sind gestiegene Personalkosten (+25%) durch Champions League-Prämien.
+                </div>
+            </div>
+
+            <div class="article-card">
+                <a href="https://www.fr.de/eintracht-frankfurt/zwei-eintracht-stars-stehen-vor-ueberraschendem-comeback-zr-94198259.html" class="article-title" target="_blank">
+                    Zwei Eintracht-Stars stehen vor überraschendem Comeback
+                </a>
+                <div class="article-summary">
+                    Positive Nachrichten aus dem Lazarett: <span class="highlight">Zwei Offensivspieler</span> stehen überraschend schnell vor ihrer Rückkehr und könnten dem Team schon bald wieder helfen. Details wurden in einem Video-Artikel behandelt.
+                </div>
+            </div>
+
+            <div class="article-card">
+                <a href="https://www.fr.de/eintracht-frankfurt/eintracht-koennte-im-rennen-um-deutsches-top-talent-leer-ausgehen-zr-94197899.html" class="article-title" target="_blank">
+                    Eintracht könnte im Rennen um deutsches Top-Talent leer ausgehen
+                </a>
+                <div class="article-summary">
+                    Bayern München grätscht im Poker um <span class="highlight">Kennet Eichhorn</span> (16, Hertha BSC) dazwischen. Das 20-Mio-Talent könnte zu den Bayern wechseln. Alternative: Eintracht fokussiert sich auf Cajetan Lenz (19, VfL Bochum) für nur 6 Mio Euro.
+                </div>
+            </div>
+
+            <div class="article-card">
+                <a href="https://www.fr.de/eintracht-frankfurt/eintracht-stellt-in-einer-kategorie-sogar-real-madrid-in-den-schatten-zr-94197488.html" class="article-title" target="_blank">
+                    Eintracht stellt sogar Real Madrid in den Schatten
+                </a>
+                <div class="article-summary">
+                    Beeindruckende Statistik: Eintracht erzielte <span class="highlight">10 Jokertore</span> (Bundesliga-Platz 3) und übertrifft damit sogar Real Madrid (2) und Arsenal (9). In Europa liegen nur wenige Teams besser. Die Einwechselstärke wird zum Markenzeichen unter Riera.
+                </div>
+            </div>
+
+            <div class="article-card">
+                <a href="https://www.fr.de/eintracht-frankfurt/erkrankt-nachwuchs-trainer-von-eintracht-frankfurt-an-krebs-zr-94197241.html" class="article-title" target="_blank">
+                    Nachwuchs-Trainer von Eintracht Frankfurt an Krebs erkrankt
+                </a>
+                <div class="article-summary">
+                    Traurige Nachricht: U17-Trainer <span class="highlight">Sebastian Haag (43)</span> ist an Darmkrebs erkrankt und fällt auf unbestimmte Zeit aus. Der Verein steht hinter ihm und seiner Familie, während intern nach einer Trainingslösung gesucht wird.
+                </div>
+            </div>
+
+            <div class="article-card">
+                <a href="https://www.fr.de/eintracht-frankfurt/ex-eintracht-juwel-mittlerweile-leistungstraeger-bei-champions-league-sieger-94196561.html" class="article-title" target="_blank">
+                    Ex-Eintracht-Juwel mittlerweile Leistungsträger bei Champions-League-Sieger
+                </a>
+                <div class="article-summary">
+                    Erfolgsgeschichte: <span class="highlight">Willian Pacho</span> wurde nach seinem 55-Mio-Transfer zu PSG zum Stammspieler und Champions League-Sieger. 26 Pflichtspiele diese Saison zeigen seine Entwicklung vom Eintracht-Talent zum Weltklasse-Verteidiger.
+                </div>
+            </div>
+
+            <div class="article-card">
+                <a href="https://www.fr.de/eintracht-frankfurt/voellig-verloren-europa-league-held-von-eintracht-frankfurt-hat-seine-torgefahr-in-england-94196557.html" class="article-title" target="_blank">
+                    Europa-League-Held hat seine Torgefahr in England völlig verloren
+                </a>
+                <div class="article-summary">
+                    Sorgen um <span class="highlight">Daichi Kamada</span>: Der EL-Held von 2022 kommt bei Crystal Palace nicht in Fahrt. In 18 Spielen nur 0 Tore und 2 Assists – ein drastischer Rückgang für den einstigen Frankfurter Publikumsliebling.
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-number">9</div>
+                    <div class="stat-label">Artikel</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">4. März</div>
+                    <div class="stat-label">Veröffentlicht</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">⚽</div>
+                    <div class="stat-label">Eintracht</div>
+                </div>
+            </div>
+            <p style="color: #666; font-style: italic;">
+                Zusammengestellt von Hatti 🏔️ • Quelle: Frankfurter Rundschau
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UX Review — Dashboard · 4. März 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif; background: #f7f7f7; color: #222; line-height: 1.6; }
+
+  /* ── Header ── */
+  .hero { background: #fff; border-bottom: 1px solid #ebebeb; padding: 3rem 2rem 2.5rem; text-align: center; }
+  .hero .eyebrow { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #ff385c; margin-bottom: 0.5rem; }
+  .hero h1 { font-size: 2.2rem; font-weight: 800; color: #222; margin-bottom: 0.5rem; }
+  .hero .subtitle { font-size: 1rem; color: #717171; max-width: 540px; margin: 0 auto; }
+  .hero .meta { margin-top: 1.2rem; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+  .hero .meta-item { font-size: 0.82rem; color: #999; }
+  .hero .meta-item strong { color: #222; }
+
+  /* ── Layout ── */
+  .container { max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+
+  /* ── Score Summary ── */
+  .score-bar { background: #fff; border-radius: 20px; padding: 2rem; margin-bottom: 2.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+  .score-big { flex-shrink: 0; text-align: center; }
+  .score-big .num { font-size: 3.5rem; font-weight: 800; color: #ff385c; line-height: 1; }
+  .score-big .den { font-size: 1.1rem; color: #bbb; }
+  .score-big .label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #999; margin-top: 0.3rem; }
+  .score-breakdown { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.8rem; }
+  .score-dim { }
+  .score-dim .dim-name { font-size: 0.75rem; font-weight: 600; color: #717171; margin-bottom: 0.3rem; }
+  .stars { color: #ff385c; font-size: 1rem; letter-spacing: 1px; }
+  .stars-empty { color: #ebebeb; }
+
+  /* ── Section Cards ── */
+  .section-card { background: #fff; border-radius: 20px; padding: 1.8rem 2rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.05); }
+  .section-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.5rem; }
+  .section-title { font-size: 1.15rem; font-weight: 700; color: #222; }
+  .section-subtitle { font-size: 0.85rem; color: #717171; margin-top: 0.2rem; }
+  .rating-block { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+  .rating-stars { font-size: 1.2rem; }
+  .rating-num { font-size: 0.8rem; color: #999; font-weight: 600; }
+
+  /* ── Priority Badges ── */
+  .badge { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.68rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .badge-critical { background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; }
+  .badge-high { background: #fff7ed; color: #ea580c; border: 1px solid #fed7aa; }
+  .badge-medium { background: #fefce8; color: #ca8a04; border: 1px solid #fef08a; }
+  .badge-low { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+
+  /* ── Finding Items ── */
+  .findings { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+  .finding { display: flex; gap: 0.8rem; align-items: flex-start; padding: 0.9rem 1rem; background: #fafafa; border-radius: 12px; border-left: 3px solid #ebebeb; }
+  .finding.critical { border-left-color: #e11d48; background: #fff8f8; }
+  .finding.high { border-left-color: #ea580c; background: #fffaf7; }
+  .finding.medium { border-left-color: #ca8a04; background: #fdfdf0; }
+  .finding-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.05rem; }
+  .finding-body { flex: 1; }
+  .finding-title { font-size: 0.9rem; font-weight: 600; color: #222; margin-bottom: 0.2rem; }
+  .finding-desc { font-size: 0.82rem; color: #717171; line-height: 1.5; }
+  .finding-fix { font-size: 0.8rem; color: #2e7d32; font-weight: 500; margin-top: 0.3rem; }
+  .finding-fix::before { content: "→ Fix: "; }
+
+  /* ── Recommendations ── */
+  .rec-list { display: flex; flex-direction: column; gap: 1rem; }
+  .rec { display: flex; gap: 1.2rem; align-items: flex-start; padding: 1.2rem; border-radius: 16px; border: 1px solid #ebebeb; background: #fff; }
+  .rec-num { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.82rem; font-weight: 800; }
+  .rec-num.p1 { background: #fff1f2; color: #e11d48; }
+  .rec-num.p2 { background: #fff7ed; color: #ea580c; }
+  .rec-num.p3 { background: #fefce8; color: #ca8a04; }
+  .rec-num.p4 { background: #f0fdf4; color: #16a34a; }
+  .rec-body { flex: 1; }
+  .rec-title { font-size: 0.95rem; font-weight: 700; color: #222; margin-bottom: 0.3rem; }
+  .rec-desc { font-size: 0.83rem; color: #717171; line-height: 1.55; }
+  .rec-impact { display: inline-block; margin-top: 0.5rem; font-size: 0.72rem; font-weight: 700; color: #ff385c; background: #fff1f2; padding: 0.15rem 0.5rem; border-radius: 6px; }
+  .rec-effort { display: inline-block; margin-top: 0.5rem; margin-left: 0.4rem; font-size: 0.72rem; font-weight: 700; color: #1565c0; background: #e3f2fd; padding: 0.15rem 0.5rem; border-radius: 6px; }
+
+  /* ── Divider ── */
+  .divider { height: 1px; background: #ebebeb; margin: 2rem 0; }
+
+  /* ── TL;DR Box ── */
+  .tldr { background: linear-gradient(135deg, #fff1f2, #fff7ed); border: 1px solid #fecdd3; border-radius: 16px; padding: 1.5rem 1.8rem; margin-bottom: 2.5rem; }
+  .tldr h3 { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #e11d48; margin-bottom: 0.8rem; }
+  .tldr p { font-size: 0.92rem; color: #444; line-height: 1.6; }
+
+  /* ── Footer ── */
+  .footer { text-align: center; color: #bbb; font-size: 0.78rem; padding: 2rem 0 0; }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.6rem; }
+    .score-bar { flex-direction: column; align-items: flex-start; }
+    .container { padding: 1.5rem 1rem 3rem; }
+    .section-card { padding: 1.3rem 1.2rem; }
+    .rec { gap: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="eyebrow">Senior UX Review</div>
+  <h1>Dashboard — UX Audit</h1>
+  <p class="subtitle">Persönliches Solopreneur-Dashboard · Tägliche Morgen-Nutzung · Mobile + Desktop</p>
+  <div class="meta">
+    <div class="meta-item"><strong>Reviewt:</strong> 4. März 2026</div>
+    <div class="meta-item"><strong>Datei:</strong> index.html</div>
+    <div class="meta-item"><strong>Kontext:</strong> Morgendlicher Check, zeitkritisch</div>
+    <div class="meta-item"><strong>Reviewer:</strong> Hatti 🏔️</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TL;DR -->
+  <div class="tldr">
+    <h3>TL;DR — Das Wichtigste</h3>
+    <p>Das Dashboard hat einen soliden visuellen Grundton (cleane Cards, gute Typografie), kämpft aber mit einem fundamentalen Problem: <strong>Es unterscheidet nicht zwischen "jetzt wichtig" und "gut zu wissen".</strong> Erledigte TODOs dominieren das Bild, Meetings des heutigen Tages sind nicht hervorgehoben, und mit 12 gleichgewichteten Sektionen erzwingt die Seite morgens einen vollständigen Mental-Scan. Drei gezielte Änderungen würden sofort helfen: (1) Completed TODOs ausblenden, (2) heutige Meetings nach oben, (3) eine klare "Heute"-Zone vor den Archiv-Sektionen.</p>
+  </div>
+
+  <!-- Gesamt-Score -->
+  <div class="score-bar">
+    <div class="score-big">
+      <div class="num">3.0</div>
+      <div class="den">/ 5</div>
+      <div class="label">Gesamt-Score</div>
+    </div>
+    <div class="score-breakdown">
+      <div class="score-dim">
+        <div class="dim-name">Information Architecture</div>
+        <div><span class="stars">★★★</span><span class="stars-empty">★★</span></div>
+      </div>
+      <div class="score-dim">
+        <div class="dim-name">Visual Hierarchy</div>
+        <div><span class="stars">★★★</span><span class="stars-empty">★★</span></div>
+      </div>
+      <div class="score-dim">
+        <div class="dim-name">Cognitive Load</div>
+        <div><span class="stars">★★</span><span class="stars-empty">★★★</span></div>
+      </div>
+      <div class="score-dim">
+        <div class="dim-name">Mobile Experience</div>
+        <div><span class="stars">★★★★</span><span class="stars-empty">★</span></div>
+      </div>
+      <div class="score-dim">
+        <div class="dim-name">Actionability</div>
+        <div><span class="stars">★★</span><span class="stars-empty">★★★</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 1. Information Architecture ── -->
+  <div class="section-card">
+    <div class="section-card-header">
+      <div>
+        <div class="section-title">📐 Information Architecture</div>
+        <div class="section-subtitle">Reihenfolge und Gruppierung der 12 Sektionen</div>
+      </div>
+      <div class="rating-block">
+        <div class="rating-stars"><span class="stars">★★★</span><span class="stars-empty">★★</span></div>
+        <div class="rating-num">3/5</div>
+      </div>
+    </div>
+    <ul class="findings">
+      <li class="finding critical">
+        <span class="finding-icon">🚨</span>
+        <div class="finding-body">
+          <div class="finding-title">Meetings sind Sektion 4 — obwohl sie das Zeitkritischste sind</div>
+          <div class="finding-desc">Der Discovery Call mit Alex Hamm (11:00) und das Frankfurt Meetup (18:30) stehen nach Briefings und Podcasts. Für eine morgendliche Routine ist das falsch priorisiert — Termine bestimmen den Tag.</div>
+          <div class="finding-fix">Meetings direkt nach dem Header positionieren, noch vor Wetter oder Briefings.</div>
+        </div>
+        <span class="badge badge-critical">Kritisch</span>
+      </li>
+      <li class="finding high">
+        <span class="finding-icon">⚠️</span>
+        <div class="finding-body">
+          <div class="finding-title">Keine klare "Heute"-Zone vs. "Archiv"-Zone</div>
+          <div class="finding-desc">Trail, Research, Ideen und Quick Links sind Referenz-Content, aber sie stehen auf gleicher Ebene wie TODOs und Meetings. Das zwingt zum Durchscrollen durch Material, das morgens irrelevant ist.</div>
+          <div class="finding-fix">Zwei Zonen schaffen: "Heute" (Meetings, TODOs, Leads) oben — "Workspace" (Projekte, Research, Ideas) unten.</div>
+        </div>
+        <span class="badge badge-high">Hoch</span>
+      </li>
+      <li class="finding medium">
+        <span class="finding-icon">💡</span>
+        <div class="finding-body">
+          <div class="finding-title">Leads stehen nach Projekten — obwohl Leads aktionierbar sind</div>
+          <div class="finding-desc">Die 2 neuen Leads ("Neu — Kontakt aufnehmen") erfordern eine Handlung heute, sind aber weit unten. Projekte sind Status-Übersicht, Leads sind Handlungsaufforderungen.</div>
+          <div class="finding-fix">Leads in die "Heute"-Zone, direkt unter TODOs.</div>
+        </div>
+        <span class="badge badge-medium">Mittel</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ── 2. Visual Hierarchy ── -->
+  <div class="section-card">
+    <div class="section-card-header">
+      <div>
+        <div class="section-title">🎨 Visual Hierarchy</div>
+        <div class="section-subtitle">Kontrast, Aufmerksamkeitsführung, Signalwirkung</div>
+      </div>
+      <div class="rating-block">
+        <div class="rating-stars"><span class="stars">★★★</span><span class="stars-empty">★★</span></div>
+        <div class="rating-num">3/5</div>
+      </div>
+    </div>
+    <ul class="findings">
+      <li class="finding high">
+        <span class="finding-icon">⚠️</span>
+        <div class="finding-body">
+          <div class="finding-title">Alle 12 h2-Sektionen sehen identisch aus</div>
+          <div class="finding-desc">Kein visueller Unterschied zwischen zeitkritischen Sektionen (Meetings, TODOs) und Archiv-Sektionen (Trail, Research). Das Auge findet keinen natürlichen Einstiegspunkt.</div>
+          <div class="finding-fix">Zeitkritische Sektionen mit stärkerer Farbe, größerem h2 oder einem farbigen Left-Border hervorheben.</div>
+        </div>
+        <span class="badge badge-high">Hoch</span>
+      </li>
+      <li class="finding medium">
+        <span class="finding-icon">💡</span>
+        <div class="finding-body">
+          <div class="finding-title">Erledigte TODOs dominieren visuell durch Menge</div>
+          <div class="finding-desc">7 von 9 TODO-Items sind durchgestrichen — das erzeugt mehr visuelles Rauschen (graue Textwand) als die 2 offenen Items, die eigentlich im Fokus stehen sollten. Der grüne Check-Kreis fällt auf, aber in die falsche Richtung.</div>
+          <div class="finding-fix">Completed Items standardmäßig mit <code>display:none</code> ausblenden; optionaler "Zeige erledigte" Toggle.</div>
+        </div>
+        <span class="badge badge-medium">Mittel</span>
+      </li>
+      <li class="finding medium">
+        <span class="finding-icon">💡</span>
+        <div class="finding-body">
+          <div class="finding-title">Weather-Error erhält gleich viel Platz wie funktionierende Inhalte</div>
+          <div class="finding-desc">Die Weather-Bar zeigt dreimal "⚠️ Service offline" in prominenter Position. Das ist das erste, was morgens auffällt — ein Fehlerzustand als Aufmacher.</div>
+          <div class="finding-fix">Bei Fehler: kompakte 1-Zeile ("Wetter offline — manuell prüfen") statt voller Bar. Oder Bar ausblenden wenn kein Datum geladen wurde.</div>
+        </div>
+        <span class="badge badge-medium">Mittel</span>
+      </li>
+      <li class="finding">
+        <span class="finding-icon">✅</span>
+        <div class="finding-body">
+          <div class="finding-title">Card-Konsistenz und Whitespace: Gut</div>
+          <div class="finding-desc">Alle Cards haben einheitliche Shadows, Padding und Border-Radii. Das gibt Ruhe. Die subtile Hover-Animation auf Grid-Cards ist angenehm.</div>
+        </div>
+        <span class="badge badge-low">Gut ✓</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ── 3. Cognitive Load ── -->
+  <div class="section-card">
+    <div class="section-card-header">
+      <div>
+        <div class="section-title">🧠 Cognitive Load</div>
+        <div class="section-subtitle">Wieviel Verarbeitungsaufwand braucht das Dashboard morgens?</div>
+      </div>
+      <div class="rating-block">
+        <div class="rating-stars"><span class="stars">★★</span><span class="stars-empty">★★★</span></div>
+        <div class="rating-num">2/5</div>
+      </div>
+    </div>
+    <ul class="findings">
+      <li class="finding critical">
+        <span class="finding-icon">🚨</span>
+        <div class="finding-body">
+          <div class="finding-title">12 Sektionen ohne Trennung — kein mentaler Ruhepunkt</div>
+          <div class="finding-desc">Die Seite ist ein kontinuierlicher Strom von Informationen. Für ein morgendliches "5-Minuten-Check" braucht man als erstes klare Antworten auf: Was passiert heute? Was muss ich tun? Alles andere ist Recherche-Kontext. Das ist aktuell nicht getrennt.</div>
+          <div class="finding-fix">Hard-Separator oder visuell distincte Zonen: "Heute" vs. "Workspace". Idealerweise: alles under "Heute" passt auf den First Viewport.</div>
+        </div>
+        <span class="badge badge-critical">Kritisch</span>
+      </li>
+      <li class="finding high">
+        <span class="finding-icon">⚠️</span>
+        <div class="finding-body">
+          <div class="finding-title">TODO-Meta-Texte sind zu lang für morgendliche Nutzung</div>
+          <div class="finding-desc">Einige TODO-Metazeilen sind mehrzeilige Beschreibungen mit Links, Kontext und nächsten Schritten — z.B. "3 Dimensionen: Throughput/Agent vs Baseline · Quality Decay...". Das ist kein TODO, das ist ein Briefing.</div>
+          <div class="finding-fix">Metazeilen auf max. 1 Zeile kürzen; Details in verlinktes Dokument auslagern.</div>
+        </div>
+        <span class="badge badge-high">Hoch</span>
+      </li>
+      <li class="finding medium">
+        <span class="finding-icon">💡</span>
+        <div class="finding-body">
+          <div class="finding-title">Projekt-Section enthält zu viele Next-Steps inline</div>
+          <div class="finding-desc">6 Projekt-Cards, jede mit mehrzeiligem "Next:" Text + Links. Für ein Dashboard reicht: Name, Status, 1 nächster Schritt. Der Rest gehört in die Projekt-Detailseite.</div>
+          <div class="finding-fix">Next-Text auf 1 Satz beschränken. Multiple Next-Steps → nur den ersten anzeigen.</div>
+        </div>
+        <span class="badge badge-medium">Mittel</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ── 4. Mobile Experience ── -->
+  <div class="section-card">
+    <div class="section-card-header">
+      <div>
+        <div class="section-title">📱 Mobile Experience</div>
+        <div class="section-subtitle">Nutzung auf Smartphone — täglicher Morgen-Check</div>
+      </div>
+      <div class="rating-block">
+        <div class="rating-stars"><span class="stars">★★★★</span><span class="stars-empty">★</span></div>
+        <div class="rating-num">4/5</div>
+      </div>
+    </div>
+    <ul class="findings">
+      <li class="finding">
+        <span class="finding-icon">✅</span>
+        <div class="finding-body">
+          <div class="finding-title">Responsive Layout: Grundsätzlich gut</div>
+          <div class="finding-desc">Der <code>@media (max-width: 600px)</code> Breakpoint kollapst alle Grids auf 1 Spalte. Sticky Header funktioniert. Weather-Bar stacked sauber.</div>
+        </div>
+        <span class="badge badge-low">Gut ✓</span>
+      </li>
+      <li class="finding medium">
+        <span class="finding-icon">💡</span>
+        <div class="finding-body">
+          <div class="finding-title">Leads-Grid ignoriert Mobile Breakpoint</div>
+          <div class="finding-desc"><code>.leads-grid</code> ist <code>grid-template-columns: repeat(2, 1fr)</code> — aber im <code>@media (max-width: 600px)</code> Block wird es nicht auf 1fr geändert. Auf schmalen Screens (375px) sind die Lead-Cards sehr eng.</div>
+          <div class="finding-fix">In den 600px Media-Query einfügen: <code>.leads-grid { grid-template-columns: 1fr; }</code></div>
+        </div>
+        <span class="badge badge-medium">Mittel</span>
+      </li>
+      <li class="finding medium">
+        <span class="finding-icon">💡</span>
+        <div class="finding-body">
+          <div class="finding-title">Font-Größen unter 0.8rem auf Mobile zu klein</div>
+          <div class="finding-desc">Meta-Texte bei TODOs (0.78rem), Tag-Labels (0.68rem) und Status-Badges (0.68rem) sind auf einem 375px Screen bei normaler Viewing-Distance kaum lesbar ohne Zoom.</div>
+          <div class="finding-fix">Mobile Minimum: 0.82rem für Metazeilen, 0.72rem für Badges. Alternativ: Tags auf Mobile ausblenden.</div>
+        </div>
+        <span class="badge badge-medium">Mittel</span>
+      </li>
+      <li class="finding">
+        <span class="finding-icon">💡</span>
+        <div class="finding-body">
+          <div class="finding-title">Touch-Targets: Chips sind ausreichend, TODO-Checks zu klein</div>
+          <div class="finding-desc">Die 20×20px Check-Circles in der TODO-Liste sind als Touch-Targets unter der empfohlenen 44×44px. Das ist für ein rein-read-only Dashboard kein Problem, aber sobald die Checkboxen interaktiv werden, wäre das kritisch.</div>
+          <div class="finding-fix">Jetzt als Low-Priority notieren: bei Interaktivität Touch-Target auf min. 44×44px expandieren.</div>
+        </div>
+        <span class="badge badge-low">Low</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ── 5. Actionability ── -->
+  <div class="section-card">
+    <div class="section-card-header">
+      <div>
+        <div class="section-title">⚡ Actionability</div>
+        <div class="section-subtitle">Wie schnell erkenne ich, was ich JETZT tun muss?</div>
+      </div>
+      <div class="rating-block">
+        <div class="rating-stars"><span class="stars">★★</span><span class="stars-empty">★★★</span></div>
+        <div class="rating-num">2/5</div>
+      </div>
+    </div>
+    <ul class="findings">
+      <li class="finding critical">
+        <span class="finding-icon">🚨</span>
+        <div class="finding-body">
+          <div class="finding-title">Kein "Top 3 Heute" — keine klare Tages-Agenda</div>
+          <div class="finding-desc">Es gibt keine Sektion die explizit sagt: "Das sind deine 3 Dinge heute." Die Information existiert (Meetings + offene TODOs), aber sie ist verstreut. Für ein morgendliches Check-in-Ritual fehlt der klare Einstieg.</div>
+          <div class="finding-fix">Kleine "Heute auf einen Blick"-Card ganz oben: Datum, heutige Meetings, offene TODOs (Anzahl), dringende Leads. Maximal 5 Zeilen.</div>
+        </div>
+        <span class="badge badge-critical">Kritisch</span>
+      </li>
+      <li class="finding high">
+        <span class="finding-icon">⚠️</span>
+        <div class="finding-body">
+          <div class="finding-title">Offene TODOs sind nicht von erledigten unterscheidbar ohne Lesen</div>
+          <div class="finding-desc">Man muss jede Zeile lesen oder nach dem Strikethrough-Stil scannen, um zu erkennen: 2 offen, 7 erledigt. Das ist kein Scan, das ist Lesen. Ein "4 offen"-Badge im Header hilft, zeigt aber auch noch nicht welche das sind.</div>
+          <div class="finding-fix">Offene TODOs zuerst, mit leichtem Highlight (linker Border in Orange). Erledigte standardmäßig verstecken oder ans Ende.</div>
+        </div>
+        <span class="badge badge-high">Hoch</span>
+      </li>
+      <li class="finding high">
+        <span class="finding-icon">⚠️</span>
+        <div class="finding-body">
+          <div class="finding-title">Leads-Status "Neu — Kontakt aufnehmen" ist nicht hervorgehoben</div>
+          <div class="finding-desc">Beide Leads haben einen klaren Action-Aufruf, aber visuell wirkt die Leads-Section wie eine Info-Section, nicht wie eine To-Do-Section. Der blaue "Neu"-Badge geht im visuellen Rauschen unter.</div>
+          <div class="finding-fix">Leads mit Aktion in die TODO-Section einbinden: "E. Raab kontaktieren (Warm Intro Alex)" als TODO-Item.</div>
+        </div>
+        <span class="badge badge-high">Hoch</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── Top 9 Empfehlungen ── -->
+  <div class="section-card">
+    <div class="section-card-header">
+      <div>
+        <div class="section-title">🎯 9 Priorisierte Empfehlungen</div>
+        <div class="section-subtitle">Sortiert nach Impact/Effort-Verhältnis · P1 = sofort · P4 = nice to have</div>
+      </div>
+    </div>
+    <div class="rec-list">
+
+      <div class="rec">
+        <div class="rec-num p1">1</div>
+        <div class="rec-body">
+          <div class="rec-title">Erledigte TODOs ausblenden (Default: hidden)</div>
+          <div class="rec-desc">7 von 9 Items sind durchgestrichen und erzeugen massives visuelles Rauschen. Standard auf <code>display:none</code> setzen, mit einem kleinen "7 erledigt anzeigen"-Link. Die 2 offenen TODOs würden sofort dominieren.</div>
+          <span class="rec-impact">Impact: Hoch</span>
+          <span class="rec-effort">Effort: 15 Min</span>
+        </div>
+        <span class="badge badge-critical">P1</span>
+      </div>
+
+      <div class="rec">
+        <div class="rec-num p1">2</div>
+        <div class="rec-body">
+          <div class="rec-title">"Heute auf einen Blick" Card ganz oben</div>
+          <div class="rec-desc">Eine kompakte Card (max. 5 Zeilen) direkt nach dem Header: heutige Meetings (mit Uhrzeit), Anzahl offener TODOs, Anzahl Leads die Aktion brauchen. Beantwortet die Frage "Was ist heute wichtig?" in 10 Sekunden.</div>
+          <span class="rec-impact">Impact: Sehr hoch</span>
+          <span class="rec-effort">Effort: 30 Min</span>
+        </div>
+        <span class="badge badge-critical">P1</span>
+      </div>
+
+      <div class="rec">
+        <div class="rec-num p1">3</div>
+        <div class="rec-body">
+          <div class="rec-title">Meetings-Section nach oben (Position 2 oder 3)</div>
+          <div class="rec-desc">Heutige Termine bestimmen den Tag. Meetings sollten direkt nach der "Heute"-Card stehen, noch vor Briefings und Podcasts. Diese Reihenfolge spiegelt die echte Morgen-Priorität wider.</div>
+          <span class="rec-impact">Impact: Hoch</span>
+          <span class="rec-effort">Effort: 5 Min</span>
+        </div>
+        <span class="badge badge-critical">P1</span>
+      </div>
+
+      <div class="rec">
+        <div class="rec-num p2">4</div>
+        <div class="rec-body">
+          <div class="rec-title">Weather-Bar: Compact Error State</div>
+          <div class="rec-desc">Bei "Service offline" zeigt die Bar drei Slots mit Fehlermeldungen — das ist der erste visuelle Eindruck am Morgen. Kompakter Fallback: 1 Zeile "🌤 Wetter offline — manuell prüfen" statt der vollen Bar. Spart Platz und reduziert negativen ersten Eindruck.</div>
+          <span class="rec-impact">Impact: Mittel</span>
+          <span class="rec-effort">Effort: 20 Min</span>
+        </div>
+        <span class="badge badge-high">P2</span>
+      </div>
+
+      <div class="rec">
+        <div class="rec-num p2">5</div>
+        <div class="rec-body">
+          <div class="rec-title">Mobile: leads-grid Breakpoint-Fix + kleinste Fontgrößen erhöhen</div>
+          <div class="rec-desc">Bug: <code>.leads-grid</code> collapst nicht auf 1 Spalte unter 600px. Zweizeiliger Fix. Gleichzeitig: Metazeilen von 0.78rem auf 0.82rem, Badge-Labels von 0.68rem auf 0.72rem — besser lesbar beim morgendlichen Daumen-Scroll.</div>
+          <span class="rec-impact">Impact: Mittel (Mobile)</span>
+          <span class="rec-effort">Effort: 10 Min</span>
+        </div>
+        <span class="badge badge-high">P2</span>
+      </div>
+
+      <div class="rec">
+        <div class="rec-num p2">6</div>
+        <div class="rec-body">
+          <div class="rec-title">Zwei visuelle Zonen schaffen: "Heute" vs. "Workspace"</div>
+          <div class="rec-desc">Mit einem visuellen Separator (z.B. grauer Bereich, Sections-Label "Workspace") zwischen den zeitkritischen Sektionen (Meetings, TODOs, Leads) und den Referenz-Sektionen (Projekte, Trail, Research, Ideen). Das erlaubt morgens früh aufzuhören zu scrollen.</div>
+          <span class="rec-impact">Impact: Hoch</span>
+          <span class="rec-effort">Effort: 30 Min</span>
+        </div>
+        <span class="badge badge-high">P2</span>
+      </div>
+
+      <div class="rec">
+        <div class="rec-num p3">7</div>
+        <div class="rec-body">
+          <div class="rec-title">TODO-Metazeilen auf 1 Zeile begrenzen</div>
+          <div class="rec-desc">Manche Metazeilen (v.a. "Capacity Pressure Index") sind mehrzeilige Mini-Briefings. Das ist für ein Dashboard zu lang. Max. 1 Zeile + Link zu Detail-Dokument. Reduziert Scrolltiefe und kognitiven Aufwand erheblich.</div>
+          <span class="rec-impact">Impact: Mittel</span>
+          <span class="rec-effort">Effort: 20 Min</span>
+        </div>
+        <span class="badge badge-medium">P3</span>
+      </div>
+
+      <div class="rec">
+        <div class="rec-num p3">8</div>
+        <div class="rec-body">
+          <div class="rec-title">Zeitkritische Sektionen visuell hervorheben</div>
+          <div class="rec-desc">Meetings und TODOs bekommen einen farbigen Left-Border am h2 (z.B. <code>border-left: 3px solid #ff385c</code>) oder eine subtil andere Hintergrundfarbe des Section-Labels. Das gibt dem Auge einen Anker beim Top-Down-Scan.</div>
+          <span class="rec-impact">Impact: Mittel</span>
+          <span class="rec-effort">Effort: 15 Min</span>
+        </div>
+        <span class="badge badge-medium">P3</span>
+      </div>
+
+      <div class="rec">
+        <div class="rec-num p4">9</div>
+        <div class="rec-body">
+          <div class="rec-title">Kompass-Section nach oben verschieben (Optional)</div>
+          <div class="rec-desc">Der Kompass ("Baue ich ein Produkt — oder baue ich Projekte?") ist ein starkes strategisches Anker-Element. Aktuell ganz unten sieht ihn kaum jemand. Überlegung: als Card direkt unter "Heute" — kurze Erinnerung an das Warum des Tages. Allerdings subjektiv: manche wollen es auch als Abschluss behalten.</div>
+          <span class="rec-impact">Impact: Low-Medium</span>
+          <span class="rec-effort">Effort: 5 Min</span>
+        </div>
+        <span class="badge badge-low">P4</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Quick Summary Table -->
+  <div class="section-card">
+    <div class="section-card-header">
+      <div>
+        <div class="section-title">📋 Empfehlungen auf einen Blick</div>
+      </div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+      <thead>
+        <tr style="border-bottom:2px solid #ebebeb;">
+          <th style="text-align:left;padding:0.6rem 0.5rem;color:#717171;font-weight:600;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;">#</th>
+          <th style="text-align:left;padding:0.6rem 0.5rem;color:#717171;font-weight:600;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;">Empfehlung</th>
+          <th style="text-align:center;padding:0.6rem 0.5rem;color:#717171;font-weight:600;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;">Prio</th>
+          <th style="text-align:center;padding:0.6rem 0.5rem;color:#717171;font-weight:600;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;">Effort</th>
+          <th style="text-align:center;padding:0.6rem 0.5rem;color:#717171;font-weight:600;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;">Kategorie</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid #f5f5f5;"><td style="padding:0.55rem 0.5rem;font-weight:700;color:#e11d48;">1</td><td style="padding:0.55rem 0.5rem;">Erledigte TODOs ausblenden</td><td style="text-align:center;padding:0.55rem 0.5rem;"><span class="badge badge-critical">P1</span></td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">15 Min</td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">Cognitive Load</td></tr>
+        <tr style="border-bottom:1px solid #f5f5f5;"><td style="padding:0.55rem 0.5rem;font-weight:700;color:#e11d48;">2</td><td style="padding:0.55rem 0.5rem;">"Heute"-Card oben</td><td style="text-align:center;padding:0.55rem 0.5rem;"><span class="badge badge-critical">P1</span></td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">30 Min</td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">Actionability</td></tr>
+        <tr style="border-bottom:1px solid #f5f5f5;"><td style="padding:0.55rem 0.5rem;font-weight:700;color:#e11d48;">3</td><td style="padding:0.55rem 0.5rem;">Meetings nach oben</td><td style="text-align:center;padding:0.55rem 0.5rem;"><span class="badge badge-critical">P1</span></td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">5 Min</td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">IA</td></tr>
+        <tr style="border-bottom:1px solid #f5f5f5;"><td style="padding:0.55rem 0.5rem;font-weight:700;color:#ea580c;">4</td><td style="padding:0.55rem 0.5rem;">Weather Error State komprimieren</td><td style="text-align:center;padding:0.55rem 0.5rem;"><span class="badge badge-high">P2</span></td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">20 Min</td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">Visual Hierarchy</td></tr>
+        <tr style="border-bottom:1px solid #f5f5f5;"><td style="padding:0.55rem 0.5rem;font-weight:700;color:#ea580c;">5</td><td style="padding:0.55rem 0.5rem;">Mobile leads-grid Bug + Fontgrößen</td><td style="text-align:center;padding:0.55rem 0.5rem;"><span class="badge badge-high">P2</span></td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">10 Min</td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">Mobile</td></tr>
+        <tr style="border-bottom:1px solid #f5f5f5;"><td style="padding:0.55rem 0.5rem;font-weight:700;color:#ea580c;">6</td><td style="padding:0.55rem 0.5rem;">"Heute" vs. "Workspace" Zonen</td><td style="text-align:center;padding:0.55rem 0.5rem;"><span class="badge badge-high">P2</span></td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">30 Min</td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">IA + Cognitive Load</td></tr>
+        <tr style="border-bottom:1px solid #f5f5f5;"><td style="padding:0.55rem 0.5rem;font-weight:700;color:#ca8a04;">7</td><td style="padding:0.55rem 0.5rem;">TODO-Meta auf 1 Zeile kürzen</td><td style="text-align:center;padding:0.55rem 0.5rem;"><span class="badge badge-medium">P3</span></td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">20 Min</td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">Cognitive Load</td></tr>
+        <tr style="border-bottom:1px solid #f5f5f5;"><td style="padding:0.55rem 0.5rem;font-weight:700;color:#ca8a04;">8</td><td style="padding:0.55rem 0.5rem;">Zeitkritische Sektionen hervorheben</td><td style="text-align:center;padding:0.55rem 0.5rem;"><span class="badge badge-medium">P3</span></td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">15 Min</td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">Visual Hierarchy</td></tr>
+        <tr><td style="padding:0.55rem 0.5rem;font-weight:700;color:#16a34a;">9</td><td style="padding:0.55rem 0.5rem;">Kompass nach oben (optional)</td><td style="text-align:center;padding:0.55rem 0.5rem;"><span class="badge badge-low">P4</span></td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">5 Min</td><td style="text-align:center;padding:0.55rem 0.5rem;color:#999;">IA</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    Dashboard UX Review · 4. März 2026 · Reviewer: Hatti 🏔️ · <a href="../index.html" style="color:#ff385c;text-decoration:none;">← Zurück zum Dashboard</a>
+  </div>
+
+</div>
+</body>
+</html>

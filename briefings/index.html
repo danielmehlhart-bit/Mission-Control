@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing-Archiv</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #1a1a1a; line-height: 1.6; padding: 24px; }
+  .container { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 22px; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 14px; margin-bottom: 24px; }
+  .back { display: inline-block; margin-bottom: 16px; color: #3b82f6; text-decoration: none; font-size: 14px; }
+  .back:hover { text-decoration: underline; }
+  .month-section { margin-bottom: 24px; }
+  .month-header { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 2px solid #e5e7eb; }
+  .briefing-list { list-style: none; }
+  .briefing-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 8px; transition: background 0.15s; }
+  .briefing-item:hover { background: #f0f0f0; }
+  .briefing-item a { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 12px; width: 100%; }
+  .briefing-date { font-size: 13px; color: #666; min-width: 80px; font-variant-numeric: tabular-nums; }
+  .briefing-emoji { font-size: 18px; min-width: 28px; text-align: center; }
+  .briefing-title { font-size: 14px; font-weight: 500; color: #222; }
+  .briefing-type { font-size: 12px; color: #999; margin-left: auto; }
+  .stats { display: flex; gap: 16px; margin-bottom: 20px; }
+  .stat { background: white; border-radius: 10px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); text-align: center; flex: 1; }
+  .stat .number { font-size: 24px; font-weight: 700; color: #222; }
+  .stat .label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const container = document.getElementById('briefings');
+  const totalEl = document.getElementById('total');
+  const daysEl = document.getElementById('days');
+  
+  // Fetch file listing from GitHub API
+  const resp = await fetch('https://api.github.com/repos/danielmehlhart-bit/dashboard/contents/briefings');
+  if (!resp.ok) { container.innerHTML = '<p>Fehler beim Laden</p>'; return; }
+  const files = await resp.json();
+  
+  const types = {
+    'alles-auf-aktien': { emoji: '🎙️', label: 'Alles auf Aktien' },
+    'eintracht': { emoji: '⚽', label: 'Eintracht Frankfurt' },
+    'marktbericht': { emoji: '📈', label: 'Marktbericht' },
+    'wetter': { emoji: '☔', label: 'Wetter' },
+    'gmail': { emoji: '📧', label: 'Gmail' }
+  };
+  
+  const briefings = files
+    .filter(f => f.name.endsWith('.html') && f.name !== 'index.html')
+    .map(f => {
+      const match = f.name.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.html$/);
+      if (!match) return null;
+      const [, date, type] = match;
+      const info = types[type] || { emoji: '📄', label: type };
+      const d = new Date(date + 'T00:00:00');
+      const weekday = d.toLocaleDateString('de-DE', { weekday: 'short' });
+      const formatted = d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+      return { date, type, weekday, formatted, ...info, file: f.name };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.date.localeCompare(a.date) || a.type.localeCompare(b.type));
+  
+  // Stats
+  const uniqueDays = new Set(briefings.map(b => b.date));
+  totalEl.textContent = briefings.length;
+  daysEl.textContent = uniqueDays.size;
+  
+  // Group by month
+  const months = {};
+  briefings.forEach(b => {
+    const d = new Date(b.date + 'T00:00:00');
+    const key = d.toLocaleDateString('de-DE', { year: 'numeric', month: 'long' });
+    if (!months[key]) months[key] = [];
+    months[key].push(b);
+  });
+  
+  let html = '';
+  for (const [month, items] of Object.entries(months)) {
+    html += `<div class="month-section"><div class="month-header">${month}</div><ul class="briefing-list">`;
+    items.forEach(b => {
+      html += `<li class="briefing-item"><a href="${b.file}">
+        <span class="briefing-date">${b.weekday} ${b.formatted}</span>
+        <span class="briefing-emoji">${b.emoji}</span>
+        <span class="briefing-title">${b.label}</span>
+        <span class="briefing-type">${b.type}</span>
+      </a></li>`;
+    });
+    html += '</ul></div>';
+  }
+  container.innerHTML = html;
+});
+</script>
+</head>
+<body>
+<div class="container">
+  <a href="../" class="back">← Dashboard</a>
+  <h1>📚 Briefing-Archiv</h1>
+  <p class="subtitle">Alle Morgen-Briefings chronologisch</p>
+  
+  <div class="stats">
+    <div class="stat"><div class="number" id="total">—</div><div class="label">Briefings</div></div>
+    <div class="stat"><div class="number" id="days">—</div><div class="label">Tage</div></div>
+  </div>
+  
+  <div id="briefings"><p style="color:#999">Lade Briefings...</p></div>
+</div>
+</body>
+</html>

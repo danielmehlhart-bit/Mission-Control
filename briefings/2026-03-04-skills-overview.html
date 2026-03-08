@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills-Übersicht — Hatti 🏔️</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif; background: #f7f7f7; color: #222; line-height: 1.6; }
+  .header { background: #fff; border-bottom: 1px solid #eee; padding: 2rem; text-align: center; }
+  .header h1 { font-size: 1.8rem; font-weight: 800; }
+  .header .sub { color: #717171; font-size: 0.9rem; margin-top: 0.3rem; }
+  .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+  .section-label { font-size: 0.72rem; font-weight: 700; color: #ff385c; text-transform: uppercase; letter-spacing: 0.08em; margin: 2rem 0 0.8rem; }
+  .skill-card { background: #fff; border-radius: 16px; padding: 1.3rem 1.5rem; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 6px 16px rgba(0,0,0,0.04); }
+  .skill-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-name { font-size: 1.05rem; font-weight: 700; color: #222; }
+  .skill-loc { font-size: 0.7rem; color: #bbb; font-family: monospace; }
+  .badge { font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 12px; }
+  .badge-custom { background: #e8f5e9; color: #2e7d32; }
+  .badge-global { background: #e3f2fd; color: #1565c0; }
+  .badge-new { background: #fff1f2; color: #e11d48; }
+  .skill-desc { font-size: 0.88rem; color: #717171; margin-bottom: 0.6rem; }
+  .skill-details { font-size: 0.82rem; color: #444; padding-top: 0.6rem; border-top: 1px solid #f5f5f5; }
+  .skill-details ul { padding-left: 1.2rem; margin-top: 0.3rem; }
+  .skill-details li { margin-bottom: 0.2rem; }
+  .summary { background: linear-gradient(135deg, #fafafa, #f0f0f0); border: 1px solid #eee; border-radius: 16px; padding: 1.3rem 1.5rem; margin-bottom: 2rem; }
+  .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center; margin-top: 0.8rem; }
+  .summary-num { font-size: 2rem; font-weight: 800; color: #ff385c; }
+  .summary-label { font-size: 0.78rem; color: #999; }
+  .footer { text-align: center; color: #ccc; font-size: 0.78rem; margin-top: 2rem; }
+  @media (max-width: 600px) { .container { padding: 1rem; } .summary-grid { grid-template-columns: 1fr; gap: 0.5rem; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🧩 Skills-Übersicht</h1>
+  <div class="sub">Alle Skills die Hatti nutzen kann · Stand: 4. März 2026</div>
+</div>
+<div class="container">
+
+<div class="summary">
+  <div class="summary-grid">
+    <div><div class="summary-num">12</div><div class="summary-label">Eigene Skills</div></div>
+    <div><div class="summary-num">5</div><div class="summary-label">Globale Skills</div></div>
+    <div><div class="summary-num">17</div><div class="summary-label">Gesamt</div></div>
+  </div>
+</div>
+
+<!-- Eigene Skills -->
+<div class="section-label">🟢 Eigene Skills (workspace/skills/)</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">📊 dashboard-update</span>
+    <span class="badge badge-new">Neu · heute</span>
+  </div>
+  <div class="skill-desc">Dashboard-Briefings, HTML-Updates, Morning Flow</div>
+  <div class="skill-details">
+    <ul>
+      <li><strong>Wann:</strong> Jedes Mal wenn etwas aufs Dashboard soll — Briefings, TODOs, Leads, Meetings, Trail</li>
+      <li><strong>Was es macht:</strong> Definiert den kompletten Flow: HTML erstellen → Dashboard-Link updaten → git push → kurzer Telegram-Ping</li>
+      <li><strong>Enthält:</strong> Section-Referenz (welche CSS-Klassen wo), Design-Regeln, Briefing-Typen, Sub-Agent-Regeln</li>
+      <li><strong>Nutzen:</strong> Sub-Agents wissen sofort wo Dateien liegen und wie das Dashboard aufgebaut ist — spart ~500 Tokens pro Prompt</li>
+    </ul>
+  </div>
+</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">🔍 adversarial-review</span>
+    <span class="badge badge-new">Neu · heute</span>
+  </div>
+  <div class="skill-desc">3-Agent Code Review: Finder → Challenger → Referee</div>
+  <div class="skill-details">
+    <ul>
+      <li><strong>Wann:</strong> Nach nicht-trivialen Code-Änderungen, neuen Features, Security-relevanten Changes</li>
+      <li><strong>Was es macht:</strong> 3 Sub-Agents mit spieltheoretischen Anreizen (Finder bekommt Punkte fürs Finden, Challenger verliert doppelt für falsches Widerlegen)</li>
+      <li><strong>Timeout:</strong> 2 Min pro Agent, 8 Min total — nie endlos loopen</li>
+      <li><strong>Output:</strong> HTML-Report mit Findings-Tabelle und Accuracy-Score</li>
+    </ul>
+  </div>
+</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">🎨 gamma-deck</span>
+    <span class="badge badge-new">Neu · heute</span>
+  </div>
+  <div class="skill-desc">Präsentationen via Gamma API erstellen</div>
+  <div class="skill-details">
+    <ul>
+      <li><strong>Wann:</strong> Pitch Decks, Follow-Up Decks, Client-Präsentationen</li>
+      <li><strong>Was es macht:</strong> Gamma API aufrufen (Auth, Parameter, Status-Polling), bei Fehler Fallback zu HTML-Deck</li>
+      <li><strong>Enthält:</strong> Komplette API-Doku (Endpoint, Auth-Header, textMode, imageOptions, sharingOptions)</li>
+      <li><strong>Wichtig:</strong> Auth ist <code>X-API-KEY</code> Header, NICHT Bearer Token!</li>
+    </ul>
+  </div>
+</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">🏗️ discovery-to-build</span>
+    <span class="badge badge-new">Neu · heute</span>
+  </div>
+  <div class="skill-desc">Sales-Pipeline: Discovery Call → Feature Discovery → PRDs → Prototyp</div>
+  <div class="skill-details">
+    <ul>
+      <li><strong>Wann:</strong> Neuer Kunde, Discovery Call verarbeiten, Follow-Up erstellen, Leads managen</li>
+      <li><strong>Was es macht:</strong> 7-Phasen-Pipeline komplett dokumentiert (Call → Transkript → Feature Discovery → PRDs → Deck → Leads → Prototyp → Demo)</li>
+      <li><strong>Enthält:</strong> Pricing-Rahmen (Discovery 2.500-3.500€, MVP 8-15k€, Retainer 800-1.500€/Monat), Checkliste nach jedem Call</li>
+      <li><strong>Referenziert:</strong> gamma-deck Skill + dashboard-update Skill</li>
+    </ul>
+  </div>
+</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">📰 rss-news</span>
+    <span class="badge badge-custom">Custom</span>
+  </div>
+  <div class="skill-desc">RSS Feeds, Podcast-Digests, Breaking News, Briefings</div>
+  <div class="skill-details">
+    <ul>
+      <li><strong>Wann:</strong> Eintracht-Briefing, Tagesschau Marktbericht, Alles auf Aktien, Eilmeldungen, Release-Monitoring</li>
+      <li><strong>Was es macht:</strong> RSS fetchen, filtern, zusammenfassen, HTML-Briefing erstellen, aufs Dashboard pushen</li>
+      <li><strong>Enthält:</strong> fetch-rss.sh Script, podcast-digest.sh Script, State-Tracking (keine Duplikate), Podcast-Prompt Template</li>
+      <li><strong>Update heute:</strong> Alle Briefings jetzt explizit → HTML + Dashboard (nicht mehr Telegram-Walls)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">🐙 github</span>
+    <span class="badge badge-custom">Custom</span>
+  </div>
+  <div class="skill-desc">GitHub via <code>gh</code> CLI</div>
+  <div class="skill-details">
+    <ul>
+      <li><strong>Wann:</strong> Issues, PRs, CI Runs, API-Queries auf GitHub</li>
+      <li><strong>Was es macht:</strong> Wrapper um <code>gh</code> CLI mit Patterns für häufige Workflows</li>
+    </ul>
+  </div>
+</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">🚀 lovable-deploy</span>
+    <span class="badge badge-custom">Custom</span>
+  </div>
+  <div class="skill-desc">Lovable Deployment Workflow</div>
+  <div class="skill-details">
+    <ul>
+      <li><strong>Wann:</strong> Code nach Lovable pushen, Migrations vorbereiten, Lovable-Prompts erstellen</li>
+      <li><strong>Was es macht:</strong> Deployment-Flow dokumentiert (git push → Lovable Pull → Migration → Test)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">🚴 strava</span>
+    <span class="badge badge-custom">Custom</span>
+  </div>
+  <div class="skill-desc">Strava API: Ride Reports, Trainingsanalyse</div>
+  <div class="skill-details">
+    <ul>
+      <li><strong>Wann:</strong> Post-Ride Reports, wöchentliche Trainings-Summaries, Strava-Daten abrufen</li>
+      <li><strong>Was es macht:</strong> OAuth Token Management, Activity Fetch, Report-Generierung</li>
+      <li><strong>Enthält:</strong> strava-helper.sh (auto Token-Refresh), Athlete-ID 133475180</li>
+    </ul>
+  </div>
+</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">✅ supabase-concord</span>
+    <span class="badge badge-custom">Custom</span>
+  </div>
+  <div class="skill-desc">Concord Data-Proxy (Tasks, Meetings, Decisions)</div>
+  <div class="skill-details">
+    <ul>
+      <li><strong>Wann:</strong> Tasks erstellen/abfragen, Meetings loggen, Decisions tracken, Voice→Concord</li>
+      <li><strong>Was es macht:</strong> Edge Function Proxy für CRUD auf Concord-Datenbank</li>
+    </ul>
+  </div>
+</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">🔒 security</span>
+    <span class="badge badge-custom">Custom</span>
+  </div>
+  <div class="skill-desc">Security Monitoring, Hardening, Incident Response</div>
+  <div class="skill-details">
+    <ul>
+      <li><strong>Wann:</strong> Security Audits, Firewall-Checks, verdächtige Aktivitäten, Hardening</li>
+      <li><strong>Was es macht:</strong> Stündlicher Monitor, wöchentlicher Audit, Runbook für Incidents</li>
+    </ul>
+  </div>
+</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">🔎 skill-vetting</span>
+    <span class="badge badge-custom">Custom</span>
+  </div>
+  <div class="skill-desc">ClawHub Skills prüfen vor Installation</div>
+  <div class="skill-details">
+    <ul>
+      <li><strong>Wann:</strong> Bevor ein Skill von ClawHub installiert wird — Security + Utility Check</li>
+      <li><strong>Was es macht:</strong> Code-Review auf Sicherheit, Bewertung ob der Skill Mehrwert bringt</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Globale Skills -->
+<div class="section-label">🔵 Globale Skills (OpenClaw built-in)</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">🌤️ weather</span>
+    <span class="badge badge-global">Global</span>
+  </div>
+  <div class="skill-desc">Wetter und Vorhersagen via wttr.in oder Open-Meteo. Kein API Key nötig.</div>
+</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">🎮 gog</span>
+    <span class="badge badge-global">Global</span>
+  </div>
+  <div class="skill-desc">Google Workspace CLI: Gmail, Calendar, Drive, Contacts, Sheets, Docs. OAuth-basiert.</div>
+</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">🎙️ openai-whisper-api</span>
+    <span class="badge badge-global">Global</span>
+  </div>
+  <div class="skill-desc">Audio-Transkription via OpenAI Whisper API. Für Voice Messages und Podcast-Transkripte.</div>
+</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">🎬 video-frames</span>
+    <span class="badge badge-global">Global</span>
+  </div>
+  <div class="skill-desc">Frames und Clips aus Videos extrahieren via ffmpeg.</div>
+</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">🛠️ skill-creator</span>
+    <span class="badge badge-global">Global</span>
+  </div>
+  <div class="skill-desc">Skills erstellen, validieren und paketieren. Meta-Skill für Skill-Entwicklung.</div>
+</div>
+
+<div class="skill-card">
+  <div class="skill-top">
+    <span class="skill-name">🔐 healthcheck</span>
+    <span class="badge badge-global">Global</span>
+  </div>
+  <div class="skill-desc">Host Security Hardening, Firewall, SSH, Updates. Für Maschinen die OpenClaw laufen lassen.</div>
+</div>
+
+<div class="footer">Hatti 🏔️ · 4. März 2026 · 12 eigene + 5 globale = 17 Skills</div>
+
+</div>
+</body>
+</html>

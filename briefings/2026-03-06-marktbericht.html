@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marktbericht 6. März 2026</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 {
+            color: #1a1a1a;
+            margin: 0 0 10px 0;
+            font-size: 2.2em;
+            font-weight: 700;
+        }
+        .date {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+        }
+        .indices {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .index {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .index.negative {
+            background: #ffe6e6;
+            border-left: 4px solid #dc3545;
+        }
+        .index.positive {
+            background: #e6ffe6;
+            border-left: 4px solid #28a745;
+        }
+        .index-name {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .index-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        .index-change {
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        .negative .index-change {
+            color: #dc3545;
+        }
+        .positive .index-change {
+            color: #28a745;
+        }
+        .drivers {
+            list-style: none;
+            padding: 0;
+        }
+        .drivers li {
+            padding: 10px 15px;
+            background: #f8f9fa;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border-left: 4px solid #007bff;
+        }
+        .negative-driver {
+            border-left-color: #dc3545 !important;
+        }
+        .positive-driver {
+            border-left-color: #28a745 !important;
+        }
+        .footer {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .source-link {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .source-link:hover {
+            background: #0056b3;
+        }
+        h2 {
+            color: #1a1a1a;
+            margin: 0 0 15px 0;
+            font-size: 1.3em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📈 Marktbericht</h1>
+            <div class="date">6. März 2026 • Iran-Krieg belastet Märkte</div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>Wichtige Indizes</h2>
+                <div class="indices">
+                    <div class="index negative">
+                        <div class="index-name">DAX</div>
+                        <div class="index-value">23.815</div>
+                        <div class="index-change">-1,6%</div>
+                    </div>
+                    <div class="index negative">
+                        <div class="index-name">Dow Jones</div>
+                        <div class="index-value">~48.100</div>
+                        <div class="index-change">-1,4%</div>
+                    </div>
+                    <div class="index negative">
+                        <div class="index-name">S&P 500</div>
+                        <div class="index-value">6.831</div>
+                        <div class="index-change">-0,6%</div>
+                    </div>
+                </div>
+                <p><strong>Rohöl Brent:</strong> $84,02 (+3% heute, +16% diese Woche)</p>
+            </div>
+
+            <div class="card">
+                <h2>Haupttreiber negativ</h2>
+                <ul class="drivers">
+                    <li class="negative-driver">🏗️ Iran-Krieg eskaliert weiter - Straße von Hormus bedroht</li>
+                    <li class="negative-driver">⛽ Ölpreise steigen stark - Inflationssorgen</li>
+                    <li class="negative-driver">📦 DHL: Verhaltener Ausblick für 2026</li>
+                    <li class="negative-driver">💊 Merck: Ergebnisrückgang bis 10% erwartet</li>
+                    <li class="negative-driver">🇺🇸 US-Arbeitsmarkt stabil - Fed weniger Spielraum</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>Haupttreiber positiv</h2>
+                <ul class="drivers">
+                    <li class="positive-driver">🔌 Broadcom +5%: KI-Chip-Umsätze bis 2027 über $100 Mrd.</li>
+                    <li class="positive-driver">⛽ Energiekonzerne profitieren von Ölpreisanstieg</li>
+                    <li class="positive-driver">💻 Nasdaq zeitweise noch im Plus dank Tech-Werten</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>Ausblick & Risiken</h2>
+                <ul class="drivers">
+                    <li>🛡️ <strong>Geopolitik:</strong> Iran-Krieg bleibt größter Unsicherheitsfaktor</li>
+                    <li>⛽ <strong>Energie:</strong> Straße von Hormus - 20.000 Seeleute festsitzend</li>
+                    <li>📈 <strong>Inflation:</strong> Steigende Ölpreise schränken Fed-Spielraum ein</li>
+                    <li>💼 <strong>Earnings:</strong> Quartalsbilanzen laufen - gemischte Signale</li>
+                    <li>🏦 <strong>Zinsen:</strong> Fed-Bericht am Freitag erwartet</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Fazit:</strong> Nach gestern kurzer Erholung wieder Rückschlag durch Iran-Krieg. Ölpreise und Inflationssorgen belasten. DAX wieder unter 24.000 - psychologische Marke durchbrochen.</p>
+            <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-oelpreis-iran-dow-100.html" class="source-link" target="_blank">📰 Vollständiger Tagesschau-Artikel</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alles auf Aktien – 5. März 2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      padding: 24px 16px 48px;
+    }
+    .container { max-width: 820px; margin: 0 auto; }
+
+    header {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 28px;
+    }
+    header .icon { font-size: 2.4rem; }
+    header h1 { font-size: 1.6rem; font-weight: 700; }
+    header p { color: #666; font-size: 0.9rem; margin-top: 2px; }
+
+    .yt-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #ff0000; color: #fff;
+      padding: 8px 16px; border-radius: 8px;
+      text-decoration: none; font-size: 0.85rem; font-weight: 600;
+      margin-bottom: 28px;
+      transition: opacity .15s;
+    }
+    .yt-link:hover { opacity: .85; }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .card h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .tldr {
+      background: #1a1a2e;
+      color: #e8e8f0;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+    }
+    .tldr h2 { color: #a0a8ff; margin-bottom: 10px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: .08em; }
+    .tldr p { font-size: 1rem; line-height: 1.5; }
+
+    .market-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px;
+    }
+    .market-item {
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .market-item .label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: .05em; }
+    .market-item .value { font-size: 1.05rem; font-weight: 700; margin-top: 2px; }
+    .market-item .change { font-size: 0.82rem; font-weight: 600; margin-top: 1px; }
+
+    .green { color: #16a34a; }
+    .red   { color: #dc2626; }
+
+    .stock-list { list-style: none; }
+    .stock-list li {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      gap: 12px;
+    }
+    .stock-list li:last-child { border-bottom: none; }
+    .stock-list .name { font-weight: 600; font-size: 0.92rem; }
+    .stock-list .note { font-size: 0.8rem; color: #666; margin-top: 2px; }
+    .stock-list .pct { font-weight: 700; font-size: 0.95rem; white-space: nowrap; }
+
+    .topic-block { margin-bottom: 14px; }
+    .topic-block h3 { font-size: 0.92rem; font-weight: 700; margin-bottom: 5px; }
+    .topic-block p { font-size: 0.87rem; color: #444; line-height: 1.55; }
+
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .tag {
+      background: #e8f4ff; color: #1d6fa4;
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 0.78rem; font-weight: 600;
+    }
+    .tag.green-tag { background: #dcfce7; color: #166534; }
+    .tag.purple-tag { background: #f3e8ff; color: #6b21a8; }
+
+    .picks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .pick-card {
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 14px;
+      border-left: 4px solid #6366f1;
+    }
+    .pick-card .cat { font-size: 0.72rem; color: #6366f1; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; margin-bottom: 4px; }
+    .pick-card .title { font-size: 0.9rem; font-weight: 700; }
+    .pick-card .desc { font-size: 0.8rem; color: #555; margin-top: 4px; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="icon">🎙️</div>
+    <div>
+      <h1>Alles auf Aktien</h1>
+      <p>Donnerstag, 5. März 2026 · Welt Podcast</p>
+    </div>
+  </header>
+
+  <a class="yt-link" href="https://www.youtube.com/watch?v=ahaa0MwJj3Q" target="_blank">
+    ▶ Auf YouTube anhören
+  </a>
+
+  <!-- TL;DR -->
+  <div class="tldr">
+    <h2>TL;DR</h2>
+    <p>DAX erholt sich kräftig (+1,74 %), Bitcoin springt über 73.000 $, Adidas enttäuscht mit schwachem Ausblick, Bayer dreht nach Glyphosat-Einigung ins Plus – und Chinas Fünfjahresplan ist das Investmentthema der Woche.</p>
+  </div>
+
+  <!-- Märkte -->
+  <div class="card">
+    <h2>📊 Märkte</h2>
+    <div class="market-grid">
+      <div class="market-item">
+        <div class="label">DAX</div>
+        <div class="value">–</div>
+        <div class="change green">+1,74 %</div>
+      </div>
+      <div class="market-item">
+        <div class="label">Nasdaq 100</div>
+        <div class="value">–</div>
+        <div class="change green">+1,5 %</div>
+      </div>
+      <div class="market-item">
+        <div class="label">S&amp;P 500</div>
+        <div class="value">–</div>
+        <div class="change green">+0,8 %</div>
+      </div>
+      <div class="market-item">
+        <div class="label">Bitcoin</div>
+        <div class="value">&gt; 73.000 $</div>
+        <div class="change green">+7 %</div>
+      </div>
+      <div class="market-item">
+        <div class="label">Gold</div>
+        <div class="value">5.140 $</div>
+        <div class="change green">+1,1 %</div>
+      </div>
+      <div class="market-item">
+        <div class="label">Silber</div>
+        <div class="value">–</div>
+        <div class="change green">+1,5 %</div>
+      </div>
+      <div class="market-item">
+        <div class="label">Brent Öl</div>
+        <div class="value">81,40 $</div>
+        <div class="change red">−2 %</div>
+      </div>
+      <div class="market-item">
+        <div class="label">WTI Öl</div>
+        <div class="value">74,60 $</div>
+        <div class="change red">−2 %</div>
+      </div>
+      <div class="market-item">
+        <div class="label">Ether</div>
+        <div class="value">–</div>
+        <div class="change green">+8 %</div>
+      </div>
+      <div class="market-item">
+        <div class="label">Solana</div>
+        <div class="value">–</div>
+        <div class="change green">+6 %</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Einzelwerte -->
+  <div class="card">
+    <h2>📈 Einzelwerte des Tages</h2>
+    <ul class="stock-list">
+      <li>
+        <div>
+          <div class="name">Adidas</div>
+          <div class="note">Ausblick unter Markterwartungen – tiefster Stand seit 3 Jahren</div>
+        </div>
+        <div class="pct red">−3,6 %</div>
+      </li>
+      <li>
+        <div>
+          <div class="name">Symrise</div>
+          <div class="note">Sehr vorsichtiger Ausblick für 2026</div>
+        </div>
+        <div class="pct red">−3,1 %</div>
+      </li>
+      <li>
+        <div>
+          <div class="name">Continental</div>
+          <div class="note">Nettoverlust 2025 (−165 Mio €), Dividende steigt auf 2,70 € (+0,20 €)</div>
+        </div>
+        <div class="pct" style="color:#888">~0 %</div>
+      </li>
+      <li>
+        <div>
+          <div class="name">Bayer</div>
+          <div class="note">Glyphosat-Sammelvergleich genehmigt → 36 € → 38 €</div>
+        </div>
+        <div class="pct green">+5,5 %</div>
+      </li>
+      <li>
+        <div>
+          <div class="name">Coinbase</div>
+          <div class="note">Bitcoin-Rally treibt Krypto-Aktien</div>
+        </div>
+        <div class="pct green">+14 %</div>
+      </li>
+      <li>
+        <div>
+          <div class="name">Strategy (ex-MicroStrategy)</div>
+          <div class="note">Bitcoin-Profiteur</div>
+        </div>
+        <div class="pct green">+8 %</div>
+      </li>
+      <li>
+        <div>
+          <div class="name">Robinhood</div>
+          <div class="note">Bitcoin-Profiteur</div>
+        </div>
+        <div class="pct green">+7 %</div>
+      </li>
+      <li>
+        <div>
+          <div class="name">Nvidia</div>
+          <div class="note">Tech-Erholung nach Ausverkauf</div>
+        </div>
+        <div class="pct green">+1,6 %</div>
+      </li>
+      <li>
+        <div>
+          <div class="name">Amazon</div>
+          <div class="note">Tech-Rebound</div>
+        </div>
+        <div class="pct green">+3,4 %</div>
+      </li>
+      <li>
+        <div>
+          <div class="name">Broadcom</div>
+          <div class="note">Q1: EPS 2,05$ (erw. 2,03$), Umsatz 19,3 Mrd $ (+29% YoY), KI treibt Wachstum</div>
+        </div>
+        <div class="pct green">+nb (nachbörslich pos.)</div>
+      </li>
+      <li>
+        <div>
+          <div class="name">Crumbl Cookies</div>
+          <div class="note">Umsatzprognose 3 % – Analysten erwarteten 4,2 %</div>
+        </div>
+        <div class="pct red">−9,3 %</div>
+      </li>
+      <li>
+        <div>
+          <div class="name">Lufthansa</div>
+          <div class="note">Kein DAX-Comeback – Indexüberprüfung 23. März bleibt alles beim Alten</div>
+        </div>
+        <div class="pct red">–</div>
+      </li>
+      <li>
+        <div>
+          <div class="name">Zalando</div>
+          <div class="note">Bleibt im DAX – kein Abstieg</div>
+        </div>
+        <div class="pct green">✓ DAX</div>
+      </li>
+      <li>
+        <div>
+          <div class="name">Schaeffler</div>
+          <div class="note">Außerplanmäßiger Aufstieg SDAX → MDAX</div>
+        </div>
+        <div class="pct green">↑ MDAX</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Thema des Tages: Chinas 5-Jahresplan -->
+  <div class="card">
+    <h2>🇨🇳 Thema des Tages: Chinas Fünfjahresplan 2026–2030</h2>
+
+    <div class="topic-block">
+      <h3>Was steckt dahinter?</h3>
+      <p>Der Volkskongress beginnt heute in Peking. Die Abgeordneten beschließen den 14. Fünfjahresplan – das wichtigste Wirtschaftslenkungsdokument der Welt. Drei zentrale Ziele: <strong>Technologische Selbstständigkeit</strong>, <strong>starker Binnenmarkt</strong> und <strong>Klimaneutralität bis 2060</strong>.</p>
+    </div>
+
+    <div class="topic-block">
+      <h3>Das Problem</h3>
+      <p>Die Ziele stehen in Spannung: Der Staat pumpt Milliarden in Hightech-Fabriken (die kaum Jobs schaffen) – während die Jugendarbeitslosigkeit offiziell bei ~20 % liegt. Überkapazitäten in Solar, Batterien und E-Autos drücken auf globale Märkte.</p>
+    </div>
+
+    <div class="topic-block">
+      <h3>Was bedeutet das für Anleger?</h3>
+      <div class="tag-list">
+        <span class="tag">Halbleiter / KI</span>
+        <span class="tag">Robotik &amp; Automation</span>
+        <span class="tag green-tag">Erneuerbare Energien</span>
+        <span class="tag purple-tag">Luxusgüter (bei Konsum-Erholung)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stock Picks / Investment-Ideen -->
+  <div class="card">
+    <h2>💡 Stock Picks &amp; Investment-Ideen</h2>
+    <div class="picks-grid">
+      <div class="pick-card">
+        <div class="cat">ETF · Halbleiter</div>
+        <div class="title">Vaneck Semiconductor ETF</div>
+        <div class="desc">ASML, Tokyo Electron, Applied Materials, TSMC, Samsung</div>
+      </div>
+      <div class="pick-card">
+        <div class="cat">ETF · Robotik</div>
+        <div class="title">iShares Automation &amp; Robotics ETF</div>
+        <div class="desc">Profitiert von Chinas Fabrikautomation und globalem Trend</div>
+      </div>
+      <div class="pick-card">
+        <div class="cat">ETF · Energie</div>
+        <div class="title">iShares Global Clean Energy Transition</div>
+        <div class="desc">Chinas Fokus auf Solar, Wind, Wasserstoff als Rückenwind</div>
+      </div>
+      <div class="pick-card">
+        <div class="cat">Aktien · Konsum (bedingt)</div>
+        <div class="title">Nike · Starbucks · LVMH · Hermès</div>
+        <div class="desc">Nur wenn China den Binnenkonsum tatsächlich ankurbelt</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Triple-A Idee -->
+  <div class="card">
+    <h2>⏱️ Triple-A Idee: Zeitreiseaktien &amp; Steuerstundung</h2>
+    <div class="topic-block">
+      <h3>Was sind „Zeitreiseaktien"?</h3>
+      <p>Unternehmen wie <strong>Deutsche Telekom</strong>, <strong>Vonovia</strong> und <strong>Freenet</strong> zahlen Dividenden aus dem <em>steuerlichen Einlagekonto (§27 KStG)</em> – das ist kurzfristig <strong>steuerfrei</strong> (kein Abzug von Abgeltungssteuer). Stattdessen wird der Anschaffungspreis im Depot reduziert. Beim späteren Verkauf zahlt man dann auf den gestiegenen Kursgewinn Steuern.</p>
+    </div>
+    <div class="topic-block">
+      <h3>Darf der Anschaffungspreis negativ werden?</h3>
+      <p>Nein – der Broker reduziert ihn maximal auf null. Man zahlt beim Verkauf nicht drauf, aber der steuerliche Kursgewinn wird größer. Es ist eine <strong>Steuerstundung, keine Steuerfreiheit</strong>.</p>
+    </div>
+    <div class="topic-block">
+      <h3>Internationale Beispiele</h3>
+      <p>US-REITs wie <strong>Realty Income</strong>, <strong>Iron Mountain</strong> und <strong>WP Carey</strong> zahlen regelmäßig teilweise Return of Capital.</p>
+    </div>
+  </div>
+
+  <div style="text-align:center; color:#aaa; font-size:0.78rem; margin-top:32px;">
+    Alles auf Aktien · Welt Podcast · 5. März 2026<br>
+    Kein Kauf- oder Anlageempfehlung.
+  </div>
+
+</div>
+</body>
+</html>

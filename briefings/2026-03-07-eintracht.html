@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eintracht Frankfurt Briefing - 7. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f7f7f7;
+            color: #222;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            color: #e30613;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: #717171;
+            font-size: 1.1rem;
+        }
+        
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .article-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+            padding: 28px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .article-title {
+            margin-bottom: 15px;
+        }
+        
+        .article-title a {
+            color: #222;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 600;
+            line-height: 1.3;
+            display: block;
+        }
+        
+        .article-title a:hover {
+            color: #e30613;
+            text-decoration: underline;
+        }
+        
+        .article-summary {
+            color: #484848;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid #dddddd;
+            color: #717171;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .article-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚽ Eintracht Frankfurt Briefing</h1>
+            <div class="subtitle">Nachrichten vom 6. März 2026 | 8 Artikel</div>
+        </div>
+        
+        <div class="articles-grid">
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/riera-warnt-vor-dem-millerntor-sonst-bekommen-sie-ein-problem-mit-mir-94205441.html" target="_blank">
+                        Riera warnt vor mentaler Schwäche: "Sonst bekommen sie ein Problem mit mir"
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Eintracht-Trainer Albert Riera fordert vor dem St.-Pauli-Spiel maximale Einstellung von seinem Team. Mentale Schwäche werde er niemals akzeptieren und die Mannschaft sei physisch gut, aber müsse "aufgeweckt" werden nach der schwierigen Phase unter Toppmöller.
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/offensivstar-eintracht-frankfurt-winkt-nach-70-millionen-absage-transfercoup-um-zr-94204817.html" target="_blank">
+                        Bahoya weckt Premier-League-Interesse nach starker Form
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Jean-Matteo Bahoya hat unter Trainer Riera deutlich zugelegt und bereits so viele Scorer wie zuvor in 17 Spielen unter Toppmöller. Manchester United und weitere englische Klubs haben den Franzosen auf dem Radar - im Sommer hatte Eintracht bereits ein 70-Millionen-Angebot aus Saudi-Arabien abgelehnt.
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/der-fc-st-pauli-empfaengt-die-eintracht-im-aufwind-94204675.html" target="_blank">
+                        Warnung vor St. Pauli: Selbst Alex Meier mahnt zur Vorsicht
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Der FC St. Pauli hat den Abstiegsplatz verlassen und befindet sich im Aufwind mit drei Siegen aus vier Spielen. Die besondere Atmosphäre am Millerntor verspricht eine heiße Partie für die Eintracht, sogar Klub-Legende Alex Meier warnt vor der Schwierigkeit der Aufgabe.
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/sge-star-brown-muss-um-nagelsmann-nominierung-zittern-zr-94204708.html" target="_blank">
+                        Browns WM-Traum in Gefahr: Vielseitigkeit wird zum Problem
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Nathaniel Brown ist bei Eintracht Frankfurt unumstrittener Leistungsträger, doch in der Nationalmannschaft nur Herausforderer. Seine Vielseitigkeit könnte paradoxerweise zum Nachteil werden, da er in keiner Position erste Wahl bei Nagelsmann ist - trotz starker Vereinsleistungen.
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/fussball-wm-2026-das-riesige-ziel-des-eintracht-kapitaens-robin-koch-zr-94204247.html" target="_blank">
+                        Koch träumt von der WM: "Ein riesiges Ziel"
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Eintracht-Kapitän Robin Koch macht aus seinen WM-Ambitionen keinen Hehl. Die Nominierung am 19. März wird richtungsweisend, da Nagelsmann danach nicht mehr viel experimentieren will. Für den 29-Jährigen wäre eine WM-Teilnahme "ein absoluter Traum".
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/ist-ritsu-doan-bei-eintracht-ein-opfer-des-systems-zr-94204668.html" target="_blank">
+                        Doan sucht weiter seine Rolle im Riera-System
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Der als Coup bewertete Transfer von Ritsu Doan zeigt noch nicht die erhofften Früchte. Gegen Ex-Klub Freiburg wurde er erstmals in dieser Saison nicht in die Startelf gestellt, zeigte aber als Joker eine gute Leistung. Seine Position im System von Albert Riera ist noch nicht gefunden.
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/neuer-sge-boss-will-eintracht-frankfurt-umkrempeln-94205226.html" target="_blank">
+                        Babett Peter neue Sportdirektorin für Eintracht-Frauen
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Mit der Weltmeisterin Babett Peter stellt Eintracht Frankfurt eine neue Sportdirektorin für den Frauenfußball vor. Die erfahrene Funktionärin soll den Verein strategisch und operativ weiterentwickeln und hat ambitionierte Pläne für die Zukunft des Frauenteams.
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-trainer-mit-klarer-botschaft-an-sein-team-94205860.html" target="_blank">
+                        Rieras klare Botschaft vor dem St.-Pauli-Spiel
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Albert Riera richtet vor dem schweren Auswärtsspiel beim FC St. Pauli eine deutliche Botschaft an seine Mannschaft. Der Trainer betont, was ihm bei seiner Eintracht besonders wichtig ist und welche Einstellung er von seinen Spielern erwartet.
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Erstellt am 7. März 2026 um 06:35 Uhr | Quelle: Frankfurter Rundschau
+        </div>
+    </div>
+</body>
+</html>

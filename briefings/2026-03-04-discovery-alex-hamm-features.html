@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feature Discovery — Alex Hamm, HAM Architekten</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: #f8f8f8; color: #1a1a1a; line-height: 1.6; padding: 2rem; max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .subtitle { color: #888; font-size: 0.85rem; margin-bottom: 2rem; }
+  h2 { font-size: 1.2rem; font-weight: 600; margin: 2rem 0 0.8rem; padding-bottom: 0.4rem; border-bottom: 2px solid #e5e5e5; }
+  h3 { font-size: 1rem; font-weight: 600; margin: 1.2rem 0 0.5rem; }
+  .card { background: #fff; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid #eee; }
+  .card.feature { border-left: 4px solid #7c3aed; }
+  .card.pain { border-left: 4px solid #ef4444; }
+  .card.opportunity { border-left: 4px solid #22c55e; }
+  .card.context { border-left: 4px solid #3b82f6; }
+  .tag { display: inline-block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 99px; margin-right: 6px; margin-bottom: 4px; }
+  .tag.critical { background: #fef2f2; color: #dc2626; }
+  .tag.high { background: #fff7ed; color: #ea580c; }
+  .tag.medium { background: #fffbeb; color: #d97706; }
+  .tag.feature { background: #f5f3ff; color: #7c3aed; }
+  .tag.validated { background: #f0fdf4; color: #16a34a; }
+  .tag.new { background: #eff6ff; color: #2563eb; }
+  .quote { background: #fafafa; border-left: 3px solid #d4d4d4; padding: 0.8rem 1rem; margin: 0.8rem 0; font-style: italic; color: #555; font-size: 0.9rem; border-radius: 0 8px 8px 0; }
+  .quote .speaker { font-style: normal; font-weight: 600; color: #333; }
+  .metric { display: inline-flex; align-items: baseline; gap: 6px; background: #f5f3ff; padding: 4px 12px; border-radius: 8px; margin: 4px 4px 4px 0; }
+  .metric .num { font-size: 1.3rem; font-weight: 700; color: #7c3aed; }
+  .metric .label { font-size: 0.8rem; color: #666; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th { text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #888; padding: 8px 12px; border-bottom: 2px solid #eee; }
+  td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; }
+  ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+  li { margin-bottom: 0.4rem; font-size: 0.9rem; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } body { padding: 1rem; } }
+  .prd-section { margin-top: 3rem; padding-top: 2rem; border-top: 3px solid #7c3aed; }
+  .ac { background: #f0fdf4; border-radius: 8px; padding: 1rem; margin: 0.5rem 0; }
+  .ac li { color: #166534; }
+  .flow { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0; }
+  .flow .step { background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 8px; padding: 6px 14px; font-size: 0.85rem; font-weight: 500; }
+  .flow .arrow { color: #aaa; font-size: 1.2rem; }
+</style>
+</head>
+<body>
+
+<h1>🔍 Feature Discovery — HAM Architekten</h1>
+<p class="subtitle">Discovery Call mit Alex Hamm · 4. März 2026, 11:00 · Transkript-Analyse</p>
+
+<!-- CONTEXT -->
+<h2>📋 Kontext</h2>
+<div class="card context">
+  <h3>HAM Architekten — Profil</h3>
+  <div class="grid2">
+    <div>
+      <strong>Team:</strong> 10 Personen (Kapazität für 20)<br>
+      <strong>Projekte/Jahr:</strong> ~70<br>
+      <strong>Ablehnungsquote:</strong> 80% der Anfragen<br>
+      <strong>Tools:</strong> Vectorworks, Dropbox, Microsoft 365, Planner, Miro (800 Boards)
+    </div>
+    <div>
+      <strong>Gescheitertes Tool:</strong> Asana (nur PL nutzten es)<br>
+      <strong>Client:</strong> Eduard (SPK_3) — 3-4 parallele Projekte<br>
+      <strong>Ansprechpartner:</strong> Alex Hamm (GF)<br>
+      <strong>Interesse:</strong> Sehr hoch — "Wir würden auch investieren"
+    </div>
+  </div>
+</div>
+
+<!-- QUANTIFIED PAINS -->
+<h2>🔴 Quantifizierte Pains</h2>
+
+<div class="card pain">
+  <h3>Pain #1: Email-Overload</h3>
+  <span class="tag critical">CRITICAL</span> <span class="tag validated">VALIDATED</span>
+  <div style="margin: 0.8rem 0;">
+    <span class="metric"><span class="num">250-300</span><span class="label">Emails/Tag</span></span>
+    <span class="metric"><span class="num">~100</span><span class="label">müssen beantwortet werden</span></span>
+    <span class="metric"><span class="num">500-600</span><span class="label">Backlog nach 2 Tagen Abwesenheit</span></span>
+  </div>
+  <div class="quote">
+    <span class="speaker">Alex:</span> "Jede einzelne E-Mail ist eigentlich eine Info zu einem Projekt oder eine Aufgabe. Und wenn ich dann ein, zwei Tage nicht im Büro bin, habe ich direkt ein Delay — erstmal den ganzen Tag nacharbeiten."
+  </div>
+  <div class="quote">
+    <span class="speaker">Alex:</span> "Diese isolierten Outlook-Boxen — das ist so ein Pain. Wenn einmal vergessen wurde, jemanden CC zu setzen und du hast eine wichtige E-Mail oder eine Anfrage — ich weiß es aber nicht."
+  </div>
+  <p><strong>Root Cause:</strong> Jede Email ist isoliert in persönlichen Outlook-Inboxen. Kein Projekt-Kontext, keine Priorisierung, kein Team-Überblick. Alex ist der Bottleneck für 1/3 aller Emails.</p>
+</div>
+
+<div class="card pain">
+  <h3>Pain #2: Repetitive Projekt-Einrichtung</h3>
+  <span class="tag critical">CRITICAL</span> <span class="tag validated">VALIDATED</span>
+  <div style="margin: 0.8rem 0;">
+    <span class="metric"><span class="num">5-6</span><span class="label">Std/Woche Nachfragen</span></span>
+    <span class="metric"><span class="num">2+</span><span class="label">Std pro Kunden-Erstgespräch</span></span>
+    <span class="metric"><span class="num">80%</span><span class="label">Aufträge abgelehnt (keine Kapazität)</span></span>
+  </div>
+  <div class="quote">
+    <span class="speaker">Alex:</span> "Nutzungsänderung — da müsste die KI schon zugreifen und eigentlich gibt es dann sechs Aufgaben. Bestand aufnehmen, Pläne zeichnen, mit Kunden abstimmen, an Bauamt schicken. Das wird jedes Mal neu erklärt, neu geschrieben."
+  </div>
+  <div class="quote">
+    <span class="speaker">Alex:</span> "Wenn man es vor drei Monaten zum letzten Mal gemacht hat, hat man es schon wieder vergessen, mit wem man da kommuniziert hat, was da wichtig war."
+  </div>
+  <p><strong>Root Cause:</strong> Standardprozesse (Bauantrag, Nutzungsänderung, etc.) sind klar definiert, werden aber jedes Mal manuell aufgesetzt und erklärt. Wissen lebt in Alex' Kopf, nicht im System.</p>
+</div>
+
+<div class="card pain">
+  <h3>Pain #3: Plan-Versioning & Informationsasymmetrie</h3>
+  <span class="tag high">HIGH</span> <span class="tag validated">VALIDATED</span>
+  <div class="quote">
+    <span class="speaker">Alex:</span> "Der Elektriker hat vor zwei Monaten kommuniziert, der hat die aktuellen DWG-Pläne nicht, aber dafür schon der Trockenbauer, aber die Elektroplanung passt nicht in den Trockenbau, weil der Plan stand. Da ist eine Zeitdifferenz von zwei, drei Wochen."
+  </div>
+  <p><strong>Root Cause:</strong> Pläne leben in Dropbox-Ordnern. Kein Push-Mechanismus, kein automatischer Plansatz-Versand an Beteiligte. Architekten verbringen die meiste Zeit damit, "falsche Pläne zu korrigieren".</p>
+</div>
+
+<div class="card pain">
+  <h3>Pain #4: Kunden-Onboarding & Kommunikation</h3>
+  <span class="tag medium">MEDIUM</span> <span class="tag validated">VALIDATED</span>
+  <div class="quote">
+    <span class="speaker">Alex:</span> "Ich sitze mit jedem Kunden mindestens zwei Stunden, erkläre, wie funktioniert ein Bauvorhaben. Was ist Leistungsphase? Was ist Grundlagenermittlung? Das ist jedes Gespräch komplett von vorne."
+  </div>
+  <p><strong>Wunsch:</strong> Kunde loggt sich ein, füllt Fragebogen aus, bevor er ins Büro kommt. "Dann haben wir schon eine komplette Checkliste und kriegen perfektes Angebot."</p>
+</div>
+
+<!-- FEATURE SPECS -->
+<h2 class="prd-section">🚀 Feature #1: Inbox Agent (Email-Triage)</h2>
+
+<div class="card feature">
+  <span class="tag feature">CORE FEATURE</span> <span class="tag critical">P0</span>
+  
+  <h3>Problem Statement</h3>
+  <p>Alex bekommt 250-300 Emails/Tag. Jede Email ist eine Projekt-Info oder Aufgabe, aber isoliert in Outlook. Es gibt keine automatische Zuordnung zu Projekten, keine Priorisierung, und wenn jemand vergisst CC zu setzen, geht Information verloren. Nach 2 Tagen Abwesenheit: 500-600 Emails Backlog.</p>
+
+  <h3>Lösung</h3>
+  <p>KI-Agent der Emails liest, zu Projekten zuordnet, zusammenfasst, und 1-Click Tasks generiert. Alex sieht morgens nicht 300 Emails sondern 10-15 projektrelevante, vorverdaute Items.</p>
+
+  <h3>User Flow</h3>
+  <div class="flow">
+    <div class="step">📧 Email kommt rein</div>
+    <div class="arrow">→</div>
+    <div class="step">🤖 Agent liest & klassifiziert</div>
+    <div class="arrow">→</div>
+    <div class="step">📁 Projekt-Zuordnung</div>
+    <div class="arrow">→</div>
+    <div class="step">📝 Summary + Task-Vorschlag</div>
+    <div class="arrow">→</div>
+    <div class="step">✅ 1-Click Task erstellen</div>
+  </div>
+
+  <h3>Acceptance Criteria</h3>
+  <div class="ac">
+    <ul>
+      <li>Email-Provider anbinden (Gmail MVP, M365 Produktion) via OAuth read-only</li>
+      <li>Emails automatisch Projekten zuordnen (Absender-Map + Betreff-Keywords)</li>
+      <li>KI-Summary pro Email (1-2 Sätze, deutsch)</li>
+      <li>Task-Vorschlag extrahieren (Titel, Assignee, Deadline, Priorität)</li>
+      <li>1-Click "Task erstellen" → Task landet im richtigen Projekt</li>
+      <li>"Ignorieren" → Email wird nicht mehr angezeigt</li>
+      <li>Transparenz-Log: "47 Emails gesehen, 12 analysiert, 35 ignoriert"</li>
+      <li>Kein Email-Body gespeichert — nur Summary + Metadaten (DSGVO)</li>
+      <li>Jederzeit trennbar (OAuth revoke)</li>
+    </ul>
+  </div>
+
+  <h3>Alex-spezifische Anforderungen</h3>
+  <ul>
+    <li>Team-Emails: Nicht nur Alex — alle Teammitglieder können Emails forwarden</li>
+    <li>Antwortvorschläge: "Auch schon Antwortvorschläge generieren" (Alex bestätigte Interesse)</li>
+    <li>Eskalation: Unbeantwortete Emails nach X Tagen hochstufen</li>
+    <li>Wochenrückblick: Freitag 16:00 — "12 Emails → 8 Tasks → 5 erledigt → 3 offen"</li>
+  </ul>
+
+  <h3>Tech-Architektur</h3>
+  <table>
+    <tr><th>Komponente</th><th>Lösung</th></tr>
+    <tr><td>Email-API</td><td>Gmail API (MVP) / Microsoft Graph (Prod)</td></tr>
+    <tr><td>Auth</td><td>OAuth2 read-only (gmail.readonly / Mail.Read)</td></tr>
+    <tr><td>Backend</td><td>Supabase Edge Function "inbox-agent" (Cron alle 5 Min)</td></tr>
+    <tr><td>LLM</td><td>Gemini 2.5 Flash (Summary + Task-Extraktion)</td></tr>
+    <tr><td>DB</td><td>inbox_connections, inbox_items, inbox_sender_map</td></tr>
+    <tr><td>Frontend</td><td>Inbox-View mit Cards + 1-Click Actions</td></tr>
+  </table>
+</div>
+
+<!-- FEATURE 2 -->
+<h2>🚀 Feature #2: Checklisten-Automatisierung (Projekt-Kickstart)</h2>
+
+<div class="card feature">
+  <span class="tag feature">CORE FEATURE</span> <span class="tag critical">P0</span>
+  
+  <h3>Problem Statement</h3>
+  <p>Jedes neue Projekt (Neubau, Nutzungsänderung, Sanierung, etc.) hat die gleichen Standardschritte. Alex erklärt sie jedes Mal neu, Mitarbeiter vergessen sie nach 3 Monaten Pause. Es gibt keine Templates, kein institutionelles Wissen im System. 80% der Anfragen werden abgelehnt — nicht wegen fehlendem Können, sondern fehlender Kapazität durch repetitive Prozesse.</p>
+
+  <h3>Lösung</h3>
+  <p>Projekttyp auswählen → System generiert automatisch alle Standard-Tasks mit Checklisten, weist zu, setzt Deadlines. Bauherr bekommt seine Todos automatisch. Kein manuelles Erklären, kein Vergessen.</p>
+
+  <h3>User Flow — Intern (Architekt)</h3>
+  <div class="flow">
+    <div class="step">📋 Neues Projekt anlegen</div>
+    <div class="arrow">→</div>
+    <div class="step">🏗️ Projekttyp wählen (Neubau/Sanierung/...)</div>
+    <div class="arrow">→</div>
+    <div class="step">⚡ System generiert Tasks + Checkliste</div>
+    <div class="arrow">→</div>
+    <div class="step">👤 Tasks zuweisen + Deadlines</div>
+    <div class="arrow">→</div>
+    <div class="step">✅ Team arbeitet Checkliste ab</div>
+  </div>
+
+  <h3>User Flow — Extern (Bauherr)</h3>
+  <div class="flow">
+    <div class="step">✍️ Angebot unterschrieben</div>
+    <div class="arrow">→</div>
+    <div class="step">📧 Bauherr bekommt Login</div>
+    <div class="arrow">→</div>
+    <div class="step">📝 Checkliste mit ersten Todos</div>
+    <div class="arrow">→</div>
+    <div class="step">✅ Bauherr arbeitet ab (vor Ersttermin)</div>
+    <div class="arrow">→</div>
+    <div class="step">📊 Architekt sieht Fortschritt</div>
+  </div>
+
+  <h3>Acceptance Criteria</h3>
+  <div class="ac">
+    <ul>
+      <li>Projekttyp-Templates definierbar (Neubau, Nutzungsänderung, Sanierung, Umbau, Gewerbe)</li>
+      <li>Jedes Template hat Standard-Tasks mit: Titel, Beschreibung, Checkliste, Default-Deadline (relativ), Default-Assignee-Rolle</li>
+      <li>Bei Projekt-Erstellung: Template auswählen → Tasks werden automatisch generiert</li>
+      <li>Bauherren-Checkliste: Subset der Tasks markiert als "Bauherr-relevant"</li>
+      <li>Bauherr bekommt Email mit Login-Link + seine Checkliste</li>
+      <li>Fortschritts-Tracking: Welche Items hat der Bauherr erledigt? (Sichtbar für Architekt)</li>
+      <li>Admin kann Templates verwalten (CRUD)</li>
+      <li>Info-Buttons an Tasks: "Was ist eine Genehmigungsplanung?" → Erklärungs-Popup (Wiki-light)</li>
+    </ul>
+  </div>
+
+  <h3>Alex' konkretes Beispiel: Nutzungsänderung</h3>
+  <table>
+    <tr><th>#</th><th>Task</th><th>Wer</th><th>Deadline</th></tr>
+    <tr><td>1</td><td>Bestand aufnehmen</td><td>Bauzeichner</td><td>+3 Tage</td></tr>
+    <tr><td>2</td><td>Pläne zeichnen</td><td>Bauzeichner</td><td>+7 Tage</td></tr>
+    <tr><td>3</td><td>Pläne mit Kunden abstimmen</td><td>Projektleiter</td><td>+10 Tage</td></tr>
+    <tr><td>4</td><td>Antragsformular ausfüllen</td><td>Projektleiter</td><td>+12 Tage</td></tr>
+    <tr><td>5</td><td>An Bauamt schicken</td><td>Projektleiter</td><td>+14 Tage</td></tr>
+    <tr><td>6</td><td>Nachforderungen bearbeiten</td><td>Projektleiter</td><td>nach Bedarf</td></tr>
+  </table>
+
+  <h3>Bauherren-Checkliste (extern)</h3>
+  <table>
+    <tr><th>#</th><th>Todo für Bauherr</th><th>Info</th></tr>
+    <tr><td>1</td><td>Lageplan besorgen</td><td>ℹ️ Was ist ein Lageplan?</td></tr>
+    <tr><td>2</td><td>Grundbuchauszug bereitstellen</td><td>ℹ️ Wo beantragen?</td></tr>
+    <tr><td>3</td><td>Bebauungsplan prüfen</td><td>ℹ️ Was steht da drin?</td></tr>
+    <tr><td>4</td><td>Strom-/Wasser-/Kanalanschluss klären</td><td>ℹ️ Versorger kontaktieren</td></tr>
+    <tr><td>5</td><td>Fragebogen ausfüllen (Wünsche, Budget, Zeitrahmen)</td><td>—</td></tr>
+  </table>
+
+  <h3>Datenmodell</h3>
+  <table>
+    <tr><th>Tabelle</th><th>Felder</th></tr>
+    <tr><td>project_templates</td><td>id, tenant_id, name, project_type, description, is_active</td></tr>
+    <tr><td>template_tasks</td><td>id, template_id, title, description, checklist (jsonb), default_deadline_days, assignee_role, is_client_visible, sort_order, info_text</td></tr>
+    <tr><td>template_client_todos</td><td>id, template_id, title, description, info_text, sort_order</td></tr>
+  </table>
+</div>
+
+<!-- OPPORTUNITIES -->
+<h2>💡 Weitere Opportunities (aus dem Call)</h2>
+
+<div class="grid2">
+  <div class="card opportunity">
+    <h3>Kundenportal</h3>
+    <span class="tag new">PHASE 2</span>
+    <p>Gebranded, mit Leserechten auf Pläne, Rechnungen, Fortschritt. Alex: "Nicht für alle Kunden — aber für die mit 3-4 parallelen Projekten."</p>
+    <p><strong>Bereits vorhanden:</strong> Kunde-Rolle existiert in ModulAI, Portal-Funktion ist gebaut aber deaktiviert.</p>
+  </div>
+  <div class="card opportunity">
+    <h3>Plan-Versionierung</h3>
+    <span class="tag new">PHASE 2</span>
+    <p>Automatischer Plansatz-Versand an Beteiligte. Push statt Pull. "Wer hat welchen Planstand?" auf einen Blick.</p>
+  </div>
+  <div class="card opportunity">
+    <h3>Hausverwaltung (Eduard + SPK_4)</h3>
+    <span class="tag new">NEUES VERTICAL</span>
+    <p>Vermietungsprozesse automatisieren. Kündigung → Neuvermietung → Onboarding. Komplett anderer Use Case, aber gleiche Plattform-Architektur möglich.</p>
+    <div class="quote"><span class="speaker">SPK_4:</span> "Wir haben auch noch ein anderes Produkt für eine andere Firma — Hausverwaltung, Vermietungsprozesse. Da würden wir auch investieren."</div>
+  </div>
+  <div class="card opportunity">
+    <h3>Fragebogen vor Ersttermin</h3>
+    <span class="tag new">QUICK WIN</span>
+    <p>Kunde füllt online Fragebogen aus bevor er ins Büro kommt. Alex spart 2h pro Erstgespräch. Einfach umsetzbar als Teil des Checklisten-Features.</p>
+  </div>
+</div>
+
+<!-- COMPETITIVE -->
+<h2>⚔️ Wettbewerbslandschaft (Alex' aktuelle Tools)</h2>
+<table>
+  <tr><th>Tool</th><th>Zweck</th><th>Problem</th><th>ModulAI ersetzt?</th></tr>
+  <tr><td>Microsoft Planner</td><td>Task-Management</td><td>"Nicht so geil designt" wie Asana</td><td>✅ Ja</td></tr>
+  <tr><td>Asana</td><td>Projekt-Management</td><td>Eingeschlafen — nur PL nutzten es</td><td>✅ Ja (einfacher)</td></tr>
+  <tr><td>Dropbox</td><td>Dateiablage</td><td>Kein Push, kein Versioning</td><td>⚠️ Teilweise (Docs-Modul)</td></tr>
+  <tr><td>Miro</td><td>Design-Kollaboration</td><td>800 Boards, Link-Chaos</td><td>🔄 Integration (iFrame)</td></tr>
+  <tr><td>Outlook/M365</td><td>Email</td><td>Isolierte Inboxen, kein Projekt-Kontext</td><td>✅ Ja (Inbox Agent)</td></tr>
+  <tr><td>Vectorworks</td><td>CAD/Planerstellung</td><td>Nicht ersetzbar</td><td>❌ Nein</td></tr>
+</table>
+
+<!-- KEY QUOTES -->
+<h2>💬 Key Quotes für Sales-Material</h2>
+<div class="card">
+  <div class="quote"><span class="speaker">Alex:</span> "Wir könnten locker 20 sein. Aber ich schaffe es einfach nicht von der Zeit her."</div>
+  <div class="quote"><span class="speaker">Alex:</span> "Wenn die KI sagt, das sind bitte die zehn Pläne — dann kann das auch jeder Bauzeichner machen. Da brauchst du keinen Architekten mehr."</div>
+  <div class="quote"><span class="speaker">Alex:</span> "Dann könnte ich auch viel mehr Projekte machen, weil wir sagen jetzt 80 Prozent ab."</div>
+  <div class="quote"><span class="speaker">Eduard:</span> "Entweder du nutzt die Technologie und überlebst, oder du wirst irgendwann zwangsläufig SAP mit einem Wasserkopf und schmierst ab."</div>
+  <div class="quote"><span class="speaker">Alex:</span> "Wenn du jetzt nicht auf diesen Zug springst, dann fährt er halt ab."</div>
+</div>
+
+<p style="text-align:center; color:#aaa; margin-top:2rem; font-size:0.75rem;">Erstellt am 4. März 2026 · Hatti 🏔️ · Quelle: Discovery Call Transkript</p>
+</body>
+</html>

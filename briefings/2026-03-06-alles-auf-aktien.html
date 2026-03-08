@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alles auf Aktien - 6. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .date {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+        
+        .markets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .market-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .market-item.positive {
+            border-left-color: #27ae60;
+        }
+        
+        .market-name {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .market-value {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #e74c3c;
+        }
+        
+        .market-value.positive {
+            color: #27ae60;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #ff6b6b;
+        }
+        
+        .topics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .topic {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-top: 4px solid #667eea;
+        }
+        
+        .topic h3 {
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+        
+        .topic p {
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .youtube-link {
+            background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin: 20px 0;
+            transition: transform 0.2s;
+        }
+        
+        .youtube-link:hover {
+            transform: translateY(-2px);
+            text-decoration: none;
+            color: white;
+        }
+        
+        .tldr {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .tldr h3 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .tldr ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .tldr li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .tldr li:before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #fff;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .markets {
+                grid-template-columns: 1fr;
+            }
+            
+            .topics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎙️ Alles auf Aktien</h1>
+            <div class="date">Freitag, 6. März 2026</div>
+            <div style="margin-top: 15px; opacity: 0.9;">
+                "Lockdown fürs Gold und Apples neue Billig-Wette"
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2>📈 Märkte im Überblick</h2>
+                <div class="markets">
+                    <div class="market-item">
+                        <div class="market-name">DAX</div>
+                        <div class="market-value">-1,6% (23.815 Punkte)</div>
+                    </div>
+                    <div class="market-item">
+                        <div class="market-name">MDAX</div>
+                        <div class="market-value">-2,2%</div>
+                    </div>
+                    <div class="market-item">
+                        <div class="market-name">Dow Jones</div>
+                        <div class="market-value">-1,6%</div>
+                    </div>
+                    <div class="market-item">
+                        <div class="market-name">S&P 500</div>
+                        <div class="market-value">-0,6%</div>
+                    </div>
+                    <div class="market-item">
+                        <div class="market-name">Brent Öl</div>
+                        <div class="market-value positive">+5% (85,53 €)</div>
+                    </div>
+                    <div class="market-item">
+                        <div class="market-name">WTI Öl</div>
+                        <div class="market-value positive">+8,3% (80,83 €)</div>
+                    </div>
+                </div>
+                <p><strong>Hauptauslöser:</strong> Anhaltende Spannungen im Nahost-Konflikt belasten die Märkte. Iran griff erneut Israel und US-Militärstützpunkte an.</p>
+            </div>
+
+            <div class="highlight">
+                <h2>🏅 Thema des Tages: Gold-Lockdown durch Nahost-Krise</h2>
+                <p><strong>Dubai als Gold-Hub bedroht:</strong> Der anhaltende Nahost-Konflikt legt Dubai als wichtigsten Transitpunkt für 20% der globalen Goldströme lahm. Wenn Flieger am Boden bleiben, kann auch kein Edelmetall bewegt werden.</p>
+                
+                <p><strong>Auswirkungen:</strong></p>
+                <ul style="margin: 10px 0 0 20px;">
+                    <li>Regionale Goldpreise entkoppeln sich vom Weltmarkt</li>
+                    <li>In Saudi-Arabien und Indien steigen die Notierungen bereits deutlich</li>
+                    <li>Volatilität nimmt zu - physische Engpässe wie "Sand im Getriebe"</li>
+                    <li>Deutsche Edelmetallhändler: 8% Spread zwischen Kauf- und Verkaufspreis</li>
+                </ul>
+                
+                <p><strong>Investment-Tipp:</strong> ETFs mit Goldminen-Aktien profitieren (VanEck Gold Miners, VanEck Junior Gold Miners)</p>
+            </div>
+
+            <div class="section">
+                <h2>🚀 Triple-A Idee: Apples clevere Billigstrategie</h2>
+                <p><strong>Paradox:</strong> Während Speicherchips historische Höhen erreichen, fährt Apple eine aggressive Preispolitik.</p>
+                
+                <div class="topics">
+                    <div class="topic">
+                        <h3>📱 iPhone 17E</h3>
+                        <p>Startpreis: 699€ (unverändert zum Vorgänger), aber doppelt so viel Speicher. Zielt auf chinesischen Mittelklasse-Markt.</p>
+                    </div>
+                    <div class="topic">
+                        <h3>💻 MacBook Neo</h3>
+                        <p>Apples bisher günstigstes Laptop für 699€. Greift Chromebook-Markt im Bildungsbereich an.</p>
+                    </div>
+                    <div class="topic">
+                        <h3>🎯 Strategie</h3>
+                        <p>Kreuzsubventionierung: Niedrigere Margen bei Einstiegsgeräten, höhere Preise bei Pro-Modellen. Nutzt Marktmacht in schwierigen Zeiten.</p>
+                    </div>
+                </div>
+                
+                <p><strong>Kursziel Goldman Sachs:</strong> 330$ (aktuell: 258$, YTD: -2,6%)</p>
+            </div>
+
+            <div class="section">
+                <h2>📊 Weitere Markt-Highlights</h2>
+                
+                <div class="topics">
+                    <div class="topic">
+                        <h3>🔧 KI-Chip Regulierung</h3>
+                        <p>USA prüfen weltweite Exportkontrollen für KI-Chips. Nvidia und AMD unter Druck. Regierung wird zum Gatekeeper der globalen KI-Industrie.</p>
+                    </div>
+                    <div class="topic">
+                        <h3>📉 Deutsche Verlierer</h3>
+                        <p><strong>Merck:</strong> -8% (Gewinnrückgang erwartet)<br>
+                        <strong>RENK:</strong> -11,4% (trotz Rekordzahlen schwacher Ausblick)<br>
+                        <strong>DHL:</strong> Verhaltener Ausblick belastet</p>
+                    </div>
+                    <div class="topic">
+                        <h3>📈 Gewinner</h3>
+                        <p><strong>Berkshire Hathaway:</strong> +2,8% (CEO investiert Gehalt in eigene Aktien)<br>
+                        <strong>Adidas:</strong> +2,3%, <strong>Puma:</strong> +4,5%<br>
+                        <strong>Expedia:</strong> +13,7%, <strong>Booking:</strong> +8,5% (OpenAI zieht sich zurück)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tldr">
+                <h3>📝 TL;DR - Die wichtigsten Punkte</h3>
+                <ul>
+                    <li>Märkte leiden unter Nahost-Spannungen, Ölpreise explodieren</li>
+                    <li>Dubai-Gold-Lockdown: 20% der globalen Goldströme betroffen</li>
+                    <li>Apple nutzt Speicher-Krise für aggressive Billigstrategie (699€ iPhone & MacBook)</li>
+                    <li>USA verschärfen KI-Chip-Exportkontrollen weltweit</li>
+                    <li>Deutsche Konzerne enttäuschen, Sportartikelhersteller glänzen</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="https://www.youtube.com/watch?v=8fowR0gbysM" class="youtube-link" target="_blank">
+                    ▶ Vollständige Episode auf YouTube ansehen
+                </a>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px; color: #666; font-size: 0.9em;">
+                Erstellt mit ❤️ von Hatti • <a href="https://hartner.li/dashboard" style="color: #667eea;">Dashboard</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

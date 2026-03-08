@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hatti Self-Audit — 07. März 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: #f7f7f7; color: #222; line-height: 1.6; }
+  .header { background: #fff; border-bottom: 1px solid #ebebeb; padding: 2rem 2rem 1.5rem; }
+  .header h1 { font-size: 1.6rem; font-weight: 800; color: #111; margin-bottom: 0.3rem; }
+  .header .sub { font-size: 0.9rem; color: #888; }
+  .container { max-width: 860px; margin: 0 auto; padding: 2rem; }
+  .section { background: #fff; border-radius: 16px; padding: 1.8rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 6px 16px rgba(0,0,0,0.04); }
+  .section h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
+  .section h3 { font-size: 0.95rem; font-weight: 700; color: #333; margin: 1.2rem 0 0.5rem; }
+  .verdict { display: inline-block; padding: 0.2rem 0.7rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700; margin-left: 0.5rem; }
+  .red { background: #fde8e8; color: #b91c1c; }
+  .yellow { background: #fef3cd; color: #92400e; }
+  .green { background: #d1fae5; color: #065f46; }
+  .finding { border-left: 3px solid #ebebeb; padding: 0.6rem 1rem; margin: 0.6rem 0; font-size: 0.88rem; color: #444; }
+  .finding.crit { border-color: #ef4444; background: #fef2f2; }
+  .finding.warn { border-color: #f59e0b; background: #fffbeb; }
+  .finding.ok { border-color: #10b981; background: #f0fdf4; }
+  .finding strong { display: block; font-size: 0.82rem; color: #666; font-weight: 600; margin-bottom: 0.2rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 0.8rem; }
+  th { background: #f9f9f9; padding: 0.5rem 0.8rem; text-align: left; font-size: 0.78rem; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #ebebeb; }
+  td { padding: 0.5rem 0.8rem; border-bottom: 1px solid #f5f5f5; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .tag { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 6px; font-size: 0.72rem; font-weight: 600; }
+  .score-bar { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; }
+  .score-label { font-size: 0.85rem; color: #666; min-width: 160px; }
+  .score-track { flex: 1; background: #ebebeb; border-radius: 8px; height: 8px; }
+  .score-fill { height: 8px; border-radius: 8px; }
+  .score-val { font-size: 0.85rem; font-weight: 700; min-width: 40px; text-align: right; }
+  .proposal { background: #f0f7ff; border-radius: 12px; padding: 1rem 1.2rem; margin: 0.6rem 0; font-size: 0.88rem; }
+  .proposal h4 { font-weight: 700; color: #1565c0; margin-bottom: 0.4rem; font-size: 0.88rem; }
+  ul { padding-left: 1.2rem; }
+  li { margin-bottom: 0.3rem; font-size: 0.88rem; }
+  code { font-family: 'SF Mono', monospace; background: #f3f4f6; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.82rem; }
+  .footer { text-align: center; font-size: 0.78rem; color: #bbb; padding: 2rem 0 1rem; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔍 Hatti Self-Audit</h1>
+  <div class="sub">Erstellt: 07. März 2026 · Auftraggeber: Daniel · Ehrlichkeitsgrad: hoch</div>
+</div>
+
+<div class="container">
+
+  <!-- Gesamturteil -->
+  <div class="section">
+    <h2>📊 Gesamtbewertung</h2>
+    <div class="score-bar">
+      <span class="score-label">Memory-Qualität</span>
+      <div class="score-track"><div class="score-fill" style="width:35%;background:#ef4444;"></div></div>
+      <span class="score-val" style="color:#ef4444;">3.5/10</span>
+    </div>
+    <div class="score-bar">
+      <span class="score-label">Task-Sauberkeit</span>
+      <div class="score-track"><div class="score-fill" style="width:55%;background:#f59e0b;"></div></div>
+      <span class="score-val" style="color:#f59e0b;">5.5/10</span>
+    </div>
+    <div class="score-bar">
+      <span class="score-label">Cron/Infra-Hygiene</span>
+      <div class="score-track"><div class="score-fill" style="width:50%;background:#f59e0b;"></div></div>
+      <span class="score-val" style="color:#f59e0b;">5/10</span>
+    </div>
+    <div class="score-bar">
+      <span class="score-label">Fehler-Transparenz</span>
+      <div class="score-track"><div class="score-fill" style="width:65%;background:#f59e0b;"></div></div>
+      <span class="score-val" style="color:#f59e0b;">6.5/10</span>
+    </div>
+    <div class="score-bar">
+      <span class="score-label">Architektur-Kohärenz</span>
+      <div class="score-track"><div class="score-fill" style="width:40%;background:#ef4444;"></div></div>
+      <span class="score-val" style="color:#ef4444;">4/10</span>
+    </div>
+    <p style="margin-top:1rem;font-size:0.88rem;color:#555;background:#f9f9f9;padding:0.8rem;border-radius:10px;">
+      <strong>Fazit:</strong> Solide bei der Ausführung einzelner Tasks, aber strukturell chaotisch. Memory ist in vielen Bereichen veraltet, widersprüchlich oder doppelt. Ich vergesse systematisch Dinge, weil kein zuverlässiger Mechanismus existiert, der Entscheidungen aus Chat-Sessions in operative Systeme (Crons, Tools) propagiert. Daniel muss zu oft nachkorrigieren.
+    </p>
+  </div>
+
+  <!-- Heutige Fehler -->
+  <div class="section">
+    <h2>🚨 Heutige Fehler — Konkretes Beispiel <span class="verdict red">kritisch</span></h2>
+
+    <h3>1. Falsche Fehlerdiagnose: gog vs. Timeout</h3>
+    <div class="finding crit">
+      <strong>Was passiert ist:</strong>
+      Ich habe "gog braucht Keyring-Passwort" gemeldet. Der echte Fehler war ein Timeout (120s). gog ist seit Wochen durch gws ersetzt — ich hätte das wissen müssen.
+    </div>
+    <div class="finding warn">
+      <strong>Root Cause:</strong>
+      Ich habe die tatsächliche Cron-Fehlermeldung nicht gelesen, sondern eine plausible Erklärung halluziniert. Sauber wäre gewesen: lastError lesen, dann antworten.
+    </div>
+
+    <h3>2. Briefings auf falschem Board</h3>
+    <div class="finding crit">
+      <strong>Was passiert ist:</strong>
+      Alle Cron-Telegram-Pings verlinkten auf <code>danielmehlhart-bit.github.io/dashboard/</code> statt <code>mc.mehlhart.de</code>. Mission Control wurde am 05.-06. März eingerichtet — ich hätte die Crons direkt damals updaten müssen.
+    </div>
+    <div class="finding warn">
+      <strong>Root Cause:</strong>
+      Es gibt keinen Mechanismus, der "neue Entscheidung in MEMORY.md" → "propagiere in betroffene Crons" bridged. Jede Entscheidung ist ein Silo.
+    </div>
+
+    <h3>3. Sub-Agent modifiziert AGENTS.md</h3>
+    <div class="finding crit">
+      <strong>Was passiert ist:</strong>
+      Ein Sub-Agent (mc-deploy Workflow) hat AGENTS.md eigenständig editiert. Core-Files sind Read-Only-Policy — diese Guardrail existiert zwar in AGENTS.md, aber Sub-Agents ignorieren sie.
+    </div>
+    <div class="finding warn">
+      <strong>Root Cause:</strong>
+      Sub-Agent-Prompts haben keinen expliziten "Du darfst AGENTS.md nicht editieren"-Hinweis. Nur implizite Policy.
+    </div>
+
+    <h3>4. OAuth-Chaos bei Gmail Draft</h3>
+    <div class="finding warn">
+      <strong>Was passiert ist:</strong>
+      5 Iterationen für einen Gmail Draft: falscher Scope → falsche Client-Type → 400 → 400 → endlich Desktop-App. 
+    </div>
+    <div class="finding ok">
+      <strong>Was gut war:</strong>
+      Ich habe das Problem strukturiert debuggt. Ergebnis: gws hat jetzt Write-Scope. Einmaliger Aufwand mit dauerhaftem Nutzen.
+    </div>
+  </div>
+
+  <!-- Memory-Struktur Audit -->
+  <div class="section">
+    <h2>🧠 Memory-Struktur Audit</h2>
+
+    <table>
+      <tr>
+        <th>Datei</th>
+        <th>Status</th>
+        <th>Problem</th>
+      </tr>
+      <tr>
+        <td><code>MEMORY.md</code></td>
+        <td><span class="tag" style="background:#fef3cd;color:#92400e;">Veraltet+Blähung</span></td>
+        <td>240 Zeilen, wächst ungebremst. Cron-Liste weicht von echten Crons ab. "Dashboard URL" stand wochenlang falsch drin. Projektstatus (HAM, BPP) hinkt der Realität hinterher.</td>
+      </tr>
+      <tr>
+        <td><code>memory/openclaw-setup.md</code></td>
+        <td><span class="tag red">Obsolet</span></td>
+        <td>Bot-Name falsch (<code>@hatti_berg_bot</code> statt <code>@Hatti_taunus_bot</code>). Alte Cron-Liste (X/Twitter Digest, Tagesschau 6:32). Main-Session-Modell falsch (Opus, nicht Sonnet). Nie geupdated.</td>
+      </tr>
+      <tr>
+        <td><code>memory/backlog.md</code></td>
+        <td><span class="tag red">Obsolet</span></td>
+        <td>"Aktiv diese Woche" enthält Tasks von Feb 15. Strava API als offen gelistet — ist seit Wochen erledigt. Nie maintained.</td>
+      </tr>
+      <tr>
+        <td><code>memory/decisions.md</code></td>
+        <td><span class="tag" style="background:#fef3cd;color:#92400e;">Lückenhaft</span></td>
+        <td>Letzter Eintrag: 15.02. Seitdem: gws-Switch, mc-deploy, OAuth-Desktop-Client, Mission Control — alle Decisions fehlen.</td>
+      </tr>
+      <tr>
+        <td><code>memory/lessons-learned.md</code></td>
+        <td><span class="tag" style="background:#fef3cd;color:#92400e;">Lückenhaft</span></td>
+        <td>Letzter Eintrag: 15.02. Alle Learnings aus März fehlen (gws OAuth, Cron-Timeout-Diagnostik, Sub-Agent-Core-File-Problem).</td>
+      </tr>
+      <tr>
+        <td><code>memory/YYYY-MM-DD.md</code> (Daily)</td>
+        <td><span class="tag" style="background:#fef3cd;color:#92400e;">Inkonsistent</span></td>
+        <td>Naming-Chaos: Manche Tage haben 5+ Dateien (2026-03-05.md, 2026-03-05-1449.md, 2026-03-05-codex-strategy.md …). Manche Tage haben 1 Mini-Datei (2026-03-01.md = 8 Zeilen). Kein Standard.</td>
+      </tr>
+      <tr>
+        <td>Workspace Root (~70 .md)</td>
+        <td><span class="tag red">Chaos</span></td>
+        <td>weber-claude-build.md (1579 Zeilen, Feb 14), deal-copilot-p0-fixes.md, architekt-connect-finance-module-*.md — alle veraltet, im Root statt archiviert.</td>
+      </tr>
+      <tr>
+        <td><code>ACTIVE-TASK.md</code></td>
+        <td><span class="tag" style="background:#fef3cd;color:#92400e;">Nie aufgeräumt</span></td>
+        <td>Existiert noch aus Feb 20 — der Task ist längst erledigt. Pattern funktioniert nicht wenn Sub-Agents die Datei nicht löschen.</td>
+      </tr>
+    </table>
+
+    <h3>Überlappungen — Was doppelt existiert</h3>
+    <div class="finding crit">
+      <strong>MEMORY.md ↔ memory/openclaw-setup.md</strong>
+      Setup-Info (Pi-IP, Bot-Name, Kanäle, Crons) steht in beiden — aber in unterschiedlichen Versionsständen. Einer lügt immer.
+    </div>
+    <div class="finding crit">
+      <strong>MEMORY.md ↔ Cron-Jobs</strong>
+      MEMORY.md enthält eine Cron-Liste. Die echten Crons stehen im Gateway. Beide driften auseinander. Aktuell: 22 Crons real, ~12 in MEMORY.md beschrieben, davon mindestens 3 mit falschen Details.
+    </div>
+    <div class="finding warn">
+      <strong>memory/decisions.md ↔ MEMORY.md</strong>
+      Wichtige Decisions (Email-Policy, Sub-Agent-Modelle) stehen in MEMORY.md und hätten eigentlich in decisions.md — werden aber nur an einer Stelle maintained.
+    </div>
+    <div class="finding warn">
+      <strong>memory/lessons-learned.md ↔ SOUL.md + AGENTS.md</strong>
+      Manche Learnings landen als "Dos/Don'ts" in SOUL.md, andere in lessons-learned.md. Kein klares Prinzip wann was wohin kommt.
+    </div>
+  </div>
+
+  <!-- Systematische Schwächen -->
+  <div class="section">
+    <h2>⚠️ Systematische Schwächen</h2>
+
+    <h3>Schwäche 1: Entscheidungen propagieren nicht</h3>
+    <div class="finding crit">
+      Wenn Daniel sagt "Links auf MC statt GitHub Pages" → ich update MEMORY.md → fertig. Aber die 22 Cron-Jobs wissen nichts davon. Ich müsste aktiv durch alle Crons gehen und prüfen. Das passiert nicht. Ergebnis: Daniel korrigiert mich Wochen später.
+    </div>
+
+    <h3>Schwäche 2: Kein Session-Start-Ritual</h3>
+    <div class="finding warn">
+      AGENTS.md sagt "Lies MEMORY.md zuerst". Das tue ich. Aber MEMORY.md ist veraltet — also lese ich falsche Infos. Und selbst die richtigen Infos führe ich nicht gegen offene Systeme (Crons, Codebase) ab.
+    </div>
+
+    <h3>Schwäche 3: Sub-Agent-Outputs landen nirgendwo</h3>
+    <div class="finding warn">
+      Sub-Agents bauen, reviewen, deployen — aber was sie gelernt haben oder was sich geändert hat, landet nicht in meinem Memory. Ich starte jede Session mit Wissensstand von before-sub-agent.
+    </div>
+
+    <h3>Schwäche 4: Fehlende Diagnostik vor Reporting</h3>
+    <div class="finding warn">
+      Der gog-Fehler heute war symptomatisch: Ich habe eine plausibel klingende Diagnose geliefert, statt den tatsächlichen Fehlerstatus zu lesen. Sauber wäre: erst Daten, dann Meinung.
+    </div>
+
+    <h3>Schwäche 5: Workspace-Root-Entrümpelung findet nie statt</h3>
+    <div class="finding warn">
+      70+ Dateien im Workspace-Root, viele davon Feb-14-Artefakte. Kein Archiv-Ordner, keine Cleanup-Routine. Über Zeit wird die Orientierung schlechter.
+    </div>
+  </div>
+
+  <!-- Architektur-Vorschläge -->
+  <div class="section">
+    <h2>🏗️ Architektur-Vorschläge</h2>
+
+    <div class="proposal">
+      <h4>A — MEMORY.md in 3 spezifische Dateien aufspalten</h4>
+      <p>Statt einer 240-Zeilen-Datei die alles enthält:</p>
+      <ul>
+        <li><code>SETUP.md</code> — Pi, Bot, Kanäle, API-Keys, Credentials. Selten geändert, immer korrekt.</li>
+        <li><code>PROJECTS.md</code> — Aktive Projekte, Status, Repos, Ansprechpartner. Wöchentlich geupdated.</li>
+        <li><code>RULES.md</code> — Operationale Regeln (Email-Policy, Telegram-Format, Sub-Agent-Regeln). Unveränderliche Policies.</li>
+      </ul>
+      <p style="margin-top:0.5rem;color:#666;font-size:0.85rem;">MEMORY.md bleibt als persönliche Langzeit-Erinnerung (Daniels Charakter, Präferenzen) — aber nicht mehr als Operations-Manual.</p>
+    </div>
+
+    <div class="proposal">
+      <h4>B — Cron-Config-Check als Standardschritt</h4>
+      <p>Jedes Mal wenn ich eine systemweite Entscheidung treffe (neue URL, neues Format, neues Tool), direkt danach: <em>"Welche Crons sind davon betroffen?"</em> — und diese updaten. Nicht als optionaler Schritt, sondern als Pflicht-Abschluss jeder Systemänderung.</p>
+      <p style="margin-top:0.5rem;color:#666;font-size:0.85rem;">Konkret: Neues Protokoll nach Systemänderung → exec <code>cron list</code> → grep nach betroffenen Strings → update.</p>
+    </div>
+
+    <div class="proposal">
+      <h4>C — Daily Memory in 2-Layer-Struktur</h4>
+      <p>Statt N Dateien pro Tag:</p>
+      <ul>
+        <li><code>memory/YYYY-MM-DD.md</code> — Einzige Tages-Datei. Raw Log. Kein Threshold.</li>
+        <li><code>memory/changelog.md</code> — Nur Decisions, Systemänderungen, neue Erkenntnisse. Maschinenlesbar (Date | Category | Change).</li>
+      </ul>
+      <p style="margin-top:0.5rem;color:#666;font-size:0.85rem;">changelog.md ersetzt decisions.md + lessons-learned.md + den Decisions-Block aus MEMORY.md.</p>
+    </div>
+
+    <div class="proposal">
+      <h4>D — Workspace-Root Cleanup + Archiv</h4>
+      <ul>
+        <li>Ordner <code>workspace/archive/YYYY-MM/</code> anlegen</li>
+        <li>Alle Dateien älter als 30 Tage aus Root → archive/</li>
+        <li>Monatliche Cleanup-Routine (z.B. 1. des Monats via Cron)</li>
+        <li>Nur Live-Dateien im Root: *.md Configs, aktive Skills</li>
+      </ul>
+    </div>
+
+    <div class="proposal">
+      <h4>E — Sub-Agent-Guardrail hardcoden</h4>
+      <p>In jeden Sub-Agent-Prompt explizit rein: <em>"Du darfst NIEMALS folgende Dateien editieren: AGENTS.md, SOUL.md, MEMORY.md, SECURITY.md, USER.md. Nur Daniel darf diese Dateien ändern."</em></p>
+      <p style="margin-top:0.5rem;color:#666;font-size:0.85rem;">Skill-Templates (coding-agent, spawn-and-deliver) als erste Stelle — dort einbauen, dann automatisch in alle künftigen Spawns.</p>
+    </div>
+
+    <div class="proposal">
+      <h4>F — Diagnostik-First-Regel (für mich)</h4>
+      <p>Wenn ein System Fehler meldet: <em>Erst den tatsächlichen Fehlerstatus lesen, dann Diagnose stellen.</em> Nie eine Fehlermeldung erfinden weil sie "wahrscheinlich klingt".</p>
+      <p style="margin-top:0.5rem;color:#666;font-size:0.85rem;">Konkret: <code>cron runs &lt;jobId&gt;</code> → letzten Run-Output lesen → dann erst antworten.</p>
+    </div>
+  </div>
+
+  <!-- Sofortmaßnahmen -->
+  <div class="section">
+    <h2>✅ Sofortmaßnahmen (was ich jetzt tun kann)</h2>
+    <table>
+      <tr>
+        <th>Maßnahme</th>
+        <th>Aufwand</th>
+        <th>Impact</th>
+      </tr>
+      <tr>
+        <td>memory/openclaw-setup.md auf aktuellen Stand bringen</td>
+        <td><span class="tag green">15 Min</span></td>
+        <td><span class="tag" style="background:#dbeafe;color:#1e40af;">Hoch</span></td>
+      </tr>
+      <tr>
+        <td>memory/backlog.md archivieren / neu schreiben</td>
+        <td><span class="tag green">10 Min</span></td>
+        <td><span class="tag" style="background:#dbeafe;color:#1e40af;">Mittel</span></td>
+      </tr>
+      <tr>
+        <td>memory/decisions.md + lessons-learned.md mit März-Einträgen nachholen</td>
+        <td><span class="tag" style="background:#fef3cd;color:#92400e;">30 Min</span></td>
+        <td><span class="tag" style="background:#dbeafe;color:#1e40af;">Hoch</span></td>
+      </tr>
+      <tr>
+        <td>Workspace Root: Dateien älter 30 Tage → archive/</td>
+        <td><span class="tag" style="background:#fef3cd;color:#92400e;">20 Min</span></td>
+        <td><span class="tag" style="background:#dbeafe;color:#1e40af;">Mittel</span></td>
+      </tr>
+      <tr>
+        <td>ACTIVE-TASK.md löschen (Feb 20, längst erledigt)</td>
+        <td><span class="tag green">1 Min</span></td>
+        <td><span class="tag" style="background:#ebebeb;color:#666;">Gering</span></td>
+      </tr>
+      <tr>
+        <td>changelog.md als neues Entscheidungs-Log anlegen</td>
+        <td><span class="tag green">15 Min</span></td>
+        <td><span class="tag" style="background:#dbeafe;color:#1e40af;">Hoch</span></td>
+      </tr>
+      <tr>
+        <td>Sub-Agent-Guardrail in AGENTS.md ergänzen</td>
+        <td><span class="tag green">5 Min</span></td>
+        <td><span class="tag" style="background:#dbeafe;color:#1e40af;">Mittel</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Frage an Daniel -->
+  <div class="section" style="background:#f0f7ff;">
+    <h2>💬 Frage an Daniel</h2>
+    <p style="font-size:0.9rem;color:#333;">Willst du, dass ich die Sofortmaßnahmen direkt jetzt umsetze? Und: Soll ich mit der MEMORY.md-Aufteilung (Vorschlag A) starten, oder erstmal nur Cleanup + Aktualisierung der bestehenden Struktur?</p>
+    <p style="font-size:0.88rem;color:#666;margin-top:0.6rem;">Die Architektur-Änderungen (A–F) kosten je 30–60 Min — ich würde das lieber in einem Block machen als häppchenweise, damit die Struktur konsistent bleibt.</p>
+  </div>
+
+  <div class="footer">Hatti Self-Audit · 07. März 2026 · Erstellt von Hatti 🏔️</div>
+</div>
+</body>
+</html>

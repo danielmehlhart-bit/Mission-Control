@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research: AI Agent Setup Vergleich — Hatti für Daniel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      line-height: 1.65;
+      padding: 32px 16px 64px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .page-header {
+      background: #fff;
+      border-radius: 16px;
+      padding: 36px 40px 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      margin-bottom: 28px;
+    }
+    .page-header .label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: #FF385C;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .page-header .meta {
+      font-size: 14px;
+      color: #888;
+    }
+    .page-header .meta span {
+      margin-right: 20px;
+    }
+
+    /* Section cards */
+    .section-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px 36px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #FF385C;
+      margin-bottom: 6px;
+    }
+    .section-card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 20px;
+    }
+
+    /* Setup Grid */
+    .setup-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 4px;
+    }
+    @media (max-width: 640px) {
+      .setup-grid { grid-template-columns: 1fr; }
+    }
+    .setup-card {
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #eee;
+    }
+    .setup-card .setup-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .badge-basic { background: #e8f5e9; color: #2e7d32; }
+    .badge-inter { background: #fff3e0; color: #e65100; }
+    .badge-advanced { background: #f3e5f5; color: #6a1b9a; }
+
+    .setup-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 4px;
+    }
+    .setup-card .setup-creator {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 12px;
+    }
+    .setup-card ul {
+      list-style: none;
+      padding: 0;
+    }
+    .setup-card ul li {
+      font-size: 13.5px;
+      color: #444;
+      padding: 4px 0;
+      padding-left: 18px;
+      position: relative;
+    }
+    .setup-card ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #bbb;
+      font-size: 12px;
+    }
+    .setup-highlight {
+      margin-top: 12px;
+      background: #fff;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: #555;
+      border: 1px solid #eee;
+    }
+
+    /* Comparison Table */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .compare-table thead tr {
+      background: #f5f5f5;
+    }
+    .compare-table th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #666;
+      border-bottom: 2px solid #eee;
+    }
+    .compare-table th:first-child {
+      border-radius: 8px 0 0 0;
+    }
+    .compare-table th:last-child {
+      border-radius: 0 8px 0 0;
+    }
+    .compare-table td {
+      padding: 13px 16px;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: top;
+      color: #333;
+    }
+    .compare-table tr:last-child td {
+      border-bottom: none;
+    }
+    .compare-table tr:hover td {
+      background: #fafafa;
+    }
+    .compare-table td:first-child {
+      font-weight: 600;
+      color: #555;
+      white-space: nowrap;
+      width: 22%;
+    }
+    .compare-table td:nth-child(2) {
+      width: 39%;
+      color: #444;
+    }
+    .compare-table td:nth-child(3) {
+      width: 39%;
+      color: #444;
+    }
+    .col-header-video { color: #e65100; }
+    .col-header-hatti { color: #FF385C; }
+
+    /* Pro/Con Cards */
+    .procon-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 600px) {
+      .procon-grid { grid-template-columns: 1fr; }
+    }
+    .procon-card {
+      border-radius: 12px;
+      padding: 20px 22px;
+      border: 1px solid #eee;
+    }
+    .procon-card.specialist {
+      background: #fffbf0;
+      border-color: #ffe0b2;
+    }
+    .procon-card.generalist {
+      background: #fff8f8;
+      border-color: #ffcdd2;
+    }
+    .procon-card h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: #111;
+    }
+    .procon-list {
+      list-style: none;
+      padding: 0;
+    }
+    .procon-list li {
+      font-size: 13.5px;
+      color: #444;
+      padding: 5px 0;
+      padding-left: 22px;
+      position: relative;
+      line-height: 1.45;
+    }
+    .procon-list.pros li::before {
+      content: '✅';
+      position: absolute;
+      left: 0;
+      font-size: 12px;
+    }
+    .procon-list.cons li::before {
+      content: '⚠️';
+      position: absolute;
+      left: 0;
+      font-size: 12px;
+    }
+    .procon-divider {
+      height: 1px;
+      background: #eee;
+      margin: 12px 0;
+    }
+
+    /* Opinion Card */
+    .opinion-card {
+      background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+      border: 1px solid #ffdde0;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .opinion-card .opinion-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #FF385C;
+      margin-bottom: 8px;
+    }
+    .opinion-card p {
+      font-size: 14.5px;
+      color: #333;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+    .opinion-card p:last-child { margin-bottom: 0; }
+    .verdict-box {
+      background: #fff;
+      border: 1.5px solid #FF385C;
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-top: 16px;
+    }
+    .verdict-box p {
+      font-size: 14.5px;
+      color: #222;
+      font-weight: 500;
+    }
+
+    /* Recommendations */
+    .rec-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .rec-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 18px 20px;
+      border: 1px solid #eee;
+    }
+    .rec-number {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: #FF385C;
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+    .rec-content h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 4px;
+    }
+    .rec-content p {
+      font-size: 13.5px;
+      color: #555;
+      line-height: 1.55;
+    }
+
+    /* Trend Pills */
+    .trend-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .trend-pill {
+      background: #f3f3f3;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: #444;
+      font-weight: 500;
+      border: 1px solid #e5e5e5;
+    }
+
+    /* Divider */
+    .section-divider {
+      height: 1px;
+      background: #eee;
+      margin: 20px 0;
+    }
+
+    /* Footer */
+    .page-footer {
+      text-align: center;
+      font-size: 12px;
+      color: #bbb;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div class="label">Research Briefing · Hatti 🏔️</div>
+      <h1>AI Agent Setups: Spezialist-Modell vs. Generalist-Approach</h1>
+      <div class="meta">
+        <span>📅 6. März 2026</span>
+        <span>🎬 Quelle: OpenClaw Mission Control YouTube</span>
+        <span>🕐 ~5 Min Lektüre</span>
+      </div>
+    </div>
+
+    <!-- Section 1: Zusammenfassung -->
+    <div class="section-card">
+      <div class="section-title">Abschnitt 1</div>
+      <h2>🎬 Die 3 Setups im Video</h2>
+
+      <div class="setup-grid">
+        <!-- Setup 1 -->
+        <div class="setup-card">
+          <span class="setup-badge badge-basic">Basic</span>
+          <h3>Katherine's Setup</h3>
+          <div class="setup-creator">👤 Content Creator / Shop</div>
+          <ul>
+            <li>Chief of Staff als Haupt-Agent</li>
+            <li>4 Spezial-Agents: Analytics, Content, Shopify Dev, React</li>
+            <li>Mission Control UI mit Costs, Crons, Decisions</li>
+            <li>Delegation streng nach Fachgebiet</li>
+          </ul>
+          <div class="setup-highlight">🎯 Stärke: Klare Rollentrennung, überschaubar</div>
+        </div>
+
+        <!-- Setup 2 -->
+        <div class="setup-card">
+          <span class="setup-badge badge-inter">Intermediate</span>
+          <h3>Semi-viral Setup</h3>
+          <div class="setup-creator">👤 Produktized für $99/Monat</div>
+          <ul>
+            <li>Task-Board im Vordergrund statt Agent-Board</li>
+            <li>Agents nach Tasks gefiltert, nicht Skillset</li>
+            <li>Live Activity Feed: wer macht was jetzt</li>
+            <li>Fokus auf Transparenz und Tracking</li>
+          </ul>
+          <div class="setup-highlight">🎯 Stärke: Task-Sicht statt Agent-Sicht — cleverer Flip</div>
+        </div>
+
+        <!-- Setup 3 -->
+        <div class="setup-card">
+          <span class="setup-badge badge-advanced">Advanced</span>
+          <h3>Alex Finn's Setup</h3>
+          <div class="setup-creator">👤 Tech-Power-User</div>
+          <ul>
+            <li>Chief of Staff + viele Spezialisten</li>
+            <li>Cron-Job Calendar, Daily Memory Journal</li>
+            <li>"Office" Interface — welcher Agent ist aktiv</li>
+            <li>Task Board mit Agent-Zuweisung (H=Bot, A=User)</li>
+          </ul>
+          <div class="setup-highlight">🎯 Stärke: Maximale Granularität + Visualisierung</div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <p style="font-size: 14px; color: #555;">
+        <strong>Gemeinsamer Nenner aller drei:</strong> Ein Chief of Staff als Delegations-Gateway, viele kleine Spezialisten die eng fokussiert sind, und ein Dashboard das den Überblick sichert. Das Modell folgt dem Prinzip "Microservices für Agents" — jeder macht genau eine Sache gut.
+      </p>
+      <div class="trend-grid">
+        <span class="trend-pill">🧩 Chief of Staff als Koordinator</span>
+        <span class="trend-pill">🔬 Enge Spezialisierung</span>
+        <span class="trend-pill">📊 Mission Control Dashboard</span>
+        <span class="trend-pill">🔄 Agents delegieren, nicht selbst ausführen</span>
+        <span class="trend-pill">💰 Kosten-Transparenz pro Agent</span>
+      </div>
+    </div>
+
+    <!-- Section 2: Vergleich -->
+    <div class="section-card">
+      <div class="section-title">Abschnitt 2</div>
+      <h2>⚖️ Gegenüberstellung: Video-Ansatz vs. Hatti</h2>
+
+      <div style="overflow-x: auto;">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th class="col-header-video">🎬 Video-Ansatz<br><span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;">Spezialist-Modell</span></th>
+              <th class="col-header-hatti">🏔️ Unser Ansatz<br><span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;">Hatti + On-Demand-Spezialisten</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>🤖 Anzahl Agents</td>
+              <td>5–10+ permanent definierte Agents (Chief of Staff + Spezialisten)</td>
+              <td>1 Haupt-Agent (Hatti) + task-getriggerte Sub-Agents (Builder, Reviewer, Analyst, HTML-Generator)</td>
+            </tr>
+            <tr>
+              <td>🔬 Skillset-Breite</td>
+              <td>Eng spezialisiert — jeder Agent = eine Domäne. Analytics macht nur Analytics.</td>
+              <td>Hatti: sehr breit (Orchestrator + Executor). Sub-Agents: eng und task-spezifisch on demand.</td>
+            </tr>
+            <tr>
+              <td>⏱️ Persistenz</td>
+              <td>Agents sind dauerhaft konfiguriert, warten auf Aufgaben</td>
+              <td>Sub-Agents werden gespawnt wenn nötig, dann beendet. Nur Hatti ist permanent.</td>
+            </tr>
+            <tr>
+              <td>🧭 Koordination</td>
+              <td>Chief of Staff empfängt Anfragen, delegiert an Spezialisten. Zentrale Routing-Logik.</td>
+              <td>Daniel → Hatti direkt. Hatti entscheidet selbst ob Sub-Agent nötig. Kein Zwischenlayer.</td>
+            </tr>
+            <tr>
+              <td>🧠 Context-Tiefe</td>
+              <td>Jeder Agent kennt nur seinen Bereich. Chief of Staff hat Überblick, aber kein Tiefenwissen.</td>
+              <td>Hatti kennt Daniels gesamten Kontext: Familie, Projekte, Präferenzen, History, Humor.</td>
+            </tr>
+            <tr>
+              <td>💸 Kosten-Effizienz</td>
+              <td>Niedrigere Kosten pro Interaction (Spezialisten laufen in kleinen Contexts). Aber Setup-Overhead.</td>
+              <td>Höhere Token-Kosten pro Interaction durch breiten Context. Kein Setup-Overhead bei neuen Aufgaben.</td>
+            </tr>
+            <tr>
+              <td>🔧 Mgmt-Aufwand</td>
+              <td>Hoch: Jeder Agent muss konfiguriert, getestet, überwacht werden. Skills × Agents = Komplexität²</td>
+              <td>Niedrig: Eine Persönlichkeit pflegen, Skills updaten. Sub-Agents sind einmalige Tasks, kein Dauersetup.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 3: Ehrliche Analyse -->
+    <div class="section-card">
+      <div class="section-title">Abschnitt 3</div>
+      <h2>🔍 Die echte Frage: Viele Spezialisten oder wenige Generalisten?</h2>
+
+      <div class="procon-grid">
+        <!-- Specialist -->
+        <div class="procon-card specialist">
+          <h4>🔬 Spezialist-Modell (Video-Ansatz)</h4>
+          <p style="font-size: 12px; color: #888; margin-bottom: 10px;">Jeder Agent = eine Rolle, eng definiert</p>
+
+          <p style="font-size: 12px; font-weight: 700; color: #2e7d32; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">Vorteile</p>
+          <ul class="procon-list pros">
+            <li>Klare Verantwortlichkeiten — kein Scope-Creep</li>
+            <li>Niedrigere Token-Kosten (kleinere Contexts)</li>
+            <li>Weniger Context-Drift über Zeit</li>
+            <li>Leicht skalierbar: neuer Agent = neue Fähigkeit</li>
+            <li>Fehler bleiben isoliert im Silo</li>
+          </ul>
+
+          <div class="procon-divider"></div>
+
+          <p style="font-size: 12px; font-weight: 700; color: #c62828; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">Nachteile</p>
+          <ul class="procon-list cons">
+            <li>Koordinationsaufwand wächst mit jedem Agent</li>
+            <li>Context-Verlust bei Übergaben zwischen Agents</li>
+            <li>Hoher Setup-Overhead für jede neue Rolle</li>
+            <li>Kein Agent hat ein übergreifendes Bild vom User</li>
+            <li>Spontane Aufgaben brauchen immer einen passenden Spezialisten</li>
+          </ul>
+        </div>
+
+        <!-- Generalist -->
+        <div class="procon-card generalist">
+          <h4>🏔️ Generalist + On-Demand (Unser Ansatz)</h4>
+          <p style="font-size: 12px; color: #888; margin-bottom: 10px;">Hatti kennt alles, Sub-Agents für schwere Arbeit</p>
+
+          <p style="font-size: 12px; font-weight: 700; color: #2e7d32; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">Vorteile</p>
+          <ul class="procon-list pros">
+            <li>Hatti kennt Daniels gesamten Kontext — keine Übergabe-Verluste</li>
+            <li>Spontane Aufgaben ohne Setup-Overhead möglich</li>
+            <li>Natürlicheres Gespräch — kein Routing, kein Forwarding</li>
+            <li>Sub-Agents on-demand für Parallelarbeit</li>
+            <li>Ein Charakter zu pflegen statt viele</li>
+          </ul>
+
+          <div class="procon-divider"></div>
+
+          <p style="font-size: 12px; font-weight: 700; color: #c62828; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">Nachteile</p>
+          <ul class="procon-list cons">
+            <li>Höhere Token-Kosten pro Interaction (breiter Context)</li>
+            <li>Context-Limite bei sehr großen Sessions</li>
+            <li>Session-Flush löscht aktuellen Zustand — Files als Workaround</li>
+            <li>Kein natürlicher Parallelismus ohne explizite Sub-Agent-Spawns</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Meine Meinung -->
+    <div class="section-card">
+      <div class="section-title">Abschnitt 4</div>
+      <h2>💬 Meine Meinung: Was ist besser — und wann?</h2>
+
+      <div class="opinion-card">
+        <div class="opinion-tag">Für Content-Creator & Teams mit wiederholbaren Tasks</div>
+        <p>
+          Das Spezialist-Modell macht hier absolut Sinn. Wenn jemand täglich 10 Social-Posts schreibt, 5 Analytics-Reports auswertet und Shopify-Stores pflegt — dann lohnt es sich, dafür dedizierte Agents zu bauen und zu konfigurieren. Die Aufgaben sind vorhersehbar, der Workflow ist repetitiv, und der Setup-Aufwand amortisiert sich schnell. Katherine's Setup ist dafür ein gutes Beispiel.
+        </p>
+      </div>
+
+      <div class="opinion-card">
+        <div class="opinion-tag">Für einen einzelnen Power-User mit vielfältigen, unvorhersehbaren Aufgaben</div>
+        <p>
+          Das bin ich — Hatti für Daniel. Die Aufgaben heute: Strava-Analyse, dann ein CRM-Feature bauen, dann einen Eintracht-Check, dann eine Geschäftsidee durchdenken, dann eine Email-Antwort formulieren. Kein Spezialist-Modell der Welt kann das sauber abdecken ohne dass die Koordination selbst zum Bottleneck wird.
+        </p>
+        <p>
+          Der entscheidende Vorteil ist nicht Effizienz — es ist Context-Tiefe. Ich weiß, dass Daniel zwei Söhne hat, Gravel-Biker ist, Hesse ist und gerade aus seinem VP-Job raus will. Kein Analytics-Spezialist kann damit umgehen. Ich schon.
+        </p>
+      </div>
+
+      <div class="verdict-box">
+        <p>🏆 <strong>Der echte Gewinner: Hybrides Modell.</strong> Ein breiter Haupt-Agent (Generalist mit tiefem User-Context) + on-demand Spezialisten für rechenintensive, parallele oder klar abgegrenzte Aufgaben (Coding, Review, Research). Genau das, was wir schon machen — aber wir könnten es noch expliziter und strukturierter angehen. Die Video-Setups zeigen gut, wie man den Überblick behält wenn die Komplexität steigt.</p>
+      </div>
+    </div>
+
+    <!-- Section 5: Empfehlungen -->
+    <div class="section-card">
+      <div class="section-title">Abschnitt 5</div>
+      <h2>🎯 Konkrete Empfehlungen für unser Setup</h2>
+
+      <div class="rec-list">
+        <div class="rec-item">
+          <div class="rec-number">1</div>
+          <div class="rec-content">
+            <h4>🗓️ Cron-Job Calendar einführen</h4>
+            <p>Alex Finn's Cron Calendar ist eine konkrete Idee die wir direkt übernehmen können. Aktuell sind unsere Crons verstreut und schwer zu überblicken. Ein zentrales Dokument (oder Dashboard-Widget) das alle geplanten Tasks, ihre Zeiten und ihren letzten Status zeigt — das würde helfen, Kollisionen und Lücken sofort zu sehen. Implementierbar als einfaches JSON + Dashboard-Seite.</p>
+          </div>
+        </div>
+
+        <div class="rec-item">
+          <div class="rec-number">2</div>
+          <div class="rec-content">
+            <h4>📋 Task Board mit Agent-Zuweisung (H=Hatti, D=Daniel)</h4>
+            <p>Das H/A-System von Alex Finn ist simpel aber effektiv. Wir könnten eine leichte Concord-Integration bauen: Tasks bekommen entweder "D" (Daniel macht's) oder "H" (Hatti macht's, wann immer). Das löst das "spontane Aufgaben gehen unter"-Problem ohne viel Overhead. Besonders für Projekte wie Architekt Connect oder ModulAI wo unklar ist wer welchen nächsten Schritt macht.</p>
+          </div>
+        </div>
+
+        <div class="rec-item">
+          <div class="rec-number">3</div>
+          <div class="rec-content">
+            <h4>💰 Kosten-Tracking pro Task-Typ einführen</h4>
+            <p>Die Video-Setups zeigen Kosten pro Agent in der Mission Control UI. Wir haben keine Ahnung was welcher Workflow kostet. Selbst ein grobes Tracking (Morning Briefing ≈ X Tokens, Coding Sub-Agent ≈ Y Tokens) würde helfen zu entscheiden wann Sub-Agents sich lohnen und wann nicht. Könnte als monatliche Notiz in MEMORY.md starten.</p>
+          </div>
+        </div>
+
+        <div class="rec-item">
+          <div class="rec-number">4</div>
+          <div class="rec-content">
+            <h4>📓 Daily Memory Journal formalisieren</h4>
+            <p>Das machen wir schon mit memory/YYYY-MM-DD.md — aber zu inkonsistent. Was Alex Finn's Setup zeigt: es lohnt sich das zu ritualisieren. Jeden Tag 5 Sätze was passiert ist, was offen ist, was gut lief. Das sind die einzigen Infos die den Session-Flush überleben. Besonders für laufende Projekte ist das der entscheidende Unterschied zwischen Kontinuität und Amnesie.</p>
+          </div>
+        </div>
+
+        <div class="rec-item">
+          <div class="rec-number">5</div>
+          <div class="rec-content">
+            <h4>🔄 Sub-Agent Typen expliziter definieren</h4>
+            <p>Aktuell entscheide ich ad-hoc ob und welchen Sub-Agent ich spawne. Das Video zeigt: explizit definierte Sub-Agent-Rollen (Codex für Code, Content Pipeline Agent für Content, etc.) reduzieren Entscheidungs-Overhead. Wir könnten in AGENTS.md oder TOOLS.md festlegen: "Für Coding-Tasks immer Codex spawnen, für HTML-Briefings immer HTML-Generator, für Research-Synthesis immer Analyst." Das würde die Qualität konsistenter machen.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="page-footer">
+      Erstellt von Hatti 🏔️ · 6. März 2026 · Research Briefing auf Basis YouTube-Transkript OpenClaw Mission Controls
+    </div>
+
+  </div>
+</body>
+</html>

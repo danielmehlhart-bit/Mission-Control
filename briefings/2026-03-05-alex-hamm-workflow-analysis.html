@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRD Analyse: Workflow-Management-System – Alex Hamm</title>
+  <style>
+    :root {
+      --primary: #1a1a2e;
+      --accent: #e94560;
+      --accent2: #0f3460;
+      --success: #16a085;
+      --warning: #f39c12;
+      --danger: #e74c3c;
+      --light: #f8f9fa;
+      --border: #dee2e6;
+      --text: #2c3e50;
+      --muted: #6c757d;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      background: #f0f2f5;
+      line-height: 1.6;
+    }
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent2) 100%);
+      color: white;
+      padding: 48px 40px 36px;
+    }
+    header .meta { font-size: 0.8rem; opacity: 0.6; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
+    header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; }
+    header .subtitle { font-size: 1rem; opacity: 0.8; margin-bottom: 24px; }
+    .badge-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .badge-accent { background: var(--accent); color: white; }
+    .badge-success { background: var(--success); color: white; }
+    .badge-warning { background: var(--warning); color: white; }
+    .badge-muted { background: rgba(255,255,255,0.15); color: white; }
+
+    /* Layout */
+    .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+    @media (max-width: 768px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      header { padding: 32px 20px; }
+      header h1 { font-size: 1.6rem; }
+    }
+
+    /* Cards */
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+    }
+    .card-full { grid-column: 1 / -1; }
+    .card h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--accent2);
+      margin: 18px 0 10px;
+    }
+    .card p { font-size: 0.9rem; color: #555; margin-bottom: 10px; }
+
+    /* Section Headers */
+    .section-header {
+      margin: 40px 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .section-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .section-num {
+      background: var(--accent);
+      color: white;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    /* Feature List */
+    .feature-list { list-style: none; }
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 0.88rem;
+    }
+    .feature-list li:last-child { border-bottom: none; }
+    .feature-list .icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+    .feature-list .label { font-weight: 600; color: var(--primary); }
+    .feature-list .desc { color: var(--muted); font-size: 0.82rem; margin-top: 2px; }
+
+    /* Priority table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th {
+      background: var(--primary);
+      color: white;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+    }
+    td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f9f9fb; }
+
+    /* Priority pills */
+    .p-high { background: #fde8e8; color: #c0392b; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
+    .p-med  { background: #fef3e2; color: #d35400; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
+    .p-low  { background: #e8f8f5; color: #16a085; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
+
+    /* Architecture Diagram */
+    .arch-box {
+      border: 2px solid;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 10px 0;
+      position: relative;
+    }
+    .arch-box.layer-ui   { border-color: #3498db; background: #ebf5fb; }
+    .arch-box.layer-biz  { border-color: #9b59b6; background: #f5eef8; }
+    .arch-box.layer-data { border-color: #27ae60; background: #eafaf1; }
+    .arch-box.layer-ext  { border-color: #e67e22; background: #fef9e7; }
+    .arch-box h4 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+    .arch-box.layer-ui   h4 { color: #2980b9; }
+    .arch-box.layer-biz  h4 { color: #8e44ad; }
+    .arch-box.layer-data h4 { color: #219a52; }
+    .arch-box.layer-ext  h4 { color: #d35400; }
+    .arch-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .arch-chip {
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+    .layer-ui   .arch-chip { background: #d6eaf8; color: #2471a3; }
+    .layer-biz  .arch-chip { background: #ebdef0; color: #7d3c98; }
+    .layer-data .arch-chip { background: #d5f5e3; color: #1a7a47; }
+    .layer-ext  .arch-chip { background: #fdebd0; color: #a04000; }
+    .arch-arrow { text-align: center; color: var(--muted); font-size: 1.2rem; margin: 2px 0; }
+
+    /* Data Model */
+    .dm-entity {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      font-size: 0.82rem;
+    }
+    .dm-entity-header {
+      background: var(--accent2);
+      color: white;
+      padding: 8px 14px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .dm-entity-fields { padding: 6px 0; }
+    .dm-field {
+      display: flex;
+      padding: 5px 14px;
+      gap: 10px;
+      border-bottom: 1px solid #f5f5f5;
+    }
+    .dm-field:last-child { border-bottom: none; }
+    .dm-field-name { font-weight: 600; color: var(--primary); min-width: 150px; }
+    .dm-field-type { color: #e74c3c; font-family: monospace; min-width: 100px; }
+    .dm-field-desc { color: var(--muted); }
+    .dm-pk { color: var(--warning); font-size: 0.7rem; font-weight: 700; }
+    .dm-fk { color: #9b59b6; font-size: 0.7rem; font-weight: 700; }
+
+    /* Questions */
+    .q-list { list-style: none; counter-reset: questions; }
+    .q-item {
+      counter-increment: questions;
+      padding: 14px 16px 14px 50px;
+      position: relative;
+      border-left: 3px solid transparent;
+      margin-bottom: 8px;
+      background: #fafafa;
+      border-radius: 0 8px 8px 0;
+    }
+    .q-item::before {
+      content: counter(questions);
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      width: 22px; height: 22px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .q-item.critical { border-left-color: var(--danger); }
+    .q-item.important { border-left-color: var(--warning); }
+    .q-item.nice { border-left-color: var(--success); }
+    .q-label { font-weight: 600; font-size: 0.88rem; color: var(--primary); }
+    .q-desc { font-size: 0.82rem; color: var(--muted); margin-top: 3px; }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 30px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+    .tl-item {
+      position: relative;
+      margin-bottom: 24px;
+    }
+    .tl-dot {
+      position: absolute;
+      left: -26px;
+      top: 4px;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 2px solid white;
+      box-shadow: 0 0 0 2px var(--accent);
+      background: var(--accent);
+    }
+    .tl-dot.done { background: var(--success); box-shadow: 0 0 0 2px var(--success); }
+    .tl-dot.warn { background: var(--warning); box-shadow: 0 0 0 2px var(--warning); }
+    .tl-phase { font-weight: 700; font-size: 0.9rem; color: var(--primary); }
+    .tl-duration { font-size: 0.78rem; color: var(--accent); font-weight: 600; }
+    .tl-tasks { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+
+    /* Effort table */
+    .effort-bar {
+      height: 6px;
+      border-radius: 3px;
+      background: #e9ecef;
+      margin-top: 4px;
+    }
+    .effort-fill {
+      height: 100%;
+      border-radius: 3px;
+    }
+    .eff-1 { width: 15%; background: var(--success); }
+    .eff-2 { width: 30%; background: var(--warning); }
+    .eff-3 { width: 55%; background: var(--accent); }
+    .eff-4 { width: 75%; background: var(--danger); }
+    .eff-5 { width: 90%; background: #c0392b; }
+
+    /* Mock-up */
+    .mockup {
+      background: #1a1a2e;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    .mockup-bar {
+      background: #0d0d1a;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dot-r { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
+    .dot-y { width: 10px; height: 10px; border-radius: 50%; background: #febc2e; }
+    .dot-g { width: 10px; height: 10px; border-radius: 50%; background: #28c840; }
+    .mockup-url { font-family: monospace; font-size: 0.75rem; color: #888; margin-left: 8px; }
+    .mockup-body {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: 400px;
+    }
+    .mockup-sidebar {
+      background: #0f0f1e;
+      padding: 16px 0;
+      border-right: 1px solid #2a2a3e;
+    }
+    .mockup-sidebar-title {
+      color: #888;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0 16px;
+      margin-bottom: 8px;
+    }
+    .mockup-nav-item {
+      padding: 8px 16px;
+      color: #aaa;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .mockup-nav-item.active {
+      background: rgba(233,69,96,0.15);
+      color: var(--accent);
+      border-left: 2px solid var(--accent);
+    }
+    .mockup-main {
+      padding: 20px;
+      background: #16162a;
+    }
+    .mockup-main-title {
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .mockup-main-sub {
+      color: #888;
+      font-size: 0.75rem;
+      margin-bottom: 16px;
+    }
+    .mockup-progress {
+      background: #0f0f1e;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+    }
+    .mockup-progress-header {
+      display: flex;
+      justify-content: space-between;
+      color: #ccc;
+      font-size: 0.78rem;
+      margin-bottom: 6px;
+    }
+    .mockup-progress-bar {
+      height: 4px;
+      background: #2a2a3e;
+      border-radius: 2px;
+    }
+    .mockup-progress-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), #ff8c69);
+    }
+    .mockup-task-group {
+      margin-bottom: 12px;
+    }
+    .mockup-task-group-title {
+      color: #888;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .mockup-task {
+      background: #1e1e30;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .mockup-task-cb {
+      width: 14px; height: 14px;
+      border: 2px solid #444;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .mockup-task-cb.done {
+      background: var(--success);
+      border-color: var(--success);
+    }
+    .mockup-task-text { color: #ccc; font-size: 0.78rem; flex: 1; }
+    .mockup-task-text.done { text-decoration: line-through; color: #555; }
+    .mockup-task-role {
+      background: #2a2a3e;
+      color: #888;
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .mockup-task-time { color: #666; font-size: 0.7rem; }
+    .mockup-task.blocked { opacity: 0.4; }
+    .mockup-task.active { border-left: 2px solid var(--accent); }
+
+    /* Info boxes */
+    .info-box {
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 12px 0;
+      font-size: 0.85rem;
+    }
+    .info-box.tip { background: #e8f8f5; border-left: 4px solid var(--success); }
+    .info-box.warn { background: #fef9e7; border-left: 4px solid var(--warning); }
+    .info-box.danger { background: #fdf2f2; border-left: 4px solid var(--danger); }
+    .info-box strong { display: block; margin-bottom: 4px; }
+
+    /* Score */
+    .score-card {
+      text-align: center;
+      padding: 20px;
+    }
+    .score-num {
+      font-size: 3.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), #ff8c69);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+    .score-label { font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
+
+    /* Footer */
+    footer {
+      background: var(--primary);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 20px;
+      font-size: 0.78rem;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="meta">ModulAI · Feature Discovery · 2026-03-05</div>
+  <h1>🏗️ PRD Analyse: Workflow-Management</h1>
+  <div class="subtitle">Intelligentes Aufgaben- & Freigabe-System für Architekturbüros — Alex Hamm</div>
+  <div class="badge-row">
+    <span class="badge badge-accent">Neues Feature-Modul</span>
+    <span class="badge badge-success">Ziel: +20% Effizienz</span>
+    <span class="badge badge-warning">~120–160h Aufwand</span>
+    <span class="badge badge-muted">Discovery-Phase</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- KPI Summary -->
+  <div class="grid-3" style="margin-top: 8px;">
+    <div class="card score-card">
+      <div class="score-num">8</div>
+      <div class="score-label">Kernfeatures im PRD</div>
+    </div>
+    <div class="card score-card">
+      <div class="score-num">+20%</div>
+      <div class="score-label">Effizienz-Ziel Alex</div>
+    </div>
+    <div class="card score-card">
+      <div class="score-num">6–8</div>
+      <div class="score-label">Wochen Implementierung</div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 1: Feature-Übersicht -->
+  <!-- ============================================================ -->
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <h2>Feature-Übersicht & Kernfunktionen</h2>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h2>🧠 Core Features (Must-Have)</h2>
+      <ul class="feature-list">
+        <li>
+          <span class="icon">📋</span>
+          <div>
+            <div class="label">Intelligenter Aufgabenkatalog</div>
+            <div class="desc">Vordefinierte Aufgaben-Templates nach Projekttyp (Baugenehmigung, Nutzungsänderung, etc.) — automatisch vorausgefüllt beim Projekt-Start</div>
+          </div>
+        </li>
+        <li>
+          <span class="icon">🔀</span>
+          <div>
+            <div class="label">Dynamische Abhängigkeiten</div>
+            <div class="desc">Parallel Tracks (gleichzeitig ausführbar) + Hard Blocks (Aufgabe B kann erst starten wenn A abgeschlossen) — visuell als DAG</div>
+          </div>
+        </li>
+        <li>
+          <span class="icon">⚡</span>
+          <div>
+            <div class="label">Trigger-Logik (If/Then)</div>
+            <div class="desc">Basierend auf Projekt-Properties werden Aufgaben automatisch hinzugefügt/entfernt. Bsp: Wenn Bundesland=Hessen → HBO-Checkliste hinzufügen</div>
+          </div>
+        </li>
+        <li>
+          <span class="icon">✅</span>
+          <div>
+            <div class="label">Rollen- & Freigabe-Workflow</div>
+            <div class="desc">Mitarbeiter markiert Aufgabe als erledigt → Chef/Projektleiter muss freigeben. Eskalation bei Verzögerung</div>
+          </div>
+        </li>
+        <li>
+          <span class="icon">📁</span>
+          <div>
+            <div class="label">Dropbox-Integration</div>
+            <div class="desc">Aufgaben verlinken direkt auf Vorlagen-Dokumente in Dropbox. Automatisches Ablegen fertiger Dokumente im richtigen Ordner</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>🚀 Extended Features (Should-Have)</h2>
+      <ul class="feature-list">
+        <li>
+          <span class="icon">⏱️</span>
+          <div>
+            <div class="label">Zeit- & Ressourcen-Management</div>
+            <div class="desc">Soll-Zeiten pro Aufgabe hinterlegen. Ist-Zeit erfassen. Delta als Effizienz-KPI sichtbar machen</div>
+          </div>
+        </li>
+        <li>
+          <span class="icon">🎓</span>
+          <div>
+            <div class="label">Lernendes System</div>
+            <div class="desc">Sonderaufgaben können als neuer Standard vorgeschlagen werden. Review-Prozess: Mitarbeiter schlägt vor → Chef genehmigt → Template wird aktualisiert</div>
+          </div>
+        </li>
+        <li>
+          <span class="icon">📊</span>
+          <div>
+            <div class="label">Projekt-Übersicht & Reporting</div>
+            <div class="desc">Dashboard mit offenen Freigaben, überfälligen Tasks, Ressourcen-Auslastung und Effizienz-Trends</div>
+          </div>
+        </li>
+        <li>
+          <span class="icon">🔔</span>
+          <div>
+            <div class="label">Benachrichtigungen</div>
+            <div class="desc">Email/In-App: Freigabe angefragt, Deadline überschritten, neues Projekt zugewiesen</div>
+          </div>
+        </li>
+        <li>
+          <span class="icon">🔄</span>
+          <div>
+            <div class="label">Rollback & Änderungshistorie</div>
+            <div class="desc">Wer hat was wann geändert? Audit-Log für Compliance. Aufgabe als "revidiert" markierbar</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 24px;">
+    <h2>🏛️ Konkretes Beispiel: Nutzungsänderung (Hessen / HBO)</h2>
+    <div class="grid-2">
+      <div>
+        <h3>Automatisch generierter Workflow</h3>
+        <ul class="feature-list">
+          <li><span class="icon">1️⃣</span><div><div class="label">Projekt anlegen</div><div class="desc">Typ: Nutzungsänderung / Bundesland: Hessen → System lädt HBO-Template</div></div></li>
+          <li><span class="icon">2️⃣</span><div><div class="label">Track A (parallel)</div><div class="desc">Bauzeichnungen erstellen, Bestandspläne aufnehmen, Brandschutznachweis</div></div></li>
+          <li><span class="icon">3️⃣</span><div><div class="label">Track B (parallel)</div><div class="desc">Abstimmung Behörde, Voranfrage HBO, Eigentümer-Kommunikation</div></div></li>
+          <li><span class="icon">4️⃣</span><div><div class="label">Hard Block</div><div class="desc">Baugenehmigungsantrag NUR möglich wenn Track A + B abgeschlossen</div></div></li>
+          <li><span class="icon">5️⃣</span><div><div class="label">Freigabe-Kette</div><div class="desc">MA erledigt → Projektleiter prüft → Chef zeichnet ab</div></div></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Trigger-Beispiele</h3>
+        <div class="info-box tip">
+          <strong>✅ Wenn Bundesland = Hessen</strong>
+          HBO-Checkliste hinzufügen (§49 HBO Sonderbauvorschriften)
+        </div>
+        <div class="info-box tip">
+          <strong>✅ Wenn Nutzung = Gastronomie</strong>
+          Hygieneplan + Gesundheitsamt-Abstimmung automatisch einfügen
+        </div>
+        <div class="info-box warn">
+          <strong>⚠️ Wenn Fläche &gt; 1000m²</strong>
+          Sonderprüfer Statik/Brandschutz verpflichtend → Aufgabe nicht delegierbar
+        </div>
+        <div class="info-box danger">
+          <strong>🚫 Hard Block-Beispiel</strong>
+          Baugenehmigung einreichen blockiert bis Brandschutznachweis von Chef freigegeben
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 2: Integration ModulAI -->
+  <!-- ============================================================ -->
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <h2>Integration in ModulAI als Feature-Modul</h2>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h2>🧩 Modul-Konzept</h2>
+      <p>Das Workflow-Management wird als <strong>optionales Premium-Modul</strong> "WorkflowAI" in ModulAI integriert — aktivierbar pro Workspace ohne die Kern-App zu beeinflussen.</p>
+      <h3>Modul-Abhängigkeiten</h3>
+      <ul class="feature-list">
+        <li><span class="icon">🔗</span><div><div class="label">Projekt-Modul (Core)</div><div class="desc">Projekte müssen bereits existieren — Workflow hängt immer an einem Projekt</div></div></li>
+        <li><span class="icon">🔗</span><div><div class="label">User-Management (Core)</div><div class="desc">Rollen (Mitarbeiter/Projektleiter/Chef) aus bestehendem Auth-System</div></div></li>
+        <li><span class="icon">🔗</span><div><div class="label">Notifications (Core/Optional)</div><div class="desc">In-App + Email-Benachrichtigungen für Freigaben</div></div></li>
+        <li><span class="icon">🔌</span><div><div class="label">Dropbox OAuth (External)</div><div class="desc">Neue Integration — separates Modul empfohlen</div></div></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>💰 Monetarisierung & Rollout</h2>
+      <h3>Empfohlenes Pricing-Modell</h3>
+      <table>
+        <tr><th>Tier</th><th>Inhalt</th><th>Aufpreis</th></tr>
+        <tr><td>Core</td><td>Basis-Checklisten (manuell)</td><td>Inkl.</td></tr>
+        <tr><td>WorkflowAI</td><td>Trigger + Dependencies + Dropbox</td><td>+€X/Monat</td></tr>
+        <tr><td>WorkflowAI+</td><td>+ Lernendes System + Reporting</td><td>+€Y/Monat</td></tr>
+      </table>
+      <div class="info-box tip" style="margin-top: 16px;">
+        <strong>💡 Alex als Design Partner</strong>
+        Alex Hamm bekommt kostenlosen Zugang während der Beta (6 Monate) im Tausch für Feedback und Case Study.
+      </div>
+      <h3>Rollout-Strategie</h3>
+      <p style="font-size:0.82rem; color:#555;">1. Closed Beta mit Alex (1 Büro) → 2. 5 weitere Architekturbüros → 3. General Availability als Add-on</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3: Technische Architektur -->
+  <!-- ============================================================ -->
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <h2>Technische Architektur & Datenmodell</h2>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h2>🏛️ Architektur-Schichten</h2>
+
+      <div class="arch-box layer-ui">
+        <h4>🖥️ Frontend (UI Layer)</h4>
+        <div class="arch-chips">
+          <span class="arch-chip">React/Next.js</span>
+          <span class="arch-chip">Workflow-Board (Kanban/DAG)</span>
+          <span class="arch-chip">Template-Editor</span>
+          <span class="arch-chip">Freigabe-Dashboard</span>
+        </div>
+      </div>
+      <div class="arch-arrow">↓↑</div>
+      <div class="arch-box layer-biz">
+        <h4>⚙️ Business Logic Layer</h4>
+        <div class="arch-chips">
+          <span class="arch-chip">Template Engine</span>
+          <span class="arch-chip">Trigger Evaluator</span>
+          <span class="arch-chip">Dependency Graph (DAG)</span>
+          <span class="arch-chip">Approval State Machine</span>
+          <span class="arch-chip">Notification Service</span>
+          <span class="arch-chip">Learning Pipeline</span>
+        </div>
+      </div>
+      <div class="arch-arrow">↓↑</div>
+      <div class="arch-box layer-data">
+        <h4>🗄️ Data Layer (Supabase)</h4>
+        <div class="arch-chips">
+          <span class="arch-chip">PostgreSQL</span>
+          <span class="arch-chip">RLS (Row Level Security)</span>
+          <span class="arch-chip">Edge Functions</span>
+          <span class="arch-chip">Realtime Subscriptions</span>
+        </div>
+      </div>
+      <div class="arch-arrow">↓↑</div>
+      <div class="arch-box layer-ext">
+        <h4>🔌 External Integrations</h4>
+        <div class="arch-chips">
+          <span class="arch-chip">Dropbox API v2</span>
+          <span class="arch-chip">Email (Resend/SendGrid)</span>
+          <span class="arch-chip">Behörden-APIs (future)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🗃️ Kerndatenmodell</h2>
+
+      <div class="dm-entity">
+        <div class="dm-entity-header">
+          workflow_templates
+          <span style="font-size:0.7rem; opacity:0.7">Aufgaben-Vorlagen</span>
+        </div>
+        <div class="dm-entity-fields">
+          <div class="dm-field"><span class="dm-field-name">id <span class="dm-pk">PK</span></span><span class="dm-field-type">uuid</span><span class="dm-field-desc">Primary Key</span></div>
+          <div class="dm-field"><span class="dm-field-name">name</span><span class="dm-field-type">text</span><span class="dm-field-desc">z.B. "Nutzungsänderung HBO"</span></div>
+          <div class="dm-field"><span class="dm-field-name">project_type</span><span class="dm-field-type">text[]</span><span class="dm-field-desc">Anwendbare Projekttypen</span></div>
+          <div class="dm-field"><span class="dm-field-name">trigger_conditions</span><span class="dm-field-type">jsonb</span><span class="dm-field-desc">If/Then Regeln als JSON-Objekt</span></div>
+          <div class="dm-field"><span class="dm-field-name">is_active</span><span class="dm-field-type">bool</span><span class="dm-field-desc">Aktiv/Archiviert</span></div>
+          <div class="dm-field"><span class="dm-field-name">created_by <span class="dm-fk">FK</span></span><span class="dm-field-type">uuid</span><span class="dm-field-desc">→ users.id</span></div>
+        </div>
+      </div>
+
+      <div class="dm-entity">
+        <div class="dm-entity-header">
+          workflow_tasks
+          <span style="font-size:0.7rem; opacity:0.7">Aufgaben in Templates</span>
+        </div>
+        <div class="dm-entity-fields">
+          <div class="dm-field"><span class="dm-field-name">id <span class="dm-pk">PK</span></span><span class="dm-field-type">uuid</span></div>
+          <div class="dm-field"><span class="dm-field-name">template_id <span class="dm-fk">FK</span></span><span class="dm-field-type">uuid</span></div>
+          <div class="dm-field"><span class="dm-field-name">title</span><span class="dm-field-type">text</span></div>
+          <div class="dm-field"><span class="dm-field-name">track</span><span class="dm-field-type">text</span><span class="dm-field-desc">"A" | "B" | "sequential"</span></div>
+          <div class="dm-field"><span class="dm-field-name">depends_on</span><span class="dm-field-type">uuid[]</span><span class="dm-field-desc">Hard-Block Abhängigkeiten</span></div>
+          <div class="dm-field"><span class="dm-field-name">assigned_role</span><span class="dm-field-type">text</span><span class="dm-field-desc">"employee" | "lead" | "chef"</span></div>
+          <div class="dm-field"><span class="dm-field-name">approval_required</span><span class="dm-field-type">bool</span></div>
+          <div class="dm-field"><span class="dm-field-name">estimated_hours</span><span class="dm-field-type">numeric</span><span class="dm-field-desc">Soll-Zeit</span></div>
+          <div class="dm-field"><span class="dm-field-name">dropbox_template_path</span><span class="dm-field-type">text</span><span class="dm-field-desc">Pfad zur Vorlage</span></div>
+        </div>
+      </div>
+
+      <div class="dm-entity">
+        <div class="dm-entity-header">
+          project_workflows
+          <span style="font-size:0.7rem; opacity:0.7">Instanziierter Workflow</span>
+        </div>
+        <div class="dm-entity-fields">
+          <div class="dm-field"><span class="dm-field-name">id <span class="dm-pk">PK</span></span><span class="dm-field-type">uuid</span></div>
+          <div class="dm-field"><span class="dm-field-name">project_id <span class="dm-fk">FK</span></span><span class="dm-field-type">uuid</span></div>
+          <div class="dm-field"><span class="dm-field-name">template_id <span class="dm-fk">FK</span></span><span class="dm-field-type">uuid</span></div>
+          <div class="dm-field"><span class="dm-field-name">status</span><span class="dm-field-type">text</span><span class="dm-field-desc">"active" | "completed" | "on_hold"</span></div>
+          <div class="dm-field"><span class="dm-field-name">applied_triggers</span><span class="dm-field-type">jsonb</span><span class="dm-field-desc">Welche Trigger waren aktiv</span></div>
+        </div>
+      </div>
+
+      <div class="dm-entity">
+        <div class="dm-entity-header">
+          task_instances
+          <span style="font-size:0.7rem; opacity:0.7">Konkrete Aufgaben-Instanzen</span>
+        </div>
+        <div class="dm-entity-fields">
+          <div class="dm-field"><span class="dm-field-name">id <span class="dm-pk">PK</span></span><span class="dm-field-type">uuid</span></div>
+          <div class="dm-field"><span class="dm-field-name">workflow_id <span class="dm-fk">FK</span></span><span class="dm-field-type">uuid</span></div>
+          <div class="dm-field"><span class="dm-field-name">task_template_id <span class="dm-fk">FK</span></span><span class="dm-field-type">uuid</span></div>
+          <div class="dm-field"><span class="dm-field-name">assigned_to <span class="dm-fk">FK</span></span><span class="dm-field-type">uuid</span></div>
+          <div class="dm-field"><span class="dm-field-name">status</span><span class="dm-field-type">text</span><span class="dm-field-desc">"pending"|"in_progress"|"review"|"done"|"blocked"</span></div>
+          <div class="dm-field"><span class="dm-field-name">completed_at</span><span class="dm-field-type">timestamptz</span></div>
+          <div class="dm-field"><span class="dm-field-name">approved_by <span class="dm-fk">FK</span></span><span class="dm-field-type">uuid</span></div>
+          <div class="dm-field"><span class="dm-field-name">actual_hours</span><span class="dm-field-type">numeric</span><span class="dm-field-desc">Ist-Zeit</span></div>
+          <div class="dm-field"><span class="dm-field-name">notes</span><span class="dm-field-type">text</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4: Fehlende Informationen -->
+  <!-- ============================================================ -->
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <h2>Fehlende Informationen — Was brauchen wir von Alex?</h2>
+  </div>
+
+  <div class="card card-full">
+    <h2>❓ Offene Fragen (nach Priorität)</h2>
+    <div class="grid-2">
+      <div>
+        <h3 style="color: var(--danger);">🔴 Kritisch (Blocker für Architektur)</h3>
+        <ol class="q-list">
+          <li class="q-item critical">
+            <div class="q-label">Welche Projekttypen existieren konkret?</div>
+            <div class="q-desc">Vollständige Liste aller Projekttypen die das System kennen muss. Definiert die Template-Struktur komplett.</div>
+          </li>
+          <li class="q-item critical">
+            <div class="q-label">Wie komplex sind die Trigger-Regeln?</div>
+            <div class="q-desc">Nur einfache If/Then (Bundesland=X → Task hinzufügen) oder verschachtelte Logik (A AND B OR C)? Entscheidet ob wir Rule-Engine brauchen.</div>
+          </li>
+          <li class="q-item critical">
+            <div class="q-label">Wie viele Mitarbeiter / Rollen gibt es?</div>
+            <div class="q-desc">Anzahl Mitarbeiter, Hierarchie-Ebenen, ob Tasks personen- oder rollenbasiert zugewiesen werden.</div>
+          </li>
+          <li class="q-item critical">
+            <div class="q-label">Wer darf Templates anlegen/ändern?</div>
+            <div class="q-desc">Nur Chef? Projektleiter? Alle mit Review? Definiert die Permission-Architektur.</div>
+          </li>
+        </ol>
+      </div>
+      <div>
+        <h3 style="color: var(--warning);">🟡 Wichtig (Scope-Entscheidungen)</h3>
+        <ol class="q-list" style="counter-reset: questions 4;">
+          <li class="q-item important">
+            <div class="q-label">Dropbox-Struktur: Wie ist sie aufgebaut?</div>
+            <div class="q-desc">Pfad-Schema der Ordnerstruktur, damit automatisches Ablegen funktioniert. Screenshots oder Export wäre ideal.</div>
+          </li>
+          <li class="q-item important">
+            <div class="q-label">Wie läuft der Freigabe-Prozess heute?</div>
+            <div class="q-desc">Über Email? Mündlich? WhatsApp? → Zeigt wie viel Widerstand gegen neues System zu erwarten ist.</div>
+          </li>
+          <li class="q-item important">
+            <div class="q-label">Was genau soll "lernendes System" tun?</div>
+            <div class="q-desc">Vorschlag vom Mitarbeiter → Chef genehmigt → geht ins Template? Oder KI-basierte Erkennung von Patterns?</div>
+          </li>
+          <li class="q-item important">
+            <div class="q-label">Soll-Zeiten: Woher kommen die Initialwerte?</div>
+            <div class="q-desc">Hat Alex bereits Zeitaufzeichnungen? Oder sollen die erst entstehen? Wie präzise müssen sie sein?</div>
+          </li>
+          <li class="q-item important">
+            <div class="q-label">Welche Behörden/Bundesländer sind relevant?</div>
+            <div class="q-desc">Nur Hessen (HBO)? Oder plant Alex Expansion? Entscheidet ob Bundesland-Modul skalierbar gebaut wird.</div>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <div style="margin-top: 16px;">
+      <h3 style="color: var(--success);">🟢 Nice-to-have (für Prioritätsentscheidungen)</h3>
+      <ol class="q-list" style="counter-reset: questions 9;">
+        <li class="q-item nice">
+          <div class="q-label">Haben Mitarbeiter PCs/Tablets oder arbeiten sie mobil?</div>
+          <div class="q-desc">Entscheidet ob Mobile-First oder Desktop-First Priorität hat</div>
+        </li>
+        <li class="q-item nice">
+          <div class="q-label">Welche anderen Tools nutzt das Büro heute?</div>
+          <div class="q-desc">CAD-Software, Projektmanagement (MS Project, Asana?), Zeiterfassung → Integrations-Potenzial</div>
+        </li>
+        <li class="q-item nice">
+          <div class="q-label">Wie viele Projekte laufen gleichzeitig?</div>
+          <div class="q-desc">Relevant für Performance-Anforderungen und UI-Design (5 vs. 50 parallele Projekte)</div>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 5: Aufwand & Implementierungsplan -->
+  <!-- ============================================================ -->
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <h2>Aufwandsschätzung & Implementierungsplan</h2>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h2>⏱️ Aufwandsschätzung nach Feature</h2>
+      <table>
+        <thead>
+          <tr><th>Feature</th><th>Aufwand</th><th>Prio</th><th>Kommentar</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              Datenmodell + Supabase-Setup
+              <div class="effort-bar"><div class="effort-fill eff-1"></div></div>
+            </td>
+            <td>8–12h</td>
+            <td><span class="p-high">P0</span></td>
+            <td>Fundament</td>
+          </tr>
+          <tr>
+            <td>
+              Template-Management (CRUD)
+              <div class="effort-bar"><div class="effort-fill eff-2"></div></div>
+            </td>
+            <td>16–20h</td>
+            <td><span class="p-high">P0</span></td>
+            <td>Core Feature</td>
+          </tr>
+          <tr>
+            <td>
+              Dependency-Graph (DAG)
+              <div class="effort-bar"><div class="effort-fill eff-3"></div></div>
+            </td>
+            <td>20–28h</td>
+            <td><span class="p-high">P0</span></td>
+            <td>Komplex, React Flow</td>
+          </tr>
+          <tr>
+            <td>
+              Trigger-Engine (If/Then)
+              <div class="effort-bar"><div class="effort-fill eff-3"></div></div>
+            </td>
+            <td>16–24h</td>
+            <td><span class="p-high">P0</span></td>
+            <td>JSON Rule Engine</td>
+          </tr>
+          <tr>
+            <td>
+              Freigabe-Workflow (State Machine)
+              <div class="effort-bar"><div class="effort-fill eff-2"></div></div>
+            </td>
+            <td>14–18h</td>
+            <td><span class="p-high">P0</span></td>
+            <td>XState empfohlen</td>
+          </tr>
+          <tr>
+            <td>
+              Dropbox-Integration
+              <div class="effort-bar"><div class="effort-fill eff-3"></div></div>
+            </td>
+            <td>18–24h</td>
+            <td><span class="p-med">P1</span></td>
+            <td>OAuth + File API</td>
+          </tr>
+          <tr>
+            <td>
+              Zeit-Tracking UI
+              <div class="effort-bar"><div class="effort-fill eff-2"></div></div>
+            </td>
+            <td>10–14h</td>
+            <td><span class="p-med">P1</span></td>
+            <td>Soll/Ist-Vergleich</td>
+          </tr>
+          <tr>
+            <td>
+              Lernendes System
+              <div class="effort-bar"><div class="effort-fill eff-4"></div></div>
+            </td>
+            <td>20–28h</td>
+            <td><span class="p-low">P2</span></td>
+            <td>V2 empfohlen</td>
+          </tr>
+          <tr>
+            <td>
+              Reporting Dashboard
+              <div class="effort-bar"><div class="effort-fill eff-3"></div></div>
+            </td>
+            <td>12–16h</td>
+            <td><span class="p-low">P2</span></td>
+            <td>Charts + KPIs</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="info-box warn" style="margin-top: 16px;">
+        <strong>📊 Gesamt-Schätzung</strong>
+        MVP (P0): ~74–102h · Full Product (P0+P1+P2): ~134–184h<br>
+        Bei 2 Entwicklern: 6–8 Wochen für MVP
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🗓️ Implementierungsplan</h2>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div>
+            <div class="tl-phase">Phase 0: Discovery Abschluss <span class="tl-duration">1 Woche</span></div>
+            <div class="tl-tasks">
+              • Fehlende Infos von Alex einholen (Fragen-Liste)<br>
+              • Dropbox-Struktur analysieren<br>
+              • 3 konkrete Projekttypen als Templates definieren<br>
+              • Wireframes abstimmen
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div>
+            <div class="tl-phase">Phase 1: Foundation <span class="tl-duration">Woche 2–3</span></div>
+            <div class="tl-tasks">
+              • Datenmodell + Supabase Schema<br>
+              • Template CRUD (Admin-View)<br>
+              • Einfache Task-Liste ohne Dependencies<br>
+              • User-Rollen-System
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div>
+            <div class="tl-phase">Phase 2: Core Logic <span class="tl-duration">Woche 3–5</span></div>
+            <div class="tl-tasks">
+              • Dependency-Graph (DAG Visualisierung)<br>
+              • Trigger-Engine implementieren<br>
+              • Freigabe-Workflow (State Machine)<br>
+              • In-App Notifications
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot warn"></div>
+          <div>
+            <div class="tl-phase">Phase 3: Beta mit Alex <span class="tl-duration">Woche 5–6</span></div>
+            <div class="tl-tasks">
+              • Dropbox-Integration<br>
+              • Nutzungsänderung-Template vollständig<br>
+              • Feedback-Session mit Alex<br>
+              • Bug Fixing + UX-Tuning
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot warn"></div>
+          <div>
+            <div class="tl-phase">Phase 4: Extended Features <span class="tl-duration">Woche 7–8</span></div>
+            <div class="tl-tasks">
+              • Zeit-Tracking + Soll/Ist-Dashboard<br>
+              • Lernendes System (MVP-Version)<br>
+              • Reporting & Export<br>
+              • Performance-Optimierung
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot warn"></div>
+          <div>
+            <div class="tl-phase">Phase 5: GA Launch <span class="tl-duration">Woche 9</span></div>
+            <div class="tl-tasks">
+              • Onboarding für weitere Büros<br>
+              • Dokumentation<br>
+              • Pricing + Stripe-Integration<br>
+              • Case Study mit Alex
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 6: UI Mock-up Konzept -->
+  <!-- ============================================================ -->
+  <div class="section-header">
+    <div class="section-num">6</div>
+    <h2>UI Mock-up Konzept</h2>
+  </div>
+
+  <div class="card card-full">
+    <h2>🖥️ Haupt-Screens & UX-Flows</h2>
+    <div class="grid-3" style="margin-bottom: 24px;">
+      <div>
+        <h3>Screen 1: Projekt-Workflow-Board</h3>
+        <p>Zentraler Screen — Mitarbeiter sehen ihren aktuellen Workflow als strukturierte Checkliste mit Track-Spalten</p>
+      </div>
+      <div>
+        <h3>Screen 2: Template-Editor</h3>
+        <p>Drag-&-Drop-Editor für Chef/Admin zum Erstellen und Bearbeiten von Workflow-Templates</p>
+      </div>
+      <div>
+        <h3>Screen 3: Freigabe-Dashboard</h3>
+        <p>Chef-View: Alle offenen Freigabe-Anfragen auf einen Blick, sortiert nach Projekt und Dringlichkeit</p>
+      </div>
+    </div>
+
+    <!-- Mock-up Screen 1 -->
+    <h3 style="margin-bottom: 12px; color: var(--accent2);">📱 Screen 1: Workflow-Board — Nutzungsänderung HBO (Prototyp-Konzept)</h3>
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="dot-r"></div><div class="dot-y"></div><div class="dot-g"></div>
+        <span class="mockup-url">modulai.app / projekte / 2024-053-nutzungsaenderung</span>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-sidebar">
+          <div class="mockup-sidebar-title">Navigation</div>
+          <div class="mockup-nav-item">📊 Dashboard</div>
+          <div class="mockup-nav-item">📁 Projekte</div>
+          <div class="mockup-nav-item active">✅ Workflow</div>
+          <div class="mockup-nav-item">📄 Dokumente</div>
+          <div class="mockup-nav-item">👥 Team</div>
+          <div style="height: 20px;"></div>
+          <div class="mockup-sidebar-title" style="margin-top: 12px;">Meine Tasks</div>
+          <div class="mockup-nav-item">⏳ In Bearbeitung (3)</div>
+          <div class="mockup-nav-item" style="color: #e94560;">🔔 Freigabe nötig (2)</div>
+          <div class="mockup-nav-item">✅ Erledigt (8)</div>
+        </div>
+        <div class="mockup-main">
+          <div class="mockup-main-title">Nutzungsänderung HBO — Musterstraße 12, Frankfurt</div>
+          <div class="mockup-main-sub">Template: Nutzungsänderung (Hessen) · Gestartet: 12.02.2026 · Zuständig: M. Müller</div>
+
+          <div class="mockup-progress">
+            <div class="mockup-progress-header">
+              <span>Gesamtfortschritt</span>
+              <span style="color: var(--accent);">8/21 Tasks · 38%</span>
+            </div>
+            <div class="mockup-progress-bar">
+              <div class="mockup-progress-fill" style="width: 38%;"></div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+              <div class="mockup-task-group">
+                <div class="mockup-task-group-title">🟦 Track A — Zeichnungen & Nachweise</div>
+                <div class="mockup-task mockup-task active">
+                  <div class="mockup-task-cb done"></div>
+                  <div class="mockup-task-text done">Bestandspläne digitalisieren</div>
+                  <div class="mockup-task-role">MA</div>
+                </div>
+                <div class="mockup-task mockup-task active">
+                  <div class="mockup-task-cb done"></div>
+                  <div class="mockup-task-text done">Grundrisse neue Nutzung</div>
+                  <div class="mockup-task-role">MA</div>
+                </div>
+                <div class="mockup-task active">
+                  <div class="mockup-task-cb" style="border-color: var(--warning); background: rgba(243,156,18,0.2);"></div>
+                  <div class="mockup-task-text">🔄 Brandschutznachweis erstellen</div>
+                  <div class="mockup-task-time">4h</div>
+                </div>
+                <div class="mockup-task blocked">
+                  <div class="mockup-task-cb" style="border-color: #555;"></div>
+                  <div class="mockup-task-text">🔒 Statik-Nachweis (Sonderprüfer)</div>
+                  <div class="mockup-task-role">EXT</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="mockup-task-group">
+                <div class="mockup-task-group-title">🟧 Track B — Behörden & Kommunikation</div>
+                <div class="mockup-task">
+                  <div class="mockup-task-cb done"></div>
+                  <div class="mockup-task-text done">Voranfrage HBO stellen</div>
+                  <div class="mockup-task-role">PL</div>
+                </div>
+                <div class="mockup-task active">
+                  <div class="mockup-task-cb" style="border-color: var(--accent); background: rgba(233,69,96,0.2);"></div>
+                  <div class="mockup-task-text">⏳ Freigabe Chef: HBO-Voranfrage</div>
+                  <div class="mockup-task-role" style="background: rgba(233,69,96,0.3); color: var(--accent);">CHEF</div>
+                </div>
+                <div class="mockup-task">
+                  <div class="mockup-task-cb" style="border-color: #444;"></div>
+                  <div class="mockup-task-text">Eigentümer-Abstimmung Protokoll</div>
+                  <div class="mockup-task-role">MA</div>
+                </div>
+              </div>
+              <div class="mockup-task-group" style="margin-top: 8px;">
+                <div class="mockup-task-group-title">🔴 Hard Block — Antrag (gesperrt)</div>
+                <div class="mockup-task blocked">
+                  <div class="mockup-task-cb" style="border-color: #555;"></div>
+                  <div class="mockup-task-text" style="color: #555;">🔒 Baugenehmigung einreichen<br><span style="font-size:0.7rem; color: #e74c3c;">Wartet auf: Track A + Track B vollständig</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box tip" style="margin-top: 20px;">
+      <strong>💡 UX-Prinzipien für die UI</strong>
+      1. <strong>Einfachheit first:</strong> Mitarbeiter sehen NUR ihre Tasks — kein UI-Overload.<br>
+      2. <strong>Blockiert = klar kommuniziert:</strong> Grayed-out mit Erklärung warum blockiert.<br>
+      3. <strong>Freigabe-Anfragen prominent:</strong> Rote Badge im Chef-Dashboard, nicht versteckt.<br>
+      4. <strong>Dropbox-Links direkt in Task:</strong> Ein Klick öffnet die Vorlage — kein Ordner-Suchen.<br>
+      5. <strong>Mobile-freundlich:</strong> Tagesaufgaben on the go abhaken.
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- Bewertung & Empfehlung -->
+  <!-- ============================================================ -->
+  <div class="section-header">
+    <div class="section-num">🎯</div>
+    <h2>Bewertung & Empfehlung</h2>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <h2 style="color: var(--success);">✅ Stärken des PRD</h2>
+      <ul class="feature-list">
+        <li><span class="icon">💪</span><div><div class="label">Konkreter Use-Case</div><div class="desc">HBO-Beispiel macht Anforderungen greifbar — kein abstraktes Wunschkonzert</div></div></li>
+        <li><span class="icon">💪</span><div><div class="label">Klares Effizienz-Ziel</div><div class="desc">20% → messbar, gibt uns einen KPI für den Erfolg</div></div></li>
+        <li><span class="icon">💪</span><div><div class="label">Domänen-Expertise</div><div class="desc">Alex versteht seinen Prozess — wir müssen ihn nicht erklären</div></div></li>
+        <li><span class="icon">💪</span><div><div class="label">Modular denkbar</div><div class="desc">Passt perfekt in ModulAI's Modul-Architektur</div></div></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2 style="color: var(--warning);">⚠️ Risiken</h2>
+      <ul class="feature-list">
+        <li><span class="icon">⚠️</span><div><div class="label">Scope Creep</div><div class="desc">Lernendes System + Behörden-Logik kann zu kompliziert werden → MVP strikt halten</div></div></li>
+        <li><span class="icon">⚠️</span><div><div class="label">Adoption</div><div class="desc">Mitarbeiter müssen mitspielen. Ohne deren Buy-in kein 20%-Ziel</div></div></li>
+        <li><span class="icon">⚠️</span><div><div class="label">Dropbox-Abhängigkeit</div><div class="desc">Was wenn Alex wechselt? Abstraktion empfohlen</div></div></li>
+        <li><span class="icon">⚠️</span><div><div class="label">Bundesland-Komplexität</div><div class="desc">Hessen hat spezifische Regeln — nicht 1:1 auf andere Länder übertragbar</div></div></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2 style="color: var(--accent);">🚀 Empfehlung</h2>
+      <div class="info-box tip">
+        <strong>Go! — Mit Einschränkungen</strong>
+        Das PRD hat die Qualität für einen Start. Aber: Fragen aus Section 4 MÜSSEN vor Entwicklungsstart beantwortet sein.
+      </div>
+      <div class="info-box warn">
+        <strong>MVP-Scope: Nur P0 Features</strong>
+        Template + Dependencies + Trigger + Freigabe. Kein Lernsystem, kein volles Reporting in V1.
+      </div>
+      <div class="info-box tip">
+        <strong>Nächster Schritt</strong>
+        Discovery-Call mit Alex (45 min) anhand dieser Fragen-Liste. Danach: Wireframes und Kostenschätzung für Angebot.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Erstellt von Hatti 🏔️ · ModulAI Feature Discovery · 2026-03-05 · Alex Hamm / Workflow-Management-System PRD
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📱 Telegram Topics + Multi-Agent — Research Briefing</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      line-height: 1.6;
+      padding: 24px 16px 60px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px 36px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .header-meta {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 8px;
+      letter-spacing: 0.3px;
+    }
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #111;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+    .header-sub {
+      font-size: 15px;
+      color: #555;
+    }
+
+    /* Section label */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #888;
+      margin: 32px 0 12px;
+    }
+
+    /* Card */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .card h2 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card h2 .icon {
+      font-size: 20px;
+    }
+
+    /* Lists */
+    ul, ol {
+      padding-left: 20px;
+    }
+    li {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 6px;
+    }
+    li strong {
+      color: #222;
+    }
+
+    /* Code */
+    code {
+      background: #f0f0f0;
+      border-radius: 5px;
+      padding: 2px 6px;
+      font-size: 12.5px;
+      font-family: 'SF Mono', 'Fira Mono', 'Menlo', monospace;
+      color: #c7254e;
+    }
+
+    /* Config block */
+    .config-block {
+      background: #1e1e2e;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-top: 14px;
+      overflow-x: auto;
+    }
+    .config-block pre {
+      font-family: 'SF Mono', 'Fira Mono', 'Menlo', monospace;
+      font-size: 12.5px;
+      color: #cdd6f4;
+      line-height: 1.65;
+      white-space: pre;
+    }
+    .config-block .key { color: #89b4fa; }
+    .config-block .str { color: #a6e3a1; }
+    .config-block .bool { color: #fab387; }
+
+    /* Two-column grid */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    /* Comparison card */
+    .compare-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 22px 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .compare-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .compare-card .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 9px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
+    .badge-green { background: #d1fae5; color: #065f46; }
+    .badge-blue  { background: #dbeafe; color: #1e40af; }
+    .compare-card ul { padding-left: 16px; }
+    .compare-card li { font-size: 13px; margin-bottom: 5px; }
+    .pro { color: #059669; font-weight: 600; }
+    .con { color: #dc2626; font-weight: 600; }
+
+    /* Pitfall / tip rows */
+    .pitfall-list { list-style: none; padding-left: 0; }
+    .pitfall-list li {
+      padding: 7px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13.5px;
+      color: #444;
+    }
+    .pitfall-list li:last-child { border-bottom: none; }
+
+    /* Steps */
+    .steps { counter-reset: step; padding-left: 0; list-style: none; }
+    .steps li {
+      counter-increment: step;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f5f5f5;
+      font-size: 14px;
+    }
+    .steps li:last-child { border-bottom: none; }
+    .steps li::before {
+      content: counter(step);
+      min-width: 28px;
+      height: 28px;
+      background: #ff385c;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Topic table */
+    .topic-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    .topic-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #888;
+      padding: 8px 12px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    .topic-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f5f5f5;
+      color: #444;
+      vertical-align: top;
+    }
+    .topic-table tr:last-child td { border-bottom: none; }
+    .topic-table tr:hover td { background: #fafafa; }
+    .topic-tag {
+      display: inline-block;
+      background: #f3f4f6;
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: 11.5px;
+      color: #374151;
+      font-weight: 500;
+    }
+
+    /* Dan Malone callout */
+    .quote-box {
+      background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+      border-left: 4px solid #ff385c;
+      border-radius: 0 12px 12px 0;
+      padding: 18px 22px;
+      margin-top: 16px;
+    }
+    .quote-box p {
+      font-size: 14px;
+      font-style: italic;
+      color: #444;
+      margin-bottom: 6px;
+    }
+    .quote-box .attr {
+      font-size: 12px;
+      color: #888;
+      font-style: normal;
+    }
+
+    /* Recommendation box */
+    .rec-box {
+      background: linear-gradient(135deg, #f0fdf4 0%, #fff 100%);
+      border: 1.5px solid #bbf7d0;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .rec-box h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #065f46;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .rec-box p, .rec-box li {
+      font-size: 13.5px;
+      color: #444;
+    }
+
+    /* Sources */
+    .source-list { list-style: none; padding-left: 0; }
+    .source-list li {
+      font-size: 13px;
+      color: #666;
+      padding: 6px 0;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .source-list li:last-child { border-bottom: none; }
+    .source-list li::before {
+      content: "↗";
+      color: #ff385c;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #bbb;
+      margin-top: 40px;
+    }
+
+    /* Tag pill */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #fff0f3;
+      color: #ff385c;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-right: 6px;
+      margin-top: 4px;
+    }
+
+    /* Highlight bar */
+    .highlight {
+      background: #fff9db;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13.5px;
+      color: #444;
+      margin-top: 12px;
+    }
+    .highlight strong { color: #b45309; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-meta">Research Briefing · 05. März 2026 · Hatti für Daniel</div>
+    <h1>📱 Telegram Topics + Multi-Agent<br>Research Briefing</h1>
+    <div class="header-sub">Wie Forum-Gruppen als Projekt-Workspace funktionieren — Theorie, Pitfalls & Empfehlung für Daniels Setup.</div>
+    <div style="margin-top: 14px;">
+      <span class="pill">🔵 Telegram</span>
+      <span class="pill">🤖 OpenClaw</span>
+      <span class="pill">🏗 Multi-Agent</span>
+      <span class="pill">📋 Setup-Guide</span>
+    </div>
+  </div>
+
+  <!-- Section 1: Was sind Topics? -->
+  <div class="section-label">01 — Grundlagen</div>
+  <div class="card">
+    <h2><span class="icon">💬</span> Was sind Telegram Forum Topics?</h2>
+    <ul>
+      <li>Telegram Gruppen können seit 2022 einen <strong>„Forum-Modus"</strong> aktivieren</li>
+      <li>Statt einem Chat gibt es <strong>mehrere Threads / Topics</strong> — wie Slack Channels innerhalb einer Gruppe</li>
+      <li>Jedes Topic hat einen <strong>eigenen Nachrichtenverlauf</strong>, komplett isoliert</li>
+      <li>Perfekt für: Projekt-Isolation, Multi-Agent Setups, thematische Trennung von Kontexten</li>
+    </ul>
+    <div class="highlight">
+      <strong>Kernidee:</strong> Eine Telegram-Gruppe wird zum persönlichen AI-Cockpit — jedes Topic ist ein eigener Arbeitsbereich mit eigenem Agenten.
+    </div>
+  </div>
+
+  <!-- Section 2: OpenClaw Support -->
+  <div class="section-label">02 — OpenClaw Integration</div>
+  <div class="card">
+    <h2><span class="icon">⚙️</span> Wie OpenClaw Topics unterstützt</h2>
+    <ul style="margin-bottom: 16px;">
+      <li>Jedes Topic bekommt eine eigene Session: <code>:topic:&lt;threadId&gt;</code></li>
+      <li>Eigener Kontext, eigene History, eigene Compaction — vollständig isoliert</li>
+      <li>Topics erben Gruppen-Settings, können aber individuell überschrieben werden</li>
+    </ul>
+    <p style="font-size: 13px; color: #888; margin-bottom: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;">Per-Topic Konfigurationsoptionen</p>
+    <div class="config-block">
+      <pre><span class="key">channels</span>.telegram.groups.<span class="key">&lt;chatId&gt;</span>.topics.<span class="key">&lt;threadId&gt;</span>:
+  <span class="key">agentId</span>:       <span class="str">"hatti"</span>         <span class="bool">// eigener Agent pro Topic</span>
+  <span class="key">systemPrompt</span>:  <span class="str">"..."</span>           <span class="bool">// spezifischer Kontext</span>
+  <span class="key">skills</span>:        <span class="str">["strava"]</span>      <span class="bool">// nur relevante Skills</span>
+  <span class="key">requireMention</span>: <span class="bool">false</span>         <span class="bool">// ob Bot erwähnt werden muss</span>
+  <span class="key">allowFrom</span>:     <span class="str">["daniel"]</span>      <span class="bool">// Zugriffskontrolle</span>
+  <span class="key">groupPolicy</span>:   <span class="str">"allowlist"</span>     <span class="bool">// open / allowlist / disabled</span></pre>
+    </div>
+  </div>
+
+  <!-- Section 3: Best Practices -->
+  <div class="section-label">03 — Best Practices</div>
+
+  <!-- Setup Steps -->
+  <div class="card">
+    <h2><span class="icon">🛠</span> Setup-Schritte</h2>
+    <ol class="steps">
+      <li>Telegram Forum-Gruppe erstellen (nur du + Bot, Supergroup)</li>
+      <li>Topics aktivieren in den Gruppeneinstellungen</li>
+      <li>Thread-IDs erfassen (aus Message-Links oder API)</li>
+      <li>Bei BotFather: <code>/setprivacy</code> → <strong>disable</strong> — damit Bot alle Nachrichten sieht, nicht nur Mentions</li>
+      <li>Bot zur Gruppe hinzufügen (als Admin mit entsprechenden Rechten)</li>
+      <li>openclaw.json anpassen: Gruppe + Topics konfigurieren</li>
+    </ol>
+  </div>
+
+  <!-- Single vs Multi Bot -->
+  <div class="grid-2">
+    <div class="compare-card">
+      <h3>🤖 Single-Bot <span class="badge badge-green">Unser Fall</span></h3>
+      <p style="font-size: 12.5px; color: #666; margin-bottom: 10px;">1 Bot, mehrere Topics, verschiedene System Prompts</p>
+      <ul>
+        <li><span class="pro">+</span> Einfach, weniger Config</li>
+        <li><span class="pro">+</span> Schnell aufzusetzen</li>
+        <li><span class="con">–</span> Gleicher Agent-Context</li>
+        <li><span class="con">–</span> Nur System Prompt unterscheidet sich</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <h3>🤖🤖 Multi-Bot <span class="badge badge-blue">Advanced</span></h3>
+      <p style="font-size: 12.5px; color: #666; margin-bottom: 10px;">Mehrere Bots, jeder im eigenen Topic, eigene Agents</p>
+      <ul>
+        <li><span class="pro">+</span> Komplett isolierte Workspaces</li>
+        <li><span class="pro">+</span> Eigene Memory & Skills pro Bot</li>
+        <li><span class="con">–</span> Mehrere BotFather-Bots nötig</li>
+        <li><span class="con">–</span> Deutlich mehr Konfiguration</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Dan Malone Pattern -->
+  <div class="card" style="margin-top: 16px;">
+    <h2><span class="icon">🎯</span> Dan Malones „Mission Control" Pattern</h2>
+    <ul style="margin-bottom: 14px;">
+      <li>4 spezialisierte Agents in einer einzigen Forum-Gruppe</li>
+      <li>Jeder Agent hat: eigenen Workspace, SOUL.md, Memory, Skills</li>
+      <li>Inter-Agent Kommunikation via <code>sessions_send</code> (z.B. Goaly fragt Homey)</li>
+      <li><strong>Fin</strong> (Buchhaltung) · <strong>Goaly</strong> (Tasks) · <strong>Homey</strong> (Smart Home)</li>
+      <li>3 Modi: Deep Work (Terminal) · On-the-go (Telegram) · Always-on (Crons)</li>
+    </ul>
+    <div class="quote-box">
+      <p>„Die Lücke war nicht Coordination UI, sondern Persistenz + Mobile + Cross-Agent Collaboration."</p>
+      <span class="attr">— Dan Malone, dan-malone.com, 18.02.2026</span>
+    </div>
+  </div>
+
+  <!-- Section 4: Pitfalls -->
+  <div class="section-label">04 — Häufige Fehler &amp; Pitfalls</div>
+  <div class="grid-2">
+    <div class="card">
+      <h2><span class="icon">🔧</span> Config-Fehler</h2>
+      <ul class="pitfall-list">
+        <li>❌ <code>groups</code> Config global statt per-account → alle Bots antworten überall</li>
+        <li>❌ Ungültige Topic-Keys (z.B. <code>label</code>) → nur Schema-konforme Keys</li>
+        <li>❌ Privacy Mode aktiviert gelassen → Bot sieht keine unerwähnten Nachrichten</li>
+        <li>❌ Bot nicht neu hinzugefügt nach Privacy-Änderung → entfernen &amp; neu einladen</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2><span class="icon">🧠</span> Kontext-Probleme</h2>
+      <ul class="pitfall-list">
+        <li>❌ Zu großer System Prompt → Token-Verschwendung bei jedem Turn</li>
+        <li>❌ Keine klare Trennung → Topics werden zu „zweitem General Chat"</li>
+        <li>❌ Memory-Leakage: Agent referenziert anderen Topic-Kontext</li>
+        <li>✅ Fix: Pro Topic kurzer, spezifischer System Prompt mit klarem Scope</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2><span class="icon">🏛</span> Architektur-Fehler</h2>
+      <ul class="pitfall-list">
+        <li>❌ Zu viele Topics → Fragmentierung, man verliert den Überblick</li>
+        <li>❌ Kein „General" Topic → alles muss kategorisiert werden</li>
+        <li>✅ Empfehlung: 3–5 Topics maximal + 1 General für Unkategorisiertes</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2><span class="icon">📱</span> Telegram-spezifisch</h2>
+      <ul class="pitfall-list">
+        <li>❌ Reactions haben keine Thread-ID → gehen an General Topic</li>
+        <li>❌ General Topic (threadId=1) hat Sonderbehandlung: <code>message_thread_id</code> wird nicht gesendet</li>
+        <li>❌ Bot kann nicht selbst Topics erstellen → braucht Admin-Rechte</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Section 5: Daniels Setup -->
+  <div class="section-label">05 — Empfehlung für Daniels Setup</div>
+
+  <div class="rec-box">
+    <h3>✅ Option A: Minimal — Single Bot (Empfohlen als Start)</h3>
+    <ul style="padding-left: 18px;">
+      <li>@hatti_berg_bot in einer Forum-Gruppe mit 4–5 Topics</li>
+      <li>Pro Topic: eigener System Prompt mit Repo-Pfad + Projekt-Kontext</li>
+      <li>1:1 DM Chat bleibt als Hauptkanal erhalten</li>
+      <li>Einfach, sofort umsetzbar, ausbaubar</li>
+    </ul>
+  </div>
+
+  <div class="card" style="border: 1.5px solid #dbeafe;">
+    <h2><span class="icon">🔮</span> Option B: Full Multi-Agent (für später)</h2>
+    <ul>
+      <li>Separater Bot pro Projekt (z.B. <code>@modulai_bot</code>, <code>@bpp_bot</code>)</li>
+      <li>Komplett isolierte Workspaces und Memory pro Bot</li>
+      <li>Inter-Agent Kommunikation via <code>sessions_send</code></li>
+      <li style="color: #888; font-size: 13px; margin-top: 4px;">→ Wenn mehr Projekte / Kunden, dann diesen Weg gehen</li>
+    </ul>
+  </div>
+
+  <!-- Topic Structure -->
+  <div class="card">
+    <h2><span class="icon">📋</span> Empfohlene Topic-Struktur</h2>
+    <table class="topic-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Topic</th>
+          <th>Zweck</th>
+          <th>Skills</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>📋 <strong>Allgemein</strong></td>
+          <td>Schnelle Fragen, Ad-hoc Tasks, alles Unkategorisierte</td>
+          <td><span class="topic-tag">alle</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>🚀 <strong>ModulAI</strong></td>
+          <td>Multi-Tenant Plattform, Feature Flags, Inbox Agent</td>
+          <td><span class="topic-tag">coding-agent</span> <span class="topic-tag">github</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>🏗️ <strong>HAM Architekten</strong></td>
+          <td>Alex Hamm, Checklisten, Follow-Ups</td>
+          <td><span class="topic-tag">supabase</span> <span class="topic-tag">gog</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>📸 <strong>BPP CRM</strong></td>
+          <td>Sebastian Weißmann, Event AI, Member Management</td>
+          <td><span class="topic-tag">supabase</span> <span class="topic-tag">coding-agent</span></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>📊 <strong>Dashboard &amp; Ops</strong></td>
+          <td>Dashboard-Updates, Cron-Jobs, Briefings, Skills</td>
+          <td><span class="topic-tag">dashboard</span> <span class="topic-tag">rss</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Section 6: Nächste Schritte -->
+  <div class="section-label">06 — Nächste Schritte</div>
+  <div class="card">
+    <h2><span class="icon">🚦</span> Setup-Reihenfolge</h2>
+    <ol class="steps">
+      <li>Daniel erstellt Telegram Forum-Gruppe (Supergroup aktivieren)</li>
+      <li>Topics nach obiger Struktur anlegen (5 Topics)</li>
+      <li>@hatti_berg_bot zur Gruppe hinzufügen — als Admin</li>
+      <li>Hatti passt <code>openclaw.json</code> Config an (Gruppe + Topics)</li>
+      <li>Pro Topic einen kurzen, spezifischen System Prompt definieren</li>
+      <li>Test: In jedem Topic eine Nachricht — prüfen ob Kontext isoliert ist</li>
+    </ol>
+  </div>
+
+  <!-- Sources -->
+  <div class="section-label">Quellen</div>
+  <div class="card">
+    <ul class="source-list">
+      <li>Dan Malone: „Building a Multi-Agent AI Team in a Telegram Forum" — dan-malone.com, 18.02.2026</li>
+      <li>OpenClaw Docs: channels/telegram.md — Forum Topics Section</li>
+      <li>Maxim AI: „How to Ensure Consistency in Multi-Turn AI Conversations"</li>
+      <li>SparkCo AI: „Deep Dive into Multi-Turn AI Conversation Agents"</li>
+      <li>MindStudio: „Scaling AI Agents — Best Practices Multi-Bot Deployment"</li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Erstellt von Hatti · 05. März 2026 · Research Briefing für Daniel
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📱 Telegram Topics — Gesamtstruktur</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      padding: 32px 16px 64px;
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    header {
+      margin-bottom: 36px;
+    }
+    header .date {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 8px;
+    }
+    header p.subtitle {
+      font-size: 15px;
+      color: #555;
+      max-width: 620px;
+    }
+
+    /* ── Legende ── */
+    .legend {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      margin-bottom: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    .legend-title {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #888;
+      margin-right: 4px;
+      width: 100%;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .badge-projekt   { background: #EEF2FF; color: #4F46E5; }
+    .badge-ops       { background: #FFF3E0; color: #E65100; }
+    .badge-lifestyle { background: #E8F5E9; color: #2E7D32; }
+    .badge-main      { background: #FCE4EC; color: #C62828; }
+
+    /* ── Architektur Section ── */
+    .arch-section {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px 28px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      margin-bottom: 36px;
+    }
+    .arch-section h2 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #111;
+    }
+    .arch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 580px) {
+      .arch-grid { grid-template-columns: 1fr; }
+    }
+    .arch-item {
+      background: #F9F9F9;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 14px;
+      color: #333;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .arch-item .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4F46E5;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    /* ── Section header ── */
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #888;
+      margin: 32px 0 14px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.09);
+      margin-bottom: 20px;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+    }
+
+    .card-header {
+      padding: 20px 24px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .card-icon {
+      font-size: 30px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .card-title-area { flex: 1; }
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 4px;
+    }
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .card-repo {
+      font-size: 12px;
+      color: #4F46E5;
+      background: #EEF2FF;
+      padding: 2px 10px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .card-repo:hover { background: #E0E7FF; }
+
+    .card-body {
+      padding: 18px 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 640px) {
+      .card-body { grid-template-columns: 1fr; }
+    }
+
+    .card-field { }
+    .card-field.full-width { grid-column: 1 / -1; }
+
+    .field-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: #aaa;
+      margin-bottom: 6px;
+    }
+    .field-value {
+      font-size: 14px;
+      color: #333;
+    }
+
+    .prompt-box {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 12.5px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .pill {
+      background: #F3F4F6;
+      color: #374151;
+      border-radius: 20px;
+      padding: 3px 11px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .pill-skill { background: #EDE9FE; color: #5B21B6; }
+    .pill-agent { background: #D1FAE5; color: #065F46; }
+    .pill-task  { background: #FEF3C7; color: #92400E; }
+    .pill-file  { background: #E0F2FE; color: #0369A1; }
+
+    /* ── Hauptkanal card ── */
+    .card.hauptkanal .card-header {
+      background: linear-gradient(135deg, #FCE4EC 0%, #F8BBD0 100%);
+    }
+    .card.hauptkanal .card-title { color: #880E4F; }
+
+    /* ── Config Section ── */
+    .config-section {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px 28px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      margin-bottom: 28px;
+    }
+    .config-section h2 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #111;
+    }
+    .code-block {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border-radius: 12px;
+      padding: 20px 22px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .code-comment { color: #6c7086; }
+    .code-key { color: #89dceb; }
+    .code-val { color: #a6e3a1; }
+    .code-str { color: #f38ba8; }
+    .code-bool { color: #fab387; }
+
+    /* ── Next Steps ── */
+    .checklist-section {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px 28px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      margin-bottom: 28px;
+    }
+    .checklist-section h2 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #111;
+    }
+    .checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      color: #333;
+    }
+    .step-num {
+      background: #4F46E5;
+      color: #fff;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #bbb;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header>
+    <div class="date">5. März 2026 · OpenClaw / Hatti</div>
+    <h1>📱 Telegram Topics — Gesamtstruktur</h1>
+    <p class="subtitle">Planung der Telegram Forum-Gruppe mit 8 Topics. Jedes Topic bekommt eine eigene Session, eigenen Kontext und dedizierte Skills.</p>
+  </header>
+
+  <!-- Legende -->
+  <div class="legend">
+    <div class="legend-title">Legende — Channel-Typen</div>
+    <span class="badge badge-projekt">🗂 Projekt / Repo</span>
+    <span class="badge badge-ops">⚙️ Operations</span>
+    <span class="badge badge-lifestyle">🌿 Lifestyle / Tracking</span>
+    <span class="badge badge-main">💬 Hauptkanal (DM)</span>
+  </div>
+
+  <!-- Architektur -->
+  <div class="arch-section">
+    <h2>🏛️ Architektur-Übersicht</h2>
+    <div class="arch-grid">
+      <div class="arch-item"><div class="dot"></div><div>Telegram <strong>Forum-Gruppe</strong> mit 8 Topics — jedes Topic ist eine eigene kontextualisierte Session</div></div>
+      <div class="arch-item"><div class="dot"></div><div><strong>1:1 DM Chat</strong> bleibt Hauptkanal für Spontanes, Persönliches, Cross-Cutting Tasks</div></div>
+      <div class="arch-item"><div class="dot"></div><div><strong>Sub-Agents</strong> werden direkt aus dem jeweiligen Topic heraus gespawnt</div></div>
+      <div class="arch-item"><div class="dot"></div><div><strong>Adversarial Review</strong> läuft im Projekt-Topic selbst — kein separates Review-Topic nötig</div></div>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div class="section-label">🗂 Projekt / Repo Topics</div>
+
+  <!-- 1. ModulAI -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🚀</div>
+      <div class="card-title-area">
+        <div class="card-title">ModulAI</div>
+        <div class="card-meta">
+          <span class="badge badge-projekt">Projekt / Repo</span>
+          <a class="card-repo" href="https://github.com/danielmehlhart-bit/modulai" target="_blank">github.com/…/modulai</a>
+          <span style="font-size:12px;color:#888;">/home/hartner/modulai/</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-field full-width">
+        <div class="field-label">System Prompt</div>
+        <div class="prompt-box">Du arbeitest am ModulAI Projekt — eine Multi-Tenant AI-Plattform.
+Repo: /home/hartner/modulai/. Lies CLAUDE.md im Repo für Kontext.
+Supabase-Projekt: emughyvcixctalfgczjd.
+Tech: Lovable + Supabase + Edge Functions.</div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Context Files</div>
+        <div class="pill-list">
+          <span class="pill pill-file">CLAUDE.md</span>
+          <span class="pill pill-file">knowledge.md</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Skills</div>
+        <div class="pill-list">
+          <span class="pill pill-skill">coding-agent</span>
+          <span class="pill pill-skill">github</span>
+          <span class="pill pill-skill">adversarial-review</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Sub-Agents</div>
+        <div class="pill-list">
+          <span class="pill pill-agent">Builder (Sonnet 4.6)</span>
+          <span class="pill pill-agent">Reviewer (Sonnet 4.6)</span>
+          <span class="pill pill-agent">Adversarial Review</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Typische Tasks</div>
+        <div class="pill-list">
+          <span class="pill pill-task">Feature Development</span>
+          <span class="pill pill-task">Bug Fixes</span>
+          <span class="pill pill-task">Code Reviews</span>
+          <span class="pill pill-task">Migration Scripts</span>
+          <span class="pill pill-task">Feature Flags</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Architekt Connect -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🏗️</div>
+      <div class="card-title-area">
+        <div class="card-title">Architekt Connect</div>
+        <div class="card-meta">
+          <span class="badge badge-projekt">Projekt / Repo</span>
+          <a class="card-repo" href="https://github.com/danielmehlhart-bit/architekt-connect" target="_blank">github.com/…/architekt-connect</a>
+          <span style="font-size:12px;color:#888;">/home/hartner/architekt-connect/</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-field full-width">
+        <div class="field-label">System Prompt</div>
+        <div class="prompt-box">Du arbeitest am Architekt Connect Projekt — ein PM-Tool für Architekturbüros
+(Pilot: Weber Architekten). Repo: /home/hartner/architekt-connect/.
+Lies CLAUDE.md. Supabase-Projekt: emughyvcixctalfgczjd.
+Features: Dashboard, Projekte, Tasks, Dokumente, Zeiterfassung,
+Voice-to-Task, HOAI-Phasen.</div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Context Files</div>
+        <div class="pill-list">
+          <span class="pill pill-file">CLAUDE.md</span>
+          <span class="pill pill-file">knowledge.md</span>
+          <span class="pill pill-file">gap-analysis.md</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Skills</div>
+        <div class="pill-list">
+          <span class="pill pill-skill">coding-agent</span>
+          <span class="pill pill-skill">github</span>
+          <span class="pill pill-skill">adversarial-review</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Sub-Agents</div>
+        <div class="pill-list">
+          <span class="pill pill-agent">Builder</span>
+          <span class="pill pill-agent">Reviewer</span>
+          <span class="pill pill-agent">Adversarial Review</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Typische Tasks</div>
+        <div class="pill-list">
+          <span class="pill pill-task">Feature Development</span>
+          <span class="pill pill-task">Gantt-Chart</span>
+          <span class="pill pill-task">Multi-Tenant Migration</span>
+          <span class="pill pill-task">Kim &amp; Paul Meeting Prep</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. BPP CRM -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📸</div>
+      <div class="card-title-area">
+        <div class="card-title">BPP CRM</div>
+        <div class="card-meta">
+          <span class="badge badge-projekt">Projekt / Repo</span>
+          <a class="card-repo" href="https://github.com/danielmehlhart-bit/photobpp-organizer" target="_blank">github.com/…/photobpp-organizer</a>
+          <span style="font-size:12px;color:#888;">/home/hartner/photobpp-organizer/</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-field full-width">
+        <div class="field-label">System Prompt</div>
+        <div class="prompt-box">Du arbeitest am BPP CRM Projekt — internes CRM für den Bund
+professioneller Porträtfotografen (~300 Mitglieder).
+Repo: /home/hartner/photobpp-organizer/. Lies CLAUDE.md.
+Ansprechpartner: Sebastian Weißmann (seba@bpp.photography).
+Tech: Lovable + Supabase. Rechnungen extern über SevDesk API.</div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Context Files</div>
+        <div class="pill-list">
+          <span class="pill pill-file">CLAUDE.md</span>
+          <span class="pill pill-file">knowledge.md</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Skills</div>
+        <div class="pill-list">
+          <span class="pill pill-skill">coding-agent</span>
+          <span class="pill pill-skill">github</span>
+          <span class="pill pill-skill">adversarial-review</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Sub-Agents</div>
+        <div class="pill-list">
+          <span class="pill pill-agent">Builder</span>
+          <span class="pill pill-agent">Reviewer</span>
+          <span class="pill pill-agent">Adversarial Review</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Typische Tasks</div>
+        <div class="pill-list">
+          <span class="pill pill-task">Core CRM Features</span>
+          <span class="pill pill-task">Member Management</span>
+          <span class="pill pill-task">Event AI</span>
+          <span class="pill pill-task">Fotografen-App</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Concord -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">✅</div>
+      <div class="card-title-area">
+        <div class="card-title">Concord</div>
+        <div class="card-meta">
+          <span class="badge badge-projekt">Projekt / Repo</span>
+          <a class="card-repo" href="https://github.com/danielmehlhart-bit/concordv3" target="_blank">github.com/…/concordv3</a>
+          <span style="font-size:12px;color:#888;">/home/hartner/concordv3/</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-field full-width">
+        <div class="field-label">System Prompt</div>
+        <div class="prompt-box">Du arbeitest am Concord Projekt — Daniels persönliches Leadership OS
+für Tasks, Projekte, Meetings, Entscheidungen.
+Repo: /home/hartner/concordv3/.
+Data-Proxy: https://vgnpimvpgppxjmvkfpnk.supabase.co/functions/v1/data-proxy
+User-ID: 88483299-7600-4971-9787-6a221e213484.</div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Context Files</div>
+        <div class="pill-list">
+          <span class="pill pill-file">CLAUDE.md</span>
+          <span class="pill pill-file">knowledge.md</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Skills</div>
+        <div class="pill-list">
+          <span class="pill pill-skill">coding-agent</span>
+          <span class="pill pill-skill">github</span>
+          <span class="pill pill-skill">supabase-concord</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Sub-Agents</div>
+        <div class="pill-list">
+          <span class="pill pill-agent">Builder</span>
+          <span class="pill pill-agent">Reviewer</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Typische Tasks</div>
+        <div class="pill-list">
+          <span class="pill pill-task">Task Management</span>
+          <span class="pill pill-task">Decision Memos</span>
+          <span class="pill pill-task">Meeting Notes</span>
+          <span class="pill pill-task">Voice-to-Concord</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">📊 Dashboard / Research Topic</div>
+
+  <!-- 5. Research & Briefings -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📊</div>
+      <div class="card-title-area">
+        <div class="card-title">Research &amp; Briefings</div>
+        <div class="card-meta">
+          <span class="badge badge-projekt">Projekt / Repo</span>
+          <a class="card-repo" href="https://github.com/danielmehlhart-bit/dashboard" target="_blank">github.com/…/dashboard</a>
+          <span style="font-size:12px;color:#888;">/home/hartner/dashboard/</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-field full-width">
+        <div class="field-label">System Prompt</div>
+        <div class="prompt-box">Du bist ein Research Agent. Deine Aufgabe: Web-Recherche über Perplexity,
+Briefings als HTML erstellen, auf dem Dashboard verlinken, git push.
+Alle Briefings nach /home/hartner/dashboard/briefings/YYYY-MM-DD-&lt;type&gt;.html.
+Airbnb-Style Design.
+Nach jedem Briefing: Link in index.html updaten + git push.</div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Context Files</div>
+        <div class="field-value" style="color:#aaa;font-size:13px;font-style:italic;">Keine spezifischen — arbeitet mit Web-Quellen</div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Skills</div>
+        <div class="pill-list">
+          <span class="pill pill-skill">dashboard-update</span>
+          <span class="pill pill-skill">rss-news</span>
+          <span class="pill pill-skill">web_search</span>
+          <span class="pill pill-skill">web_fetch</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Sub-Agents</div>
+        <div class="pill-list">
+          <span class="pill pill-agent">Sonnet 4.6 (HTML-Generierung)</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Typische Tasks</div>
+        <div class="pill-list">
+          <span class="pill pill-task">Marktrecherche</span>
+          <span class="pill pill-task">Wettbewerbs-Analyse</span>
+          <span class="pill pill-task">Tech-Briefings</span>
+          <span class="pill pill-task">Podcast Summaries</span>
+          <span class="pill pill-task">Iran / Geopolitik</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">⚙️ Operations Topic</div>
+
+  <!-- 6. Security -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🔒</div>
+      <div class="card-title-area">
+        <div class="card-title">Security</div>
+        <div class="card-meta">
+          <span class="badge badge-ops">Operations</span>
+          <span style="font-size:12px;color:#888;">Raspberry Pi 5 · Debian Trixie</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-field full-width">
+        <div class="field-label">System Prompt</div>
+        <div class="prompt-box">Du bist für die Security des Raspberry Pi 5 (Debian Trixie) und der
+OpenClaw-Installation zuständig.
+Tailscale IP: 100.73.197.68 | LAN: 192.168.2.172
+SSH nur über Tailscale (ListenAddress 100.73.197.68). UFW aktiv.
+Prüfe regelmäßig: offene Ports, SSH-Config, Firewall, Updates,
+Logs auf verdächtige Aktivitäten.</div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Context Files</div>
+        <div class="pill-list">
+          <span class="pill pill-file">SECURITY.md</span>
+          <span class="pill pill-file">SECURITY-RUNBOOK.md</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Skills</div>
+        <div class="pill-list">
+          <span class="pill pill-skill">healthcheck</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Sub-Agents</div>
+        <div class="pill-list">
+          <span class="pill pill-agent">Security Auditor (Sonnet 4.6)</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Typische Tasks</div>
+        <div class="pill-list">
+          <span class="pill pill-task">Security Audits</span>
+          <span class="pill pill-task">SSH Hardening</span>
+          <span class="pill pill-task">Firewall-Checks</span>
+          <span class="pill pill-task">Update-Management</span>
+          <span class="pill pill-task">Incident Response</span>
+          <span class="pill pill-task">Log-Analyse</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">🌿 Lifestyle / Tracking Topic</div>
+
+  <!-- 7. Fitness -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🚴</div>
+      <div class="card-title-area">
+        <div class="card-title">Fitness</div>
+        <div class="card-meta">
+          <span class="badge badge-lifestyle">Lifestyle / Tracking</span>
+          <span style="font-size:12px;color:#888;">Ziel: Eschborn-Frankfurt · 1. Mai 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-field full-width">
+        <div class="field-label">System Prompt</div>
+        <div class="prompt-box">Du trackst Daniels Fitness und Radsport-Training.
+Ziel: Eschborn-Frankfurt am 1. Mai 2026 (~90km).
+FTP ~225W | 76kg | 39 Jahre | 3-4h/Woche Training.
+Strava API für Aktivitäten.
+Erstelle Post-Ride Reports und wöchentliche Trainings-Summaries.</div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Context Files</div>
+        <div class="pill-list">
+          <span class="pill pill-file">memory/fitness-bike.md</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Skills</div>
+        <div class="pill-list">
+          <span class="pill pill-skill">strava</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Sub-Agents</div>
+        <div class="field-value" style="color:#aaa;font-size:13px;font-style:italic;">Keine — direkter Agent</div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Typische Tasks</div>
+        <div class="pill-list">
+          <span class="pill pill-task">Post-Ride Reports</span>
+          <span class="pill pill-task">Wöchentliche Summaries</span>
+          <span class="pill pill-task">Ernährungs-Tipps</span>
+          <span class="pill pill-task">Rennvorbereitung</span>
+          <span class="pill pill-task">Trainingsplan</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">💬 Hauptkanal (bleibt separater 1:1 DM)</div>
+
+  <!-- 8. Hatti -->
+  <div class="card hauptkanal">
+    <div class="card-header">
+      <div class="card-icon">💬</div>
+      <div class="card-title-area">
+        <div class="card-title">Hatti</div>
+        <div class="card-meta">
+          <span class="badge badge-main">Hauptkanal · 1:1 DM</span>
+          <span style="font-size:12px;color:#880E4F;font-weight:500;">⚠️ KEIN Topic — bleibt separater Chat</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-field full-width">
+        <div class="field-label">Beschreibung</div>
+        <div class="field-value">Der bestehende 1:1 DM Chat bleibt unverändert als Hauptkanal für alles Spontane, Cross-Cutting, Persönliches und Quick Tasks. Voller AGENTS.md, SOUL.md, USER.md, MEMORY.md Kontext — keine Einschränkungen.</div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Context</div>
+        <div class="pill-list">
+          <span class="pill pill-file">AGENTS.md</span>
+          <span class="pill pill-file">SOUL.md</span>
+          <span class="pill pill-file">USER.md</span>
+          <span class="pill pill-file">MEMORY.md</span>
+        </div>
+      </div>
+      <div class="card-field">
+        <div class="field-label">Skills</div>
+        <div class="field-value" style="font-size:13px;font-weight:600;color:#C62828;">Alle verfügbaren Skills</div>
+      </div>
+      <div class="card-field full-width">
+        <div class="field-label">Typische Tasks</div>
+        <div class="pill-list">
+          <span class="pill pill-task">Ad-hoc Fragen</span>
+          <span class="pill pill-task">Email-Drafts</span>
+          <span class="pill pill-task">Kalender</span>
+          <span class="pill pill-task">Leads</span>
+          <span class="pill pill-task">Ideen</span>
+          <span class="pill pill-task">Alles ohne Projekt-Zuordnung</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Config -->
+  <div class="section-label">⚙️ OpenClaw Config — Beispiel</div>
+  <div class="config-section">
+    <h2>JSON5-Konfiguration (vereinfacht)</h2>
+    <div class="code-block"><span class="code-comment">// openclaw.config.json5 — Telegram Forum Group Topics</span>
+channels: {
+  telegram: {
+    groups: {
+      <span class="code-key">"-1003673489753"</span>: {
+        topics: {
+          <span class="code-key">"&lt;threadId-modulai&gt;"</span>: {
+            requireMention: <span class="code-bool">false</span>,
+            systemPrompt: <span class="code-str">"Du arbeitest am ModulAI Projekt..."</span>,
+            allowFrom: [<span class="code-str">"485318478"</span>],
+            contextFiles: [<span class="code-str">"CLAUDE.md"</span>, <span class="code-str">"knowledge.md"</span>]
+          },
+          <span class="code-key">"&lt;threadId-architekt&gt;"</span>: {
+            requireMention: <span class="code-bool">false</span>,
+            systemPrompt: <span class="code-str">"Du arbeitest am Architekt Connect Projekt..."</span>,
+            allowFrom: [<span class="code-str">"485318478"</span>]
+          },
+          <span class="code-key">"&lt;threadId-bpp&gt;"</span>: {
+            requireMention: <span class="code-bool">false</span>,
+            systemPrompt: <span class="code-str">"Du arbeitest am BPP CRM Projekt..."</span>,
+            allowFrom: [<span class="code-str">"485318478"</span>]
+          },
+          <span class="code-key">"&lt;threadId-concord&gt;"</span>: {
+            requireMention: <span class="code-bool">false</span>,
+            systemPrompt: <span class="code-str">"Du arbeitest am Concord Projekt..."</span>,
+            allowFrom: [<span class="code-str">"485318478"</span>]
+          },
+          <span class="code-key">"&lt;threadId-research&gt;"</span>: {
+            requireMention: <span class="code-bool">false</span>,
+            systemPrompt: <span class="code-str">"Du bist ein Research Agent..."</span>,
+            allowFrom: [<span class="code-str">"485318478"</span>]
+          },
+          <span class="code-key">"&lt;threadId-security&gt;"</span>: {
+            requireMention: <span class="code-bool">false</span>,
+            systemPrompt: <span class="code-str">"Du bist für die Security zuständig..."</span>,
+            allowFrom: [<span class="code-str">"485318478"</span>]
+          },
+          <span class="code-key">"&lt;threadId-fitness&gt;"</span>: {
+            requireMention: <span class="code-bool">false</span>,
+            systemPrompt: <span class="code-str">"Du trackst Daniels Fitness..."</span>,
+            allowFrom: [<span class="code-str">"485318478"</span>]
+          }
+        }
+      }
+    }
+  }
+}</div>
+  </div>
+
+  <!-- Next Steps -->
+  <div class="section-label">🗺️ Nächste Schritte</div>
+  <div class="checklist-section">
+    <h2>Setup-Checklist</h2>
+    <ul class="checklist">
+      <li>
+        <div class="step-num">1</div>
+        <div>Daniel schickt eine Nachricht in jedes Topic → <strong>Thread-IDs erfassen</strong> und in der Config eintragen</div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div>Pro Topic: <strong>System Prompt + Context Files</strong> in der OpenClaw Config eintragen (siehe JSON5-Beispiel oben)</div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div><strong>CLAUDE.md</strong> in jedem Repo prüfen/erstellen — das ist der primäre Kontext-Einstieg für Coding-Agents</div>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <div><strong>Testen:</strong> In jedem Topic eine einfache Aufgabe stellen, prüfen ob der richtige Kontext greift</div>
+      </li>
+      <li>
+        <div class="step-num">5</div>
+        <div><strong>Feintuning:</strong> Skills pro Topic einschränken wenn nötig — weniger ist mehr für fokussierte Sessions</div>
+      </li>
+    </ul>
+  </div>
+
+  <footer>
+    Erstellt von Hatti 🏔️ · 5. März 2026 · OpenClaw Dashboard
+  </footer>
+
+</div>
+</body>
+</html>

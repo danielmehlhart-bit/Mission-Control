@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eintracht Briefing - 8. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #e60026, #ff4d6d);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            margin-bottom: 25px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .card-header {
+            padding: 20px 25px 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .card-title a {
+            color: #2c3e50;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .card-title a:hover {
+            color: #e60026;
+        }
+        
+        .card-meta {
+            font-size: 0.9rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card-content {
+            padding: 20px 25px 25px;
+            font-size: 1.05rem;
+            color: #555;
+            line-height: 1.7;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #e60026;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .emoji {
+            font-size: 1.2rem;
+            margin-right: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                margin-bottom: 20px;
+            }
+            
+            .card-header,
+            .card-content {
+                padding: 15px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>⚽ Eintracht Briefing</h1>
+            <p>Samstag, 7. März 2026 — Alle News aus Frankfurt</p>
+        </header>
+
+        <article class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/holt-eintracht-frankfurt-nach-burkardt-naechsten-neuzugang-vom-fsv-mainz-05-94206394.html" target="_blank">
+                        Holt Eintracht Frankfurt nach Burkardt den nächsten Neuzugang vom FSV Mainz 05?
+                    </a>
+                </h2>
+                <div class="card-meta">
+                    <span class="emoji">🔄</span>
+                    <span>Transfer • 16:53</span>
+                    <span class="badge">Paul Nebel</span>
+                </div>
+            </div>
+            <div class="card-content">
+                Paul Nebel vom FSV Mainz 05 steht im Fokus der Eintracht — der 23-jährige Offensivspieler wäre eine ideale Verstärkung für Albert Rieras flexibles System. Mit zehn Toren und sechs Vorlagen hatte er großen Anteil an Mainz' Conference-League-Qualifikation. Marktwert: 18 Millionen Euro, Vertrag bis 2027.
+            </div>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-kapitaen-robin-koch-ist-der-herr-der-luefte-zr-94205792.html" target="_blank">
+                        Eintracht-Kapitän Robin Koch ist der Herr der Lüfte
+                    </a>
+                </h2>
+                <div class="card-meta">
+                    <span class="emoji">👑</span>
+                    <span>Analyse • 08:00</span>
+                    <span class="badge">Nationalteam</span>
+                </div>
+            </div>
+            <div class="card-content">
+                Koch überzeugt mit neuer Stabilität unter Riera — in drei Spielen nur ein Gegentor kassiert, 95% Passquote bei 70+ Zuspielen pro Partie. Der Kapitän zeigt auch abseits des Platzes Führungsqualitäten (Spende an Kinderhospiz). Reicht es noch für die WM-Nominierung durch Nagelsmann?
+            </div>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-trainer-riera-ueberrascht-mit-xavi-vergleich-zr-94206240.html" target="_blank">
+                        Eintracht-Trainer Riera überrascht plötzlich mit Xavi-Vergleich
+                    </a>
+                </h2>
+                <div class="card-meta">
+                    <span class="emoji">💬</span>
+                    <span>Pressekonferenz • 12:47</span>
+                    <span class="badge">St. Pauli</span>
+                </div>
+            </div>
+            <div class="card-content">
+                Albert Riera nutzt Xavi als Paradebeispiel für die Bedeutung des Spiels ohne Ball vor dem St. Pauli-Duell. Der Trainer betont die Wichtigkeit defensiver Stabilität und zeigt mit dem Barcelona-Weltstar auf, wie Weltklasse-Fußball auch ohne spektakuläre Offensivaktionen funktioniert.
+            </div>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/der-bundesliga-europa-league-held-der-eintracht-ist-mittlerweile-teilzeitkraft-im-abstiegskampf-94206010.html" target="_blank">
+                        Europa-League-Held der Eintracht ist mittlerweile Teilzeitkraft im Abstiegskampf
+                    </a>
+                </h2>
+                <div class="card-meta">
+                    <span class="emoji">😔</span>
+                    <span>Ex-Spieler • 07:00</span>
+                    <span class="badge">Christopher Lenz</span>
+                </div>
+            </div>
+            <div class="card-content">
+                Christopher Lenz, Europa-League-Sieger von 2022, kämpft mit Fortuna Düsseldorf um den Klassenerhalt in der 2. Bundesliga. Der 31-jährige Linksverteidiger kommt nur noch sporadisch zum Einsatz — bislang elf Spiele, meist Kurzeinsätze, nach einem Muskelfaserriss.
+            </div>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-leihspieler-auch-bei-neuem-verein-auf-dem-abstellgleis-94206009.html" target="_blank">
+                        Eintracht-Leihspieler auch bei neuem Verein auf dem Abstellgleis
+                    </a>
+                </h2>
+                <div class="card-meta">
+                    <span class="emoji">🇮🇹</span>
+                    <span>Leihe • 06:00</span>
+                    <span class="badge">Nkounkou</span>
+                </div>
+            </div>
+            <div class="card-content">
+                Niels Nkounkou kämpft auch beim FC Turin um Spielzeit — nur acht Serie A-Einsätze, keine Torbeteiligung. Der französische Linksverteidiger steht sowohl in Frankfurt als auch in Italien auf dem Abstellgleis. Leihvertrag läuft noch bis Juni 2026.
+            </div>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/fc-st-pauli-empfaengt-eintracht-frankfurt-wo-das-spiel-live-uebertragen-wird-zr-94206383.html" target="_blank">
+                        FC St. Pauli empfängt Eintracht Frankfurt: Wo das Spiel live übertragen wird
+                    </a>
+                </h2>
+                <div class="card-meta">
+                    <span class="emoji">📺</span>
+                    <span>TV-Info • 16:40</span>
+                    <span class="badge">25. Spieltag</span>
+                </div>
+            </div>
+            <div class="card-content">
+                Am Sonntag (heute) um 15:30 Uhr gastiert die Eintracht beim FC St. Pauli am Millerntor. Beide Teams reisen mit Rückenwind an — St. Pauli nach Siegen gegen Bremen und Hoffenheim, die SGE nach dem 2:0 gegen Freiburg. Im Hinspiel gewann Frankfurt dank Burkardt-Doppelpack.
+            </div>
+        </article>
+
+        <footer class="footer">
+            ⚽ Automatisches Briefing — Erstellt von Hatti 🏔️<br>
+            Quelle: Frankfurter Rundschau (FR.de)
+        </footer>
+    </div>
+</body>
+</html>

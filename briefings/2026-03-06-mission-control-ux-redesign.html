@@ -1,0 +1,2072 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mission Control — UX Redesign Mockup</title>
+<!--
+  MISSION CONTROL — UX REDESIGN MOCKUP
+  =====================================
+  Author: Hatti (Senior UX/UI perspective)
+  Date: 2026-03-06
+  
+  CHANGES vs. OLD DESIGN:
+  - Removed left sidebar (220px wasted) → Top Nav bar (52px)
+  - Full-width content area gained ~220px horizontal space
+  - Docs: Resizable split pane (drag handle) replaces fixed 200px list
+  - Warmer dark palette: #0d0f12 base vs. cold slate-950
+  - Better type hierarchy: Inter, larger headings, smaller body in muted
+  - Cards: 12px radius, subtle border, soft shadow
+  - Nav active: pill highlight, no "Active" badge
+  - Mobile: icon-only nav + hamburger
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===================================
+   DESIGN TOKENS
+   =================================== */
+:root {
+  /* Background layers — warmer than cold slate */
+  --bg-base:     #0d0f12;   /* was: slate-950 (#020617) — warmer, less blue-black */
+  --bg-surface:  #141720;   /* card / panel backgrounds */
+  --bg-elevated: #1a1d27;   /* hover states, dropdowns */
+  --bg-overlay:  #1e2330;   /* modals, popovers */
+
+  /* Borders — subtle, not harsh */
+  --border:      #1e2128;   /* was: slate-800 — softer separation */
+  --border-muted:#16191f;
+
+  /* Text hierarchy */
+  --text-primary:   #f0f2f5;   /* headings, primary labels */
+  --text-secondary: #8b90a0;   /* secondary labels, dates */
+  --text-muted:     #4a5068;   /* placeholder, disabled */
+
+  /* Accent — Emerald stays */
+  --accent:      #10B981;
+  --accent-dim:  rgba(16, 185, 129, 0.12);
+  --accent-glow: rgba(16, 185, 129, 0.25);
+
+  /* Status */
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger:  #EF4444;
+  --info:    #3B82F6;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius:    12px;   /* was: 8px — slightly rounder, friendlier */
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* Shadow — soft, warm-tinted */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
+  --shadow:    0 4px 12px rgba(0,0,0,0.45), 0 2px 4px rgba(0,0,0,0.3);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.4);
+
+  /* Top Nav height */
+  --nav-h: 52px;
+}
+
+/* ===================================
+   RESET & BASE
+   =================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===================================
+   TOP NAVIGATION BAR
+   UX: Replaces 220px left sidebar → full-width content
+   Height: 52px (not too tall, not cramped)
+   =================================== */
+.top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: rgba(13, 15, 18, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 0;
+  z-index: 100;
+}
+
+/* Logo — left anchor */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-primary);
+  text-decoration: none;
+  margin-right: 28px;
+  flex-shrink: 0;
+}
+.nav-logo-icon {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, var(--accent) 0%, #059669 100%);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.nav-logo-text { letter-spacing: -0.3px; }
+.nav-logo-text span { color: var(--accent); }
+
+/* Nav items — horizontal list */
+.nav-items {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  border: none;
+  background: none;
+  text-decoration: none;
+}
+.nav-item:hover {
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+}
+/* UX: Pill-Hintergrund statt "Active" Badge — klarer, cleaner */
+.nav-item.active {
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  box-shadow: 0 0 0 1px var(--border);
+}
+.nav-item.active .nav-icon { color: var(--accent); }
+
+.nav-icon { font-size: 15px; }
+
+/* Right side: user + status */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent-glow);
+  animation: pulse 2.5s ease infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--accent-glow); }
+  50% { opacity: 0.7; box-shadow: 0 0 12px var(--accent-glow); }
+}
+
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 4px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.user-badge:hover { background: var(--bg-elevated); }
+.user-avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366F1, var(--accent));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: white;
+}
+.user-name { font-size: 12.5px; font-weight: 500; }
+
+/* ===================================
+   MAIN CONTENT AREA
+   =================================== */
+.app-body {
+  margin-top: var(--nav-h);
+  height: calc(100vh - var(--nav-h));
+  overflow: hidden;
+}
+
+/* Screen switching */
+.screen { display: none; height: 100%; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* ===================================
+   HOME SCREEN
+   =================================== */
+#screen-home {
+  overflow-y: auto;
+  padding: 32px 40px 48px;
+}
+
+/* Hero — UX: gibt dem Dashboard Persönlichkeit und Kontext */
+.home-hero {
+  margin-bottom: 28px;
+}
+.hero-greeting {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+.hero-weather {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px 3px 7px;
+  font-size: 13px;
+}
+
+/* Stat Cards — 3er Row */
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.stat-card:hover {
+  border-color: rgba(16, 185, 129, 0.25);
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
+}
+.stat-card:hover::before { opacity: 1; }
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-sub {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+.stat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--accent-dim);
+  color: var(--accent);
+  margin-left: auto;
+}
+
+/* Quick Access Row */
+.quick-access {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+.quick-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: var(--radius);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+  text-decoration: none;
+}
+.quick-btn-primary {
+  background: var(--accent);
+  color: #000;
+}
+.quick-btn-primary:hover { background: #0ea271; }
+.quick-btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+.quick-btn-secondary:hover { background: var(--bg-elevated); border-color: rgba(16,185,129,0.3); }
+
+/* Section Headers */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+.section-link {
+  font-size: 12.5px;
+  color: var(--accent);
+  cursor: pointer;
+  text-decoration: none;
+}
+.section-link:hover { text-decoration: underline; }
+
+/* Briefing Cards Grid — UX: Bigger cards, mehr Kontext sichtbar */
+.briefing-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.briefing-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.briefing-card:hover {
+  border-color: rgba(16,185,129,0.3);
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
+}
+.bc-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.bc-icon {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.bc-meta {
+  flex: 1;
+  min-width: 0;
+}
+.bc-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+  /* UX: No more truncation on cards! Full title visible */
+  line-height: 1.35;
+}
+.bc-date {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+.bc-snippet {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.new-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--accent-dim);
+  color: var(--accent);
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+
+/* ===================================
+   DOCS SCREEN — SPLIT PANE
+   UX: Die Hauptverbesserung. Volle Breite, resizable.
+   =================================== */
+#screen-docs {
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Filter chips */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  flex-shrink: 0;
+  scrollbar-width: none;
+}
+.filter-bar::-webkit-scrollbar { display: none; }
+
+.filter-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.filter-chip:hover {
+  color: var(--text-primary);
+  border-color: var(--accent);
+}
+.filter-chip.active {
+  color: var(--accent);
+  background: var(--accent-dim);
+  border-color: rgba(16,185,129,0.4);
+}
+.filter-count {
+  font-size: 10.5px;
+  background: var(--bg-elevated);
+  padding: 1px 5px;
+  border-radius: var(--radius-pill);
+  color: var(--text-muted);
+}
+.filter-chip.active .filter-count {
+  background: rgba(16,185,129,0.2);
+  color: var(--accent);
+}
+
+/* Split pane container */
+.split-pane {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* LEFT PANEL — Briefings list */
+.pane-list {
+  width: 280px;   /* default — UX: 80px wider than old 200px */
+  min-width: 180px;
+  max-width: 450px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.list-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.list-header-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.list-count {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+}
+
+.list-items {
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.list-items::-webkit-scrollbar { width: 4px; }
+.list-items::-webkit-scrollbar-track { background: transparent; }
+.list-items::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* UX: Kompaktere List Items vs. altes Design */
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-muted);
+  transition: background 0.1s;
+  position: relative;
+}
+.list-item:hover { background: var(--bg-elevated); }
+.list-item.selected {
+  background: var(--accent-dim);
+}
+.list-item.selected::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--accent);
+  border-radius: 0 2px 2px 0;
+}
+
+.li-emoji {
+  font-size: 17px;
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
+}
+.li-content { flex: 1; min-width: 0; }
+.li-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  /* UX: Kein truncate in der Liste wenn Platz da ist */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.li-date {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.li-badge-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* DRAG HANDLE
+   UX: Visueller Gripper, cursor col-resize, hover feedback */
+.drag-handle {
+  width: 4px;
+  background: var(--border);
+  cursor: col-resize;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.drag-handle:hover, .drag-handle.dragging {
+  background: rgba(16,185,129,0.4);
+}
+.drag-gripper {
+  position: absolute;
+  width: 20px;
+  height: 40px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: -1px;
+  transition: all 0.15s;
+  pointer-events: none;
+  box-shadow: var(--shadow-sm);
+}
+.drag-handle:hover .drag-gripper {
+  color: var(--accent);
+  border-color: rgba(16,185,129,0.4);
+  background: var(--bg-overlay);
+}
+
+/* RIGHT PANEL — Preview
+   UX: Weißer Hintergrund für HTML-Briefings (lesbar!) */
+.pane-preview {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.preview-header {
+  padding: 11px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  background: var(--bg-surface);
+}
+.preview-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+  min-width: 0;
+}
+.preview-actions {
+  display: flex;
+  gap: 6px;
+}
+.preview-btn {
+  padding: 5px 11px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  transition: all 0.15s;
+}
+.preview-btn:hover { color: var(--text-primary); border-color: var(--accent); }
+
+.preview-frame {
+  flex: 1;
+  overflow: hidden;
+  background: #fff;  /* UX: Weißer Hintergrund für HTML-Content */
+  position: relative;
+}
+
+/* Simulated HTML preview content */
+.preview-content {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 32px 40px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #1a1a2e;
+}
+.preview-content h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0d0f1a;
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+.preview-content .preview-date {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 20px;
+}
+.preview-content p { margin-bottom: 14px; color: #333; }
+.preview-content ul { padding-left: 20px; margin-bottom: 14px; }
+.preview-content ul li { margin-bottom: 6px; color: #333; }
+.preview-content h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0d0f1a;
+  margin: 20px 0 8px;
+}
+.preview-content .highlight-box {
+  background: #f0fdf4;
+  border-left: 3px solid #10B981;
+  padding: 12px 16px;
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0;
+  color: #065f46;
+  font-size: 13.5px;
+}
+
+/* Empty state */
+.preview-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  gap: 10px;
+  background: var(--bg-base);
+}
+.preview-empty-icon { font-size: 36px; opacity: 0.4; }
+.preview-empty-text { font-size: 13px; }
+
+/* ===================================
+   TASKS SCREEN
+   =================================== */
+#screen-tasks {
+  overflow-y: auto;
+  padding: 28px 40px;
+}
+
+.tasks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.tasks-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+}
+
+.task-group { margin-bottom: 24px; }
+.task-group-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  padding-left: 2px;
+}
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.task-item:hover { border-color: rgba(16,185,129,0.25); background: var(--bg-elevated); }
+.task-check {
+  width: 18px; height: 18px;
+  border-radius: 5px;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.task-item:hover .task-check { border-color: var(--accent); }
+.task-item.done .task-check {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.task-item.done .task-check::after {
+  content: '✓';
+  color: #000;
+  font-size: 11px;
+  font-weight: 700;
+}
+.task-text {
+  flex: 1;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+.task-item.done .task-text {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+.task-tag {
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+}
+.task-priority-high { border-left: 3px solid var(--danger) !important; }
+.task-priority-medium { border-left: 3px solid var(--warning) !important; }
+.task-due {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* ===================================
+   BEFORE / AFTER SECTION
+   =================================== */
+#screen-compare {
+  overflow-y: auto;
+  padding: 32px 40px;
+}
+
+.compare-intro {
+  margin-bottom: 28px;
+}
+.compare-intro h2 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  margin-bottom: 8px;
+}
+.compare-intro p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.compare-panel {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.compare-panel-header {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.compare-panel.before .compare-panel-header {
+  background: rgba(239, 68, 68, 0.1);
+  border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+  color: #EF4444;
+}
+.compare-panel.after .compare-panel-header {
+  background: rgba(16, 185, 129, 0.1);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+  color: var(--accent);
+}
+
+/* Before: Simulates old sidebar layout */
+.old-layout {
+  display: flex;
+  height: 260px;
+  background: #020617;
+  overflow: hidden;
+}
+.old-sidebar {
+  width: 220px;
+  background: #0f172a;
+  border-right: 1px solid #1e293b;
+  padding: 12px 0;
+  flex-shrink: 0;
+}
+.old-nav-item {
+  padding: 8px 14px;
+  font-size: 12px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.old-nav-item.active-item { background: #1e293b; color: #f1f5f9; }
+.old-nav-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #475569; padding: 8px 14px 4px; }
+.old-list { width: 200px; border-right: 1px solid #1e293b; flex-shrink: 0; overflow: hidden; }
+.old-list-item { padding: 8px 10px; border-bottom: 1px solid #0f172a; }
+.old-list-title { font-size: 11px; color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.old-list-date { font-size: 10px; color: #64748b; margin-top: 2px; }
+.old-preview { flex: 1; background: #0f172a; padding: 10px; }
+.old-preview-text { font-size: 10px; color: #94a3b8; line-height: 1.5; }
+
+.problem-list {
+  padding: 12px 16px;
+  background: var(--bg-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.problem-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+.problem-icon { color: var(--danger); flex-shrink: 0; font-size: 13px; }
+.improvement-icon { color: var(--accent); flex-shrink: 0; font-size: 13px; }
+
+/* New layout preview */
+.new-layout {
+  height: 260px;
+  background: var(--bg-base);
+  overflow: hidden;
+}
+.new-topnav-preview {
+  height: 36px;
+  background: rgba(13,15,18,0.95);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 16px;
+}
+.preview-logo { font-size: 11px; font-weight: 700; color: var(--accent); }
+.preview-nav-items { display: flex; gap: 4px; }
+.preview-nav-item { font-size: 10px; color: var(--text-secondary); padding: 3px 8px; border-radius: 20px; }
+.preview-nav-item.act { background: var(--bg-elevated); color: var(--text-primary); }
+.new-content-preview {
+  display: flex;
+  height: calc(260px - 36px);
+}
+.new-list-preview {
+  width: 180px;
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+}
+.new-list-preview-item {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.nlpi-emoji { font-size: 13px; }
+.nlpi-content {}
+.nlpi-title { font-size: 11px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 130px; }
+.nlpi-date { font-size: 9.5px; color: var(--text-secondary); }
+.new-preview-area {
+  flex: 1;
+  background: #fff;
+  padding: 12px;
+  overflow: hidden;
+}
+.new-preview-area h3 { font-size: 12px; font-weight: 700; color: #111; margin-bottom: 6px; }
+.new-preview-area p { font-size: 10px; color: #555; line-height: 1.5; }
+
+/* Changelog table */
+.changelog {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.changelog-title {
+  padding: 14px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.changelog-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 1fr;
+  gap: 16px;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--border-muted);
+  font-size: 13px;
+}
+.changelog-row:last-child { border-bottom: none; }
+.changelog-cat {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 11.5px;
+}
+.changelog-old { color: #ef4444; }
+.changelog-new { color: var(--accent); }
+
+/* ===================================
+   MOBILE HINT
+   =================================== */
+.mobile-section {
+  margin-top: 32px;
+}
+.mobile-phones {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.phone-frame {
+  width: 200px;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--bg-base);
+  box-shadow: var(--shadow-lg);
+}
+.phone-status {
+  height: 24px;
+  background: var(--bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  font-size: 9px;
+  color: var(--text-secondary);
+}
+.phone-nav {
+  height: 44px;
+  background: rgba(13,15,18,0.95);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  justify-content: space-between;
+}
+.phone-nav-icon { font-size: 16px; }
+.phone-nav-icons { display: flex; gap: 14px; }
+.phone-body { min-height: 280px; padding: 12px; }
+.phone-hero { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.phone-meta { font-size: 10px; color: var(--text-secondary); margin-bottom: 12px; }
+.phone-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 7px;
+}
+.phone-card-emoji { font-size: 16px; margin-bottom: 4px; }
+.phone-card-title { font-size: 11px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+.phone-card-meta { font-size: 9.5px; color: var(--text-secondary); }
+.phone-list-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border-muted);
+}
+.pli-emoji { font-size: 14px; }
+.pli-title { font-size: 11px; font-weight: 500; }
+.pli-date { font-size: 9.5px; color: var(--text-secondary); }
+.phone-label {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+/* ===================================
+   UTILITY / SCROLL
+   =================================== */
+#screen-home, #screen-tasks, #screen-compare {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+#screen-home::-webkit-scrollbar,
+#screen-tasks::-webkit-scrollbar,
+#screen-compare::-webkit-scrollbar { width: 6px; }
+#screen-home::-webkit-scrollbar-thumb,
+#screen-tasks::-webkit-scrollbar-thumb,
+#screen-compare::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 6px;
+}
+
+/* ===================================
+   MOBILE RESPONSIVE
+   UX: Icon-only nav, no split pane
+   =================================== */
+@media (max-width: 640px) {
+  .nav-item .nav-label { display: none; }
+  .nav-item { padding: 8px; }
+  .nav-logo-text { display: none; }
+  .user-name { display: none; }
+  .stat-cards { grid-template-columns: 1fr; }
+  .briefing-cards { grid-template-columns: 1fr; }
+  #screen-home, #screen-tasks { padding: 16px; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .quick-access { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===========================
+     TOP NAVIGATION BAR
+     UX WHY: Sidebar (220px) entfernt → +220px horizontaler Platz für Content.
+     52px hoch = genug Platz für Klickziele, nicht zu groß.
+     Pill-Active-State: moderner als "Active" Badge.
+     =========================== -->
+<nav class="top-nav">
+  <!-- Logo -->
+  <a class="nav-logo" onclick="return false;">
+    <div class="nav-logo-icon">🎛️</div>
+    <span class="nav-logo-text">Mission<span>Control</span></span>
+  </a>
+
+  <!-- Navigation Items — horizontal statt vertikal -->
+  <div class="nav-items">
+    <button class="nav-item active" onclick="switchScreen('home', this)">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Home</span>
+    </button>
+    <button class="nav-item" onclick="switchScreen('tasks', this)">
+      <span class="nav-icon">✅</span>
+      <span class="nav-label">Tasks</span>
+    </button>
+    <button class="nav-item" onclick="switchScreen('docs', this)">
+      <span class="nav-icon">📄</span>
+      <span class="nav-label">Docs</span>
+    </button>
+    <button class="nav-item" onclick="switchScreen('compare', this)">
+      <span class="nav-icon">🔍</span>
+      <span class="nav-label">Before/After</span>
+    </button>
+    <button class="nav-item" style="opacity:0.5; cursor:default;">
+      <span class="nav-icon">🧠</span>
+      <span class="nav-label">Memory</span>
+    </button>
+    <button class="nav-item" style="opacity:0.5; cursor:default;">
+      <span class="nav-icon">⏰</span>
+      <span class="nav-label">Cron</span>
+    </button>
+    <button class="nav-item" style="opacity:0.5; cursor:default;">
+      <span class="nav-icon">🏔️</span>
+      <span class="nav-label">Hatti</span>
+    </button>
+  </div>
+
+  <!-- Right side -->
+  <div class="nav-right">
+    <div class="status-indicator">
+      <div class="status-dot"></div>
+      <span style="display:none" class="status-text">Online</span>
+    </div>
+    <div class="user-badge">
+      <div class="user-avatar">DM</div>
+      <span class="user-name">Daniel</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ===========================
+     APP BODY
+     =========================== -->
+<div class="app-body">
+
+  <!-- =======================
+       HOME SCREEN
+       ======================= -->
+  <div id="screen-home" class="screen active">
+
+    <!-- Hero — UX: Kontext + Willkommen, macht das Dashboard persönlich -->
+    <div class="home-hero">
+      <div class="hero-greeting">Guten Morgen, Daniel. 👋</div>
+      <div class="hero-meta">
+        <span>Donnerstag, 6. März 2026</span>
+        <div class="hero-weather">
+          🌤️ <span>9°C · Oberursel</span>
+        </div>
+        <span style="color: var(--text-muted)">KW 10</span>
+      </div>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="stat-cards">
+      <div class="stat-card" onclick="switchScreen('docs', document.querySelector('[onclick*=docs]'))">
+        <div class="stat-label">
+          <span>📄</span> Neue Briefings
+          <span class="stat-badge">+3 heute</span>
+        </div>
+        <div class="stat-value">12</div>
+        <div class="stat-sub">3 ungelesen · Letztes: 08:14 Uhr</div>
+      </div>
+      <div class="stat-card" onclick="switchScreen('tasks', document.querySelector('[onclick*=tasks]'))">
+        <div class="stat-label">
+          <span>✅</span> Offene Tasks
+          <span class="stat-badge" style="background: rgba(245,158,11,0.12); color: #F59E0B;">2 fällig</span>
+        </div>
+        <div class="stat-value">7</div>
+        <div class="stat-sub">2 heute fällig · 5 diese Woche</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          <span>📅</span> Nächster Termin
+        </div>
+        <div class="stat-value" style="font-size: 20px; margin-top:4px; letter-spacing: -0.3px;">14:30</div>
+        <div class="stat-sub">Weekly Sync · Raum 3.2 · in 4h 20min</div>
+      </div>
+    </div>
+
+    <!-- Quick Access — UX: Die 3 häufigsten Aktionen, prominente CTAs -->
+    <div class="quick-access">
+      <button class="quick-btn quick-btn-primary">
+        ✚ Task erstellen
+      </button>
+      <button class="quick-btn quick-btn-secondary" onclick="switchScreen('docs', document.querySelector('[onclick*=docs]'))">
+        💬 Hatti fragen
+      </button>
+      <button class="quick-btn quick-btn-secondary" onclick="switchScreen('docs', document.querySelector('[onclick*=docs]'))">
+        📄 Briefings öffnen
+      </button>
+    </div>
+
+    <!-- Recent Briefings -->
+    <div class="section-header">
+      <div class="section-title">Neueste Briefings</div>
+      <a class="section-link" onclick="switchScreen('docs', document.querySelector('[onclick*=docs]'))">Alle anzeigen →</a>
+    </div>
+
+    <!-- UX: Größere Cards, vollständige Titel, Snippet sichtbar -->
+    <div class="briefing-cards">
+      <div class="briefing-card" onclick="switchScreen('docs', document.querySelector('[onclick*=docs]'))">
+        <div class="bc-header">
+          <div class="bc-icon">☀️</div>
+          <div class="bc-meta">
+            <div class="bc-title">Morning Briefing — Märkte, Eintracht & KI-News</div>
+            <div class="bc-date">Heute · 08:14 Uhr</div>
+          </div>
+          <span class="new-badge">NEU</span>
+        </div>
+        <div class="bc-snippet">DAX +0.8%, Eintracht-Kader fit für Bundesligaspiel, Anthropic Claude 4 angekündigt...</div>
+      </div>
+
+      <div class="briefing-card" onclick="switchScreen('docs', document.querySelector('[onclick*=docs]'))">
+        <div class="bc-header">
+          <div class="bc-icon">🎙️</div>
+          <div class="bc-meta">
+            <div class="bc-title">Podcast: Alles auf Aktien — Folge 892 Transkript + Zusammenfassung</div>
+            <div class="bc-date">Heute · 07:30 Uhr</div>
+          </div>
+          <span class="new-badge">NEU</span>
+        </div>
+        <div class="bc-snippet">Thema: Small Caps Comeback? Drei Aktien die Welt & Co empfehlen analysiert.</div>
+      </div>
+
+      <div class="briefing-card" onclick="switchScreen('docs', document.querySelector('[onclick*=docs]'))">
+        <div class="bc-header">
+          <div class="bc-icon">🏗️</div>
+          <div class="bc-meta">
+            <div class="bc-title">Projekt-Update: Mission Control Redesign — Entscheidungen & Next Steps</div>
+            <div class="bc-date">Gestern · 19:42 Uhr</div>
+          </div>
+        </div>
+        <div class="bc-snippet">Top Nav beschlossen, Split Pane implementiert, Feedback von Daniel eingearbeitet.</div>
+      </div>
+
+      <div class="briefing-card">
+        <div class="bc-header">
+          <div class="bc-icon">📈</div>
+          <div class="bc-meta">
+            <div class="bc-title">Marktbericht KW 10 — Wochenzusammenfassung mit Ausblick</div>
+            <div class="bc-date">05.03.2026</div>
+          </div>
+        </div>
+        <div class="bc-snippet">US-Inflation schwächer als erwartet. Fed-Pivot Erwartungen steigen. Rohstoffe rauf.</div>
+      </div>
+
+      <div class="briefing-card">
+        <div class="bc-header">
+          <div class="bc-icon">⚽</div>
+          <div class="bc-meta">
+            <div class="bc-title">Eintracht Frankfurt — Analyse Augsburg (2:1) und Vorschau auf Dortmund</div>
+            <div class="bc-date">04.03.2026</div>
+          </div>
+        </div>
+        <div class="bc-snippet">Knappe Geste, aber 3 Punkte. Dodi Lukébakio entscheidend. Dortmund wird schwerer.</div>
+      </div>
+
+      <div class="briefing-card">
+        <div class="bc-header">
+          <div class="bc-icon">🔧</div>
+          <div class="bc-meta">
+            <div class="bc-title">Concord App — Sprint Review & Backlog Grooming Session</div>
+            <div class="bc-date">03.03.2026</div>
+          </div>
+        </div>
+        <div class="bc-snippet">Sprint 3 done. Supabase Edge Functions stabil. Nächstes: Dashboard-Integration.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================
+       DOCS / BRIEFINGS SCREEN
+       ======================= -->
+  <div id="screen-docs" class="screen">
+
+    <!-- Filter Chips — UX: Horizontal statt Sidebar-Kategorien, spart vertikalen Platz -->
+    <div class="filter-bar">
+      <button class="filter-chip active" onclick="setFilter(this)">
+        Alle <span class="filter-count">47</span>
+      </button>
+      <button class="filter-chip" onclick="setFilter(this)">
+        ☀️ Morning <span class="filter-count">18</span>
+      </button>
+      <button class="filter-chip" onclick="setFilter(this)">
+        🎙️ Podcasts <span class="filter-count">9</span>
+      </button>
+      <button class="filter-chip" onclick="setFilter(this)">
+        🏗️ Projekte <span class="filter-count">12</span>
+      </button>
+      <button class="filter-chip" onclick="setFilter(this)">
+        📈 Märkte <span class="filter-count">8</span>
+      </button>
+      <button class="filter-chip" onclick="setFilter(this)">
+        ⚽ Eintracht <span class="filter-count">6</span>
+      </button>
+      <button class="filter-chip" onclick="setFilter(this)">
+        🧠 KI-News <span class="filter-count">11</span>
+      </button>
+      <button class="filter-chip" onclick="setFilter(this)">
+        🔧 Tech <span class="filter-count">7</span>
+      </button>
+    </div>
+
+    <!-- Split Pane — UX: Resizable! Nutzer kann selbst entscheiden wie viel Liste vs. Preview -->
+    <div class="split-pane" id="splitPane">
+
+      <!-- LEFT: Briefings list -->
+      <div class="pane-list" id="paneList">
+        <div class="list-header">
+          <span class="list-header-title">Briefings</span>
+          <span class="list-count">47</span>
+        </div>
+        <div class="list-items">
+          <!-- UX: Emoji links für schnelles Scannen, Datum grau klein, NEU-Badge -->
+          <div class="list-item selected" onclick="selectItem(this, 'morning-0306')">
+            <span class="li-emoji">☀️</span>
+            <div class="li-content">
+              <div class="li-title">Morning Briefing — Märkte, Eintracht & KI-News</div>
+              <div class="li-date">Heute · 08:14</div>
+            </div>
+            <div class="li-badge-area">
+              <span class="new-badge">NEU</span>
+            </div>
+          </div>
+
+          <div class="list-item" onclick="selectItem(this, 'podcast-aaa')">
+            <span class="li-emoji">🎙️</span>
+            <div class="li-content">
+              <div class="li-title">Alles auf Aktien — Folge 892 Digest</div>
+              <div class="li-date">Heute · 07:30</div>
+            </div>
+            <div class="li-badge-area">
+              <span class="new-badge">NEU</span>
+            </div>
+          </div>
+
+          <div class="list-item" onclick="selectItem(this, 'projekt-mc')">
+            <span class="li-emoji">🏗️</span>
+            <div class="li-content">
+              <div class="li-title">Mission Control Redesign — Next Steps</div>
+              <div class="li-date">Gestern · 19:42</div>
+            </div>
+          </div>
+
+          <div class="list-item" onclick="selectItem(this, 'markt-kw10')">
+            <span class="li-emoji">📈</span>
+            <div class="li-content">
+              <div class="li-title">Marktbericht KW 10 — Wochenzusammenfassung</div>
+              <div class="li-date">05.03. · 18:00</div>
+            </div>
+          </div>
+
+          <div class="list-item" onclick="selectItem(this, 'eintracht-augsburg')">
+            <span class="li-emoji">⚽</span>
+            <div class="li-content">
+              <div class="li-title">Eintracht Augsburg (2:1) Analyse + Dortmund Vorschau</div>
+              <div class="li-date">04.03. · 21:30</div>
+            </div>
+          </div>
+
+          <div class="list-item" onclick="selectItem(this, 'concord-sprint')">
+            <span class="li-emoji">🔧</span>
+            <div class="li-content">
+              <div class="li-title">Concord Sprint Review & Backlog Grooming</div>
+              <div class="li-date">03.03. · 16:15</div>
+            </div>
+          </div>
+
+          <div class="list-item" onclick="selectItem(this, 'ki-news-0302')">
+            <span class="li-emoji">🧠</span>
+            <div class="li-content">
+              <div class="li-title">KI-News Digest — Anthropic, OpenAI, Mistral</div>
+              <div class="li-date">03.03. · 09:00</div>
+            </div>
+          </div>
+
+          <div class="list-item" onclick="selectItem(this, 'morning-0302')">
+            <span class="li-emoji">☀️</span>
+            <div class="li-content">
+              <div class="li-title">Morning Briefing — Zinsängste & Tech-Selloff</div>
+              <div class="li-date">03.03. · 07:45</div>
+            </div>
+          </div>
+
+          <div class="list-item" onclick="selectItem(this, 'strava-week')">
+            <span class="li-emoji">🚴</span>
+            <div class="li-content">
+              <div class="li-title">Strava Wochenbericht — 3 Rides, 128km</div>
+              <div class="li-date">02.03. · 20:00</div>
+            </div>
+          </div>
+
+          <div class="list-item" onclick="selectItem(this, 'morning-0228')">
+            <span class="li-emoji">☀️</span>
+            <div class="li-content">
+              <div class="li-title">Morning Briefing — KW 9 Vorschau</div>
+              <div class="li-date">28.02. · 08:00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DRAG HANDLE
+           UX: Visuell klar, ◁▷ signalisiert Ziehbarkeit, col-resize Cursor -->
+      <div class="drag-handle" id="dragHandle">
+        <div class="drag-gripper">◁▷</div>
+      </div>
+
+      <!-- RIGHT: Preview panel -->
+      <div class="pane-preview" id="panePreview">
+        <div class="preview-header">
+          <span style="font-size:16px">☀️</span>
+          <span class="preview-title">Morning Briefing — Märkte, Eintracht & KI-News</span>
+          <div class="preview-actions">
+            <button class="preview-btn">↗ Öffnen</button>
+            <button class="preview-btn">⋯</button>
+          </div>
+        </div>
+
+        <!-- UX: Weißer Hintergrund für HTML-Content — Briefings sind dafür gemacht -->
+        <div class="preview-frame">
+          <div class="preview-content" id="previewContent">
+            <h1>Morning Briefing</h1>
+            <div class="preview-date">Donnerstag, 6. März 2026 · 08:14 Uhr · ☀️ Morning</div>
+
+            <div class="highlight-box">
+              🎯 <strong>Top 3 heute:</strong> DAX im Plus, Eintracht fit, Claude 4 angekündigt.
+            </div>
+
+            <h2>📈 Märkte</h2>
+            <p>DAX eröffnet bei +0.8% (22.340 Punkte). US-Futures leicht positiv nach gestern's Fed-Kommentar. Inflation-Daten heute Nachmittag erwartet — könnten Richtung vorgeben.</p>
+            <ul>
+              <li><strong>DAX:</strong> 22.340 (+0.8%)</li>
+              <li><strong>S&P 500 Futures:</strong> +0.3%</li>
+              <li><strong>EUR/USD:</strong> 1.082 (stabil)</li>
+              <li><strong>Gold:</strong> $2.890 (+0.4%)</li>
+            </ul>
+
+            <h2>⚽ Eintracht Frankfurt</h2>
+            <p>Kader meldet sich fit nach dem Augsburg-Spiel. Dortmund-Duell am Samstag (15:30). Trainer Toppmöller rechnet mit vollem Einsatz von Dodi Lukébakio.</p>
+
+            <h2>🧠 KI-News</h2>
+            <p>Anthropic kündigt Claude 4 an — soll "reasoning by default" bieten. OpenAI zeigt GPT-5 Teaser. Mistral launcht neue Code-Spezialisierung "Codestral 2".</p>
+
+            <h2>🔧 Tech & Tools</h2>
+            <p>Supabase launcht neue Vector-Search Features. Lovable.dev bekommt Team-Features. GitHub Copilot jetzt mit Agent-Modus.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================
+       TASKS SCREEN
+       ======================= -->
+  <div id="screen-tasks" class="screen">
+    <div class="tasks-header">
+      <div class="tasks-title">Tasks</div>
+      <button class="quick-btn quick-btn-primary" style="padding: 8px 14px; font-size:13px;">
+        ✚ Neuer Task
+      </button>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Heute fällig</div>
+      <div class="task-item task-priority-high" style="border-radius: var(--radius)">
+        <div class="task-check"></div>
+        <span class="task-text">Concord: Decision-Tracking UI finalisieren</span>
+        <span class="task-tag">🔧 Concord</span>
+        <span class="task-due" style="color: var(--danger);">Heute 18:00</span>
+      </div>
+      <div class="task-item task-priority-medium" style="border-radius: var(--radius)">
+        <div class="task-check"></div>
+        <span class="task-text">LinkedIn Post Draft — Mission Control Erfahrungsbericht</span>
+        <span class="task-tag">✍️ Content</span>
+        <span class="task-due" style="color: var(--warning);">Heute EOD</span>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Diese Woche</div>
+      <div class="task-item" style="border-radius: var(--radius)">
+        <div class="task-check"></div>
+        <span class="task-text">Discovery Call mit KMU-Lead vorbereiten</span>
+        <span class="task-tag">💼 Sales</span>
+        <span class="task-due">Do, 8. März</span>
+      </div>
+      <div class="task-item" style="border-radius: var(--radius)">
+        <div class="task-check"></div>
+        <span class="task-text">Strava Cron: Wöchentlicher Bericht testen</span>
+        <span class="task-tag">🚴 Strava</span>
+        <span class="task-due">Fr, 7. März</span>
+      </div>
+      <div class="task-item" style="border-radius: var(--radius)">
+        <div class="task-check"></div>
+        <span class="task-text">Mission Control Redesign: Feedback einarbeiten</span>
+        <span class="task-tag">🏗️ MC</span>
+        <span class="task-due">Fr, 7. März</span>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-label">Erledigt heute</div>
+      <div class="task-item done" style="border-radius: var(--radius)">
+        <div class="task-check"></div>
+        <span class="task-text">Morning Briefing gecheckt</span>
+        <span class="task-tag">☀️ Daily</span>
+        <span class="task-due" style="color: var(--text-muted);">08:20</span>
+      </div>
+      <div class="task-item done" style="border-radius: var(--radius)">
+        <div class="task-check"></div>
+        <span class="task-text">UX Redesign Mockup in Auftrag gegeben</span>
+        <span class="task-tag">🏗️ MC</span>
+        <span class="task-due" style="color: var(--text-muted);">09:15</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================
+       BEFORE / AFTER SCREEN
+       ======================= -->
+  <div id="screen-compare" class="screen">
+    <div class="compare-intro">
+      <h2>🔍 Before / After — Redesign-Entscheidungen</h2>
+      <p>Was war am alten Design kaputt, was wurde warum geändert. Keine Meinung, nur UX-Begründungen.</p>
+    </div>
+
+    <!-- Visual Comparison -->
+    <div class="compare-grid">
+      <!-- BEFORE -->
+      <div class="compare-panel before">
+        <div class="compare-panel-header">
+          ✗ ALT — 3-Spalten-Layout mit Sidebar
+        </div>
+        <!-- Simulated old layout -->
+        <div class="old-layout">
+          <div class="old-sidebar">
+            <div class="old-nav-label">Navigation</div>
+            <div class="old-nav-item active-item">🏠 Home</div>
+            <div class="old-nav-item">✅ Tasks</div>
+            <div class="old-nav-item">📄 Docs</div>
+            <div class="old-nav-label">System</div>
+            <div class="old-nav-item">🧠 Memory</div>
+            <div class="old-nav-item">⏰ Cron</div>
+            <div class="old-nav-item">🏔️ Hatti</div>
+          </div>
+          <div class="old-list">
+            <div style="padding:8px 10px; font-size:10px; color:#475569; text-transform:uppercase; letter-spacing:0.5px;">Briefings</div>
+            <div class="old-list-item">
+              <div class="old-list-title">Morning Briefing — Märkte, Eintracht &amp; KI-News</div>
+              <div class="old-list-date">Heute</div>
+            </div>
+            <div class="old-list-item">
+              <div class="old-list-title">Podcast Digest: Alles auf Aktie...</div>
+              <div class="old-list-date">Heute</div>
+            </div>
+            <div class="old-list-item">
+              <div class="old-list-title">Mission Control Redesign Upd...</div>
+              <div class="old-list-date">Gestern</div>
+            </div>
+          </div>
+          <div class="old-preview">
+            <div class="old-preview-text">
+              <strong style="color:#e2e8f0">Morning Briefing</strong><br>
+              Donnerstag, 6. März 2026<br><br>
+              DAX +0.8% · Eintracht fit · Claude 4 angekündigt...<br><br>
+              [sehr wenig Platz, kaum lesbar]
+            </div>
+          </div>
+        </div>
+        <div class="problem-list">
+          <div class="problem-item">
+            <span class="problem-icon">✗</span>
+            220px Sidebar verschwendet horizontalen Platz
+          </div>
+          <div class="problem-item">
+            <span class="problem-icon">✗</span>
+            200px Liste → Titel werden truncated (unleserlich)
+          </div>
+          <div class="problem-item">
+            <span class="problem-icon">✗</span>
+            Preview-Bereich zu klein (Rest nach 420px Spalten)
+          </div>
+          <div class="problem-item">
+            <span class="problem-icon">✗</span>
+            Nicht skalierend — auf 27" Monitor riesige Lücken
+          </div>
+          <div class="problem-item">
+            <span class="problem-icon">✗</span>
+            Kalte Slate-Farben, wenig Charakter
+          </div>
+        </div>
+      </div>
+
+      <!-- AFTER -->
+      <div class="compare-panel after">
+        <div class="compare-panel-header">
+          ✓ NEU — Top Nav + Resizable Split Pane
+        </div>
+        <!-- Simulated new layout -->
+        <div class="new-layout">
+          <div class="new-topnav-preview">
+            <span class="preview-logo">🎛️ MC</span>
+            <div class="preview-nav-items">
+              <span class="preview-nav-item act">🏠 Home</span>
+              <span class="preview-nav-item">✅ Tasks</span>
+              <span class="preview-nav-item">📄 Docs</span>
+              <span class="preview-nav-item">🧠 Mem</span>
+            </div>
+            <div style="margin-left:auto; font-size:9px; color: #10B981;">● DM</div>
+          </div>
+          <div class="new-content-preview">
+            <div class="new-list-preview">
+              <div style="padding: 5px 10px; font-size:9px; color: var(--text-secondary); text-transform:uppercase; letter-spacing:0.5px; border-bottom: 1px solid var(--border);">Briefings · 47</div>
+              <div class="new-list-preview-item">
+                <span class="nlpi-emoji">☀️</span>
+                <div>
+                  <div class="nlpi-title" style="color: var(--accent);">Morning Briefing — Märkte...</div>
+                  <div class="nlpi-date">Heute · 08:14</div>
+                </div>
+              </div>
+              <div class="new-list-preview-item">
+                <span class="nlpi-emoji">🎙️</span>
+                <div>
+                  <div class="nlpi-title">Podcast: Alles auf Aktien</div>
+                  <div class="nlpi-date">Heute · 07:30</div>
+                </div>
+              </div>
+              <div class="new-list-preview-item">
+                <span class="nlpi-emoji">🏗️</span>
+                <div>
+                  <div class="nlpi-title">Mission Control Redesign</div>
+                  <div class="nlpi-date">Gestern</div>
+                </div>
+              </div>
+            </div>
+            <div class="new-preview-area">
+              <h3>Morning Briefing</h3>
+              <p>DAX +0.8% · Eintracht fit · Claude 4 angekündigt. US-Inflation heute Nachmittag erwartet...</p>
+              <p style="color: #10B981; font-size:9px; margin-top:8px;">← Drag handle macht diesen Bereich größer</p>
+            </div>
+          </div>
+        </div>
+        <div class="problem-list">
+          <div class="problem-item">
+            <span class="improvement-icon">✓</span>
+            Top Nav: 52px statt 220px → +168px Content-Breite
+          </div>
+          <div class="problem-item">
+            <span class="improvement-icon">✓</span>
+            Resizable Pane: Liste 180–450px, User entscheidet
+          </div>
+          <div class="problem-item">
+            <span class="improvement-icon">✓</span>
+            Preview füllt gesamte restliche Breite
+          </div>
+          <div class="problem-item">
+            <span class="improvement-icon">✓</span>
+            Vollständige Titel — kein Truncating mehr
+          </div>
+          <div class="problem-item">
+            <span class="improvement-icon">✓</span>
+            Wärmeres Dark Theme, bessere Typografie
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Changelog -->
+    <div class="changelog">
+      <div class="changelog-title">Design System Änderungen — Begründungen</div>
+      <div class="changelog-row" style="background: var(--bg-elevated); font-size: 11px; font-weight:600; color: var(--text-muted);">
+        <span>Bereich</span><span>Alt</span><span>Neu + Begründung</span>
+      </div>
+      <div class="changelog-row">
+        <span class="changelog-cat">Layout</span>
+        <span class="changelog-old">Linke Sidebar (220px) + 3 Spalten</span>
+        <span class="changelog-new">Top Nav (52px) + volle Breite. 168px mehr Content-Platz.</span>
+      </div>
+      <div class="changelog-row">
+        <span class="changelog-cat">Hintergrund</span>
+        <span class="changelog-old">#020617 (Slate-950, kalt-blau)</span>
+        <span class="changelog-new">#0d0f12 (wärmer, fast neutral). Weniger ermüdend bei langem Arbeiten.</span>
+      </div>
+      <div class="changelog-row">
+        <span class="changelog-cat">Cards</span>
+        <span class="changelog-old">8px Radius, harter Border</span>
+        <span class="changelog-new">12px Radius, #1e2128 Border + Box-Shadow. Moderne, freundlichere Anmutung.</span>
+      </div>
+      <div class="changelog-row">
+        <span class="changelog-cat">Nav Active</span>
+        <span class="changelog-old">"Active" Badge Text + Farbe</span>
+        <span class="changelog-new">Pill-Hintergrund + Accent Icon. Cleaner, weniger Clutter.</span>
+      </div>
+      <div class="changelog-row">
+        <span class="changelog-cat">Briefings-Liste</span>
+        <span class="changelog-old">200px fest, Titel truncated</span>
+        <span class="changelog-new">280px default, 180–450px drag. Titel voll sichtbar, Datum als sekundäre Info.</span>
+      </div>
+      <div class="changelog-row">
+        <span class="changelog-cat">Kategorien</span>
+        <span class="changelog-old">Sidebar-Navlinks für Kategorien</span>
+        <span class="changelog-new">Horizontal Filter-Chips über der Liste. Schneller, platzsparender.</span>
+      </div>
+      <div class="changelog-row">
+        <span class="changelog-cat">Preview</span>
+        <span class="changelog-old">Dark background für HTML-Content</span>
+        <span class="changelog-new">Weißer Hintergrund — HTML-Briefings sind für hell designed.</span>
+      </div>
+      <div class="changelog-row">
+        <span class="changelog-cat">Home Screen</span>
+        <span class="changelog-old">Fehlte / rudimentär</span>
+        <span class="changelog-new">Hero + Stat-Cards + Quick Access + Briefing-Cards. Zentraler Ausgangspunkt.</span>
+      </div>
+    </div>
+
+    <!-- Mobile Section -->
+    <div class="mobile-section">
+      <div class="section-header">
+        <div class="section-title">📱 Mobile — Zwei Zustände</div>
+      </div>
+      <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 20px; max-width: 500px;">
+        Auf Mobile entfallen Labels aus der Nav und das Split Pane. Tippen auf ein Briefing öffnet es direkt fullscreen.
+      </p>
+
+      <div class="mobile-phones">
+        <!-- Phone 1: Home Screen Mobile -->
+        <div>
+          <div class="phone-frame">
+            <div class="phone-status">
+              <span>9:41</span>
+              <span>●●● 100%</span>
+            </div>
+            <!-- UX: Mobile Nav = Icons only -->
+            <div class="phone-nav">
+              <span class="phone-nav-icon">🎛️</span>
+              <div class="phone-nav-icons">
+                <span class="phone-nav-icon" style="opacity:0.4">☰</span>
+                <span class="phone-nav-icon" style="font-size:20px; color: #10B981">🏠</span>
+                <span class="phone-nav-icon" style="opacity:0.5">✅</span>
+                <span class="phone-nav-icon" style="opacity:0.5">📄</span>
+              </div>
+            </div>
+            <div class="phone-body">
+              <div class="phone-hero">Guten Morgen, Daniel.</div>
+              <div class="phone-meta">Do, 6. März · 🌤️ 9°C</div>
+              <div class="phone-card">
+                <div class="phone-card-emoji">📄</div>
+                <div class="phone-card-title">12 Briefings</div>
+                <div class="phone-card-meta">3 neu heute</div>
+              </div>
+              <div class="phone-card">
+                <div class="phone-card-emoji">✅</div>
+                <div class="phone-card-title">7 offene Tasks</div>
+                <div class="phone-card-meta">2 heute fällig</div>
+              </div>
+              <div class="phone-card">
+                <div class="phone-card-emoji">📅</div>
+                <div class="phone-card-title">14:30 · Weekly Sync</div>
+                <div class="phone-card-meta">in 4h 20min</div>
+              </div>
+            </div>
+          </div>
+          <div class="phone-label">Home — Mobile</div>
+        </div>
+
+        <!-- Phone 2: Docs List Mobile (no split pane) -->
+        <div>
+          <div class="phone-frame">
+            <div class="phone-status">
+              <span>9:41</span>
+              <span>●●● 100%</span>
+            </div>
+            <div class="phone-nav">
+              <span class="phone-nav-icon">🎛️</span>
+              <div class="phone-nav-icons">
+                <span class="phone-nav-icon" style="opacity:0.4">☰</span>
+                <span class="phone-nav-icon" style="opacity:0.5">🏠</span>
+                <span class="phone-nav-icon" style="opacity:0.5">✅</span>
+                <span class="phone-nav-icon" style="font-size:20px; color: #10B981">📄</span>
+              </div>
+            </div>
+            <div class="phone-body" style="padding: 8px 0;">
+              <!-- Filter chips scrollable -->
+              <div style="display:flex; gap:5px; overflow-x:auto; padding: 6px 10px; scrollbar-width:none; border-bottom: 1px solid var(--border);">
+                <span style="background: var(--accent-dim); color: var(--accent); border-radius:20px; padding: 3px 8px; font-size:10px; white-space:nowrap; border: 1px solid rgba(16,185,129,0.3);">Alle</span>
+                <span style="background: var(--bg-surface); color: var(--text-secondary); border-radius:20px; padding: 3px 8px; font-size:10px; white-space:nowrap; border: 1px solid var(--border);">☀️ Morning</span>
+                <span style="background: var(--bg-surface); color: var(--text-secondary); border-radius:20px; padding: 3px 8px; font-size:10px; white-space:nowrap; border: 1px solid var(--border);">🎙️ Podcast</span>
+              </div>
+              <!-- UX: Mobile: nur Liste, kein Split Pane. Tippen → öffnet direkt. -->
+              <div class="phone-list-item" style="padding: 10px 12px;">
+                <span class="pli-emoji">☀️</span>
+                <div>
+                  <div class="pli-title" style="color: var(--accent);">Morning Briefing — Märkte...</div>
+                  <div class="pli-date">Heute · 08:14 <span style="background: var(--accent-dim); color: var(--accent); padding: 1px 5px; border-radius:10px; font-size:9px; margin-left:4px;">NEU</span></div>
+                </div>
+              </div>
+              <div class="phone-list-item" style="padding: 10px 12px;">
+                <span class="pli-emoji">🎙️</span>
+                <div>
+                  <div class="pli-title">Alles auf Aktien — Folge 892</div>
+                  <div class="pli-date">Heute · 07:30</div>
+                </div>
+              </div>
+              <div class="phone-list-item" style="padding: 10px 12px;">
+                <span class="pli-emoji">🏗️</span>
+                <div>
+                  <div class="pli-title">Mission Control Redesign</div>
+                  <div class="pli-date">Gestern · 19:42</div>
+                </div>
+              </div>
+              <div class="phone-list-item" style="padding: 10px 12px;">
+                <span class="pli-emoji">📈</span>
+                <div>
+                  <div class="pli-title">Marktbericht KW 10</div>
+                  <div class="pli-date">05.03. · 18:00</div>
+                </div>
+              </div>
+              <div style="text-align:center; padding: 8px; font-size:10px; color: var(--text-muted);">
+                → Tippen öffnet Vollbild-Preview
+              </div>
+            </div>
+          </div>
+          <div class="phone-label">Docs — Mobile (kein Split Pane)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app-body -->
+
+<script>
+// ===========================
+// SCREEN SWITCHING
+// UX: Einfaches Tab-System, kein Framework nötig
+// ===========================
+function switchScreen(screenId, navEl) {
+  // Hide all screens
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  // Show target
+  document.getElementById('screen-' + screenId).classList.add('active');
+
+  // Highlight nav item
+  if (navEl) navEl.classList.add('active');
+}
+
+// ===========================
+// FILTER CHIPS
+// ===========================
+function setFilter(el) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ===========================
+// LIST ITEM SELECTION
+// ===========================
+function selectItem(el, id) {
+  document.querySelectorAll('.list-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+
+  // Update preview content based on selection
+  const previews = {
+    'morning-0306': {
+      emoji: '☀️',
+      title: 'Morning Briefing — Märkte, Eintracht & KI-News',
+      content: `
+        <h1>Morning Briefing</h1>
+        <div class="preview-date">Donnerstag, 6. März 2026 · 08:14 Uhr · ☀️ Morning</div>
+        <div class="highlight-box">🎯 <strong>Top 3 heute:</strong> DAX im Plus, Eintracht fit, Claude 4 angekündigt.</div>
+        <h2>📈 Märkte</h2>
+        <p>DAX eröffnet bei +0.8% (22.340 Punkte). US-Inflation-Daten heute Nachmittag erwartet.</p>
+        <ul><li><strong>DAX:</strong> 22.340 (+0.8%)</li><li><strong>EUR/USD:</strong> 1.082</li><li><strong>Gold:</strong> $2.890 (+0.4%)</li></ul>
+        <h2>⚽ Eintracht</h2><p>Kader fit für Dortmund-Spiel am Samstag (15:30 Uhr).</p>
+        <h2>🧠 KI</h2><p>Anthropic kündigt Claude 4 an — reasoning by default.</p>
+      `
+    },
+    'podcast-aaa': {
+      emoji: '🎙️',
+      title: 'Alles auf Aktien — Folge 892 Digest',
+      content: `
+        <h1>Podcast-Digest: Alles auf Aktien #892</h1>
+        <div class="preview-date">Donnerstag, 6. März 2026 · 07:30 Uhr · 🎙️ Podcast</div>
+        <div class="highlight-box">⏱️ Laufzeit: 44 min · Thema: Small Caps Comeback?</div>
+        <h2>🎯 Kernthesen</h2>
+        <ul>
+          <li>Small Caps outperformen Large Caps in Zinssenkungszyklen</li>
+          <li>3 konkrete Aktien vorgestellt: HelloFresh, Varta (Turnaround?), Rational</li>
+          <li>Welt & Co sehr kritisch gegenüber Varta — "zu viele offene Fragen"</li>
+        </ul>
+        <h2>📌 Meine Einschätzung</h2>
+        <p>Rational überzeugt (profitabel, Burggraben), HelloFresh spekulativ. Varta lasse ich.</p>
+      `
+    },
+    'projekt-mc': {
+      emoji: '🏗️',
+      title: 'Mission Control Redesign — Next Steps',
+      content: `
+        <h1>Projekt-Update: Mission Control Redesign</h1>
+        <div class="preview-date">Mittwoch, 5. März 2026 · 19:42 Uhr · 🏗️ Projekt</div>
+        <h2>✅ Entschieden</h2>
+        <ul>
+          <li>Top Nav statt Sidebar</li>
+          <li>Resizable Split Pane für Docs</li>
+          <li>Wärmeres Dark Theme (#0d0f12)</li>
+        </ul>
+        <h2>🔜 Nächste Schritte</h2>
+        <ul>
+          <li>Hatti baut HTML-Mockup</li>
+          <li>Daniel reviewed auf echtem Monitor</li>
+          <li>Dann: Implementierung in echtem Dashboard</li>
+        </ul>
+      `
+    }
+  };
+
+  const preview = previews[id];
+  if (preview) {
+    document.querySelector('.preview-title').textContent = preview.title;
+    document.getElementById('previewContent').innerHTML = preview.content;
+  }
+}
+
+// ===========================
+// RESIZABLE SPLIT PANE
+// UX WHY: User kann selbst bestimmen wie viel Listenbreite vs. Preview.
+//         Besonders auf breiten Monitoren wichtig.
+//         col-resize Cursor + visueller Gripper = Diskoverability.
+// ===========================
+(function() {
+  const handle = document.getElementById('dragHandle');
+  const paneList = document.getElementById('paneList');
+  const splitPane = document.getElementById('splitPane');
+
+  let isDragging = false;
+  let startX = 0;
+  let startWidth = 0;
+
+  handle.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.clientX;
+    startWidth = paneList.offsetWidth;
+    handle.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const delta = e.clientX - startX;
+    const newWidth = Math.max(180, Math.min(450, startWidth + delta));
+    paneList.style.width = newWidth + 'px';
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    handle.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  });
+
+  // Touch support for mobile (even though mobile = no split pane at <640px)
+  handle.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    startX = e.touches[0].clientX;
+    startWidth = paneList.offsetWidth;
+    handle.classList.add('dragging');
+  }, { passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const delta = e.touches[0].clientX - startX;
+    const newWidth = Math.max(180, Math.min(450, startWidth + delta));
+    paneList.style.width = newWidth + 'px';
+  }, { passive: true });
+
+  document.addEventListener('touchend', () => {
+    isDragging = false;
+    handle.classList.remove('dragging');
+  });
+})();
+</script>
+</body>
+</html>
