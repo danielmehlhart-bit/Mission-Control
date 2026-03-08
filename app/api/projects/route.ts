@@ -1,92 +1,77 @@
-import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { NextResponse } from "next/server";
+import { getDb } from "@/lib/db";
 
-const FILE = process.env.PROJECTS_FILE || '/data/briefings/projects.json';
-const FALLBACK = '/tmp/mc-projects.json';
-
-function getFile() {
-  try {
-    const dir = path.dirname(FILE);
-    if (fs.existsSync(dir)) { fs.accessSync(dir, fs.constants.W_OK); return FILE; }
-  } catch {}
-  return FALLBACK;
-}
+export const dynamic = "force-dynamic";
 
 export type Project = {
   id: string;
   name: string;
   client: string;
-  status: 'active' | 'paused' | 'done';
+  status: "active" | "paused" | "done";
   description?: string;
   contactId?: string;
   repo?: string;
   color: string;
 };
 
-const SEED: Project[] = [
-  { id: "1", name: "ModulAI", client: "HAM Architekten", status: "active", description: "Multi-Tenant AI-Plattform für Architekturbüros", contactId: "1", repo: "danielmehlhart-bit/modulai", color: "#8B5CF6" },
-  { id: "2", name: "Architekt Connect", client: "Weber Architekten", status: "active", description: "PM-Tool für Architekturbüros (Pilot: Weber)", contactId: "3", repo: "danielmehlhart-bit/architekt-connect", color: "#3B82F6" },
-  { id: "3", name: "BPP CRM", client: "BPP", status: "active", description: "Internes CRM für ~300 Mitglieder", contactId: "5", repo: "danielmehlhart-bit/photobpp-organizer", color: "#F59E0B" },
-  { id: "4", name: "Concord", client: "Intern", status: "active", description: "Persönliches Leadership OS", repo: "danielmehlhart-bit/concordv3", color: "#10B981" },
-];
-
-function read(): Project[] {
-  try {
-    const f = getFile();
-    if (fs.existsSync(f)) return JSON.parse(fs.readFileSync(f, 'utf-8'));
-  } catch {}
-  fs.writeFileSync(getFile(), JSON.stringify(SEED, null, 2));
-  return SEED;
+function rowToProject(row: Record<string, unknown>): Project {
+  return {
+    id: row.id as string,
+    name: row.name as string,
+    client: row.client as string,
+    status: row.status as "active" | "paused" | "done",
+    ...(row.description ? { description: row.description as string } : {}),
+    ...(row.contact_id ? { contactId: row.contact_id as string } : {}),
+    ...(row.repo ? { repo: row.repo as string } : {}),
+    color: row.color as string,
+  };
 }
-function write(data: Project[]) { fs.writeFileSync(getFile(), JSON.stringify(data, null, 2)); }
 
-export async function GET() { return NextResponse.json({ projects: read() }); }
+export async function GET() {
+  const db = getDb();
+  const rows = db.prepare("SELECT * FROM projects ORDER BY created_at ASC").all() as Record<string, unknown>[];
+  return NextResponse.json({ projects: rows.map(rowToProject) });
+}
 
 export async function POST(req: Request) {
-  // Fix 4: Allowlist — nur bekannte Felder, kein ...body spread
-  const body = await req.json();
-  const { name, client, status, description, contactId, repo, color } = body;
-  if (!name?.trim()) return NextResponse.json({ error: 'Name required' }, { status: 400 });
-  const projects = read();
-  const project: Project = {
-    id: Date.now().toString(),
-    name: String(name).trim(),
-    client: String(client ?? '').trim(),
-    status: ['active', 'paused', 'done'].includes(status) ? status : 'active',
-    ...(description ? { description: String(description).trim() } : {}),
-    ...(contactId ? { contactId: String(contactId).trim() } : {}),
-    ...(repo ? { repo: String(repo).trim() } : {}),
-    color: String(color ?? '#6366f1').trim(),
-  };
-  projects.push(project);
-  write(projects);
+  const { name, client, status, description, contactId, repo, color } = await req.json();
+  if (!name?.trim()) return NextResponse.json({ error: "Name required" }, { status: 400 });
+  const db = getDb();
+  const id = Date.now().toString();
+  const validStatus = ["active", "paused", "done"].includes(status) ? status : "active";
+  db.prepare(`
+    INSERT INTO projects (id, name, client, status, description, contact_id, repo, color, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+  `).run(id, name.trim(), client ?? "", validStatus, description ?? "", contactId ?? null, repo ?? null, color ?? "#6366f1");
+  const project = rowToProject(db.prepare("SELECT * FROM projects WHERE id = ?").get(id) as Record<string, unknown>);
   return NextResponse.json({ project });
 }
 
 export async function PATCH(req: Request) {
   const { searchParams } = new URL(req.url);
-  const id = searchParams.get('id');
-  // Fix 4: Allowlist — nur bekannte Felder patchen
-  const body = await req.json();
-  const projects = read();
-  const idx = projects.findIndex(p => p.id === id);
-  if (idx === -1) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-  const { name, client, status, description, contactId, repo, color } = body;
-  if (name !== undefined) projects[idx].name = String(name).trim();
-  if (client !== undefined) projects[idx].client = String(client).trim();
-  if (status !== undefined && ['active', 'paused', 'done'].includes(status)) projects[idx].status = status;
-  if (description !== undefined) projects[idx].description = String(description).trim();
-  if (contactId !== undefined) projects[idx].contactId = String(contactId).trim();
-  if (repo !== undefined) projects[idx].repo = String(repo).trim();
-  if (color !== undefined) projects[idx].color = String(color).trim();
-  write(projects);
-  return NextResponse.json({ project: projects[idx] });
+  const id = searchParams.get("id");
+  if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
+  const db = getDb();
+  if (!db.prepare("SELECT id FROM projects WHERE id = ?").get(id)) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+  const { name, client, status, description, contactId, repo, color } = await req.json();
+  if (name !== undefined) db.prepare("UPDATE projects SET name = ? WHERE id = ?").run(name.trim(), id);
+  if (client !== undefined) db.prepare("UPDATE projects SET client = ? WHERE id = ?").run(client, id);
+  if (status !== undefined && ["active", "paused", "done"].includes(status))
+    db.prepare("UPDATE projects SET status = ? WHERE id = ?").run(status, id);
+  if (description !== undefined) db.prepare("UPDATE projects SET description = ? WHERE id = ?").run(description, id);
+  if (contactId !== undefined) db.prepare("UPDATE projects SET contact_id = ? WHERE id = ?").run(contactId, id);
+  if (repo !== undefined) db.prepare("UPDATE projects SET repo = ? WHERE id = ?").run(repo, id);
+  if (color !== undefined) db.prepare("UPDATE projects SET color = ? WHERE id = ?").run(color, id);
+  const project = rowToProject(db.prepare("SELECT * FROM projects WHERE id = ?").get(id) as Record<string, unknown>);
+  return NextResponse.json({ project });
 }
 
 export async function DELETE(req: Request) {
   const { searchParams } = new URL(req.url);
-  const id = searchParams.get('id');
-  write(read().filter(p => p.id !== id));
+  const id = searchParams.get("id");
+  if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
+  getDb().prepare("DELETE FROM projects WHERE id = ?").run(id);
   return NextResponse.json({ ok: true });
 }
