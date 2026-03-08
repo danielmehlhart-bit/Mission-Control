@@ -97,7 +97,8 @@ function initSchema(db: Database.Database): void {
       insert.run({ id: "3", name: "Kim Weber", company: "Weber Architekten", role: "Projektleiterin", email: "", project: "Architekt Connect" });
       insert.run({ id: "4", name: "Paul Weber", company: "Weber Architekten", role: "Inhaber", email: "", project: "Architekt Connect" });
       insert.run({ id: "5", name: "Sebastian Weißmann", company: "BPP", role: "Geschäftsführer", email: "seba@bpp.photography", project: "BPP" });
-      insert.run({ id: "6", name: "Eduard Raab", company: "Raab Immobilien", role: "Inhaber", email: "e.raab@raabimmobilien.com", project: "HAM / ModulAI" });
+      insert.run({ id: "6", name: "Eduard Raab", company: "Raab Immobilien", role: "Inhaber", email: "e.raab@raabimmobilien.com", project: "Raab Immobilien" });
+      insert.run({ id: "7", name: "W. Specht", company: "Raab Immobilien", role: "", email: "w.specht@raabimmobilien.com", project: "Raab Immobilien" });
     });
     seedPeople();
   }
