@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mission Control — Security Audit</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f7f8fa;
+      color: #222;
+      line-height: 1.6;
+      padding: 32px 16px 80px;
+    }
+    .container { max-width: 900px; margin: 0 auto; }
+
+    /* ── HEADER ── */
+    .header {
+      background: #fff;
+      border-radius: 16px;
+      padding: 36px 40px 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      margin-bottom: 28px;
+    }
+    .header-top { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+    .header-icon { font-size: 36px; }
+    .header h1 { font-size: 26px; font-weight: 700; color: #111; letter-spacing: -0.5px; }
+    .header-meta { font-size: 13px; color: #888; margin-bottom: 16px; }
+    .exec-summary {
+      background: #f0f4ff;
+      border-left: 4px solid #4f6ef7;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 18px;
+      font-size: 15px;
+      color: #2d3a6b;
+      font-weight: 500;
+    }
+
+    /* ── SEVERITY COUNTERS ── */
+    .severity-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    .sev-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 22px 18px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      text-align: center;
+    }
+    .sev-card .count { font-size: 40px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+    .sev-card .label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #666; }
+    .sev-critical .count { color: #dc2626; }
+    .sev-high .count { color: #ea6c00; }
+    .sev-medium .count { color: #ca8a04; }
+    .sev-low .count { color: #16a34a; }
+    .sev-critical { border-top: 4px solid #dc2626; }
+    .sev-high { border-top: 4px solid #ea6c00; }
+    .sev-medium { border-top: 4px solid #ca8a04; }
+    .sev-low { border-top: 4px solid #16a34a; }
+
+    /* ── SECTION TITLES ── */
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 16px;
+      margin-top: 36px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ── FINDING CARDS ── */
+    .finding {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      border-left: 5px solid #ddd;
+    }
+    .finding.critical { border-left-color: #dc2626; }
+    .finding.high     { border-left-color: #ea6c00; }
+    .finding.medium   { border-left-color: #ca8a04; }
+    .finding.low      { border-left-color: #16a34a; }
+
+    .finding-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+    .finding-title { font-size: 16px; font-weight: 700; color: #111; flex: 1; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 11px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      white-space: nowrap;
+    }
+    .badge-critical { background: #fef2f2; color: #dc2626; }
+    .badge-high     { background: #fff7ed; color: #ea6c00; }
+    .badge-medium   { background: #fefce8; color: #854d0e; }
+    .badge-low      { background: #f0fdf4; color: #16a34a; }
+
+    .finding-file {
+      font-size: 12px;
+      color: #888;
+      font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+      background: #f4f5f7;
+      padding: 3px 9px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    .finding-desc {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 14px;
+    }
+    .finding-desc code {
+      font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+      background: #f4f5f7;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 12.5px;
+      color: #d63384;
+    }
+    .recommendation {
+      background: #f8faff;
+      border: 1px solid #dbe4ff;
+      border-radius: 10px;
+      padding: 12px 16px;
+    }
+    .recommendation-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #4f6ef7;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 5px;
+    }
+    .recommendation p {
+      font-size: 13.5px;
+      color: #2d3a6b;
+    }
+    .recommendation code {
+      font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+      background: #e8eeff;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 12.5px;
+      color: #3b50d4;
+    }
+
+    /* ── POSITIVES ── */
+    .positives {
+      background: #f0fdf4;
+      border-radius: 16px;
+      padding: 24px 28px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      margin-top: 10px;
+    }
+    .positive-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid #dcfce7;
+      font-size: 14px;
+      color: #166534;
+    }
+    .positive-item:last-child { border-bottom: none; }
+    .positive-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── ROADMAP ── */
+    .roadmap {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      padding: 24px 28px;
+      margin-top: 10px;
+    }
+    .roadmap-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .roadmap-item:last-child { border-bottom: none; }
+    .roadmap-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #111;
+      color: #fff;
+      font-weight: 800;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .roadmap-content { flex: 1; }
+    .roadmap-action { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 4px; }
+    .roadmap-why { font-size: 13px; color: #666; }
+    .roadmap-tags { display: flex; gap: 6px; margin-top: 7px; flex-wrap: wrap; }
+    .tag {
+      font-size: 11px;
+      padding: 2px 9px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .tag-impact { background: #fef2f2; color: #dc2626; }
+    .tag-effort { background: #f0f4ff; color: #4f6ef7; }
+    .tag-effort-low { background: #f0fdf4; color: #16a34a; }
+
+    @media (max-width: 600px) {
+      .severity-grid { grid-template-columns: repeat(2, 1fr); }
+      .header { padding: 24px 20px; }
+      .finding { padding: 18px 16px; }
+      .roadmap { padding: 18px 16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div class="header-icon">🛡️</div>
+      <h1>Mission Control — Security Audit</h1>
+    </div>
+    <div class="header-meta">08. März 2026 · Reviewer: Hatti (Sub-Agent) · Scope: mc.mehlhart.de</div>
+    <div class="exec-summary">
+      Die App hat eine solide Basis (Docker non-root, httpOnly Cookie, Path-Traversal-Schutz), aber zwei kritische Lücken — hardcodierte Default-Credentials und fehlendes Rate-Limiting auf dem Login — ermöglichen triviale Kompromittierung und müssen <strong>sofort</strong> geschlossen werden.
+    </div>
+  </div>
+
+  <!-- SEVERITY COUNTERS -->
+  <div class="severity-grid">
+    <div class="sev-card sev-critical">
+      <div class="count">2</div>
+      <div class="label">🔴 Critical</div>
+    </div>
+    <div class="sev-card sev-high">
+      <div class="count">5</div>
+      <div class="label">🟠 High</div>
+    </div>
+    <div class="sev-card sev-medium">
+      <div class="count">5</div>
+      <div class="label">🟡 Medium</div>
+    </div>
+    <div class="sev-card sev-low">
+      <div class="count">4</div>
+      <div class="label">🟢 Low / Info</div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────── -->
+  <!-- CRITICAL FINDINGS -->
+  <!-- ─────────────────────────────────── -->
+  <div class="section-title">🔴 Critical</div>
+
+  <!-- C1 -->
+  <div class="finding critical">
+    <div class="finding-header">
+      <div class="finding-title">Hardcodierte Fallback-Credentials in Production</div>
+      <span class="badge badge-critical">🔴 Critical</span>
+    </div>
+    <div class="finding-file">middleware.ts · app/api/auth/login/route.ts</div>
+    <div class="finding-desc">
+      Beide Dateien nutzen <code>?? "mc-dev-secret-change-in-production"</code> bzw. <code>?? "mission2024"</code> als Fallback, wenn die Umgebungsvariablen <code>MC_JWT_SECRET</code> und <code>MC_PASSWORD</code> nicht gesetzt sind. Falls die Env-Vars fehlen oder leer sind — z.B. durch einen Deploy-Fehler in Coolify — kann jeder mit dem Passwort <code>mission2024</code> einloggen <em>und</em> beliebige JWT-Tokens fälschen (da das Secret bekannt ist).
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        Hard-fail statt Fallback: <code>if (!process.env.MC_JWT_SECRET) throw new Error("MC_JWT_SECRET is required")</code>. 
+        App-Start schlägt fehl statt mit schwachen Credentials hochzukommen. Zusätzlich: starkes Secret (≥32 Byte random) und starkes Passwort in Coolify setzen, beide Vars als "required" dokumentieren. Passwort sofort ändern.
+      </p>
+    </div>
+  </div>
+
+  <!-- C2 -->
+  <div class="finding critical">
+    <div class="finding-header">
+      <div class="finding-title">Kein Rate-Limiting auf dem Login-Endpoint</div>
+      <span class="badge badge-critical">🔴 Critical</span>
+    </div>
+    <div class="finding-file">app/api/auth/login/route.ts</div>
+    <div class="finding-desc">
+      Der <code>POST /api/auth/login</code> Endpoint hat keinerlei Brute-Force-Schutz. Ein Angreifer kann unbegrenzt Passwort-Versuche senden — bei einem 6-stelligen numerischen Passwort wären das ~1 Mio. Requests, bei einem Wörterbuch-Angriff noch schneller. Keine Lockout-Logik, kein CAPTCHA, keine IP-Drosselung.
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        In-Memory-Rate-Limiter per IP implementieren (z.B. max 5 Versuche / 15 Minuten), danach exponentielles Backoff. 
+        Alternativ: Reverse-Proxy (Coolify/Nginx/Traefik) mit Rate-Limit-Middleware vorschalten. 
+        Kurzfristig: IP-Allowlist im Reverse-Proxy auf bekannte IPs beschränken.
+      </p>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────── -->
+  <!-- HIGH FINDINGS -->
+  <!-- ─────────────────────────────────── -->
+  <div class="section-title">🟠 High</div>
+
+  <!-- H1 -->
+  <div class="finding high">
+    <div class="finding-header">
+      <div class="finding-title">Gesamter OpenClaw-Workspace via /api/memory exponiert</div>
+      <span class="badge badge-high">🟠 High</span>
+    </div>
+    <div class="finding-file">docker-compose.yml · app/api/memory/route.ts · lib/fs.ts</div>
+    <div class="finding-desc">
+      <code>MEMORY_DIR=/workspace</code> und <code>BRIEFINGS_DIR=/workspace</code> zeigen beide auf das gesamte <code>~/.openclaw/workspace</code>-Verzeichnis. 
+      Die <code>listMemory()</code>-Funktion gibt alle <code>.md</code>-Dateien darin zurück — das sind u.a. <code>SETUP.md</code> (API Keys, Infrastruktur-Details), <code>MEMORY.md</code> (persönliche Daten), <code>USER.md</code> (private Infos), <code>SOUL.md</code> und alle Tagesnotizen. 
+      Jeder authentifizierte Nutzer (also jeder mit dem Login-Passwort) kann diese Dateien lesen. 
+      Bei Kombination mit C2 (Brute-Force): kein weiterer Auth-Aufwand nötig.
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        <code>MEMORY_DIR</code> und <code>BRIEFINGS_DIR</code> auf dedizierte Unterverzeichnisse einschränken, z.B. <code>/workspace/briefings</code> und <code>/workspace/memory-exports</code> (nur explizit freigegebene Dateien). Niemals die gesamte Workspace-Root exponieren. Volume im docker-compose entsprechend anpassen: <code>/home/hartner/.openclaw/workspace/briefings:/workspace/briefings:ro</code>.
+      </p>
+    </div>
+  </div>
+
+  <!-- H2 -->
+  <div class="finding high">
+    <div class="finding-header">
+      <div class="finding-title">API-Routes ohne Defense-in-Depth Auth</div>
+      <span class="badge badge-high">🟠 High</span>
+    </div>
+    <div class="finding-file">app/api/*/route.ts (alle Routes)</div>
+    <div class="finding-desc">
+      Alle API-Routes (<code>/api/briefings</code>, <code>/api/memory</code>, <code>/api/tasks</code>, <code>/api/projects</code>, <code>/api/people</code>, <code>/api/hatti</code>) verlassen sich ausschließlich auf die Middleware für Authentifizierung. Keiner der Handler verifiziert selbst das JWT. Wenn die Middleware einen Route-Matcher-Bug hat, ein Future-Next.js-Update das Verhalten ändert oder ein Route-Handler-Pfad nicht vom Matcher erfasst wird, sind alle Daten ungeschützt. Defense in Depth fehlt komplett.
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        Hilfs-Funktion <code>verifyAuth(request)</code> erstellen, die das JWT aus dem Cookie prüft und <code>401</code> zurückgibt wenn ungültig. In jeden Route-Handler als ersten Aufruf einbauen. Middleware bleibt als erste Verteidigungslinie, Route-Handler als zweite.
+      </p>
+    </div>
+  </div>
+
+  <!-- H3 -->
+  <div class="finding high">
+    <div class="finding-header">
+      <div class="finding-title">Unvalidiertes Object-Spread in POST/PATCH — Prototype Pollution / Field Injection</div>
+      <span class="badge badge-high">🟠 High</span>
+    </div>
+    <div class="finding-file">app/api/projects/route.ts · app/api/people/route.ts · app/api/tasks/route.ts</div>
+    <div class="finding-desc">
+      Alle drei Routes nutzen <code>const project = &#123; ...body, id: Date.now().toString() &#125;</code> bzw. <code>projects[idx] = &#123; ...projects[idx], ...body &#125;</code> ohne Schema-Validierung. Ein Angreifer kann beliebige Felder einfügen (z.B. <code>__proto__</code>, <code>constructor</code>) oder bestehende Objekte durch PATCH komplett überschreiben — inklusive der <code>id</code> (wird beim PATCH nicht überschrieben, aber andere Felder schon). Bei PATCH auf Tasks kann z.B. der Status auf einen ungültigen Wert gesetzt werden.
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        Zod oder manuelle Allowlist-Validierung implementieren: nur explizit erlaubte Felder aus dem Body extrahieren. Beispiel: <code>const &#123; title, project, notes &#125; = await req.json()</code> statt <code>...body</code>. Für PATCH analog: nur bekannte Felder patch-en.
+      </p>
+    </div>
+  </div>
+
+  <!-- H4 -->
+  <div class="finding high">
+    <div class="finding-header">
+      <div class="finding-title">Keine HTTP-Security-Headers konfiguriert</div>
+      <span class="badge badge-high">🟠 High</span>
+    </div>
+    <div class="finding-file">next.config.mjs</div>
+    <div class="finding-desc">
+      In <code>next.config.mjs</code> sind keine Security-Headers gesetzt. Next.js liefert by default: kein <code>Content-Security-Policy</code>, kein <code>X-Frame-Options</code>, kein <code>X-Content-Type-Options</code>, kein <code>Referrer-Policy</code>, kein <code>Permissions-Policy</code>, kein <code>Strict-Transport-Security</code>. Das macht die App anfällig für Clickjacking, MIME-Sniffing und erleichtert XSS-Angriffe erheblich.
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        In <code>next.config.mjs</code> den <code>headers()</code>-Block ergänzen: 
+        <code>X-Frame-Options: DENY</code>, 
+        <code>X-Content-Type-Options: nosniff</code>, 
+        <code>Referrer-Policy: strict-origin-when-cross-origin</code>, 
+        <code>Strict-Transport-Security: max-age=63072000; includeSubDomains</code>, 
+        sowie eine restriktive CSP. Verifikation via <a href="https://securityheaders.com">securityheaders.com</a>.
+      </p>
+    </div>
+  </div>
+
+  <!-- H5 -->
+  <div class="finding high">
+    <div class="finding-header">
+      <div class="finding-title">Next.js mit bekannten DoS-Vulnerabilities (CVE)</div>
+      <span class="badge badge-high">🟠 High</span>
+    </div>
+    <div class="finding-file">package.json · next@14.2.35</div>
+    <div class="finding-desc">
+      <code>npm audit</code> meldet 4 High-Severity-Vulnerabilities in der installierten Version. Konkret: 
+      <code>GHSA-h25m-26qc-wcjf</code> — Next.js HTTP-Request-Deserialisierung kann bei unsicheren React Server Components zu DoS führen. 
+      <code>GHSA-9g9p-9gw9-jx7f</code> — Image Optimizer DoS via remotePatterns. 
+      Diese betreffen direkt Next.js selbst und sind bei self-hosted Deployments relevant.
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        Next.js auf die neueste stabile 15.x Version updaten (<code>npm install next@latest</code>). Die Breaking Changes zwischen 14→15 sind überschaubar (Async Params in Route Handlers). Danach <code>npm audit</code> erneut prüfen. glob-Vulnerability in devDependencies ist geringes Risiko (build-time only).
+      </p>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────── -->
+  <!-- MEDIUM FINDINGS -->
+  <!-- ─────────────────────────────────── -->
+  <div class="section-title">🟡 Medium</div>
+
+  <!-- M1 -->
+  <div class="finding medium">
+    <div class="finding-header">
+      <div class="finding-title">iframe Preview von KI-generiertem HTML ohne Sandbox</div>
+      <span class="badge badge-medium">🟡 Medium</span>
+    </div>
+    <div class="finding-file">app/docs/page.tsx:294 · app/api/briefings/route.ts</div>
+    <div class="finding-desc">
+      Briefings werden als rohes HTML direkt in einem <code>&lt;iframe src="/api/briefings?file=...&raw=1"&gt;</code> angezeigt — ohne <code>sandbox</code>-Attribut. Das HTML ist KI-generiert und hat Zugriff auf JavaScript, localStorage, kann fetch-Requests abfeuern und auf Cookies zugreifen. Da der iframe auf demselben Origin läuft, hat er vollen Zugriff auf die App-Session.
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        <code>sandbox="allow-scripts allow-same-origin"</code> → lieber <code>sandbox="allow-scripts"</code> (ohne same-origin!). Oder: Briefings auf einem anderen Origin / subdomain ausliefern (<code>briefings.mehlhart.de</code>). Zusätzlich: CSP-Header auf dem <code>raw=1</code>-Endpoint setzen, der script-src einschränkt.
+      </p>
+    </div>
+  </div>
+
+  <!-- M2 -->
+  <div class="finding medium">
+    <div class="finding-header">
+      <div class="finding-title">30-Tage JWT ohne Revocation-Mechanismus</div>
+      <span class="badge badge-medium">🟡 Medium</span>
+    </div>
+    <div class="finding-file">app/api/auth/login/route.ts</div>
+    <div class="finding-desc">
+      Tokens sind 30 Tage gültig. Es gibt kein Logout, keinen Revoke-Endpoint, keine Token-Rotation, keine Session-Blacklist. Ein gestohlenes Cookie bleibt bis zu 30 Tage nutzbar. Es gibt keine Möglichkeit, nach Kompromittierung alle aktiven Sessions zu invalidieren ohne das JWT-Secret zu ändern (was alle anderen Sessions ebenfalls invalidiert).
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        Token-Laufzeit auf 24h reduzieren + Refresh-Token-Mechanismus implementieren. Alternativ: Logout-Endpoint hinzufügen, der ein "issued-before"-Timestamp in den JWT-Claims prüft (server-side Revocation ohne DB). Kurzfristig: 7 Tage statt 30 Tage als Kompromiss.
+      </p>
+    </div>
+  </div>
+
+  <!-- M3 -->
+  <div class="finding medium">
+    <div class="finding-header">
+      <div class="finding-title">Interne Error-Messages werden an den Client geleakt</div>
+      <span class="badge badge-medium">🟡 Medium</span>
+    </div>
+    <div class="finding-file">app/api/briefings/route.ts · app/api/memory/route.ts</div>
+    <div class="finding-desc">
+      Im Catch-Block wird <code>(error as Error).message</code> direkt an den Client zurückgegeben. Das kann interne Dateipfade, Stack-Traces oder Systeminfos enthalten — wertvolle Informationen für einen Angreifer (z.B. <code>"ENOENT: no such file or directory, open '/home/hartner/.openclaw/workspace/..."</code>).
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        Im Catch-Block nur generische Meldungen zurückgeben: <code>&#123; error: "Failed to read file" &#125;</code>. Intern loggen (server-side) mit vollem Error. Niemals rohe <code>error.message</code> oder Stack-Traces an den Client senden.
+      </p>
+    </div>
+  </div>
+
+  <!-- M4 -->
+  <div class="finding medium">
+    <div class="finding-header">
+      <div class="finding-title">Fallback-Datenspeicher in /tmp (world-readable)</div>
+      <span class="badge badge-medium">🟡 Medium</span>
+    </div>
+    <div class="finding-file">app/api/tasks/route.ts · app/api/projects/route.ts · app/api/people/route.ts</div>
+    <div class="finding-desc">
+      Wenn <code>/data/briefings/</code> nicht beschreibbar ist, fallen alle drei Routes auf <code>/tmp/mc-tasks.json</code>, <code>/tmp/mc-projects.json</code>, <code>/tmp/mc-people.json</code> zurück. Das <code>/tmp</code>-Verzeichnis ist unter Linux typischerweise world-readable (0755) und wird nicht persistiert. Enthält Kontaktdaten (E-Mail-Adressen von Kunden), Projekt-Repos, Task-Details.
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        <code>TASKS_FILE</code>, <code>PROJECTS_FILE</code>, <code>PEOPLE_FILE</code> in Coolify/docker-compose korrekt setzen und auf ein Volume mounten. Fallback entweder ganz entfernen oder zumindest auf ein gesichertes Verzeichnis (z.B. <code>/app/data/</code> im Container) umleiten. Beim Start prüfen ob Primary-Path schreibbar ist, sonst hard fail.
+      </p>
+    </div>
+  </div>
+
+  <!-- M5 -->
+  <div class="finding medium">
+    <div class="finding-header">
+      <div class="finding-title">Dockerfile Build-Stage: npm ci --only=production vor npm run build</div>
+      <span class="badge badge-medium">🟡 Medium</span>
+    </div>
+    <div class="finding-file">Dockerfile</div>
+    <div class="finding-desc">
+      Das Dockerfile führt <code>npm ci --only=production</code> aus, dann <code>npm run build</code>. TypeScript-Compilierung und ESLint (benötigt für den Build) sind devDependencies und werden dabei übersprungen. In der Praxis läuft der Build nur, weil <code>node_modules/</code> vom Host-Checkout vorhanden ist. In einer sauberen CI/CD-Pipeline würde dieser Build fehlschlagen. Das ist ein Konfigurationsfehler der die Reproduzierbarkeit des Builds gefährdet.
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        Build-Stage: <code>npm ci</code> (ohne <code>--only=production</code>) — alle Dependencies für den Build. 
+        Runner-Stage: nur das fertige <code>.next/standalone</code>-Artefakt kopieren (wie jetzt). 
+        Alternativ zweistufig: <code>npm ci</code> → <code>npm run build</code> → <code>npm prune --production</code>.
+      </p>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────── -->
+  <!-- LOW FINDINGS -->
+  <!-- ─────────────────────────────────── -->
+  <div class="section-title">🟢 Low / Info</div>
+
+  <!-- L1 -->
+  <div class="finding low">
+    <div class="finding-header">
+      <div class="finding-title">SameSite=Lax statt Strict für Auth-Cookie</div>
+      <span class="badge badge-low">🟢 Low</span>
+    </div>
+    <div class="finding-file">app/api/auth/login/route.ts</div>
+    <div class="finding-desc">
+      Das Auth-Cookie ist auf <code>sameSite: "lax"</code> gesetzt. Für eine single-user App ohne Cross-Site-Navigation-Anforderungen wäre <code>strict</code> die sicherere Wahl — verhindert CSRF auch bei Top-Level-Navigation.
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        <code>sameSite: "strict"</code> setzen, sofern keine Redirect-Flows von externen Seiten gebraucht werden. Bei Mission Control (direkter Login) kein Problem.
+      </p>
+    </div>
+  </div>
+
+  <!-- L2 -->
+  <div class="finding low">
+    <div class="finding-header">
+      <div class="finding-title">Kein Audit-Log für Auth-Events</div>
+      <span class="badge badge-low">🟢 Low</span>
+    </div>
+    <div class="finding-file">app/api/auth/login/route.ts</div>
+    <div class="finding-desc">
+      Fehlgeschlagene und erfolgreiche Login-Versuche werden nicht geloggt. Bei einem Angriff gibt es keine Möglichkeit nachzuvollziehen, ob und wann die App kompromittiert wurde.
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        <code>console.warn</code> / <code>console.error</code> mit Timestamp und IP bei fehlgeschlagenen Logins. Docker-Logs werden von Coolify erfasst. Alternativ: strukturiertes Logging mit IP-Hashing (privacy-compliant).
+      </p>
+    </div>
+  </div>
+
+  <!-- L3 -->
+  <div class="finding low">
+    <div class="finding-header">
+      <div class="finding-title">Keine Input-Längen-Limits in API-Routes</div>
+      <span class="badge badge-low">🟢 Low</span>
+    </div>
+    <div class="finding-file">app/api/tasks/route.ts · app/api/hatti/route.ts</div>
+    <div class="finding-desc">
+      Task-Titel, Notes, Hatti-Messages haben keine maximale Länge. Ein Angreifer könnte Megabytes an Daten in die JSON-Dateien schreiben, was zu Disk-Full-Zustand oder Memory-Problemen führen kann.
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        Maximale String-Längen definieren: Titel max 200 Zeichen, Notes max 2000, Message max 5000. Validierung direkt nach dem JSON-Parse.
+      </p>
+    </div>
+  </div>
+
+  <!-- L4 -->
+  <div class="finding low">
+    <div class="finding-header">
+      <div class="finding-title">Port 3000 direkt in docker-compose exponiert</div>
+      <span class="badge badge-low">🟢 Low</span>
+    </div>
+    <div class="finding-file">docker-compose.yml</div>
+    <div class="finding-desc">
+      <code>ports: "3000:3000"</code> bindet den Container-Port an alle Interfaces des Hosts (<code>0.0.0.0:3000</code>). Wenn der Host eine öffentliche IP hat und kein Firewall-Rule greift, ist die App direkt (ohne TLS, ohne Coolify-Reverse-Proxy) erreichbar.
+    </div>
+    <div class="recommendation">
+      <div class="recommendation-label">💡 Empfehlung</div>
+      <p>
+        Port nur auf Localhost binden: <code>"127.0.0.1:3000:3000"</code>. Der Reverse-Proxy (Coolify/Traefik) verbindet sich intern — kein externer Zugriff auf Port 3000 nötig. Ergänzend: Firewall-Regel auf dem Host (ufw allow/deny 3000).
+      </p>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────── -->
+  <!-- POSITIVES -->
+  <!-- ─────────────────────────────────── -->
+  <div class="section-title">✅ Das Gute — gut gemacht</div>
+  <div class="positives">
+    <div class="positive-item">
+      <span class="positive-icon">✅</span>
+      <span><strong>Non-Root Docker User</strong> — Container läuft als <code>nextjs</code> (UID 1001), nicht als root. Privilege Escalation erheblich erschwert.</span>
+    </div>
+    <div class="positive-item">
+      <span class="positive-icon">✅</span>
+      <span><strong>Volume Read-Only gemountet</strong> — <code>/workspace:ro</code> in docker-compose verhindert, dass die App in den OpenClaw-Workspace schreiben kann.</span>
+    </div>
+    <div class="positive-item">
+      <span class="positive-icon">✅</span>
+      <span><strong>httpOnly Cookie</strong> — Das Auth-Cookie ist <code>httpOnly: true</code>, damit kein JavaScript im Browser es lesen kann. Richtig gemacht.</span>
+    </div>
+    <div class="positive-item">
+      <span class="positive-icon">✅</span>
+      <span><strong>Secure Cookie in Production</strong> — <code>secure: process.env.NODE_ENV === "production"</code> — Cookie wird nur über HTTPS übertragen in prod.</span>
+    </div>
+    <div class="positive-item">
+      <span class="positive-icon">✅</span>
+      <span><strong>Path-Traversal-Schutz in lib/fs.ts</strong> — <code>safeResolve()</code> mit <code>isWithinRoot()</code>-Check verhindert <code>../../../etc/passwd</code>-Angriffe. Gut implementiert.</span>
+    </div>
+    <div class="positive-item">
+      <span class="positive-icon">✅</span>
+      <span><strong>MAX_DEPTH = 2 in walkDir()</strong> — Verhindert tiefes Traversieren des Dateisystems bei Directory-Listing.</span>
+    </div>
+    <div class="positive-item">
+      <span class="positive-icon">✅</span>
+      <span><strong>jose statt jsonwebtoken</strong> — Moderne, Web-Crypto-basierte JWT-Bibliothek ohne bekannte Vulnerabilities. Algorithmus explizit auf HS256 gesetzt.</span>
+    </div>
+    <div class="positive-item">
+      <span class="positive-icon">✅</span>
+      <span><strong>Middleware-Matcher deckt alle Routes ab</strong> — <code>/((?!_next/static|_next/image|favicon.ico).*)</code> erfasst korrekt alle API-Routes und Pages.</span>
+    </div>
+    <div class="positive-item">
+      <span class="positive-icon">✅</span>
+      <span><strong>TypeScript durchgehend</strong> — Statische Typisierung reduziert eine ganze Klasse von Bugs. Kein JavaScript-Schludern.</span>
+    </div>
+    <div class="positive-item">
+      <span class="positive-icon">✅</span>
+      <span><strong>Docker Healthcheck vorhanden</strong> — Container wird automatisch neugestartet wenn der Health-Endpoint nicht antwortet.</span>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────── -->
+  <!-- ROADMAP -->
+  <!-- ─────────────────────────────────── -->
+  <div class="section-title">🗺️ Prioritized Hardening Roadmap</div>
+  <div class="roadmap">
+
+    <div class="roadmap-item">
+      <div class="roadmap-num">1</div>
+      <div class="roadmap-content">
+        <div class="roadmap-action">Hardcodierte Credentials entfernen + starke Env-Vars erzwingen</div>
+        <div class="roadmap-why">Sofort: <code>MC_PASSWORD</code> und <code>MC_JWT_SECRET</code> in Coolify auf starke Werte setzen. Code auf Hard-Fail bei fehlenden Env-Vars umstellen. Passwort auf 16+ Zeichen erhöhen.</div>
+        <div class="roadmap-tags">
+          <span class="tag tag-impact">🔴 Critical Impact</span>
+          <span class="tag tag-effort-low">💚 ~30min Aufwand</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-num">2</div>
+      <div class="roadmap-content">
+        <div class="roadmap-action">Rate-Limiting auf /api/auth/login implementieren</div>
+        <div class="roadmap-why">Max 5 Versuche / 15 Minuten per IP. In-Memory mit einer einfachen Map realisierbar, alternativ Traefik-Middleware in Coolify konfigurieren. Stops Brute-Force komplett.</div>
+        <div class="roadmap-tags">
+          <span class="tag tag-impact">🔴 Critical Impact</span>
+          <span class="tag tag-effort">🔵 ~2h Aufwand</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-num">3</div>
+      <div class="roadmap-content">
+        <div class="roadmap-action">MEMORY_DIR / BRIEFINGS_DIR auf dedizierte Unterverzeichnisse beschränken</div>
+        <div class="roadmap-why">Workspace-Root aus dem Docker-Volume entfernen. Nur <code>/workspace/briefings</code> und ein explizites <code>/workspace/memory-public</code>-Verzeichnis mounten. Verhindert unbeabsichtigten Zugriff auf API Keys und persönliche Daten.</div>
+        <div class="roadmap-tags">
+          <span class="tag tag-impact">🟠 High Impact</span>
+          <span class="tag tag-effort-low">💚 ~1h Aufwand</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-num">4</div>
+      <div class="roadmap-content">
+        <div class="roadmap-action">HTTP-Security-Headers in next.config.mjs hinzufügen</div>
+        <div class="roadmap-why">X-Frame-Options, X-Content-Type-Options, CSP, HSTS, Referrer-Policy. Standardisierter <code>headers()</code>-Block, fertige Templates verfügbar. Verbessert Security-Score von F auf A. Blockiert Clickjacking und MIME-Sniffing sofort.</div>
+        <div class="roadmap-tags">
+          <span class="tag tag-impact">🟠 High Impact</span>
+          <span class="tag tag-effort-low">💚 ~45min Aufwand</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-num">5</div>
+      <div class="roadmap-content">
+        <div class="roadmap-action">Next.js auf 15.x updaten + iframe-Sandbox hinzufügen</div>
+        <div class="roadmap-why">Next.js-Update schließt zwei aktive DoS-Vulnerabilities. iframe-Sandbox (<code>sandbox="allow-scripts"</code> ohne same-origin) isoliert KI-generierten HTML-Content und verhindert Session-Hijacking via Briefing-XSS. Beides im gleichen Zug machbar.</div>
+        <div class="roadmap-tags">
+          <span class="tag tag-impact">🟠 High Impact</span>
+          <span class="tag tag-effort">🔵 ~3h Aufwand</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center; margin-top: 48px; font-size: 12px; color: #bbb;">
+    Generiert am 08.03.2026 · Hatti Security Audit · mc.mehlhart.de
+  </div>
+
+</div>
+</body>
+</html>
