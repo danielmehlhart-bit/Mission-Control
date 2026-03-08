@@ -44,9 +44,21 @@ function write(data: Project[]) { fs.writeFileSync(getFile(), JSON.stringify(dat
 export async function GET() { return NextResponse.json({ projects: read() }); }
 
 export async function POST(req: Request) {
+  // Fix 4: Allowlist — nur bekannte Felder, kein ...body spread
   const body = await req.json();
+  const { name, client, status, description, contactId, repo, color } = body;
+  if (!name?.trim()) return NextResponse.json({ error: 'Name required' }, { status: 400 });
   const projects = read();
-  const project: Project = { ...body, id: Date.now().toString() };
+  const project: Project = {
+    id: Date.now().toString(),
+    name: String(name).trim(),
+    client: String(client ?? '').trim(),
+    status: ['active', 'paused', 'done'].includes(status) ? status : 'active',
+    ...(description ? { description: String(description).trim() } : {}),
+    ...(contactId ? { contactId: String(contactId).trim() } : {}),
+    ...(repo ? { repo: String(repo).trim() } : {}),
+    color: String(color ?? '#6366f1').trim(),
+  };
   projects.push(project);
   write(projects);
   return NextResponse.json({ project });
@@ -55,11 +67,19 @@ export async function POST(req: Request) {
 export async function PATCH(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get('id');
+  // Fix 4: Allowlist — nur bekannte Felder patchen
   const body = await req.json();
   const projects = read();
   const idx = projects.findIndex(p => p.id === id);
   if (idx === -1) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-  projects[idx] = { ...projects[idx], ...body };
+  const { name, client, status, description, contactId, repo, color } = body;
+  if (name !== undefined) projects[idx].name = String(name).trim();
+  if (client !== undefined) projects[idx].client = String(client).trim();
+  if (status !== undefined && ['active', 'paused', 'done'].includes(status)) projects[idx].status = status;
+  if (description !== undefined) projects[idx].description = String(description).trim();
+  if (contactId !== undefined) projects[idx].contactId = String(contactId).trim();
+  if (repo !== undefined) projects[idx].repo = String(repo).trim();
+  if (color !== undefined) projects[idx].color = String(color).trim();
   write(projects);
   return NextResponse.json({ project: projects[idx] });
 }

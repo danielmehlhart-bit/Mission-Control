@@ -66,32 +66,41 @@ export async function readBriefing(filePath: string) {
   return fs.readFile(fullPath, "utf8");
 }
 
+// Fix 3: Memory-Zugriff auf memory/ Subdir beschränkt — nie den vollen Workspace exponieren
+const MEMORY_SUBDIR = "memory";
+
 export async function listMemory() {
   const root = ROOTS.memory;
-  const files = await walkDir(root);
-  const filtered = files.filter((file) =>
-    /memory\.md$/i.test(file) ||
-    /logs\/.*\.md$/i.test(file) ||
-    /daily\/.*\.md$/i.test(file) ||
-    /\.md$/i.test(file)
-  );
+  // Nur den memory/ Unterordner lesen, nicht den vollen Workspace
+  const memoryRoot = path.join(root, MEMORY_SUBDIR);
+  let files: string[] = [];
+  try {
+    files = await walkDir(memoryRoot);
+  } catch {
+    // Fallback: Subdir existiert nicht → leere Liste
+    return { root: memoryRoot, files: [] };
+  }
   return {
-    root,
+    root: memoryRoot,
     files: await Promise.all(
-      filtered.map(async (file) => {
-        const stat = await fs.stat(file);
-        return {
-          name: path.basename(file),
-          path: path.relative(root, file),
-          modified: stat.mtime.toISOString(),
-        };
-      })
+      files
+        .filter((file) => /\.md$/i.test(file))
+        .map(async (file) => {
+          const stat = await fs.stat(file);
+          return {
+            name: path.basename(file),
+            path: path.relative(memoryRoot, file),
+            modified: stat.mtime.toISOString(),
+          };
+        })
     ),
   };
 }
 
 export async function readMemory(filePath: string) {
   const root = ROOTS.memory;
-  const fullPath = safeResolve(root, filePath);
+  const memoryRoot = path.join(root, MEMORY_SUBDIR);
+  // Path-Traversal-Schutz: Pfad muss innerhalb des memory/ Subdirs bleiben
+  const fullPath = safeResolve(memoryRoot, filePath);
   return fs.readFile(fullPath, "utf8");
 }

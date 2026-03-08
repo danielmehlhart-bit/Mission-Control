@@ -47,9 +47,21 @@ function write(data: Person[]) { fs.writeFileSync(getFile(), JSON.stringify(data
 export async function GET() { return NextResponse.json({ people: read() }); }
 
 export async function POST(req: Request) {
+  // Fix 4: Allowlist — nur bekannte Felder, kein ...body spread
   const body = await req.json();
+  const { name, company, role, email, phone, project, notes } = body;
+  if (!name?.trim()) return NextResponse.json({ error: 'Name required' }, { status: 400 });
   const people = read();
-  const person: Person = { ...body, id: Date.now().toString() };
+  const person: Person = {
+    id: Date.now().toString(),
+    name: String(name).trim(),
+    company: String(company ?? '').trim(),
+    ...(role ? { role: String(role).trim() } : {}),
+    ...(email ? { email: String(email).trim() } : {}),
+    ...(phone ? { phone: String(phone).trim() } : {}),
+    ...(project ? { project: String(project).trim() } : {}),
+    ...(notes ? { notes: String(notes).trim() } : {}),
+  };
   people.push(person);
   write(people);
   return NextResponse.json({ person });
@@ -58,11 +70,19 @@ export async function POST(req: Request) {
 export async function PATCH(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get('id');
+  // Fix 4: Allowlist — nur bekannte Felder patchen
   const body = await req.json();
   const people = read();
   const idx = people.findIndex(p => p.id === id);
   if (idx === -1) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-  people[idx] = { ...people[idx], ...body };
+  const { name, company, role, email, phone, project, notes } = body;
+  if (name !== undefined) people[idx].name = String(name).trim();
+  if (company !== undefined) people[idx].company = String(company).trim();
+  if (role !== undefined) people[idx].role = String(role).trim();
+  if (email !== undefined) people[idx].email = String(email).trim();
+  if (phone !== undefined) people[idx].phone = String(phone).trim();
+  if (project !== undefined) people[idx].project = String(project).trim();
+  if (notes !== undefined) people[idx].notes = String(notes).trim();
   write(people);
   return NextResponse.json({ person: people[idx] });
 }

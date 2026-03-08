@@ -2,9 +2,12 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
-const SECRET = new TextEncoder().encode(
-  process.env.MC_JWT_SECRET ?? "mc-dev-secret-change-in-production"
-);
+// Fix 1: Hard-fail — kein Silent-Fallback auf schwaches Default-Secret
+const jwtSecret = process.env.MC_JWT_SECRET;
+if (!jwtSecret) {
+  console.error("FATAL: MC_JWT_SECRET is not set — all requests will be blocked");
+}
+const SECRET = new TextEncoder().encode(jwtSecret ?? "");
 
 const PUBLIC_PATHS = ["/login", "/api/auth/login"];
 
@@ -22,6 +25,13 @@ export async function middleware(request: NextRequest) {
 
   // Check JWT cookie
   const token = request.cookies.get("mc_auth")?.value;
+  // Fix 1: Ohne Secret → alle geblockt (fail closed)
+  if (!jwtSecret) {
+    const loginUrl = request.nextUrl.clone();
+    loginUrl.pathname = "/login";
+    return NextResponse.redirect(loginUrl);
+  }
+
   if (token) {
     try {
       await jwtVerify(token, SECRET);
