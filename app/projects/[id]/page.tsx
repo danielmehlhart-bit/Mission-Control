@@ -9,6 +9,8 @@ import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import HorizontalRule from "@tiptap/extension-horizontal-rule";
 import Placeholder from "@tiptap/extension-placeholder";
+import EditProjectModal from "./edit-modal";
+
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 type Project = {
@@ -155,6 +157,7 @@ export default function ProjectDetailPage() {
   const [stageUpdating, setStageUpdating] = useState(false);
   const [editOppValue, setEditOppValue] = useState(false);
   const [oppValueInput, setOppValueInput] = useState("");
+  const [editProjectModal, setEditProjectModal] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -276,7 +279,8 @@ export default function ProjectDetailPage() {
                 💰 {project.opportunityValue ?? "Wert eintragen"}
               </button>
             )}
-            <span style={{ padding: "4px 12px", borderRadius: 999, fontSize: 11, fontWeight: 600, background: "rgba(16,185,129,0.12)", color: "#10B981", border: "1px solid rgba(16,185,129,0.25)" }}>● Aktiv</span>
+            <span style={{ padding: "4px 12px", borderRadius: 999, fontSize: 11, fontWeight: 600, background: "rgba(16,185,129,0.12)", color: "#10B981", border: "1px solid rgba(16,185,129,0.25)" }}>● {project.status.charAt(0).toUpperCase() + project.status.slice(1)}</span>
+            <button onClick={() => setEditProjectModal(true)} style={{ padding: "5px 12px", borderRadius: 6, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 12, cursor: "pointer" }}>✏️ Bearbeiten</button>
           </div>
         </div>
       </div>
@@ -415,13 +419,20 @@ export default function ProjectDetailPage() {
         </div>
       </div>
 
-      {/* Meeting Modal */}
+      {/* Modals */}
       {meetingModal && project && (
         <MeetingModal
           project={project} people={people}
           editing={editingMeeting}
           onClose={() => { setMeetingModal(false); setEditingMeeting(null); }}
           onSaved={() => { setMeetingModal(false); setEditingMeeting(null); load(); }}
+        />
+      )}
+      {editProjectModal && project && (
+        <EditProjectModal
+          project={project}
+          onClose={() => setEditProjectModal(false)}
+          onSaved={() => { setEditProjectModal(false); load(); }}
         />
       )}
     </div>
