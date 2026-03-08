@@ -348,13 +348,13 @@ export default function ProjectDetailPage() {
             {planned.length > 0 && (
               <>
                 <div style={{ padding: "8px 16px 4px", fontSize: 11, color: "#4a5068", textTransform: "uppercase", letterSpacing: "0.5px" }}>Geplant</div>
-                {planned.map(m => <MeetingRow key={m.id} m={m} color={color} onEdit={() => { setEditingMeeting(m); setMeetingModal(true); }} onDelete={() => deleteMeeting(m.id)} onMarkDone={async () => { await fetch(`/api/meetings?id=${m.id}`, { method: "PATCH", headers: {"Content-Type":"application/json"}, body: JSON.stringify({status:"done"}) }); load(); }} projectId={id} tasks={tasks} onTaskCreated={load} />)}
+                {planned.map(m => <MeetingRow key={m.id} m={m} color={color} onEdit={() => { setEditingMeeting(m); setMeetingModal(true); }} onDelete={() => deleteMeeting(m.id)} onMarkDone={async () => { await fetch(`/api/meetings?id=${m.id}`, { method: "PATCH", headers: {"Content-Type":"application/json"}, body: JSON.stringify({status:"done"}) }); load(); }} projectId={id} onTaskCreated={load} />)}
               </>
             )}
             {past.length > 0 && (
               <>
                 <div style={{ padding: "8px 16px 4px", fontSize: 11, color: "#4a5068", textTransform: "uppercase", letterSpacing: "0.5px", borderTop: planned.length > 0 ? "1px solid #1e2128" : "none" }}>Vergangen</div>
-                {past.map(m => <MeetingRow key={m.id} m={m} color={color} onEdit={() => { setEditingMeeting(m); setMeetingModal(true); }} onDelete={() => deleteMeeting(m.id)} onMarkDone={async () => { await fetch(`/api/meetings?id=${m.id}`, { method: "PATCH", headers: {"Content-Type":"application/json"}, body: JSON.stringify({status:"done"}) }); load(); }} projectId={id} tasks={tasks} onTaskCreated={load} />)}
+                {past.map(m => <MeetingRow key={m.id} m={m} color={color} onEdit={() => { setEditingMeeting(m); setMeetingModal(true); }} onDelete={() => deleteMeeting(m.id)} onMarkDone={async () => { await fetch(`/api/meetings?id=${m.id}`, { method: "PATCH", headers: {"Content-Type":"application/json"}, body: JSON.stringify({status:"done"}) }); load(); }} projectId={id} onTaskCreated={load} />)}
               </>
             )}
             {meetings.length === 0 && <div style={{ padding: "24px 16px", textAlign: "center", color: "#4a5068", fontSize: 12 }}>Noch keine Meetings. + Neues Meeting anlegen.</div>}
@@ -424,9 +424,9 @@ export default function ProjectDetailPage() {
 }
 
 // ─── MeetingRow Component ─────────────────────────────────────────────────────
-function MeetingRow({ m, color, onEdit, onDelete, onMarkDone, projectId, tasks, onTaskCreated }: {
+function MeetingRow({ m, color, onEdit, onDelete, onMarkDone, projectId, onTaskCreated }: {
   m: Meeting; color: string; onEdit: () => void; onDelete: () => void; onMarkDone: () => void;
-  projectId: string; tasks: Task[]; onTaskCreated: () => void;
+  projectId: string; onTaskCreated: () => void;
 }) {
   const [addingAI, setAddingAI] = useState("");
 
