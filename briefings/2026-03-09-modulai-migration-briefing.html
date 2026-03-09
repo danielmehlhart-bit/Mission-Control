@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ModulAI Migration — Lovable → Hetzner/Coolify</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      line-height: 1.6;
+      padding: 24px 16px 60px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* HEADER */
+    .header {
+      background: #fff;
+      border-radius: 16px;
+      padding: 36px 40px 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      border-top: 4px solid #FF385C;
+    }
+
+    .header-meta {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 10px;
+      letter-spacing: 0.3px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 8px;
+    }
+
+    .header h1 span { color: #FF385C; }
+
+    .header .subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .stack-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .badge-red    { background: #fff0f2; color: #FF385C; border: 1px solid #ffcdd4; }
+    .badge-green  { background: #e8f8f2; color: #1a9e63; border: 1px solid #a3dfc5; }
+    .badge-blue   { background: #e8f2ff; color: #1a6ce8; border: 1px solid #a3c5f5; }
+    .badge-gray   { background: #f2f2f2; color: #555;    border: 1px solid #ddd; }
+
+    /* SECTION CARD */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px 36px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+
+    .card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card h2 .icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #333;
+      margin: 18px 0 8px;
+    }
+
+    .card p {
+      color: #444;
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+
+    .card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .card ul li {
+      padding: 6px 0 6px 22px;
+      position: relative;
+      color: #444;
+      font-size: 15px;
+      border-bottom: 1px solid #f5f5f5;
+    }
+
+    .card ul li:last-child { border-bottom: none; }
+
+    .card ul li::before {
+      content: "›";
+      position: absolute;
+      left: 6px;
+      color: #FF385C;
+      font-weight: 700;
+    }
+
+    /* STATUS TABLE */
+    .status-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+
+    .status-table th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 8px 12px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .status-table td {
+      padding: 10px 12px;
+      font-size: 14px;
+      color: #333;
+      border-bottom: 1px solid #f5f5f5;
+      vertical-align: middle;
+    }
+
+    .status-table tr:last-child td { border-bottom: none; }
+
+    /* STEP CARDS */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .step {
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 20px 24px;
+      position: relative;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .step-number {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #FF385C;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .step-badge {
+      margin-left: auto;
+    }
+
+    .step ul {
+      margin-top: 4px;
+    }
+
+    /* CODE BLOCKS */
+    pre, code {
+      font-family: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", Menlo, Consolas, monospace;
+      font-size: 13px;
+    }
+
+    pre {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 12px 0;
+      overflow-x: auto;
+      line-height: 1.7;
+    }
+
+    pre .comment { color: #6c7086; }
+    pre .key     { color: #89b4fa; }
+    pre .val     { color: #a6e3a1; }
+    pre .cmd     { color: #f38ba8; }
+
+    code {
+      background: #f5f5f5;
+      color: #d63031;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 13px;
+    }
+
+    /* CHECKLIST */
+    .checklist {
+      list-style: none;
+      padding: 0;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 0;
+      font-size: 15px;
+      color: #333;
+      border-bottom: 1px solid #f5f5f5;
+    }
+
+    .checklist li:last-child { border-bottom: none; }
+
+    .checklist li::before {
+      content: "☐";
+      font-size: 16px;
+      color: #ccc;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    /* PITFALL CARDS */
+    .pitfall {
+      background: #fff8f0;
+      border: 1px solid #ffd8a8;
+      border-left: 4px solid #ff9f43;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+    }
+
+    .pitfall strong {
+      display: block;
+      color: #d0621a;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .pitfall p {
+      color: #6b4c1e;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    /* EFFORT */
+    .effort-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .effort-item {
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 18px 20px;
+      text-align: center;
+    }
+
+    .effort-item .effort-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: #FF385C;
+      display: block;
+    }
+
+    .effort-item .effort-label {
+      font-size: 13px;
+      color: #777;
+      margin-top: 4px;
+    }
+
+    /* ACTION ITEMS */
+    .action-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 16px;
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+
+    .action-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #111;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .action-text {
+      font-size: 15px;
+      color: #333;
+      padding-top: 2px;
+    }
+
+    .action-text strong { color: #111; }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px;
+      background: #f0f0f0;
+      margin: 20px 0;
+    }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      color: #aaa;
+      font-size: 13px;
+      margin-top: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .card { padding: 22px 18px; }
+      .header { padding: 24px 20px; }
+      .effort-grid { grid-template-columns: 1fr; }
+      .step-header { flex-wrap: wrap; }
+      .step-badge { margin-left: 0; margin-top: 8px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-meta">&#128197; 9. März 2026 &nbsp;·&nbsp; Migration Briefing &nbsp;·&nbsp; ModulAI</div>
+    <h1>ModulAI: <span>Lovable → Hetzner/Coolify</span></h1>
+    <p class="subtitle">Frontend-Migration — selbst gehosted, volle Kontrolle, Supabase bleibt komplett unangetastet.</p>
+    <div class="stack-badges">
+      <span class="badge badge-red">&#128683; Lovable Frontend (wird abgelöst)</span>
+      <span class="badge badge-blue">&#10024; Coolify auf Hetzner (neu)</span>
+      <span class="badge badge-green">&#10003; Supabase (bleibt komplett)</span>
+      <span class="badge badge-gray">&#128279; github.com/danielmehlhart-bit/modulai</span>
+    </div>
+  </div>
+
+  <!-- 1. ÜBERBLICK -->
+  <div class="card">
+    <h2><span class="icon">&#127919;</span> 1. Überblick &amp; Ziel</h2>
+    <p>
+      ModulAI läuft aktuell auf <strong>Lovable</strong> — einem Service der zwei Dinge gleichzeitig macht: Frontend hosten + KI-gestützte UI-Generierung. Das Backend (Auth, Datenbank, Edge Functions, Storage) liegt schon jetzt bei <strong>Supabase</strong> und ist vollständig unabhängig von Lovable.
+    </p>
+    <p>
+      Das Ziel: Das Frontend von Lovable lösen und auf einem eigenen Hetzner-Server via <strong>Coolify</strong> betreiben. Coolify übernimmt Deployments, SSL, und Domain-Routing — vollautomatisch, ohne DevOps-Kenntnisse.
+    </p>
+
+    <div class="divider"></div>
+
+    <table class="status-table">
+      <thead>
+        <tr>
+          <th>Komponente</th>
+          <th>Vorher</th>
+          <th>Nachher</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Frontend-Hosting</strong></td>
+          <td>Lovable</td>
+          <td>Coolify / Hetzner</td>
+          <td><span class="badge badge-blue">&#10024; Neu auf Coolify</span></td>
+        </tr>
+        <tr>
+          <td><strong>Supabase Auth</strong></td>
+          <td>Supabase</td>
+          <td>Supabase</td>
+          <td><span class="badge badge-green">&#10003; Bleibt bei Supabase</span></td>
+        </tr>
+        <tr>
+          <td><strong>Datenbank (Postgres)</strong></td>
+          <td>Supabase</td>
+          <td>Supabase</td>
+          <td><span class="badge badge-green">&#10003; Bleibt bei Supabase</span></td>
+        </tr>
+        <tr>
+          <td><strong>Edge Functions</strong></td>
+          <td>Supabase</td>
+          <td>Supabase</td>
+          <td><span class="badge badge-green">&#10003; Bleibt bei Supabase</span></td>
+        </tr>
+        <tr>
+          <td><strong>Storage</strong></td>
+          <td>Supabase</td>
+          <td>Supabase</td>
+          <td><span class="badge badge-green">&#10003; Bleibt bei Supabase</span></td>
+        </tr>
+        <tr>
+          <td><strong>GitHub Repo</strong></td>
+          <td>Lovable Sync</td>
+          <td>Coolify Quelle</td>
+          <td><span class="badge badge-blue">&#10024; Neu auf Coolify</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 2. WAS LOVABLE MACHT -->
+  <div class="card">
+    <h2><span class="icon">&#128269;</span> 2. Was Lovable macht — und was nicht migriert werden muss</h2>
+    <p>Lovable ist im Kern zwei Dinge: eine <strong>KI-IDE</strong> (Code generieren) und ein <strong>statischer Hoster</strong> (dein Build online stellen). Mehr nicht.</p>
+
+    <h3>&#10060; Was Lovable NICHT ist:</h3>
+    <ul>
+      <li>Kein Backend — Lovable kennt deine Supabase-Daten nicht</li>
+      <li>Kein Edge-Function-Runner — die laufen in Supabase's eigenem Netz</li>
+      <li>Kein Datenbankserver — Postgres ist komplett bei Supabase</li>
+      <li>Kein Auth-Provider — das macht Supabase</li>
+    </ul>
+
+    <h3>&#9989; Was beim Umzug relevant ist:</h3>
+    <ul>
+      <li>Nur das <strong>Frontend-Bundle</strong> (HTML + JS + CSS nach <code>npm run build</code>)</li>
+      <li>Die <strong>Env-Variablen</strong> (<code>VITE_SUPABASE_URL</code> und <code>VITE_SUPABASE_ANON_KEY</code>)</li>
+      <li>Die <strong>Domain-Konfiguration</strong> in Supabase (Redirect URLs)</li>
+    </ul>
+
+    <div style="background:#e8f8f2; border:1px solid #a3dfc5; border-radius:10px; padding:14px 18px; margin-top:16px;">
+      <strong style="color:#1a9e63;">&#127881; Die gute Nachricht</strong>
+      <p style="color:#1a6b4a; margin-top:6px; margin-bottom:0; font-size:14px;">
+        Du migrierst nur den Hoster, nicht das Backend. Wenn Coolify läuft und die Env-Variablen stimmen, funktioniert alles wie vorher — Auth, DB, Functions, alles. Die meiste Arbeit ist Setup, nicht Migration.
+      </p>
+    </div>
+  </div>
+
+  <!-- 3. VORAUSSETZUNGEN -->
+  <div class="card">
+    <h2><span class="icon">&#9989;</span> 3. Voraussetzungen checken</h2>
+    <p>Bevor du startest, diese 4 Dinge prüfen:</p>
+    <ul class="checklist">
+      <li><strong>GitHub Repo ist aktuell</strong> — Lovable → GitHub Sync aktiviert, letzter Commit ist dein aktueller Stand. URL: <code>github.com/danielmehlhart-bit/modulai</code></li>
+      <li><strong>Hetzner Server läuft</strong> — Coolify ist installiert und erreichbar (normalerweise über Port 8000 oder deine Server-IP). Falls noch nicht: Coolify-Installer (<code>curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash</code>)</li>
+      <li><strong>Domain/Subdomain bereit</strong> — z.B. <code>modulai.mehlhart.de</code>. Du brauchst Zugang zu deinen DNS-Einstellungen (z.B. bei Cloudflare, IONOS, Strato).</li>
+      <li><strong>Supabase Keys bereit</strong> — Supabase Dashboard → Projekt → Settings → API. Du brauchst: <em>Project URL</em> und <em>anon public key</em>.</li>
+    </ul>
+  </div>
+
+  <!-- 4. SCHRITT-FÜR-SCHRITT -->
+  <div class="card">
+    <h2><span class="icon">&#128640;</span> 4. Schritt-für-Schritt Migration</h2>
+
+    <div class="steps">
+
+      <!-- Step A -->
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number">A</div>
+          <div class="step-title">GitHub Repo vorbereiten</div>
+          <div class="step-badge"><span class="badge badge-gray">&#128193; Repo-Check</span></div>
+        </div>
+        <p style="font-size:14px; color:#555; margin-bottom:10px;">Prüfe ob dein Repo die richtigen Build-Dateien enthält. Bei einem Lovable-Projekt ist das fast immer ein Vite-Setup.</p>
+        <ul>
+          <li>Im Repo prüfen: <code>package.json</code> und <code>vite.config.ts</code> vorhanden?</li>
+          <li>In <code>package.json</code> nach dem <code>scripts</code>-Block schauen — Build-Befehl ist dort</li>
+          <li>Typisch: <code>npm run build</code> → Output in <code>dist/</code></li>
+          <li><code>.env.example</code> anlegen (zum Dokumentieren, nicht für echte Keys!)</li>
+        </ul>
+        <pre><span class="comment"># .env.example</span>
+<span class="key">VITE_SUPABASE_URL</span>=<span class="val">https://dein-projekt.supabase.co</span>
+<span class="key">VITE_SUPABASE_ANON_KEY</span>=<span class="val">dein-anon-key-hier</span></pre>
+        <pre><span class="comment"># package.json scripts (Beispiel)</span>
+{
+  "scripts": {
+    <span class="key">"build"</span>: <span class="val">"vite build"</span>,
+    <span class="key">"dev"</span>: <span class="val">"vite"</span>
+  }
+}</pre>
+      </div>
+
+      <!-- Step B -->
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number">B</div>
+          <div class="step-title">Coolify Setup auf Hetzner</div>
+          <div class="step-badge"><span class="badge badge-blue">&#10024; Neu auf Coolify</span></div>
+        </div>
+        <ul>
+          <li>Coolify öffnen → <strong>New Project</strong> erstellen (z.B. "ModulAI")</li>
+          <li>Im Projekt: <strong>+ New Resource</strong> klicken</li>
+          <li>Typ wählen: <strong>"Static Site"</strong> (wenn Lovable ein Vite/React-SPA ist — das ist der Normalfall)</li>
+          <li>GitHub Source wählen → Repo <code>danielmehlhart-bit/modulai</code> verbinden (OAuth empfohlen)</li>
+          <li>Branch: <code>main</code></li>
+          <li>Build-Command eintragen: <code>npm run build</code></li>
+          <li>Publish Directory (Output): <code>dist</code></li>
+        </ul>
+        <pre><span class="comment"># Coolify Build-Einstellungen</span>
+<span class="key">Build Command:</span>    <span class="val">npm run build</span>
+<span class="key">Publish Directory:</span> <span class="val">dist</span>
+<span class="key">Node Version:</span>     <span class="val">20</span> (oder latest LTS)</pre>
+      </div>
+
+      <!-- Step C -->
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number">C</div>
+          <div class="step-title">Environment Variables in Coolify setzen</div>
+          <div class="step-badge"><span class="badge badge-red">&#9888;&#65039; Wichtig!</span></div>
+        </div>
+        <p style="font-size:14px; color:#555; margin-bottom:10px;">
+          Das ist der häufigste Fehler: Env-Variablen vergessen. Vite baut sie zur Build-Zeit in den Bundle ein — sie müssen <strong>vor dem Deploy</strong> gesetzt sein.
+        </p>
+        <ul>
+          <li>In Coolify: Resource → <strong>Environment Variables</strong> Tab</li>
+          <li>Beide Variablen aus Supabase Dashboard → Settings → API kopieren</li>
+          <li><strong>Achtung:</strong> Variablen MÜSSEN mit <code>VITE_</code> beginnen, sonst ignoriert Vite sie!</li>
+        </ul>
+        <pre><span class="key">VITE_SUPABASE_URL</span>=<span class="val">https://abcdefghijk.supabase.co</span>
+<span class="key">VITE_SUPABASE_ANON_KEY</span>=<span class="val">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</span></pre>
+      </div>
+
+      <!-- Step D -->
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number">D</div>
+          <div class="step-title">Supabase CORS &amp; Allowed Origins updaten</div>
+          <div class="step-badge"><span class="badge badge-green">&#10003; Supabase Aktion</span></div>
+        </div>
+        <ul>
+          <li>Supabase Dashboard → dein Projekt → <strong>Authentication → URL Configuration</strong></li>
+          <li><strong>Site URL</strong> auf neue Domain setzen: <code>https://modulai.mehlhart.de</code></li>
+          <li>Unter <strong>Redirect URLs</strong>: neue URL hinzufügen: <code>https://modulai.mehlhart.de/**</code></li>
+          <li>Alten Lovable-URL als Redirect URL kann vorerst bleiben (schadet nicht)</li>
+        </ul>
+        <pre><span class="comment"># Supabase Authentication → URL Configuration</span>
+<span class="key">Site URL:</span>      <span class="val">https://modulai.mehlhart.de</span>
+<span class="key">Redirect URLs:</span> <span class="val">https://modulai.mehlhart.de/**</span>
+               <span class="val">https://modulai.mehlhart.de/auth/callback</span></pre>
+      </div>
+
+      <!-- Step E -->
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number">E</div>
+          <div class="step-title">Custom Domain in Coolify konfigurieren</div>
+          <div class="step-badge"><span class="badge badge-blue">&#127758; DNS</span></div>
+        </div>
+        <ul>
+          <li>In Coolify: Resource → <strong>Domains</strong> Tab</li>
+          <li>Domain eintragen: <code>modulai.mehlhart.de</code></li>
+          <li>In deinem DNS-Anbieter: <strong>A-Record</strong> anlegen</li>
+          <li>SSL: Coolify macht Let's Encrypt automatisch — kein manuelles Zertifikat nötig!</li>
+        </ul>
+        <pre><span class="comment"># DNS-Einstellung bei deinem Provider</span>
+<span class="key">Typ:</span>   <span class="val">A</span>
+<span class="key">Name:</span>  <span class="val">modulai</span>
+<span class="key">Wert:</span>  <span class="val">DEINE-HETZNER-SERVER-IP</span>
+<span class="key">TTL:</span>   <span class="val">300</span> (5 Minuten für schnelles Testen)</pre>
+      </div>
+
+      <!-- Step F -->
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number">F</div>
+          <div class="step-title">Deploy &amp; Test</div>
+          <div class="step-badge"><span class="badge badge-green">&#9989; Go Live</span></div>
+        </div>
+        <ul>
+          <li>In Coolify: <strong>"Deploy"</strong> Button klicken → Build-Log beobachten</li>
+          <li>Nach erfolgreichem Build: <code>https://modulai.mehlhart.de</code> im Browser öffnen</li>
+          <li><strong>Login-Flow testen</strong> — geht Auth? Wird nach Login korrekt redirected?</li>
+          <li>Edge Functions testen (sollten sofort klappen — Supabase-seitig unverändert)</li>
+          <li>Alle Kernfunktionen einmal durchklicken</li>
+          <li>Browser-Konsole auf Fehler prüfen (F12 → Console)</li>
+        </ul>
+      </div>
+
+      <!-- Step G -->
+      <div class="step">
+        <div class="step-header">
+          <div class="step-number">G</div>
+          <div class="step-title">Lovable deaktivieren / Domain ummelden</div>
+          <div class="step-badge"><span class="badge badge-red">&#128683; Lovable abschalten</span></div>
+        </div>
+        <ul>
+          <li>In Lovable: <strong>Einstellungen → Custom Domain</strong> → Domain entfernen</li>
+          <li>DNS-Eintrag für Lovable-URL entfernen (falls vorhanden)</li>
+          <li>Supabase Redirect URL für Lovable-Domain kann entfernt werden</li>
+          <li>Optional: Lovable Projekt in "Published" lassen oder archivieren (Backup)</li>
+        </ul>
+        <div style="background:#fff0f0; border:1px solid #ffcdd4; border-radius:8px; padding:12px 14px; margin-top:10px; font-size:14px; color:#c0392b;">
+          &#9888;&#65039; <strong>Reihenfolge wichtig:</strong> Erst sicherstellen dass Coolify-Deploy läuft, DANN Lovable-Domain entfernen. Nicht umgekehrt.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 5. EDGE FUNCTIONS -->
+  <div class="card">
+    <h2><span class="icon">&#9889;</span> 5. Edge Functions — fast nichts zu tun</h2>
+    <div style="background:#e8f8f2; border:1px solid #a3dfc5; border-radius:10px; padding:16px 20px; margin-bottom:16px;">
+      <strong style="color:#1a9e63; font-size:16px;">&#10003; Kein Handlungsbedarf für bestehende Functions</strong>
+      <p style="color:#1a6b4a; margin-top:6px; margin-bottom:0; font-size:14px;">Supabase Edge Functions laufen in Supabase's eigenem Deno-Runtime — vollständig unabhängig von Lovable oder Coolify. Die laufen weiter wie bisher.</p>
+    </div>
+    <ul>
+      <li>Functions werden über die Supabase-URL aufgerufen — die ändert sich nicht</li>
+      <li>Aufrufe kommen aus dem Frontend via <code>VITE_SUPABASE_URL</code> — wird korrekt geladen</li>
+      <li>Kein Deployment, kein Refactoring, kein Konfigurationsaufwand</li>
+    </ul>
+    <h3>Falls Functions noch nicht deployed sind:</h3>
+    <pre><span class="comment"># Supabase CLI (einmalig installieren falls noch nicht vorhanden)</span>
+<span class="cmd">npm install -g supabase</span>
+
+<span class="comment"># Login</span>
+<span class="cmd">supabase login</span>
+
+<span class="comment"># Function deployen</span>
+<span class="cmd">supabase functions deploy</span> <span class="val">name-der-function</span>
+
+<span class="comment"># Alle Functions deployen</span>
+<span class="cmd">supabase functions deploy</span></pre>
+  </div>
+
+  <!-- 6. FALLSTRICKE -->
+  <div class="card">
+    <h2><span class="icon">&#9888;&#65039;</span> 6. Häufige Fallstricke</h2>
+
+    <div class="pitfall">
+      <strong>&#128683; Env-Variablen fehlen oder falsch gesetzt</strong>
+      <p>Die App startet, aber Auth schlägt fehl oder Daten werden nicht geladen. <strong>Fix:</strong> In Coolify → Environment Variables prüfen. Vite baut Env-Variablen zur <em>Build-Zeit</em> ein — nach Änderung immer neu deployen!</p>
+    </div>
+
+    <div class="pitfall">
+      <strong>&#128683; CORS / Redirect URLs in Supabase nicht aktualisiert</strong>
+      <p>Login schlägt fehl, Browser zeigt "invalid redirect URL" oder Auth-Callback funktioniert nicht. <strong>Fix:</strong> Supabase → Authentication → URL Configuration → Site URL und Redirect URLs auf neue Domain setzen.</p>
+    </div>
+
+    <div class="pitfall">
+      <strong>&#128683; Falsches Build-Output-Verzeichnis in Coolify</strong>
+      <p>Coolify sucht in <code>build/</code> oder <code>out/</code>, aber Vite produziert <code>dist/</code>. <strong>Fix:</strong> Coolify → Resource → Build-Einstellungen → Publish Directory auf <code>dist</code> setzen.</p>
+    </div>
+
+    <div class="pitfall">
+      <strong>&#128683; Lovable-Domain noch aktiv — Duplicate Content</strong>
+      <p>Wenn deine App gleichzeitig unter der Lovable-URL und deiner neuen Domain erreichbar ist, entstehen SEO-Probleme (Google sieht doppelte Inhalte). <strong>Fix:</strong> Lovable-Custom-Domain entfernen sobald Coolify-Deploy stabil läuft.</p>
+    </div>
+
+    <div class="pitfall">
+      <strong>&#128683; DNS-Propagation braucht Zeit</strong>
+      <p>Neuer A-Record ist gesetzt, aber die Domain löst noch auf die alte IP auf. <strong>Fix:</strong> Warten (5–60 Min bei TTL 300). Prüfen mit: <code>nslookup modulai.mehlhart.de</code></p>
+    </div>
+  </div>
+
+  <!-- 7. AUFWAND -->
+  <div class="card">
+    <h2><span class="icon">&#9201;</span> 7. Aufwand-Schätzung</h2>
+    <div class="effort-grid">
+      <div class="effort-item">
+        <span class="effort-value">2–3h</span>
+        <div class="effort-label">Technischer Setup<br>(Coolify + DNS + Deploy)</div>
+      </div>
+      <div class="effort-item">
+        <span class="effort-value">1h</span>
+        <div class="effort-label">Testen &amp; Iterieren<br>(Auth, Features, Bugs)</div>
+      </div>
+      <div class="effort-item" style="background:#fff0f2; border-color:#ffd0d7;">
+        <span class="effort-value" style="color:#FF385C;">~½ Tag</span>
+        <div class="effort-label" style="color:#c0392b;"><strong>Gesamt</strong><br>wenn alles vorbereitet</div>
+      </div>
+    </div>
+    <p style="margin-top:16px; font-size:14px; color:#666;">&#128161; Größter Zeitfresser ist meistens DNS-Propagation und das erste Mal durch Coolify navigieren. Der zweite Deploy geht in 10 Minuten.</p>
+  </div>
+
+  <!-- 8. NÄCHSTE SCHRITTE -->
+  <div class="card">
+    <h2><span class="icon">&#128203;</span> 8. Nächste Schritte — Was du heute tun kannst</h2>
+
+    <div class="action-item">
+      <div class="action-number">1</div>
+      <div class="action-text"><strong>GitHub Repo checken:</strong> Öffne <code>github.com/danielmehlhart-bit/modulai</code> — ist der aktuelle Stand drin? Gibt es <code>package.json</code> und <code>vite.config.ts</code> im Root?</div>
+    </div>
+
+    <div class="action-item">
+      <div class="action-number">2</div>
+      <div class="action-text"><strong>Supabase Keys notieren:</strong> Öffne Supabase Dashboard → Settings → API → kopiere Project URL und anon key in einen sicheren Ort (1Password, Notiz).</div>
+    </div>
+
+    <div class="action-item">
+      <div class="action-number">3</div>
+      <div class="action-text"><strong>Coolify-Status prüfen:</strong> Ist Coolify bereits auf dem Hetzner Server installiert? Kannst du es im Browser öffnen? Falls nein: Installer ausführen (1 Befehl, 5 Minuten).</div>
+    </div>
+
+    <div class="action-item">
+      <div class="action-number">4</div>
+      <div class="action-text"><strong>Domain entscheiden:</strong> Welche Subdomain soll ModulAI bekommen? (<code>modulai.mehlhart.de</code>?) — DNS-Zugang bereithalten.</div>
+    </div>
+
+    <div class="action-item">
+      <div class="action-number">5</div>
+      <div class="action-text"><strong>Coolify-Deploy aufsetzen:</strong> Steps B + C aus dem Migrations-Guide oben — dauert ~30 Min für den ersten Setup.</div>
+    </div>
+
+    <div class="action-item">
+      <div class="action-number">6</div>
+      <div class="action-text"><strong>Supabase URLs updaten:</strong> Step D — Redirect URLs und Site URL in Supabase Authentication auf neue Domain setzen. <strong>Nicht vergessen, sonst bricht Auth!</strong></div>
+    </div>
+
+    <div class="action-item">
+      <div class="action-number">7</div>
+      <div class="action-text"><strong>Testen &amp; Lovable abschalten:</strong> Wenn alles läuft → Custom Domain aus Lovable entfernen.</div>
+    </div>
+
+    <div style="background:#fff0f2; border:2px solid #FF385C; border-radius:12px; padding:16px 20px; margin-top:20px;">
+      <strong style="color:#FF385C; font-size:15px;">&#128161; Quick-Win Strategie</strong>
+      <p style="color:#333; margin-top:8px; margin-bottom:0; font-size:14px;">
+        Fang mit einem <strong>Test-Deploy auf einer Subdomain</strong> an (z.B. <code>modulai-staging.mehlhart.de</code>) während Lovable noch läuft. So kannst du in Ruhe testen, ohne die laufende App zu gefährden. Erst wenn alles grün ist → Lovable abschalten.
+      </p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Erstellt am 09.03.2026 &nbsp;·&nbsp; ModulAI Migration Briefing &nbsp;·&nbsp; Hatti &#127956;&#65039;
+  </div>
+
+</div>
+</body>
+</html>
