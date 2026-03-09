@@ -38,7 +38,15 @@ function matchesBriefing(filename: string, projectName: string, clientName: stri
     .replace(/[^a-z0-9\s]/g, " ")
     .split(/\s+/)
     .filter(w => w.length > 2);
-  return words.some(w => slug.includes(w));
+  return words.some(w => {
+    if (slug.includes(w)) return true;
+    // Fuzzy: erste 3 Zeichen (matcht z.B. "raam" für "raab")
+    if (w.length >= 4) {
+      const parts = slug.split("-");
+      return parts.some(p => p.length >= 3 && p.slice(0, 3) === w.slice(0, 3) && Math.abs(p.length - w.length) <= 2);
+    }
+    return false;
+  });
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -160,6 +168,7 @@ export default function ProjectDetailPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [people, setPeople] = useState<Person[]>([]);
   const [briefings, setBriefings] = useState<BriefingFile[]>([]);
+  const [selectedBriefing, setSelectedBriefing] = useState<BriefingFile | null>(null);
   const [loading, setLoading] = useState(true);
   const [noteSaving, setNoteSaving] = useState(false);
   const [noteSaved, setNoteSaved] = useState(false);
@@ -169,7 +178,6 @@ export default function ProjectDetailPage() {
   const [editOppValue, setEditOppValue] = useState(false);
   const [oppValueInput, setOppValueInput] = useState("");
   const [editProjectModal, setEditProjectModal] = useState(false);
-  const [selectedBriefing, setSelectedBriefing] = useState<BriefingFile | null>(null);
 
   const editor = useEditor({
     extensions: [
