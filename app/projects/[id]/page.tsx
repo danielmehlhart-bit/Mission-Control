@@ -30,6 +30,17 @@ type Task = { id: string; title: string; project: string; status: string; };
 type Person = { id: string; name: string; company: string; role?: string; email?: string; project?: string; };
 type BriefingFile = { name: string; path: string; modified: string; };
 
+function matchesBriefing(filename: string, projectName: string, clientName: string): boolean {
+  const slug = filename.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const words = [projectName, clientName]
+    .join(" ")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .filter(w => w.length > 2);
+  return words.some(w => slug.includes(w));
+}
+
 // ─── Constants ────────────────────────────────────────────────────────────────
 const STAGES = [
   { key: "lead", label: "Lead" },
@@ -158,6 +169,7 @@ export default function ProjectDetailPage() {
   const [editOppValue, setEditOppValue] = useState(false);
   const [oppValueInput, setOppValueInput] = useState("");
   const [editProjectModal, setEditProjectModal] = useState(false);
+  const [selectedBriefing, setSelectedBriefing] = useState<BriefingFile | null>(null);
 
   const editor = useEditor({
     extensions: [
@@ -195,10 +207,11 @@ export default function ProjectDetailPage() {
     setPeople(peopleData.people ?? []);
 
     const briefData = await briefRes.json();
-    const words = proj.name.toLowerCase().split(/\s+/).filter((w: string) => w.length > 3);
-    setBriefings((briefData.files ?? []).filter((f: BriefingFile) =>
-      words.some((w: string) => f.name.toLowerCase().includes(w))
-    ).slice(0, 5));
+    setBriefings(
+      (briefData.files ?? [])
+        .filter((f: BriefingFile) => matchesBriefing(f.name, proj.name, proj.client ?? ""))
+        .sort((a: BriefingFile, b: BriefingFile) => b.name.localeCompare(a.name))
+    );
 
     const noteData = await noteRes.json();
     if (editor && noteData.content) {
@@ -368,6 +381,48 @@ export default function ProjectDetailPage() {
             )}
             {meetings.length === 0 && <div style={{ padding: "24px 16px", textAlign: "center", color: "#4a5068", fontSize: 12 }}>Noch keine Meetings. + Neues Meeting anlegen.</div>}
           </div>
+
+          {/* Briefings Inline */}
+          {briefings.length > 0 && (
+            <div style={{ background: "#141720", border: "1px solid #1e2128", borderRadius: 12, overflow: "hidden" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", borderBottom: "1px solid #1e2128" }}>
+                <span style={{ fontSize: 13, fontWeight: 600 }}>📁 Briefings ({briefings.length})</span>
+                {selectedBriefing && (
+                  <button onClick={() => setSelectedBriefing(null)} style={{ padding: "3px 10px", borderRadius: 5, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 11, cursor: "pointer" }}>✕ Schließen</button>
+                )}
+              </div>
+              <div style={{ maxHeight: 220, overflowY: "auto", padding: "8px 12px", display: "flex", flexDirection: "column", gap: 4 }}>
+                {briefings.map(f => {
+                  const isSelected = selectedBriefing?.name === f.name;
+                  const label = f.name.replace(/\.html?$/, "").replace(/^\d{4}-\d{2}-\d{2}-/, "").replace(/-/g, " ");
+                  const dateStr = f.name.match(/^(\d{4}-\d{2}-\d{2})/)?.[1] ?? "";
+                  return (
+                    <button key={f.name} onClick={() => setSelectedBriefing(isSelected ? null : f)}
+                      style={{
+                        display: "flex", alignItems: "center", gap: 8, padding: "8px 12px",
+                        borderRadius: 7, border: `1px solid ${isSelected ? color + "50" : "#1e2128"}`,
+                        background: isSelected ? `${color}12` : "#0d0f12",
+                        color: isSelected ? color : "#8b90a0",
+                        fontSize: 12, cursor: "pointer", textAlign: "left", fontWeight: isSelected ? 600 : 400,
+                      }}>
+                      <span>📄</span>
+                      <span style={{ flex: 1, textTransform: "capitalize" }}>{label}</span>
+                      {dateStr && <span style={{ fontSize: 10, color: "#4a5068", flexShrink: 0 }}>{dateStr}</span>}
+                    </button>
+                  );
+                })}
+              </div>
+              {selectedBriefing && (
+                <div style={{ borderTop: "1px solid #1e2128", height: 540 }}>
+                  <iframe
+                    src={`/api/briefings?file=${encodeURIComponent(selectedBriefing.name)}&raw=1`}
+                    style={{ width: "100%", height: "100%", border: "none", background: "#fff" }}
+                    title={selectedBriefing.name}
+                  />
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Sidebar */}
@@ -381,17 +436,7 @@ export default function ProjectDetailPage() {
             {project.description && <div style={{ fontSize: 12, color: "#4a5068", paddingTop: 8, lineHeight: 1.6 }}>{project.description}</div>}
           </SideCard>
 
-          {/* Briefings */}
-          {briefings.length > 0 && (
-            <SideCard title="📁 Briefings">
-              {briefings.map(f => (
-                <a key={f.name} href={`/briefings/${f.name}`} target="_blank" rel="noreferrer"
-                  style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 8px", borderRadius: 6, fontSize: 11, color: "#8b90a0", textDecoration: "none", background: "#0d0f12", marginBottom: 4 }}>
-                  📄 {f.name}
-                </a>
-              ))}
-            </SideCard>
-          )}
+
 
           {/* Tasks */}
           {tasks.length > 0 && (

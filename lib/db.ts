@@ -94,6 +94,12 @@ function initSchema(db: Database.Database): void {
   addCol("ALTER TABLE projects ADD COLUMN stage TEXT NOT NULL DEFAULT 'lead'");
   addCol("ALTER TABLE projects ADD COLUMN opportunity_value TEXT");
 
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS _migrations (
+      id         TEXT PRIMARY KEY,
+      applied_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
   db.exec("SELECT 1"); // flush
 
   // Seed Projekte falls Tabelle leer
@@ -114,6 +120,12 @@ function initSchema(db: Database.Database): void {
     });
     seedProjects();
   }
+
+  // Migration helper — läuft nur einmal pro ID
+  const runMigration = (id: string, fn: () => void) => {
+    const already = db.prepare("SELECT id FROM _migrations WHERE id = ?").get(id);
+    if (!already) { fn(); db.prepare("INSERT INTO _migrations (id) VALUES (?)").run(id); }
+  };
 
   // Seed Notes für Raab Immobilien (Projekt-ID 7) falls noch keine Note vorhanden
   const raabNote = db.prepare("SELECT project_id FROM project_notes WHERE project_id = '7'").get();
@@ -191,6 +203,72 @@ function initSchema(db: Database.Database): void {
     db.prepare("INSERT OR IGNORE INTO project_notes (project_id, content, updated_at) VALUES (?, ?, datetime('now'))")
       .run("7", raabBriefingContent);
   }
+
+  // Migration: Meeting-Prep 10.03. für Raab (überschreibt bestehende Notes einmalig)
+  runMigration("raab_meeting_prep_20260310", () => {
+    const meetingPrepContent = JSON.stringify({
+      type: "doc",
+      content: [
+        { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: "📋 Discovery Call Prep — Mo 10.03.2026 · 10:00 Uhr" }] },
+        { type: "paragraph", content: [{ type: "text", marks: [{ type: "italic" }], text: "Eduard Raab · Raab Immobilien · 60 Min · SPICED Framework" }] },
+        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Ablauf" }] },
+        { type: "bulletList", content: [
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "0–5 Min: " }, { type: "text", text: "Ankommen, Small Talk. \"Ich möchte verstehen wie Sie heute arbeiten — bevor ich irgendwas von uns erzähle.\"" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "5–20 Min: " }, { type: "text", text: "Situation — Status Quo ohne Wertung" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "20–40 Min: " }, { type: "text", text: "Pain + Impact — ihn selbst rechnen lassen (Stunden × Stundensatz × 52)" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "40–52 Min: " }, { type: "text", text: "Critical Event + Decision Process" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "52–60 Min: " }, { type: "text", text: "Zusammenfassen + konkreten nächsten Schritt vereinbaren" }] }] },
+        ] },
+        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "SPICED — Fragen" }] },
+        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "S — Situation" }] },
+        { type: "bulletList", content: [
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Wie läuft ein Mieterwechsel bei Ihnen heute von A–Z ab?\"" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Welche Tools/Systeme nutzen Sie dafür?\"" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Wie groß ist Ihr Team — wer macht was?\"" }] }] },
+        ] },
+        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "P — Pain (ihn rechnen lassen!)" }] },
+        { type: "bulletList", content: [
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Was sind die größten Zeitfresser?\"" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Wie viele Stunden/Woche frisst [Pain Point]?\"" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Was kostet Sie eine Stunde grob?\" → Jahreskosten gemeinsam hochrechnen" }] }] },
+        ] },
+        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "I — Impact" }] },
+        { type: "bulletList", content: [
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Was bedeutet das für Ihr Geschäft, wenn das so weitergeht?\"" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Haben Sie schon mal versucht, das zu lösen? Was ist passiert?\"" }] }] },
+        ] },
+        { type: "blockquote", content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "Die goldene Frage: " }, { type: "text", text: "\"Nehmen wir an, Sie hätten EverReal & Immoware24 morgen im Einsatz. Welches Problem wäre dann immer noch nicht gelöst?\"" }] }] },
+        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "C — Critical Event" }] },
+        { type: "bulletList", content: [
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Was hat sich verändert, dass das Thema jetzt auf dem Tisch liegt?\"" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Was passiert, wenn Sie das in 6 Monaten nicht lösen?\"" }] }] },
+        ] },
+        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "D — Decision Process" }] },
+        { type: "bulletList", content: [
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Wenn wir die perfekte Lösung hätten — wie würde der Entscheidungsprozess aussehen?\"" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Wer muss noch mit ins Boot?\"" }] }] },
+        ] },
+        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "✅ Pre-Call Checklist" }] },
+        { type: "taskList", content: [
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Company Research erfolgt" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Du redest 20%, Eduard 80%" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Ihn den Business Case selbst rechnen lassen" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Nach Critical Event fragen" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Decision Process klären" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Konkreten nächsten Termin am Ende vereinbaren" }] }] },
+        ] },
+        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "📋 Post-Call (innerhalb 2h!)" }] },
+        { type: "taskList", content: [
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "SPICED Scorecard in Meeting-Notizen ausfüllen" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Follow-Up Email mit quantifiziertem Impact" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Nächsten Termin vorschlagen (Prototyp / Proposal)" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Lead in Mission Control updaten (Stage + Opportunity Value)" }] }] },
+        ] },
+      ],
+    });
+    db.prepare("INSERT OR REPLACE INTO project_notes (project_id, content, updated_at) VALUES (?, ?, datetime('now'))")
+      .run("7", meetingPrepContent);
+  });
 
   // Seed People falls Tabelle leer
   const peopleCount = (db.prepare("SELECT COUNT(*) as c FROM people").get() as { c: number }).c;
