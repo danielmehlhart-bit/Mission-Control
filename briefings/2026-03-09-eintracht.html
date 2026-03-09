@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚽ Eintracht Briefing - 09.03.2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .date {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .article-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .article-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .article-title a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s ease;
+        }
+        
+        .article-title a:hover {
+            color: #e74c3c;
+        }
+        
+        .article-summary {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .article-time {
+            color: #95a5a6;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+        
+        .highlight {
+            border-left: 4px solid #e74c3c;
+            background: linear-gradient(135deg, #fff 0%, #ffebee 100%);
+        }
+        
+        .footer {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚽ Eintracht Frankfurt Briefing</h1>
+            <div class="date">Sonntag, 08. März 2026 — 17 Artikel</div>
+        </div>
+        
+        <div class="articles-grid">
+            <div class="article-card highlight">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-frankfurt-spielt-beim-fc-st-pauli-ohne-eine-einzige-torchance-94207386.html" target="_blank">
+                        Eintracht Frankfurt mit kärglichem Auftritt am Millerntor
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Das 0:0 beim FC St. Pauli offenbarte die Offensivschwäche der Eintracht. Trotz 679 Pässen und 72% Ballbesitz blieb die SGE ohne einzige Torchance. Trainer Albert Riera kritisierte das viel zu langsame Spiel, lobte aber die Defensivleistung.
+                </div>
+                <div class="article-time">19:11 Uhr</div>
+            </div>
+            
+            <div class="article-card highlight">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-rekordverkauf-kolo-muani-kaempft-mit-tottenham-gegen-den-abstieg-zr-94207359.html" target="_blank">
+                        Kolo Muani kämpft mit Tottenham gegen den Abstieg
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Der Eintracht-Rekordverkauf steckt mit Tottenham in der Krise. Die Spurs rangieren auf Platz 16 der Premier League, nur einen Punkt vor den Abstiegsplätzen. Kolo Muani kommt in 30 Spielen nur auf vier Tore.
+                </div>
+                <div class="article-time">18:54 Uhr</div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-star-nnamdi-collins-spricht-erstmals-ueber-transfergeruechte-zr-94207746.html" target="_blank">
+                        Collins zu Transfergerüchten: "Prallt alles an mir ab"
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Nnamdi Collins äußert sich zu Spekulationen um einen Premier League-Wechsel. Der deutsche U21-Nationalspieler zeigt sich gelassen und betont, dass er sich bei der Eintracht sehr wohlfühlt.
+                </div>
+                <div class="article-time">22:39 Uhr</div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-legende-sorgt-mit-besonderem-geburtstagsgruss-fuer-gaensehaut-zr-94206887.html" target="_blank">
+                        Abraham gratuliert emotional zum 127. Geburtstag
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Eintracht-Legende David Abraham erinnert auf Instagram an besondere Vereinsmomente anlässlich des 127. Geburtstags der SGE. Der Ex-Kapitän postete emotionale Fotos und Erinnerungen.
+                </div>
+                <div class="article-time">12:41 Uhr</div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/war-unbefriedigend-fuer-meine-entwicklung-aurele-amenda-gibt-tiefe-einblicke-zr-94206640.html" target="_blank">
+                        Amenda: "War unbefriedigend für meine Entwicklung"
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Aurèle Amenda gibt tiefe Einblicke in seine schwere Zeit unter Toppmöller und erklärt, warum er im Winter noch weg wollte. Unter Riera läuft es nun deutlich besser für den Schweizer.
+                </div>
+                <div class="article-time">08:00 Uhr</div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/im-video-frankfurt-fans-feiern-geburtstag-ihres-vereins-zr-94207315.html" target="_blank">
+                        Fans singen lautstark zum Vereins-Geburtstag
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Während des Auswärtsspiels beim FC St. Pauli feierten die Eintracht-Fans lautstark den 127. Geburtstag ihres Vereins. Im Gastbereich des Millerntor-Stadions herrschte trotz des schwachen Spiels Partystimmung.
+                </div>
+                <div class="article-time">18:21 Uhr</div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/im-video-frankfurt-hymne-wird-in-hamburg-gespielt-zr-94207173.html" target="_blank">
+                        Kuriosität: SGE-Hymne läuft im St. Pauli-Stadion
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Vor dem Bundesliga-Spiel passierte eine Kuriosität: Der FC St. Pauli spielte aus Versehen die Eintracht-Hymne im eigenen Stadion ab. Die Frankfurt-Fans nahmen es mit Humor.
+                </div>
+                <div class="article-time">16:20 Uhr</div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-kolumne-ballhorn-seniorensport-94207277.html" target="_blank">
+                        Ballhorn-Kolumne: Seniorensport zum 127. Geburtstag
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Die Eintracht wird 127 Jahre alt und spielte auf St. Pauli entsprechend. Thomas Stillbauers scharfzüngige Kolumne zum müden Auftritt der SGE am eigenen Geburtstag.
+                </div>
+                <div class="article-time">17:52 Uhr</div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-spiel-gegen-st-pauli-linienrichter-muss-verletzt-vom-feld-zr-94207229.html" target="_blank">
+                        Linienrichter muss verletzt ausgewechselt werden
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Ungewöhnliche Szene beim Gastspiel: Schiedsrichter-Assistent Christian Dietz verletzte sich und musste "ausgewechselt" werden. Eine seltene Unterbrechung im ohnehin ereignisarmen Spiel.
+                </div>
+                <div class="article-time">17:03 Uhr</div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/albert-riera-ist-der-tueftler-von-eintracht-frankfurt-zr-94206876.html" target="_blank">
+                        Albert Riera: Der Tüftler von Eintracht Frankfurt
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Flexibilität wird bei Albert Riera großgeschrieben. Der neue Trainer arbeitet daran, die vorhandenen Potenziale vollständig auszuschöpfen und das Team taktisch variabler zu gestalten.
+                </div>
+                <div class="article-time">12:30 Uhr</div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/la-liga-transfer-von-ex-eintracht-star-droht-zu-platzen-zr-94206617.html" target="_blank">
+                        La Liga-Transfer von Ex-Star droht zu platzen
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Ein ehemaliger Superstar der Eintracht liebäugelt mit einem Wechsel nach Spanien, doch der Transfer wird zunehmend unwahrscheinlich. Die Verhandlungen stocken offenbar.
+                </div>
+                <div class="article-time">07:47 Uhr</div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/spekulationen-an-wechsel-nach-frankfurt-eintracht-flirt-heizt-zr-94206595.html" target="_blank">
+                        Eintracht-Flirt heizt Wechsel-Spekulationen an
+                    </a>
+                </div>
+                <div class="article-summary">
+                    Paul Nebel von Mainz 05 könnte der nächste Neuzugang werden. Der Spieler reagierte öffentlich auf die Gerüchte und heizte damit die Spekulationen weiter an.
+                </div>
+                <div class="article-time">06:56 Uhr</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Erstellt am 09.03.2026 um 06:36 Uhr • Mission Control</p>
+            <p>17 Artikel vom 08.03.2026 analysiert</p>
+        </div>
+    </div>
+</body>
+</html>
