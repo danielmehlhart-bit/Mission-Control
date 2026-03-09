@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DRMS-SPA26 — Executive Summary & DSGVO-Risikoeinschätzung</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      line-height: 1.7;
+      padding: 2rem 1rem;
+    }
+    .container { max-width: 900px; margin: 0 auto; }
+
+    /* Header */
+    .header {
+      border-left: 4px solid #6366f1;
+      padding: 1.5rem 1.5rem 1.5rem 2rem;
+      background: #1a1d27;
+      border-radius: 0 12px 12px 0;
+      margin-bottom: 2.5rem;
+    }
+    .header .label {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #6366f1;
+      margin-bottom: 0.5rem;
+    }
+    .header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 0.4rem;
+    }
+    .header .subtitle {
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+    .header .meta {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .header .meta span {
+      font-size: 0.8rem;
+      color: #64748b;
+      background: #0f1117;
+      padding: 0.2rem 0.7rem;
+      border-radius: 100px;
+    }
+
+    /* Sections */
+    .section {
+      background: #1a1d27;
+      border-radius: 12px;
+      padding: 1.8rem 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .section h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .section h2 .icon { font-size: 1.2rem; }
+    .section h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin: 1.2rem 0 0.6rem;
+    }
+    p { color: #94a3b8; margin-bottom: 0.8rem; font-size: 0.92rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* Tags */
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.8rem 0; }
+    .tag {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-weight: 500;
+    }
+    .tag-blue { background: #1e3a5f; color: #93c5fd; }
+    .tag-purple { background: #2e1a5e; color: #c4b5fd; }
+    .tag-orange { background: #4a2500; color: #fdba74; }
+    .tag-red { background: #4a0f0f; color: #fca5a5; }
+    .tag-green { background: #0f3020; color: #86efac; }
+    .tag-yellow { background: #3a2e00; color: #fde68a; }
+
+    /* Risk matrix */
+    .risk-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 1rem; }
+    .risk-table th {
+      text-align: left;
+      padding: 0.7rem 1rem;
+      background: #0f1117;
+      color: #64748b;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .risk-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #2d3148;
+      color: #94a3b8;
+      vertical-align: top;
+    }
+    .risk-table tr:last-child td { border-bottom: none; }
+    .risk-table .risk-label {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      white-space: nowrap;
+    }
+    .risk-hoch { background: #4a0f0f; color: #fca5a5; }
+    .risk-mittel { background: #3a2e00; color: #fde68a; }
+    .risk-niedrig { background: #0f3020; color: #86efac; }
+
+    /* Feature grid */
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+    @media (max-width: 600px) { .feature-grid { grid-template-columns: 1fr; } }
+    .feature-card {
+      background: #0f1117;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      border: 1px solid #2d3148;
+    }
+    .feature-card .fc-title { font-size: 0.85rem; font-weight: 600; color: #e2e8f0; margin-bottom: 0.3rem; }
+    .feature-card .fc-desc { font-size: 0.78rem; color: #64748b; }
+    .feature-card .fc-status { font-size: 0.7rem; margin-top: 0.4rem; }
+
+    /* Data flow */
+    .flow-box {
+      background: #0f1117;
+      border: 1px solid #2d3148;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin: 0.6rem 0;
+      font-size: 0.85rem;
+    }
+    .flow-box .flow-title { font-weight: 600; color: #e2e8f0; margin-bottom: 0.4rem; }
+    .flow-box .flow-desc { color: #64748b; font-size: 0.8rem; }
+    .flow-arrow { text-align: center; color: #475569; font-size: 1.2rem; margin: 0.2rem 0; }
+
+    /* Recommendations */
+    .rec-list { list-style: none; padding: 0; }
+    .rec-list li {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #2d3148;
+      color: #94a3b8;
+      font-size: 0.88rem;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+    .rec-list li:last-child { border-bottom: none; }
+    .rec-list li .priority {
+      min-width: 60px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 0.15rem 0;
+      border-radius: 4px;
+      margin-top: 0.1rem;
+    }
+
+    /* Status banner */
+    .status-banner {
+      background: linear-gradient(135deg, #1e1a3a 0%, #1a1d27 100%);
+      border: 1px solid #4c1d95;
+      border-radius: 10px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.88rem;
+      color: #c4b5fd;
+    }
+    .status-banner strong { color: #f1f5f9; }
+
+    .divider { height: 1px; background: #2d3148; margin: 1rem 0; }
+
+    footer {
+      text-align: center;
+      color: #334155;
+      font-size: 0.75rem;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #1e2235;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="label">Internes Dokument · Vertraulich</div>
+    <h1>DRMS-SPA26 — Executive Summary</h1>
+    <div class="subtitle">Sales Intelligence Platform auf Basis Zoho CRM · Datenschutz &amp; DSGVO-Risikoeinschätzung</div>
+    <div class="meta">
+      <span>📅 09. März 2026</span>
+      <span>👤 Autor: Daniel Mehlhart, VP Operations</span>
+      <span>🏷️ Status: Beta / Pilotphase</span>
+      <span>🔒 VERTRAULICH</span>
+    </div>
+  </div>
+
+  <!-- Status Banner -->
+  <div class="status-banner">
+    <strong>⚠️ Wichtiger Hinweis:</strong> Dieses Tool befindet sich aktuell in einer <strong>nicht autorisierten Testphase</strong>. Der Einsatz erfolgt außerhalb der geltenden ISO 27001-Richtlinien und eines formellen DPIA-Prozesses. Dieses Dokument soll die erforderliche Transparenz gegenüber der Geschäftsführung herstellen und den Weg zur formellen Genehmigung vorbereiten.
+  </div>
+
+  <!-- 1. Projektziel -->
+  <div class="section">
+    <h2><span class="icon">🎯</span> 1. Projektziel &amp; Vision</h2>
+    <p>DRMS-SPA26 ("Deal Compass") ist eine interne Sales Intelligence Plattform, die direkt in Zoho CRM eingebettet ist. Sie soll Sales-Mitarbeitenden helfen, <strong>Prospekte schneller zu qualifizieren</strong>, <strong>Deals besser zu verstehen</strong> und <strong>Aktivitäten strukturiert zu managen</strong> — alles ohne den CRM-Kontext zu verlassen.</p>
+
+    <h3>Aktueller Stand (Pilotphase)</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="fc-title">🔍 Company Research</div>
+        <div class="fc-desc">KI-gestützte Unternehmensrecherche mit Fit-Score, Deal Angles, Buyer Personas und Opening Lines. Nutzt Perplexity für Web-Research.</div>
+        <div class="fc-status"><span class="tag tag-green">Live</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-title">📊 Opportunities Dashboard</div>
+        <div class="fc-desc">Pipeline-Übersicht, Forecast-Tracking, Stage-Conversion-Analyse. Daten live aus Zoho CRM via COQL.</div>
+        <div class="fc-status"><span class="tag tag-green">Live</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-title">📈 MQL Performance</div>
+        <div class="fc-desc">SLA-Tracking für Lead-Follow-up, Rep-Performance, Funnel-Analyse. Identifiziert Verzögerungen im Leadmanagement.</div>
+        <div class="fc-status"><span class="tag tag-green">Live</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-title">🧠 CRM Insights (NL→COQL)</div>
+        <div class="fc-desc">Natural Language Queries gegen Zoho CRM — Sales-Mitarbeitende können Fragen in Klartext stellen, die KI übersetzt in CRM-Abfragen.</div>
+        <div class="fc-status"><span class="tag tag-green">Live</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-title">🤝 Deal Copilot</div>
+        <div class="fc-desc">KI-gesteuertes Deal-Coaching. Analysiert aktuelle Deals und gibt kontextbezogene Handlungsempfehlungen.</div>
+        <div class="fc-status"><span class="tag tag-green">Live</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-title">🎯 Enablement Dashboard</div>
+        <div class="fc-desc">KPI-Tracking mit Targets, historischen Trends und Inline-Editing. Sales-Performance gegen 2026-Jahresziele.</div>
+        <div class="fc-status"><span class="tag tag-green">Live</span></div>
+      </div>
+    </div>
+
+    <h3>Roadmap (geplant)</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="fc-title">🔔 Proaktive Notifications</div>
+        <div class="fc-desc">Automatische Alerts bei Deal-Stagnation, SLA-Überschreitungen, Forecast-Abweichungen — direkt in Slack/Email.</div>
+        <div class="fc-status"><span class="tag tag-yellow">Geplant Q2 2026</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-title">👤 Salesperson Cockpit</div>
+        <div class="fc-desc">Individuelle Rep-Ansicht: Task-Management, Deal-Übersicht, Aktivitäten-Log. Ersetzt manuelle CRM-Pflege.</div>
+        <div class="fc-status"><span class="tag tag-yellow">Geplant Q2 2026</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-title">🎙️ Meeting Transcript Integration</div>
+        <div class="fc-desc">Gesprächstranskripte von Sales-Calls sollen automatisch in den Cockpit fließen. CRM-Einträge werden auto-generiert.</div>
+        <div class="fc-status"><span class="tag tag-orange">Konzept — kein Tech-Stack definiert</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-title">🗂️ Zoho Desk Integration</div>
+        <div class="fc-desc">Support-Ticket-Daten in Sales-Kontext. Aktuell NICHT in OAuth-Scopes vorhanden — erfordert separaten Genehmigungsschritt.</div>
+        <div class="fc-status"><span class="tag tag-red">Nicht aktiv · Scope fehlt</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Datenzugriff -->
+  <div class="section">
+    <h2><span class="icon">🗄️</span> 2. Datenzugriff — Was wird verarbeitet?</h2>
+
+    <h3>Zoho CRM — Zugegriffene Module</h3>
+    <div class="tag-row">
+      <span class="tag tag-blue">Leads</span>
+      <span class="tag tag-blue">Contacts</span>
+      <span class="tag tag-blue">Accounts</span>
+      <span class="tag tag-blue">Opportunities/Deals</span>
+      <span class="tag tag-blue">Activities (Calls, Tasks, Events)</span>
+      <span class="tag tag-blue">Users</span>
+      <span class="tag tag-orange">Zoho Desk (geplant — noch nicht aktiv)</span>
+    </div>
+    <p>Der OAuth-Scope ist aktuell <code>ZohoCRM.modules.ALL</code> — das ist ein Breitband-Scope, der theoretisch Zugriff auf <em>alle</em> CRM-Module gewährt, nicht nur die genutzten. Dies ist ein konkretes Minimierungsrisiko (→ Abschnitt 4).</p>
+
+    <h3>Art der gespeicherten Daten</h3>
+    <p>Folgende Daten verlassen Zoho und werden in Supabase (PostgreSQL, EU-Region) persistiert:</p>
+    <div class="flow-box">
+      <div class="flow-title">Pipeline-Snapshots (opportunities_snapshots, mql_snapshots)</div>
+      <div class="flow-desc">Monatliche Snapshots der Deal-Pipeline inkl. Betragsfelder, Stage, Owner, Close Date. Personenbezug: Zoho User IDs (Sales Reps), ggf. Firmennamen.</div>
+    </div>
+    <div class="flow-box">
+      <div class="flow-title">Research Results (research_results)</div>
+      <div class="flow-desc">KI-generierte Firmenanalysen inkl. extrahierter Führungskontakte (Name, LinkedIn-URL, E-Mail falls public). Quelle: öffentliche Web-Daten via Perplexity. Personenbezug: B2B-Kontaktdaten von Zielpersonen.</div>
+    </div>
+    <div class="flow-box">
+      <div class="flow-title">CRM Query History (crm_query_history)</div>
+      <div class="flow-desc">Log aller NL→COQL Queries inkl. Ergebnissen. Kann personenbezogene Daten enthalten, wenn Queries nach Kontakten/Leads suchen.</div>
+    </div>
+    <div class="flow-box">
+      <div class="flow-title">User Activity (user_activity)</div>
+      <div class="flow-desc">Aktionslog der Nutzer (welcher Sales Rep hat welche Funktion wann genutzt). Enthält E-Mail-Adressen der internen Nutzer.</div>
+    </div>
+    <div class="flow-box">
+      <div class="flow-title">Zoho Tokens (zoho_tokens)</div>
+      <div class="flow-desc">OAuth Access- und Refresh-Tokens. Kein direkter Personenbezug, aber Zugangsschlüssel zu allen CRM-Daten.</div>
+    </div>
+  </div>
+
+  <!-- 3. Datenfluss & externe Dienstleister -->
+  <div class="section">
+    <h2><span class="icon">🔀</span> 3. Datenfluss &amp; externe Dienstleister</h2>
+    <p>Dies ist das kritischste Kapitel aus DSGVO-Perspektive. Folgende externe Dienstleister verarbeiten Daten aus dem Kontext dieses Tools:</p>
+
+    <div class="flow-box">
+      <div class="flow-title">① Zoho CRM / Zoho Corporation (USA)</div>
+      <div class="flow-desc">Quellsystem. Daten verbleiben in Zoho. Zoho ist für DSGVO zertifiziert (SCCs vorhanden). Datentransfer USA → EU bereits im bestehenden Zoho-Vertrag abgedeckt. ✅ Kein neues Risiko durch dieses Tool.</div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box">
+      <div class="flow-title">② Supabase (EU-Region: eu-central-1 / Frankfurt)</div>
+      <div class="flow-desc">Backend-Datenbank und Serverless Functions. Daten liegen in AWS Frankfurt (EU). Supabase bietet DPA an. ⚠️ <strong>Kein formeller AV-Vertrag mit Drooms abgeschlossen.</strong> Dies muss nachgeholt werden.</div>
+    </div>
+    <div class="flow-arrow">↓ (für Research-Features)</div>
+    <div class="flow-box">
+      <div class="flow-title">③ Perplexity AI (USA) — Research &amp; Contact Extraction</div>
+      <div class="flow-desc">Empfängt: Firmennamen, Domains, Suchanfragen. Gibt zurück: Öffentliche Infos (B2B-Kontakte, Firmendaten). <strong>⚠️ Kein DPA vorhanden. Keine EU-Datenverarbeitung garantiert.</strong> Perplexity nutzt Anfragen für Modell-Training (opt-out möglich, aber nicht konfiguriert). Aktuell werden Firmennamen von Prospects übertragen — das sind i.d.R. keine personenbezogenen Daten, aber Unternehmensgeheimnisse (Wettbewerbsrisiko).</div>
+    </div>
+    <div class="flow-arrow">↓ (für Analyse-Features)</div>
+    <div class="flow-box">
+      <div class="flow-title">④ Lovable AI / Anthropic-basiert (USA) — Company Analysis &amp; Deal Angles</div>
+      <div class="flow-desc">Empfängt: Recherche-Outputs, Firmenkontext, Deal-Informationen zur Analyse. Gibt zurück: Fit-Scores, Buyer Personas, Deal-Rationale. <strong>⚠️ Kein DPA vorhanden. Daten können für Modell-Training verwendet werden.</strong> Enthält i.d.R. keine direkt personenbezogenen Daten, aber strukturierte Geschäftsinformationen über Prospects.</div>
+    </div>
+    <div class="flow-arrow">↓ (für NL→CRM Queries)</div>
+    <div class="flow-box">
+      <div class="flow-title">⑤ KI-Modell (Lovable API) — CRM Query Generation &amp; Deal Copilot</div>
+      <div class="flow-desc"><strong>Höchstes DSGVO-Risiko:</strong> Der NL→COQL-Query-Generator und Deal Copilot empfangen Freitext-Eingaben von Sales-Mitarbeitenden. Diese Eingaben können Kundennamen, Deal-Informationen, Kontaktdaten enthalten. Diese Daten verlassen das EU-System und landen beim KI-Anbieter. <strong>⚠️ Kein AV-Vertrag. Keine Garantie über Nicht-Training.</strong></div>
+    </div>
+
+    <div class="divider"></div>
+    <h3>Zusammenfassung: Was landet "bei der KI"?</h3>
+    <table class="risk-table">
+      <tr>
+        <th>Feature</th>
+        <th>Was wird übertragen?</th>
+        <th>Personenbezug</th>
+      </tr>
+      <tr>
+        <td>Company Research</td>
+        <td>Firmennamen, Domains</td>
+        <td>Gering (B2B, öffentlich)</td>
+      </tr>
+      <tr>
+        <td>Contact Extraction</td>
+        <td>Firmennamen → Führungskontakte (public)</td>
+        <td>Mittel (öffentliche B2B-Personen)</td>
+      </tr>
+      <tr>
+        <td>Deal Analysis / Fit Score</td>
+        <td>Research-Output, Firmenkontext</td>
+        <td>Gering bis mittel</td>
+      </tr>
+      <tr>
+        <td>CRM Insights (NL→COQL)</td>
+        <td>Freitext-Queries (können CRM-Daten enthalten)</td>
+        <td><strong>Mittel bis hoch</strong></td>
+      </tr>
+      <tr>
+        <td>Deal Copilot</td>
+        <td>Deal-Kontext, Freitext, ggf. Kundendaten</td>
+        <td><strong>Hoch</strong></td>
+      </tr>
+    </table>
+    <p style="margin-top:1rem;"><em>Hinweis zu Meeting Transcripts (Roadmap): Wenn Transkripte von Sales-Calls verarbeitet werden, handelt es sich um Aufzeichnungen natürlicher Personen. Hier wäre eine explizite Einwilligung und ein striktes DPIA-Verfahren zwingend notwendig, bevor ein solches Feature in Betrieb geht.</em></p>
+  </div>
+
+  <!-- 4. DSGVO-Risikoeinschätzung -->
+  <div class="section">
+    <h2><span class="icon">⚖️</span> 4. DSGVO-Risikoeinschätzung</h2>
+    <table class="risk-table">
+      <tr>
+        <th>Risiko</th>
+        <th>Risikostufe</th>
+        <th>Begründung</th>
+      </tr>
+      <tr>
+        <td>Fehlender AV-Vertrag mit Supabase</td>
+        <td><span class="risk-label risk-hoch">HOCH</span></td>
+        <td>Supabase verarbeitet CRM-Daten ohne formellen DSGVO-Auftragsverarbeitungsvertrag. Art. 28 DSGVO verletzt.</td>
+      </tr>
+      <tr>
+        <td>Datenweitergabe an Perplexity ohne DPA</td>
+        <td><span class="risk-label risk-hoch">HOCH</span></td>
+        <td>Kein AV-Vertrag, kein opt-out aus Trainingsnutzung, kein SCCs für USA-Transfer. Art. 44 ff. DSGVO.</td>
+      </tr>
+      <tr>
+        <td>Datenweitergabe an Lovable/KI-Modell ohne DPA</td>
+        <td><span class="risk-label risk-hoch">HOCH</span></td>
+        <td>Deal Copilot &amp; CRM Insights können sensible Kundendaten übertragen. Fehlender AV-Vertrag.</td>
+      </tr>
+      <tr>
+        <td>Übermäßige OAuth-Scopes (CRM.modules.ALL)</td>
+        <td><span class="risk-label risk-mittel">MITTEL</span></td>
+        <td>Datensparsamkeitsprinzip verletzt. Sollte auf tatsächlich genutzte Module beschränkt werden.</td>
+      </tr>
+      <tr>
+        <td>Keine DPIA durchgeführt</td>
+        <td><span class="risk-label risk-hoch">HOCH</span></td>
+        <td>Systematische Verarbeitung von CRM-Daten mit KI erfordert DPIA nach Art. 35 DSGVO. Noch nicht erfolgt.</td>
+      </tr>
+      <tr>
+        <td>Kein Löschkonzept für Supabase-Daten</td>
+        <td><span class="risk-label risk-mittel">MITTEL</span></td>
+        <td>Research-Ergebnisse, Query-History und Snapshots werden unbegrenzt gespeichert. Kein Retention-Management.</td>
+      </tr>
+      <tr>
+        <td>Meeting Transcript Roadmap</td>
+        <td><span class="risk-label risk-hoch">HOCH (präventiv)</span></td>
+        <td>Aufzeichnung von Kundengesprächen ohne explizite Einwilligung ist in D/EU nicht erlaubt. Rechtlich klären bevor Implementierung.</td>
+      </tr>
+      <tr>
+        <td>Kontaktdaten-Extraktion (Führungskontakte)</td>
+        <td><span class="risk-label risk-mittel">MITTEL</span></td>
+        <td">Scrapen von Kontaktdaten via KI liegt in einer rechtlichen Grauzone. B2B-Kontakte auf öffentlichen Profilen gelten bedingt als erlaubt, müssen aber im CRM-Zweck begründbar sein.</td>
+      </tr>
+      <tr>
+        <td>CSP-Header fehlen (XSS-Risiko)</td>
+        <td><span class="risk-label risk-niedrig">NIEDRIG</span></td>
+        <td>Technisches Sicherheitsrisiko (Art. 32 DSGVO — TOMs). Im aktuellen internen Betrieb vertretbar, vor produktiver Nutzung beheben.</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 5. Empfehlungen -->
+  <div class="section">
+    <h2><span class="icon">✅</span> 5. Empfehlungen &amp; nächste Schritte</h2>
+    <ul class="rec-list">
+      <li>
+        <span class="priority risk-hoch">Sofort</span>
+        <div><strong>DPIA einleiten</strong> — Datenschutz-Folgenabschätzung nach Art. 35 DSGVO für das gesamte Tool starten. DSB oder externer Datenschutzberater einbinden.</div>
+      </li>
+      <li>
+        <span class="priority risk-hoch">Sofort</span>
+        <div><strong>AV-Vertrag mit Supabase abschließen</strong> — Supabase bietet einen Standard-DPA an (DPA-Formular auf supabase.com). Muss vor weiterer Nutzung unterzeichnet werden.</div>
+      </li>
+      <li>
+        <span class="priority risk-hoch">Sofort</span>
+        <div><strong>KI-Anbieter prüfen</strong> — Für Perplexity und Lovable/Anthropic DPA-Optionen prüfen. Alternativ: Scope der Features einschränken bis DPAs vorliegen (insb. Deal Copilot &amp; CRM Insights).</div>
+      </li>
+      <li>
+        <span class="priority risk-mittel">Kurzfristig</span>
+        <div><strong>OAuth-Scopes minimieren</strong> — Von <code>ZohoCRM.modules.ALL</code> auf konkrete Module (Leads, Contacts, Deals, Activities) einschränken.</div>
+      </li>
+      <li>
+        <span class="priority risk-mittel">Kurzfristig</span>
+        <div><strong>Retention-Policy implementieren</strong> — Automatische Löschung von Query History (z.B. nach 90 Tagen) und alten Snapshots einbauen.</div>
+      </li>
+      <li>
+        <span class="priority risk-mittel">Vor Rollout</span>
+        <div><strong>User Awareness</strong> — Sales-Team sensibilisieren: keine Kundendaten in Freitext-Feldern (CRM Insights, Deal Copilot) eingeben bis AV-Verträge abgeschlossen.</div>
+      </li>
+      <li>
+        <span class="priority risk-niedrig">Roadmap</span>
+        <div><strong>Meeting Transcripts rechtlich absichern</strong> — Bevor Implementierung: Einwilligungskonzept für Kunden &amp; interne Mitarbeitende ausarbeiten. DSGVO + BDSG + lokale Arbeitnehmerrechte berücksichtigen.</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 6. Fazit -->
+  <div class="section">
+    <h2><span class="icon">📋</span> 6. Fazit</h2>
+    <p>Das Tool hat erhebliches strategisches Potenzial: Es beschleunigt Research, gibt Sales-Mitarbeitenden besseren Kontext und ermöglicht datengetriebene Entscheidungen direkt im CRM-Workflow. Die Roadmap mit Notifications, Rep-Cockpits und Meeting-Transkripten ist folgerichtig und wettbewerbsrelevant.</p>
+    <p>Der aktuelle Status ist jedoch aus DSGVO-Perspektive nicht tragbar für einen breiten Rollout. Die kritischen Risiken (fehlende DPA-Verträge, keine DPIA, unkontrollierte Datenweitergabe an KI-Anbieter) sind behebbar — aber nicht trivial und erfordern Ressourcen und Entscheidungen auf Management-Ebene.</p>
+    <p><strong>Empfehlung:</strong> Pilotphase mit kontrollierten internen Nutzern fortführen, parallel DPIA + AV-Verträge aufgleisen. Kein Rollout auf gesamtes Sales-Team vor Abschluss der datenschutzrechtlichen Grundlagen. Die Investition lohnt sich — aber nur mit sauberem rechtlichem Fundament.</p>
+
+    <div class="tag-row" style="margin-top:1.2rem;">
+      <span class="tag tag-purple">Erstellt von: Hatti (KI-Assistent)</span>
+      <span class="tag tag-blue">Auf Basis: DRMS-SPA26 Repo + knowledge.md</span>
+      <span class="tag tag-orange">Für: CEO Review · Drooms</span>
+    </div>
+  </div>
+
+  <footer>
+    DRMS-SPA26 Executive Summary · Generiert 09.03.2026 · Vertraulich · Nur für internen Gebrauch
+  </footer>
+
+</div>
+</body>
+</html>
