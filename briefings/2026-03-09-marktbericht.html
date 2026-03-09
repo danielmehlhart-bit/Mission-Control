@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marktbericht 9. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #f8f9fa;
+            line-height: 1.6;
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .date {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #2d3748;
+        }
+        
+        .index-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+        
+        .positive { color: #10b981; }
+        .negative { color: #ef4444; }
+        
+        .change {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #2d3748;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fed7af 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .oil-prices {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .oil-card {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .oil-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #dc2626;
+            margin: 5px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .source-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 20px 0;
+            transition: background 0.2s ease;
+        }
+        
+        .source-link:hover {
+            background: #5a67d8;
+        }
+        
+        p {
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+        
+        ul {
+            margin: 16px 0;
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="date">Montag, 9. März 2026</div>
+            <h1>📈 Marktbericht</h1>
+            <div class="subtitle">Börsen weltweit im Krisenmodus</div>
+        </div>
+
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-title">🇩🇪 DAX</div>
+                <div class="index-value negative">23.591</div>
+                <div class="change negative">-0,9% (Tag)</div>
+                <div class="change negative">-7,0% (Woche)</div>
+                <p style="font-size: 0.9rem; color: #666;">Unter 24.000 Punkte gefallen</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">🇺🇸 Dow Jones</div>
+                <div class="index-value negative">47.063</div>
+                <div class="change negative">-2,0% (Tag)</div>
+                <div class="change negative">-3,0% (Woche)</div>
+                <p style="font-size: 0.9rem; color: #666;">Schlechte Arbeitsmarktdaten</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">🛢️ Öl (Brent)</div>
+                <div class="index-value negative">92+ USD</div>
+                <div class="change negative">+9,0%</div>
+                <p style="font-size: 0.9rem; color: #666;">Höchster Stand seit April 2024</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">🚨 Haupttreiber</div>
+            
+            <div class="highlight-box">
+                <strong>Iran-Krieg eskaliert weiter:</strong> Straße von Hormus weiterhin gesperrt. Trump fordert "bedingungslose Kapitulation" Irans. Angriff auf irakisches Ölfeld stoppt Produktion.
+            </div>
+
+            <div class="oil-prices">
+                <div class="oil-card">
+                    <div>Brent Crude</div>
+                    <div class="oil-price">92+ USD</div>
+                    <div>+9% heute</div>
+                </div>
+                <div class="oil-card">
+                    <div>WTI</div>
+                    <div class="oil-price">90+ USD</div>
+                    <div>Noch stärker gestiegen</div>
+                </div>
+            </div>
+
+            <p><strong>Katars Energieminister warnt:</strong> Alle Förderstaaten am Persischen Golf könnten Produktion einstellen. Ölpreis könnte auf 150 USD steigen.</p>
+            
+            <p><strong>US-Arbeitsmarkt bricht ein:</strong> 92.000 Jobs verloren (erwartet: +59.000). Arbeitslosenquote steigt auf 4,4%. Handlungsdruck für Fed erhöht.</p>
+        </div>
+
+        <div class="content-section">
+            <div class="section-title">🔮 Ausblick</div>
+            <ul>
+                <li><strong>Mittwoch:</strong> Verbraucherpreisdaten Deutschland & USA</li>
+                <li><strong>Freitag:</strong> Fed-Inflationsindikator (PCE-Index)</li>
+                <li><strong>Risiken:</strong> Weitere Eskalation im Nahen Osten, Energieengpässe, neue Inflationswelle</li>
+                <li><strong>Dollar stärkt sich:</strong> Euro fällt auf 1,1561 USD</li>
+            </ul>
+            
+            <p><strong>Indien darf wieder russisches Öl kaufen</strong> - USA gewähren temporäre Ausnahme wegen Versorgungsengpässen.</p>
+            
+            <p><strong>Lufthansa-Ergebnis:</strong> Betriebsergebnis +19% auf 1,96 Mrd. €, Rekord-Umsatz von 39,6 Mrd. €</p>
+        </div>
+
+        <div class="footer">
+            <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-oelpreis-iran-krise-dow-100.html" class="source-link" target="_blank">📰 Zur Tagesschau-Quelle</a>
+            <div>Automatisch erstellt am 9. März 2026 um 08:00 MEZ</div>
+        </div>
+    </div>
+</body>
+</html>
