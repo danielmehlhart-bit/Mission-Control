@@ -115,6 +115,83 @@ function initSchema(db: Database.Database): void {
     seedProjects();
   }
 
+  // Seed Notes für Raab Immobilien (Projekt-ID 7) falls noch keine Note vorhanden
+  const raabNote = db.prepare("SELECT project_id FROM project_notes WHERE project_id = '7'").get();
+  if (!raabNote) {
+    const raabBriefingContent = JSON.stringify({
+      type: "doc",
+      content: [
+        { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: "🗓️ Discovery Call · Mo 10.03.2026 · 10:00 Uhr" }] },
+        { type: "paragraph", content: [{ type: "text", marks: [{ type: "italic" }], text: "Briefing: Eduard Raab (Raam Immobilien) — Discovery Playbook" }] },
+        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Company-Hypothese" }] },
+        { type: "paragraph", content: [{ type: "text", text: "Bauträger und/oder Immobilienbestandshalter mit Fokus auf Vermietung. Wahrscheinlich kleines Team (3–8 MA). Hohe Affinität für Prozessoptimierung." }] },
+        { type: "bulletList", content: [
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Geschäft: Bauträger, Kauf/Sanierung/Verkauf, Eigenbestand (~100 Einheiten)" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Tech-Stack: Wahrscheinlich rudimentär (Excel, E-Mail). Offen für Tools wie EverReal/Immoware24." }] }] },
+        ] },
+        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Ziele des Gesprächs" }] },
+        { type: "bulletList", content: [
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Problem verstehen, nicht Lösung verkaufen — immer zurück zum \"Was genau ist das Problem dahinter?\"" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Pains quantifizieren: Den Kunden SELBST rechnen lassen. Was kostet der Status Quo in Stunden, Euros, verpassten Chancen?" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Die \"EverReal-Lücke\" finden: Wo hören Standard-Tools auf und beginnt der manuelle Schmerz?" }] }] },
+        ] },
+        { type: "blockquote", content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "Die goldene Frage: " }, { type: "text", text: "\"Klingt, als hätten Sie sich schon intensiv mit EverReal und Immoware24 beschäftigt. Nehmen wir mal an, Sie hätten beide morgen im Einsatz. Welches Problem wäre dann immer noch nicht gelöst? Wo wäre immer noch manuelle Arbeit nötig?\"" }] }] },
+        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Discovery Framework (SPICED)" }] },
+        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "Block 1: Situation" }] },
+        { type: "bulletList", content: [
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Erzählen Sie mal, wie läuft ein Mieterwechsel bei Ihnen heute von A–Z ab?\"" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Welche Tools/Systeme nutzen Sie dafür aktuell?\"" }] }] },
+        ] },
+        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "Block 2: Pain" }] },
+        { type: "bulletList", content: [
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Was sind die größten Zeitfresser oder Nerv-Faktoren?\"" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Wie viele Stunden pro Woche frisst [Pain Point] ungefähr?\"" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Was kostet Sie eine Stunde Ihrer Zeit, grob? → Lass ihn auf Jahreskosten hochrechnen.\"" }] }] },
+        ] },
+        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "Block 3: Impact" }] },
+        { type: "bulletList", content: [
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Was bedeutet das für Ihr Geschäft, wenn das so weitergeht?\"" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Haben Sie schon mal versucht, das Problem zu lösen? Was ist passiert?\"" }] }] },
+        ] },
+        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "Block 4: Critical Event" }] },
+        { type: "bulletList", content: [
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Was hat sich verändert, dass das Thema gerade jetzt auf dem Tisch liegt?\"" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Was passiert, wenn Sie das in den nächsten 6 Monaten nicht lösen?\"" }] }] },
+        ] },
+        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "Block 5: Decision Process" }] },
+        { type: "bulletList", content: [
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "\"Wenn wir die perfekte Lösung hätten – wie würde der Entscheidungsprozess bei Ihnen aussehen?\"" }] }] },
+        ] },
+        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Hypothetische Pains (zum Einwerfen)" }] },
+        { type: "bulletList", content: [
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Doppelte Dateneingabe: Mieterdaten aus Selbstauskunft müssen manuell in 3 verschiedene Systeme übertragen werden." }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Kommunikations-Chaos: Bis alle Dokumente vom neuen Mieter da sind, 15 E-Mails — trotzdem fehlt die Hälfte." }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Fehlender Onboarding-Prozess: Nach Vertragsunterschrift unklar, wer dem Mieter welche Infos gibt. Jedes Mal ad-hoc." }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Leerstand durch langsame Prozesse: Zwischen Kündigung und Neuvermietung X Wochen Verlust." }] }] },
+        ] },
+        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "✅ Checkliste für den Call" }] },
+        { type: "taskList", content: [
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Company Research erfolgt" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Hypothesen über Pains im Kopf" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Die 10 Discovery-Fragen parat" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Du redest 20%, Eduard redet 80%" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Ihn den Business Case selbst rechnen lassen" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Nach Critical Event fragen" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Decision Process klären" }] }] },
+        ] },
+        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "📋 Post-Call (innerhalb 2 Stunden!)" }] },
+        { type: "taskList", content: [
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "SPICED Scorecard in Meeting-Notizen ausfüllen" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Follow-Up Email mit quantifiziertem Impact entwerfen" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Konkreten nächsten Termin vorschlagen" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Lead auf Mission Control aktualisieren" }] }] },
+        ] },
+      ],
+    });
+    db.prepare("INSERT OR IGNORE INTO project_notes (project_id, content, updated_at) VALUES (?, ?, datetime('now'))")
+      .run("7", raabBriefingContent);
+  }
+
   // Seed People falls Tabelle leer
   const peopleCount = (db.prepare("SELECT COUNT(*) as c FROM people").get() as { c: number }).c;
   if (peopleCount === 0) {
