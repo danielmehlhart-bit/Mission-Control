@@ -1,5 +1,13 @@
-// EditProjectModal Component
-function EditProjectModal({ project, onClose, onSaved }: {
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+type Project = {
+  id: string; name: string; client: string; status: string;
+  description?: string; repo?: string; color: string;
+};
+
+export default function EditProjectModal({ project, onClose, onSaved }: {
   project: Project; onClose: () => void; onSaved: () => void;
 }) {
   const [form, setForm] = useState({
