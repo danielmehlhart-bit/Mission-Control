@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raab Immobilien · Discovery Call · 10.03.2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #F97316;
+      --orange-light: #FFF7ED;
+      --orange-mid: #FFEDD5;
+      --dark: #1a1a2e;
+      --dark-mid: #2d2d44;
+      --gray-50: #F9FAFB;
+      --gray-100: #F3F4F6;
+      --gray-200: #E5E7EB;
+      --gray-400: #9CA3AF;
+      --gray-600: #4B5563;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --green: #16A34A;
+      --green-light: #F0FDF4;
+      --green-mid: #DCFCE7;
+      --red: #DC2626;
+      --red-light: #FEF2F2;
+      --red-mid: #FEE2E2;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.05);
+      --shadow-lg: 0 10px 40px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.06);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --radius-xs: 6px;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-900);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(135deg, var(--dark) 0%, var(--dark-mid) 100%);
+      padding: 40px 20px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(249,115,22,0.18) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -40px;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(249,115,22,0.10) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(249,115,22,0.15);
+      border: 1px solid rgba(249,115,22,0.30);
+      color: var(--orange);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .header-badge::before { content: '●'; font-size: 8px; }
+    h1 {
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .header-date {
+      color: var(--gray-400);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+    .participants {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 100px;
+      padding: 7px 14px;
+      color: #fff;
+      font-size: 13px;
+    }
+    .pill-avatar {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--orange);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+    .pill-name { font-weight: 600; }
+    .pill-role { color: var(--gray-400); font-size: 12px; }
+
+    /* ── MAIN ── */
+    .main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ── CARD BASE ── */
+    .card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      padding: 28px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 4px;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 20px;
+    }
+
+    /* ── COMPANY SNAPSHOT ── */
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .snapshot-item {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+    }
+    .snapshot-item-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+    .snapshot-item-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray-900);
+    }
+    .chain {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+    }
+    .chain-step {
+      background: var(--orange-mid);
+      color: var(--orange);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: var(--radius-xs);
+    }
+    .chain-arrow { color: var(--gray-400); font-size: 12px; }
+    .tech-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .tech-tag {
+      background: var(--gray-100);
+      color: var(--gray-700);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--gray-200);
+    }
+    .tech-tag.partial { border-color: #FDE68A; background: #FFFBEB; color: #92400E; }
+
+    /* ── PAIN POINTS ── */
+    .pain-grid {
+      display: grid;
+      gap: 16px;
+    }
+    .pain-card {
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--gray-200);
+      overflow: hidden;
+    }
+    .pain-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .prio-badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+    .prio-1 { background: #FEE2E2; color: #991B1B; }
+    .prio-2 { background: #FEF3C7; color: #92400E; }
+    .prio-3 { background: #DCFCE7; color: #166534; }
+    .prio-4 { background: #E0E7FF; color: #3730A3; }
+    .pain-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    .pain-body { padding: 16px 20px; }
+    .pain-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 16px;
+    }
+    .pain-list li {
+      font-size: 14px;
+      color: var(--gray-700);
+      padding-left: 18px;
+      position: relative;
+    }
+    .pain-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--gray-400);
+      font-size: 12px;
+      top: 1px;
+    }
+    .quote-block {
+      background: var(--orange-light);
+      border-left: 3px solid var(--orange);
+      border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+    }
+    .quote-block:last-child { margin-bottom: 0; }
+    .quote-speaker {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--orange);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 3px;
+    }
+    .quote-text {
+      font-size: 13px;
+      font-style: italic;
+      color: var(--gray-700);
+      line-height: 1.5;
+    }
+
+    /* ── BUSINESS CASE ── */
+    .biz-highlight {
+      background: linear-gradient(135deg, var(--dark) 0%, var(--dark-mid) 100%);
+      border-radius: var(--radius-sm);
+      padding: 28px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .biz-amount {
+      font-size: clamp(42px, 8vw, 64px);
+      font-weight: 800;
+      color: var(--orange);
+      line-height: 1;
+    }
+    .biz-amount-label {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 6px;
+    }
+    .biz-calc {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 14px;
+    }
+    .biz-calc-item {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.8);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+    .biz-vision {
+      background: var(--orange-light);
+      border: 1px solid var(--orange-mid);
+      border-radius: var(--radius-sm);
+      padding: 18px 20px;
+    }
+    .biz-vision-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--orange);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .vision-steps {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+    .vision-step {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray-700);
+      background: #fff;
+      border: 1px solid var(--orange-mid);
+      padding: 4px 10px;
+      border-radius: var(--radius-xs);
+    }
+    .vision-step.final {
+      background: var(--orange);
+      color: #fff;
+      border-color: var(--orange);
+    }
+    .vision-arrow { color: var(--orange); font-size: 14px; }
+    .goal-box {
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: var(--gray-100);
+      border-radius: var(--radius-xs);
+      font-size: 14px;
+      color: var(--gray-700);
+    }
+    .goal-box strong { color: var(--dark); }
+
+    /* ── NEXT STEPS ── */
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      background: var(--gray-50);
+    }
+    .step-check {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--orange);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--orange);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .step-content { flex: 1; }
+    .step-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 2px;
+    }
+    .step-meta {
+      font-size: 12px;
+      color: var(--gray-400);
+    }
+    .step-price {
+      background: var(--orange-mid);
+      color: var(--orange);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 100px;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    /* ── MENTOR COMPASS ── */
+    .mentor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 580px) {
+      .mentor-grid { grid-template-columns: 1fr; }
+    }
+    .mentor-col {
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .mentor-col-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .mentor-col.do .mentor-col-header { background: var(--green-mid); color: var(--green); }
+    .mentor-col.dont .mentor-col-header { background: var(--red-mid); color: var(--red); }
+    .mentor-col-body {
+      border: 1px solid var(--gray-200);
+      border-top: none;
+      border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+      overflow: hidden;
+    }
+    .mentor-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: var(--gray-700);
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .mentor-item:last-child { border-bottom: none; }
+    .mentor-item-icon { flex-shrink: 0; margin-top: 1px; font-size: 14px; }
+    .mentor-col.do .mentor-item-icon { color: var(--green); }
+    .mentor-col.dont .mentor-item-icon { color: var(--red); }
+
+    /* Lead quality */
+    .lead-box {
+      background: linear-gradient(135deg, #F0FDF4, #DCFCE7);
+      border: 2px solid #86EFAC;
+      border-radius: var(--radius-sm);
+      padding: 24px;
+    }
+    .lead-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .lead-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--green);
+    }
+    .lead-score {
+      display: flex;
+      gap: 4px;
+    }
+    .lead-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    .lead-dot.empty { background: var(--gray-200); }
+    .lead-desc {
+      font-size: 14px;
+      color: var(--gray-700);
+      margin-bottom: 10px;
+    }
+    .lead-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .lead-tag {
+      background: #fff;
+      border: 1px solid #86EFAC;
+      color: #166534;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--gray-400);
+      font-size: 13px;
+      border-top: 1px solid var(--gray-200);
+    }
+    footer a { color: var(--orange); text-decoration: none; font-weight: 600; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .card { padding: 20px; }
+      .pain-header { padding: 12px 16px; }
+      .pain-body { padding: 14px 16px; }
+      .biz-highlight { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-badge">Discovery Call</div>
+      <h1>Raab Immobilien · Discovery Call · 10.03.2026</h1>
+      <p class="header-date">Dienstag, 10. März 2026</p>
+      <div class="participants">
+        <div class="pill">
+          <div class="pill-avatar">ER</div>
+          <div>
+            <div class="pill-name">Eduard Raab</div>
+            <div class="pill-role">Inhaber</div>
+          </div>
+        </div>
+        <div class="pill">
+          <div class="pill-avatar">WS</div>
+          <div>
+            <div class="pill-name">Waldemar Specht</div>
+            <div class="pill-role">Operations</div>
+          </div>
+        </div>
+        <div class="pill">
+          <div class="pill-avatar">DM</div>
+          <div>
+            <div class="pill-name">Daniel Mehlhart</div>
+            <div class="pill-role">Discovery</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- COMPANY SNAPSHOT -->
+    <div class="card">
+      <div class="section-label">Unternehmen</div>
+      <div class="section-title">Company Snapshot</div>
+
+      <div class="snapshot-grid">
+        <div class="snapshot-item">
+          <div class="snapshot-item-label">Firma</div>
+          <div class="snapshot-item-value">Raab Immobilien</div>
+        </div>
+        <div class="snapshot-item">
+          <div class="snapshot-item-label">Mitarbeiter</div>
+          <div class="snapshot-item-value">~50</div>
+        </div>
+        <div class="snapshot-item">
+          <div class="snapshot-item-label">Struktur</div>
+          <div class="snapshot-item-value">10 Gesellschaften (Holding)</div>
+        </div>
+        <div class="snapshot-item">
+          <div class="snapshot-item-label">Fokus</div>
+          <div class="snapshot-item-value">Projektentwicklung Bestandsimmobilien</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <div class="snapshot-item-label" style="margin-bottom: 8px;">Wertschöpfungskette</div>
+        <div class="chain">
+          <span class="chain-step">Entwicklung</span>
+          <span class="chain-arrow">→</span>
+          <span class="chain-step">Architektur & Baugenehmigung</span>
+          <span class="chain-arrow">→</span>
+          <span class="chain-step">Ausführung</span>
+          <span class="chain-arrow">→</span>
+          <span class="chain-step">Vermarktung</span>
+          <span class="chain-arrow">→</span>
+          <span class="chain-step">Verwaltung</span>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <div class="snapshot-item-label" style="margin-bottom: 8px;">Aktueller Tech-Stack</div>
+        <div class="tech-tags">
+          <span class="tech-tag">Excel</span>
+          <span class="tech-tag">Server-Ordner</span>
+          <span class="tech-tag partial">Trello (unregelmäßig)</span>
+          <span class="tech-tag">ImmoClou</span>
+          <span class="tech-tag partial">EverReal (ansatzweise)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAIN POINTS -->
+    <div class="card">
+      <div class="section-label">Analyse</div>
+      <div class="section-title">Pain Points · Priorisiert</div>
+      <div class="pain-grid">
+
+        <!-- PRIO 1 -->
+        <div class="pain-card">
+          <div class="pain-header">
+            <span class="prio-badge prio-1">🔴 Prio 1</span>
+            <span class="pain-title">Interne Kommunikation & Aufgabenmanagement</span>
+          </div>
+          <div class="pain-body">
+            <ul class="pain-list">
+              <li>E-Mail-Chaos: Fragen werden 3× an verschiedene Personen gestellt bis Infos ankommen</li>
+              <li>Keine Aufgabenzuweisung — "Ungelesen = unerledigt" als Workaround</li>
+              <li>Trello eingeführt, wird nicht konsistent genutzt — jeder als Alleinkämpfer</li>
+              <li>Vision: Aus jeder E-Mail automatisch ein Task mit Zuständigkeit + Prozessschritten</li>
+            </ul>
+            <div class="quote-block">
+              <div class="quote-speaker">Eduard Raab</div>
+              <div class="quote-text">"Jede E-Mail ist entweder Stamp oder Aufgabe. Keiner schreibt eine E-Mail und sagt 'Hey Waldemar, mein Sonnenschein'."</div>
+            </div>
+            <div class="quote-block">
+              <div class="quote-speaker">Waldemar Specht</div>
+              <div class="quote-text">"Es wäre gut, wenn man irgendjemanden fragen könnte, wie bei ChatGPT — drückst du Enter und es kommt eine Antwort."</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRIO 2 -->
+        <div class="pain-card">
+          <div class="pain-header">
+            <span class="prio-badge prio-2">🟡 Prio 2</span>
+            <span class="pain-title">Kündigung → Neuvermietung Prozess</span>
+          </div>
+          <div class="pain-body">
+            <ul class="pain-list">
+              <li>Bindet 20 Stunden/Woche einer Person — komplett manuell</li>
+              <li>Bilder sammeln, Excel-Daten, Copy-Paste-Beschreibungen, Besichtigungstermine die platzen</li>
+              <li>Vision: Kündigung eintragen → Inserat, Anfragen, Selbstauskunft, Bewertung, Mietvertrag, Protokoll — alles automatisch. Letzter manueller Schritt: Schlüsselübergabe.</li>
+            </ul>
+            <div class="quote-block">
+              <div class="quote-speaker">Eduard Raab</div>
+              <div class="quote-text">"Das einzige, was tatsächlich bei uns im Haus passieren muss: Wir setzen einen Fleck und sagen OK, die Kündigung ist da."</div>
+            </div>
+            <div class="quote-block">
+              <div class="quote-speaker">Waldemar Specht</div>
+              <div class="quote-text">"Da fährst du dahin, vereinbarst Termine, stehst vor dem Objekt, Viertelstunde, setzt dich ins Auto, fährst zurück — weil die Leute einfach nicht erschienen sind."</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRIO 3 -->
+        <div class="pain-card">
+          <div class="pain-header">
+            <span class="prio-badge prio-3">🟢 Prio 3</span>
+            <span class="pain-title">Baustellenmanagement & Projektsteuerung</span>
+          </div>
+          <div class="pain-body">
+            <ul class="pain-list">
+              <li>Mitarbeiterplanung, Zeiterfassung, Statusberichte, Krankmeldungen — alles manuell</li>
+              <li>Materialbeschaffung per Telefon — könnte durch Voice-Input + Foto automatisiert werden</li>
+              <li>Projektpläne statisch statt lebendig — Änderungen müssen händisch nachgezogen werden</li>
+            </ul>
+            <div class="quote-block">
+              <div class="quote-speaker">Eduard Raab</div>
+              <div class="quote-text">"Du brauchst einen Projektplan mit uns. Es passiert irgendetwas und der gesamte Projektplan muss leben, sich selbst ändern."</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRIO 4 -->
+        <div class="pain-card">
+          <div class="pain-header">
+            <span class="prio-badge prio-4">🔵 Prio 4</span>
+            <span class="pain-title">HR & Onboarding</span>
+          </div>
+          <div class="pain-body">
+            <ul class="pain-list">
+              <li>Live-Beispiel im Call: 3 neue Mitarbeiter → Personalfragebögen → Rückfrage beim falschen Mitarbeiter → 4 Personen, 20–40 Minuten Aufwand</li>
+              <li>10 Gesellschaften = hohe Komplexität, sehr fehleranfällig</li>
+              <li>Kein zentrales HR-System — alles verteilt über Gesellschaften</li>
+            </ul>
+            <div class="quote-block">
+              <div class="quote-speaker">Eduard Raab</div>
+              <div class="quote-text">"Wir brauchen ein SAP in gut und schön."</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BUSINESS CASE -->
+    <div class="card">
+      <div class="section-label">Quantifizierung</div>
+      <div class="section-title">Business Case</div>
+
+      <div class="biz-highlight">
+        <div class="biz-amount">20.800 €</div>
+        <div class="biz-amount-label">jährliche Kosten allein durch den Vermietungsprozess (konservativ)</div>
+        <div class="biz-calc">
+          <span class="biz-calc-item">20 Std./Woche</span>
+          <span class="biz-calc-item">× 20 €/Std.</span>
+          <span class="biz-calc-item">× 52 Wochen</span>
+          <span class="biz-calc-item">= 20.800 € p.a.</span>
+        </div>
+      </div>
+
+      <div class="biz-vision" style="margin-top: 16px;">
+        <div class="biz-vision-title">Eduards Vision — Vermietung vollautomatisch</div>
+        <div class="vision-steps">
+          <span class="vision-step">Kündigung eingetragen</span>
+          <span class="vision-arrow">→</span>
+          <span class="vision-step">Inserat live</span>
+          <span class="vision-arrow">→</span>
+          <span class="vision-step">Anfragen beantwortet</span>
+          <span class="vision-arrow">→</span>
+          <span class="vision-step">Selbstauskunft eingeholt</span>
+          <span class="vision-arrow">→</span>
+          <span class="vision-step">Mieter bewertet</span>
+          <span class="vision-arrow">→</span>
+          <span class="vision-step">Mietvertrag generiert</span>
+          <span class="vision-arrow">→</span>
+          <span class="vision-step final">🗝️ Schlüsselübergabe</span>
+        </div>
+      </div>
+
+      <div class="goal-box">
+        <strong>Eduards Ziel:</strong> Mehr Volumen mit bestehendem Team — kein aufgeblähter "Wasserkopf". Wachstum durch Automatisierung, nicht durch Kopfzahl.
+      </div>
+    </div>
+
+    <!-- NEXT STEPS -->
+    <div class="card">
+      <div class="section-label">Vereinbart</div>
+      <div class="section-title">Nächste Schritte</div>
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-check">1</div>
+          <div class="step-content">
+            <div class="step-title">Demo-Zugang für Eduard + Waldemar auf modulAI einrichten</div>
+            <div class="step-meta">Beispieldaten mit Immobilien-Kontext befüllen — Wohnungen, Mieterwechsel, Schadensmeldungen als Dummy-Daten. <strong>Heute noch.</strong></div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-check">2</div>
+          <div class="step-content">
+            <div class="step-title">Call-Zusammenfassung an Eduard + Waldemar senden</div>
+            <div class="step-meta">Dieses Dokument — Momentum nutzen, solange der Call frisch ist.</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-check">3</div>
+          <div class="step-content">
+            <div class="step-title">Solution Design Sprint — 2 × 2 Stunden vor Ort bei Raab</div>
+            <div class="step-meta">Prozesse tiefgehend aufnehmen, Adoption-Plan erarbeiten, Sequenz 1 scharf definieren.</div>
+          </div>
+          <div class="step-price">1.500 €</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MENTOR COMPASS -->
+    <div class="card">
+      <div class="section-label">Mentor-Kompass</div>
+      <div class="section-title">TUN vs. VERMEIDEN</div>
+
+      <div class="mentor-grid">
+        <div class="mentor-col do">
+          <div class="mentor-col-header">✅ TUN</div>
+          <div class="mentor-col-body">
+            <div class="mentor-item">
+              <span class="mentor-item-icon">✓</span>
+              Demo sofort einrichten — heute noch. Momentum ist alles nach einem guten Call.
+            </div>
+            <div class="mentor-item">
+              <span class="mentor-item-icon">✓</span>
+              Sequenziell denken: Erstes Paket = E-Mail-Triage + Task-Management. Das ist der Quick Win.
+            </div>
+            <div class="mentor-item">
+              <span class="mentor-item-icon">✓</span>
+              Solution Design als Paid Engagement positionieren — 1.500 € schützt Daniels Zeit UND qualifiziert den Lead. Wer zahlt, meint es ernst.
+            </div>
+            <div class="mentor-item">
+              <span class="mentor-item-icon">✓</span>
+              Quantifizierung im Angebot rückbeziehen: Eduard hat 20h/Woche selbst genannt. Das ist SEIN Business Case.
+            </div>
+            <div class="mentor-item">
+              <span class="mentor-item-icon">✓</span>
+              Adoption-Plan beim Solution Design vertiefen — Tool ohne Change Management scheitert.
+            </div>
+            <div class="mentor-item">
+              <span class="mentor-item-icon">✓</span>
+              Demo mit Immobilien-Beispieldaten befüllen: Wohnungen, Mieterwechsel, Schadensmeldungen.
+            </div>
+          </div>
+        </div>
+
+        <div class="mentor-col dont">
+          <div class="mentor-col-header">✗ VERMEIDEN</div>
+          <div class="mentor-col-body">
+            <div class="mentor-item">
+              <span class="mentor-item-icon">✗</span>
+              Feature-Creep: SAP, ERP, CRM, Bautagebuch, HR, Materialbeschaffung in einem Call erwähnt — nicht alles versprechen. Das ist eine 5-Jahres-Roadmap.
+            </div>
+            <div class="mentor-item">
+              <span class="mentor-item-icon">✗</span>
+              Demo ohne Immobilien-Kontext zeigen — wirkt abstrakt und unvorbereitet.
+            </div>
+            <div class="mentor-item">
+              <span class="mentor-item-icon">✗</span>
+              Kein Angebot ohne Solution Design — Komplexität ist zu hoch.
+            </div>
+            <div class="mentor-item">
+              <span class="mentor-item-icon">✗</span>
+              Zu viele offene Baustellen parallel: Ein klarer nächster Schritt zur Zeit.
+            </div>
+            <div class="mentor-item">
+              <span class="mentor-item-icon">✗</span>
+              Timelines ohne Puffer bei 10 Gesellschaften + bestehenden Kunden planen.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lead Quality -->
+      <div class="lead-box">
+        <div class="lead-box-header">
+          <div class="lead-title">🏆 Lead-Qualität: Sehr hoch</div>
+          <div class="lead-score">
+            <div class="lead-dot"></div>
+            <div class="lead-dot"></div>
+            <div class="lead-dot"></div>
+            <div class="lead-dot"></div>
+            <div class="lead-dot empty"></div>
+          </div>
+        </div>
+        <p class="lead-desc">
+          Eduard denkt strategisch, Waldemar operativ — ein perfektes Duo. Beide sind Entscheider. Kein "müssen wir erst intern besprechen." Wenn Sequenz 1 läuft, folgen Sequenz 2 (Vermietung), 3 (Baustelle) und 4 (HR) automatisch. <strong>Potentiell größtes Projekt bisher.</strong>
+        </p>
+        <div class="lead-tags">
+          <span class="lead-tag">Beide Entscheider anwesend</span>
+          <span class="lead-tag">Kein Approval-Prozess</span>
+          <span class="lead-tag">Strategisches Denken vorhanden</span>
+          <span class="lead-tag">Hohe Skalierbarkeit</span>
+          <span class="lead-tag">4 Sequenzen identifiziert</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    Erstellt von Hatti 🏔️ · <a href="https://mc.mehlhart.de" target="_blank">mc.mehlhart.de</a>
+  </footer>
+
+</body>
+</html>

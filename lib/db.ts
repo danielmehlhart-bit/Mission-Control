@@ -284,8 +284,64 @@ function initSchema(db: Database.Database): void {
       insert.run({ id: "4", name: "Paul Weber", company: "Weber Architekten", role: "Inhaber", email: "", project: "Architekt Connect" });
       insert.run({ id: "5", name: "Sebastian Weißmann", company: "BPP", role: "Geschäftsführer", email: "seba@bpp.photography", project: "BPP" });
       insert.run({ id: "6", name: "Eduard Raab", company: "Raab Immobilien", role: "Inhaber", email: "e.raab@raabimmobilien.com", project: "Raab Immobilien" });
-      insert.run({ id: "7", name: "W. Specht", company: "Raab Immobilien", role: "", email: "w.specht@raabimmobilien.com", project: "Raab Immobilien" });
+      insert.run({ id: "7", name: "Waldemar Specht", company: "Raab Immobilien", role: "Geschäftspartner / Operations", email: "w.specht@raabimmobilien.com", project: "Raab Immobilien" });
     });
     seedPeople();
   }
+
+  // Migration: Raab Kontakte mit Discovery-Call-Infos anreichern (10.03.2026)
+  runMigration("raab_contacts_enrich_20260310", () => {
+    db.prepare(`UPDATE people SET
+      name = 'Eduard Raab',
+      role = 'Inhaber / Geschäftsführer',
+      notes = 'Projektentwickler, ~50 MA, 10 Gesellschaften in Holding. Strategischer Denker. Entscheidet allein. Traum: "Kündigung eintragen → alles läuft automatisch bis Schlüsselübergabe." Will SAP in gut und schön. Kontaktiert via Alex Hamm (Architekt). Discovery Call 10.03.2026 — sehr qualifizierter Lead. Nächster Schritt: Demo-Zugang modulAI + Solution Design Sprint 1.500€.'
+      WHERE id = '6'`).run();
+    db.prepare(`UPDATE people SET
+      name = 'Waldemar Specht',
+      role = 'Geschäftspartner / Operations & Prozesse',
+      notes = 'Wirtschaftsingenieur + Kaufmann. Begleitet Eduard seit Anfang (erstem Hausbau). Verantwortlich für Prozessoptimierung: Posteingang, Schadensprozess, Vermietungsprozess. Operativer Kopf. Wichtigstes Anliegen: Nachhaltigkeit/Tracking von Infos, Entscheidungen einfacher treffen. Key Quote: "Viel besser wäre, wenn wir irgendjemanden fragen könnten, wie bei ChatGPT — drückst du Enter und es kommt eine Antwort."'
+      WHERE id = '7'`).run();
+    // Projekt: Stage auf "discovery" updaten, Opportunity Value setzen
+    db.prepare(`UPDATE projects SET
+      description = 'Discovery abgeschlossen 10.03.2026 · 50 MA, 10 Gesellschaften · Prio 1: E-Mail-Triage + Task-Management · Prio 2: Kündigung→Neuvermietung-Automatisierung · Pain: 20h/Woche = ~20.800€/Jahr · Nächster Schritt: Demo-Zugang + Solution Design Sprint (1.500€)',
+      stage = 'discovery',
+      opportunity_value = '1500'
+      WHERE id = '7'`).run();
+    // Post-Call Projekt-Notes: Discovery-Ergebnisse
+    const postCallNotes = JSON.stringify({
+      type: "doc",
+      content: [
+        { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: "✅ Discovery Call Ergebnisse — 10.03.2026" }] },
+        { type: "paragraph", content: [{ type: "text", marks: [{ type: "italic" }], text: "Eduard Raab + Waldemar Specht · Ca. 60 Min · Sehr qualifizierter Lead" }] },
+        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Company Snapshot" }] },
+        { type: "bulletList", content: [
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "Firma: " }, { type: "text", text: "Raab Immobilien — Projektentwickler Bestandsimmobilien" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "Größe: " }, { type: "text", text: "~50 Mitarbeiter, 10 Gesellschaften in Holding" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "Wertschöpfung: " }, { type: "text", text: "Entwicklung → Bau → Vermarktung → Verwaltung (alles aus einer Hand)" }] }] },
+          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "Tech-Stack: " }, { type: "text", text: "Excel, Server-Ordner, Trello (ungenutzt), ImmoClou, EverReal (ansatzweise)" }] }] },
+        ] },
+        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Pain Points (priorisiert)" }] },
+        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "🔴 PRIO 1 — Interne Kommunikation + Aufgabenmanagement" }] },
+        { type: "paragraph", content: [{ type: "text", text: "E-Mail-Chaos, Fragen werden 3x gestellt. Trello-Adoption gescheitert. Aus jeder E-Mail soll automatisch Task mit Zuständigkeit + Prozessschritten entstehen. KI-E-Mail-Triage als Traumlösung." }] },
+        { type: "blockquote", content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "italic" }], text: "\"Jede E-Mail ist entweder Stamp oder Aufgabe. Keiner schreibt eine E-Mail und sagt 'Hey Waldemar, mein Sonnenschein.'\" — Eduard Raab" }] }] },
+        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "🟡 PRIO 2 — Kündigung → Neuvermietung" }] },
+        { type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "20h/Woche · €20/h · ~€20.800/Jahr (konservativ)" }] },
+        { type: "paragraph", content: [{ type: "text", text: "Manuell: Bilder sammeln, Excel, Copy-Paste-Beschreibungen, Besichtigungstermine die platzen. Vision: Kündigung eintragen → alles automatisch bis Schlüsselübergabe." }] },
+        { type: "blockquote", content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "italic" }], text: "\"Das einzige, was tatsächlich bei uns im Haus passieren muss: Wir setzen einen Fleck und sagen OK, die Kündigung ist da.\" — Eduard Raab" }] }] },
+        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "🟢 PRIO 3 — Baustellenmanagement" }] },
+        { type: "paragraph", content: [{ type: "text", text: "Mitarbeiterplanung, Zeiterfassung, Materialbeschaffung — alles manuell. Voice-Input für Bestellvorschläge als Zukunftsvision." }] },
+        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "🟢 PRIO 4 — HR / Onboarding" }] },
+        { type: "paragraph", content: [{ type: "text", text: "Live-Beispiel: 3 neue MAs, Steuerberater-Rückfrage landet beim falschen Mitarbeiter → 4 Personen 20-40 Min gebunden. Kein strukturiertes Onboarding." }] },
+        { type: "blockquote", content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "italic" }], text: "\"Wir brauchen ein SAP in gut und schön.\" — Eduard Raab" }] }] },
+        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "🎯 Nächste Schritte" }] },
+        { type: "taskList", content: [
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "SOFORT: " }, { type: "text", text: "Demo-Zugang modulAI einrichten (mit Immobilien-Dummy-Daten!)" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "DIESE WOCHE: " }, { type: "text", text: "Call-Zusammenfassung an Eduard + Waldemar schicken" }] }] },
+          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "NÄCHSTER TERMIN: " }, { type: "text", text: "Solution Design Sprint (2×2h vor Ort) für €1.500 — Ergebnis: fundierte Analyse + Mockup-Designs" }] }] },
+        ] },
+      ],
+    });
+    db.prepare("INSERT OR REPLACE INTO project_notes (project_id, content, updated_at) VALUES (?, ?, datetime('now'))")
+      .run("7", postCallNotes);
+  });
 }
