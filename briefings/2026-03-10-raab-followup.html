@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Follow-Up · Raab · 10. März 2026</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #f4f4f6;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      color: #1a1a2e;
+      padding: 48px 16px 80px;
+    }
+
+    .card {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    .header {
+      padding: 40px 48px 32px;
+      border-bottom: 1px solid #eeeef2;
+    }
+
+    .header-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #8888a0;
+      margin-bottom: 10px;
+    }
+
+    .header-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #1a1a2e;
+      line-height: 1.25;
+    }
+
+    /* ── Body ── */
+    .body {
+      padding: 40px 48px;
+    }
+
+    /* ── Section ── */
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #8888a0;
+      margin-bottom: 20px;
+    }
+
+    /* ── Pain Blocks ── */
+    .pain-block {
+      background: #f7f7f9;
+      border-radius: 8px;
+      padding: 20px 22px;
+      margin-bottom: 12px;
+    }
+
+    .pain-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .pain-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 6px;
+    }
+
+    .pain-text {
+      font-size: 15px;
+      color: #3d3d5c;
+      line-height: 1.6;
+    }
+
+    /* ── Steps ── */
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .step:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-number {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      background: #1a1a2e;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 6px;
+    }
+
+    .step-text {
+      font-size: 15px;
+      color: #3d3d5c;
+      line-height: 1.6;
+    }
+
+    .step-text + .step-text {
+      margin-top: 4px;
+    }
+
+    .price-box {
+      display: inline-block;
+      margin-top: 10px;
+      background: #fff7f0;
+      border: 1px solid #fde3cc;
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #c2410c;
+    }
+
+    .price-box span {
+      color: #F97316;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid #eeeef2;
+      margin: 40px 0;
+    }
+
+    /* ── Signature ── */
+    .signature {
+      padding-top: 4px;
+    }
+
+    .sig-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+
+    .sig-meta {
+      font-size: 14px;
+      color: #6666888;
+      line-height: 1.7;
+    }
+
+    .sig-meta a {
+      color: #5555888;
+      text-decoration: none;
+    }
+
+    .sig-meta a:hover {
+      text-decoration: underline;
+    }
+
+    .sig-button {
+      display: inline-block;
+      margin-top: 18px;
+      background: #1a1a2e;
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 6px;
+      transition: background 0.15s;
+    }
+
+    .sig-button:hover {
+      background: #2d2d52;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .header { padding: 28px 24px 24px; }
+      .body   { padding: 28px 24px 32px; }
+      .header-title { font-size: 21px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-label">Follow-Up · Discovery Call · 10. März 2026</div>
+    <h1 class="header-title">Zusammenfassung &amp; nächste Schritte</h1>
+  </div>
+
+  <!-- Body -->
+  <div class="body">
+
+    <!-- Section 1 -->
+    <div class="section">
+      <div class="section-title">Was ich mitgenommen habe</div>
+
+      <div class="pain-block">
+        <div class="pain-label">Kommunikation und Aufgaben</div>
+        <div class="pain-text">Fragen wandern durch mehrere Personen bevor jemand eine Antwort hat. E-Mails als Aufgaben-Tracker: ungelesen gleich unerledigt. Trello wurde eingeführt, wird aber nicht konsistent genutzt — jeder kämpft für sich.</div>
+      </div>
+
+      <div class="pain-block">
+        <div class="pain-label">Kündigung bis Neuvermietung</div>
+        <div class="pain-text">Dieser Prozess bindet rund 20 Stunden pro Woche: Bilder sammeln, Daten aus Excel zusammensuchen, Beschreibungen copy-pasten, Besichtigungstermine die oft nicht wahrgenommen werden. Vision: Kündigung eintragen — die Maschine läuft bis zur Schlüsselübergabe.</div>
+      </div>
+
+      <div class="pain-block">
+        <div class="pain-label">Informationen finden</div>
+        <div class="pain-text">Wer hat was wann entschieden? Wo liegt welches Dokument? Neue Mitarbeiter stellen Fragen, die eigentlich längst beantwortet sind. Das kostet Zeit und Nerven auf allen Seiten.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Section 2 -->
+    <div class="section">
+      <div class="section-title">Vorgeschlagene nächste Schritte</div>
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <div class="step-title">Demo-Zugang <span style="font-weight:400;color:#8888a0;font-size:13px;">— diese Woche</span></div>
+          <div class="step-text">Ihr bekommt Zugang auf die Plattform, die ich bereits für andere Kunden im Einsatz habe — befüllt mit Immobilien-Beispieldaten, damit ihr konkret seht wie das für Raab aussehen könnte. Onboarding direkt im Tool inklusive.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <div class="step-title">Solution Design Sprint <span style="font-weight:400;color:#8888a0;font-size:13px;">— nächste 2–3 Wochen</span></div>
+          <div class="step-text">2 × 2 Stunden bei euch vor Ort. Im Fokus: euer Kommunikations- und Aufgaben-Workflow — von der ersten E-Mail bis zur erledigten Aufgabe.</div>
+          <div class="step-text">Ergebnis: Fundierte Analyse, konkrete Lösungsvorschläge, erste Mockup-Designs. Die Unterlagen gehören euch.</div>
+          <div class="price-box">Investment: <span>1.500 €</span> (netto)</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Signature -->
+    <div class="signature">
+      <div class="sig-name">Daniel Mehlhart</div>
+      <div class="sig-meta">
+        <a href="mailto:daniel@mehlhart.de">daniel@mehlhart.de</a><br>
+        <a href="https://mehlhart.de" target="_blank">mehlhart.de</a>
+      </div>
+      <a class="sig-button" href="https://calendly.com/daniel-mehlhart/30min" target="_blank">Termin buchen →</a>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
