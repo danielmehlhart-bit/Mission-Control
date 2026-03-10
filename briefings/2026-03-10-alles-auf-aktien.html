@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alles auf Aktien - 10. März 2026</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .date {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        
+        .summary {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .summary h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .topic-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .topic-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        
+        .highlight-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .positive { color: #27ae60; }
+        .negative { color: #e74c3c; }
+        .neutral { color: #f39c12; }
+        
+        .stock-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .stock-item:last-child {
+            border-bottom: none;
+        }
+        
+        .stock-name {
+            font-weight: 600;
+        }
+        
+        .oil-timeline {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        
+        .oil-timeline h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-item {
+            margin: 10px 0;
+            padding-left: 20px;
+            border-left: 3px solid #3498db;
+        }
+        
+        .youtube-link {
+            background: linear-gradient(135deg, #FF0000, #CC0000);
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 10px;
+            display: inline-block;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .youtube-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,0,0,0.3);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2rem; }
+            .topic-grid { grid-template-columns: 1fr; }
+            .container { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 Alles auf Aktien</h1>
+            <div class="date">Dienstag, 10. März 2026</div>
+            <p>Der wildeste Öl-Tag der Geschichte + Stagflations-Champions</p>
+            <a href="https://www.youtube.com/watch?v=apcy09MOFck" class="youtube-link" target="_blank">
+                📺 Zur YouTube-Episode
+            </a>
+        </div>
+
+        <div class="summary">
+            <h2>📊 TL;DR</h2>
+            <p>🛢️ <strong>Historischer Öl-Pivot:</strong> WTI von $120 auf $81 durch Trumps "Krieg fast vorbei"-Aussagen<br>
+            📈 <strong>Märkte erholten sich:</strong> S&P 500 +0,8%, NASDAQ +1,3%, DAX -0,8%<br>
+            🏥 <strong>Stagflation-Schutz:</strong> Goldman Sachs Basket mit 110 defensiven Aktien<br>
+            💊 <strong>Pharma-Rally:</strong> HIMS +40% nach Novo-Deal, Novo Nordisk +3,1%</p>
+        </div>
+
+        <div class="topic-grid">
+            <div class="topic-card">
+                <h3>🛢️ Der größte Öl-Pivot seit 1985</h3>
+                <div class="oil-timeline">
+                    <h4>Zeitlinie des Wahnsinns:</h4>
+                    <div class="timeline-item">
+                        <strong>Morgen:</strong> Iran-Krieg Tag 10, Straße von Hormus dicht
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Vormittag:</strong> WTI steigt auf $120, Panik pur
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Mittag:</strong> Trump nach Putin-Gespräch: "Krieg fast vorbei"
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Nachmittag:</strong> Öl stürzt auf $81 ab (-32%!)
+                    </div>
+                </div>
+                <p><strong>Lehre:</strong> Geopolitische Märkte = Hochfrequenzpoker, nicht Investment</p>
+            </div>
+
+            <div class="topic-card">
+                <h3>📈 Marktüberblick</h3>
+                <div class="stock-item">
+                    <span class="stock-name">S&P 500</span>
+                    <span class="highlight-number positive">+0,8%</span>
+                </div>
+                <div class="stock-item">
+                    <span class="stock-name">NASDAQ 100</span>
+                    <span class="highlight-number positive">+1,3%</span>
+                </div>
+                <div class="stock-item">
+                    <span class="stock-name">DAX</span>
+                    <span class="highlight-number negative">-0,8%</span>
+                </div>
+                <div class="stock-item">
+                    <span class="stock-name">Bitcoin</span>
+                    <span class="highlight-number positive">→ $69.000</span>
+                </div>
+                <p style="margin-top: 15px;"><strong>Volatilität extrem:</strong> Von tiefrot zu knallgrün in einem Tag</p>
+            </div>
+
+            <div class="topic-card">
+                <h3>🏥 Stagflation-Champions</h3>
+                <p><strong>Goldman Sachs Basket:</strong> 110 Firmen, die von Stagflation profitieren</p>
+                <div style="margin: 15px 0;">
+                    <strong>Top-Sektoren:</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>🏥 <strong>26 Gesundheitsfirmen:</strong> Eli Lilly, Pfizer, J&J, Intuitive Surgical</li>
+                        <li>⛏️ <strong>17 Rohstoff-Firmen:</strong> Newmont, Barrick Gold, Nucor</li>
+                        <li>💻 <strong>Tech-Überraschung:</strong> Apple, Amazon, Microsoft (Produktivität!)</li>
+                        <li>🛒 <strong>Defensiv-Konsum:</strong> Walmart, Costco</li>
+                    </ul>
+                </div>
+                <p><strong>Performance:</strong> +6-7% vs. S&P 500/MSCI World langfristig</p>
+            </div>
+
+            <div class="topic-card">
+                <h3>📊 Einzelaktien-Highlights</h3>
+                <div class="stock-item">
+                    <span class="stock-name">HIMS & HST</span>
+                    <span class="highlight-number positive">+40%</span>
+                </div>
+                <div class="stock-item">
+                    <span class="stock-name">Novo Nordisk</span>
+                    <span class="highlight-number positive">+3,1%</span>
+                </div>
+                <div class="stock-item">
+                    <span class="stock-name">GE Healthcare</span>
+                    <span class="highlight-number positive">+2,1%</span>
+                </div>
+                <div class="stock-item">
+                    <span class="stock-name">Vertiv</span>
+                    <span class="highlight-number positive">+9,5%</span>
+                </div>
+                <div class="stock-item">
+                    <span class="stock-name">Live Nation</span>
+                    <span class="highlight-number positive">+6,2%</span>
+                </div>
+                <p style="margin-top: 15px;"><strong>🚀 Özempic-Deal:</strong> HIMS darf Abnehm-Spritze mit Novo vertreiben</p>
+            </div>
+
+            <div class="topic-card">
+                <h3>🏭 Deutsche Aktien</h3>
+                <div class="stock-item">
+                    <span class="stock-name">GE Healthcare</span>
+                    <span class="highlight-number positive">+2,1%</span>
+                </div>
+                <div class="stock-item">
+                    <span class="stock-name">Gabler Group (Börsengang)</span>
+                    <span class="highlight-number negative">-0,5%</span>
+                </div>
+                <p style="margin-top: 15px;">
+                    <strong>GE Healthcare:</strong> €470M Free Cashflow, €1,30 Dividende 2025 (+15 Cent)<br>
+                    <strong>Zoll-resistent:</strong> US muss deutsche Maschinen kaufen!
+                </p>
+            </div>
+
+            <div class="topic-card">
+                <h3>📅 Heute wichtig</h3>
+                <ul style="padding-left: 20px;">
+                    <li><strong>📊 Makro:</strong> Deutsche Exportzahlen, China-Daten</li>
+                    <li><strong>🚗 Volkswagen:</strong> Geschäftszahlen</li>
+                    <li><strong>🍫 Lindt & Sprüngli:</strong> Jahresergebnis</li>
+                    <li><strong>👔 Hugo Boss:</strong> Zahlen</li>
+                    <li><strong>💻 Oracle:</strong> Q3-Ergebnisse (nachbörslich)</li>
+                    <li><strong>🔬 Biontech:</strong> Update erwartet</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Generiert von Hatti 🏔️ • <a href="https://mc.mehlhart.de" style="color: rgba(255,255,255,0.9);">Mission Control</a></p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Keine Anlageberatung • Eigene Recherche erforderlich</p>
+        </div>
+    </div>
+</body>
+</html>
