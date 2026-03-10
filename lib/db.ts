@@ -86,13 +86,56 @@ function initSchema(db: Database.Database): void {
       created_at    TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
-    -- Opportunity fields auf projects (migration-safe: ignoriert falls schon existiert)
+    CREATE TABLE IF NOT EXISTS accounts (
+      id         TEXT PRIMARY KEY,
+      name       TEXT NOT NULL,
+      domain     TEXT,
+      industry   TEXT,
+      size       TEXT,
+      status     TEXT NOT NULL DEFAULT 'prospect',
+      color      TEXT NOT NULL DEFAULT '#6366f1',
+      notes      TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS deals (
+      id               TEXT PRIMARY KEY,
+      account_id       TEXT NOT NULL,
+      title            TEXT NOT NULL,
+      value            INTEGER,
+      stage            TEXT NOT NULL DEFAULT 'lead',
+      probability      INTEGER DEFAULT 0,
+      expected_close   TEXT,
+      notes            TEXT,
+      created_at       TEXT NOT NULL DEFAULT (datetime('now')),
+      closed_at        TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS activities (
+      id         TEXT PRIMARY KEY,
+      type       TEXT NOT NULL,
+      title      TEXT,
+      summary    TEXT,
+      account_id TEXT,
+      contact_id TEXT,
+      deal_id    TEXT,
+      project_id TEXT,
+      meeting_id TEXT,
+      metadata   TEXT DEFAULT '{}',
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
   `);
 
   // Spalten nachträglich hinzufügen (ALTER TABLE IF NOT EXISTS column nicht in SQLite → try/catch)
   const addCol = (sql: string) => { try { db.exec(sql); } catch {} };
   addCol("ALTER TABLE projects ADD COLUMN stage TEXT NOT NULL DEFAULT 'lead'");
   addCol("ALTER TABLE projects ADD COLUMN opportunity_value TEXT");
+  addCol("ALTER TABLE projects ADD COLUMN account_id TEXT");
+  addCol("ALTER TABLE projects ADD COLUMN deal_id TEXT");
+  addCol("ALTER TABLE people ADD COLUMN account_id TEXT");
+  addCol("ALTER TABLE people ADD COLUMN contact_role TEXT DEFAULT 'contact'");
+  addCol("ALTER TABLE meetings ADD COLUMN account_id TEXT");
+  addCol("ALTER TABLE meetings ADD COLUMN deal_id TEXT");
 
   db.exec(`
     CREATE TABLE IF NOT EXISTS _migrations (
@@ -288,6 +331,67 @@ function initSchema(db: Database.Database): void {
     });
     seedPeople();
   }
+
+  // Migration: Create accounts from existing projects and link data
+  runMigration("create_accounts_from_projects", () => {
+    // Collect unique clients from projects
+    const projects = db.prepare("SELECT id, name, client, color, stage, opportunity_value FROM projects").all() as {
+      id: string; name: string; client: string; color: string; stage: string; opportunity_value: string | null;
+    }[];
+    const clientMap = new Map<string, { id: string; color: string }>();
+    for (const p of projects) {
+      const clientKey = p.client.trim();
+      if (!clientKey || clientMap.has(clientKey)) continue;
+      const accountId = `acc_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+      const status = clientKey === "Intern" ? "active" : "prospect";
+      db.prepare("INSERT INTO accounts (id, name, status, color) VALUES (?, ?, ?, ?)").run(accountId, clientKey, status, p.color);
+      clientMap.set(clientKey, { id: accountId, color: p.color });
+    }
+    // Link projects to accounts
+    for (const p of projects) {
+      const acc = clientMap.get(p.client.trim());
+      if (acc) {
+        db.prepare("UPDATE projects SET account_id = ? WHERE id = ?").run(acc.id, p.id);
+      }
+    }
+    // Link people to accounts by company name
+    const people = db.prepare("SELECT id, company FROM people").all() as { id: string; company: string }[];
+    for (const person of people) {
+      const acc = clientMap.get(person.company.trim());
+      if (acc) {
+        db.prepare("UPDATE people SET account_id = ? WHERE id = ?").run(acc.id, person.id);
+      }
+    }
+    // Create deals from projects that have a non-default stage
+    for (const p of projects) {
+      if (p.client === "Intern") continue;
+      const acc = clientMap.get(p.client.trim());
+      if (!acc) continue;
+      const dealId = `deal_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+      const value = p.opportunity_value ? parseInt(p.opportunity_value) : null;
+      // Map old project stages to deal stages
+      const stageMap: Record<string, string> = {
+        lead: "lead", discovery: "discovery", proposal: "proposal",
+        "solution-engineering": "proposal", rollout: "negotiation",
+        live: "closed-won", "closed-won": "closed-won", "closed-lost": "closed-lost",
+      };
+      const dealStage = stageMap[p.stage] ?? "lead";
+      db.prepare("INSERT INTO deals (id, account_id, title, value, stage, probability, notes) VALUES (?, ?, ?, ?, ?, ?, ?)")
+        .run(dealId, acc.id, p.name, value, dealStage, dealStage === "closed-won" ? 100 : dealStage === "closed-lost" ? 0 : 50, p.name);
+      db.prepare("UPDATE projects SET deal_id = ? WHERE id = ?").run(dealId, p.id);
+    }
+    // Link meetings to accounts via their project
+    const meetings = db.prepare("SELECT id, project_id FROM meetings").all() as { id: string; project_id: string }[];
+    for (const m of meetings) {
+      const proj = projects.find(p => p.id === m.project_id);
+      if (proj) {
+        const acc = clientMap.get(proj.client.trim());
+        if (acc) {
+          db.prepare("UPDATE meetings SET account_id = ? WHERE id = ?").run(acc.id, m.id);
+        }
+      }
+    }
+  });
 
   // Migration: Raab Tasks nach Discovery Call 10.03.2026
   runMigration("raab_tasks_post_discovery_20260310", () => {

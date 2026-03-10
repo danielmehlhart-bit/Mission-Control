@@ -12,6 +12,10 @@ export type Person = {
   phone?: string;
   project?: string;
   notes?: string;
+  accountId?: string;
+  contactRole?: string;
+  accountName?: string;
+  accountColor?: string;
 };
 
 function rowToPerson(row: Record<string, unknown>): Person {
@@ -24,25 +28,39 @@ function rowToPerson(row: Record<string, unknown>): Person {
     ...(row.phone ? { phone: row.phone as string } : {}),
     ...(row.project ? { project: row.project as string } : {}),
     ...(row.notes ? { notes: row.notes as string } : {}),
+    ...(row.account_id ? { accountId: row.account_id as string } : {}),
+    ...(row.contact_role ? { contactRole: row.contact_role as string } : {}),
+    ...(row.account_name ? { accountName: row.account_name as string } : {}),
+    ...(row.account_color ? { accountColor: row.account_color as string } : {}),
   };
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const accountId = searchParams.get("accountId");
   const db = getDb();
-  const rows = db.prepare("SELECT * FROM people ORDER BY name ASC").all() as Record<string, unknown>[];
+  let sql = `
+    SELECT p.*, a.name as account_name, a.color as account_color
+    FROM people p
+    LEFT JOIN accounts a ON p.account_id = a.id
+  `;
+  const params: unknown[] = [];
+  if (accountId) { sql += " WHERE p.account_id = ?"; params.push(accountId); }
+  sql += " ORDER BY p.name ASC";
+  const rows = db.prepare(sql).all(...params) as Record<string, unknown>[];
   return NextResponse.json({ people: rows.map(rowToPerson) });
 }
 
 export async function POST(req: Request) {
-  const { name, company, role, email, phone, project, notes } = await req.json();
+  const { name, company, role, email, phone, project, notes, accountId, contactRole } = await req.json();
   if (!name?.trim()) return NextResponse.json({ error: "Name required" }, { status: 400 });
   const db = getDb();
   const id = Date.now().toString();
   db.prepare(`
-    INSERT INTO people (id, name, company, role, email, phone, project, notes, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
-  `).run(id, name.trim(), company ?? "", role ?? null, email ?? null, phone ?? null, project ?? null, notes ?? null);
-  const person = rowToPerson(db.prepare("SELECT * FROM people WHERE id = ?").get(id) as Record<string, unknown>);
+    INSERT INTO people (id, name, company, role, email, phone, project, notes, account_id, contact_role, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+  `).run(id, name.trim(), company ?? "", role ?? null, email ?? null, phone ?? null, project ?? null, notes ?? null, accountId ?? null, contactRole ?? "contact");
+  const person = rowToPerson(db.prepare("SELECT p.*, a.name as account_name, a.color as account_color FROM people p LEFT JOIN accounts a ON p.account_id = a.id WHERE p.id = ?").get(id) as Record<string, unknown>);
   return NextResponse.json({ person });
 }
 
@@ -54,7 +72,7 @@ export async function PATCH(req: Request) {
   if (!db.prepare("SELECT id FROM people WHERE id = ?").get(id)) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
-  const { name, company, role, email, phone, project, notes } = await req.json();
+  const { name, company, role, email, phone, project, notes, accountId, contactRole } = await req.json();
   if (name !== undefined) db.prepare("UPDATE people SET name = ? WHERE id = ?").run(name.trim(), id);
   if (company !== undefined) db.prepare("UPDATE people SET company = ? WHERE id = ?").run(company, id);
   if (role !== undefined) db.prepare("UPDATE people SET role = ? WHERE id = ?").run(role, id);
@@ -62,7 +80,9 @@ export async function PATCH(req: Request) {
   if (phone !== undefined) db.prepare("UPDATE people SET phone = ? WHERE id = ?").run(phone, id);
   if (project !== undefined) db.prepare("UPDATE people SET project = ? WHERE id = ?").run(project, id);
   if (notes !== undefined) db.prepare("UPDATE people SET notes = ? WHERE id = ?").run(notes, id);
-  const person = rowToPerson(db.prepare("SELECT * FROM people WHERE id = ?").get(id) as Record<string, unknown>);
+  if (accountId !== undefined) db.prepare("UPDATE people SET account_id = ? WHERE id = ?").run(accountId, id);
+  if (contactRole !== undefined) db.prepare("UPDATE people SET contact_role = ? WHERE id = ?").run(contactRole, id);
+  const person = rowToPerson(db.prepare("SELECT p.*, a.name as account_name, a.color as account_color FROM people p LEFT JOIN accounts a ON p.account_id = a.id WHERE p.id = ?").get(id) as Record<string, unknown>);
   return NextResponse.json({ person });
 }
 
