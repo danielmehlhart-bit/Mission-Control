@@ -289,6 +289,17 @@ function initSchema(db: Database.Database): void {
     seedPeople();
   }
 
+  // Migration: Raab Tasks nach Discovery Call 10.03.2026
+  runMigration("raab_tasks_post_discovery_20260310", () => {
+    const insertTask = db.prepare(`
+      INSERT INTO tasks (id, title, project, status, notes, created_at)
+      VALUES (?, ?, 'Raab Immobilien', 'todo', ?, datetime('now'))
+    `);
+    insertTask.run(Date.now().toString() + "1", "Demo-Zugang modulAI einrichten — Immobilien-Dummy-Daten für Eduard + Waldemar", "Priorität: SOFORT. Momentum nicht verlieren. Wohnungen, Mieterwechsel, Schadensmeldungen als Dummy-Daten.");
+    insertTask.run((Date.now() + 1).toString() + "2", "Call-Summary an Eduard Raab + Waldemar Specht senden", "Priorität: Diese Woche. Zusammenfassung aus Discovery Call 10.03.2026 — Briefing liegt unter mc.mehlhart.de/briefings.");
+    insertTask.run((Date.now() + 2).toString() + "3", "Solution Design Sprint terminieren — 2×2h vor Ort, Angebot 1.500€ ausarbeiten", "Ergebnis des Sprints: Fundierte Analyse + Mockup-Designs → gehören dann Eduard + Waldemar.");
+  });
+
   // Migration: Raab Kontakte mit Discovery-Call-Infos anreichern (10.03.2026)
   runMigration("raab_contacts_enrich_20260310", () => {
     db.prepare(`UPDATE people SET
