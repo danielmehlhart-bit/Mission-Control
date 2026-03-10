@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>modulAI — Stripe Paywall Plan</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f1117;
+      color: #e1e4e8;
+      padding: 32px 16px;
+      line-height: 1.6;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .meta {
+      font-size: 0.82rem;
+      color: #6b7280;
+      margin-bottom: 36px;
+    }
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #a78bfa;
+      margin: 36px 0 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Flow Diagram */
+    .flow {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 28px 32px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: #c9d1d9;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .flow .highlight { color: #7ee787; }
+    .flow .accent { color: #f78166; }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+      font-size: 0.9rem;
+    }
+    th {
+      background: #1e2531;
+      color: #7c8aaa;
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid #30363d;
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #21262d;
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #1a1f29; }
+    td:first-child { color: #79c0ff; font-weight: 500; }
+    .tag-good { background: #1f3a22; color: #7ee787; padding: 2px 8px; border-radius: 4px; font-size: 0.78rem; }
+    .tag-bad  { background: #3a1f1f; color: #f78166; padding: 2px 8px; border-radius: 4px; font-size: 0.78rem; }
+
+    /* Info box */
+    .infobox {
+      background: #1a2332;
+      border-left: 4px solid #a78bfa;
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      margin-top: 4px;
+      font-size: 0.9rem;
+      color: #c9d1d9;
+    }
+
+    /* Next step */
+    .nextstep {
+      background: #1c2a1c;
+      border: 1px solid #2ea043;
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-top: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .nextstep .icon { font-size: 1.4rem; flex-shrink: 0; }
+    .nextstep p { color: #adf7b6; font-size: 0.92rem; }
+
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <h1>modulAI — Stripe Paywall Plan</h1>
+    <div class="meta">Stand: 10. März 2026 · Tenant-basiertes Seat-Billing</div>
+
+    <!-- Flow -->
+    <h2>User-Flow</h2>
+    <div class="flow">Registrierung → Login → Abo-Check
+     │
+     ┌─────────┴─────────┐
+     │                   │
+<span class="highlight"> Abo aktiv        Kein Abo</span>
+     │                   │
+     ▼                   ▼
+<span class="highlight"> Dashboard</span>       /subscribe Seite
+                         │
+                         ▼
+                   Stripe Checkout
+                         │
+                         ▼
+               Zahlung OK → Webhook
+                         │
+                         ▼
+                DB: status = active
+                         │
+                         ▼
+<span class="highlight">               Dashboard ✓</span>
+
+<span class="accent">Monatlich: Stripe zieht automatisch ein.</span>
+Bei Fehlschlag/Kündigung → Webhook → status = inactive → Paywall.</div>
+
+    <!-- Architektur -->
+    <h2>Architektur</h2>
+    <div class="card">
+      <table>
+        <thead><tr><th>Komponente</th><th>Funktion</th></tr></thead>
+        <tbody>
+          <tr><td>subscriptions Tabelle</td><td>tenant_id, stripe_customer_id, stripe_subscription_id, status, current_seats</td></tr>
+          <tr><td>create-checkout Edge Fn</td><td>Zählt Seats im Tenant → Stripe Checkout Session mit quantity = seat_count</td></tr>
+          <tr><td>stripe-webhook Edge Fn</td><td>Empfängt Stripe Events → aktualisiert subscriptions.status in DB</td></tr>
+          <tr><td>Paywall-Guard (AppLayout)</td><td>Nach Login: status ≠ 'active' → Redirect zu /subscribe</td></tr>
+          <tr><td>Seat-Sync</td><td>Bei invite / delete team-member → Stripe quantity updaten</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="infobox">
+      Billing ist <strong>Tenant-basiert</strong>: Admin zahlt, alle User im Büro haben Zugang.<br>
+      Seat-Count = <code>COUNT(*) FROM profiles WHERE tenant_id = X</code>
+    </div>
+
+    <!-- Preismodelle -->
+    <h2>Preismodelle</h2>
+    <div class="card">
+      <table>
+        <thead><tr><th>Modell</th><th>Beispiel</th><th>Vorteil</th><th>Nachteil</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>A: Per-Seat Flat</td>
+            <td>80 €/Seat/Monat</td>
+            <td><span class="tag-good">Transparent, linear</span></td>
+            <td><span class="tag-bad">Kein Mengenrabatt</span></td>
+          </tr>
+          <tr>
+            <td>B: Graduated (Staffel)</td>
+            <td>1–5: 89 €, 6–20: 69 €, 21+: 49 €</td>
+            <td><span class="tag-good">Anreiz für Wachstum</span></td>
+            <td><span class="tag-bad">Komplexer zu kommunizieren</span></td>
+          </tr>
+          <tr>
+            <td>C: Flat-Tier</td>
+            <td>1–5 = 400 €, 6–20 = 1.200 €</td>
+            <td><span class="tag-good">Einfach, planbar</span></td>
+            <td><span class="tag-bad">Große Preissprünge</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="infobox">
+      Bei <strong>A</strong> und <strong>B</strong>: Stripe berechnet automatisch anhand der quantity.<br>
+      Bei <strong>C</strong>: App muss Tier manuell wechseln.
+    </div>
+
+    <!-- Stripe Gebühren -->
+    <h2>Stripe Gebühren</h2>
+    <div class="card">
+      <table>
+        <thead><tr><th>Posten</th><th>Kosten</th></tr></thead>
+        <tbody>
+          <tr><td>Monatliche Grundgebühr</td><td>0 €</td></tr>
+          <tr><td>EU-Karten (Transaktion)</td><td>1,5 % + 0,25 €</td></tr>
+          <tr><td>Stripe Billing (Abo-Zuschlag)</td><td>+ 0,5 %</td></tr>
+          <tr><td>Effektiv pro Zahlung</td><td><strong>~2,3 %</strong></td></tr>
+          <tr><td>Non-EU-Karten</td><td>3,25 % + 0,25 € + 0,5 %</td></tr>
+          <tr><td>Chargeback</td><td>15 € pro Fall</td></tr>
+          <tr><td>Stripe Tax (optional)</td><td>+ 0,5 %</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="infobox">
+      Rechenbeispiel: 80 € × 10 Seats = <strong>800 €/Monat</strong> → Stripe-Gebühren ca. <strong>18,65 €</strong> (~2,3 %)
+    </div>
+
+    <!-- Nächster Schritt -->
+    <h2>Nächster Schritt</h2>
+    <div class="nextstep">
+      <div class="icon">🚀</div>
+      <p>Stripe über das <strong>Lovable Stripe-Tool</strong> aktivieren → Secret Key hinterlegen → Edge Functions + DB-Tabelle + Paywall-Seite implementieren.</p>
+    </div>
+
+  </div>
+</body>
+</html>
