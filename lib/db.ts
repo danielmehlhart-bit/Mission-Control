@@ -309,8 +309,8 @@ function initSchema(db: Database.Database): void {
       WHERE id = '6'`).run();
     db.prepare(`UPDATE people SET
       name = 'Waldemar Specht',
-      role = 'Geschäftspartner / Operations & Prozesse',
-      notes = 'Wirtschaftsingenieur + Kaufmann. Begleitet Eduard seit Anfang (erstem Hausbau). Verantwortlich für Prozessoptimierung: Posteingang, Schadensprozess, Vermietungsprozess. Operativer Kopf. Wichtigstes Anliegen: Nachhaltigkeit/Tracking von Infos, Entscheidungen einfacher treffen. Key Quote: "Viel besser wäre, wenn wir irgendjemanden fragen könnten, wie bei ChatGPT — drückst du Enter und es kommt eine Antwort."'
+      role = 'Geschäftspartner / Operations & Prozessoptimierung',
+      notes = 'Wirtschaftsingenieur + Kaufmann. Begleitet Eduard seit seinem ersten Hausbau — kennt das Unternehmen von Grund auf. Hat den Vermietungsprozess mit aufgebaut. Verantwortlich für alle internen Prozesse: Posteingang, Schadensprozess, Mitarbeiterplanung. Operativer Kopf neben Eduard. Identifiziert sich stark mit Effizienz & Nachhaltung — sein wichtigstes Wort. Sitzt aktuell neben Eduard im gleichen Büro. Hat im Call direkt 3 neue Mitarbeiter als Live-Beispiel für das Chaos beim Steuerbüro genannt. Key Quote: "Viel besser wäre, wenn wir irgendjemanden fragen könnten, wie bei ChatGPT — drückst du Enter und es kommt eine Antwort." Discovery Call 10.03.2026.'
       WHERE id = '7'`).run();
     // Projekt: Stage auf "discovery" updaten, Opportunity Value setzen
     db.prepare(`UPDATE projects SET
