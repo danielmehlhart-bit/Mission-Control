@@ -432,6 +432,18 @@ function initSchema(db: Database.Database): void {
     insertTask.run((Date.now() + 2).toString() + "3", "Solution Design Sprint terminieren — 2×2h vor Ort, Angebot 1.500€ ausarbeiten", "Ergebnis des Sprints: Fundierte Analyse + Mockup-Designs → gehören dann Eduard + Waldemar.");
   });
 
+  // Migration: ModulAI Task — Evaluierung Feature Talk to your Data (11.03.2026)
+  runMigration("modulai_talk_to_data_eval_20260311", () => {
+    db.prepare(`
+      INSERT INTO tasks (id, title, project, status, notes, created_at)
+      VALUES (?, ?, 'ModulAI', 'todo', ?, datetime('now'))
+    `).run(
+      Date.now().toString() + "_ttd",
+      "Evaluierung Feature: Talk to your Data",
+      "Welche Daten sollen ansprechbar sein? RAG vs. structured query? Machbarkeit + Aufwand einschätzen."
+    );
+  });
+
   // Migration: Raab Kontakte mit Discovery-Call-Infos anreichern (10.03.2026)
   runMigration("raab_contacts_enrich_20260310", () => {
     db.prepare(`UPDATE people SET
