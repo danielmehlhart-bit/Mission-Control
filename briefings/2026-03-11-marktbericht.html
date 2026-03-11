@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📈 Marktbericht 11. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .date {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .market-index {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .index-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .index-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .positive {
+            color: #27ae60;
+        }
+        
+        .negative {
+            color: #e74c3c;
+        }
+        
+        .change {
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        
+        .news-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-headline {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .news-content {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+        
+        .outlook {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .outlook h2 {
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .source-link {
+            background: #34495e;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 20px 0;
+            transition: background 0.3s ease;
+        }
+        
+        .source-link:hover {
+            background: #2c3e50;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .oil-price {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .oil-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📈 Marktbericht</h1>
+            <div class="date">11. März 2026 — Daten vom 10. März</div>
+        </div>
+        
+        <div class="cards-grid">
+            <div class="card">
+                <div class="market-index">
+                    <span class="index-name">DAX</span>
+                    <div>
+                        <div class="index-value positive">23.968</div>
+                        <div class="change positive">+2,4% (+559 Punkte)</div>
+                    </div>
+                </div>
+                <div style="color: #27ae60; font-weight: bold;">💡 Hoffnung auf Iran-Kriegsende treibt Kurse</div>
+            </div>
+            
+            <div class="card">
+                <div class="market-index">
+                    <span class="index-name">Dow Jones</span>
+                    <div>
+                        <div class="index-value positive">~+0,6%</div>
+                        <div class="change positive">Erholung setzt sich fort</div>
+                    </div>
+                </div>
+                <div style="color: #7f8c8d;">🇺🇸 Wall Street folgt Erholungstrend</div>
+            </div>
+            
+            <div class="card oil-price">
+                <div class="section-title" style="color: white; border-left: 4px solid white;">🛢️ Ölpreis</div>
+                <div class="oil-value">$88</div>
+                <div>Brent pro Barrel — deutlich gefallen von $119,50</div>
+            </div>
+        </div>
+        
+        <div class="cards-grid">
+            <div class="card">
+                <h3 class="section-title">📊 Haupttreiber</h3>
+                <div class="news-item">
+                    <div class="news-headline">Trump: "Krieg so gut wie beendet"</div>
+                    <div class="news-content">US-Präsident äußert Hoffnung auf baldiges Ende des Iran-Kriegs</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-headline">Ölpreis bricht ein</div>
+                    <div class="news-content">Von $119,50 auf $88 — mögliche Sanktionslockerung gegen Russland</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-headline">China stark</div>
+                    <div class="news-content">Exporte +21,8%, Importe +19,8% — überraschend starke Zahlen</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="section-title">📰 Unternehmens-News</h3>
+                <div class="news-item">
+                    <div class="news-headline negative">VW: Gewinn halbiert</div>
+                    <div class="news-content">2025: 6,9 Mrd € (-44%) — Aktie dennoch im Plus durch Erholung</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-headline negative">BioNTech: Doppelschlag</div>
+                    <div class="news-content">Gründer Sahin/Türeci verlassen Unternehmen + 1,12 Mrd € Verlust</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-headline negative">Deutsche Exporte</div>
+                    <div class="news-content">Januar: -2,3% vs. Dezember — schwacher Jahresstart</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="outlook">
+            <h2>🔮 Ausblick</h2>
+            <p><strong>"Tanz auf dem Vulkan"</strong> — Analysten warnen vor zu viel Optimismus. Solange Iran-Situation nicht endgültig deeskaliert, bleiben Aufwärtsbewegungen fragil.</p>
+            <p style="margin-top: 15px;">Entscheidend: Zollkonflikte & Energiepreise. Höhere Ölkosten würden deutsche Industrie besonders treffen.</p>
+            
+            <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-oelpreis-naher-osten-boerse-100.html" class="source-link" target="_blank">
+                📖 Vollständiger Bericht auf tagesschau.de
+            </a>
+        </div>
+    </div>
+</body>
+</html>
