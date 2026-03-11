@@ -24,9 +24,8 @@ export function CapturePill({ onSave, onClose, projects = ["Allgemein"] }: Props
   };
 
   return (
-    <div style={{
+    <div className="mc-surface-1" style={{
       display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
-      background: "#141720", border: "1px solid #1e2128", borderRadius: 12,
       padding: "10px 14px",
     }}>
       <input
@@ -38,15 +37,15 @@ export function CapturePill({ onSave, onClose, projects = ["Allgemein"] }: Props
         placeholder="Task beschreiben…"
         style={{
           flex: "1 1 200px", background: "none", border: "none", outline: "none",
-          color: "#f0f2f5", fontSize: 14,
+          color: "var(--text-1)", fontSize: 14,
         }}
       />
       <select
         value={project}
         onChange={e => setProject(e.target.value)}
         style={{
-          background: "#0d0f12", border: "1px solid #1e2128", borderRadius: 8,
-          color: "#c8ccd6", fontSize: 12, padding: "5px 10px", outline: "none",
+          background: "var(--surface-0)", border: "1px solid var(--border-strong)", borderRadius: "var(--radius-sm)",
+          color: "var(--text-2)", fontSize: 12, padding: "5px 10px", outline: "none",
         }}
       >
         {projects.map(p => <option key={p} value={p}>{p}</option>)}
@@ -55,7 +54,7 @@ export function CapturePill({ onSave, onClose, projects = ["Allgemein"] }: Props
         onClick={save}
         disabled={saving || !title.trim()}
         style={{
-          padding: "6px 16px", borderRadius: 8, background: "#10B981", border: "none",
+          padding: "6px 16px", borderRadius: "var(--radius-sm)", background: "var(--accent)", border: "none",
           color: "#fff", fontSize: 13, fontWeight: 600, cursor: saving ? "default" : "pointer",
           opacity: saving || !title.trim() ? 0.6 : 1,
         }}
@@ -64,7 +63,7 @@ export function CapturePill({ onSave, onClose, projects = ["Allgemein"] }: Props
       </button>
       <button
         onClick={onClose}
-        style={{ background: "none", border: "none", color: "#4a5068", cursor: "pointer", fontSize: 16, lineHeight: 1 }}
+        style={{ background: "none", border: "none", color: "var(--text-3)", cursor: "pointer", fontSize: 16, lineHeight: 1 }}
       >✕</button>
     </div>
   );

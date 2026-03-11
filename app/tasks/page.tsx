@@ -100,50 +100,53 @@ export default function TasksPage() {
     const done = task.status === "done";
     const badgeStyle = getProjectStyle(task.project);
     return (
-      <div className={`group flex flex-col rounded-lg border px-3 py-2.5 transition ${
-        done ? "border-slate-800/40 bg-slate-900/20" : "border-slate-800/60 bg-slate-900/40 hover:border-slate-700/60"
-      }`}>
-        <div className="flex items-center gap-3">
-          <button onClick={() => toggleTask(task)} className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition ${
-            done ? "border-emerald-500/60 bg-emerald-500/20 text-emerald-400" : "border-slate-600 hover:border-emerald-500/60"
-          }`}>
-            {done && <span className="text-xs">✓</span>}
+      <div style={{
+        display: "flex", flexDirection: "column", borderRadius: "var(--radius-sm)", padding: "10px 12px",
+        border: `1px solid ${done ? "var(--border-muted)" : "var(--border-strong)"}`,
+        background: done ? "color-mix(in srgb, var(--surface-1) 65%, transparent)" : "var(--surface-1)",
+        transition: "all var(--motion-fast) var(--ease-standard)",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <button onClick={() => toggleTask(task)} style={{
+            display: "flex", width: 20, height: 20, alignItems: "center", justifyContent: "center", flexShrink: 0,
+            borderRadius: 6, border: `2px solid ${done ? "color-mix(in srgb, var(--accent) 60%, transparent)" : "var(--text-3)"}`,
+            background: done ? "color-mix(in srgb, var(--accent) 18%, transparent)" : "transparent", color: "var(--accent)",
+          }}>
+            {done && <span style={{ fontSize: 11 }}>✓</span>}
           </button>
-          <span className={`flex-1 text-sm ${done ? "line-through text-slate-500" : "text-slate-200"}`}>{task.title}</span>
-          <span style={{ ...badgeStyle, borderWidth: 1, borderStyle: "solid" }}
-            className="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium">
+          <span style={{ flex: 1, fontSize: 14, color: done ? "var(--text-3)" : "var(--text-1)", textDecoration: done ? "line-through" : "none" }}>{task.title}</span>
+          <span style={{ ...badgeStyle, borderWidth: 1, borderStyle: "solid", borderRadius: 999, padding: "2px 8px", fontSize: 11, fontWeight: 500 }}>
             {task.project}
           </span>
-          {/* Actions — visible on hover */}
-          <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button onClick={() => openEdit(task)} className="rounded p-1 text-slate-500 hover:text-slate-200 hover:bg-slate-700/50 transition text-xs" title="Bearbeiten">✏️</button>
+          <div style={{ display: "flex", gap: 4 }}>
+            <button onClick={() => openEdit(task)} style={{ borderRadius: 6, padding: 4, color: "var(--text-2)", fontSize: 11 }}>✏️</button>
             {deleteConfirm === task.id ? (
               <>
-                <button onClick={() => deleteTask(task.id)} className="rounded px-2 py-1 text-red-400 hover:bg-red-500/10 text-xs font-semibold transition">Löschen?</button>
-                <button onClick={() => setDeleteConfirm(null)} className="rounded p-1 text-slate-500 hover:text-slate-200 text-xs transition">✕</button>
+                <button onClick={() => deleteTask(task.id)} style={{ borderRadius: 6, padding: "4px 8px", color: "var(--state-danger)", fontSize: 11, fontWeight: 600 }}>Löschen?</button>
+                <button onClick={() => setDeleteConfirm(null)} style={{ borderRadius: 6, padding: 4, color: "var(--text-2)", fontSize: 11 }}>✕</button>
               </>
             ) : (
-              <button onClick={() => setDeleteConfirm(task.id)} className="rounded p-1 text-slate-600 hover:text-red-400 transition text-xs">🗑</button>
+              <button onClick={() => setDeleteConfirm(task.id)} style={{ borderRadius: 6, padding: 4, color: "var(--text-3)", fontSize: 11 }}>🗑</button>
             )}
           </div>
         </div>
         {task.notes && !done && (
-          <p className="mt-1.5 ml-8 text-xs text-slate-500 leading-relaxed">{task.notes}</p>
+          <p style={{ marginTop: 6, marginLeft: 32, fontSize: 12, color: "var(--text-3)", lineHeight: 1.6 }}>{task.notes}</p>
         )}
       </div>
     );
   };
 
   return (
-    <div className="space-y-6">
-      <header className="flex flex-wrap items-center justify-between gap-4">
+    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+      <header style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
         <div>
-          <h1 className="text-3xl font-semibold text-slate-50">Task Board</h1>
-          <p className="mt-2 text-sm text-slate-400">Deine offenen Tasks — projektübergreifend.</p>
+          <h1 style={{ fontSize: 30, fontWeight: 600, color: "var(--text-1)" }}>Task Board</h1>
+          <p style={{ marginTop: 8, fontSize: 14, color: "var(--text-2)" }}>Deine offenen Tasks — projektübergreifend.</p>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="rounded-full border border-slate-700 bg-slate-800 px-3 py-1 text-xs text-slate-200">{todoTasks.length} offen</span>
-          <button onClick={() => setShowCapture(v => !v)} className="rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-4 py-2 transition">
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ borderRadius: 999, border: "1px solid var(--border-strong)", background: "var(--surface-2)", padding: "4px 12px", fontSize: 12, color: "var(--text-1)" }}>{todoTasks.length} offen</span>
+          <button onClick={() => setShowCapture(v => !v)} style={{ borderRadius: "var(--radius-sm)", background: "var(--accent)", color: "white", fontSize: 14, fontWeight: 500, padding: "8px 16px" }}>
             + New Task
           </button>
         </div>
@@ -153,27 +156,30 @@ export default function TasksPage() {
         <CapturePill onSave={addTask} onClose={() => setShowCapture(false)} projects={projectNames} />
       )}
 
-      {/* Project filter */}
-      <div className="flex flex-wrap gap-1.5">
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
         {["All", ...projectNames].map(p => (
-          <button key={p} onClick={() => setFilter(p)} className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
-            filter === p ? "border-emerald-400/50 bg-emerald-400/10 text-emerald-200" : "border-slate-700/60 text-slate-400 hover:border-slate-600 hover:text-slate-200"
-          }`}>
-            {p}{p !== "All" && p !== ALLGEMEIN && <span className="ml-1.5 text-slate-500">{tasks.filter(t => t.project === p && t.status === "todo").length}</span>}
+          <button key={p} onClick={() => setFilter(p)} style={{
+            borderRadius: 999, border: "1px solid",
+            borderColor: filter === p ? "color-mix(in srgb, var(--accent) 50%, transparent)" : "var(--border-strong)",
+            background: filter === p ? "var(--accent-dim)" : "transparent",
+            color: filter === p ? "color-mix(in srgb, var(--accent) 72%, white)" : "var(--text-2)",
+            padding: "4px 12px", fontSize: 12, fontWeight: 500,
+          }}>
+            {p}{p !== "All" && p !== ALLGEMEIN && <span style={{ marginLeft: 6, color: "var(--text-3)" }}>{tasks.filter(t => t.project === p && t.status === "todo").length}</span>}
           </button>
         ))}
       </div>
 
-      {loading ? <div className="text-sm text-slate-400">Loading…</div> : (
-        <div className="space-y-2">
+      {loading ? <div style={{ fontSize: 14, color: "var(--text-2)" }}>Loading…</div> : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {todoTasks.length === 0 && doneTasks.length === 0 ? (
-            <div className="rounded-2xl border border-slate-800/40 bg-slate-900/20 py-16 text-center text-slate-500">Keine offenen Tasks. 🎉</div>
+            <div style={{ borderRadius: "var(--radius-lg)", border: "1px solid var(--border-muted)", background: "color-mix(in srgb, var(--surface-1) 65%, transparent)", padding: "64px 0", textAlign: "center", color: "var(--text-3)" }}>Keine offenen Tasks. 🎉</div>
           ) : (
             <>
               {todoTasks.map(t => <TaskRow key={t.id} task={t} />)}
               {doneTasks.length > 0 && (
                 <>
-                  <div className="pt-2 pb-1 text-xs uppercase tracking-[0.3em] text-slate-600">Erledigt</div>
+                  <div style={{ paddingTop: 8, paddingBottom: 4, fontSize: 12, textTransform: "uppercase", letterSpacing: "0.3em", color: "var(--text-3)" }}>Erledigt</div>
                   {doneTasks.map(t => <TaskRow key={t.id} task={t} />)}
                 </>
               )}
@@ -182,38 +188,37 @@ export default function TasksPage() {
         </div>
       )}
 
-      {/* Edit Modal */}
       {editTask && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, padding: 20 }} onClick={() => setEditTask(null)}>
-          <div style={{ background: "#141720", border: "1px solid #1e2128", borderRadius: 16, padding: 24, width: "100%", maxWidth: 480 }} onClick={e => e.stopPropagation()}>
-            <h2 style={{ fontSize: 16, fontWeight: 700, color: "#f0f2f5", marginBottom: 18 }}>Task bearbeiten</h2>
+        <div style={{ position: "fixed", inset: 0, background: "color-mix(in srgb, black 70%, transparent)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, padding: 20 }} onClick={() => setEditTask(null)}>
+          <div style={{ background: "var(--surface-1)", border: "1px solid var(--border-strong)", borderRadius: "var(--radius-lg)", boxShadow: "var(--shadow-strong)", padding: 24, width: "100%", maxWidth: 480 }} onClick={e => e.stopPropagation()}>
+            <h2 style={{ fontSize: 16, fontWeight: 700, color: "var(--text-1)", marginBottom: 18 }}>Task bearbeiten</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               <div>
-                <label style={{ fontSize: 11, color: "#8b90a0", marginBottom: 4, display: "block" }}>Titel</label>
+                <label style={{ fontSize: 11, color: "var(--text-2)", marginBottom: 4, display: "block" }}>Titel</label>
                 <input value={editForm.title} onChange={e => setEditForm(f => ({ ...f, title: e.target.value }))}
                   onKeyDown={e => { if (e.key === "Enter") saveEdit(); if (e.key === "Escape") setEditTask(null); }}
                   autoFocus
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #1e2128", background: "#0d0f12", color: "#f0f2f5", fontSize: 14, outline: "none", boxSizing: "border-box" }}
+                  style={{ width: "100%", padding: "8px 12px", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-strong)", background: "var(--surface-0)", color: "var(--text-1)", fontSize: 14, outline: "none", boxSizing: "border-box" }}
                 />
               </div>
               <div>
-                <label style={{ fontSize: 11, color: "#8b90a0", marginBottom: 4, display: "block" }}>Projekt</label>
+                <label style={{ fontSize: 11, color: "var(--text-2)", marginBottom: 4, display: "block" }}>Projekt</label>
                 <select value={editForm.project} onChange={e => setEditForm(f => ({ ...f, project: e.target.value }))}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #1e2128", background: "#0d0f12", color: "#f0f2f5", fontSize: 13, outline: "none" }}>
+                  style={{ width: "100%", padding: "8px 12px", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-strong)", background: "var(--surface-0)", color: "var(--text-1)", fontSize: 13, outline: "none" }}>
                   {projectNames.map(p => <option key={p} value={p}>{p}</option>)}
                 </select>
               </div>
               <div>
-                <label style={{ fontSize: 11, color: "#8b90a0", marginBottom: 4, display: "block" }}>Notizen</label>
+                <label style={{ fontSize: 11, color: "var(--text-2)", marginBottom: 4, display: "block" }}>Notizen</label>
                 <textarea value={editForm.notes} onChange={e => setEditForm(f => ({ ...f, notes: e.target.value }))} rows={3}
                   placeholder="Kontext, Links, Gedanken…"
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #1e2128", background: "#0d0f12", color: "#f0f2f5", fontSize: 13, outline: "none", resize: "vertical", boxSizing: "border-box" }}
+                  style={{ width: "100%", padding: "8px 12px", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-strong)", background: "var(--surface-0)", color: "var(--text-1)", fontSize: 13, outline: "none", resize: "vertical", boxSizing: "border-box" }}
                 />
               </div>
             </div>
             <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
-              <button onClick={() => setEditTask(null)} style={{ flex: 1, padding: "9px 0", borderRadius: 8, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 13, cursor: "pointer" }}>Abbrechen</button>
-              <button onClick={saveEdit} disabled={editSaving || !editForm.title.trim()} style={{ flex: 2, padding: "9px 0", borderRadius: 8, border: "none", background: "#10B981", color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+              <button onClick={() => setEditTask(null)} style={{ flex: 1, padding: "9px 0", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-strong)", background: "transparent", color: "var(--text-2)", fontSize: 13, cursor: "pointer" }}>Abbrechen</button>
+              <button onClick={saveEdit} disabled={editSaving || !editForm.title.trim()} style={{ flex: 2, padding: "9px 0", borderRadius: "var(--radius-sm)", border: "none", background: "var(--accent)", color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
                 {editSaving ? "Speichern…" : "Speichern"}
               </button>
             </div>
