@@ -96,13 +96,13 @@ export default function TasksPage() {
     await fetch(`/api/tasks?id=${id}`, { method: "DELETE" });
   };
 
-  const TaskRow = ({ task }: { task: Task }) => {
+  const TaskRow = ({ task, index }: { task: Task; index: number }) => {
     const done = task.status === "done";
     const badgeStyle = getProjectStyle(task.project);
     return (
-      <div className={`group flex flex-col rounded-lg border px-3 py-2.5 transition ${
+      <div className={`motion-item motion-elevated group flex flex-col rounded-lg border px-3 py-2.5 transition ${
         done ? "border-slate-800/40 bg-slate-900/20" : "border-slate-800/60 bg-slate-900/40 hover:border-slate-700/60"
-      }`}>
+      }`} style={{ ["--stagger-index" as const]: index }}>
         <div className="flex items-center gap-3">
           <button onClick={() => toggleTask(task)} className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition ${
             done ? "border-emerald-500/60 bg-emerald-500/20 text-emerald-400" : "border-slate-600 hover:border-emerald-500/60"
@@ -154,27 +154,27 @@ export default function TasksPage() {
       )}
 
       {/* Project filter */}
-      <div className="flex flex-wrap gap-1.5">
-        {["All", ...projectNames].map(p => (
-          <button key={p} onClick={() => setFilter(p)} className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
+      <div className="motion-stagger flex flex-wrap gap-1.5">
+        {["All", ...projectNames].map((p, index) => (
+          <button key={p} onClick={() => setFilter(p)} className={`motion-item rounded-full border px-3 py-1 text-xs font-medium transition ${
             filter === p ? "border-emerald-400/50 bg-emerald-400/10 text-emerald-200" : "border-slate-700/60 text-slate-400 hover:border-slate-600 hover:text-slate-200"
-          }`}>
+          }`} style={{ ["--stagger-index" as const]: index }}>
             {p}{p !== "All" && p !== ALLGEMEIN && <span className="ml-1.5 text-slate-500">{tasks.filter(t => t.project === p && t.status === "todo").length}</span>}
           </button>
         ))}
       </div>
 
       {loading ? <div className="text-sm text-slate-400">Loading…</div> : (
-        <div className="space-y-2">
+        <div key={filter} className="motion-stagger space-y-2">
           {todoTasks.length === 0 && doneTasks.length === 0 ? (
             <div className="rounded-2xl border border-slate-800/40 bg-slate-900/20 py-16 text-center text-slate-500">Keine offenen Tasks. 🎉</div>
           ) : (
             <>
-              {todoTasks.map(t => <TaskRow key={t.id} task={t} />)}
+              {todoTasks.map((t, index) => <TaskRow key={t.id} task={t} index={index} />)}
               {doneTasks.length > 0 && (
                 <>
                   <div className="pt-2 pb-1 text-xs uppercase tracking-[0.3em] text-slate-600">Erledigt</div>
-                  {doneTasks.map(t => <TaskRow key={t.id} task={t} />)}
+                  {doneTasks.map((t, index) => <TaskRow key={t.id} task={t} index={todoTasks.length + index + 1} />)}
                 </>
               )}
             </>

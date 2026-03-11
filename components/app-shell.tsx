@@ -80,7 +80,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         })}
       </nav>
 
-      <main style={{ paddingTop: 52, minHeight: "100vh" }}>{children}</main>
+      <main style={{ paddingTop: 52, minHeight: "100vh" }}><div key={pathname} className="page-motion-enter">{children}</div></main>
     </div>
   );
 }
