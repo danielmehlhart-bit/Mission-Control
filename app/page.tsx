@@ -7,6 +7,8 @@ import { CapturePill } from "@/components/capture-pill";
 
 type BriefingFile = { name: string; path: string; modified: string };
 type Project = { id: string; name: string; color: string };
+type Deal = { id: string; accountName?: string; accountColor?: string; title: string; value?: number; stage: string; probability: number; };
+type Account = { id: string; name: string; color: string; lastActivityAt?: string; pipelineValue?: number; };
 
 function formatFilename(name: string): { title: string; date: string } {
   const match = name.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.html$/);
@@ -23,6 +25,8 @@ export default function HomePage() {
   const router = useRouter();
   const [briefings, setBriefings] = useState<BriefingFile[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [deals, setDeals] = useState<Deal[]>([]);
+  const [accounts, setAccounts] = useState<Account[]>([]);
   const [lastSeen, setLastSeen] = useState(0);
   const [showToast, setShowToast] = useState(false);
   const [newCount, setNewCount] = useState(0);
@@ -46,13 +50,19 @@ export default function HomePage() {
     setLastSeen(ts);
     const load = async () => {
       try {
-        const [res, projRes] = await Promise.all([
+        const [res, projRes, dealRes, accRes] = await Promise.all([
           fetch("/api/briefings", { cache: "no-store" }),
           fetch("/api/projects", { cache: "no-store" }),
+          fetch("/api/deals", { cache: "no-store" }),
+          fetch("/api/accounts", { cache: "no-store" }),
         ]);
         const data = await res.json();
         const projData = await projRes.json();
+        const dealData = await dealRes.json();
+        const accData = await accRes.json();
         setProjects(projData.projects ?? []);
+        setDeals(dealData.deals ?? []);
+        setAccounts(accData.accounts ?? []);
         const DATED = /^\d{4}-\d{2}-\d{2}-.*\.html?$/i;
       const sorted = (data.files ?? [])
         .filter((f: BriefingFile) => DATED.test(f.name))
@@ -127,20 +137,69 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(3, 1fr)", gap: 12, marginBottom: 24 }}>
-        {[
-          { label: "Neue Briefings", value: newCount > 0 ? String(newCount) : "–", sub: "seit letztem Besuch", accent: newCount > 0 },
-          { label: "Mission Control", value: "Online", sub: "mc.mehlhart.de", accent: true },
-          { label: "Briefings gesamt", value: String(briefings.length), sub: "im Archiv" },
-        ].map(s => (
-          <div key={s.label} style={{ ...card }}>
-            <div style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "#4a5068", marginBottom: 8 }}>{s.label}</div>
-            <div style={{ fontSize: 26, fontWeight: 700, color: s.accent ? "#10B981" : "#f0f2f5", lineHeight: 1 }}>{s.value}</div>
-            <div style={{ fontSize: 11, color: "#4a5068", marginTop: 6 }}>{s.sub}</div>
+      {/* Pipeline Stats */}
+      {(() => {
+        const openDeals = deals.filter(d => !d.stage.startsWith("closed-"));
+        const totalPipeline = openDeals.reduce((s, d) => s + (d.value ?? 0), 0);
+        const weightedPipeline = openDeals.reduce((s, d) => s + ((d.value ?? 0) * d.probability / 100), 0);
+        const wonDeals = deals.filter(d => d.stage === "closed-won");
+        const wonValue = wonDeals.reduce((s, d) => s + (d.value ?? 0), 0);
+        return (
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: 12, marginBottom: 24 }}>
+            {[
+              { label: "Pipeline", value: totalPipeline > 0 ? `€${totalPipeline.toLocaleString("de-DE")}` : "–", sub: `${openDeals.length} open deals`, accent: totalPipeline > 0 },
+              { label: "Weighted", value: weightedPipeline > 0 ? `€${Math.round(weightedPipeline).toLocaleString("de-DE")}` : "–", sub: "expected revenue" },
+              { label: "Won", value: wonValue > 0 ? `€${wonValue.toLocaleString("de-DE")}` : "–", sub: `${wonDeals.length} deals closed`, accent: wonValue > 0 },
+              { label: "Briefings", value: newCount > 0 ? String(newCount) : "–", sub: newCount > 0 ? "neue seit letztem Besuch" : `${briefings.length} im Archiv`, accent: newCount > 0 },
+            ].map(s => (
+              <div key={s.label} style={{ ...card }}>
+                <div style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "#4a5068", marginBottom: 8 }}>{s.label}</div>
+                <div style={{ fontSize: 26, fontWeight: 700, color: s.accent ? "#10B981" : "#f0f2f5", lineHeight: 1 }}>{s.value}</div>
+                <div style={{ fontSize: 11, color: "#4a5068", marginTop: 6 }}>{s.sub}</div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        );
+      })()}
+
+      {/* Follow-up Nudges */}
+      {(() => {
+        const stale = accounts.filter(a => {
+          if (a.lastActivityAt) {
+            const days = Math.floor((Date.now() - new Date(a.lastActivityAt).getTime()) / (1000 * 60 * 60 * 24));
+            return days > 7 && (a.pipelineValue ?? 0) > 0;
+          }
+          return (a.pipelineValue ?? 0) > 0;
+        }).slice(0, 4);
+        if (stale.length === 0) return null;
+        return (
+          <div style={{ ...card, marginBottom: 24 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+              <span style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "#F59E0B" }}>Follow-Up Needed</span>
+              <button onClick={() => router.push("/accounts")} style={{ fontSize: 12, color: "#10B981", background: "none", border: "none", cursor: "pointer" }}>All Accounts →</button>
+            </div>
+            {stale.map(a => {
+              const days = a.lastActivityAt ? Math.floor((Date.now() - new Date(a.lastActivityAt).getTime()) / (1000 * 60 * 60 * 24)) : null;
+              return (
+                <button key={a.id} onClick={() => router.push(`/accounts/${a.id}`)} style={{
+                  display: "flex", alignItems: "center", gap: 10, padding: "8px 12px", borderRadius: 8,
+                  background: "none", border: "none", cursor: "pointer", width: "100%", textAlign: "left",
+                  transition: "background 0.12s",
+                }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#1a1d27"}
+                  onMouseLeave={e => e.currentTarget.style.background = "none"}>
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: days !== null && days > 21 ? "#ef4444" : "#F59E0B", flexShrink: 0 }} />
+                  <span style={{ fontSize: 13, fontWeight: 500, color: "#c8ccd6", flex: 1 }}>{a.name}</span>
+                  <span style={{ fontSize: 11, color: days !== null && days > 21 ? "#ef4444" : "#F59E0B" }}>
+                    {days !== null ? `${days}d ago` : "No activity"}
+                  </span>
+                  <span style={{ fontSize: 12, color: "#2a2d38" }}>→</span>
+                </button>
+              );
+            })}
+          </div>
+        );
+      })()}
 
       {/* Fresh Briefings */}
       {briefings.length > 0 && (

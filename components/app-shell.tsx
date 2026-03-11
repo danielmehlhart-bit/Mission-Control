@@ -6,9 +6,10 @@ import { NavBadge } from "@/components/nav-badge";
 
 const navItems = [
   { href: "/",          label: "Home",      icon: "⌂" },
-  { href: "/tasks",     label: "Tasks",     icon: "✓" },
-  { href: "/projects",  label: "Projekte",  icon: "🏗️" },
+  { href: "/accounts",  label: "Accounts",  icon: "🏢" },
+  { href: "/pipeline",  label: "Pipeline",  icon: "📊" },
   { href: "/people",    label: "People",    icon: "👥" },
+  { href: "/tasks",     label: "Tasks",     icon: "✓" },
   { href: "/docs",      label: "Docs",      icon: "📄", badge: true },
   { href: "/memory",    label: "Memory",    icon: "🧠" },
   { href: "/hatti",     label: "Hatti",     icon: "💬" },
@@ -35,7 +36,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         {/* Nav Items — desktop only (hidden on mobile via CSS) */}
         <div className="top-nav-items" style={{ alignItems: "center", gap: 2, flex: 1, overflowX: "auto" }}>
           {navItems.map(item => {
-            const active = pathname === item.href;
+            const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
             return (
               <Link key={item.href} href={item.href} style={{
                 display: "flex", alignItems: "center", gap: 5,

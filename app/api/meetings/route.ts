@@ -7,7 +7,7 @@ type MeetingRow = {
   id: string; project_id: string; title: string; type: string; date: string;
   duration_min: number | null; participants: string; notes: string | null;
   summary: string | null; drive_link: string | null; action_items: string;
-  status: string; created_at: string;
+  status: string; created_at: string; account_id: string | null; deal_id: string | null;
 };
 
 function rowToMeeting(r: MeetingRow) {
@@ -18,6 +18,7 @@ function rowToMeeting(r: MeetingRow) {
     notes: r.notes, summary: r.summary, driveLink: r.drive_link,
     actionItems: JSON.parse(r.action_items ?? "[]"),
     status: r.status, createdAt: r.created_at,
+    accountId: r.account_id, dealId: r.deal_id,
   };
 }
 
