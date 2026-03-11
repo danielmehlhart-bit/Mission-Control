@@ -5,13 +5,13 @@ import { AppShell } from "@/components/app-shell";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-space-grotesk",
   weight: ["400", "500", "600", "700"],
 });
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  variable: "--font-body",
+  variable: "--font-ibm-plex-sans",
   weight: ["400", "500", "600"],
 });
 

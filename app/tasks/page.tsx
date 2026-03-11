@@ -109,7 +109,7 @@ export default function TasksPage() {
           }`}>
             {done && <span className="text-xs">✓</span>}
           </button>
-          <span className={`flex-1 text-sm ${done ? "line-through text-slate-500" : "text-slate-200"}`}>{task.title}</span>
+          <span className={`type-body flex-1 ${done ? "line-through text-slate-500" : "text-slate-200"}`}>{task.title}</span>
           <span style={{ ...badgeStyle, borderWidth: 1, borderStyle: "solid" }}
             className="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium">
             {task.project}
@@ -128,7 +128,7 @@ export default function TasksPage() {
           </div>
         </div>
         {task.notes && !done && (
-          <p className="mt-1.5 ml-8 text-xs text-slate-500 leading-relaxed">{task.notes}</p>
+          <p className="type-body mt-1.5 ml-8 text-slate-500">{task.notes}</p>
         )}
       </div>
     );
@@ -138,8 +138,8 @@ export default function TasksPage() {
     <div className="space-y-6">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold text-slate-50">Task Board</h1>
-          <p className="mt-2 text-sm text-slate-400">Deine offenen Tasks — projektübergreifend.</p>
+          <h1 className="type-h1 text-slate-50">Task Board</h1>
+          <p className="type-body mt-2 text-slate-400">Deine offenen Tasks — projektübergreifend.</p>
         </div>
         <div className="flex items-center gap-2">
           <span className="rounded-full border border-slate-700 bg-slate-800 px-3 py-1 text-xs text-slate-200">{todoTasks.length} offen</span>
@@ -173,7 +173,7 @@ export default function TasksPage() {
               {todoTasks.map(t => <TaskRow key={t.id} task={t} />)}
               {doneTasks.length > 0 && (
                 <>
-                  <div className="pt-2 pb-1 text-xs uppercase tracking-[0.3em] text-slate-600">Erledigt</div>
+                  <div className="type-caption pt-2 pb-1 text-slate-600">Erledigt</div>
                   {doneTasks.map(t => <TaskRow key={t.id} task={t} />)}
                 </>
               )}
