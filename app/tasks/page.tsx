@@ -156,7 +156,7 @@ export default function TasksPage() {
       {/* Project filter */}
       <div className="flex flex-wrap gap-1.5">
         {["All", ...projectNames].map(p => (
-          <button key={p} onClick={() => setFilter(p)} className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
+          <button key={p} onClick={() => setFilter(p)} className={`interactive-surface interactive-chip rounded-full border px-3 py-1 text-xs font-medium ${
             filter === p ? "border-emerald-400/50 bg-emerald-400/10 text-emerald-200" : "border-slate-700/60 text-slate-400 hover:border-slate-600 hover:text-slate-200"
           }`}>
             {p}{p !== "All" && p !== ALLGEMEIN && <span className="ml-1.5 text-slate-500">{tasks.filter(t => t.project === p && t.status === "todo").length}</span>}

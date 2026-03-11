@@ -35,6 +35,58 @@ html, body {
 /* Selection */
 ::selection { background: rgba(16, 185, 129, 0.2); }
 
+/* Interaction states */
+.interactive-surface {
+  transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease, border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.interactive-surface:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+.interactive-surface:active {
+  transform: translateY(1px) scale(0.995);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.22);
+}
+
+.interactive-surface:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.45), 0 8px 22px rgba(0, 0, 0, 0.24);
+}
+
+.interactive-surface:disabled,
+.interactive-surface[aria-disabled="true"] {
+  opacity: 0.45;
+  transform: none;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.interactive-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.24);
+}
+
+.interactive-chip:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interactive-surface,
+  .interactive-surface:hover,
+  .interactive-surface:active,
+  .interactive-chip,
+  .interactive-chip:hover,
+  .interactive-chip:active {
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
 /* Mobile nav */
 .top-nav-items { display: flex; }
 .bottom-nav { display: none; }
