@@ -393,6 +393,18 @@ function initSchema(db: Database.Database): void {
     }
   });
 
+  // Migration: modulAI + Weber Tasks 11.03.2026
+  runMigration("modulai_weber_tasks_20260311", () => {
+    const insertTask = db.prepare(`
+      INSERT INTO tasks (id, title, project, status, notes, created_at)
+      VALUES (?, ?, ?, 'todo', ?, datetime('now'))
+    `);
+    insertTask.run(Date.now().toString() + "a", "modulAI UX: Aufgaben-Zuweisung als Picklist — Rechtsklick-Verwirrung beheben", "modulAI", null);
+    insertTask.run((Date.now() + 1).toString() + "b", "modulAI Bug: Phasen können nicht editiert werden", "modulAI", null);
+    insertTask.run((Date.now() + 2).toString() + "c", "modulAI Feature: Analyse & Zeiterfassung verknüpfen für Deckungskostenermittlung", "modulAI", null);
+    insertTask.run((Date.now() + 3).toString() + "d", "Weber: Datei-Anhänge im Review-Loop ermöglichen", "Architekt Connect", null);
+  });
+
   // Migration: Raab Tasks nach Discovery Call 10.03.2026
   runMigration("raab_tasks_post_discovery_20260310", () => {
     const insertTask = db.prepare(`
