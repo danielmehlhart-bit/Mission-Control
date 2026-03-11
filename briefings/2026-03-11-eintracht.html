@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eintracht Frankfurt Briefing - 11. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #484848;
+            background: #fafafa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        }
+        
+        h1 {
+            font-size: 3em;
+            font-weight: 300;
+            color: #222;
+            margin-bottom: 10px;
+        }
+        
+        .date {
+            font-size: 1.1em;
+            color: #888;
+            font-weight: 400;
+        }
+        
+        .eintracht-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #e41e26, #000);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .article-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #f0f0f0;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+        }
+        
+        .article-content {
+            padding: 32px;
+        }
+        
+        .article-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+        
+        .article-title a {
+            color: #222;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .article-title a:hover {
+            color: #e41e26;
+        }
+        
+        .article-summary {
+            color: #666;
+            line-height: 1.7;
+            font-size: 1em;
+        }
+        
+        .topic-tag {
+            display: inline-block;
+            background: #f8f8f8;
+            color: #666;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        
+        .hot-topic {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .summary-stats {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .stats-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #e41e26;
+            display: block;
+        }
+        
+        .stats-label {
+            color: #888;
+            font-size: 1.1em;
+            margin-top: 8px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            color: #888;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #fff3cd 0%, #fff3cd 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="eintracht-badge">⚽ SGE News</div>
+            <h1>Eintracht Frankfurt Briefing</h1>
+            <div class="date">Dienstag, 10. März 2026</div>
+        </header>
+        
+        <div class="summary-stats">
+            <span class="stats-number">9</span>
+            <div class="stats-label">Artikel vom gestrigen Tag</div>
+        </div>
+        
+        <div class="articles-grid">
+            
+            <div class="article-card hot-topic">
+                <div class="article-content">
+                    <div class="topic-tag">🔥 HOT TOPIC</div>
+                    <h2 class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/markus-kroesche-denkt-ueber-vorzeitigen-abschied-nach-94210888.html" target="_blank">
+                            Markus Krösche denkt über vorzeitigen Abschied nach
+                        </a>
+                    </h2>
+                    <div class="article-summary">
+                        Sportvorstand Krösche macht vor der wichtigen Aufsichtsratssitzung Druck und denkt über einen vorzeitigen Ausstieg aus seinem bis 2028 laufenden Vertrag nach. Trainer Riera sucht noch nach Lösungen für die schwächelnde Offensive, nachdem das 0:0 in St. Pauli die Probleme offenbarte.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-card hot-topic">
+                <div class="article-content">
+                    <div class="topic-tag">🚨 KRISE</div>
+                    <h2 class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/droht-eintracht-frankfurt-der-abgang-von-markus-kroesche-zr-94210789.html" target="_blank">
+                            Droht Eintracht Frankfurt der Abgang von Markus Krösche?
+                        </a>
+                    </h2>
+                    <div class="article-summary">
+                        Vom Europacup-Glanz in die finanzielle Enge: Die Eintracht steht vor einem Umbruch, strukturell gezwungen zu Transferüberschüssen von 30+ Mio. Euro jährlich. Krösches Zukunft ist offener denn je, auch nach öffentlicher Kritik von Hellmann bezüglich Fehleinschätzungen wie Elye Wahi.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="topic-tag">💰 TRANSFER</div>
+                    <h2 class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/verlaengert-mario-goetze-seinen-vertrag-bei-der-eintracht-zr-94211648.html" target="_blank">
+                            Verlängert Mario Götze seinen Vertrag bei der Eintracht?
+                        </a>
+                    </h2>
+                    <div class="article-summary">
+                        Der Vertrag des 33-jährigen WM-Helden läuft im Sommer aus. Götze ist einer der absoluten Fan-Lieblinge bei der SGE, doch seine Zukunft bleibt ungewiss.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="topic-tag">🎯 TRANSFER-ZIEL</div>
+                    <h2 class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/paul-nebel-wechselt-berater-abschied-von-mainz-05-scheint-nah-94210606.html" target="_blank">
+                            Paul Nebel wechselt Berater – Abschied von Mainz scheint nah
+                        </a>
+                    </h2>
+                    <div class="article-summary">
+                        Der Mittelfeldspieler hat sich eine neue Agentur gesucht, seine Aussagen klingen nach einem bevorstehenden Transfer im Sommer. <span class="highlight">Eintracht Frankfurt dürfte aber nicht das Ziel sein</span> - der Fast-Nationalspieler peilt wohl höhere Ligen an.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="topic-tag">😤 VERSCHWENDET</div>
+                    <h2 class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/talent-ohne-buehne-wie-elias-baum-bei-eintracht-frankfurt-verschlissen-wird-zr-94210422.html" target="_blank">
+                            Wie Elias Baum bei Eintracht Frankfurt verschlissen wird
+                        </a>
+                    </h2>
+                    <div class="article-summary">
+                        Einst Leistungsträger in Liga zwei (3 Tore, 7 Assists bei Elversberg), heute Zuschauer in der Bundesliga. Das Frankfurter Eigengewächs findet unter Trainer Riera weiter keinen Zugang zur Stammelf, obwohl er bei Elversberg überragend performte.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="topic-tag">👨‍👧‍👦 FAMILIE</div>
+                    <h2 class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/eintracht-mittelfeldstar-ojlund-war-frueher-mittelstuermer-zr-94209965.html" target="_blank">
+                            Eintracht-Mittelfeldstar Højlund war früher Mittelstürmer
+                        </a>
+                    </h2>
+                    <div class="article-summary">
+                        Oscar Højlund rückt bei der Eintracht immer mehr ins Rampenlicht. Er war ein Schnäppchen und spielt heute im defensiven Mittelfeld - früher aber als Mittelstürmer. "Wir sind eine fußballbegeisterte Familie", sagt er über die bekannte Højlund-Fußballer-Dynastie.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="topic-tag">💎 EX-SPIELER</div>
+                    <h2 class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/euro-wert-ex-eintracht-juwel-ist-ploetzlich-bei-europa-league-klub-torjaeger-und-20-millionen-94209839.html" target="_blank">
+                            Ex-Eintracht-Juwel ist plötzlich Torjäger – und 20 Millionen Euro wert
+                        </a>
+                    </h2>
+                    <div class="article-summary">
+                        Rodrigo Zalazar konnte sich bei Eintracht Frankfurt nicht durchsetzen, doch beim SC Braga ist der Uruguayer zum Torjäger und Leistungsträger im Europa-League-Teilnehmer geworden. Seine konstanteste Form zeigt er in der laufenden Saison in Portugal.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="topic-tag">👨‍⚕️ UPDATE</div>
+                    <h2 class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/abgefahren-eintracht-abgang-zeigt-sich-nach-startproblemen-in-top-form-wm-zug-wohl-dennoch-94209733.html" target="_blank">
+                            Eintracht-Abgang Kevin Trapp in Top-Form – WM-Zug dennoch abgefahren
+                        </a>
+                    </h2>
+                    <div class="article-summary">
+                        Der ehemalige Eintracht-Keeper Kevin Trapp hat sich bei Paris FC nach Startproblemen einen Stammplatz gesichert und zeigt wieder Top-Form. Für eine WM-Nominierung wird es aber wohl nicht mehr reichen.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="topic-tag">🏥 VERLETZUNG</div>
+                    <h2 class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/ex-eintracht-flop-erlebt-jahr-zum-vergessen-inklusive-horror-verletzung-94209891.html" target="_blank">
+                            Ex-Eintracht-Flop van de Beek: Saison zum Vergessen
+                        </a>
+                    </h2>
+                    <div class="article-summary">
+                        Donny van de Beek konnte sich bei Eintracht Frankfurt nicht durchsetzen und erlebt auch bei Girona eine bittere Saison - inklusive schwerer Verletzung. Für den Niederländer läuft es weiterhin nicht rund.
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <footer>
+            <p>📊 Briefing generiert am 11. März 2026 um 06:35 Uhr</p>
+            <p>🏔️ Mit freundlichen Grüßen von Hatti</p>
+        </footer>
+    </div>
+</body>
+</html>
