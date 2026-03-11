@@ -126,18 +126,13 @@ export default function HomePage() {
           { label: "💬 Hatti", onClick: () => router.push("/hatti") },
           { label: "📄 Briefings", onClick: () => router.push("/docs") },
         ].map(a => (
-          <button key={a.label} onClick={a.onClick} style={{
+          <button key={a.label} onClick={a.onClick} className="interactive-surface" style={{
             padding: "7px 16px", borderRadius: 999, fontSize: 13, fontWeight: 500,
             background: a.label === "+ Task" && showCapture ? "#10B98120" : "#1a1d27",
             border: `1px solid ${a.label === "+ Task" && showCapture ? "#10B98150" : "#1e2128"}`,
             color: a.label === "+ Task" && showCapture ? "#10B981" : "#c8ccd6",
-            cursor: "pointer", transition: "all 0.15s",
-          }}
-            onMouseEnter={e => { e.currentTarget.style.background = "#22263a"; e.currentTarget.style.color = "#f0f2f5"; }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = a.label === "+ Task" && showCapture ? "#10B98120" : "#1a1d27";
-              e.currentTarget.style.color = a.label === "+ Task" && showCapture ? "#10B981" : "#c8ccd6";
-            }}>
+            cursor: "pointer",
+          }}>
             {a.label}
           </button>
         ))}
