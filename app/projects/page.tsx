@@ -35,8 +35,8 @@ export default function ProjectsPage() {
   return (
     <div style={{ padding: "20px 24px", maxWidth: 960 }}>
       <div style={{ marginBottom: 20 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 700, letterSpacing: "-0.3px" }}>Projekte</h1>
-        <p style={{ fontSize: 13, color: "#8b90a0", marginTop: 4 }}>Alle aktiven Projekte auf einen Blick.</p>
+        <h1 className="type-h1" style={{ color: "#f0f2f5" }}>Projekte</h1>
+        <p className="type-body" style={{ color: "#8b90a0", marginTop: 4 }}>Alle aktiven Projekte auf einen Blick.</p>
       </div>
 
       {loading ? <p style={{ color: "#8b90a0" }}>Loading…</p> : (
@@ -56,8 +56,8 @@ export default function ProjectsPage() {
                   {/* Title + status */}
                   <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10, marginBottom: 8 }}>
                     <div>
-                      <h2 style={{ fontSize: 16, fontWeight: 700, color: "#f0f2f5", letterSpacing: "-0.2px" }}>{project.name}</h2>
-                      <div style={{ fontSize: 12, color: "#8b90a0", marginTop: 2 }}>{project.client}</div>
+                      <h2 className="type-h3" style={{ color: "#f0f2f5" }}>{project.name}</h2>
+                      <div className="type-body" style={{ color: "#8b90a0", marginTop: 2 }}>{project.client}</div>
                     </div>
                     <span style={{
                       padding: "3px 10px", borderRadius: 999, fontSize: 11, fontWeight: 600,
@@ -68,7 +68,7 @@ export default function ProjectsPage() {
                   </div>
 
                   {project.description && (
-                    <p style={{ fontSize: 13, color: "#8b90a0", lineHeight: 1.5, marginBottom: 16 }}>{project.description}</p>
+                    <p className="type-body" style={{ color: "#8b90a0", marginBottom: 16 }}>{project.description}</p>
                   )}
 
                   {/* Stats */}

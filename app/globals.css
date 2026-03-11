@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
 :root {
   --bg-base:     #0d0f12;
   --bg-surface:  #141720;
@@ -19,11 +17,126 @@
   --nav-h: 52px;
 }
 
+
+
+:root {
+  --font-display: var(--font-space-grotesk);
+  --font-headline: var(--font-space-grotesk);
+  --font-body: var(--font-ibm-plex-sans);
+
+  --type-display-size: clamp(2rem, 1.7rem + 1.4vw, 2.6rem);
+  --type-display-line-height: 1.08;
+  --type-display-letter-spacing: -0.03em;
+
+  --type-h1-size: clamp(1.6rem, 1.4rem + 0.9vw, 2rem);
+  --type-h1-line-height: 1.15;
+  --type-h1-letter-spacing: -0.022em;
+
+  --type-h2-size: clamp(1.3rem, 1.2rem + 0.55vw, 1.55rem);
+  --type-h2-line-height: 1.2;
+  --type-h2-letter-spacing: -0.015em;
+
+  --type-h3-size: clamp(1.14rem, 1.08rem + 0.35vw, 1.28rem);
+  --type-h3-line-height: 1.25;
+  --type-h3-letter-spacing: -0.01em;
+
+  --type-h4-size: clamp(1rem, 0.96rem + 0.25vw, 1.08rem);
+  --type-h4-line-height: 1.3;
+  --type-h4-letter-spacing: -0.006em;
+
+  --type-body-size: clamp(0.92rem, 0.9rem + 0.2vw, 1rem);
+  --type-body-line-height: 1.58;
+  --type-body-letter-spacing: -0.003em;
+
+  --type-caption-size: clamp(0.72rem, 0.7rem + 0.1vw, 0.78rem);
+  --type-caption-line-height: 1.4;
+  --type-caption-letter-spacing: 0.04em;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --type-display-size: clamp(1.68rem, 1.54rem + 0.72vw, 1.98rem);
+    --type-h1-size: clamp(1.42rem, 1.33rem + 0.5vw, 1.72rem);
+    --type-h2-size: clamp(1.2rem, 1.12rem + 0.35vw, 1.36rem);
+    --type-h3-size: clamp(1.05rem, 1.01rem + 0.18vw, 1.16rem);
+    --type-h4-size: 1rem;
+    --type-body-size: 0.94rem;
+    --type-body-line-height: 1.62;
+    --type-caption-size: 0.72rem;
+  }
+}
+
+.type-display,
+h1.type-display {
+  font-family: var(--font-display), sans-serif;
+  font-size: var(--type-display-size);
+  line-height: var(--type-display-line-height);
+  letter-spacing: var(--type-display-letter-spacing);
+  font-weight: 700;
+}
+
+.type-h1,
+h1.type-h1 {
+  font-family: var(--font-headline), sans-serif;
+  font-size: var(--type-h1-size);
+  line-height: var(--type-h1-line-height);
+  letter-spacing: var(--type-h1-letter-spacing);
+  font-weight: 700;
+}
+
+.type-h2,
+h2.type-h2 {
+  font-family: var(--font-headline), sans-serif;
+  font-size: var(--type-h2-size);
+  line-height: var(--type-h2-line-height);
+  letter-spacing: var(--type-h2-letter-spacing);
+  font-weight: 650;
+}
+
+.type-h3,
+h3.type-h3 {
+  font-family: var(--font-headline), sans-serif;
+  font-size: var(--type-h3-size);
+  line-height: var(--type-h3-line-height);
+  letter-spacing: var(--type-h3-letter-spacing);
+  font-weight: 600;
+}
+
+.type-h4,
+h4.type-h4 {
+  font-family: var(--font-headline), sans-serif;
+  font-size: var(--type-h4-size);
+  line-height: var(--type-h4-line-height);
+  letter-spacing: var(--type-h4-letter-spacing);
+  font-weight: 600;
+}
+
+.type-body {
+  font-family: var(--font-body), sans-serif;
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+  letter-spacing: var(--type-body-letter-spacing);
+}
+
+.type-caption {
+  font-family: var(--font-body), sans-serif;
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line-height);
+  letter-spacing: var(--type-caption-letter-spacing);
+  text-transform: uppercase;
+}
 html, body {
   background: var(--bg-base);
   color: var(--text-primary);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+  letter-spacing: var(--type-body-letter-spacing);
   -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-feature-settings: "liga" 1, "calt" 1;
 }
 
 /* Scrollbars */
