@@ -40,14 +40,15 @@ export default function ProjectsPage() {
       </div>
 
       {loading ? <p style={{ color: "#8b90a0" }}>Loading…</p> : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
-          {projects.map(project => {
+        <div className="motion-stagger" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
+          {projects.map((project, index) => {
             const todoCount = getTaskCount(project.name);
             const color = project.color;
             return (
-              <div key={project.id} onClick={() => router.push(`/projects/${project.id}`)} style={{
+              <div key={project.id} className="motion-item motion-elevated" onClick={() => router.push(`/projects/${project.id}`)} style={{
                 background: "#141720", border: "1px solid #1e2128", borderRadius: 14,
                 overflow: "hidden", cursor: "pointer",
+                ["--stagger-index" as const]: index,
               }}>
                 {/* Header bar */}
                 <div style={{ height: 4, background: color }} />
@@ -76,7 +77,7 @@ export default function ProjectsPage() {
                     <button onClick={() => router.push(`/tasks?project=${encodeURIComponent(project.name)}`)} style={{
                       display: "flex", alignItems: "center", gap: 6, padding: "5px 12px",
                       borderRadius: 8, border: "1px solid #1e2128", background: "#1a1d27",
-                      cursor: "pointer", color: "#c8ccd6", fontSize: 12, fontWeight: 500,
+                      cursor: "pointer", color: "#c8ccd6", fontSize: 12, fontWeight: 500, transition: "transform var(--motion-duration-hover) var(--motion-ease-enter), border-color var(--motion-duration-hover) ease",
                     }}>
                       <span style={{ color: todoCount > 0 ? color : "#4a5068", fontWeight: 700 }}>{todoCount}</span>
                       offene Tasks
@@ -84,7 +85,7 @@ export default function ProjectsPage() {
                     <button onClick={() => router.push(`/docs?project=${encodeURIComponent(project.name)}`)} style={{
                       display: "flex", alignItems: "center", gap: 6, padding: "5px 12px",
                       borderRadius: 8, border: "1px solid #1e2128", background: "#1a1d27",
-                      cursor: "pointer", color: "#c8ccd6", fontSize: 12,
+                      cursor: "pointer", color: "#c8ccd6", fontSize: 12, transition: "transform var(--motion-duration-hover) var(--motion-ease-enter), border-color var(--motion-duration-hover) ease",
                     }}>
                       📄 Briefings
                     </button>

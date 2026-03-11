@@ -153,6 +153,34 @@ Pi /home/hartner/mission-control/briefings/ (neue HTML-Dateien)
 
 `briefingMatchesProject(filename, projectName)` — extrahiert Keywords (>3 Zeichen) aus Projektnamen und prüft ob im Dateinamen vorhanden. Automatisch für neue Projekte, kein Hardcode.
 
+
+## Motion Spec (UI Animation Guidelines)
+
+Mission Control nutzt eine **leichte CSS-first Motion Layer** (kein zusätzlicher Runtime-Overhead).
+
+### Core Tokens
+- `--motion-duration-page`: **280ms** (Page Enter)
+- `--motion-duration-section`: **220ms** (Section/Card Stagger)
+- `--motion-duration-hover`: **160ms** (Hover/Press Feedback)
+- `--motion-ease-enter`: `cubic-bezier(0.22, 1, 0.36, 1)`
+- `--motion-ease-exit`: `cubic-bezier(0.4, 0, 1, 1)`
+- `--motion-distance-page`: **16px** Y-offset
+- `--motion-distance-section`: **10px** Y-offset
+- `--motion-shadow-rest`: `0 0 0 rgba(0,0,0,0)`
+- `--motion-shadow-hover`: `0 14px 26px rgba(0,0,0,0.26)`
+
+### Patterns
+- **Page enter:** `page-motion-enter` auf Route-Content anwenden.
+- **Section stagger:** Parent `motion-stagger`, Kinder `motion-item`, Delay via `--stagger-index` in ~45ms Steps.
+- **Interactive surfaces:** `motion-elevated` für Karten/Buttons (leichter Lift + Shadow), auf Mobile Hover-Effekt deaktiviert.
+
+### Performance + Graceful Degradation
+- Nur `transform` + `opacity` animieren (keine layout-thrashing Properties).
+- `will-change: transform` nur auf interaktiven Flächen (`motion-elevated`).
+- Auf `max-width: 640px` wird Hover-Lift neutralisiert, damit Touch-UX stabil bleibt.
+- Bei `prefers-reduced-motion: reduce`: Animationen/Transitions nahezu deaktiviert, Inhalte erscheinen statisch.
+- Ziel: konsistente Motion ohne spürbaren FPS-Drop auf mobilen Geräten.
+
 ## Bekannte Einschränkungen / Tech-Debt
 
 - Rate Limiter ist in-memory (kein Redis) → verliert State bei Restart

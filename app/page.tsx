@@ -120,18 +120,19 @@ export default function HomePage() {
       </div>
 
       {/* Quick Actions */}
-      <div style={{ display: "flex", gap: 8, marginBottom: showCapture ? 12 : 24, flexWrap: "wrap" }}>
+      <div className="motion-stagger" style={{ display: "flex", gap: 8, marginBottom: showCapture ? 12 : 24, flexWrap: "wrap" }}>
         {[
           { label: "+ Task", onClick: () => setShowCapture(v => !v) },
           { label: "💬 Hatti", onClick: () => router.push("/hatti") },
           { label: "📄 Briefings", onClick: () => router.push("/docs") },
-        ].map(a => (
-          <button key={a.label} onClick={a.onClick} style={{
+        ].map((a, index) => (
+          <button key={a.label} className="motion-item motion-elevated" onClick={a.onClick} style={{
             padding: "7px 16px", borderRadius: 999, fontSize: 13, fontWeight: 500,
             background: a.label === "+ Task" && showCapture ? "#10B98120" : "#1a1d27",
             border: `1px solid ${a.label === "+ Task" && showCapture ? "#10B98150" : "#1e2128"}`,
             color: a.label === "+ Task" && showCapture ? "#10B981" : "#c8ccd6",
             cursor: "pointer", transition: "all 0.15s",
+            ["--stagger-index" as const]: index,
           }}
             onMouseEnter={e => { e.currentTarget.style.background = "#22263a"; e.currentTarget.style.color = "#f0f2f5"; }}
             onMouseLeave={e => {
@@ -164,14 +165,14 @@ export default function HomePage() {
         const wonDeals = deals.filter(d => d.stage === "closed-won");
         const wonValue = wonDeals.reduce((s, d) => s + (d.value ?? 0), 0);
         return (
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: 12, marginBottom: 24 }}>
+          <div className="motion-stagger" style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: 12, marginBottom: 24 }}>
             {[
               { label: "Pipeline", value: totalPipeline > 0 ? `€${totalPipeline.toLocaleString("de-DE")}` : "–", sub: `${openDeals.length} open deals`, accent: totalPipeline > 0 },
               { label: "Weighted", value: weightedPipeline > 0 ? `€${Math.round(weightedPipeline).toLocaleString("de-DE")}` : "–", sub: "expected revenue" },
               { label: "Won", value: wonValue > 0 ? `€${wonValue.toLocaleString("de-DE")}` : "–", sub: `${wonDeals.length} deals closed`, accent: wonValue > 0 },
               { label: "Briefings", value: newCount > 0 ? String(newCount) : "–", sub: newCount > 0 ? "neue seit letztem Besuch" : `${briefings.length} im Archiv`, accent: newCount > 0 },
-            ].map(s => (
-              <div key={s.label} style={{ ...card }}>
+            ].map((s, index) => (
+              <div key={s.label} className="motion-item motion-elevated" style={{ ...card, ["--stagger-index" as const]: index }}>
                 <div style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "#4a5068", marginBottom: 8 }}>{s.label}</div>
                 <div style={{ fontSize: 26, fontWeight: 700, color: s.accent ? "#10B981" : "#f0f2f5", lineHeight: 1 }}>{s.value}</div>
                 <div style={{ fontSize: 11, color: "#4a5068", marginTop: 6 }}>{s.sub}</div>
@@ -291,16 +292,16 @@ export default function HomePage() {
               Alle →
             </button>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            {briefings.map(f => {
+          <div className="motion-stagger" style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            {briefings.map((f, index) => {
               const { title, date } = formatFilename(f.name);
               const cat = detectCategory(f.name);
               return (
-                <button key={f.path} onClick={() => router.push(`/docs?file=${encodeURIComponent(f.name)}`)} style={{
+                <button key={f.path} className="motion-item" onClick={() => router.push(`/docs?file=${encodeURIComponent(f.name)}`)} style={{
                   display: "flex", alignItems: "center", gap: 10,
                   padding: "9px 12px", borderRadius: 8, textAlign: "left",
                   background: "none", border: "none", cursor: "pointer", width: "100%",
-                  transition: "background 0.12s",
+                  transition: "background 0.12s", ["--stagger-index" as const]: index,
                 }}
                   onMouseEnter={e => e.currentTarget.style.background = "#1a1d27"}
                   onMouseLeave={e => e.currentTarget.style.background = "none"}>
