@@ -13,6 +13,7 @@ type CalendarEvent = {
   id: string; summary: string; start: string; end: string;
   linkedPeople: { id: string; name: string }[];
   linkedProject?: { id: string; name: string; color: string };
+  linkedAccount?: { id: string; name: string; color: string };
 };
 
 function formatFilename(name: string): { title: string; date: string } {
@@ -253,7 +254,19 @@ export default function HomePage() {
                       ))}
                     </div>
                   )}
-                  {ev.linkedProject && (
+                  {ev.linkedAccount && (
+                    <span
+                      onClick={() => router.push(`/accounts/${ev.linkedAccount!.id}`)}
+                      style={{
+                        fontSize: 10, padding: "2px 7px", borderRadius: 999,
+                        background: `${ev.linkedAccount.color}20`,
+                        color: ev.linkedAccount.color,
+                        border: `1px solid ${ev.linkedAccount.color}40`,
+                        flexShrink: 0, cursor: "pointer",
+                      }}
+                    >{ev.linkedAccount.name}</span>
+                  )}
+                  {!ev.linkedAccount && ev.linkedProject && (
                     <span style={{
                       fontSize: 10, padding: "2px 7px", borderRadius: 999,
                       background: `${ev.linkedProject.color}20`,

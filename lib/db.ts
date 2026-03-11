@@ -146,6 +146,14 @@ function initSchema(db: Database.Database): void {
   addCol("ALTER TABLE meetings ADD COLUMN deal_id TEXT");
 
   db.exec(`
+    CREATE TABLE IF NOT EXISTS meeting_notes (
+      id               TEXT PRIMARY KEY,
+      calendar_event_id TEXT NOT NULL UNIQUE,
+      title            TEXT,
+      content          TEXT NOT NULL DEFAULT '{}',
+      updated_at       TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
     CREATE TABLE IF NOT EXISTS _migrations (
       id         TEXT PRIMARY KEY,
       applied_at TEXT NOT NULL DEFAULT (datetime('now'))

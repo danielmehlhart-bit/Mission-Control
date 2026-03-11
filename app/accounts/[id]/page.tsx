@@ -1,7 +1,11 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import Placeholder from "@tiptap/extension-placeholder";
 
 type Account = {
   id: string; name: string; domain?: string; industry?: string; size?: string;
@@ -25,6 +29,11 @@ type Project = {
 type Activity = {
   id: string; type: string; title?: string; summary?: string; createdAt: string;
   accountId?: string; dealId?: string; contactId?: string;
+};
+type CalEvent = {
+  id: string; summary: string; start: string; end: string;
+  linkedPeople: { id: string; name: string }[];
+  linkedAccount?: { id: string; name: string; color: string };
 };
 
 const STATUS_LABEL: Record<string, string> = { prospect: "Prospect", active: "Active", churned: "Churned", paused: "Paused" };
@@ -64,6 +73,8 @@ export default function AccountDetailPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
+  const [calEvents, setCalEvents] = useState<CalEvent[]>([]);
+  const [openNoteEventId, setOpenNoteEventId] = useState<string | null>(null);
 
   // Modals
   const [contactModal, setContactModal] = useState(false);
@@ -96,6 +107,18 @@ export default function AccountDetailPage() {
   }, [id, router]);
 
   useEffect(() => { load(); }, [load]);
+
+  useEffect(() => {
+    fetch("/api/calendar", { cache: "no-store" })
+      .then(r => r.json())
+      .then(d => {
+        if (d.disabled) return;
+        // Filter: nur Events wo ein Kontakt dieses Accounts verknüpft ist
+        // (linkedAccount.id = id ODER wir matchen nachträglich via contacts)
+        setCalEvents(d.events ?? []);
+      })
+      .catch(() => {});
+  }, [id]);
 
   const saveContact = async () => {
     if (!contactForm.name.trim()) return;
@@ -339,22 +362,47 @@ export default function AccountDetailPage() {
 
           {/* ─── ACTIVITIES TAB ─── */}
           {tab === "activities" && (
-            <Card title="Activity Timeline" action={{ label: "+ Log Activity", onClick: () => setActivityModal(true) }}>
-              {activities.length === 0 && <Empty text="Noch keine Aktivitäten." />}
-              {activities.map(a => (
-                <div key={a.id} style={{ display: "flex", gap: 10, padding: "10px 0", borderBottom: "1px solid #111318", alignItems: "flex-start" }}>
-                  <span style={{ fontSize: 16, marginTop: 1 }}>{ACTIVITY_ICONS[a.type] ?? "📌"}</span>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <span style={{ fontSize: 12.5, fontWeight: 500, color: "#c8ccd6" }}>{a.title ?? a.type}</span>
-                      <span style={{ padding: "1px 6px", borderRadius: 999, fontSize: 10, background: "#1a1d27", color: "#4a5068" }}>{a.type}</span>
+            <>
+              {/* Upcoming Calendar Events */}
+              {(() => {
+                const contactIds = new Set(contacts.map(c => c.id));
+                const upcoming = calEvents
+                  .filter(e => new Date(e.start) >= new Date() && e.linkedPeople.some(lp => contactIds.has(lp.id)))
+                  .sort((a, b) => a.start.localeCompare(b.start))
+                  .slice(0, 10);
+                if (upcoming.length === 0) return null;
+                return (
+                  <Card title="📅 Geplante Termine">
+                    {upcoming.map(ev => (
+                      <CalEventRow
+                        key={ev.id}
+                        ev={ev}
+                        color={color}
+                        isOpen={openNoteEventId === ev.id}
+                        onToggleNote={() => setOpenNoteEventId(openNoteEventId === ev.id ? null : ev.id)}
+                      />
+                    ))}
+                  </Card>
+                );
+              })()}
+
+              <Card title="Activity Timeline" action={{ label: "+ Log Activity", onClick: () => setActivityModal(true) }}>
+                {activities.length === 0 && <Empty text="Noch keine Aktivitäten." />}
+                {activities.map(a => (
+                  <div key={a.id} style={{ display: "flex", gap: 10, padding: "10px 0", borderBottom: "1px solid #111318", alignItems: "flex-start" }}>
+                    <span style={{ fontSize: 16, marginTop: 1 }}>{ACTIVITY_ICONS[a.type] ?? "📌"}</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ fontSize: 12.5, fontWeight: 500, color: "#c8ccd6" }}>{a.title ?? a.type}</span>
+                        <span style={{ padding: "1px 6px", borderRadius: 999, fontSize: 10, background: "#1a1d27", color: "#4a5068" }}>{a.type}</span>
+                      </div>
+                      {a.summary && <div style={{ fontSize: 12, color: "#8b90a0", marginTop: 4, lineHeight: 1.6, background: "#0d0f12", borderRadius: 6, padding: "6px 10px" }}>{a.summary}</div>}
                     </div>
-                    {a.summary && <div style={{ fontSize: 12, color: "#8b90a0", marginTop: 4, lineHeight: 1.6, background: "#0d0f12", borderRadius: 6, padding: "6px 10px" }}>{a.summary}</div>}
+                    <span style={{ fontSize: 11, color: "#4a5068", flexShrink: 0, whiteSpace: "nowrap" }}>{formatDate(a.createdAt)}</span>
                   </div>
-                  <span style={{ fontSize: 11, color: "#4a5068", flexShrink: 0, whiteSpace: "nowrap" }}>{formatDate(a.createdAt)}</span>
-                </div>
-              ))}
-            </Card>
+                ))}
+              </Card>
+            </>
           )}
         </div>
 
@@ -571,6 +619,128 @@ function ModalActions({ onClose, onSave, saving, disabled }: { onClose: () => vo
     <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
       <button onClick={onClose} style={{ flex: 1, padding: "9px 0", borderRadius: 8, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 13, cursor: "pointer" }}>Abbrechen</button>
       <button onClick={onSave} disabled={saving || disabled} style={{ flex: 2, padding: "9px 0", borderRadius: 8, border: "none", background: saving ? "#0a7a50" : "#10B981", color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>{saving ? "Speichern…" : "Speichern"}</button>
+    </div>
+  );
+}
+
+// ─── Calendar Event Row with inline TipTap notes ──────────────────────────────
+function CalEventRow({ ev, color, isOpen, onToggleNote }: {
+  ev: CalEvent; color: string; isOpen: boolean; onToggleNote: () => void;
+}) {
+  const d = new Date(ev.start);
+  const dateStr = ev.start.includes("T")
+    ? d.toLocaleDateString("de-DE", { weekday: "short", day: "numeric", month: "short" }) + " · " + d.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })
+    : d.toLocaleDateString("de-DE", { weekday: "short", day: "numeric", month: "short" });
+
+  const [hasNote, setHasNote] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Underline,
+      Placeholder.configure({ placeholder: "Agenda, Vorbereitung, Notizen…" }),
+    ],
+    editorProps: {
+      attributes: { style: "outline:none; min-height:80px; font-size:13px; color:#c8ccd6; line-height:1.7;" },
+    },
+    onUpdate: ({ editor }) => {
+      if (saveTimer.current) clearTimeout(saveTimer.current);
+      setSaved(false);
+      saveTimer.current = setTimeout(async () => {
+        setSaving(true);
+        await fetch("/api/meeting-notes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ calEventId: ev.id, title: ev.summary, content: JSON.stringify(editor.getJSON()) }),
+        });
+        setSaving(false);
+        setSaved(true);
+        setHasNote(true);
+        setTimeout(() => setSaved(false), 2000);
+      }, 800);
+    },
+  }, [ev.id]);
+
+  // Load existing note when panel opens
+  useEffect(() => {
+    if (!isOpen || !editor) return;
+    fetch(`/api/meeting-notes?calEventId=${encodeURIComponent(ev.id)}`)
+      .then(r => r.json())
+      .then(d => {
+        if (d.note?.content) {
+          try {
+            editor.commands.setContent(JSON.parse(d.note.content));
+            setHasNote(true);
+          } catch { /* empty note */ }
+        }
+      })
+      .catch(() => {});
+  }, [isOpen, editor, ev.id]);
+
+  // Check if note exists on mount
+  useEffect(() => {
+    fetch(`/api/meeting-notes?calEventId=${encodeURIComponent(ev.id)}`)
+      .then(r => r.json())
+      .then(d => setHasNote(!!d.note?.content))
+      .catch(() => {});
+  }, [ev.id]);
+
+  return (
+    <div style={{ borderBottom: "1px solid #111318" }}>
+      {/* Event row */}
+      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0" }}>
+        <span style={{ fontSize: 11, fontWeight: 600, color: "#a78bfa", minWidth: 120, flexShrink: 0 }}>{dateStr}</span>
+        <span style={{ flex: 1, fontSize: 13, color: "#c8ccd6", fontWeight: 500 }}>{ev.summary}</span>
+        {ev.linkedPeople.slice(0, 3).map(p => (
+          <span key={p.id} style={{ fontSize: 10, padding: "2px 7px", borderRadius: 999, background: "#1e2536", color: "#7c8db0", border: "1px solid #2d3348" }}>
+            {p.name.split(" ")[0]}
+          </span>
+        ))}
+        <button
+          onClick={onToggleNote}
+          style={{
+            padding: "4px 10px", borderRadius: 6, fontSize: 11, fontWeight: 600, cursor: "pointer", flexShrink: 0,
+            border: `1px solid ${isOpen ? color + "60" : hasNote ? "#10B98160" : "#1e2128"}`,
+            background: isOpen ? color + "18" : hasNote ? "#10B98110" : "transparent",
+            color: isOpen ? color : hasNote ? "#10B981" : "#8b90a0",
+          }}
+        >
+          {hasNote ? "📝 Notizen" : "✏️ Vorbereiten"}
+        </button>
+      </div>
+
+      {/* Inline notes panel */}
+      {isOpen && (
+        <div style={{
+          margin: "0 0 12px 0", background: "#0d0f12", border: "1px solid #1e2536",
+          borderRadius: 8, padding: "12px 14px",
+        }}>
+          {/* Toolbar */}
+          <div style={{ display: "flex", gap: 4, marginBottom: 8, borderBottom: "1px solid #1e2128", paddingBottom: 8 }}>
+            {([
+              { label: "B", cmd: () => editor?.chain().focus().toggleBold().run(), active: () => editor?.isActive("bold") ?? false },
+              { label: "I", cmd: () => editor?.chain().focus().toggleItalic().run(), active: () => editor?.isActive("italic") ?? false },
+              { label: "U", cmd: () => editor?.chain().focus().toggleUnderline().run(), active: () => editor?.isActive("underline") ?? false },
+              { label: "•", cmd: () => editor?.chain().focus().toggleBulletList().run(), active: () => editor?.isActive("bulletList") ?? false },
+              { label: "1.", cmd: () => editor?.chain().focus().toggleOrderedList().run(), active: () => editor?.isActive("orderedList") ?? false },
+            ] as { label: string; cmd: () => void; active: () => boolean }[]).map(b => (
+              <button key={b.label} onMouseDown={e => { e.preventDefault(); b.cmd(); }} style={{
+                padding: "2px 8px", borderRadius: 4, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600,
+                background: b.active() ? "#1e2128" : "transparent",
+                color: b.active() ? "#f0f2f5" : "#8b90a0",
+              }}>{b.label}</button>
+            ))}
+            <div style={{ flex: 1 }} />
+            <span style={{ fontSize: 10, color: saving ? "#a78bfa" : saved ? "#10B981" : "#4a5068", alignSelf: "center" }}>
+              {saving ? "Speichern…" : saved ? "✓ Gespeichert" : ""}
+            </span>
+          </div>
+          <EditorContent editor={editor} />
+        </div>
+      )}
     </div>
   );
 }
