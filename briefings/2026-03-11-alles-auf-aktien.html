@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alles auf Aktien - 11.03.2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background: #f8f9fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header .date {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .summary {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .summary h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .topic {
+            background: white;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .topic-header {
+            padding: 20px 25px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .topic-header.negative {
+            border-left-color: #e74c3c;
+        }
+        
+        .topic-header.positive {
+            border-left-color: #27ae60;
+        }
+        
+        .topic-header.neutral {
+            border-left-color: #f39c12;
+        }
+        
+        .topic h3 {
+            color: #2c3e50;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+        
+        .topic-content {
+            padding: 0 25px 20px;
+            line-height: 1.7;
+        }
+        
+        .performance {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin: 5px 5px 5px 0;
+        }
+        
+        .positive-perf {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .negative-perf {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .neutral-perf {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .highlight {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+        }
+        
+        .market-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .market-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            text-align: center;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .youtube-link {
+            display: inline-block;
+            background: #ff0000;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+        
+        .youtube-link:hover {
+            background: #cc0000;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .market-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 Alles auf Aktien</h1>
+            <div class="date">Mittwoch, 11. März 2026</div>
+        </div>
+        
+        <div class="summary">
+            <h2>📊 TL;DR</h2>
+            <p><strong>Märkte:</strong> DAX erholt sich um 2,4% auf 24.000 Punkte, US-Märkte gemischt wegen geopolitischer Spannungen. <strong>KI-Boom:</strong> Oracle explodiert mit +10% dank KI-Rekordverträgen, Amazon holt 47 Mrd. USD für KI-Investitionen. <strong>Drama:</strong> BioNTech-Gründer verlassen das Unternehmen (-17%), während VW trotz schwacher Zahlen überraschend steigt (+3%).</p>
+        </div>
+
+        <div class="topic">
+            <div class="topic-header positive">
+                <h3>📈 Marktüberblick</h3>
+            </div>
+            <div class="topic-content">
+                <div class="market-overview">
+                    <div class="market-item">
+                        <strong>DAX</strong><br>
+                        <span class="performance positive-perf">+2,4%</span><br>
+                        24.000 Punkte
+                    </div>
+                    <div class="market-item">
+                        <strong>S&P 500</strong><br>
+                        <span class="performance negative-perf">-0,2%</span><br>
+                        Geopolitik belastet
+                    </div>
+                    <div class="market-item">
+                        <strong>Nasdaq 100</strong><br>
+                        <span class="performance negative-perf">-0,04%</span><br>
+                        KI-Euphorie vs. Unsicherheit
+                    </div>
+                </div>
+                <p>Deutsche Börse folgt positiver US-Entwicklung vom Montag. US-Märkte richtungslos wegen widersprüchlicher Signale zum Iran-Konflikt und korrigierter Falschmeldungen über Öltanker-Eskorte.</p>
+            </div>
+        </div>
+
+        <div class="topic">
+            <div class="topic-header positive">
+                <h3>🚀 Oracle: KI-Rakete zündet</h3>
+            </div>
+            <div class="topic-content">
+                <span class="performance positive-perf">+10% nachbörslich</span>
+                <p><strong>Die Zahlen:</strong> Umsatz +22% auf 17,2 Mrd. USD, Auftragsbestand explodiert um 325% auf 553 Mrd. USD durch gigantische KI-Verträge. Cloud-Infrastruktur wächst um 81%.</p>
+                
+                <div class="highlight">
+                    <strong>🎯 Das Geschäftsmodell:</strong> Kunden wie OpenAI zahlen vorab für GPU-Kapazitäten oder bringen eigene Chips mit - reduziert Oracles Risiko massiv bei 18,6 Mrd. USD Investitionen.
+                </div>
+                
+                <p><strong>Ausblick:</strong> Umsatzziel 2027 um 1 Mrd. auf 90 Mrd. USD angehoben. 80% der Analysten raten zum Kauf, sehen 75% Kurspotenzial. Aktie notiert 56% unter Allzeit-Hoch.</p>
+            </div>
+        </div>
+
+        <div class="topic">
+            <div class="topic-header positive">
+                <h3>💰 Amazon: 47 Milliarden USD Mega-Emission</h3>
+            </div>
+            <div class="topic-content">
+                <span class="performance positive-perf">+0,8%</span>
+                <p><strong>Größenwahn:</strong> 37 Mrd. USD in den USA + 10 Mrd. EUR in Europa = viertgrößte Anleihe-Emission aller Zeiten. Dreifach überzeichnet bei 126 Mrd. USD Nachfrage!</p>
+                
+                <div class="highlight">
+                    <strong>💡 Warum?</strong> Investoren reißen sich um Amazon-Schulden - gelten als sicherer als manche Staatsanleihen. 200 Mrd. USD KI-Investitionen alleine 2026 geplant.
+                </div>
+                
+                <p>Teil des KI-Wettrüstens: Microsoft, Meta & Co investieren zusammen 650-700 Mrd. USD in KI-Infrastruktur. "Wer die KI-Infrastruktur kontrolliert, kontrolliert die nächste industrielle Revolution."</p>
+            </div>
+        </div>
+
+        <div class="topic">
+            <div class="topic-header neutral">
+                <h3>🎭 Bill Ackman: Der neue Warren Buffett?</h3>
+            </div>
+            <div class="topic-content">
+                <p><strong>Größenwahn 2.0:</strong> Pershing Square plant 5-10 Mrd. USD Börsengang für neues Berkshire Hathaway-Modell. Anleger kaufen Voranteile für 50$ + bekommen Managementgesellschafts-Aktien.</p>
+                
+                <div class="highlight">
+                    <strong>🧠 Das Modell:</strong> Kein Liquiditätsdruck wie bei Hedgefonds - Geld bleibt dauerhaft im Unternehmen, wird aber an Börse gehandelt. Bereits zwei Versuche (2020, 2024) gescheitert.
+                </div>
+                
+                <p><strong>Erfolgsfaktor:</strong> Am Ende entscheidet nicht die Struktur, sondern die Performance über Mini-Berkshire Erfolg.</p>
+            </div>
+        </div>
+
+        <div class="topic">
+            <div class="topic-header negative">
+                <h3>⚠️ Novo Nordisk: FDA-Warnschuss</h3>
+            </div>
+            <div class="topic-content">
+                <span class="performance negative-perf">-22% YTD</span>
+                <p><strong>Compliance-Problem:</strong> FDA Warning Letter wegen nicht gemeldeter Semaglutid-Nebenwirkungen, darunter Todesfälle und Suizid. Hunderte Berichte verspätet eingereicht.</p>
+                
+                <div class="highlight">
+                    <strong>⚖️ Klarstellung:</strong> Behörde sagt nicht, dass Medikament ursächlich war - kritisiert nur Meldeprozesse. Trotzdem Reputationsproblem im wichtigen US-Markt.
+                </div>
+                
+                <p><strong>Doppelbelastung:</strong> Operativ unter Druck durch Eli Lilly-Konkurrenz, regulatorisch durch FDA-Zweifel. War lange Platzhirsch im GLP-1-Segment.</p>
+            </div>
+        </div>
+
+        <div class="topic">
+            <div class="topic-header negative">
+                <h3>💔 BioNTech: Abschiedsdrama der Gründer</h3>
+            </div>
+            <div class="topic-content">
+                <span class="performance negative-perf">-17% / -6 Mrd. USD Börsenwert</span>
+                <p><strong>Das Beben:</strong> Uğur Şahin und Özlem Türeci verlassen BioNTech bis Jahresende. "Wollen als Pioniere neue Wege beschreiten" - gründen neue Firma für nächste Innovationsstufe.</p>
+                
+                <div class="highlight">
+                    <strong>🎭 Von Volksheld zu Normalfall:</strong> Aus nationaler Biotech-Ikone wird gewöhnliches Investment. Gründer-Manager-Trennung: Visionäre bauen auf, Betriebswirte skalieren.
+                </div>
+                
+                <p><strong>Die Realität:</strong> COVID-Gewinne vorbei, Umsatz Q4 -24% auf 907 Mio. EUR, Nettoverlust 1,1 Mrd. EUR. Noch kein Onkologie-Durchbruch trotz hoher Investitionen.</p>
+                
+                <p><strong>Übernahme-Spekulation:</strong> Börsenwert auf 20 Mrd. USD geschrumpft - für Pharma-Giganten machbar. Gründer behalten Aktien, würden profitieren.</p>
+            </div>
+        </div>
+
+        <div class="topic">
+            <div class="topic-header positive">
+                <h3>🚗 VW: Weniger schlecht = gut genug</h3>
+            </div>
+            <div class="topic-content">
+                <span class="performance positive-perf">+3%</span>
+                <p><strong>Das Paradoxon:</strong> Schwache Zahlen, aber Aktie steigt. Q4: 4,2% operative Marge (erwartet: 4,6-4,8%), Ausblick 2026 nur 4-5,5% (erwartet: 5%+).</p>
+                
+                <div class="highlight">
+                    <strong>💰 Rettungsanker Cashflow:</strong> 6,4 Mrd. EUR freier Cashflow durch weniger Investitionen und Lagerabbau. 50.000 Stellen in Deutschland bis 2030 weg.
+                </div>
+                
+                <p><strong>Value-Wette:</strong> KGV von 4 (!) bei 90 EUR Kurs, 5,26 EUR Dividende = 6% Rendite. Analysten sehen Kursziele bis 140 EUR.</p>
+                
+                <p><strong>Realität:</strong> Best house in bad neighborhood - ganzer europäischer Volumenmarkt unter Druck, aber VW hat Portfolio, China-JVs und 34 Mrd. EUR Nettoliquidität.</p>
+            </div>
+        </div>
+
+        <div class="topic">
+            <div class="topic-header neutral">
+                <h3>📅 Heute wichtig</h3>
+            </div>
+            <div class="topic-content">
+                <p><strong>Wirtschaftsdaten:</strong> US-Verbraucherpreise Februar (endgültig), deutsche 10-jährige Bundesanleihen-Auktion (5 Mrd. EUR)</p>
+                
+                <p><strong>Unternehmenszahlen:</strong> Henkel, Porsche, Rheinmetall, Wacker Chemie, Klöckner, Uniper, Inditex</p>
+                
+                <p><strong>Sonstiges:</strong> Lufthansa-Pilotenstreik 12.-13. März angekündigt</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>🎯 Die Lektion der Woche:</strong><br>
+            "Nicht gut schlägt nicht gut, sondern weniger schlecht als erwartet."<br>
+            <em>Willkommen in der neuen Realität!</em></p>
+            
+            <a href="https://www.youtube.com/watch?v=IL_lY5Yuc3Q" class="youtube-link" target="_blank">
+                ▶️ Vollständige Episode auf YouTube
+            </a>
+            
+            <p style="margin-top: 20px; color: #666; font-size: 0.9rem;">
+                Automatisch generiert aus "Alles auf Aktien" vom 11.03.2026<br>
+                Keine Anlageberatung • Eigene Recherche erforderlich
+            </p>
+        </div>
+    </div>
+</body>
+</html>
