@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iran-Konflikt Briefing — 11. März 2026</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7f7f5;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white;
+      padding: 60px 24px 48px;
+      text-align: center;
+    }
+    .hero .tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+    .hero .subtitle {
+      font-size: 16px;
+      color: rgba(255,255,255,0.65);
+    }
+    .hero .timestamp {
+      margin-top: 16px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+    }
+
+    .alert-bar {
+      background: #e63946;
+      color: white;
+      padding: 12px 24px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .alert-bar span { opacity: 0.85; font-weight: 400; }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border: 1px solid #ebebeb;
+    }
+    .card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card .card-desc {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .bullet-list {
+      list-style: none;
+      padding: 0;
+    }
+    .bullet-list li {
+      display: flex;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f5f5f5;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+    .bullet-list li:last-child { border-bottom: none; }
+    .bullet-list li::before {
+      content: "→";
+      color: #e63946;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .highlight-box {
+      background: #fff8e1;
+      border-left: 4px solid #f59e0b;
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #78350f;
+    }
+    .highlight-box strong { display: block; margin-bottom: 4px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .danger-box {
+      background: #fff0f0;
+      border-left: 4px solid #e63946;
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #7f1d1d;
+    }
+    .danger-box strong { display: block; margin-bottom: 4px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .info-box {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #1e3a5f;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .stat-card {
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid #ececec;
+    }
+    .stat-card .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: #1a1a1a;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-card .stat-value.red { color: #e63946; }
+    .stat-card .stat-value.green { color: #22c55e; }
+    .stat-card .stat-value.amber { color: #f59e0b; }
+    .stat-card .stat-label {
+      font-size: 12px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .stat-card .stat-sub {
+      font-size: 11px;
+      color: #aaa;
+      margin-top: 4px;
+    }
+
+    .quote-block {
+      border-left: 3px solid #d1d5db;
+      padding: 12px 20px;
+      margin: 16px 0;
+      font-size: 15px;
+      font-style: italic;
+      color: #4b5563;
+    }
+    .quote-block cite {
+      display: block;
+      margin-top: 8px;
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 600;
+      color: #888;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 4px;
+      bottom: 4px;
+      width: 2px;
+      background: #e5e7eb;
+    }
+    .timeline-item {
+      position: relative;
+      padding: 0 0 20px 16px;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -22px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #e63946;
+      border: 2px solid white;
+      box-shadow: 0 0 0 2px #e63946;
+    }
+    .timeline-item .tl-date {
+      font-size: 11px;
+      font-weight: 700;
+      color: #e63946;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .timeline-item .tl-text {
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.5;
+    }
+
+    .sources {
+      background: #fafafa;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #ebebeb;
+    }
+    .sources h3 { font-size: 14px; font-weight: 700; color: #555; margin-bottom: 12px; }
+    .sources a {
+      display: block;
+      font-size: 13px;
+      color: #3b82f6;
+      text-decoration: none;
+      padding: 4px 0;
+    }
+    .sources a:hover { text-decoration: underline; }
+
+    .footer {
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 13px;
+      color: #aaa;
+      border-top: 1px solid #ebebeb;
+    }
+    .footer strong { color: #888; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 40px 16px 32px; }
+      .container { padding: 32px 16px; }
+      .card { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="tag">🏔️ Hatti Briefing</div>
+  <h1>Iran-Konflikt<br/>Lage & Ausblick</h1>
+  <div class="subtitle">Militär · Märkte · Innenpolitik · Hormuz</div>
+  <div class="timestamp">Stand: Mittwoch, 11. März 2026 · Operation Epic Fury, Tag 11</div>
+</div>
+
+<div class="alert-bar">
+  🔴 KRITISCH &nbsp;·&nbsp; Straße von Hormuz geschlossen &nbsp;·&nbsp; Khamenei tot &nbsp;·&nbsp; US-Luftangriffe intensiviert &nbsp;<span>· Brent ~$88–94/Barrel</span>
+</div>
+
+<div class="container">
+
+  <!-- TIMELINE 48H -->
+  <div class="section-label">⏱ Die letzten 48 Stunden</div>
+  <div class="card">
+    <h2>📅 Chronologie: 9.–11. März 2026</h2>
+    <div class="card-desc">Was ist seit gestern früh passiert?</div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="tl-date">28. Feb — Beginn</div>
+        <div class="tl-text">USA und Israel starten „Operation Epic Fury". Irans Oberster Führer Ali Khamenei stirbt bei ersten Luftangriffen auf Teheran.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">9. März</div>
+        <div class="tl-text">Mojtaba Khamenei, Sohn des getöteten Führers, wird als neuer Oberster Führer eingesetzt. Hardliner-Kurs gilt als gesetzt. Iran-Sicherheitschef warnt USA vor weiteren Konsequenzen.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">10. März — Tag 10</div>
+        <div class="tl-text">Verteidigungsminister Pete Hegseth kündigt „intensivste Luftoperationen" bisher an. 9 iranische Drohnen treffen UAE trotz Abfangung von 26 Drohnen und 8 Raketen. US-Soldaten sterben in Kuwait und Saudi-Arabien.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">10. März — Trump Statement</div>
+        <div class="tl-text">Trump sagt, der Krieg sei „sehr bald" vorbei, „aber nicht diese Woche" — und gleichzeitig hätten die USA „jede einzelne Kraft im Iran vollständig ausgelöscht". Auf Widerspruch: „Man kann beides sagen."</div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-date">11. März — heute</div>
+        <div class="tl-text">Hegseth bestätigt: weitere Eskalation geplant. Iran verhängt schwersten Internetsperr-Maßnahmen seit Jahren. Israel greift gleichzeitig Hisbollah im Libanon an.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HORMUZ -->
+  <div class="section-label">🚢 Straße von Hormuz</div>
+  <div class="card">
+    <h2>⚓ Hormuz: Gesperrt — und der Preis steigt</h2>
+    <div class="card-desc">20% des globalen Öls fließen durch diese 50km-Meerenge. Die ist dicht.</div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value red">$94</div>
+        <div class="stat-label">Brent Crude Peak</div>
+        <div class="stat-sub">höchster Stand seit Sep 2023</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value amber">$88</div>
+        <div class="stat-label">Brent aktuell</div>
+        <div class="stat-sub">nach Trump-Signal gesunken</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value red">+50%</div>
+        <div class="stat-label">Ölpreis YTD</div>
+        <div class="stat-sub">seit Jahresbeginn</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value red">20%</div>
+        <div class="stat-label">Weltöl durch Hormuz</div>
+        <div class="stat-sub">kompletter Ausfall</div>
+      </div>
+    </div>
+
+    <ul class="bullet-list">
+      <li>Iran hat Navigation durch die Straße offiziell verboten — Tanker fahren kaum noch durch</li>
+      <li>Nahost-Produzenten (Saudi-Arabien, Kuwait, UAE) können gebohrt, aber nicht verschiffen</li>
+      <li>Saudi Aramco leitet Öl um — verursacht LPG-Engpässe u.a. in Indien</li>
+      <li>EIA revidiert Jahresprognose von $58 auf $79 Durchschnitt für 2026</li>
+      <li>G7 berät über Freigabe strategischer Reserven, bisher kein Beschluss</li>
+    </ul>
+
+    <div class="danger-box">
+      <strong>⚠️ Risikofaktor</strong>
+      Neben Öl: Düngemittel, Nahrungsmittelversorgung, Frachtversicherung — alles unter Druck. Die EIA-Prognose basiert auf der Annahme einer temporären Sperrung. Wird sie langfristig, sind die Modelle obsolet.
+    </div>
+  </div>
+
+  <!-- MÄRKTE -->
+  <div class="section-label">📈 Märkte & Wirtschaft</div>
+  <div class="card">
+    <h2>📊 Was passiert an den Märkten?</h2>
+    <div class="card-desc">Öl hoch, Aktien volatil, Kurs-Bewegungen folgen Trumps Worten</div>
+
+    <ul class="bullet-list">
+      <li><strong>Ölpreis über $100</strong> kurzzeitig nach Kriegsbeginn — stärkster Anstieg seit 2022</li>
+      <li>Rückgang auf ~$88 nach Trumps Signal, dass Konflikt „bald" ende und Sanktionserleichterungen denkbar seien</li>
+      <li>S&P 500 Futures anfangs im Minus, zuletzt +2% — Märkte im De-Risking-Modus, aber kein Kollaps</li>
+      <li>Europäische Märkte erholen sich bei Kriegsende-Signalen, ausgewählte Aktien (Hugo Boss +7%, etc.) entkoppeln</li>
+      <li>Indien: RBI stützt Rupie aktiv wegen Rohstoff-Schock</li>
+      <li>Finanzierungskosten für Unternehmen gestiegen, Liquiditätsprobleme in Derivatemärkten</li>
+      <li>China-KI-Aktien laufen trotz allem hoch — globale Risikodiversifikation sichtbar</li>
+    </ul>
+
+    <div class="highlight-box">
+      <strong>📌 Kern-Beobachtung</strong>
+      Der Markt folgt aktuell fast 1:1 Trumps Aussagen. Jede Eskalationsmeldung drückt Öl hoch, jede Deeskalationsgeste drückt sie runter. Das macht Pricing extrem schwierig — und politisch beeinflussbar.
+    </div>
+  </div>
+
+  <!-- US INNENPOLITIK -->
+  <div class="section-label">🇺🇸 USA — Innenpolitik</div>
+  <div class="card">
+    <h2>🏛️ Was läuft innenpolitisch in den USA?</h2>
+    <div class="card-desc">Kongress-Spannungen, Veteranen-Widerstand, geteiltes Land</div>
+
+    <ul class="bullet-list">
+      <li>Demokraten im Senat (Booker, Schumer, Kaine, Schatz) blockieren Tagesordnung — fordern öffentliche Anhörungen mit Rubio und Hegseth</li>
+      <li>Demokraten wollen War-Powers-Abstimmungen erzwingen — Kongress soll seine Rolle zurückfordern</li>
+      <li>Republikaner blockieren demokratische Gegenbewegungen (u.a. CISA/FEMA-Funding)</li>
+      <li>Post-9/11-Veteranen im Kongress (parteiübergreifend) warnen vor Irak/Afghanistan-Wiederholung</li>
+      <li>US-Soldaten tot in Kuwait und Saudi-Arabien — öffentliche Stimmung unter Druck</li>
+    </ul>
+
+    <div class="quote-block">
+      „Congress appears spineless when it comes to checks and balances."
+      <cite>— MSNBC-Analyse, 10. März 2026</cite>
+    </div>
+
+    <div class="info-box">
+      Öffentliche Meinung: Keine direkten Umfragen verfügbar, aber Diskurs geprägt von Sorge um Soldatenleben, steigende Spritpreise und fehlende Kriegsstrategie. Demokraten nutzen Aufgabe des Iran-Deals 2018 als Argument gegen Trumps Glaubwürdigkeit.
+    </div>
+  </div>
+
+  <!-- TRUMP STRATEGIE -->
+  <div class="section-label">🎯 Trump & Strategie</div>
+  <div class="card">
+    <h2>🗣️ Was sagt Trump — und was steckt dahinter?</h2>
+    <div class="card-desc">Erklärte Ziele, widersprüchliche Signale, kein klares Endspiel</div>
+
+    <ul class="bullet-list">
+      <li><strong>Offiziell 3 Ziele:</strong> Irans Raketenlager und -launcher zerstören, Iranische Marine vernichten, Iran dauerhaft nuklear entwaffnen</li>
+      <li>Trump, Hegseth und Rubio nennen gleichzeitig: Regimewechsel, Schwächung der Islamischen Republik, Rückkehr zu Verhandlungen, Nation-Building — ohne klare Rangfolge</li>
+      <li>Bedingung für Kriegsende: „Bedingungslose Kapitulation" — definiert als: <em>wann Trump es so sagt</em></li>
+      <li>Iran lehnt Waffenstillstand ohne US-Garantien ab; Trumps Envoy Steve Witkoff zweifelt an Irans Gesprächsbereitschaft</li>
+    </ul>
+
+    <div class="quote-block">
+      „Er hat absichtlich kein kohärentes Ziel — er bläst Dinge in die Luft und wartet, wo der Staub fällt, bevor er den Sieg ausruft."
+      <cite>— Thomas Juneau, Universität Ottawa, Politologe</cite>
+    </div>
+
+    <div class="danger-box">
+      <strong>⚠️ Kernrisiko</strong>
+      Domestic political pressure — nicht iranische Kapitulation — wird wahrscheinlich bestimmen, wann Trump das Kriegsende erklärt. Das macht den Konflikt unberechenbarer, nicht berechenbarer.
+    </div>
+
+    <div class="highlight-box">
+      <strong>📌 Was kommt als nächstes?</strong>
+      Hegseth kündigt weitere Intensivierung an. Iran setzt auf Zermürbung (Drohnen, Proxies, Internetsperren). Mojtaba Khamenei als neuer Führer gilt als Hardliner — Verhandlungsbereitschaft unklar. Flüchtige De-Eskalationssignale von Trump könnten Vorbereitung für politischen Ausstieg sein.
+    </div>
+  </div>
+
+  <!-- QUELLEN -->
+  <div class="sources">
+    <h3>Quellen</h3>
+    <a href="https://abcnews.com/International/live-updates/iran-live-updates?id=130893022&entryId=130930022" target="_blank">ABC News — Iran Live Updates (10. März 2026)</a>
+    <a href="https://www.latimes.com/world-nation/story/2026-03-10/these-lawmakers-were-shaped-by-combat-after-9-11-now-theyre-grappling-with-new-mideast-war" target="_blank">LA Times — Post-9/11 Lawmakers & Iran War</a>
+    <a href="https://www.euronews.com/business/2026/03/10/iran-war-shocks-continue-to-ripple-through-the-global-economy" target="_blank">Euronews Business — Wirtschaftsfolgen der Iran-Krise</a>
+    <a href="https://oilprice.com/Latest-Energy-News/World-News/Oil-Shock-Lifts-EIA-Price-Outlook-as-Hormuz-Crisis-Reshapes-Forecast.html" target="_blank">OilPrice.com — EIA Preisprognose nach Hormuz-Krise</a>
+    <a href="https://www.politico.com/news/2026/03/10/veterans-iraq-afghanistan-react-iran-00820831" target="_blank">Politico — Veteranen zu Iran-Krieg</a>
+    <a href="https://www.cbsnews.com/video/gabe-amo-americans-experience-high-costs-iran-war-more-one-way/" target="_blank">CBS News — Rep. Amo über Kriegskosten für Amerikaner</a>
+    <a href="https://www.vifindia.org/article/2026/march/11/Assassination-of-Iran-s-Supreme-Leader-and-the-Crisis-in-West-Asia" target="_blank">VIF India — Khamenei-Nachfolge und Westasien-Krise</a>
+  </div>
+
+</div>
+
+<div class="footer">
+  <strong>Hatti Briefing</strong> · Iran-Konflikt · 11. März 2026<br />
+  Erstellt mit web_search (Perplexity Sonar Pro) · Stand 09:30 MEZ
+</div>
+
+</body>
+</html>
