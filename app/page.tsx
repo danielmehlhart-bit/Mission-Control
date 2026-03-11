@@ -9,6 +9,11 @@ type BriefingFile = { name: string; path: string; modified: string };
 type Project = { id: string; name: string; color: string };
 type Deal = { id: string; accountName?: string; accountColor?: string; title: string; value?: number; stage: string; probability: number; };
 type Account = { id: string; name: string; color: string; lastActivityAt?: string; pipelineValue?: number; };
+type CalendarEvent = {
+  id: string; summary: string; start: string; end: string;
+  linkedPeople: { id: string; name: string }[];
+  linkedProject?: { id: string; name: string; color: string };
+};
 
 function formatFilename(name: string): { title: string; date: string } {
   const match = name.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.html$/);
@@ -33,6 +38,7 @@ export default function HomePage() {
   const [isMobile, setIsMobile] = useState(false);
   const [now, setNow] = useState("");
   const [showCapture, setShowCapture] = useState(false);
+  const [todayEvents, setTodayEvents] = useState<CalendarEvent[]>([]);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -83,6 +89,18 @@ export default function HomePage() {
     const onVisible = () => { if (document.visibilityState === "visible") load(); };
     document.addEventListener("visibilitychange", onVisible);
     return () => document.removeEventListener("visibilitychange", onVisible);
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/calendar", { cache: "no-store" })
+      .then(r => r.json())
+      .then(d => {
+        if (d.disabled) return;
+        const todayStr = new Date().toISOString().slice(0, 10);
+        const today = (d.events as CalendarEvent[]).filter(e => e.start.startsWith(todayStr));
+        setTodayEvents(today);
+      })
+      .catch(() => {});
   }, []);
 
   const isNew = (f: BriefingFile) => new Date(f.modified).getTime() > lastSeen;
@@ -200,6 +218,56 @@ export default function HomePage() {
           </div>
         );
       })()}
+
+      {/* Heute — Calendar Widget */}
+      {todayEvents.length > 0 && (
+        <div style={{ ...card, marginBottom: 24 }}>
+          <div style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "#4a5068", marginBottom: 12 }}>
+            📅 Heute
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            {todayEvents.slice(0, 3).map(ev => {
+              const time = ev.start.includes("T")
+                ? new Date(ev.start).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })
+                : "Ganztag";
+              return (
+                <div key={ev.id} style={{
+                  display: "flex", alignItems: "center", gap: 10,
+                  padding: "8px 12px", borderRadius: 8, background: "#0f1219",
+                  border: "1px solid #1e2128",
+                }}>
+                  <span style={{
+                    fontSize: 11, fontWeight: 600, color: "#a78bfa",
+                    minWidth: 46, flexShrink: 0,
+                  }}>{time}</span>
+                  <span style={{ flex: 1, fontSize: 13, color: "#c8ccd6", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    {ev.summary}
+                  </span>
+                  {ev.linkedPeople.length > 0 && (
+                    <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
+                      {ev.linkedPeople.slice(0, 2).map(p => (
+                        <span key={p.id} style={{
+                          fontSize: 10, padding: "2px 7px", borderRadius: 999,
+                          background: "#1e2536", color: "#7c8db0", border: "1px solid #2d3348",
+                        }}>{p.name.split(" ")[0]}</span>
+                      ))}
+                    </div>
+                  )}
+                  {ev.linkedProject && (
+                    <span style={{
+                      fontSize: 10, padding: "2px 7px", borderRadius: 999,
+                      background: `${ev.linkedProject.color}20`,
+                      color: ev.linkedProject.color,
+                      border: `1px solid ${ev.linkedProject.color}40`,
+                      flexShrink: 0,
+                    }}>{ev.linkedProject.name}</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Fresh Briefings */}
       {briefings.length > 0 && (

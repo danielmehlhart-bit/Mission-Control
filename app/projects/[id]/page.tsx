@@ -170,6 +170,7 @@ export default function ProjectDetailPage() {
   const [briefings, setBriefings] = useState<BriefingFile[]>([]);
   const [selectedBriefing, setSelectedBriefing] = useState<BriefingFile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [calEvents, setCalEvents] = useState<{ id: string; summary: string; start: string; linkedPeople: { id: string; name: string }[] }[]>([]);
   const [noteSaving, setNoteSaving] = useState(false);
   const [noteSaved, setNoteSaved] = useState(false);
   const [meetingModal, setMeetingModal] = useState(false);
@@ -229,6 +230,13 @@ export default function ProjectDetailPage() {
   }, [id, editor, router]);
 
   useEffect(() => { if (editor) load(); }, [editor, load]);
+
+  useEffect(() => {
+    fetch("/api/calendar", { cache: "no-store" })
+      .then(r => r.json())
+      .then(d => { if (!d.disabled) setCalEvents(d.events ?? []); })
+      .catch(() => {});
+  }, []);
 
   const saveNote = async () => {
     if (!editor) return;
@@ -389,6 +397,52 @@ export default function ProjectDetailPage() {
             )}
             {meetings.length === 0 && <div style={{ padding: "24px 16px", textAlign: "center", color: "#4a5068", fontSize: 12 }}>Noch keine Meetings. + Neues Meeting anlegen.</div>}
           </div>
+
+          {/* Google Calendar Events */}
+          {(() => {
+            const projectPeopleIds = new Set(
+              people
+                .filter(p => project && (
+                  (p.project && p.project.toLowerCase().includes(project.name.toLowerCase())) ||
+                  (p.company && p.company.toLowerCase().includes(project.client.toLowerCase()))
+                ))
+                .map(p => p.id)
+            );
+            const linkedEvents = calEvents
+              .filter(e =>
+                new Date(e.start) >= new Date() &&
+                e.linkedPeople.some(lp => projectPeopleIds.has(lp.id))
+              )
+              .sort((a, b) => a.start.localeCompare(b.start))
+              .slice(0, 5);
+            if (linkedEvents.length === 0) return null;
+            return (
+              <div style={{ background: "#141720", border: "1px solid #1e2128", borderRadius: 12, overflow: "hidden" }}>
+                <div style={{ padding: "12px 16px", borderBottom: "1px solid #1e2128" }}>
+                  <span style={{ fontSize: 13, fontWeight: 600 }}>🗓 Google Calendar ({linkedEvents.length})</span>
+                </div>
+                {linkedEvents.map(ev => {
+                  const d = new Date(ev.start);
+                  const dateStr = ev.start.includes("T")
+                    ? d.toLocaleDateString("de-DE", { weekday: "short", day: "numeric", month: "short" }) + " " + d.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })
+                    : d.toLocaleDateString("de-DE", { weekday: "short", day: "numeric", month: "short" });
+                  return (
+                    <div key={ev.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", borderTop: "1px solid #0f1117" }}>
+                      <span style={{ fontSize: 11, color: "#a78bfa", fontWeight: 600, minWidth: 110, flexShrink: 0 }}>{dateStr}</span>
+                      <span style={{ flex: 1, fontSize: 13, color: "#c8ccd6" }}>{ev.summary}</span>
+                      <div style={{ display: "flex", gap: 4 }}>
+                        {ev.linkedPeople.slice(0, 3).map(lp => (
+                          <span key={lp.id} style={{ fontSize: 10, padding: "2px 7px", borderRadius: 999, background: "#1e2536", color: "#7c8db0", border: "1px solid #2d3348" }}>
+                            {lp.name.split(" ")[0]}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })()}
 
           {/* Briefings Inline */}
           {briefings.length > 0 && (

@@ -8,6 +8,7 @@ type Person = {
   accountId?: string; contactRole?: string; accountName?: string; accountColor?: string;
 };
 type Account = { id: string; name: string; color: string };
+type CalEvent = { id: string; summary: string; start: string; linkedPeople: { id: string }[] };
 
 const EMPTY: Omit<Person, "id"> = { name: "", company: "", role: "", email: "", phone: "", project: "", notes: "", contactRole: "contact", accountId: "" };
 
@@ -41,6 +42,8 @@ export default function PeoplePage() {
   const [saving, setSaving] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
+  const [calEvents, setCalEvents] = useState<CalEvent[]>([]);
+
   const load = () => Promise.all([
     fetch("/api/people").then(r => r.json()),
     fetch("/api/accounts").then(r => r.json()),
@@ -50,6 +53,21 @@ export default function PeoplePage() {
     setLoading(false);
   });
   useEffect(() => { load(); }, []);
+
+  useEffect(() => {
+    fetch("/api/calendar", { cache: "no-store" })
+      .then(r => r.json())
+      .then(d => { if (!d.disabled) setCalEvents(d.events ?? []); })
+      .catch(() => {});
+  }, []);
+
+  const nextEventForPerson = (personId: string): CalEvent | null => {
+    const future = calEvents.filter(e =>
+      new Date(e.start) >= new Date() &&
+      e.linkedPeople.some(lp => lp.id === personId)
+    );
+    return future.sort((a, b) => a.start.localeCompare(b.start))[0] ?? null;
+  };
 
   const accountFilters = ["All", ...accounts.map(a => a.name)];
   const filtered = people.filter(p => {
@@ -175,6 +193,23 @@ export default function PeoplePage() {
                     {person.phone && <span style={{ fontSize: 11, color: "#4a5068" }}>{person.phone}</span>}
                   </div>
                 </div>
+
+                {/* Calendar Badge */}
+                {(() => {
+                  const next = nextEventForPerson(person.id);
+                  if (!next) return null;
+                  const d = new Date(next.start);
+                  const label = next.start.includes("T")
+                    ? d.toLocaleDateString("de-DE", { day: "numeric", month: "short" }) + " " + d.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })
+                    : d.toLocaleDateString("de-DE", { day: "numeric", month: "short" });
+                  return (
+                    <span title={next.summary} style={{
+                      fontSize: 10, padding: "3px 8px", borderRadius: 999, flexShrink: 0,
+                      background: "#1e1a2e", border: "1px solid #3d3060", color: "#a78bfa",
+                      cursor: "default",
+                    }}>📅 {label}</span>
+                  );
+                })()}
 
                 {/* Actions */}
                 <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
