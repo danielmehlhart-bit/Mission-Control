@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oberursel Politikstruktur — Org Chart</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a1a;
+      padding: 32px 16px;
+      line-height: 1.5;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .header {
+      background: #fff;
+      border-radius: 16px;
+      padding: 36px 40px 28px;
+      margin-bottom: 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .header .label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+    .header h1 { font-size: 1.8rem; font-weight: 800; color: #111; margin-bottom: 6px; }
+    .header .sub { font-size: 0.95rem; color: #666; }
+
+    /* ===== ORG CHART ===== */
+    .org-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* Magistrat */
+    .exec-row {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .exec-box {
+      background: #1e293b;
+      color: #fff;
+      border-radius: 12px;
+      padding: 16px 24px;
+      text-align: center;
+      min-width: 200px;
+    }
+    .exec-box .title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 4px; }
+    .exec-box .name { font-size: 0.95rem; font-weight: 700; }
+    .exec-box .desc { font-size: 0.78rem; color: #cbd5e1; margin-top: 2px; }
+
+    .connector-v {
+      width: 2px;
+      height: 28px;
+      background: #cbd5e1;
+      margin: 0 auto;
+    }
+    .connector-h-wrap {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 0;
+    }
+
+    /* StaVV */
+    .stavv-box {
+      background: #0f172a;
+      color: #fff;
+      border-radius: 14px;
+      padding: 20px 32px;
+      text-align: center;
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 8px;
+    }
+    .stavv-box .label-top { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #64748b; margin-bottom: 4px; }
+    .stavv-box h2 { font-size: 1.1rem; font-weight: 800; margin-bottom: 8px; }
+    .stavv-box .meta { font-size: 0.82rem; color: #94a3b8; }
+
+    /* Sitzverteilung */
+    .seats-row {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .seat-chip {
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .chip-cdu { background: #374151; }
+    .chip-gruen { background: #166534; }
+    .chip-spd { background: #b91c1c; }
+    .chip-obg { background: #92400e; }
+    .chip-ulo { background: #1d4ed8; }
+    .chip-afd { background: #4b5563; }
+    .chip-linke { background: #7e22ce; }
+    .chip-small { background: #475569; }
+
+    /* Ausschüsse */
+    .ausschuss-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      width: 100%;
+      max-width: 800px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+    .ausschuss-card {
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .ausschuss-card .a-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+    .ausschuss-card h3 { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; line-height: 1.3; }
+    .ausschuss-card .chair { font-size: 0.78rem; margin-bottom: 8px; }
+    .ausschuss-card .members { font-size: 0.73rem; opacity: 0.85; line-height: 1.6; }
+    .buka { background: #ecfdf5; border: 2px solid #6ee7b7; color: #065f46; }
+    .hfda { background: #eff6ff; border: 2px solid #93c5fd; color: #1e3a8a; }
+    .sbka { background: #fdf4ff; border: 2px solid #d8b4fe; color: #581c87; }
+
+    .note-special {
+      background: #fef3c7;
+      border: 1px solid #fbbf24;
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #92400e;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    /* Ortsbeiräte */
+    .ortsbeirat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 800px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+    .ort-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 12px 14px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .ort-card .ort-name { font-size: 0.82rem; font-weight: 700; color: #374151; margin-bottom: 2px; }
+    .ort-card .ort-meta { font-size: 0.72rem; color: #9ca3af; }
+
+    /* Beiräte */
+    .beirat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 800px;
+      margin-top: 8px;
+    }
+    .beirat-card {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: 10px;
+      padding: 12px 14px;
+      text-align: center;
+    }
+    .beirat-card .b-name { font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 2px; }
+    .beirat-card .b-meta { font-size: 0.72rem; color: #94a3b8; }
+
+    .section-arrow {
+      font-size: 1.4rem;
+      color: #cbd5e1;
+      text-align: center;
+      margin: 4px 0;
+    }
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      text-align: center;
+      margin: 12px 0 4px;
+    }
+
+    /* Legende */
+    .legend {
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px 28px;
+      margin-top: 28px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .legend h3 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 12px; }
+    .legend-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.85rem;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+    .legend-item strong { color: #111; }
+    .legend-item span { color: #666; }
+
+    .power-note {
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px 28px;
+      margin-top: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .power-note h3 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 12px; }
+    .power-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .power-block { background: #f8fafc; border-radius: 8px; padding: 12px 16px; }
+    .power-block .pb-title { font-size: 0.8rem; font-weight: 700; color: #374151; margin-bottom: 6px; }
+    .power-block .pb-body { font-size: 0.83rem; color: #555; line-height: 1.5; }
+
+    .footer { text-align: center; font-size: 0.78rem; color: #bbb; margin-top: 28px; }
+
+    @media (max-width: 640px) {
+      .ausschuss-row, .ortsbeirat-row, .beirat-row { grid-template-columns: 1fr; }
+      .power-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="label">Hatti Briefing · 12. März 2026</div>
+    <h1>🏛️ Oberursel — Politikstruktur</h1>
+    <div class="sub">Wer entscheidet was, wo — und welche Fraktion sitzt wo. Wahlperiode 2021–2026.</div>
+  </div>
+
+  <div class="org-wrapper">
+
+    <!-- MAGISTRAT -->
+    <div class="section-label">Exekutive — setzt Beschlüsse um, bringt Vorlagen ein</div>
+    <div class="exec-row">
+      <div class="exec-box">
+        <div class="title">Bürgermeisterin</div>
+        <div class="name">Antje Runge</div>
+        <div class="desc">Hauptverwaltungsbeamtin · Vorsitz im Magistrat</div>
+      </div>
+      <div class="exec-box">
+        <div class="title">Erster Stadtrat</div>
+        <div class="name">Benedikt Uhlig</div>
+        <div class="desc">Stadtentwicklung, Bau, Finanzen</div>
+      </div>
+    </div>
+
+    <div class="connector-v"></div>
+    <div class="section-arrow">↑ Vorlagen ↓ Beschlüsse</div>
+    <div class="connector-v"></div>
+
+    <!-- STADTVERORDNETENVERSAMMLUNG -->
+    <div class="section-label">Legislative — beschließt, kontrolliert den Magistrat</div>
+    <div class="stavv-box">
+      <div class="label-top">Stadtverordnetenversammlung · 45 Mitglieder · tagt ~alle 6–8 Wochen</div>
+      <h2>Stadtverordnetenversammlung Oberursel</h2>
+      <div class="meta">Vorsteher: Lothar Köhler (CDU) · Büro der Gremien: 06171 502-360</div>
+      <div class="seats-row">
+        <span class="seat-chip chip-cdu">CDU 12</span>
+        <span class="seat-chip chip-gruen">Grüne 11</span>
+        <span class="seat-chip chip-spd">SPD 6</span>
+        <span class="seat-chip chip-obg">OBG 5</span>
+        <span class="seat-chip chip-ulo">ULO 3</span>
+        <span class="seat-chip chip-afd">AfD 2</span>
+        <span class="seat-chip chip-linke">Linke 2</span>
+        <span class="seat-chip chip-small">FDP 1 · Klimaliste 1 · Sonst. 2</span>
+      </div>
+    </div>
+
+    <div class="connector-v"></div>
+    <div class="section-arrow">↓ bereiten vor · empfehlen</div>
+
+    <!-- AUSSCHÜSSE -->
+    <div class="section-label">3 Fachausschüsse — je 15 Mitglieder · bereiten Beschlüsse vor</div>
+    <div class="ausschuss-row">
+
+      <div class="ausschuss-card buka">
+        <div class="a-label">BUKA</div>
+        <h3>Bau-, Umwelt- & Klimaschutzausschuss</h3>
+        <div class="chair">Vorsitz: <strong>Sabine Kunz</strong> <span style="opacity:0.8">(SPD)</span></div>
+        <div class="members">
+          CDU 4 · Grüne 4 · SPD 2<br>
+          OBG 2 · ULO 1 · AfD 1 · Linke 1
+        </div>
+        <div style="margin-top:8px; font-size:0.73rem; opacity:0.8;">Bebauungspläne · Straßen · Klimaschutz · Naturschutz</div>
+      </div>
+
+      <div class="ausschuss-card hfda">
+        <div class="a-label">HFDA</div>
+        <h3>Haupt-, Finanz- & Digitalisierungsausschuss</h3>
+        <div class="chair">Vorsitz: <strong>Michael Planer</strong> <span style="opacity:0.8">(ULO)</span></div>
+        <div class="members">
+          CDU 4 · Grüne 4 · SPD 2<br>
+          OBG 2 · ULO 1 · AfD 1 · Linke 1
+        </div>
+        <div class="note-special">⚡ Opposition führt Finanzausschuss</div>
+        <div style="margin-top:6px; font-size:0.73rem; opacity:0.8;">Haushalt · Stadtwerke · Personal · Digitalisierung</div>
+      </div>
+
+      <div class="ausschuss-card sbka">
+        <div class="a-label">SBKA</div>
+        <h3>Sozial-, Bildungs- & Kulturausschuss</h3>
+        <div class="chair">Vorsitz: <strong>Susanne Kügel</strong> <span style="opacity:0.8">(CDU)</span></div>
+        <div class="members">
+          CDU 4 · Grüne 4 · SPD 2<br>
+          OBG 2 · ULO 1 · AfD 1 · Linke 1
+        </div>
+        <div style="margin-top:8px; font-size:0.73rem; opacity:0.8;">Kitas · Schulen · Jugend · Kultur · Soziales</div>
+      </div>
+
+    </div>
+
+    <div class="section-arrow" style="margin-top:12px;">↓ Stadtteile beraten mit</div>
+
+    <!-- ORTSBEIRÄTE -->
+    <div class="section-label">6 Ortsbeiräte — beratendes Mandat für ihre Stadtteile</div>
+    <div class="ortsbeirat-row">
+      <div class="ort-card"><div class="ort-name">Oberursel-Mitte</div><div class="ort-meta">9 Mitglieder</div></div>
+      <div class="ort-card"><div class="ort-name">Oberursel-Nord</div><div class="ort-meta">7 Mitglieder</div></div>
+      <div class="ort-card"><div class="ort-name">Bommersheim</div><div class="ort-meta">9 Mitglieder</div></div>
+      <div class="ort-card"><div class="ort-name">Oberstedten</div><div class="ort-meta">9 Mitglieder</div></div>
+      <div class="ort-card"><div class="ort-name">Stierstadt</div><div class="ort-meta">9 Mitglieder</div></div>
+      <div class="ort-card"><div class="ort-name">Weißkirchen</div><div class="ort-meta">9 Mitglieder</div></div>
+    </div>
+
+    <!-- BEIRÄTE -->
+    <div class="section-label" style="margin-top:16px;">Fachliche Beiräte — beratend, ohne Stimmrecht in StaVV</div>
+    <div class="beirat-row">
+      <div class="beirat-card"><div class="b-name">🌍 Ausländerbeirat</div><div class="b-meta">9 Mitglieder · direkt gewählt</div></div>
+      <div class="beirat-card"><div class="b-name">🌿 Klimabeirat</div><div class="b-meta">16 Mitglieder · Fachexperten</div></div>
+      <div class="beirat-card"><div class="b-name">🧒 Jugendrat</div><div class="b-meta">11 Mitglieder · Jugendliche</div></div>
+    </div>
+
+  </div>
+
+  <!-- MACHT-ANALYSE -->
+  <div class="power-note">
+    <h3>Wie Macht funktioniert</h3>
+    <div class="power-grid">
+      <div class="power-block">
+        <div class="pb-title">🔴 Koalitionsmehrheit (23 von 45)</div>
+        <div class="pb-body">CDU (12) + SPD (6) + OBG (5) = 23 Stimmen. Knappe Mehrheit — 3 Stimmen Puffer. Stimmt einer der drei Partner nicht mit, kippt ein Beschluss.</div>
+      </div>
+      <div class="power-block">
+        <div class="pb-title">🔵 Opposition (17–22)</div>
+        <div class="pb-body">Grüne (11) + ULO (3) + Linke (2) + FDP (1) + Klimaliste (1) + Sonst. (2) = bis zu 20. Reicht nicht für Mehrheit, aber für Druck und Anfragen.</div>
+      </div>
+      <div class="power-block">
+        <div class="pb-title">⚡ Besondere Konstellation: HFDA</div>
+        <div class="pb-body">ULO-Fraktionsvorsitzender Michael Planer leitet den Haupt- und Finanzausschuss — ungewöhnlich für eine Oppositionspartei mit nur 3 Sitzen.</div>
+      </div>
+      <div class="power-block">
+        <div class="pb-title">📋 Wie ein Beschluss entsteht</div>
+        <div class="pb-body">Antrag oder Magistrat-Vorlage → Ausschuss berät + empfiehlt → StaVV beschließt. Bürger können bei öffentlichen Sitzungen zuhören.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEGENDE -->
+  <div class="legend">
+    <h3>Fraktionen — Vorsitzende</h3>
+    <div class="legend-grid">
+      <div class="legend-item"><div class="legend-dot" style="background:#374151"></div><div><strong>CDU (12)</strong><span> · Jürgen Aumüller · Vorsteher: Lothar Köhler</span></div></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#166534"></div><div><strong>Grüne (11)</strong><span> · Christina Herr</span></div></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#b91c1c"></div><div><strong>SPD (6)</strong><span> · Elenor Pospiech</span></div></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#92400e"></div><div><strong>OBG (5)</strong><span> · Steffen Veiga Gennert</span></div></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#1d4ed8"></div><div><strong>ULO (3)</strong><span> · Michael Planer</span></div></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#4b5563"></div><div><strong>AfD (2)</strong><span> · Prof. Dr. Claudia Koch-Brandt</span></div></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#7e22ce"></div><div><strong>Linke (2)</strong><span> · Ingmar Schlegel</span></div></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#475569"></div><div><strong>FDP (1) · Klimaliste (1) · Mauczok (1)</strong></div></div>
+    </div>
+  </div>
+
+  <div class="footer">Datenstand: März 2026 · Quelle: rim.ekom21.de/oberursel · Wahlperiode 2021–2026<br>
+  <a href="https://mc.mehlhart.de" style="color:#bbb">mc.mehlhart.de</a></div>
+
+</div>
+</body>
+</html>
