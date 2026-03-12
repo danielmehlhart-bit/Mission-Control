@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StaVV Oberursel — 43. Sitzung, 05.02.2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7f7f7;
+      color: #1a1a1a;
+      padding: 32px 16px;
+      line-height: 1.6;
+    }
+    .container { max-width: 900px; margin: 0 auto; }
+
+    .header {
+      background: #0f172a;
+      color: #fff;
+      border-radius: 16px;
+      padding: 36px 40px 28px;
+      margin-bottom: 24px;
+    }
+    .header .label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #64748b; margin-bottom: 8px; }
+    .header h1 { font-size: 1.7rem; font-weight: 800; margin-bottom: 6px; }
+    .header .sub { font-size: 0.9rem; color: #94a3b8; }
+    .header .meta-row { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 14px; font-size: 0.83rem; color: #64748b; }
+
+    .section-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #aaa; margin: 24px 0 10px; }
+
+    /* Summary Cards */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    }
+    .stat-card .num { font-size: 1.8rem; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+    .stat-card .lbl { font-size: 0.75rem; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .green { color: #16a34a; }
+    .blue { color: #2563eb; }
+    .orange { color: #d97706; }
+    .red { color: #dc2626; }
+
+    /* Beschluss Card */
+    .beschluss-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 22px 26px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    }
+    .bc-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+    .bc-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+    .tag-passed { background: #dcfce7; color: #166534; }
+    .tag-rejected { background: #fee2e2; color: #991b1b; }
+    .tag-dropped { background: #f3f4f6; color: #6b7280; }
+    .bc-num { font-size: 0.72rem; color: #999; font-weight: 600; }
+    .bc-title { font-size: 1rem; font-weight: 700; color: #111; margin-bottom: 4px; }
+    .bc-sub { font-size: 0.85rem; color: #555; margin-bottom: 10px; }
+
+    .vote-bar-wrap { margin-bottom: 10px; }
+    .vote-bar-wrap .vote-label { font-size: 0.75rem; font-weight: 600; color: #888; margin-bottom: 4px; display: flex; justify-content: space-between; }
+    .vote-bar { height: 8px; background: #f1f5f9; border-radius: 4px; overflow: hidden; display: flex; }
+    .vb-ja { background: #22c55e; }
+    .vb-nein { background: #ef4444; }
+    .vb-enth { background: #f59e0b; }
+
+    .faction-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .faction-chip {
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .fc-ja { background: #dcfce7; color: #166534; }
+    .fc-nein { background: #fee2e2; color: #991b1b; }
+    .fc-enth { background: #fef3c7; color: #92400e; }
+
+    .controversy {
+      font-size: 0.78rem;
+      color: #7c3aed;
+      background: #f5f3ff;
+      border-left: 3px solid #7c3aed;
+      padding: 6px 10px;
+      border-radius: 0 6px 6px 0;
+      margin-top: 8px;
+    }
+    .note-box {
+      font-size: 0.8rem;
+      color: #555;
+      background: #f8fafc;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-top: 8px;
+    }
+
+    /* Fragestunde */
+    .frage-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 14px 20px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      border-left: 3px solid #e2e8f0;
+    }
+    .frage-card.gruen { border-left-color: #16a34a; }
+    .frage-card.ulo { border-left-color: #2563eb; }
+    .frage-card.klima { border-left-color: #0891b2; }
+    .frage-card .f-tag { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+    .frage-card .f-title { font-size: 0.92rem; font-weight: 600; color: #111; }
+    .frage-card .f-desc { font-size: 0.82rem; color: #666; margin-top: 2px; }
+
+    .hatti-box {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-top: 20px;
+      font-size: 0.88rem;
+      color: #1e3a5f;
+    }
+    .hatti-box strong { color: #1d4ed8; }
+
+    .footer { text-align: center; font-size: 0.78rem; color: #bbb; margin-top: 32px; }
+
+    @media (max-width: 600px) {
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+      .header { padding: 20px; }
+      .header h1 { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="label">Hatti Briefing · StaVV-Protokoll</div>
+    <h1>Stadtverordnetenversammlung Oberursel</h1>
+    <div class="sub">43. öffentliche Sitzung — letzte Sitzung der Wahlperiode 2021–2026</div>
+    <div class="meta-row">
+      <span>📅 Donnerstag, 05. Februar 2026 · 19:30 Uhr</span>
+      <span>🏛️ Rathaus Oberursel, Großer Sitzungssaal</span>
+      <span>👥 43 von 45 Stadtverordneten anwesend</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="summary-grid">
+    <div class="stat-card"><div class="num green">10</div><div class="lbl">Beschlüsse</div></div>
+    <div class="stat-card"><div class="num red">3</div><div class="lbl">Abgelehnt</div></div>
+    <div class="stat-card"><div class="num orange">4</div><div class="lbl">Für erledigt erklärt</div></div>
+    <div class="stat-card"><div class="num blue">5</div><div class="lbl">Fragestunde-Punkte</div></div>
+  </div>
+
+  <!-- FRAGESTUNDE -->
+  <div class="section-title">A) Fragestunde — Anfragen der Fraktionen</div>
+
+  <div class="frage-card ulo">
+    <div class="f-tag" style="color:#2563eb">ULO · F-52/2025 + F-1/2026</div>
+    <div class="f-title">Lichtsignalanlage & Entwurfsplanung Frankfurter Landstraße</div>
+    <div class="f-desc">ULO fragte nach Kosten und erwarteter Verbesserung am Verkehrsknoten Frankfurter Landstraße / Zimmersmühlenweg. Bürgermeisterin antwortete schriftlich.</div>
+  </div>
+  <div class="frage-card gruen">
+    <div class="f-tag" style="color:#166534">Grüne · F-2/2026</div>
+    <div class="f-title">Defibrillatoren in Oberursel</div>
+    <div class="f-desc">Fragen zu Standorten, Zeitplan und bisherigen Angeboten für neue Defibrillatoren. Bürgermeisterin antwortete schriftlich.</div>
+  </div>
+  <div class="frage-card gruen">
+    <div class="f-tag" style="color:#166534">Grüne · F-2/2026</div>
+    <div class="f-title">Zeitplan Bebauungsplan Nr. 271 — Verlängerung Nassauer Straße</div>
+    <div class="f-desc">Wird der ursprüngliche Zeitplan (Frühbeteiligung März 2025, Offenlage Herbst 2025, Satzung Anfang 2026) eingehalten? Antwort: Bürgermeisterin.</div>
+  </div>
+  <div class="frage-card klima">
+    <div class="f-tag" style="color:#0891b2">Klimaliste</div>
+    <div class="f-title">Offenlegung Bebauungsplanvorentwurf Nr. 274 — Durchstich</div>
+    <div class="f-desc">Anfrage zur laufenden Offenlegungsphase (12.03.–14.04.2025) des Durchstich-Projekts.</div>
+  </div>
+
+  <!-- BESCHLÜSSE -->
+  <div class="section-title">D) Beschlüsse — Vorlagen des Magistrats</div>
+
+  <!-- BSO -->
+  <div class="beschluss-card">
+    <div class="bc-header">
+      <div>
+        <div class="bc-num">VL-213/2025</div>
+        <div class="bc-title">Änderung Betriebssatzung BSO (Bau- & Servicebetrieb)</div>
+        <div class="bc-sub">Anpassung der Organisationsstruktur des städtischen Eigenbetriebs BSO</div>
+      </div>
+      <span class="bc-tag tag-passed">✅ Angenommen</span>
+    </div>
+    <div class="vote-bar-wrap">
+      <div class="vote-label"><span>23 Ja · 20 Nein</span><span style="color:#dc2626">knappste Entscheidung des Abends</span></div>
+      <div class="vote-bar"><div class="vb-ja" style="width:53%"></div><div class="vb-nein" style="width:47%"></div></div>
+    </div>
+    <div class="faction-row">
+      <span class="faction-chip fc-ja">CDU 12 ✓</span>
+      <span class="faction-chip fc-ja">SPD 6 ✓</span>
+      <span class="faction-chip fc-ja">OBG 5 ✓</span>
+      <span class="faction-chip fc-nein">Grüne 10 ✗</span>
+      <span class="faction-chip fc-nein">ULO 3 ✗</span>
+      <span class="faction-chip fc-nein">AfD 2 ✗</span>
+      <span class="faction-chip fc-nein">Linke 2 ✗</span>
+      <span class="faction-chip fc-nein">Klimaliste 1 ✗</span>
+      <span class="faction-chip fc-nein">FDP 1 ✗</span>
+    </div>
+    <div class="controversy">⚡ Sehr kontrovers: klassische Koalitionslinie. 23:20 — nur 3 Stimmen Puffer.</div>
+  </div>
+
+  <!-- Marxstraße -->
+  <div class="beschluss-card">
+    <div class="bc-header">
+      <div>
+        <div class="bc-num">VL-6/2026</div>
+        <div class="bc-title">Bebauungsplan Nr. 265 — Neues Wohngebiet Marxstraße</div>
+        <div class="bc-sub">Verfahrenseinleitung für neues Wohngebiet. Grüne beantragten vorab: 30 % mietpreisgebundener Wohnraum, 10m Abstand zum Urselbach, Gehölzschutz, Basketballplatz erhalten.</div>
+      </div>
+      <span class="bc-tag tag-passed">✅ Angenommen</span>
+    </div>
+
+    <div style="font-size:0.78rem; color:#888; font-weight:600; margin-bottom:4px; margin-top:4px;">ÄNDERUNGSANTRAG (Grüne/Linke/Mauczok) → Abgelehnt 17:26</div>
+    <div class="faction-row" style="margin-bottom:10px;">
+      <span class="faction-chip fc-ja">Grüne 10 ✓</span>
+      <span class="faction-chip fc-ja">ULO 3 ✓</span>
+      <span class="faction-chip fc-ja">Linke 2 ✓</span>
+      <span class="faction-chip fc-ja">Klimaliste 1 ✓</span>
+      <span class="faction-chip fc-nein">CDU 12 ✗</span>
+      <span class="faction-chip fc-nein">SPD 6 ✗</span>
+      <span class="faction-chip fc-nein">OBG 5 ✗</span>
+      <span class="faction-chip fc-nein">AfD 2 ✗</span>
+      <span class="faction-chip fc-nein">FDP 1 ✗</span>
+    </div>
+
+    <div style="font-size:0.78rem; color:#888; font-weight:600; margin-bottom:4px;">URSPRÜNGLICHER BESCHLUSS → Angenommen 31:12</div>
+    <div class="faction-row">
+      <span class="faction-chip fc-ja">CDU 12 ✓</span>
+      <span class="faction-chip fc-ja">SPD 6 ✓</span>
+      <span class="faction-chip fc-ja">OBG 5 ✓</span>
+      <span class="faction-chip fc-ja">ULO 3 ✓</span>
+      <span class="faction-chip fc-ja">AfD 2 ✓</span>
+      <span class="faction-chip fc-ja">Linke 2 ✓</span>
+      <span class="faction-chip fc-ja">FDP 1 ✓</span>
+      <span class="faction-chip fc-nein">Grüne 10 ✗</span>
+      <span class="faction-chip fc-nein">Klimaliste 1 ✗</span>
+    </div>
+    <div class="note-box">💡 ULO hat für den Grünen-Änderungsantrag (mehr Sozialwohnungen, Naturschutz) gestimmt — und anschließend auch für den Originalbeschluss. Pragmatischer Kurs.</div>
+  </div>
+
+  <!-- Stadtbus -->
+  <div class="beschluss-card">
+    <div class="bc-header">
+      <div>
+        <div class="bc-num">VL-7/2026</div>
+        <div class="bc-title">Stadtbus Oberursel — Integration in VHT</div>
+        <div class="bc-sub">Öffentlich-rechtliche Vereinbarung zur Ausweitung des Stadtbusverkehrs in den Verkehrsverband Hochtaunus (VHT). Ersetzt eigenständigen Stadtbus.</div>
+      </div>
+      <span class="bc-tag tag-passed">✅ Angenommen</span>
+    </div>
+    <div class="vote-bar-wrap">
+      <div class="vote-label"><span>26 Ja · 17 Nein</span></div>
+      <div class="vote-bar"><div class="vb-ja" style="width:60%"></div><div class="vb-nein" style="width:40%"></div></div>
+    </div>
+    <div class="faction-row">
+      <span class="faction-chip fc-ja">CDU 12 ✓</span>
+      <span class="faction-chip fc-ja">SPD 6 ✓</span>
+      <span class="faction-chip fc-ja">OBG 5 ✓</span>
+      <span class="faction-chip fc-ja">AfD 2 ✓</span>
+      <span class="faction-chip fc-ja">FDP 1 ✓</span>
+      <span class="faction-chip fc-nein">Grüne 10 ✗</span>
+      <span class="faction-chip fc-nein">ULO 3 ✗</span>
+      <span class="faction-chip fc-nein">Linke 2 ✗</span>
+      <span class="faction-chip fc-nein">Klimaliste 1 ✗</span>
+    </div>
+    <div class="controversy">⚡ Intensiv debattiert. SPD stimmte für VHT-Integration — trotz ÖPNV-Ausbau-Rhetorik. ULO hatte Ringbus-Alternative vorgeschlagen (in Vorperiode abgelehnt).</div>
+  </div>
+
+  <!-- STEP -->
+  <div class="beschluss-card">
+    <div class="bc-header">
+      <div>
+        <div class="bc-num">VL-192/2025</div>
+        <div class="bc-title">STEP — Integrierter Stadtentwicklungsplan Oberursel</div>
+        <div class="bc-sub">Langfristiger Entwicklungsrahmen für die Stadt. Grüne wollten Prüfung neuer Gewerbeflächen (Bahnhof Weißkirchen, Frankfurter Landstraße) streichen.</div>
+      </div>
+      <span class="bc-tag tag-passed">✅ Angenommen</span>
+    </div>
+    <div style="font-size:0.78rem; color:#888; font-weight:600; margin-bottom:4px; margin-top:4px;">ÄNDERUNGSANTRAG (Grüne) → Abgelehnt 14:27</div>
+    <div class="faction-row" style="margin-bottom:10px;">
+      <span class="faction-chip fc-ja">Grüne 10 ✓</span>
+      <span class="faction-chip fc-ja">Linke 2 ✓</span>
+      <span class="faction-chip fc-ja">Klimaliste 1 ✓</span>
+      <span class="faction-chip fc-nein">CDU 12 ✗</span>
+      <span class="faction-chip fc-nein">SPD 6 ✗</span>
+      <span class="faction-chip fc-nein">OBG 5 ✗</span>
+      <span class="faction-chip fc-nein">ULO 3 ✗</span>
+      <span class="faction-chip fc-nein">FDP 1 ✗</span>
+    </div>
+    <div style="font-size:0.78rem; color:#888; font-weight:600; margin-bottom:4px;">HAUPTBESCHLUSS → Fast einstimmig 39:1:2</div>
+    <div class="faction-row">
+      <span class="faction-chip fc-ja">CDU · Grüne · SPD · OBG · ULO · Linke · Klimaliste ✓</span>
+      <span class="faction-chip fc-nein">AfD 1 ✗</span>
+      <span class="faction-chip fc-enth">FDP · Mauczok — Enthaltung</span>
+    </div>
+    <div class="note-box">Breiter Konsens beim Gesamtplan trotz Streit über Einzelpunkte. Grüne stimmten trotz gescheitertem Änderungsantrag für den STEP.</div>
+  </div>
+
+  <!-- Nassauer Straße -->
+  <div class="beschluss-card" style="border: 2px solid #fca5a5;">
+    <div class="bc-header">
+      <div>
+        <div class="bc-num">A-3/2026 via BUKA</div>
+        <div class="bc-title">🔥 Nassauer Straße Durchstich — Planungsstopp</div>
+        <div class="bc-sub">Grüne beantragten: alle Planungsausgaben für den Durchstich (geschätzt ~32 Mio. € Gesamtkosten) sofort einfrieren, bis neue StaVV nach der Wahl einen Grundsatzbeschluss fasst.</div>
+      </div>
+      <span class="bc-tag tag-rejected">❌ Abgelehnt</span>
+    </div>
+    <div class="vote-bar-wrap">
+      <div class="vote-label"><span>17 für Antrag · 26 dagegen</span><span style="color:#dc2626">Intensivste Debatte des Abends — 11 Redner</span></div>
+      <div class="vote-bar"><div class="vb-ja" style="width:39%"></div><div class="vb-nein" style="width:61%"></div></div>
+    </div>
+    <div class="faction-row">
+      <span class="faction-chip fc-ja">Grüne 10 ✓ Stopp</span>
+      <span class="faction-chip fc-ja">ULO 3 ✓ Stopp</span>
+      <span class="faction-chip fc-ja">Linke 2 ✓ Stopp</span>
+      <span class="faction-chip fc-ja">Klimaliste 1 ✓ Stopp</span>
+      <span class="faction-chip fc-nein">CDU 12 ✗</span>
+      <span class="faction-chip fc-nein">SPD 6 ✗</span>
+      <span class="faction-chip fc-nein">OBG 5 ✗</span>
+      <span class="faction-chip fc-nein">AfD 2 ✗</span>
+      <span class="faction-chip fc-nein">FDP 1 ✗</span>
+    </div>
+    <div class="note-box">📌 Bürgermeisterin Runge stellte klar: Vorzugsvariante und Kostenschätzung werden frühestens Herbst 2026 vorliegen, Entwurfsplanung frühestens 2028. Das Projekt läuft also auf jeden Fall weiter — die Frage ist nur mit wem.</div>
+  </div>
+
+  <!-- Grundstück -->
+  <div class="beschluss-card">
+    <div class="bc-header">
+      <div>
+        <div class="bc-num">VL-216/2025</div>
+        <div class="bc-title">Grundstück Mutter-Teresa-Straße — Vergabe Erbbaurecht</div>
+        <div class="bc-sub">99-jähriges Erbbaurecht an Box GmbH (Kelkheim) für Mietwohnungsbau. 30 Jahre Bindung an bezahlbaren Wohnraum.</div>
+      </div>
+      <span class="bc-tag tag-passed">✅ Angenommen</span>
+    </div>
+    <div class="vote-bar-wrap">
+      <div class="vote-label"><span>39 Ja · 3 Nein · 1 Enthaltung</span><span style="color:#16a34a">Breiter Konsens</span></div>
+      <div class="vote-bar"><div class="vb-ja" style="width:90%"></div><div class="vb-nein" style="width:7%"></div><div class="vb-enth" style="width:3%"></div></div>
+    </div>
+    <div class="faction-row">
+      <span class="faction-chip fc-ja">CDU · Grüne · SPD · OBG · ULO · Linke · Mauczok ✓</span>
+      <span class="faction-chip fc-nein">AfD 2 ✗ · FDP 1 ✗</span>
+      <span class="faction-chip fc-enth">Klimaliste — Enthaltung</span>
+    </div>
+  </div>
+
+  <!-- Sammelabstimmung -->
+  <div class="beschluss-card">
+    <div class="bc-header">
+      <div>
+        <div class="bc-title">Sammelabstimmung — 4 Vorlagen einstimmig</div>
+        <div class="bc-sub">Spielapparatesteuersatzung · Ladeinfrastruktur E-Autos · Bürgschaft für Stadtwerke (2 Mio. €) · Zustimmungsverfahren § 36a BauGB</div>
+      </div>
+      <span class="bc-tag tag-passed">✅ Alle einstimmig</span>
+    </div>
+    <div class="note-box">Routinepunkte ohne Kontroverse — breiter Konsens aller Fraktionen.</div>
+  </div>
+
+  <!-- Erledigte Anträge -->
+  <div class="section-title">F) Anträge — für erledigt erklärt (Ende Wahlperiode)</div>
+
+  <div class="beschluss-card" style="border-left: 4px solid #94a3b8;">
+    <div class="bc-header">
+      <div>
+        <div class="bc-title">Mehrere Anträge wegen Ende der Wahlzeit abgelaufen (§ 9 Abs. 12)</div>
+        <div class="bc-sub">Tourismusbeitrag für Stadtführer (Grüne/ULO/Linke) · SEWO-Abwicklung (ULO) · Prüfantrag Gehwegbreite (ULO) · AfD-Antrag Seebrücke-Ausstieg · Sachverständige im BUKA (Grüne)</div>
+      </div>
+      <span class="bc-tag tag-dropped">⏱ Erledigt</span>
+    </div>
+    <div class="note-box">Diese Anträge wurden nie abgestimmt — die neue StaVV nach der Wahl muss sie neu einbringen, wenn sie weiterverfolgt werden sollen.</div>
+  </div>
+
+  <div class="hatti-box">
+    <strong>Hattis Einordnung:</strong> Diese Sitzung zeigt das politische Koordinatensystem Oberursels in Reinform. Die Koalitionslinie (CDU + SPD + OBG) gegen Opposition (Grüne + ULO + Linke) zieht sich durch fast alle kontroversen Abstimmungen. Auffällig: die SPD stimmt trotz progressiver Programmatik konsequent mit der Koalition — beim Stadtbus, beim Nassauer-Straße-Stopp, bei der BSO-Satzung. Die nächste StaVV nach der Wahl am 15. März wird zeigen, ob und wie sich diese Verhältnisse verschieben.
+  </div>
+
+  <div class="footer">
+    Quelle: Öffentliche Niederschrift StaVV 05.02.2026 · rim.ekom21.de/oberursel · Erstellt von Hatti, 12.03.2026<br>
+    <a href="https://mc.mehlhart.de" style="color:#bbb">mc.mehlhart.de</a>
+  </div>
+
+</div>
+</body>
+</html>
