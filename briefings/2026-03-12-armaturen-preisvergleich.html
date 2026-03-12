@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preisvergleich — Armaturen Austausch Weber</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f7f7f7; color: #1a1a1a; padding: 24px 16px; line-height: 1.5; }
+    .container { max-width: 900px; margin: 0 auto; }
+
+    .header { background: #fff; border-radius: 14px; padding: 28px 32px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+    .header .label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #999; margin-bottom: 6px; }
+    .header h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 4px; }
+    .header .sub { font-size: 0.88rem; color: #666; }
+
+    .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+    .stat { background: #fff; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
+    .stat .num { font-size: 1.6rem; font-weight: 800; line-height: 1.1; }
+    .stat .lbl { font-size: 0.73rem; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 3px; }
+    .red { color: #dc2626; }
+    .green { color: #16a34a; }
+    .orange { color: #d97706; }
+    .blue { color: #2563eb; }
+
+    .section-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #aaa; margin: 20px 0 10px; }
+
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 16px; }
+    th { background: #f8fafc; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #888; padding: 12px 16px; text-align: left; border-bottom: 1px solid #f1f5f9; }
+    td { padding: 14px 16px; font-size: 0.88rem; border-bottom: 1px solid #f8fafc; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+
+    .pos { font-size: 0.72rem; color: #aaa; font-weight: 600; }
+    .prod-name { font-weight: 600; color: #111; font-size: 0.9rem; margin-bottom: 2px; }
+    .prod-brand { font-size: 0.75rem; color: #888; }
+    .price-angebot { font-weight: 700; color: #dc2626; white-space: nowrap; }
+    .price-online { font-weight: 700; color: #16a34a; white-space: nowrap; }
+    .price-na { color: #aaa; font-size: 0.82rem; }
+    .save-chip { display: inline-block; background: #dcfce7; color: #166534; border-radius: 4px; padding: 2px 7px; font-size: 0.73rem; font-weight: 700; white-space: nowrap; }
+    .save-none { background: #f3f4f6; color: #9ca3af; }
+    .source-link { font-size: 0.75rem; color: #6366f1; text-decoration: none; }
+    .source-link:hover { text-decoration: underline; }
+    .caveat { font-size: 0.72rem; color: #f59e0b; margin-top: 3px; }
+
+    .total-row td { background: #f8fafc; font-weight: 700; border-top: 2px solid #e5e7eb; }
+
+    .info-box { background: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 8px; padding: 14px 18px; margin-bottom: 14px; font-size: 0.88rem; color: #1e3a5f; }
+    .info-box ul { margin-top: 6px; padding-left: 18px; }
+    .info-box li { margin-bottom: 4px; }
+
+    .warn-box { background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 8px; padding: 14px 18px; margin-bottom: 14px; font-size: 0.88rem; color: #78350f; }
+
+    .footer { text-align: center; font-size: 0.75rem; color: #bbb; margin-top: 24px; }
+
+    @media (max-width: 600px) {
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+      th, td { padding: 10px 12px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="label">Hatti Research · 12. März 2026</div>
+    <h1>🚿 Armaturen-Preisvergleich — Kostenschätzung 00015/25</h1>
+    <div class="sub">Petzoldt &amp; Umbreit GmbH vs. Online-Preise (idealo, badquadrat, sanitino u.a.) · Mattschwarz-Armaturen</div>
+  </div>
+
+  <div class="summary-grid">
+    <div class="stat"><div class="num red">2.888 €</div><div class="lbl">Angebot netto</div></div>
+    <div class="stat"><div class="num green">~1.770 €</div><div class="lbl">Online netto (Material)</div></div>
+    <div class="stat"><div class="num orange">~790 €</div><div class="lbl">Potenzielle Ersparnis Material</div></div>
+    <div class="stat"><div class="num blue">650 €</div><div class="lbl">Arbeitszeit (fair)</div></div>
+  </div>
+
+  <div class="section-title">Positionsvergleich — Material</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Pos.</th>
+        <th>Produkt</th>
+        <th>Angebot</th>
+        <th>Online günstigster</th>
+        <th>Ersparnis</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td><span class="pos">1</span></td>
+        <td>
+          <div class="prod-name">KLUDI BOZZ Waschtisch-Einhandmischer 100</div>
+          <div class="prod-brand">inkl. Push Open Ablauf · Mattschwarz</div>
+          <div class="caveat">⚠ Online-Preis teilw. ohne Ablaufgarnitur</div>
+        </td>
+        <td><span class="price-angebot">303,36 €</span></td>
+        <td>
+          <span class="price-online">~92–150 €</span><br>
+          <a href="https://www.badquadrat.de/badarmaturen-accessoires/fuer-waschtische/kludi-bozz-waschtisch-einhandmischer-auslaufhoehe-100mm-ohne-ablaufgarnitur.html" class="source-link" target="_blank">badquadrat.de ↗</a> ·
+          <a href="https://www.megabad.com/kludi-bozz-waschtisch-einhandmischer-100-hoehe-a-1240304.htm" class="source-link" target="_blank">megabad.com ↗</a>
+        </td>
+        <td><span class="save-chip">~150–210 €</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="pos">2</span></td>
+        <td>
+          <div class="prod-name">VIEGA Multiplex Trio Ausstattungsset MT5</div>
+          <div class="prod-brand">Art. 806125 · Excentergarn. · schwarz matt</div>
+        </td>
+        <td><span class="price-angebot">333,60 €</span></td>
+        <td>
+          <span class="price-online">260,58 €</span><br>
+          <a href="https://www.idealo.de/preisvergleich/OffersOfProduct/205490904_-multiplex-trio-ausstattungsset-fuer-6161-01-visign-mt5-schwarz-matt-806125-viega.html" class="source-link" target="_blank">idealo.de ↗</a>
+        </td>
+        <td><span class="save-chip">~73 €</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="pos">3</span></td>
+        <td>
+          <div class="prod-name">KLUDI BOZZ UP-Wannenmischer mit Umsteller</div>
+          <div class="prod-brand">eigensicher · rund · Mattschwarz</div>
+          <div class="caveat">⚠ Preise variieren je nach Modellvariante</div>
+        </td>
+        <td><span class="price-angebot">543,00 €</span></td>
+        <td>
+          <span class="price-online">267–272 €</span><br>
+          <a href="https://www.idealo.de/preisvergleich/OffersOfProduct/205428576_-bozz-einhebelmischer-fuer-wanne-schwarz-matt-386633976-kludi.html" class="source-link" target="_blank">idealo.de ↗</a> ·
+          <a href="https://www.sanitino.de/kludi-bozz-up-armatur-fur-2-ausgange-schwarz-matt-387163976" class="source-link" target="_blank">sanitino.de ↗</a>
+        </td>
+        <td><span class="save-chip">~270–275 €</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="pos">4 + 7</span></td>
+        <td>
+          <div class="prod-name">HG Schlauchanschluss DN15 Fixfit S</div>
+          <div class="prod-brand">Art. 26453670 · mit Rückflussverhinderer · mattschwarz · ×2</div>
+        </td>
+        <td><span class="price-angebot">75,60 €</span><br><span style="font-size:0.75rem;color:#aaa">(2 × 37,80 €)</span></td>
+        <td>
+          <span class="price-online">~30–45 €</span><br>
+          <span style="font-size:0.75rem;color:#aaa">Standardartikel, Preisvergleich empfohlen</span>
+        </td>
+        <td><span class="save-chip">~30–45 €</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="pos">5</span></td>
+        <td>
+          <div class="prod-name">HANSGROHE ACTIVERA SELECT S Brausehalter Set</div>
+          <div class="prod-brand">Art. 28052670 · inkl. Schlauch · Mattschwarz</div>
+        </td>
+        <td><span class="price-angebot">54,60 €</span></td>
+        <td>
+          <span class="price-online">44,45 €</span><br>
+          <a href="https://www.skybad.de/hansgrohe-activera-select-s-duschkopfhalterungset-95-28052670-2jet-o95mm-brauseschlauch-1250-mm-schwarz-matt.html" class="source-link" target="_blank">skybad.de ↗</a>
+        </td>
+        <td><span class="save-chip">~10 €</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="pos">6</span></td>
+        <td>
+          <div class="prod-name">KLUDI BOZZ UP-Einhandhebelmischer Brause</div>
+          <div class="prod-brand">rund · Mattschwarz</div>
+          <div class="caveat">⚠ Artikelnummer im Angebot nicht angegeben — Varianten ab 89 € bis ~240 €</div>
+        </td>
+        <td><span class="price-angebot">331,80 €</span></td>
+        <td>
+          <span class="price-online">~89–239 €</span><br>
+          <a href="https://www.waerme24.de/kludi-bozz-up-brause-einhandmischer-feinbau-set-mit-funktionseinheit-mattschwarz-387553976.html" class="source-link" target="_blank">wärme24.de ↗</a> ·
+          <a href="https://preisvergleich.heise.de/kludi-bozz-unterputz-brause-einhandmischer-mattschwarz-386553976-a3069559.html" class="source-link" target="_blank">heise Preisvergleich ↗</a>
+        </td>
+        <td><span class="save-chip">~90–240 €</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="pos">8</span></td>
+        <td>
+          <div class="prod-name">HANSGROHE ACTIVERA S Showerpipe Reno-Set</div>
+          <div class="prod-brand">Art. 28074670 · inkl. Kopf- u. Handbrause · Mattschwarz</div>
+        </td>
+        <td><span class="price-angebot">506,52 €</span></td>
+        <td>
+          <span class="price-online">391,26 €</span><br>
+          <a href="https://www.sanitino.de/hansgrohe-activera-s" class="source-link" target="_blank">sanitino.de ↗</a> ·
+          <a href="https://www.badquadrat.de/badarmaturen-accessoires/stangen-brausen-zubehoer/hansgrohe-activera-s-duschsystem-240-1-strahlart-ecosmart-reno-varia.html" class="source-link" target="_blank">badquadrat.de ↗</a>
+        </td>
+        <td><span class="save-chip">~115 €</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="pos">9</span></td>
+        <td>
+          <div class="prod-name">VIEGA Farbset TEMPOPLEX Ablaufgarnitur</div>
+          <div class="prod-brand">Art. 806132 · für BWR · schwarz matt · Ø 115 mm</div>
+        </td>
+        <td><span class="price-angebot">90,00 €</span></td>
+        <td>
+          <span class="price-online">~50–80 €</span><br>
+          <a href="https://heizung-billiger.de/109757-viega-ausstattungsset-69640-in-115mm-kunststoff-schwarz-matt-viega-806132-4015211806132.html" class="source-link" target="_blank">heizung-billiger.de ↗</a>
+        </td>
+        <td><span class="save-chip">~10–40 €</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="pos">10</span></td>
+        <td>
+          <div class="prod-name">Arbeitszeit Meister Detlef Petzoldt</div>
+          <div class="prod-brand">10 Stunden × 65 €/h (geschätzt)</div>
+        </td>
+        <td><span class="price-angebot">650,00 €</span></td>
+        <td><span class="price-na">Marktüblich<br>60–80 €/h regional</span></td>
+        <td><span class="save-chip save-none">—</span></td>
+      </tr>
+
+      <tr class="total-row">
+        <td colspan="2">Gesamtsumme netto (Angebot)</td>
+        <td><span class="price-angebot">2.888,48 €</span></td>
+        <td><span class="price-online">~2.073–2.098 €</span><br><span style="font-size:0.75rem;color:#aaa">Material online + 650 € Arbeitszeit</span></td>
+        <td><span class="save-chip">~790–815 €</span></td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <strong>Was bedeutet das?</strong>
+    <ul>
+      <li>Das Angebot enthält einen Materialaufschlag von ca. <strong>50–70 %</strong> auf Endverbraucher-Online-Preise — das ist branchenüblich für Handwerksbetriebe (Einkauf über Fachhandel + Marge).</li>
+      <li>Die <strong>Arbeitszeit (650 €)</strong> ist mit 65 €/h für einen Heizungsmeister in der Rhein-Main-Region fair und marktüblich.</li>
+      <li>Alternative: Material selbst kaufen + Handwerker nur für Montage beauftragen (Material-only-Einkauf ~1.120–1.450 € online) — spart ~800 €, aber nicht jeder Handwerker montiert fremdes Material.</li>
+      <li>Bei Pos. 6 (KLUDI Brause-Mischer) unbedingt die genaue Artikelnummer klären — Preisrange ist sehr groß (89–332 €).</li>
+    </ul>
+  </div>
+
+  <div class="warn-box">
+    <strong>⚠ Hinweise zur Vergleichbarkeit</strong><br>
+    Pos. 1 (Waschtisch-Mischer): Online-Preis teilweise ohne Ablaufgarnitur — tatsächlicher Vergleichspreis inkl. Push-Open-Ablauf liegt eher bei 130–150 €. · Pos. 3 + 6 (UP-Mischer): Exakte Artikelnummern nicht im Angebot angegeben — Onlinepreise können abweichen. · Alle Online-Preise sind Endverbraucher-Preise (Stand März 2026); tatsächliche Verfügbarkeit vor Kauf prüfen.
+  </div>
+
+  <div class="footer">
+    Quellen: idealo.de · badquadrat.de · sanitino.de · skybad.de · megabad.com · wärme24.de · heizung-billiger.de<br>
+    Erstellt von Hatti · 12.03.2026 · <a href="https://mc.mehlhart.de" style="color:#bbb">mc.mehlhart.de</a>
+  </div>
+
+</div>
+</body>
+</html>
