@@ -13,7 +13,7 @@
       padding: 32px 16px;
       line-height: 1.6;
     }
-    .container { max-width: 900px; margin: 0 auto; }
+    .container { max-width: 920px; margin: 0 auto; }
 
     .header {
       background: #fff;
@@ -48,7 +48,6 @@
       font-size: 0.9rem;
       color: #777;
     }
-    .header .meta span { display: flex; align-items: center; gap: 6px; }
 
     .info-box {
       background: #fff8ec;
@@ -130,10 +129,21 @@
     .topic.green { background: #dcfce7; color: #166534; }
     .topic.red { background: #fee2e2; color: #991b1b; }
     .topic.blue { background: #dbeafe; color: #1e40af; }
+    .topic.orange { background: #ffedd5; color: #9a3412; }
 
-    .positions h3 {
-      font-size: 0.88rem;
-      font-weight: 600;
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 640px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    .positions h3, .kritik-section h3 {
+      font-size: 0.82rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: #888;
@@ -144,8 +154,8 @@
       padding: 0;
     }
     .positions ul li {
-      padding: 6px 0;
-      font-size: 0.95rem;
+      padding: 5px 0;
+      font-size: 0.93rem;
       border-bottom: 1px solid #f0f0f0;
       display: flex;
       gap: 8px;
@@ -159,15 +169,49 @@
       margin-top: 1px;
     }
 
+    .kritik-section {
+      background: #fff5f5;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+    }
+    .kritik-section ul {
+      list-style: none;
+      padding: 0;
+    }
+    .kritik-section ul li {
+      padding: 5px 0;
+      font-size: 0.9rem;
+      border-bottom: 1px solid #fee2e2;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      color: #333;
+    }
+    .kritik-section ul li:last-child { border-bottom: none; }
+    .kritik-section ul li::before {
+      content: "⚠";
+      color: #ef4444;
+      flex-shrink: 0;
+      font-size: 0.8rem;
+      margin-top: 3px;
+    }
+    .source-tag {
+      font-size: 0.72rem;
+      color: #999;
+      font-style: italic;
+      display: block;
+      margin-top: 2px;
+    }
+
     .candidates {
-      margin-top: 20px;
       background: #f8f9fa;
       border-radius: 10px;
       padding: 16px 20px;
     }
     .candidates h3 {
-      font-size: 0.88rem;
-      font-weight: 600;
+      font-size: 0.82rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: #888;
@@ -204,14 +248,48 @@
       background: #eff6ff;
       border-left: 4px solid #3b82f6;
       border-radius: 8px;
-      padding: 16px 20px;
-      margin-top: 18px;
-      font-size: 0.9rem;
+      padding: 14px 18px;
+      margin-top: 16px;
+      font-size: 0.88rem;
       color: #1e3a5f;
     }
     .hatti-note strong { color: #1d4ed8; }
 
-    .divider { border-top: 1px dashed #e5e7eb; margin: 20px 0; }
+    .divider { border-top: 1px dashed #e5e7eb; margin: 24px 0; }
+
+    .streitthema-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      margin-bottom: 20px;
+    }
+    .streitthema-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #111;
+    }
+    .streitthema-card p {
+      font-size: 0.9rem;
+      color: #444;
+      line-height: 1.6;
+    }
+    .position-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .pos-tag {
+      font-size: 0.8rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .pos-pro { background: #dcfce7; color: #166534; }
+    .pos-contra { background: #fee2e2; color: #991b1b; }
+    .pos-neutral { background: #f3f4f6; color: #4b5563; }
 
     .footer {
       text-align: center;
@@ -232,9 +310,9 @@
 <div class="container">
 
   <div class="header">
-    <div class="label">Hatti Briefing · 12. März 2026</div>
+    <div class="label">Hatti Briefing · 12. März 2026 · v2 mit Kritik</div>
     <h1>🗳️ Kommunalwahl Oberursel 2026</h1>
-    <div class="subtitle">Stadtverordnetenversammlung Oberursel (61440) — 4 Parteien im Check</div>
+    <div class="subtitle">Stadtverordnetenversammlung Oberursel (61440) — 4 Parteien im Check inkl. Kritikpunkte</div>
     <div class="meta">
       <span>📅 Wahltag: Sonntag, 15. März 2026</span>
       <span>🏛️ 45 Sitze Stadtverordnetenversammlung</span>
@@ -243,9 +321,47 @@
   </div>
 
   <div class="info-box">
-    ⚡ <strong>Kontext:</strong> Die aktuelle Mehrheit in der Stadtverordnetenversammlung stützt sich auf eine Koalition aus CDU, SPD und OBG/Freie Wähler. Die Opposition (Grüne, ULO, FDP, Linke) will das ändern. Kumulieren und Panaschieren möglich — du kannst Stimmen auf Kandidaten verteilen.
+    ⚡ <strong>Kontext:</strong> Die aktuelle Mehrheit in der Stadtverordnetenversammlung stützt sich auf eine Koalition aus <strong>CDU + SPD + OBG/Freie Wähler</strong>. Die Opposition (Grüne, ULO/Volt, FDP, Linke, Klimaliste) will das aufbrechen. Kumulieren und Panaschieren möglich — du kannst deine 45 Stimmen frei auf Kandidaten verteilen, max. 3 je Person.
   </div>
 
+  <!-- STREITTHEMEN -->
+  <div class="section-title">Die heißen Eisen in Oberursel</div>
+
+  <div class="streitthema-card">
+    <h3>🚗 Nassauer Straße — Durchstich zur Weingärtenumgehung</h3>
+    <p>Das wohl teuerste und umstrittenste Projekt: Die Stadt plant einen Straßendurchstich, der Nassauer Straße und Weingärtenumgehung verbinden soll. Kosten laut Gutachten: <strong>mindestens 24,8 Mio. € Bau + 3,2 Mio. Lärm/Umwelt + 4,1 Mio. Entwässerung</strong>, also ~32 Mio. € gesamt — ohne Fördergelder. Das Verkehrsgutachten zeigt keinen Rückgang des Gesamtverkehrs, nur Verlagerung, und 18.000 Kfz/Tag auf dem neuen Abschnitt. CO₂ durch Bau: 160 t, 2.500 m² neue Versiegelung. Ein „Aktionsbündnis Durchstich verhindern" hat sich gebildet, die Lokale Klimainitiative LOK ist klar dagegen.</p>
+    <div class="position-row">
+      <span class="pos-tag pos-pro">CDU: dafür</span>
+      <span class="pos-tag pos-pro">SPD: dafür</span>
+      <span class="pos-tag pos-contra">Grüne: dagegen</span>
+      <span class="pos-tag pos-contra">ULO: dagegen</span>
+    </div>
+  </div>
+
+  <div class="streitthema-card">
+    <h3>🧒 Kita-Gebühren — Erhöhungen seit Januar 2026</h3>
+    <p>Seit Jahresbeginn gelten in Oberursel neue Kita- und Krippengebühren. Die ULO spricht von Anstiegen von bis zu <strong>35–55 Prozent</strong> im Krippenbereich. Die einkommensabhängige Staffelung wird kritisiert, weil sie Mittelstandsfamilien besonders trifft. Erwartete Mehreinnahmen: 700.000 € in 2026, 1,2 Mio. € in 2027. Der Stadtelternbeirat (STEB) stellt fest: <strong>CDU, SPD und OBG sehen weitere Beitragserhöhungen als wahrscheinlich</strong> und halten an der „Drittel-Logik" (Land/Stadt/Eltern) fest — was strukturell zu weiteren Steigerungen führt.</p>
+    <div class="position-row">
+      <span class="pos-tag pos-neutral">CDU: Drittel-Logik, weitere Erhöhungen möglich</span>
+      <span class="pos-tag pos-neutral">SPD: ähnlich</span>
+      <span class="pos-tag pos-contra">Grüne: Entlastung</span>
+      <span class="pos-tag pos-contra">ULO: klar dagegen</span>
+    </div>
+  </div>
+
+  <div class="streitthema-card">
+    <h3>🚌 Stadtbus — Integration in VHT oder eigenständig?</h3>
+    <p>Die Koalition plant die Integration des Oberurseler Stadtbusses in den Verkehrsverband Hochtaunus (VHT). Die ULO warnt vor einer <strong>Angebotsverschlechterung</strong> durch die Übernahme und schlug stattdessen einen Ringbus vor, der Oberursel intern besser vernetzt — dieser Antrag wurde von der Koalitionsmehrheit abgelehnt.</p>
+    <div class="position-row">
+      <span class="pos-tag pos-pro">CDU/SPD: VHT-Integration</span>
+      <span class="pos-tag pos-contra">ULO: Ringbus statt VHT</span>
+      <span class="pos-tag pos-contra">Grüne: ÖPNV-Ausbau</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PARTEIEN -->
   <div class="section-title">Die 4 Parteien im Überblick</div>
 
   <div class="cards">
@@ -256,29 +372,53 @@
         <div class="party-badge cdu">CDU</div>
         <div class="card-header-text">
           <h2>CDU Oberursel</h2>
-          <div class="tagline">Aktuell stärkste Kraft, Regierungspartei in der Koalition</div>
+          <div class="tagline">Aktuell stärkste Kraft · Regierungspartei in der Koalition</div>
         </div>
       </div>
 
       <div class="topics">
-        <span class="topic">Wirtschaft</span>
+        <span class="topic">Wirtschaft & Gewerbe</span>
         <span class="topic">Sicherheit</span>
         <span class="topic">Solide Finanzen</span>
         <span class="topic">Digitalisierung</span>
         <span class="topic">Familie & Ehrenamt</span>
-        <span class="topic">Klimaschutz</span>
+        <span class="topic">Klimaschutz (technologieoffen)</span>
       </div>
 
-      <div class="positions">
-        <h3>Programm-Schwerpunkte (Kommunalebene)</h3>
-        <ul>
-          <li>Starke Wirtschaft und Gewerbeentwicklung als Grundlage für städtische Einnahmen</li>
-          <li>Solide Finanzpolitik, Haushaltsstabilität, keine Steuererhöhungen</li>
-          <li>Moderne Verwaltung, Digitalisierung von Stadtdiensten</li>
-          <li>Familienfreundlichkeit: Kitas, Schulen, Sport, Vereine stärken</li>
-          <li>Klimaschutz — technologieoffen, kein ideologisches Programm</li>
-          <li>Sicherheit und Ordnung im öffentlichen Raum</li>
-        </ul>
+      <div class="two-col">
+        <div class="positions">
+          <h3>Programm-Schwerpunkte</h3>
+          <ul>
+            <li>Starke Wirtschaft und Gewerbeentwicklung</li>
+            <li>Solide Finanzpolitik, kein Schuldenmachen</li>
+            <li>Digitalisierung Stadtverwaltung</li>
+            <li>Familienfreundlichkeit: Kitas, Schulen, Vereine</li>
+            <li>Klimaschutz ohne ideologische Schlagseite</li>
+            <li>Sicherheit und Ordnung</li>
+          </ul>
+        </div>
+
+        <div class="kritik-section">
+          <h3>Kritikpunkte (Presse/Opposition)</h3>
+          <ul>
+            <li>
+              Koalition hat 2025 laut ULO nur <strong>5 Anträge</strong> eingebracht — darunter ein Lachgasverbot und eine Maßnahme mit 280 € Einsparung pro Jahr.
+              <span class="source-tag">Quelle: Taunus-Nachrichten, ULO Wahlkampfabschluss März 2026</span>
+            </li>
+            <li>
+              Hält am Nassauer Straße Durchstich fest (~32 Mio. €), obwohl Gutachten keinen Rückgang des Gesamtverkehrs belegt.
+              <span class="source-tag">Quelle: LOK, Grüne-Analyse, Taunus-Nachrichten</span>
+            </li>
+            <li>
+              Weitere Kita-Gebührenerhöhungen als wahrscheinlich angesehen — Drittel-Logik strukturell teuer für Eltern.
+              <span class="source-tag">Quelle: Stadtelternbeirat STEB, Befragung Kommunalwahl 2026</span>
+            </li>
+            <li>
+              Reduzierung Stadtverordnete 45→41 scheiterte wegen interner Uneinigkeit der Koalition selbst.
+              <span class="source-tag">Quelle: Taunus-Nachrichten</span>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div class="candidates">
@@ -286,40 +426,26 @@
         <div class="candidate-list">
           <div class="candidate">
             <div class="rank">2</div>
-            <div>
-              <div class="name">Martin Bollinger</div>
-              <div class="desc">27 Jahre · Junge Union</div>
-            </div>
+            <div><div class="name">Martin Bollinger</div><div class="desc">27 J. · Junge Union</div></div>
           </div>
           <div class="candidate">
             <div class="rank">4</div>
-            <div>
-              <div class="name">Daniel Neuner</div>
-              <div class="desc">21 Jahre · Junge Union</div>
-            </div>
+            <div><div class="name">Daniel Neuner</div><div class="desc">21 J. · Junge Union</div></div>
           </div>
           <div class="candidate">
             <div class="rank">9</div>
-            <div>
-              <div class="name">Lukas Brosi</div>
-              <div class="desc">30 Jahre · Junge Union</div>
-            </div>
+            <div><div class="name">Lukas Brosi</div><div class="desc">30 J. · Junge Union</div></div>
           </div>
           <div class="candidate">
             <div class="rank">13</div>
-            <div>
-              <div class="name">Jonas Giebitz</div>
-              <div class="desc">23 Jahre · Schatzmeister JU Oberursel</div>
-            </div>
+            <div><div class="name">Jonas Giebitz</div><div class="desc">23 J. · Schatzmeister JU</div></div>
           </div>
         </div>
-        <div style="margin-top:10px; font-size:0.83rem; color:#999;">
-          ⚠️ Spitzenkandidat (Platz 1) konnte ich nicht verifiziert ermitteln — CDU-Website nicht erreichbar. Liste hat laut JU überdurchschnittlich viele Jungkandidaten.
-        </div>
+        <div style="margin-top:10px; font-size:0.82rem; color:#999;">⚠️ Spitzenkandidat (Platz 1) nicht verifizierbar — CDU-Website nicht erreichbar. Liste hat überdurchschnittlich viele Jungkandidaten auf mandatsrelevanten Plätzen.</div>
       </div>
 
       <div class="hatti-note">
-        <strong>Hattis Einschätzung:</strong> CDU ist die aktuell regierende Kraft in Oberursel. Programm ist breit, wenig Ecken. Starker Fokus auf Wirtschaft, solide Mitte-rechts. Die Koalition mit SPD und OBG hat laut Oppositionskritik in der letzten Amtszeit wenig eigene Akzente gesetzt. Verjüngung der Liste ist ein Pluspunkt.
+        <strong>Hattis Einschätzung:</strong> CDU ist die Regierungspartei, und das merkt man: wenig Ecken im Programm, viel Kontinuität. Die Koalitionsbilanz ist mager — der ULO-Vergleich (5 Anträge in einem Jahr) ist nicht entkräftet worden. Nassauer Straße und Kita-Gebühren sind die zwei konkreten Wunden.
       </div>
     </div>
 
@@ -342,75 +468,78 @@
         <span class="topic">Klimafestigkeit</span>
       </div>
 
-      <div class="positions">
-        <h3>Programm-Schwerpunkte</h3>
-        <ul>
-          <li>Bezahlbarer Wohnraum für alle Einkommensschichten, geförderte Wohnungen</li>
-          <li>Mobilitätswende: Fuß- und Radverkehr gleichberechtigt zum Auto, ÖPNV stärken</li>
-          <li>Bildung unabhängig vom Geldbeutel der Eltern — frühkindlich bis lebenslanges Lernen</li>
-          <li>Sozialer Zusammenhalt, Inklusion, Vielfalt</li>
-          <li>Nachhaltiger Haushalt mit verlässlichen Stadtwerken</li>
-          <li>Klares Bekenntnis zu Demokratie gegen populistische Strömungen</li>
-        </ul>
+      <div class="two-col">
+        <div class="positions">
+          <h3>Programm-Schwerpunkte</h3>
+          <ul>
+            <li>Bezahlbarer Wohnraum für alle Schichten</li>
+            <li>Mobilitätswende: Rad & Fuß gleichberechtigt zum Auto</li>
+            <li>Bildung unabhängig vom Eltern-Portemonnaie</li>
+            <li>Sozialer Zusammenhalt, Inklusion, Vielfalt</li>
+            <li>Verlässliche Stadtwerke, nachhaltiger Haushalt</li>
+            <li>Klares Demokratie-Bekenntnis gegen Populismus</li>
+          </ul>
+        </div>
+
+        <div class="kritik-section">
+          <h3>Kritikpunkte (Presse/Opposition)</h3>
+          <ul>
+            <li>
+              Teil der Koalition, die Kita-Gebühren um bis zu 55 % erhöht hat — trotz sozialem Programmanspruch.
+              <span class="source-tag">Quelle: ULO, STEB-Befragung</span>
+            </li>
+            <li>
+              Unterstützt den Nassauer Straße Durchstich (~32 Mio. €), obwohl Gutachten ökologische und verkehrliche Zweifel belegt.
+              <span class="source-tag">Quelle: Grüne-Analyse, LOK Klimainitiative</span>
+            </li>
+            <li>
+              Rhetorik zu Mobilität und Klimaschutz steht in Widerspruch zur Koalitionspraxis (Durchstich, VHT-Integration Stadtbus).
+              <span class="source-tag">Eigene Analyse / Programmvergleich</span>
+            </li>
+            <li>
+              SPD-Kandidat Kaan Güdük (Platz 8) wurde rassistisch angegriffen — die SPD hat sich solidarisiert, aber das Thema zeigt die gesellschaftliche Stimmung im Wahlkampf.
+              <span class="source-tag">Quelle: Taunus-Nachrichten, März 2026</span>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div class="candidates">
-        <h3>Kandidaten — Stadtverordnetenversammlung (Top 12)</h3>
+        <h3>Kandidaten — Stadtverordnetenversammlung (Top)</h3>
         <div class="candidate-list">
           <div class="candidate">
             <div class="rank">1</div>
-            <div>
-              <div class="name">Elenor Pospiech</div>
-              <div class="desc">63 J. · Volkswirtin, Wirtschaftsjournalistin, Unternehmerin · 5 Kinder</div>
-            </div>
+            <div><div class="name">Elenor Pospiech</div><div class="desc">63 J. · Volkswirtin, Journalistin, Unternehmerin · 5 Kinder, 2 Enkelkinder</div></div>
           </div>
           <div class="candidate">
             <div class="rank">2</div>
-            <div>
-              <div class="name">Wolfgang Burchard</div>
-              <div class="desc">Ehem. Lehrer · seit 2016 in der StaVV · Mobilitätswende-Fokus</div>
-            </div>
+            <div><div class="name">Wolfgang Burchard</div><div class="desc">Ehem. Lehrer · seit 2016 in StaVV · Mobilitätswende</div></div>
           </div>
           <div class="candidate">
             <div class="rank">3</div>
-            <div>
-              <div class="name">Sabine Kunz</div>
-              <div class="desc">Rechtsanwältin · Fachanwältin Bau-/Architektenrecht · Naturfreunde Oberursel</div>
-            </div>
+            <div><div class="name">Sabine Kunz</div><div class="desc">Rechtsanwältin · Fachanwältin Bau-/Architektenrecht · Naturfreunde</div></div>
           </div>
           <div class="candidate">
             <div class="rank">4</div>
-            <div>
-              <div class="name">Frank Sibert</div>
-              <div class="desc">58 J. · Bankbetriebswirt · Co-Vorsitzender SPD · Finanz-/Energiewende</div>
-            </div>
+            <div><div class="name">Frank Sibert</div><div class="desc">58 J. · Bankbetriebswirt · Co-Vorsitzender SPD · Energie-/Finanzwende</div></div>
           </div>
           <div class="candidate">
             <div class="rank">6</div>
-            <div>
-              <div class="name">Sebastian Imhof</div>
-              <div class="desc">38 J. · seit 2021 in StaVV · Kita, Wohnraum, Bürgerbeteiligung</div>
-            </div>
+            <div><div class="name">Sebastian Imhof</div><div class="desc">38 J. · seit 2021 in StaVV · Kita, Wohnraum, Bürgerbeteiligung</div></div>
           </div>
           <div class="candidate">
             <div class="rank">8</div>
-            <div>
-              <div class="name">Kaan Güdük</div>
-              <div class="desc">Underwriter · Co-Vorsitzender SPD Nord · Transparenz, Klartext</div>
-            </div>
+            <div><div class="name">Kaan Güdük</div><div class="desc">Underwriter · Co-Vorsitzender SPD Nord · Transparenz & Klartext</div></div>
           </div>
           <div class="candidate">
             <div class="rank">10</div>
-            <div>
-              <div class="name">Marco Ernst</div>
-              <div class="desc">24 J. · Student · Seit 2018 pol. engagiert · Stimme der Jungen</div>
-            </div>
+            <div><div class="name">Marco Ernst</div><div class="desc">24 J. · Student · Seit 2018 engagiert · Stimme der Jungen</div></div>
           </div>
         </div>
       </div>
 
       <div class="hatti-note">
-        <strong>Hattis Einschätzung:</strong> SPD ist trotz Koalitionsbeteiligung in der Programmatik klar sozialer ausgerichtet als CDU. Interessant: sehr diverses, erfahrenes Team — vom Juristen über den Banker bis zum 24-jährigen Studenten. Spitzenkandidatin Elenor Pospiech kommt aus der Wirtschaft, nicht aus der Gewerkschaft — das ist für Oberursel realistisch.
+        <strong>Hattis Einschätzung:</strong> Die SPD hat das ambitionierteste Kandidatenprofil — sehr diverse Köpfe, echter Querschnitt. Das Problem: als Koalitionspartner klafft ein Graben zwischen Programm und Praxis. Wer SPD wählt, wählt im Prinzip "CDU light + soziales Gewissen". Das kann reizvoll sein — oder enttäuschend, je nachdem was man erwartet.
       </div>
     </div>
 
@@ -430,86 +559,74 @@
         <span class="topic">Bezahlbares Wohnen</span>
         <span class="topic green">Flächenentsiegelung</span>
         <span class="topic">Bildung & Jugend</span>
-        <span class="topic green">ÖPNV</span>
+        <span class="topic green">ÖPNV-Ausbau</span>
       </div>
 
-      <div class="positions">
-        <h3>Programm-Schwerpunkte</h3>
-        <ul>
-          <li>Klimaneutralität: Klimabeirat stärken, Begrünung und Flächenentsiegelung vorantreiben</li>
-          <li>Mobilität: Lückenschluss Nord-Süd Radachse, ÖPNV-Ausbau, Stopp Weingärtenumgehungs-Durchstich</li>
-          <li>Soziales Wohnen: Mehr Sozialwohnungen, bezahlbarer Wohnraum als Grundrecht</li>
-          <li>Bildung & Jugend: Jugendbeirat stärken, Mitspracherecht ausbauen</li>
-          <li>Innenstadt: Rathaus, Stadthalle und Bücherei als Begegnungsorte erhalten</li>
-          <li>GAZ (Gefahrenabwehrzentrum) konsequent umsetzen</li>
-          <li>Sporthalle für TSGO: Geeignetes Grundstück bereitstellen</li>
-        </ul>
+      <div class="two-col">
+        <div class="positions">
+          <h3>Programm-Schwerpunkte</h3>
+          <ul>
+            <li>Klimaneutralität, Begrünung, Entsiegelung</li>
+            <li>Nord-Süd Radachse (Lückenschluss)</li>
+            <li>Stopp Nassauer Straße Durchstich</li>
+            <li>Mehr Sozialwohnungen, Wohnen als Grundrecht</li>
+            <li>Jugendbeirat stärken, Mitsprache ausbauen</li>
+            <li>Rathaus, Stadthalle & Bücherei als Begegnungsorte erhalten</li>
+            <li>GAZ (Gefahrenabwehrzentrum) umsetzen</li>
+          </ul>
+        </div>
+
+        <div class="kritik-section">
+          <h3>Kritikpunkte (Presse/Bürger)</h3>
+          <ul>
+            <li>
+              Programm wurde partizipativ erarbeitet (300+ Anregungen) — aber konkrete Finanzierungsszenarien fehlen in der öffentlichen Darstellung.
+              <span class="source-tag">Eigene Analyse</span>
+            </li>
+            <li>
+              Klarer Fokus auf Rad & Klima — städtische Realität (viele Pendler, Familien mit Auto) spiegelt sich weniger wider. Risiko: Wahrnehmung als ideologisch statt pragmatisch.
+              <span class="source-tag">Eigene Einschätzung</span>
+            </li>
+            <li>
+              Als Oppositionspartei bisher ohne Regierungsverantwortung in Oberursel — Programmumsetzung bleibt Versprechen.
+              <span class="source-tag">Eigene Analyse</span>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div class="candidates">
-        <h3>Kandidaten — Stadtverordnetenversammlung (Top 12)</h3>
+        <h3>Kandidaten — Stadtverordnetenversammlung (Top)</h3>
         <div class="candidate-list">
           <div class="candidate">
             <div class="rank">1</div>
-            <div>
-              <div class="name">Susanne Herz</div>
-              <div class="desc">61 J. · Referentin Familienbildung · Spitzenkandidatin</div>
-            </div>
+            <div><div class="name">Susanne Herz</div><div class="desc">61 J. · Referentin Familienbildung · Spitzenkandidatin</div></div>
           </div>
           <div class="candidate">
             <div class="rank">2</div>
-            <div>
-              <div class="name">Sven Mathes</div>
-              <div class="desc">26 J. · Verwaltungsfachangestellter · Jüngste Spitze</div>
-            </div>
+            <div><div class="name">Sven Mathes</div><div class="desc">26 J. · Verwaltungsfachangestellter</div></div>
           </div>
           <div class="candidate">
             <div class="rank">3</div>
-            <div>
-              <div class="name">Dr. Angela Helbling</div>
-              <div class="desc">53 J. · Geologin</div>
-            </div>
+            <div><div class="name">Dr. Angela Helbling</div><div class="desc">53 J. · Geologin</div></div>
           </div>
           <div class="candidate">
             <div class="rank">4</div>
-            <div>
-              <div class="name">Dennis Pfeiffer</div>
-              <div class="desc">35 J. · Gartenbauwissenschaftler</div>
-            </div>
-          </div>
-          <div class="candidate">
-            <div class="rank">5</div>
-            <div>
-              <div class="name">Wiebke Seeleib</div>
-              <div class="desc">Personalreferentin & Betriebsrätin</div>
-            </div>
+            <div><div class="name">Dennis Pfeiffer</div><div class="desc">35 J. · Gartenbauwissenschaftler</div></div>
           </div>
           <div class="candidate">
             <div class="rank">6</div>
-            <div>
-              <div class="name">Dr. David Lamouroux</div>
-              <div class="desc">41 J. · Physiker</div>
-            </div>
+            <div><div class="name">Dr. David Lamouroux</div><div class="desc">41 J. · Physiker</div></div>
           </div>
           <div class="candidate">
             <div class="rank">8</div>
-            <div>
-              <div class="name">Wolfgang Schmitt</div>
-              <div class="desc">66 J. · MdB a.D. · Erfahrener Kommunalpolitiker</div>
-            </div>
-          </div>
-          <div class="candidate">
-            <div class="rank">10</div>
-            <div>
-              <div class="name">Ilja Moreth</div>
-              <div class="desc">57 J. · Informatiker</div>
-            </div>
+            <div><div class="name">Wolfgang Schmitt</div><div class="desc">66 J. · MdB a.D. · Erfahrener Kommunalpolitiker</div></div>
           </div>
         </div>
       </div>
 
       <div class="hatti-note">
-        <strong>Hattis Einschätzung:</strong> Grüne haben mit über 300 Bürgeranregungen das bisher am partizipativsten erarbeitete Programm. Klarer Fokus auf Radverkehr und Klimaschutz. Mit Wolfgang Schmitt (MdB a.D.) haben sie einen echten Politikheavy auf Platz 8. Susanne Herz als Spitzenkandidatin — bodenständige Profil, kein klassischer Grünen-Ideologieträger.
+        <strong>Hattis Einschätzung:</strong> Von allen vier Parteien haben die Grünen das inhaltlich dichteste Programm und die klarste Opposition zum Durchstich-Projekt. Das kostet Mut, denn in Oberursel gibt es viele Autofahrer. Schwäche: Ohne Koalitionsoptionen nach der Wahl bleiben viele Punkte Wunschzettel.
       </div>
     </div>
 
@@ -519,7 +636,7 @@
         <div class="party-badge ulo">ULO</div>
         <div class="card-header-text">
           <h2>ULO/Volt — Unabhängige Liste Oberursel</h2>
-          <div class="tagline">Sozialliberale Wählergemeinschaft, seit 2022 in der StaVV</div>
+          <div class="tagline">Sozialliberale Wählergemeinschaft · seit Dez 2022 in der StaVV</div>
         </div>
       </div>
 
@@ -529,20 +646,40 @@
         <span class="topic">ÖPNV & Ringbus</span>
         <span class="topic blue">Bahnhofsareal</span>
         <span class="topic">Gewerbegebiet</span>
-        <span class="topic">Bürgerpartizipation</span>
+        <span class="topic">Schwammstadt</span>
       </div>
 
-      <div class="positions">
-        <h3>Programm-Schwerpunkte</h3>
-        <ul>
-          <li>Autoarme Innenstadt: Weniger Durchgangsverkehr, mehr Lebensqualität in der City</li>
-          <li>Preisgünstiger Wohnraum — eines der 3 Magazin-Schwerpunktthemen</li>
-          <li>ÖPNV: Ringbus statt VHT-Integration, bessere innerstädtische Verbindungen</li>
-          <li>Bahnhofsareal: Mikroapartments für Studenten, IT-Fachschule, Parkhaus, Fahrradverleih</li>
-          <li>Gewerbegebiet prüfen und weiterentwickeln für mehr Stadteinnahmen</li>
-          <li>Kritisch gegenüber dem 20–25 Mio. € Nassauer Straße Durchstich-Projekt</li>
-          <li>Stadtbus erhalten — keine Verschlechterung durch VHT-Übernahme</li>
-        </ul>
+      <div class="two-col">
+        <div class="positions">
+          <h3>Programm-Schwerpunkte</h3>
+          <ul>
+            <li>Autoarme Innenstadt, intelligentes Parkleitsystem</li>
+            <li>Preisgünstiger Wohnraum: Erbbaugrundstücke, Genossenschaften, Aufstockung von Supermärkten</li>
+            <li>ÖPNV: Ringbus statt VHT-Integration</li>
+            <li>Bahnhofsareal: Mikroapartments, IT-Fachschule, Fahrradverleih</li>
+            <li>Starkregenschutz / Schwammstadt-Konzept</li>
+            <li>Kita-Gebühren senken, keine Drittel-Logik-Erhöhungen</li>
+            <li>Kein Nassauer Straße Durchstich</li>
+          </ul>
+        </div>
+
+        <div class="kritik-section">
+          <h3>Kritikpunkte (Presse/Bürger)</h3>
+          <ul>
+            <li>
+              Als kleine neue Kraft ohne eigene Mehrheit — Anträge wurden mehrfach von der Koalition abgelehnt (z.B. Ringbus). Umsetzungsmacht begrenzt.
+              <span class="source-tag">Eigene Analyse / Taunus-Nachrichten</span>
+            </li>
+            <li>
+              Kooperation mit Volt Deutschland bringt eine europäische, teils techno-liberale Färbung, die nicht zu allen ULO-Kernwählern passt.
+              <span class="source-tag">Eigene Einschätzung</span>
+            </li>
+            <li>
+              Fraktion erst seit Dez 2022 — wenig Erfahrung mit tatsächlicher Regierungsverantwortung auf kommunaler Ebene.
+              <span class="source-tag">Eigene Analyse</span>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div class="candidates">
@@ -550,51 +687,29 @@
         <div class="candidate-list">
           <div class="candidate">
             <div class="rank">1</div>
-            <div>
-              <div class="name">Michael Planer</div>
-              <div class="desc">Fraktionsvorsitzender ULO · Gründungsmitglied der Fraktion (Dez 2022)</div>
-            </div>
+            <div><div class="name">Michael Planer</div><div class="desc">Fraktionsvorsitzender ULO · Gründungsmitglied (Dez 2022)</div></div>
           </div>
           <div class="candidate">
             <div class="rank">2</div>
-            <div>
-              <div class="name">Yvonne Morawitz</div>
-              <div class="desc">Ortsbeiratskandidatin Oberstedten</div>
-            </div>
+            <div><div class="name">Yvonne Morawitz</div><div class="desc">Ortsbeiratskandidatin Oberstedten</div></div>
           </div>
           <div class="candidate">
             <div class="rank">3</div>
-            <div>
-              <div class="name">Thomas Fiehler</div>
-              <div class="desc">Finanz- und ÖPNV-Experte der Fraktion · starker Wahlkämpfer</div>
-            </div>
+            <div><div class="name">Thomas Fiehler</div><div class="desc">Finanz- & ÖPNV-Experte · schärfster Redner der Fraktion</div></div>
           </div>
           <div class="candidate">
             <div class="rank">4</div>
-            <div>
-              <div class="name">Nasser Djafari</div>
-              <div class="desc">Ortsbeirat Mitte-Kandidat</div>
-            </div>
+            <div><div class="name">Nasser Djafari</div><div class="desc">Stv. Vorsitzender ULO · Starkregenschutz, Wohnraum</div></div>
           </div>
           <div class="candidate">
             <div class="rank">5</div>
-            <div>
-              <div class="name">Adrian Fritsch</div>
-              <div class="desc">Ortsbeirat Nord</div>
-            </div>
-          </div>
-          <div class="candidate">
-            <div class="rank">6</div>
-            <div>
-              <div class="name">Joachim Schmitz</div>
-              <div class="desc">Ortsbeirat Mitte</div>
-            </div>
+            <div><div class="name">Adrian Fritsch</div><div class="desc">ULO-Vorsitzender · Ortsbeirat Nord</div></div>
           </div>
         </div>
       </div>
 
       <div class="hatti-note">
-        <strong>Hattis Einschätzung:</strong> Die ULO ist die interessanteste Wildcard. Seit Fraktionsgründung 12/2022 haben sie 26 Anträge und 17 Anfragen eingebracht — für eine neue Kraft beachtlich. Thomas Fiehler ist inhaltlich der schärfste Kopf. Kooperation mit Volt bringt überraschend europäischen Anstrich. Ihre Hauptthese: Die CDU/SPD/OBG-Koalition ist träge geworden. Das klingt in Teilen überzeugend. Schwäche: Als kleinere Kraft haben sie weniger Durchsetzungsmacht ohne Koalitionspartner.
+        <strong>Hattis Einschätzung:</strong> Die ULO ist die interessanteste und unbequemste Kraft. Sie stellen die richtigen Fragen (32 Mio. für einen Straßendurchstich, der keinen Verkehr reduziert?), haben konkrete Alternativideen und eine beeindruckende parlamentarische Bilanz für eine 3 Jahre junge Fraktion. Hauptrisiko: ohne Koalitionspartner bleibt die Wirkung begrenzt. Wählen macht hier vor allem dann Sinn, wenn man ein Gegengewicht zur träge gewordenen Mehrheit will.
       </div>
     </div>
 
@@ -602,72 +717,80 @@
 
   <div class="divider"></div>
 
+  <!-- SCHNELLVERGLEICH -->
   <div class="section-title">Hattis Schnell-Vergleich</div>
-
-  <div class="card" style="margin-bottom:24px;">
-    <table style="width:100%; border-collapse:collapse; font-size:0.9rem;">
+  <div class="card" style="margin-bottom:24px; overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse; font-size:0.88rem; min-width:500px;">
       <thead>
         <tr style="border-bottom:2px solid #e5e7eb;">
-          <th style="text-align:left; padding:8px 12px; color:#888; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.06em;">Thema</th>
-          <th style="padding:8px 12px; color:#222;">CDU</th>
-          <th style="padding:8px 12px; color:#e3000f;">SPD</th>
-          <th style="padding:8px 12px; color:#46962b;">Grüne</th>
-          <th style="padding:8px 12px; color:#2563eb;">ULO</th>
+          <th style="text-align:left; padding:8px 12px; color:#888; font-size:0.78rem; text-transform:uppercase;">Thema</th>
+          <th style="padding:8px 12px; color:#222; text-align:center;">CDU</th>
+          <th style="padding:8px 12px; color:#e3000f; text-align:center;">SPD</th>
+          <th style="padding:8px 12px; color:#46962b; text-align:center;">Grüne</th>
+          <th style="padding:8px 12px; color:#2563eb; text-align:center;">ULO</th>
         </tr>
       </thead>
       <tbody>
         <tr style="border-bottom:1px solid #f0f0f0;">
-          <td style="padding:10px 12px; font-weight:600;">Wohnraum</td>
-          <td style="padding:10px 12px; text-align:center;">➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕</td>
+          <td style="padding:9px 12px; font-weight:600;">Wohnraum</td>
+          <td style="padding:9px 12px; text-align:center;">➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕➕</td>
         </tr>
         <tr style="border-bottom:1px solid #f0f0f0;">
-          <td style="padding:10px 12px; font-weight:600;">Radverkehr</td>
-          <td style="padding:10px 12px; text-align:center;">➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕</td>
+          <td style="padding:9px 12px; font-weight:600;">Radverkehr</td>
+          <td style="padding:9px 12px; text-align:center;">➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕</td>
         </tr>
         <tr style="border-bottom:1px solid #f0f0f0;">
-          <td style="padding:10px 12px; font-weight:600;">ÖPNV</td>
-          <td style="padding:10px 12px; text-align:center;">➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕➕</td>
+          <td style="padding:9px 12px; font-weight:600;">ÖPNV</td>
+          <td style="padding:9px 12px; text-align:center;">➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕➕</td>
         </tr>
         <tr style="border-bottom:1px solid #f0f0f0;">
-          <td style="padding:10px 12px; font-weight:600;">Klimaschutz</td>
-          <td style="padding:10px 12px; text-align:center;">➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕</td>
+          <td style="padding:9px 12px; font-weight:600;">Klimaschutz</td>
+          <td style="padding:9px 12px; text-align:center;">➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕</td>
         </tr>
         <tr style="border-bottom:1px solid #f0f0f0;">
-          <td style="padding:10px 12px; font-weight:600;">Wirtschaft</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕</td>
+          <td style="padding:9px 12px; font-weight:600;">Wirtschaft</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f0f0f0;">
+          <td style="padding:9px 12px; font-weight:600;">Finanzdisziplin</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕</td>
+          <td style="padding:9px 12px; text-align:center;">➕➕</td>
         </tr>
         <tr>
-          <td style="padding:10px 12px; font-weight:600;">Finanzdisziplin</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕</td>
-          <td style="padding:10px 12px; text-align:center;">➕➕</td>
+          <td style="padding:9px 12px; font-weight:600;">Nassauer Str. Durchstich</td>
+          <td style="padding:9px 12px; text-align:center; font-size:0.9rem;">✅ dafür</td>
+          <td style="padding:9px 12px; text-align:center; font-size:0.9rem;">✅ dafür</td>
+          <td style="padding:9px 12px; text-align:center; font-size:0.9rem;">❌ dagegen</td>
+          <td style="padding:9px 12px; text-align:center; font-size:0.9rem;">❌ dagegen</td>
         </tr>
       </tbody>
     </table>
   </div>
 
   <div class="info-box" style="background:#f0fdf4; border-left-color:#22c55e; color:#14532d;">
-    🗳️ <strong>Tipp:</strong> Bei der Kommunalwahl in Hessen hast du 45 Stimmen (= Zahl der Stadtverordneten). Du kannst bis zu 3 Stimmen auf eine Person kumulieren und Stimmen über Parteilisten hinaus vergeben (Panaschieren). Das ermöglicht dir, z.B. eine Partei zu favorisieren, aber einzelne Köpfe anderer Listen extra zu unterstützen.
+    🗳️ <strong>Abstimmungs-Tipp:</strong> Bei der Kommunalwahl in Hessen hast du <strong>45 Stimmen</strong> (= Zahl der Stadtverordneten). Du kannst bis zu <strong>3 Stimmen auf eine Person kumulieren</strong> und Stimmen über Parteilisten hinaus vergeben (Panaschieren). Das heißt: du kannst z.B. hauptsächlich eine Partei stärken, aber einzelne Kandidaten anderer Listen gezielt extra pushen.
   </div>
 
   <div class="footer">
-    Erstellt von Hatti · 12. März 2026 · Quellen: ul-oberursel.de, spd-oberursel.de, gruene-oberursel.de, taunus-nachrichten.de<br>
+    Erstellt von Hatti · v2 · 12. März 2026<br>
+    Quellen: ul-oberursel.de · spd-oberursel.de · gruene-oberursel.de · taunus-nachrichten.de · l-o-k.org · wahl.steb-oberursel.de<br>
     <a href="https://mc.mehlhart.de">mc.mehlhart.de</a>
   </div>
 
