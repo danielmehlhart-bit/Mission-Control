@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notebook-Vergleich — Coding & Kundentermine</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f7f7f7; color: #1a1a1a; padding: 24px 16px; line-height: 1.5; }
+    .container { max-width: 960px; margin: 0 auto; }
+
+    .header { background: #0f172a; color: #fff; border-radius: 16px; padding: 28px 32px; margin-bottom: 24px; }
+    .header .label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #64748b; margin-bottom: 6px; }
+    .header h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 4px; }
+    .header .sub { font-size: 0.88rem; color: #94a3b8; }
+    .req-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .req-chip { background: #1e293b; border-radius: 20px; padding: 4px 12px; font-size: 0.78rem; color: #e2e8f0; }
+
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+    .card { background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); position: relative; overflow: hidden; }
+    .card.winner { border: 2px solid #22c55e; }
+    .card.over-budget { border: 2px solid #f59e0b; }
+
+    .badge { position: absolute; top: 16px; right: 16px; font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+    .badge-green { background: #dcfce7; color: #166534; }
+    .badge-orange { background: #fef3c7; color: #92400e; }
+    .badge-blue { background: #eff6ff; color: #1e40af; }
+
+    .brand { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #94a3b8; margin-bottom: 4px; }
+    .model-name { font-size: 1.05rem; font-weight: 800; color: #111; margin-bottom: 2px; line-height: 1.3; }
+    .model-sub { font-size: 0.8rem; color: #888; margin-bottom: 14px; }
+
+    .price-big { font-size: 1.6rem; font-weight: 800; margin-bottom: 14px; line-height: 1; }
+    .price-green { color: #16a34a; }
+    .price-orange { color: #d97706; }
+    .price-red { color: #dc2626; }
+
+    .specs { list-style: none; padding: 0; margin-bottom: 14px; }
+    .specs li { font-size: 0.85rem; color: #444; padding: 5px 0; border-bottom: 1px solid #f8fafc; display: flex; justify-content: space-between; gap: 8px; }
+    .specs li:last-child { border-bottom: none; }
+    .spec-key { color: #888; font-size: 0.8rem; flex-shrink: 0; }
+    .spec-val { font-weight: 600; text-align: right; }
+
+    .pros-cons { margin-top: 12px; }
+    .pro, .con { font-size: 0.8rem; padding: 2px 0; }
+    .pro::before { content: "✓ "; color: #16a34a; font-weight: 700; }
+    .con::before { content: "✗ "; color: #dc2626; font-weight: 700; }
+
+    .buy-link { display: block; margin-top: 14px; text-align: center; background: #f8fafc; border-radius: 8px; padding: 8px 14px; font-size: 0.8rem; font-weight: 600; color: #6366f1; text-decoration: none; }
+    .buy-link:hover { background: #eff6ff; }
+
+    /* Vergleichstabelle */
+    .section-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #aaa; margin: 24px 0 10px; }
+
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 20px; }
+    th { background: #f8fafc; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #888; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; }
+    td { padding: 12px 16px; font-size: 0.87rem; border-bottom: 1px solid #f8fafc; text-align: center; }
+    td:first-child { text-align: left; font-weight: 600; color: #555; }
+    tr:last-child td { border-bottom: none; }
+    .cell-good { color: #16a34a; font-weight: 700; }
+    .cell-ok { color: #d97706; font-weight: 600; }
+    .cell-bad { color: #dc2626; }
+
+    .verdict { background: #fff; border-radius: 14px; padding: 22px 28px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 20px; }
+    .verdict h3 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 12px; }
+    .verdict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .v-block { background: #f8fafc; border-radius: 8px; padding: 12px 16px; }
+    .v-title { font-size: 0.83rem; font-weight: 700; margin-bottom: 4px; }
+    .v-body { font-size: 0.82rem; color: #555; line-height: 1.5; }
+
+    .footer { text-align: center; font-size: 0.75rem; color: #bbb; margin-top: 24px; }
+
+    @media (max-width: 700px) {
+      .cards { grid-template-columns: 1fr; }
+      .verdict-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="label">Hatti Research · 12. März 2026</div>
+    <h1>💻 Notebook-Vergleich — Windows</h1>
+    <div class="sub">Coding + Kundentermine · Dell + Lenovo · Budget max. 1.200 €</div>
+    <div class="req-chips">
+      <span class="req-chip">⚡ schnell</span>
+      <span class="req-chip">🔋 lange Akkulaufzeit</span>
+      <span class="req-chip">🏢 Kundentermine</span>
+      <span class="req-chip">👨‍💻 Coding</span>
+      <span class="req-chip">📐 14 Zoll</span>
+      <span class="req-chip">💶 max. 1.200 €</span>
+    </div>
+  </div>
+
+  <!-- CARDS -->
+  <div class="cards">
+
+    <!-- Lenovo ThinkPad T14 -->
+    <div class="card winner">
+      <span class="badge badge-green">✓ Empfehlung</span>
+      <div class="brand">Lenovo</div>
+      <div class="model-name">ThinkPad T14 Gen 5</div>
+      <div class="model-sub">AMD Ryzen 7 PRO 8840U · 14"</div>
+      <div class="price-big price-green">ab 967 €</div>
+      <ul class="specs">
+        <li><span class="spec-key">Prozessor</span><span class="spec-val">Ryzen 7 PRO 8840U</span></li>
+        <li><span class="spec-key">RAM</span><span class="spec-val">16 GB (konfigurierbar)</span></li>
+        <li><span class="spec-key">SSD</span><span class="spec-val">256–512 GB</span></li>
+        <li><span class="spec-key">Display</span><span class="spec-val">14" IPS, 1920×1200</span></li>
+        <li><span class="spec-key">Akku</span><span class="spec-val">~14–16 h</span></li>
+        <li><span class="spec-key">Gewicht</span><span class="spec-val">1,38 kg</span></li>
+        <li><span class="spec-key">Windows</span><span class="spec-val">Win 11 Home/Pro</span></li>
+      </ul>
+      <div class="pros-cons">
+        <div class="pro">Beste Tastatur für Coding (legendäre ThinkPad-Qualität)</div>
+        <div class="pro">Business-Look für Kundentermine</div>
+        <div class="pro">Sehr lange Akkulaufzeit</div>
+        <div class="pro">Robust, repairierbar, Unternehmensgarantie</div>
+        <div class="con">Basis-SSD (256 GB) für Coding zu knapp → 512 GB bevorzugen</div>
+        <div class="con">Design eher nüchtern als optisch beeindruckend</div>
+      </div>
+      <a href="https://www.idealo.de/preisvergleich/Liste/121228891/lenovo-thinkpad-t14-gen-5-amd.html" class="buy-link" target="_blank">→ idealo.de vergleichen</a>
+    </div>
+
+    <!-- Lenovo IdeaPad Slim 5 -->
+    <div class="card">
+      <span class="badge badge-blue">💰 Preis-Leistung</span>
+      <div class="brand">Lenovo</div>
+      <div class="model-name">IdeaPad Slim 5 Gen 9</div>
+      <div class="model-sub">AMD Ryzen 7 8845HS · 14"</div>
+      <div class="price-big price-green">ab 773 €</div>
+      <ul class="specs">
+        <li><span class="spec-key">Prozessor</span><span class="spec-val">Ryzen 7 8845HS</span></li>
+        <li><span class="spec-key">RAM</span><span class="spec-val">16 GB LPDDR5x</span></li>
+        <li><span class="spec-key">SSD</span><span class="spec-val">1 TB</span></li>
+        <li><span class="spec-key">Display</span><span class="spec-val">14" IPS, 1920×1200</span></li>
+        <li><span class="spec-key">Akku</span><span class="spec-val">~11 h Video</span></li>
+        <li><span class="spec-key">Gewicht</span><span class="spec-val">1,46 kg</span></li>
+        <li><span class="spec-key">Windows</span><span class="spec-val">Win 11 Home</span></li>
+      </ul>
+      <div class="pros-cons">
+        <div class="pro">Bestes Preis-Leistungs-Verhältnis</div>
+        <div class="pro">1 TB SSD — genug Platz für alles</div>
+        <div class="pro">Sehr leise, kühl unter Last</div>
+        <div class="con">Consumer-Design, weniger Business-Ausstrahlung</div>
+        <div class="con">Tastatur nicht ganz auf ThinkPad-Niveau</div>
+        <div class="con">Akku schwächer als die anderen</div>
+      </div>
+      <a href="https://www.idealo.de/preisvergleich/OffersOfProduct/203699701_-ideapad-slim-5-14-2024-lenovo.html" class="buy-link" target="_blank">→ idealo.de vergleichen</a>
+    </div>
+
+    <!-- Dell XPS 13 -->
+    <div class="card over-budget">
+      <span class="badge badge-orange">⚠ Über Budget</span>
+      <div class="brand">Dell</div>
+      <div class="model-name">XPS 13 9350</div>
+      <div class="model-sub">Intel Core Ultra 5 226V · 14"</div>
+      <div class="price-big price-orange">ab 1.399 €</div>
+      <ul class="specs">
+        <li><span class="spec-key">Prozessor</span><span class="spec-val">Core Ultra 5 226V</span></li>
+        <li><span class="spec-key">RAM</span><span class="spec-val">16 GB LPDDR5x</span></li>
+        <li><span class="spec-key">SSD</span><span class="spec-val">512 GB</span></li>
+        <li><span class="spec-key">Display</span><span class="spec-val">14" IPS, 1920×1200</span></li>
+        <li><span class="spec-key">Akku</span><span class="spec-val">~13,5 h (Bestmarke)</span></li>
+        <li><span class="spec-key">Gewicht</span><span class="spec-val">1,20 kg</span></li>
+        <li><span class="spec-key">Windows</span><span class="spec-val">Win 11 Home</span></li>
+      </ul>
+      <div class="pros-cons">
+        <div class="pro">Leichtestes Gerät — ideal für Reisen</div>
+        <div class="pro">Beste Akkulaufzeit (13,5h gemessen)</div>
+        <div class="pro">Premium-Look für Kundentermine</div>
+        <div class="pro">Intel Lunar Lake — sehr effizient</div>
+        <div class="con">199–200 € über dem Budget</div>
+        <div class="con">Kaum Anschlüsse (nur 2× USB-C)</div>
+        <div class="con">Kein USB-A — Hub nötig</div>
+      </div>
+      <a href="https://www.idealo.de/preisvergleich/OffersOfProduct/204858527_-xps-13-9350-2024-dell.html" class="buy-link" target="_blank">→ idealo.de vergleichen</a>
+    </div>
+
+  </div>
+
+  <!-- VERGLEICHSTABELLE -->
+  <div class="section-title">Direktvergleich</div>
+  <table>
+    <thead>
+      <tr>
+        <th style="text-align:left">Kriterium</th>
+        <th>ThinkPad T14 G5</th>
+        <th>IdeaPad Slim 5</th>
+        <th>Dell XPS 13</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Preis (ab)</td>
+        <td class="cell-good">967 € ✓</td>
+        <td class="cell-good">773 € ✓</td>
+        <td class="cell-bad">1.399 € ✗</td>
+      </tr>
+      <tr>
+        <td>Akkulaufzeit</td>
+        <td class="cell-good">14–16 h ✓✓</td>
+        <td class="cell-ok">~11 h ○</td>
+        <td class="cell-good">~13,5 h ✓✓</td>
+      </tr>
+      <tr>
+        <td>Gewicht</td>
+        <td class="cell-ok">1,38 kg ○</td>
+        <td class="cell-ok">1,46 kg ○</td>
+        <td class="cell-good">1,20 kg ✓</td>
+      </tr>
+      <tr>
+        <td>Tastatur (Coding)</td>
+        <td class="cell-good">Exzellent ✓✓</td>
+        <td class="cell-ok">Gut ○</td>
+        <td class="cell-ok">Gut ○</td>
+      </tr>
+      <tr>
+        <td>Business-Ausstrahlung</td>
+        <td class="cell-good">Sehr hoch ✓✓</td>
+        <td class="cell-ok">Mittel ○</td>
+        <td class="cell-good">Sehr hoch ✓✓</td>
+      </tr>
+      <tr>
+        <td>Anschlüsse</td>
+        <td class="cell-good">USB-A + USB-C + HDMI ✓</td>
+        <td class="cell-good">USB-A + USB-C + HDMI ✓</td>
+        <td class="cell-bad">Nur 2× USB-C ✗</td>
+      </tr>
+      <tr>
+        <td>SSD-Speicher</td>
+        <td class="cell-ok">256 GB (kl. Variante) !</td>
+        <td class="cell-good">1 TB ✓✓</td>
+        <td class="cell-ok">512 GB ○</td>
+      </tr>
+      <tr>
+        <td>Zuverlässigkeit</td>
+        <td class="cell-good">Business-Grade ✓✓</td>
+        <td class="cell-ok">Consumer ○</td>
+        <td class="cell-good">Premium ✓✓</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- FAZIT -->
+  <div class="verdict">
+    <h3>Empfehlung für deinen Use Case</h3>
+    <div class="verdict-grid">
+      <div class="v-block">
+        <div class="v-title">🏆 Wenn Budget entscheidet: ThinkPad T14 Gen 5</div>
+        <div class="v-body">Beste Gesamtlösung im Budget. Kodier-Tastatur ohne Kompromisse, lange Akkulaufzeit, Business-Look für Kundentermine. <strong>Wichtig: Ryzen 7 PRO + 16 GB RAM + 512 GB SSD konfigurieren</strong> — dann ~1.050–1.150 €.</div>
+      </div>
+      <div class="v-block">
+        <div class="v-title">💡 Wenn Budget egal: Dell XPS 13 9350</div>
+        <div class="v-body">Leichtestes Gerät, beste Akkulaufzeit, top Optik für Kundentermine. 200 € über Budget — aber dauerhafter Begleiter. Braucht einen USB-C-Hub für externe Geräte.</div>
+      </div>
+      <div class="v-block">
+        <div class="v-title">💰 Budget-Option: IdeaPad Slim 5 (Ryzen 7)</div>
+        <div class="v-body">Gut für Coding, 1 TB SSD, ~773 €. Consumer-Gerät — weniger Business-Ausstrahlung bei Kundenterminen. Spart ~200 € vs. ThinkPad.</div>
+      </div>
+      <div class="v-block">
+        <div class="v-title">❌ ThinkPad X1 Carbon?</div>
+        <div class="v-body">Wäre ideal, aber Einstiegspreis 1.729 € — weit über Budget. Für diesen Use Case kein sinnvoller Trade-off.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Quellen: idealo.de · notebookcheck.com · laptopmedia.com · pcwelt.de · dell.com · lenovo.com · Stand März 2026<br>
+    <a href="https://mc.mehlhart.de" style="color:#bbb">mc.mehlhart.de</a>
+  </div>
+
+</div>
+</body>
+</html>
