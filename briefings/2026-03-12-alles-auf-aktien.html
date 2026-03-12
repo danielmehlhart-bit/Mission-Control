@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alles auf Aktien - 12. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .date {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        
+        .youtube-link {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .youtube-link:hover {
+            background: #e55656;
+            transform: translateY(-2px);
+        }
+        
+        .section {
+            background: white;
+            margin-bottom: 25px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .section:hover {
+            transform: translateY(-2px);
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+        }
+        
+        .markets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .market-item {
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .positive {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .negative {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .neutral {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        
+        .stocks {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .stock {
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid;
+        }
+        
+        .stock.up {
+            border-left-color: #27ae60;
+            background: #ecf8f3;
+        }
+        
+        .stock.down {
+            border-left-color: #e74c3c;
+            background: #fdf2f2;
+        }
+        
+        .stock-name {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stock-change {
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        
+        .up .stock-change {
+            color: #27ae60;
+        }
+        
+        .down .stock-change {
+            color: #e74c3c;
+        }
+        
+        .tl-dr {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        
+        .tl-dr h2 {
+            color: white;
+            border-bottom: 3px solid rgba(255,255,255,0.3);
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .markets {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 Alles auf Aktien</h1>
+            <div class="date">Donnerstag, 12. März 2026</div>
+            <a href="https://www.youtube.com/watch?v=RRti-HtPQ88" class="youtube-link" target="_blank">▶ Episode ansehen</a>
+        </div>
+
+        <div class="section tl-dr">
+            <h2>🚀 TL;DR</h2>
+            <p><strong>Atomkraft-Renaissance:</strong> Von der Leyen nennt Atomausstieg "strategischen Fehler" • <strong>Geopolitik:</strong> Ölpreis volatil wegen Straße von Hormus • <strong>Picks:</strong> Uran-ETFs, Covered Call Strategien (aber Vorsicht!)</p>
+        </div>
+
+        <div class="section">
+            <h2>📊 Märkte im Überblick</h2>
+            <div class="markets">
+                <div class="market-item negative">
+                    <div>DAX</div>
+                    <div>-1,4% → 23.640</div>
+                </div>
+                <div class="market-item negative">
+                    <div>S&P 500</div>
+                    <div>-0,1%</div>
+                </div>
+                <div class="market-item neutral">
+                    <div>NASDAQ 100</div>
+                    <div>+0,03%</div>
+                </div>
+                <div class="market-item positive">
+                    <div>Brent Öl</div>
+                    <div>+5% → 92$/Fass</div>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <strong>🛢️ Ölpreis-Drama:</strong> IEA gibt 400 Mio. Barrel aus strategischen Reserven frei - mehr als nach Ukraine-Invasion! Problem: nur 4 Tage globaler Verbrauch. Straße von Hormus bleibt Risiko.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📈 Einzelaktien</h2>
+            <div class="stocks">
+                <div class="stock up">
+                    <div class="stock-name">Oracle</div>
+                    <div class="stock-change">+9,2%</div>
+                    <small>Starke Quartalszahlen</small>
+                </div>
+                <div class="stock up">
+                    <div class="stock-name">Bumble</div>
+                    <div class="stock-change">+24%</div>
+                    <small>Trotz sinkender Nutzer</small>
+                </div>
+                <div class="stock up">
+                    <div class="stock-name">Porsche AG</div>
+                    <div class="stock-change">+6,1%</div>
+                    <small>Überraschend nach schwachen Zahlen</small>
+                </div>
+                <div class="stock up">
+                    <div class="stock-name">Wacker Chemie</div>
+                    <div class="stock-change">+6,6%</div>
+                    <small>Höhere Gewinnprognose</small>
+                </div>
+                <div class="stock down">
+                    <div class="stock-name">Aerovium</div>
+                    <div class="stock-change">-6,2%</div>
+                    <small>Schwache Zahlen</small>
+                </div>
+                <div class="stock down">
+                    <div class="stock-name">Rheinmetall</div>
+                    <div class="stock-change">Rückgang</div>
+                    <small>Erwartungen verfehlt</small>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <strong>🎬 Netflix Deal:</strong> 600 Mio. $ für Ben Afflecks KI-Firma "Artists Equity" - eine der größten Netflix-Übernahmen. Hollywood setzt voll auf KI-Tools.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>⚛️ Thema des Tages: Atomkraft-Renaissance</h2>
+            <p><strong>Hammer-Aussage:</strong> EU-Kommissionschefin von der Leyen nennt den Atomausstieg einen "strategischen Fehler".</p>
+            
+            <div class="highlight">
+                <strong>Die Wende:</strong> Von 32% Atomstrom (2000) auf unter 15% heute. Jetzt Fokus auf kleine modulare Reaktoren (SMR) - flexibler, günstiger, ab 2030 einsatzbereit.
+            </div>
+            
+            <h3>🎯 Investment-Chancen:</h3>
+            <ul>
+                <li><strong>Uran-ETFs:</strong> UBS Nuclear Economies, Wisdom Tree Uranium, VanEck Nuclear</li>
+                <li><strong>Einzelaktien:</strong> Cameco, Constellation Energy, NextEra Energy</li>
+                <li><strong>SMR-Player:</strong> Oklo (unterstützt von Sam Altman), New Scale, Rolls-Royce Holdings</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>💰 Triple A: Yield Max ETFs</h2>
+            <p><strong>Versprechen:</strong> 25-45% Ausschüttungsrendite durch Covered Call Strategien</p>
+            
+            <div class="highlight">
+                <strong>⚠️ Achtung Return of Capital Falle!</strong> Hohe Renditen oft nur durch Rückzahlung des eigenen Kapitals. Gewinne nach oben gedeckelt, Verluste nach unten offen.
+            </div>
+            
+            <h3>So funktioniert's:</h3>
+            <ul>
+                <li>ETF hält z.B. NVIDIA-Aktien</li>
+                <li>Verkauft Call-Optionen darauf</li>
+                <li>Kassiert Prämien = hohe Ausschüttung</li>
+                <li><strong>Aber:</strong> Gewinne begrenzt, Verluste voll mitgenommen</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Hatti's Take</h2>
+            <div class="highlight">
+                <strong>Atomkraft:</strong> Strategische Wette auf Europas Energieunabhängigkeit. Uran-ETFs interessant, aber politisches Risiko beachten.<br><br>
+                <strong>Yield Max:</strong> Für Cashflow-Liebhaber ok, aber kein Vermögensaufbau. Gen Z sollte vorsichtig sein - klingt zu gut um wahr zu sein.<br><br>
+                <strong>Märkte:</strong> Geopolitik dominiert. Öl bleibt volatil, solange Hormus-Straße Risiko besteht.
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px; color: #7f8c8d;">
+            <small>Automatisch generiert von Hatti 🏔️ • <a href="https://mc.mehlhart.de" style="color: #3498db;">Mission Control</a></small>
+        </div>
+    </div>
+</body>
+</html>
