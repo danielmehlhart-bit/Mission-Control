@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marktbericht 12.03.2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header .date {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .markets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .market-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid #e9ecef;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .market-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .market-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .market-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .market-change {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .positive {
+            color: #10b981;
+        }
+        
+        .negative {
+            color: #ef4444;
+        }
+        
+        .news-section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: #222;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .news-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+            border: 1px solid #e9ecef;
+        }
+        
+        .news-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: #333;
+        }
+        
+        .news-content {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .outlook-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .outlook-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .source-link {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+        
+        .source-link:hover {
+            background: #0056b3;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📈 Marktbericht</h1>
+            <div class="date">12. März 2026 — Die Märkte bleiben angespannt</div>
+        </div>
+        
+        <div class="markets-grid">
+            <div class="market-card">
+                <div class="market-name">🇩🇪 DAX</div>
+                <div class="market-value negative">23.640</div>
+                <div class="market-change negative">-1,37% (-329 Pkt)</div>
+            </div>
+            
+            <div class="market-card">
+                <div class="market-name">🛢️ Öl (Brent)</div>
+                <div class="market-value negative">~93,00 $</div>
+                <div class="market-change negative">+5% (Iran-Krieg)</div>
+            </div>
+            
+            <div class="market-card">
+                <div class="market-name">📊 Inflation DE</div>
+                <div class="market-value positive">1,9%</div>
+                <div class="market-change positive">Feb 2026 (unter 2%)</div>
+            </div>
+        </div>
+        
+        <div class="news-section">
+            <h2 class="section-title">🔥 Haupttreiber</h2>
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-title">🚨 Iran-Krieg belastet Märkte</div>
+                    <div class="news-content">
+                        Krieg im Iran und Ölsorgen bleiben dominierendes Thema. Rekord-Freigabe von Ölreserven durch IEA zeigt kaum Wirkung. Analysten erwarten anhaltende Nervosität.
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-title">📉 DAX volatil aber schwach</div>
+                    <div class="news-content">
+                        Schwankungen zwischen Tagestiefpunkt und über 23.800 Punkten. Am Ende -1,37% bei 23.640 Punkten. Kann nicht an Vortageserholung anknüpfen.
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-title">🏭 Unternehmensmeldungen gemischt</div>
+                    <div class="news-content">
+                        Rheinmetall: Umsatz +29% auf 9,9 Mrd €, aber Aktie -8%. Henkel: Rückgänge, Kurs -4%. Porsche: Gewinn -91% auf 310 Mio €, Aktie -1,2%.
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-title">🇺🇸 Oracle stützt US-Märkte</div>
+                    <div class="news-content">
+                        Starke Quartalszahlen von Oracle (+12%) stützen S&P 500 und Nasdaq. Dow bleibt unter Inflationsdruck. Iran-Auswirkungen noch nicht eingepreist.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="outlook-card">
+            <h3>🔮 Ausblick</h3>
+            <p>
+                Die Nervosität der Märkte wird maßgeblich von den Entwicklungen im Iran abhängen. 
+                Ökonomen befürchten, dass die gestiegenen Öl- und Gaspreise die deutsche Inflation 
+                ab März wieder über 2% treiben werden. Dauer des Krieges ist entscheidender Faktor.
+            </p>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-dow-jones-iran-100.html" 
+               target="_blank" class="source-link">
+                📰 Vollständiger Artikel bei Tagesschau
+            </a>
+        </div>
+        
+        <div class="footer">
+            Generiert am 12.03.2026 um 08:00 MEZ • Quelle: Tagesschau.de
+        </div>
+    </div>
+</body>
+</html>
