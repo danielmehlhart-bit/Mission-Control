@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PRD: Workflow Templates (LPH Task Boards)</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0d0f12;
+      color: #c8ccd8;
+      line-height: 1.7;
+      padding: 32px 20px;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+
+    /* Header */
+    .doc-header {
+      border-bottom: 1px solid #1e2128;
+      padding-bottom: 24px;
+      margin-bottom: 36px;
+    }
+    .doc-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(16,185,129,0.12);
+      color: #10B981;
+      border: 1px solid rgba(16,185,129,0.3);
+      border-radius: 999px;
+      padding: 3px 12px;
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #f0f2f5;
+      letter-spacing: -0.3px;
+      margin-bottom: 10px;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 13px;
+      color: #8b90a0;
+      margin-top: 14px;
+    }
+    .meta span { display: flex; align-items: center; gap: 6px; }
+
+    /* Status badges */
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 999px;
+      padding: 2px 10px;
+    }
+    .badge-draft { background: rgba(245,158,11,0.12); color: #F59E0B; border: 1px solid rgba(245,158,11,0.3); }
+    .badge-open  { background: rgba(99,102,241,0.12); color: #818CF8; border: 1px solid rgba(99,102,241,0.3); }
+    .badge-done  { background: rgba(16,185,129,0.12); color: #10B981; border: 1px solid rgba(16,185,129,0.3); }
+
+    /* Sections */
+    section { margin-bottom: 40px; }
+    h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #f0f2f5;
+      letter-spacing: -0.1px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h2 .num {
+      width: 26px; height: 26px;
+      border-radius: 6px;
+      background: #1e2128;
+      color: #8b90a0;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e2e5ed;
+      margin: 22px 0 10px;
+    }
+    p { font-size: 14px; color: #b0b5c4; margin-bottom: 12px; }
+
+    /* Cards */
+    .card {
+      background: #141720;
+      border: 1px solid #1e2128;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 12px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #f0f2f5;
+      margin-bottom: 6px;
+    }
+    .card-sub {
+      font-size: 13px;
+      color: #8b90a0;
+      line-height: 1.6;
+    }
+
+    /* Problem/Goal blocks */
+    .highlight-block {
+      background: rgba(16,185,129,0.06);
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+    }
+    .highlight-block p { color: #a7f3d0; margin: 0; font-size: 14px; }
+
+    .problem-block {
+      background: rgba(245,158,11,0.06);
+      border: 1px solid rgba(245,158,11,0.2);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+    }
+    .problem-block p { color: #fde68a; margin: 0; font-size: 14px; }
+
+    /* User stories */
+    .story {
+      background: #141720;
+      border: 1px solid #1e2128;
+      border-left: 3px solid #6366F1;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #c8ccd8;
+    }
+    .story strong { color: #818CF8; }
+
+    /* Feature table */
+    .feat-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .feat-table th {
+      text-align: left;
+      padding: 10px 14px;
+      background: #1a1d27;
+      color: #8b90a0;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-bottom: 1px solid #1e2128;
+    }
+    .feat-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #141720;
+      vertical-align: top;
+      color: #b0b5c4;
+    }
+    .feat-table tr:last-child td { border-bottom: none; }
+    .feat-table tr:hover td { background: #141720; }
+    .prio-high   { color: #f87171; font-weight: 600; }
+    .prio-mid    { color: #F59E0B; font-weight: 600; }
+    .prio-low    { color: #8b90a0; font-weight: 600; }
+    .feat-id     { color: #4a5068; font-family: monospace; }
+
+    /* Flow diagram (text-based) */
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .flow-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: #1e2128;
+      border: 1px solid #2a2d38;
+      color: #10B981;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .flow-content .label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e2e5ed;
+      margin-bottom: 3px;
+    }
+    .flow-content .desc {
+      font-size: 13px;
+      color: #8b90a0;
+    }
+    .flow-arrow {
+      text-align: center;
+      color: #2a2d38;
+      font-size: 18px;
+      margin: -4px 0 4px 12px;
+    }
+
+    /* Template list */
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .template-chip {
+      background: #141720;
+      border: 1px solid #1e2128;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+    .template-chip .t-name { color: #f0f2f5; font-weight: 600; margin-bottom: 3px; }
+    .template-chip .t-count { color: #8b90a0; font-size: 12px; }
+
+    /* Open questions */
+    .question {
+      background: #141720;
+      border: 1px solid #1e2128;
+      border-left: 3px solid #F59E0B;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #b0b5c4;
+    }
+    .question .q-label { color: #F59E0B; font-weight: 700; font-size: 12px; margin-bottom: 4px; }
+
+    /* Source block */
+    .source-block {
+      background: #0d0f12;
+      border: 1px solid #1e2128;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 12px;
+      color: #4a5068;
+    }
+    .source-block a { color: #8b90a0; text-decoration: none; }
+
+    /* Footer */
+    .footer {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid #1e2128;
+      font-size: 12px;
+      color: #4a5068;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 22px; }
+      .meta { gap: 12px; font-size: 12px; }
+      .template-grid { grid-template-columns: 1fr 1fr; }
+      .feat-table { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="doc-tag">PRD · ModulAI</div>
+    <h1>Workflow Templates — LPH Task Boards</h1>
+    <p style="font-size:15px; color:#8b90a0; margin-top:6px; margin-bottom:0;">
+      Wiederverwendbare Aufgaben-Vorlagen für Leistungsphasen und Standardprozesse in Architekturbüros.
+    </p>
+    <div class="meta">
+      <span>📅 13. März 2026</span>
+      <span>👤 Input: Alex Hamm (HAM Architekten)</span>
+      <span>🏷️ <span class="badge badge-draft">Draft v1.0</span></span>
+      <span>🏢 Tenant: HAM Architekten</span>
+    </div>
+  </div>
+
+  <!-- 1. Problem -->
+  <section>
+    <h2><span class="num">1</span> Problem & Kontext</h2>
+
+    <div class="problem-block">
+      <p>
+        📌 <strong>Kernproblem:</strong> Standardprozesse wie Leistungsphase 5 umfassen 300–400 wiederkehrende Aufgaben.
+        Ohne Vorlagen muss jedes Mal der komplette Aufgabenbaum manuell erfasst werden —
+        fehleranfällig, zeitaufwendig und abhängig vom Erfahrungsträger (Büroinhaber).
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Kontext: HAM Architekten</div>
+      <div class="card-sub">
+        Das Büro bearbeitet mehrere Projekte gleichzeitig in verschiedenen Leistungsphasen (HOAI §34).
+        Typisches Volumen: 4–5 Bauanträge pro Monat, dazu laufende Ausführungsplanung (LPH 5),
+        Vergabe (LPH 6/7) und Bauleitung (LPH 8).<br/><br/>
+        Aktueller Schmerz: Bei jedem neuen Projekt erklärt der Büroinhaber denselben Standardprozess —
+        die gleichen Checklisten, die gleichen Abhängigkeiten, die gleichen Fehlerquellen.
+      </div>
+    </div>
+
+    <h3>Beobachtete Muster (aus Voice Note Alex Hamm, 13.03.2026)</h3>
+    <div class="card">
+      <div class="card-sub">
+        <strong style="color:#e2e5ed;">1. Ad-hoc Tasks:</strong> Entstehen spontan auf der Baustelle oder im Gespräch.
+        Werden direkt als Einzel-Task erstellt. Funktioniert bereits gut.<br/><br/>
+        <strong style="color:#e2e5ed;">2. Strukturierte Prozesse:</strong> Leistungsphasen, Bauanträge, Nutzungsänderungen — haben eine
+        feste Reihenfolge von 100–400 Teilaufgaben mit bekannten Abhängigkeiten. Diese fehlen heute als Vorlage.<br/><br/>
+        <strong style="color:#e2e5ed;">3. Projekt-spezifische Erweiterungen:</strong> Auf die Standardvorlage kommen projektindividuelle
+        Tasks obenauf (z. B. Denkmalschutz-Auflagen, Sonderwünsche Bauherr).
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Goals -->
+  <section>
+    <h2><span class="num">2</span> Ziele & Erfolgskriterien</h2>
+
+    <div class="highlight-block">
+      <p>🎯 <strong>Hauptziel:</strong> Standardprozesse (Leistungsphasen, Bauanträge) einmalig definieren
+         und danach per Knopfdruck in jedes neue Projekt laden — ohne manuellen Aufwand und ohne Wissensverlust.</p>
+    </div>
+
+    <div class="template-grid" style="margin-top:16px;">
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">⏱️ Zeitersparnis</div>
+        <div class="card-sub">Taskboard für LPH 5 in &lt; 30 Sek. ins Projekt laden statt stundenlanger manueller Eingabe</div>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">📋 Vollständigkeit</div>
+        <div class="card-sub">Kein "Ach stimmt, ich muss noch..." mehr — alle Standardschritte sind von Anfang an sichtbar</div>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">🔁 Reproduzierbarkeit</div>
+        <div class="card-sub">Neue Mitarbeiter können Projekte selbstständig nach Standard bearbeiten</div>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">🧩 Flexibilität</div>
+        <div class="card-sub">Templates sind Startpunkt, nicht Zwangsjacke — erweiterbar und individuell kürzbar</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. User Stories -->
+  <section>
+    <h2><span class="num">3</span> User Stories</h2>
+
+    <div class="story">
+      <strong>US-01</strong> — Als Büroinhaber möchte ich für jede Leistungsphase eine fertige Task-Vorlage haben,
+      damit ich diese mit einem Klick in ein neues Projekt laden kann, ohne jeden Schritt neu erklären zu müssen.
+    </div>
+
+    <div class="story">
+      <strong>US-02</strong> — Als Projektmitarbeiter möchte ich beim Projektstart alle relevanten Aufgaben
+      bereits im Board sehen (Status: offen), damit ich selbst überprüfen kann, was noch fehlt, ohne auf den Chef warten zu müssen.
+    </div>
+
+    <div class="story">
+      <strong>US-03</strong> — Als Büroinhaber möchte ich nach dem Laden eines Templates projektspezifische Tasks
+      ergänzen können (z. B. Denkmalschutz-Auflage), damit jedes Projekt die nötige Individualität behält.
+    </div>
+
+    <div class="story">
+      <strong>US-04</strong> — Als Mitarbeiter bei einem kleinen Projekt (z. B. Garage) möchte ich irrelevante
+      Vorlage-Tasks schnell als "nicht relevant" markieren oder löschen können,
+      damit das Board übersichtlich bleibt, ohne die Vorlage selbst zu verändern.
+    </div>
+
+    <div class="story">
+      <strong>US-05</strong> — Als Büroinhaber möchte ich ~10 Standard-Workflow-Templates verwalten
+      (nach Leistungsphase oder Prozesstyp), damit das Büro einen einheitlichen Standard hat.
+    </div>
+  </section>
+
+  <!-- 4. User Flow -->
+  <section>
+    <h2><span class="num">4</span> User Flow — Template in Projekt laden</h2>
+
+    <div class="flow-step">
+      <div class="flow-num">1</div>
+      <div class="flow-content">
+        <div class="label">Projekt öffnen / neu anlegen</div>
+        <div class="desc">Nutzer befindet sich im Projekt-Taskboard (z. B. "Neubau Müller, Frankfurt")</div>
+      </div>
+    </div>
+    <div class="flow-arrow">↓</div>
+
+    <div class="flow-step">
+      <div class="flow-num">2</div>
+      <div class="flow-content">
+        <div class="label">„Workflow laden" auswählen</div>
+        <div class="desc">Button oder Menüeintrag im Taskboard: <em>„Workflow-Template hinzufügen"</em></div>
+      </div>
+    </div>
+    <div class="flow-arrow">↓</div>
+
+    <div class="flow-step">
+      <div class="flow-num">3</div>
+      <div class="flow-content">
+        <div class="label">Template auswählen</div>
+        <div class="desc">Liste aller verfügbaren Templates (LPH 1–9, Bauantrag, Nutzungsänderung etc.) wird angezeigt</div>
+      </div>
+    </div>
+    <div class="flow-arrow">↓</div>
+
+    <div class="flow-step">
+      <div class="flow-num">4</div>
+      <div class="flow-content">
+        <div class="label">Template-Vorschau (optional)</div>
+        <div class="desc">Überblick der enthaltenen Tasks und Kategorien — vor dem Laden einsehbar</div>
+      </div>
+    </div>
+    <div class="flow-arrow">↓</div>
+
+    <div class="flow-step">
+      <div class="flow-num">5</div>
+      <div class="flow-content">
+        <div class="label">„Ins Projekt laden" bestätigen</div>
+        <div class="desc">Alle Tasks werden als Kopie ins Projekt-Taskboard übertragen (Status: offen)</div>
+      </div>
+    </div>
+    <div class="flow-arrow">↓</div>
+
+    <div class="flow-step">
+      <div class="flow-num">6</div>
+      <div class="flow-content">
+        <div class="label">Board anpassen</div>
+        <div class="desc">Mitarbeiter ergänzt projektspezifische Tasks, markiert irrelevante als erledigt oder löscht sie</div>
+      </div>
+    </div>
+    <div class="flow-arrow">↓</div>
+
+    <div class="flow-step">
+      <div class="flow-num">7</div>
+      <div class="flow-content">
+        <div class="label">Laufende Bearbeitung</div>
+        <div class="desc">Tasks werden im normalen Workflow abgearbeitet (offen → in Bearbeitung → erledigt)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Feature Requirements -->
+  <section>
+    <h2><span class="num">5</span> Feature Requirements</h2>
+
+    <table class="feat-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Feature</th>
+          <th>Beschreibung</th>
+          <th>Prio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feat-id">F-01</td>
+          <td><strong>Template-Bibliothek</strong></td>
+          <td>Verwaltungsbereich für Workflow-Templates (CRUD). Pro Tenant konfigurierbar. Templates haben Name, Beschreibung, Kategorie und Task-Liste.</td>
+          <td><span class="prio-high">Must</span></td>
+        </tr>
+        <tr>
+          <td class="feat-id">F-02</td>
+          <td><strong>Template in Projekt laden</strong></td>
+          <td>Ein-Klick-Import eines Templates ins aktive Projekt. Alle Tasks werden als Kopie erstellt (Status: offen). Original-Template bleibt unverändert.</td>
+          <td><span class="prio-high">Must</span></td>
+        </tr>
+        <tr>
+          <td class="feat-id">F-03</td>
+          <td><strong>Task-Hierarchie (Parent/Child)</strong></td>
+          <td>Tasks können Unteraufgaben (Subtasks) haben. LPH 5 hat z. B. Kapitel als Parent-Tasks und die 100+ Einzelschritte als Subtasks.</td>
+          <td><span class="prio-high">Must</span></td>
+        </tr>
+        <tr>
+          <td class="feat-id">F-04</td>
+          <td><strong>Template-Vorschau</strong></td>
+          <td>Vor dem Laden: Nutzer sieht Anzahl Tasks, Kategorien und eine Kurzübersicht des Inhalts.</td>
+          <td><span class="prio-mid">Should</span></td>
+        </tr>
+        <tr>
+          <td class="feat-id">F-05</td>
+          <td><strong>Task-Status: „Nicht relevant"</strong></td>
+          <td>Tasks können als "nicht relevant" markiert werden (visuell ausgegraut, nicht in Fortschrittsberechnung). Alternative: direkt löschen.</td>
+          <td><span class="prio-high">Must</span></td>
+        </tr>
+        <tr>
+          <td class="feat-id">F-06</td>
+          <td><strong>Mehrere Templates pro Projekt</strong></td>
+          <td>Ein Projekt kann mehrere Templates erhalten (z. B. LPH 5 + Bauantrag für ein Projekt, das beides umfasst).</td>
+          <td><span class="prio-mid">Should</span></td>
+        </tr>
+        <tr>
+          <td class="feat-id">F-07</td>
+          <td><strong>Ad-hoc Tasks ergänzen</strong></td>
+          <td>Nach dem Template-Import können jederzeit projektspezifische Tasks hinzugefügt werden (bereits vorhanden).</td>
+          <td><span class="prio-high">Must</span></td>
+        </tr>
+        <tr>
+          <td class="feat-id">F-08</td>
+          <td><strong>Template-Verwaltung (Admin)</strong></td>
+          <td>Büroinhaber kann Templates anlegen, bearbeiten, duplizieren und deaktivieren. Initiale Templates werden von HAM Architekten befüllt.</td>
+          <td><span class="prio-high">Must</span></td>
+        </tr>
+        <tr>
+          <td class="feat-id">F-09</td>
+          <td><strong>Fortschritts-Tracking</strong></td>
+          <td>Prozentanzeige pro Template-Gruppe im Projekt (z. B. "LPH 5: 43 von 100 Tasks erledigt"). Als markiert "nicht relevant" zählen nicht in den Nenner.</td>
+          <td><span class="prio-mid">Should</span></td>
+        </tr>
+        <tr>
+          <td class="feat-id">F-10</td>
+          <td><strong>Abhängigkeiten (Future)</strong></td>
+          <td>Tasks können Abhängigkeiten haben ("kann erst abgeschlossen werden, wenn X freigegeben"). KI warnt bei Überspringen. <em>(V2)</em></td>
+          <td><span class="prio-low">Later</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 6. Initial Templates -->
+  <section>
+    <h2><span class="num">6</span> Initiale Template-Bibliothek</h2>
+
+    <p>Alex Hamm hat ~10 Templates als Ziel genannt. Priorisiert nach Häufigkeit im Büro:</p>
+
+    <div class="template-grid">
+      <div class="template-chip">
+        <div class="t-name">📋 LPH 4 — Genehmigung</div>
+        <div class="t-count">Bauantrag, Unterlagen, Einreichung</div>
+      </div>
+      <div class="template-chip" style="border-color: rgba(16,185,129,0.4);">
+        <div class="t-name" style="color:#10B981;">🏗️ LPH 5 — Ausführung</div>
+        <div class="t-count">~100 Tasks · Quelltext vorhanden ✅</div>
+      </div>
+      <div class="template-chip">
+        <div class="t-name">📦 LPH 6 — Vergabe (Vorbereitung)</div>
+        <div class="t-count">LV, Ausschreibung, Angebotsanfrage</div>
+      </div>
+      <div class="template-chip">
+        <div class="t-name">🤝 LPH 7 — Vergabe (Mitwirkung)</div>
+        <div class="t-count">Angebotsprüfung, Vergabeempfehlung</div>
+      </div>
+      <div class="template-chip">
+        <div class="t-name">👷 LPH 8 — Bauleitung</div>
+        <div class="t-count">Bautagebuch, Abnahmen, Mängelrügen</div>
+      </div>
+      <div class="template-chip">
+        <div class="t-name">🏢 Bauantrag (Standard)</div>
+        <div class="t-count">4–5x/Monat · High Value</div>
+      </div>
+      <div class="template-chip">
+        <div class="t-name">🔄 Nutzungsänderung</div>
+        <div class="t-count">Bereits als Referenz vorhanden</div>
+      </div>
+      <div class="template-chip">
+        <div class="t-name">🏛️ Denkmalschutz Add-on</div>
+        <div class="t-count">Erweiterung für bestehende Templates</div>
+      </div>
+    </div>
+
+    <p style="margin-top:16px; font-size:13px; color:#8b90a0;">
+      ✅ <strong>LPH 5 ist bereits vollständig dokumentiert</strong> (8 Kapitel, ~100 Tasks, incl. Erklärungen und Fehlerquellen).
+      Dieser Masterflow dient als Vorlage für alle anderen Templates und wurde von Alex Hamm persönlich erstellt.
+    </p>
+  </section>
+
+  <!-- 7. LPH 5 Task-Struktur -->
+  <section>
+    <h2><span class="num">7</span> LPH 5 — Template-Inhaltsübersicht</h2>
+    <p>Basis: Dokument "LPH 5 Master Flow (HAMM)" (erstellt Alex Hamm, 12.03.2026). Jede Gruppe = Parent-Task mit N Subtasks.</p>
+
+    <div class="card">
+      <div class="card-title">📂 1. Administration & Projekt-Setup</div>
+      <div class="card-sub">Plankopf & Index, Nordpfeil-Abgleich, Höhenbezugspunkte (NN). Fundament der Planorganisation.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">📂 2. Baustelleneinrichtung & Logistik</div>
+      <div class="card-sub">BE-Plan, Kranstandort, Lagerflächenplanung, Wasser-/Stromanschlüsse.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">📂 3. Gründung & erdberührte Bauteile</div>
+      <div class="card-sub">Leitungsführung unter Bodenplatte, Fundamenterder, Mehrsparten-Einführung. Nicht mehr korrigierbar!</div>
+    </div>
+    <div class="card">
+      <div class="card-title">📂 4. Werkplanung Grundrisse (1:50)</div>
+      <div class="card-sub">Kettenbemaßung, Rohbau-Öffnungsmaße Fenster/Türen, Treppenkonstruktion.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">📂 5. Schnitte & Ansichten (1:50)</div>
+      <div class="card-sub">Bodenaufbauten (Schicht für Schicht), Dachkonstruktion & Entwässerung.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">📂 6. Fachplaner-Integration & Technik</div>
+      <div class="card-sub">Schlitz- & Durchbruchsplanung (S&D), Deckenspiegel-Koordination mit TGA.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">📂 7. Detailplanung (1:20 bis 1:1)</div>
+      <div class="card-sub">Fensteranschluss-Abdichtung, Sockelpunkt/Kelleranschluss. Wärmebrücken & Feuchteschutz.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">📂 8. Besondere Leistungen & Qualitätssicherung</div>
+      <div class="card-sub">Prüfung Montagepläne Dritter, Raumbuch-Erstellung & Fortschreibung.</div>
+    </div>
+
+    <div style="margin-top:12px; padding:14px 18px; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.25); border-radius:8px; font-size:13px; color:#a5b4fc;">
+      💡 <strong>Implementierungs-Hinweis (aus Masterflow):</strong> Jeder Task sollte ein „Abhängigkeit"-Feld haben.
+      Beispiel: <em>„Detail Fensteranschluss kann erst abgeschlossen werden, wenn die finale Fensterliste vom Chef freigegeben wurde."</em>
+      → Basis für zukünftige KI-Warnungen bei übersprungenen Schritten (F-10).
+    </div>
+  </section>
+
+  <!-- 8. Data Model -->
+  <section>
+    <h2><span class="num">8</span> Datenmodell (Skizze)</h2>
+
+    <div class="card">
+      <div class="card-sub" style="font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; line-height: 2; color: #8b90a0;">
+        <span style="color:#10B981;">task_templates</span> (tenant_id, id, name, description, category, is_active)<br/>
+        &nbsp;&nbsp;↳ <span style="color:#818CF8;">template_tasks</span> (template_id, id, title, parent_task_id, order, default_status, notes, error_sources)<br/><br/>
+        <span style="color:#10B981;">projects</span><br/>
+        &nbsp;&nbsp;↳ <span style="color:#818CF8;">tasks</span> (project_id, id, title, parent_task_id, status, source_template_id, is_relevant, ...)<br/><br/>
+        <span style="color:#4a5068;">// source_template_id → Traceability (aus welchem Template stammt dieser Task?)</span><br/>
+        <span style="color:#4a5068;">// is_relevant → false = "nicht relevant", wird aus Fortschrittsberechnung ausgeblendet</span>
+      </div>
+    </div>
+
+    <p style="font-size:13px; color:#8b90a0;">
+      Template-Import = Kopie aller <code style="background:#1e2128; padding:1px 6px; border-radius:4px;">template_tasks</code> als neue
+      <code style="background:#1e2128; padding:1px 6px; border-radius:4px;">tasks</code>-Einträge im Projekt.
+      Änderungen am Projekt-Task berühren nie das Template (non-destructive copy).
+    </p>
+  </section>
+
+  <!-- 9. Out of Scope -->
+  <section>
+    <h2><span class="num">9</span> Out of Scope (V1)</h2>
+    <div class="card">
+      <div class="card-sub">
+        ❌ Automatisches Zuweisen von Mitarbeitern beim Template-Import<br/>
+        ❌ Abhängigkeits-Logik (Blocking) — kommt in V2 (F-10)<br/>
+        ❌ KI-Warnungen bei übersprungenen kritischen Schritten — V2<br/>
+        ❌ Terminplanung / Fristenberechnung aus Template<br/>
+        ❌ Multi-Tenant-Template-Sharing zwischen verschiedenen Büros
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Open Questions -->
+  <section>
+    <h2><span class="num">10</span> Offene Fragen</h2>
+
+    <div class="question">
+      <div class="q-label">❓ FRAGE 1</div>
+      Sollen Templates buroweit geteilt werden (alle Mitarbeiter sehen dieselben Templates) oder nutzer-individuell? → Annahme: büroweit (tenant-level)
+    </div>
+
+    <div class="question">
+      <div class="q-label">❓ FRAGE 2</div>
+      Wie soll das Board visuell strukturiert sein — eine lange Liste mit Gruppen, oder Kanban mit Spalten pro Gruppe? → Für LPH 5 sprechen die 8 Kapitel für Gruppen-Ansicht (Group/Board).
+    </div>
+
+    <div class="question">
+      <div class="q-label">❓ FRAGE 3</div>
+      Kann ein Template mehrfach ins gleiche Projekt geladen werden (z. B. bei einem Projekt mit zwei Gebäuden)? → Zu klären mit Alex.
+    </div>
+
+    <div class="question">
+      <div class="q-label">❓ FRAGE 4</div>
+      Sollen aus dem Projekt heraus neue "gelungene Abläufe" zurück als Template gespeichert werden können? (Bottom-up Template-Erstellung) → Nice to have, kein V1.
+    </div>
+  </section>
+
+  <!-- Sources -->
+  <section>
+    <h2><span class="num">11</span> Quellen</h2>
+    <div class="source-block">
+      📄 <strong>Dokument:</strong> "LPH 5 Master Flow (HAMM)" — Alex Hamm, erstellt 12.03.2026 in Mission Control Docs<br/>
+      <a href="https://gemini.google.com/share/continue/006884b12dd5">🔗 Gemini-Quelle (Originaldokument Alex Hamm)</a><br/><br/>
+      🎙️ <strong>Voice Note:</strong> Alex Hamm an Daniel Mehlhart, 13.03.2026, 10:37 Uhr — Beschreibung User Flow Workflow Templates<br/><br/>
+      📝 <strong>PRD erstellt von:</strong> Hatti · 13.03.2026
+    </div>
+  </section>
+
+  <div class="footer">
+    <span>ModulAI · PRD Workflow Templates · v1.0 Draft</span>
+    <span>13. März 2026</span>
+  </div>
+
+</div>
+</body>
+</html>
