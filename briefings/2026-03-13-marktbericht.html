@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marktbericht 13.03.2026</title>
+    <style>
+        body {
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            color: #333;
+            font-size: 2.5em;
+            font-weight: 600;
+        }
+        .timestamp {
+            color: #666;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+        .markets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .market-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .market-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+        .market-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .market-value {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .positive { color: #00c851; }
+        .negative { color: #ff3547; }
+        .neutral { color: #666; }
+        .change {
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        .news-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .highlight {
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .key-points {
+            list-style: none;
+            padding: 0;
+        }
+        .key-points li {
+            background: #f8f9fa;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #28a745;
+        }
+        .footer {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            text-align: center;
+            color: #666;
+        }
+        .source-link {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            margin-top: 15px;
+            transition: background-color 0.2s ease;
+        }
+        .source-link:hover {
+            background: #0056b3;
+        }
+        .oil-badge {
+            display: inline-block;
+            background: #ffc107;
+            color: #212529;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin: 10px 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📈 Marktbericht</h1>
+            <div class="timestamp">13. März 2026 • 07:34 Uhr</div>
+        </div>
+
+        <div class="markets-grid">
+            <div class="market-card">
+                <div class="market-name">🇩🇪 DAX</div>
+                <div class="market-value positive">23.617</div>
+                <div class="change positive">+0,1% (erwartet)</div>
+                <small>Gestern: 23.589 (-0,2%)</small>
+            </div>
+
+            <div class="market-card">
+                <div class="market-name">🇺🇸 Dow Jones</div>
+                <div class="market-value negative">46.677</div>
+                <div class="change negative">-1,6%</div>
+            </div>
+
+            <div class="market-card">
+                <div class="market-name">📱 NASDAQ</div>
+                <div class="market-value negative">22.311</div>
+                <div class="change negative">-1,8%</div>
+            </div>
+
+            <div class="market-card">
+                <div class="market-name">🛢️ Brent Öl</div>
+                <div class="market-value neutral">~100 $</div>
+                <div class="change">pro Barrel</div>
+                <small>Runter von 120$ am Montag</small>
+            </div>
+        </div>
+
+        <div class="news-section">
+            <h2 class="section-title">🎯 Haupttreiber</h2>
+            
+            <div class="highlight">
+                <strong>Iran-Krieg dominiert Märkte:</strong> Zehnter Handelstag seit Kriegsausbruch prägt weiter die Stimmung. Ölpreise um 100$ belasten Konjunktur- und Inflationserwartungen.
+            </div>
+
+            <ul class="key-points">
+                <li><strong>Energiepreise im Fokus:</strong> Öl- und Gaspreise als Gradmesser für wirtschaftliche Entwicklung</li>
+                <li><strong>US-Sanktionslockerung:</strong> Befristeter Kauf von russischem Öl bis 11. April erlaubt</li>
+                <li><strong>Rezessionsängste:</strong> Hohe Energiekosten bedrohen europäischen Aufschwung</li>
+                <li><strong>Zinswende-Stopp:</strong> EZB könnte Zinssenkungen pausieren oder sogar erhöhen</li>
+            </ul>
+
+            <div class="oil-badge">Öl: Kritische 100$ Marke</div>
+            <div class="oil-badge">Inflation: Steigend</div>
+            <div class="oil-badge">Zinsen: Unsicher</div>
+        </div>
+
+        <div class="news-section">
+            <h2 class="section-title">🔮 Ausblick</h2>
+            <p><strong>Kurz:</strong> Stabiler DAX-Start erwartet, aber kritische Gesamtlage. Jede schlechte Nachricht kann Verkaufswelle auslösen.</p>
+            <p><strong>Mittel:</strong> Energiepreise entscheiden über Richtung. Europa besonders verletzlich bei anhaltend hohen Ölpreisen.</p>
+            <p><strong>Lang:</strong> Rezessionsrisiko steigt, wenn Iran-Konflikt anhält. Notenbanken in schwieriger Lage zwischen Inflation und Wachstum.</p>
+        </div>
+
+        <div class="footer">
+            <p>Quelle: Tagesschau Marktbericht</p>
+            <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-dow-notenbanken-geldpolitik-oel-100.html" class="source-link" target="_blank">
+                📰 Vollständiger Artikel
+            </a>
+        </div>
+    </div>
+</body>
+</html>
