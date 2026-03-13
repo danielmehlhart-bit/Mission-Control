@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alles auf Aktien Briefing • 13. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header .date {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .section h2 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+        
+        .market-data {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .market-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .market-item .label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .market-item .value {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .positive { color: #27ae60; }
+        .negative { color: #e74c3c; }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        .key-points {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .key-points li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .key-points li:before {
+            content: "•";
+            color: #667eea;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .youtube-link {
+            display: block;
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            text-align: center;
+            margin: 30px 0;
+            font-weight: 500;
+            transition: transform 0.2s ease;
+        }
+        
+        .youtube-link:hover {
+            transform: translateY(-2px);
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .content {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 Alles auf Aktien</h1>
+            <div class="date">Freitag, 13. März 2026</div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2>📊 Märkte heute</h2>
+                <div class="market-data">
+                    <div class="market-item">
+                        <div class="label">Dow Jones</div>
+                        <div class="value negative">-700 Punkte</div>
+                    </div>
+                    <div class="market-item">
+                        <div class="label">S&P 500</div>
+                        <div class="value negative">-1,5%</div>
+                    </div>
+                    <div class="market-item">
+                        <div class="label">NASDAQ 100</div>
+                        <div class="value negative">-1,7%</div>
+                    </div>
+                    <div class="market-item">
+                        <div class="label">DAX</div>
+                        <div class="value negative">-0,2%</div>
+                    </div>
+                    <div class="market-item">
+                        <div class="label">VIX (Angst)</div>
+                        <div class="value positive">+12,7% → 27</div>
+                    </div>
+                    <div class="market-item">
+                        <div class="label">Brent Öl</div>
+                        <div class="value positive">über 100$</div>
+                    </div>
+                </div>
+                <p>Aufkommende Panik an den Börsen — keine Dip-Buyer mehr, Angstbarometer steigt kräftig.</p>
+            </div>
+            
+            <div class="highlight-box">
+                <h2>🛢️ Thema des Tages: 200$ Ölpreis-Drohung</h2>
+                <p><strong>Straße von Hormus faktisch blockiert</strong> — 20% des weltweiten Ölverbrauchs (15 Mio. Barrel/Tag) normalerweise durch dieses Nadelöhr. Iran droht mit dauerhafter Sperrung, Ölpreis könnte auf 200$ steigen. Internationale Energieagentur spricht von <em>"größter Versorgungsstörung in der Geschichte des globalen Ölmarktes"</em>.</p>
+            </div>
+            
+            <div class="section">
+                <h2>📈 Gewinner des Tages</h2>
+                <ul class="key-points">
+                    <li><strong>Zalando</strong> +9,5% (DAX-Spitzenreiter) — ordentliche Zahlen + 300 Mio. Euro Aktienrückkauf bis Juli</li>
+                    <li><strong>Hannover Rück</strong> +4,5% — Dividende 5% über Marktschätzung</li>
+                    <li><strong>RWE</strong> +4% — Zahlen über Erwartung, Dividende 1,20€</li>
+                    <li><strong>Ölwerte</strong> kräftig im Plus: Exxon, ConocoPhillips, Occidental alle +3%</li>
+                    <li><strong>Düngemittelhersteller</strong> — Mosaik +7% (steigende Preise vor neuer Saison)</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>📉 Verlierer & Probleme</h2>
+                <ul class="key-points">
+                    <li><strong>Adobe</strong> -7,8% nachbörslich — CEO Chantano Naren tritt nach 18 Jahren zurück, trotz guter KI-Zahlen (Firefly ARR verdreifacht auf 250 Mio.)</li>
+                    <li><strong>Deutsche Bank</strong> -5,3% — 26 Mrd. Euro Exposure im Private Credit Markt, Turbulenzen in den USA</li>
+                    <li><strong>UI Path</strong> -8,2% — Software-Narrativ belastet trotz ordentlicher Zahlen</li>
+                    <li><strong>RTL</strong> — schwacher Werbemarkt, aber höhere Dividende dank Verkauf</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>💡 Triple-A Idee: Misstrade-Falle</h2>
+                <p>Matthias und Christian hatten perfektes Market-Timing mit gehebelten Short-ETCs auf Öl (100-200% Gewinn), <strong>aber</strong>: Trade Republic hat alle Verkäufe storniert wegen "fehlhafter Quote" des Market Makers. Verkaufskurs lag bei 8€, eigentlicher Wert nur 4€.</p>
+                <p><strong>Realität:</strong> Mistrades werden binnen 120 Minuten storniert, kein Anspruch auf entgangenen Gewinn. An der Börse zählt nur was nach allen Fristen übrig bleibt.</p>
+            </div>
+            
+            <div class="section">
+                <h2>🔥 TL;DR</h2>
+                <ul class="key-points">
+                    <li>Börsen im Panikmodus wegen Nahost-Eskalation</li>
+                    <li>Öl springt über 100$, Iran droht mit 200$</li>
+                    <li>Adobe-CEO geht trotz KI-Erfolgen</li>
+                    <li>Deutsche Bank mit Private-Credit-Risiken</li>
+                    <li>Misstrades zeigen: Nur echtes Cash zählt</li>
+                </ul>
+            </div>
+            
+            <a href="https://www.youtube.com/watch?v=a8X6Y9QBSTo" class="youtube-link" target="_blank">
+                ▶️ Vollständige Episode auf YouTube anhören
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p>Erstellt am 13. März 2026 • <a href="https://mc.mehlhart.de" style="color: #667eea;">Mission Control</a></p>
+            <p><em>Die besprochenen Aktien stellen keine Anlageempfehlung dar.</em></p>
+        </div>
+    </div>
+</body>
+</html>
