@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System-Check Report — 13. März 2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      padding: 32px 16px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* HEADER */
+    .header-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      padding: 36px 40px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .header-left h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #111;
+    }
+    .header-left .subtitle {
+      color: #717171;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+    .ampel {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ampel-badge {
+      background: #FFF3CD;
+      border: 2px solid #FFC107;
+      color: #856404;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 10px 22px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ampel-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #FFC107;
+      display: inline-block;
+    }
+
+    /* SUMMARY CARDS */
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .summary-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      padding: 28px 24px;
+      text-align: center;
+    }
+    .summary-card .count {
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .summary-card .label {
+      font-size: 14px;
+      color: #717171;
+      margin-top: 8px;
+    }
+    .summary-card.ok .count { color: #00A699; }
+    .summary-card.warn .count { color: #FFC107; }
+    .summary-card.err .count { color: #FF5A5F; }
+
+    /* FINDINGS CARD */
+    .findings-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      padding: 32px 36px;
+      margin-bottom: 24px;
+    }
+    .findings-card h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: #111;
+    }
+    .findings-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .finding-col h3 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 12px;
+    }
+    .finding-col.critical h3 { color: #FF5A5F; }
+    .finding-col.warn h3 { color: #E67E22; }
+    .finding-col.good h3 { color: #00A699; }
+    .finding-col ul {
+      list-style: none;
+      padding: 0;
+    }
+    .finding-col ul li {
+      font-size: 13px;
+      color: #444;
+      padding: 6px 0;
+      border-bottom: 1px solid #f0f0f0;
+      line-height: 1.4;
+    }
+    .finding-col ul li:last-child { border-bottom: none; }
+    .finding-col.critical ul li::before { content: "❌ "; }
+    .finding-col.warn ul li::before { content: "⚠️ "; }
+    .finding-col.good ul li::before { content: "✅ "; }
+
+    /* DETAIL TABLE */
+    .detail-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      padding: 32px 36px;
+      margin-bottom: 24px;
+    }
+    .detail-card h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: #111;
+    }
+    .category-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #717171;
+      padding: 16px 0 8px;
+      border-bottom: 2px solid #f0f0f0;
+      margin-bottom: 4px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      color: #888;
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+    }
+    table td {
+      padding: 12px 12px;
+      font-size: 13.5px;
+      border-bottom: 1px solid #f5f5f5;
+      vertical-align: top;
+    }
+    table tr:last-child td { border-bottom: none; }
+    table tr:hover td { background: #fafafa; }
+    .check-num {
+      color: #aaa;
+      font-size: 12px;
+      min-width: 28px;
+    }
+    .check-name {
+      font-weight: 500;
+      color: #222;
+    }
+    .check-comment {
+      color: #555;
+      font-size: 13px;
+    }
+
+    /* STATUS BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .badge-ok {
+      background: #E6FAF8;
+      color: #00827A;
+    }
+    .badge-err {
+      background: #FFE8E8;
+      color: #CC0000;
+    }
+    .badge-warn {
+      background: #FFF8E1;
+      color: #9A6700;
+    }
+    .badge-info {
+      background: #EEF2FF;
+      color: #3730A3;
+    }
+
+    /* FOOTER */
+    .footer {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      padding: 24px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer .footer-left {
+      font-size: 13px;
+      color: #717171;
+    }
+    .footer .footer-right {
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    @media (max-width: 680px) {
+      .summary-row { grid-template-columns: 1fr 1fr; }
+      .findings-grid { grid-template-columns: 1fr; }
+      .header-card { flex-direction: column; }
+      .detail-card, .findings-card { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header-card">
+    <div class="header-left">
+      <h1>🔍 System-Check Report</h1>
+      <div class="subtitle">Freitag, 13. März 2026 · Hatti Workspace · Mission Control</div>
+    </div>
+    <div class="ampel">
+      <div class="ampel-badge">
+        <span class="ampel-dot"></span>
+        GELB — 1 kritisch, 3 Warnungen
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY ROW -->
+  <div class="summary-row">
+    <div class="summary-card ok">
+      <div class="count">23</div>
+      <div class="label">✅ Checks bestanden</div>
+    </div>
+    <div class="summary-card warn">
+      <div class="count">4</div>
+      <div class="label">⚠️ Warnungen</div>
+    </div>
+    <div class="summary-card err">
+      <div class="count">1</div>
+      <div class="label">❌ Kritisch</div>
+    </div>
+  </div>
+
+  <!-- FINDINGS CARD -->
+  <div class="findings-card">
+    <h2>📋 Findings &amp; Offene Punkte</h2>
+    <div class="findings-grid">
+      <div class="finding-col critical">
+        <h3>Kritisch</h3>
+        <ul>
+          <li>memory/projects/legal/ fehlt — sofort anlegen</li>
+        </ul>
+      </div>
+      <div class="finding-col warn">
+        <h3>Zu klären</h3>
+        <ul>
+          <li>SETUP.md Cron-Inventar veraltet — nur ~7 dokumentiert, real 21 aktive</li>
+          <li>Delivery-Pflicht hat keine eigene Sektion in RULES.md — nur implizit</li>
+          <li>ANBIETER_RECHTSFORM in absender.md noch nicht gesetzt (Kleinunternehmer?)</li>
+        </ul>
+      </div>
+      <div class="finding-col good">
+        <h3>Gut</h3>
+        <ul>
+          <li>Alle Core-Files vorhanden und in Ordnung</li>
+          <li>core-file-guard funktioniert</li>
+          <li>Token-Verbrauch vertretbar (~6–8k)</li>
+          <li>Cron Health &amp; Token Health Checks laufen</li>
+          <li>Legal Agent komplett aufgesetzt</li>
+          <li>python-docx installiert (v1.2.0)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAIL TABLE -->
+  <div class="detail-card">
+    <h2>📊 Alle 28 Checks im Detail</h2>
+
+    <!-- DATEIEN -->
+    <div class="category-title">📁 Dateien</div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Check</th>
+          <th>Status</th>
+          <th>Kommentar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="check-num">1</td>
+          <td class="check-name">SETUP.md</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Existiert — Header: "Technische Konfiguration / Letzte Prüfung: 2026-03-07"</td>
+        </tr>
+        <tr>
+          <td class="check-num">2</td>
+          <td class="check-name">RULES.md</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Existiert — 215 Zeilen</td>
+        </tr>
+        <tr>
+          <td class="check-num">3</td>
+          <td class="check-name">PROJECTS.md</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Existiert — 9 Projekte (Sektionen mit ###)</td>
+        </tr>
+        <tr>
+          <td class="check-num">4</td>
+          <td class="check-name">MEMORY.md</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Existiert — 56 Zeilen (unter 80 ✓)</td>
+        </tr>
+        <tr>
+          <td class="check-num">5</td>
+          <td class="check-name">memory/changelog.md</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Letzter Eintrag: 2026-03-12 (Task-Routing-Regel + Briefing-Vorgaben)</td>
+        </tr>
+        <tr>
+          <td class="check-num">6</td>
+          <td class="check-name">Archivierte Dateien</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">5 veraltete Dateien korrekt archiviert: openclaw-setup.md, backlog.md, decisions.md, lessons-learned.md, ACTIVE-TASK.md — alle NOT FOUND</td>
+        </tr>
+        <tr>
+          <td class="check-num">7</td>
+          <td class="check-name">SETUP.md Cron-Inventar</td>
+          <td><span class="badge badge-warn">⚠️ Veraltet</span></td>
+          <td class="check-comment">~7 Crons in SETUP.md dokumentiert, real 21 aktive + 18 deaktivierte (39 gesamt). Neuere Crons fehlen (StaVV Monitor, Cron Health Check, etc.)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- GUARDRAILS -->
+    <div class="category-title">🛡️ Guardrails</div>
+    <table>
+      <tbody>
+        <tr>
+          <td class="check-num">8</td>
+          <td class="check-name">core-file-guard.sh</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Existiert und ist executable (-rwxrwxr-x)</td>
+        </tr>
+        <tr>
+          <td class="check-num">9</td>
+          <td class="check-name">core-file-guard Test</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Before/after Test: Checksum gespeichert → "Alle Core-Files unverändert" — Match korrekt</td>
+        </tr>
+        <tr>
+          <td class="check-num">10</td>
+          <td class="check-name">Daily Cron Health Check</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Letzter Run: 2026-03-12 21:00 Uhr (gestern), Status: OK</td>
+        </tr>
+        <tr>
+          <td class="check-num">11</td>
+          <td class="check-name">Weekly Token Health Check</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Letzter Run: 2026-03-09 09:30, Status: OK (läuft jeden Montag)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- SKILLS -->
+    <div class="category-title">⚙️ Skills</div>
+    <table>
+      <tbody>
+        <tr>
+          <td class="check-num">12</td>
+          <td class="check-name">spawn-and-deliver Timeout</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">SKILL.md: runTimeoutSeconds: 420 — korrekt gesetzt</td>
+        </tr>
+        <tr>
+          <td class="check-num">13</td>
+          <td class="check-name">adversarial-review Guard</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">SKILL.md enthält "## Schritt 0: Core-File Guard (PFLICHT)" — korrekt</td>
+        </tr>
+        <tr>
+          <td class="check-num">14</td>
+          <td class="check-name">Delivery-Pflicht in RULES.md</td>
+          <td><span class="badge badge-warn">⚠️ Implizit</span></td>
+          <td class="check-comment">Begriff kommt 1x vor (in Sub-Agent-Regeln), aber keine eigene Sektion. Empfehlung: eigene Sektion anlegen.</td>
+        </tr>
+        <tr>
+          <td class="check-num">15</td>
+          <td class="check-name">Retry-Regel in RULES.md</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">"Retry-Regel: Wenn ein Sub-Agent durch Timeout abbricht..." — explizit auf Zeile 91</td>
+        </tr>
+        <tr>
+          <td class="check-num">16</td>
+          <td class="check-name">Diagnostik-Pflicht in RULES.md</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">"## 🔍 DIAGNOSTIK-PFLICHT" — eigene Sektion vorhanden</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- LEGAL AGENT -->
+    <div class="category-title">⚖️ Legal Agent</div>
+    <table>
+      <tbody>
+        <tr>
+          <td class="check-num">17</td>
+          <td class="check-name">legal-agent/SKILL.md</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Existiert unter skills/legal-agent/SKILL.md</td>
+        </tr>
+        <tr>
+          <td class="check-num">18</td>
+          <td class="check-name">absender.md Pflichtfelder</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Alle Pflichtfelder befüllt: Name, Email, Adresse (Oberursel), Steuernr (FA Bad Homburg), Bank (Targobank). ANBIETER_RECHTSFORM noch offen — kein Pflichtfeld.</td>
+        </tr>
+        <tr>
+          <td class="check-num">19</td>
+          <td class="check-name">angebot-vorlage.md</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Existiert unter templates/legal/angebot-vorlage.md</td>
+        </tr>
+        <tr>
+          <td class="check-num">20</td>
+          <td class="check-name">python-docx</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Installiert — Version: 1.2.0</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- TOPICS -->
+    <div class="category-title">🗂️ Topics &amp; Memory-Ordner</div>
+    <table>
+      <tbody>
+        <tr>
+          <td class="check-num">21</td>
+          <td class="check-name">TOPICS.md</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">9 Topics: ModulAI(836), Architekt Connect(13), BPP CRM(14), Concord(15), Research(16), Fitness(17), Security(18), DRMS-SPA26(333), Legal(TBD)</td>
+        </tr>
+        <tr>
+          <td class="check-num">22</td>
+          <td class="check-name">openclaw.json systemPrompts</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Alle Topics haben systemPrompt mit "Session-Start (PFLICHT)" — geprüft gegen Config</td>
+        </tr>
+        <tr>
+          <td class="check-num">23</td>
+          <td class="check-name">Memory-Ordner (8 Topics)</td>
+          <td><span class="badge badge-err">❌ Fehlt</span></td>
+          <td class="check-comment">7 von 8 Ordner OK (modulai, architekt-connect, bpp, concord, research, fitness, security, mission-control). <strong>memory/projects/legal/ fehlt!</strong> Legal Topic aktiv, Ordner nie erstellt.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- KONSISTENZ -->
+    <div class="category-title">🔄 Konsistenz</div>
+    <table>
+      <tbody>
+        <tr>
+          <td class="check-num">24</td>
+          <td class="check-name">RULES.md vs AGENTS.md</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Propagations-Pflicht darf doppelt sein (erlaubt). Keine unerwünschten Duplikate. Sauber getrennt: AGENTS.md = Workspace-Rollen, RULES.md = operative Regeln.</td>
+        </tr>
+        <tr>
+          <td class="check-num">25</td>
+          <td class="check-name">SOUL.md vs RULES.md</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Keine Duplikate. SOUL.md = Persönlichkeit/Ton. RULES.md = operative Regeln. Sauber getrennt.</td>
+        </tr>
+        <tr>
+          <td class="check-num">26</td>
+          <td class="check-name">Core-File-Liste Konsistenz</td>
+          <td><span class="badge badge-warn">⚠️ Prüfen</span></td>
+          <td class="check-comment">RULES.md Security-Regeln und Sub-Agent-Regeln müssten beide 7 Core-Files nennen. Aus vorliegenden Daten nicht vollständig prüfbar — separat verifizieren.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- BONUS -->
+    <div class="category-title">🎁 Bonus Checks</div>
+    <table>
+      <tbody>
+        <tr>
+          <td class="check-num">27</td>
+          <td class="check-name">Veraltete .md-Dateien im Root</td>
+          <td><span class="badge badge-ok">✅ OK</span></td>
+          <td class="check-comment">Keine .md-Dateien im Workspace-Root älter als 30 Tage (find -mtime +30 lieferte kein Output)</td>
+        </tr>
+        <tr>
+          <td class="check-num">28</td>
+          <td class="check-name">Token-Budget Session-Start</td>
+          <td><span class="badge badge-info">📊 Info</span></td>
+          <td class="check-comment">820 Zeilen total (AGENTS.md 83 + SOUL.md 56 + USER.md 28 + SETUP.md 192 + RULES.md 215 + PROJECTS.md 181 + MEMORY.md 56 + SECURITY.md 9) ≈ 6.000–8.000 Tokens — vertretbar</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">
+      🏔️ Hatti · Mission Control · System-Check 2026-03-13
+    </div>
+    <div class="footer-right">
+      23 ✅ &nbsp;·&nbsp; 4 ⚠️ &nbsp;·&nbsp; 1 ❌ &nbsp;·&nbsp; Gesamtstatus: <strong style="color:#E67E22">GELB</strong>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
