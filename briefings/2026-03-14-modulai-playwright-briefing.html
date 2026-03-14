@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ModulAI · Playwright QA-Setup · Briefing</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+      background: #f7f7f7;
+      color: #222222;
+      line-height: 1.6;
+      padding: 24px 16px 60px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #0057FF 0%, #003DB5 100%);
+      border-radius: 20px;
+      padding: 40px 36px;
+      color: white;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::after {
+      content: '🎭';
+      font-size: 120px;
+      position: absolute;
+      right: -10px;
+      top: -10px;
+      opacity: 0.12;
+      line-height: 1;
+    }
+    .header .tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .header p {
+      font-size: 16px;
+      opacity: 0.85;
+      max-width: 560px;
+    }
+    .header .meta {
+      margin-top: 20px;
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    /* Cards */
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04);
+      transition: box-shadow 0.2s;
+    }
+    .card:hover {
+      box-shadow: 0 6px 24px rgba(0,0,0,0.11), 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .icon-blue  { background: #EBF1FF; }
+    .icon-green { background: #E8F8F1; }
+    .icon-red   { background: #FFF0F0; }
+    .icon-yellow{ background: #FFFBEB; }
+    .icon-purple{ background: #F3EEFF; }
+    .icon-gray  { background: #F4F4F4; }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111;
+    }
+    .card-subtitle {
+      font-size: 13px;
+      color: #717171;
+      margin-top: 2px;
+    }
+
+    /* Pill list */
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .pill-blue   { background: #EBF1FF; color: #0057FF; }
+    .pill-green  { background: #E8F8F1; color: #008A4B; }
+    .pill-red    { background: #FFF0F0; color: #D93025; }
+    .pill-gray   { background: #F4F4F4; color: #444; }
+
+    /* Feature list */
+    .feature-list { list-style: none; }
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 11px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 15px;
+    }
+    .feature-list li:last-child { border-bottom: none; }
+    .feature-list .feat-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .feature-list .feat-text strong {
+      display: block;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: 2px;
+    }
+    .feature-list .feat-text span {
+      color: #717171;
+      font-size: 13px;
+    }
+
+    /* Flow diagram */
+    .flow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      margin: 8px 0;
+    }
+    .flow-step {
+      background: #EBF1FF;
+      border: 2px solid #C5D7FF;
+      border-radius: 14px;
+      padding: 14px 24px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 600;
+      color: #0057FF;
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+    }
+    .flow-step .step-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #7a9cff;
+      margin-bottom: 4px;
+    }
+    .flow-arrow {
+      width: 2px;
+      height: 28px;
+      background: #C5D7FF;
+      position: relative;
+    }
+    .flow-arrow::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 8px solid #C5D7FF;
+    }
+    .flow-result {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      max-width: 420px;
+      margin-top: 0;
+    }
+    .flow-pass {
+      flex: 1;
+      background: #E8F8F1;
+      border: 2px solid #A8E6C5;
+      border-radius: 14px;
+      padding: 14px 12px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #008A4B;
+    }
+    .flow-fail {
+      flex: 1;
+      background: #FFF0F0;
+      border: 2px solid #FFC5C5;
+      border-radius: 14px;
+      padding: 14px 12px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #D93025;
+    }
+
+    /* Telegram badge */
+    .telegram-badge {
+      background: linear-gradient(135deg, #229ED9, #0088CC);
+      color: white;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 14px;
+    }
+    .telegram-badge .tg-icon { font-size: 28px; }
+    .telegram-badge strong { display: block; font-size: 15px; margin-bottom: 2px; }
+
+    /* RAM visualization */
+    .ram-visual {
+      margin-top: 8px;
+    }
+    .ram-bar-wrap {
+      background: #f0f0f0;
+      border-radius: 50px;
+      height: 18px;
+      overflow: hidden;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    .ram-bar-used {
+      height: 100%;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+      transition: width 1s ease;
+    }
+    .ram-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .ram-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #444;
+    }
+    .ram-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .ram-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .ram-row-label { font-size: 14px; color: #444; }
+    .ram-row-val { font-size: 14px; font-weight: 600; color: #111; }
+
+    /* Limitation list */
+    .limit-list { list-style: none; }
+    .limit-list li {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 15px;
+      align-items: flex-start;
+    }
+    .limit-list li:last-child { border-bottom: none; }
+    .limit-icon {
+      color: #D93025;
+      font-size: 18px;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+    .limit-text strong { display: block; font-weight: 600; color: #111; margin-bottom: 2px; }
+    .limit-text span { color: #717171; font-size: 13px; }
+
+    /* Impact cards */
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .impact-card {
+      background: #F7F9FF;
+      border: 1.5px solid #E0E8FF;
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .impact-card .imp-icon { font-size: 28px; margin-bottom: 10px; }
+    .impact-card strong { display: block; font-size: 15px; font-weight: 700; color: #111; margin-bottom: 6px; }
+    .impact-card p { font-size: 13px; color: #555; }
+
+    /* Checklist */
+    .checklist { list-style: none; }
+    .checklist li {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 15px;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .check-box {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #DDDDDD;
+      border-radius: 6px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .checklist .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #0057FF;
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .checklist .step-text strong { display: block; font-weight: 600; color: #111; }
+    .checklist .step-text span { font-size: 13px; color: #717171; }
+
+    /* Device badges */
+    .device-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .device-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #F4F4F4;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .device-badge .dev-icon { font-size: 22px; }
+
+    /* Section divider */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #AAAAAA;
+      margin: 10px 0 16px;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #AAAAAA;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      .header h1 { font-size: 24px; }
+      .card { padding: 20px 18px; }
+      .flow-result { flex-direction: column; }
+      .impact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="tag">QA · Automatisierung · ModulAI</div>
+    <h1>🎭 Playwright QA-Setup</h1>
+    <p>Dein nächtlicher Test-Roboter — findet Fehler in ModulAI bevor deine User sie finden.</p>
+    <div class="meta">📅 14. März 2026 &nbsp;·&nbsp; 🏗️ ModulAI &nbsp;·&nbsp; 🍓 Raspberry Pi 5</div>
+  </div>
+
+  <!-- 1. WAS IST PLAYWRIGHT -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-blue">🤖</div>
+      <div>
+        <div class="card-title">Was ist Playwright?</div>
+        <div class="card-subtitle">Browser-Automatisierung von Microsoft — kostenlos</div>
+      </div>
+    </div>
+
+    <ul class="feature-list">
+      <li>
+        <div class="feat-icon icon-blue">🏢</div>
+        <div class="feat-text">
+          <strong>Von Microsoft entwickelt</strong>
+          <span>Open Source, aktiv weiterentwickelt, riesige Community — keine Vendor-Abhängigkeit</span>
+        </div>
+      </li>
+      <li>
+        <div class="feat-icon icon-green">💰</div>
+        <div class="feat-text">
+          <strong>Komplett kostenlos</strong>
+          <span>Keine Abo-Kosten, keine versteckten Gebühren — läuft auf deinem Pi zuhause</span>
+        </div>
+      </li>
+      <li>
+        <div class="feat-icon icon-purple">🖱️</div>
+        <div class="feat-text">
+          <strong>Steuert echte Browser</strong>
+          <span>Kein Fake — Playwright öffnet Chromium und klickt wirklich durch deine App, genauso wie ein echter User</span>
+        </div>
+      </li>
+    </ul>
+
+    <div class="pill-list" style="margin-top: 16px;">
+      <span class="pill pill-blue">✅ Gratis</span>
+      <span class="pill pill-blue">✅ Kein Abo</span>
+      <span class="pill pill-blue">✅ Keine Cloud notwendig</span>
+      <span class="pill pill-gray">🔓 Open Source</span>
+    </div>
+  </div>
+
+  <!-- 2. WAS WIR BAUEN -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-green">🏗️</div>
+      <div>
+        <div class="card-title">Was wir konkret bauen</div>
+        <div class="card-subtitle">Dein automatischer QA-Agent für ModulAI — läuft auf dem Pi</div>
+      </div>
+    </div>
+
+    <ul class="feature-list">
+      <li>
+        <div class="feat-icon icon-green">🍓</div>
+        <div class="feat-text">
+          <strong>Läuft auf deinem Raspberry Pi 5</strong>
+          <span>Keine Cloud, keine monatlichen Kosten — dein Pi arbeitet nachts während du schläfst</span>
+        </div>
+      </li>
+      <li>
+        <div class="feat-icon icon-yellow">⏰</div>
+        <div class="feat-text">
+          <strong>Startet automatisch um 02:00 Uhr</strong>
+          <span>Ein Cron-Job weckt Playwright jede Nacht — kein manuelles Starten nötig</span>
+        </div>
+      </li>
+      <li>
+        <div class="feat-icon icon-blue">👻</div>
+        <div class="feat-text">
+          <strong>Headless Browser — unsichtbar im Hintergrund</strong>
+          <span>Playwright öffnet Chromium ohne Fenster und klickt sich durch ModulAI — vollautomatisch</span>
+        </div>
+      </li>
+    </ul>
+
+    <div class="section-label" style="margin-top: 20px;">Getestete Flows</div>
+    <ul class="feature-list">
+      <li>
+        <div class="feat-icon icon-blue">🔐</div>
+        <div class="feat-text">
+          <strong>Login-Flow</strong>
+          <span>Rollenbasiert: Architekt & Kunde — testet Zugang und Weiterleitung</span>
+        </div>
+      </li>
+      <li>
+        <div class="feat-icon icon-green">📁</div>
+        <div class="feat-text">
+          <strong>Projekt anlegen & Daten speichern</strong>
+          <span>Formular ausfüllen, speichern, Supabase-Rückgabe prüfen</span>
+        </div>
+      </li>
+      <li>
+        <div class="feat-icon icon-purple">🔄</div>
+        <div class="feat-text">
+          <strong>Tenant-Wechsel</strong>
+          <span>Multi-Tenant-Logik wird geprüft — Architekt sieht nur seine Daten, Kunde nur seine</span>
+        </div>
+      </li>
+    </ul>
+
+    <div class="section-label" style="margin-top: 20px;">Mobile Simulation</div>
+    <div class="device-row">
+      <div class="device-badge">
+        <div class="dev-icon">📱</div>
+        <div>
+          <strong>iPhone 14</strong><br>
+          <span style="font-size:12px; color:#717171;">390 × 844 px</span>
+        </div>
+      </div>
+      <div class="device-badge">
+        <div class="dev-icon">📱</div>
+        <div>
+          <strong>Samsung Galaxy S23</strong><br>
+          <span style="font-size:12px; color:#717171;">360 × 780 px</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="telegram-badge">
+      <div class="tg-icon">✈️</div>
+      <div>
+        <strong>Report direkt auf Telegram</strong>
+        Nach jedem Test-Run bekommst du eine Nachricht — ✅ alles grün oder ❌ mit Screenshot was kaputt ist
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. FLOW DIAGRAMM -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-purple">🔀</div>
+      <div>
+        <div class="card-title">Technischer Ablauf</div>
+        <div class="card-subtitle">Von Cron bis Telegram — so funktioniert der Test-Run</div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-label">⏰ Start</div>
+        Cron-Job — 02:00 Uhr
+      </div>
+      <div class="flow-arrow"></div>
+      <div class="flow-step">
+        <div class="step-label">🤖 Browser</div>
+        Playwright startet (headless Chromium)
+      </div>
+      <div class="flow-arrow"></div>
+      <div class="flow-step">
+        <div class="step-label">🧪 Tests</div>
+        Login → Kernfunktionen → Mobile Viewports
+      </div>
+      <div class="flow-arrow"></div>
+      <div class="flow-result">
+        <div class="flow-pass">✅ PASS<br><span style="font-size:12px; font-weight:400;">Alles grün</span></div>
+        <div class="flow-fail">❌ FAIL<br><span style="font-size:12px; font-weight:400;">Screenshot mitgeschickt</span></div>
+      </div>
+      <div class="flow-arrow"></div>
+      <div class="flow-step" style="background: linear-gradient(135deg,#E3F2FF,#D0E8FF); border-color: #90BEF0; color: #0057FF;">
+        <div class="step-label">✈️ Report</div>
+        Telegram-Nachricht an Daniel
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. LIMITS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-red">⚠️</div>
+      <div>
+        <div class="card-title">Was Playwright nicht kann</div>
+        <div class="card-subtitle">Ehrlichkeit über Grenzen — damit Erwartungen stimmen</div>
+      </div>
+    </div>
+
+    <ul class="limit-list">
+      <li>
+        <div class="limit-icon">🚫</div>
+        <div class="limit-text">
+          <strong>Kein echtes iOS Safari</strong>
+          <span>Playwright simuliert mobile Viewports — aber echter Safari auf dem iPhone hat eigene Bugs, die wir so nicht finden. Für Safari-spezifische Issues braucht es echtes Gerät.</span>
+        </div>
+      </li>
+      <li>
+        <div class="limit-icon">🚫</div>
+        <div class="limit-text">
+          <strong>Kein Performance-Testing</strong>
+          <span>Playwright prüft Funktion — nicht Ladezeiten, Core Web Vitals oder Server-Antwortzeiten. Dafür gibt's andere Tools (z.B. Lighthouse).</span>
+        </div>
+      </li>
+      <li>
+        <div class="limit-icon">🚫</div>
+        <div class="limit-text">
+          <strong>Kein visuelles Design-Review</strong>
+          <span>Playwright sieht nicht ob ein Button verschoben ist oder Farben falsch sind — nur ob Elemente vorhanden und klickbar sind.</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 5. RAM SITUATION -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-yellow">🍓</div>
+      <div>
+        <div class="card-title">RAM-Situation auf dem Pi</div>
+        <div class="card-subtitle">8 GB gesamt — warum nachts die beste Zeit ist</div>
+      </div>
+    </div>
+
+    <div class="ram-visual">
+      <div class="ram-row">
+        <span class="ram-row-label">🟦 Firefox + OpenClaw (tagsüber)</span>
+        <span class="ram-row-val">~5 GB</span>
+      </div>
+      <div class="ram-bar-wrap">
+        <div class="ram-bar-used" style="width: 62.5%; background: linear-gradient(90deg, #0057FF, #4D88FF);">62%</div>
+      </div>
+
+      <div class="ram-row" style="margin-top: 6px;">
+        <span class="ram-row-label">🟩 Firefox idle (nachts)</span>
+        <span class="ram-row-val">~2–3 GB</span>
+      </div>
+      <div class="ram-bar-wrap">
+        <div class="ram-bar-used" style="width: 32%; background: linear-gradient(90deg, #008A4B, #00B862);">32%</div>
+      </div>
+
+      <div class="ram-row" style="margin-top: 6px;">
+        <span class="ram-row-label">🟧 Playwright Test-Run</span>
+        <span class="ram-row-val">~500 MB–1 GB</span>
+      </div>
+      <div class="ram-bar-wrap">
+        <div class="ram-bar-used" style="width: 10%; background: linear-gradient(90deg, #E87D00, #FFA63D);">10%</div>
+      </div>
+
+      <div style="background: #F7FFF9; border: 1.5px solid #A8E6C5; border-radius: 12px; padding: 14px 16px; margin-top: 18px; display: flex; align-items: flex-start; gap: 10px;">
+        <span style="font-size: 22px;">💡</span>
+        <div style="font-size: 14px; color: #333;">
+          <strong>Deshalb läuft der Test um 02:00 Uhr:</strong> Firefox ist im Idle-Modus, OpenClaw läuft idle — genug Puffer für Playwright. Nach dem Run wird der Playwright-Prozess sofort beendet, RAM freigegeben.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. BUSINESS IMPACT -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-green">📈</div>
+      <div>
+        <div class="card-title">Was das für dich bedeutet</div>
+        <div class="card-subtitle">Business Impact als Solo-Founder</div>
+      </div>
+    </div>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="imp-icon">⏱️</div>
+        <strong>Kein manuelles Testen</strong>
+        <p>Du musst nach jedem Deploy nicht mehr selbst auf 2 Geräten klicken. Das macht Playwright.</p>
+      </div>
+      <div class="impact-card">
+        <div class="imp-icon">🚨</div>
+        <strong>Fehler zuerst, nicht deine User</strong>
+        <p>Wenn nachts etwas bricht, weißt du es morgens früh — bevor jemand anderes es merkt.</p>
+      </div>
+      <div class="impact-card">
+        <div class="imp-icon">📐</div>
+        <strong>Skaliert mit ModulAI</strong>
+        <p>Neue Features → neue Tests. Die Test-Suite wächst mit der App. Einmal aufgebaut, immer dabei.</p>
+      </div>
+      <div class="impact-card">
+        <div class="imp-icon">🚀</div>
+        <strong>Nächster Schritt</strong>
+        <p>Tests vor jedem Lovable-Deploy automatisch triggern — dann kein kaputtes Deployment mehr.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. NÄCHSTE SCHRITTE -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-blue">📋</div>
+      <div>
+        <div class="card-title">Nächste Schritte</div>
+        <div class="card-subtitle">4 Schritte bis zum laufenden QA-System</div>
+      </div>
+    </div>
+
+    <ul class="checklist">
+      <li>
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <strong>Playwright auf dem Pi installieren</strong>
+          <span>npm install + Chromium-Binary — einmaliger Setup, danach läuft es</span>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <strong>Test-Suite schreiben</strong>
+          <span>Login-Flow, Projekt anlegen, Tenant-Wechsel — die wichtigsten Kernfunktionen zuerst</span>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <strong>Cron einrichten (02:00 Uhr täglich)</strong>
+          <span>Ein Befehl in der Crontab des Pi — danach startet alles automatisch</span>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <div class="step-text">
+          <strong>Telegram-Report konfigurieren</strong>
+          <span>Bot-Token + Chat-ID — du kriegst Ergebnis direkt aufs Handy</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>🏗️ ModulAI QA-Briefing · 🍓 Raspberry Pi 5 · erstellt von Hatti 🏔️</p>
+    <p style="margin-top: 4px;">14. März 2026</p>
+  </div>
+
+</div>
+</body>
+</html>
