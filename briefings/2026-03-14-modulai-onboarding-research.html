@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ModulAI Onboarding Research — Hattis Briefing</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #F7F7F7;
+    color: #222222;
+    line-height: 1.6;
+    padding: 24px 16px 64px;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 48px 0 32px;
+  }
+
+  .header .meta {
+    font-size: 13px;
+    color: #717171;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #222;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .header .subtitle {
+    font-size: 17px;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Quick-Win Banner */
+  .quickwin-banner {
+    background: linear-gradient(135deg, #0057FF 0%, #0041CC 100%);
+    color: white;
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 20px rgba(0, 87, 255, 0.3);
+  }
+
+  .quickwin-banner .icon {
+    font-size: 40px;
+    flex-shrink: 0;
+  }
+
+  .quickwin-banner h2 {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    margin-bottom: 6px;
+  }
+
+  .quickwin-banner p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .quickwin-banner strong {
+    font-weight: 700;
+  }
+
+  /* Section cards */
+  .card {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .card-header .emoji {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .card-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #222;
+  }
+
+  .card-header .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #0057FF;
+    margin-bottom: 4px;
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+
+  .stat-box {
+    flex: 1;
+    min-width: 150px;
+    background: #F7F7F7;
+    border-radius: 12px;
+    padding: 18px 20px;
+    text-align: center;
+  }
+
+  .stat-box .number {
+    font-size: 32px;
+    font-weight: 800;
+    color: #0057FF;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-box .label {
+    font-size: 13px;
+    color: #717171;
+    line-height: 1.3;
+  }
+
+  /* Reason list */
+  .reason-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .reason-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    background: #FFF8F0;
+    border-radius: 10px;
+    border-left: 3px solid #FF5A1F;
+    font-size: 15px;
+  }
+
+  .reason-list li .ri {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* Pattern cards */
+  .patterns-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .pattern-card {
+    border: 1px solid #EBEBEB;
+    border-radius: 12px;
+    padding: 22px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pattern-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: #0057FF;
+    border-radius: 4px 0 0 4px;
+  }
+
+  .pattern-card .pattern-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #0057FF;
+    margin-bottom: 6px;
+  }
+
+  .pattern-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #222;
+  }
+
+  .pattern-card .pattern-desc {
+    font-size: 15px;
+    color: #444;
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+
+  .pattern-meta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .pattern-meta-item {
+    font-size: 13px;
+    color: #555;
+  }
+
+  .pattern-meta-item strong {
+    color: #222;
+    font-weight: 600;
+  }
+
+  .example-chip {
+    display: inline-block;
+    background: #EEF3FF;
+    color: #0057FF;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  /* Table */
+  .table-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid #EBEBEB;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead tr {
+    background: #F7F7F7;
+  }
+
+  th {
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: #555;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border-bottom: 1px solid #EBEBEB;
+  }
+
+  td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #F0F0F0;
+    color: #333;
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr.highlight td {
+    background: #F0FFF4;
+  }
+
+  tr.highlight td:first-child {
+    font-weight: 700;
+    color: #16a34a;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .badge-green { background: #DCFCE7; color: #16a34a; }
+  .badge-blue { background: #EEF3FF; color: #0057FF; }
+  .badge-orange { background: #FFF7ED; color: #EA580C; }
+  .badge-red { background: #FEF2F2; color: #DC2626; }
+  .badge-gray { background: #F3F4F6; color: #6B7280; }
+
+  .rec-text {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.4;
+  }
+
+  /* Phase timeline */
+  .phase-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .phase-item {
+    display: flex;
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .phase-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 48px;
+    flex-shrink: 0;
+  }
+
+  .phase-dot {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .phase-dot-1 { background: #0057FF; color: white; }
+  .phase-dot-2 { background: #7C3AED; color: white; }
+  .phase-dot-3 { background: #059669; color: white; }
+
+  .phase-line {
+    width: 2px;
+    background: #E5E7EB;
+    flex: 1;
+    margin: 6px 0;
+  }
+
+  .phase-content {
+    padding: 0 0 32px 0;
+    flex: 1;
+  }
+
+  .phase-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .tag-1 { color: #0057FF; }
+  .tag-2 { color: #7C3AED; }
+  .tag-3 { color: #059669; }
+
+  .phase-content h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #222;
+  }
+
+  .phase-content p {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .phase-tasks {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .phase-tasks li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #444;
+  }
+
+  .phase-tasks li::before {
+    content: '→';
+    color: #0057FF;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  /* Code block */
+  .code-block {
+    background: #1E1E2E;
+    color: #CDD6F4;
+    border-radius: 12px;
+    padding: 24px;
+    font-family: 'Monaco', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+
+  .code-block .c-comment { color: #6C7086; }
+  .code-block .c-keyword { color: #CBA6F7; }
+  .code-block .c-string { color: #A6E3A1; }
+  .code-block .c-func { color: #89B4FA; }
+  .code-block .c-var { color: #F5C2E7; }
+  .code-block .c-type { color: #FAB387; }
+
+  /* Voice spotlight */
+  .voice-spotlight {
+    background: linear-gradient(135deg, #EEF3FF 0%, #F0FDF4 100%);
+    border-radius: 16px;
+    padding: 28px;
+    border: 1px solid #C7D2FE;
+    margin-bottom: 20px;
+  }
+
+  .mic-animation {
+    width: 80px;
+    height: 80px;
+    background: #0057FF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 16px;
+    box-shadow: 0 0 0 0 rgba(0, 87, 255, 0.4);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 87, 255, 0.4); }
+    70% { box-shadow: 0 0 0 20px rgba(0, 87, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 87, 255, 0); }
+  }
+
+  .voice-spotlight h3 {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #222;
+  }
+
+  .voice-spotlight p {
+    text-align: center;
+    color: #555;
+    font-size: 15px;
+    max-width: 500px;
+    margin: 0 auto 20px;
+  }
+
+  .voice-reasons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .voice-reason-chip {
+    background: white;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 14px;
+    color: #333;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .voice-reason-chip .vr-emoji { font-size: 18px; }
+
+  /* Slide preview */
+  .slide-preview {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .slide-chip {
+    background: white;
+    border-radius: 10px;
+    padding: 12px 16px;
+    border: 2px solid #EBEBEB;
+    font-size: 13px;
+    color: #444;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .slide-chip.active {
+    border-color: #0057FF;
+    color: #0057FF;
+    font-weight: 600;
+  }
+
+  .slide-chip .snum {
+    width: 22px;
+    height: 22px;
+    background: #F0F0F0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    color: #555;
+  }
+
+  .slide-chip.active .snum {
+    background: #0057FF;
+    color: white;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 0 0;
+    font-size: 13px;
+    color: #999;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .header h1 { font-size: 26px; }
+    .card { padding: 20px; }
+    .stats-row { flex-direction: column; }
+    .quickwin-banner { flex-direction: column; gap: 12px; }
+    .voice-reasons { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="meta">ModulAI · Onboarding Research · 14. März 2026</div>
+    <h1>User Onboarding für Architekten</h1>
+    <p class="subtitle">Warum das Checklisten-Onboarding scheitert — und was Daniel <em>jetzt</em> stattdessen bauen soll.</p>
+  </div>
+
+  <!-- Quick-Win Banner -->
+  <div class="quickwin-banner">
+    <div class="icon">⚡</div>
+    <div>
+      <h2>Quick Win — Diese Woche, 0 €</h2>
+      <p>Bau ein <strong>eigenes Welcome Modal</strong> direkt in Lovable: 5 Slides, animiertes Mikrofon auf Slide 3, <code>hasSeenOnboarding</code> Flag in Supabase. Fertig in einem Abend. Kein Drittanbieter-Tool nötig.</p>
+    </div>
+  </div>
+
+  <!-- A: Warum Checklisten scheitern -->
+  <div class="card">
+    <div class="card-header">
+      <span class="emoji">📋</span>
+      <div>
+        <div class="section-label">Abschnitt A</div>
+        <h2>Warum Checklisten-Onboarding oft scheitert</h2>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="number">&lt;20%</div>
+        <div class="label">Ø Completion Rate für In-App Checklisten</div>
+      </div>
+      <div class="stat-box">
+        <div class="number">73%</div>
+        <div class="label">der User klicken Onboarding-Elemente beim ersten Erscheinen weg</div>
+      </div>
+      <div class="stat-box">
+        <div class="number">8 Sek</div>
+        <div class="label">Zeit bis erste Entscheidung: "Bleibe ich oder nicht?"</div>
+      </div>
+      <div class="stat-box">
+        <div class="number">3×</div>
+        <div class="label">Höherer Engagement durch geführte Tours vs. passive Checklisten</div>
+      </div>
+    </div>
+
+    <ul class="reason-list">
+      <li>
+        <span class="ri">😰</span>
+        <div><strong>Kognitive Überlastung:</strong> Eine leere App + eine lange To-Do-Liste = Schock. Architekten sind pragmatisch — sie wollen sofort loslegen, nicht erst einen Lehrplan abarbeiten.</div>
+      </li>
+      <li>
+        <span class="ri">👻</span>
+        <div><strong>Kein "Aha-Moment":</strong> Checklisten zeigen TASKS, keine Features. Der User versteht nicht, <em>warum</em> ein Feature ihm das Leben einfacher macht. Besonders kritisch für Voice-Features, die man sehen (hören) muss.</div>
+      </li>
+      <li>
+        <span class="ri">🎯</span>
+        <div><strong>Zu generisch:</strong> "Erstelle dein erstes Projekt" klingt wie jedes andere PM-Tool. Kein spezifischer Wert für Architekten auf der Baustelle kommuniziert.</div>
+      </li>
+      <li>
+        <span class="ri">📍</span>
+        <div><strong>Kein Kontext:</strong> Checklisten hängen irgendwo in der Sidebar. Guided Tours und Modals erscheinen <em>dort</em>, wo der User gerade ist — im richtigen Moment.</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- B: Die 3 Patterns -->
+  <div class="card">
+    <div class="card-header">
+      <span class="emoji">🎯</span>
+      <div>
+        <div class="section-label">Abschnitt B</div>
+        <h2>Die 3 wirkungsvollsten Onboarding-Patterns</h2>
+      </div>
+    </div>
+
+    <div class="patterns-grid">
+
+      <div class="pattern-card">
+        <div class="pattern-num">Pattern 01</div>
+        <h3>🖼️ Feature Spotlight Modal (Welcome Karussell)</h3>
+        <p class="pattern-desc">
+          Ein fullscreen- oder centered Modal beim allerersten Login — bevor der User die App überhaupt sieht.
+          3–6 Slides die die wichtigsten Features visuell zeigen: großes Icon, kurzer Titel, ein Satz Erklärung, Skip-Option.
+          Kein Feature-Dumping — jede Slide hat <em>einen</em> klaren Punkt.
+        </p>
+        <div class="pattern-meta">
+          <div class="pattern-meta-item">
+            <strong>Wann es wirkt:</strong> Erster Login, neues Feature-Release, nach Re-Aktivierung
+          </div>
+          <div class="pattern-meta-item">
+            <strong>Vorbild:</strong>
+            <span class="example-chip">🔷 Linear</span>
+            <span class="example-chip">🟣 Notion</span>
+            <span class="example-chip">🟠 Loom</span>
+          </div>
+        </div>
+        <div style="margin-top: 12px; padding: 12px 14px; background: #F0FFF4; border-radius: 8px; font-size: 14px; color: #166534;">
+          💡 <strong>Für ModulAI:</strong> 5 Slides — Dashboard Overview → Projekte → 🎤 Voice Features (animiertes Mikro) → Tasks → Team Invite
+        </div>
+      </div>
+
+      <div class="pattern-card">
+        <div class="pattern-num">Pattern 02</div>
+        <h3>🗺️ Guided Product Tour (Schritt-für-Schritt)</h3>
+        <p class="pattern-desc">
+          Overlay-basierter Highlight: Ein Element der UI wird "spotlighted" (Rest abgedunkelt), daneben erscheint ein Tooltip mit Erklärung und "Weiter"-Button.
+          Der User führt echte Aktionen durch — nicht nur lesen, sondern <em>klicken</em>.
+          Aktivierungsrate 40–60% höher als passive Erklärungen.
+        </p>
+        <div class="pattern-meta">
+          <div class="pattern-meta-item">
+            <strong>Wann es wirkt:</strong> Nach dem Welcome Modal, on-demand über "Hilfe"-Button, bei neuen Features
+          </div>
+          <div class="pattern-meta-item">
+            <strong>Vorbild:</strong>
+            <span class="example-chip">🔴 Figma</span>
+            <span class="example-chip">🟡 Asana</span>
+            <span class="example-chip">🔵 Intercom</span>
+          </div>
+        </div>
+        <div style="margin-top: 12px; padding: 12px 14px; background: #EEF3FF; border-radius: 8px; font-size: 14px; color: #1D4ED8;">
+          💡 <strong>Für ModulAI:</strong> "Voice Tour" — 4 Steps: Mikrofon finden → Aufnahme starten → Memo wird zu Task → Task editieren
+        </div>
+      </div>
+
+      <div class="pattern-card">
+        <div class="pattern-num">Pattern 03</div>
+        <h3>🌱 Empty State Coaching</h3>
+        <p class="pattern-desc">
+          Leere Listen- und Dashboard-Bereiche sind die beste Werbefläche, die du hast.
+          Statt "Noch keine Projekte" zeigen: ein aussagekräftiges Illustration + konkreter CTA ("Erstes Projekt anlegen")
+          + kleiner Hinweis auf das Voice-Feature ("Oder einfach eintippen lassen — per Sprache 🎤").
+          Kein extra-Tool nötig, direkt in den Komponenten umsetzbar.
+        </p>
+        <div class="pattern-meta">
+          <div class="pattern-meta-item">
+            <strong>Wann es wirkt:</strong> Immer — besonders für neue User ohne Daten
+          </div>
+          <div class="pattern-meta-item">
+            <strong>Vorbild:</strong>
+            <span class="example-chip">⬛ Linear</span>
+            <span class="example-chip">🟣 Notion</span>
+            <span class="example-chip">🔵 Slack</span>
+          </div>
+        </div>
+        <div style="margin-top: 12px; padding: 12px 14px; background: #FFF7ED; border-radius: 8px; font-size: 14px; color: #9A3412;">
+          💡 <strong>Für ModulAI:</strong> Jede leere Liste hat ein Bau-/Architekten-Motiv + direkten CTA + 1 Satz Voice-Hinweis
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- C: Tool-Vergleich -->
+  <div class="card">
+    <div class="card-header">
+      <span class="emoji">🛠️</span>
+      <div>
+        <div class="section-label">Abschnitt C</div>
+        <h2>Tool-Vergleich — Open Source vs. SaaS</h2>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Typ</th>
+            <th>Preis</th>
+            <th>React</th>
+            <th>Lovable</th>
+            <th>Empfehlung</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Eigenes Modal</strong></td>
+            <td><span class="badge badge-blue">DIY React</span></td>
+            <td><strong>0 €</strong></td>
+            <td>✅</td>
+            <td>✅</td>
+            <td class="rec-text">
+              <span class="badge badge-green">⭐ Phase 1</span><br>
+              <span style="font-size:12px;">Vollste Kontrolle, kein Overhead, direkt in Lovable generierbar</span>
+            </td>
+          </tr>
+          <tr class="highlight">
+            <td><strong>Driver.js</strong></td>
+            <td><span class="badge badge-blue">Open Source</span></td>
+            <td><strong>Kostenlos</strong></td>
+            <td>✅</td>
+            <td>✅</td>
+            <td class="rec-text">
+              <span class="badge badge-green">⭐ Phase 2</span><br>
+              <span style="font-size:12px;">Kleinstes Bundle (~20KB), modern TypeScript, einfachste API — Top-Wahl für Guided Tours</span>
+            </td>
+          </tr>
+          <tr class="highlight">
+            <td><strong>React Joyride</strong></td>
+            <td><span class="badge badge-blue">React Library</span></td>
+            <td><strong>Kostenlos</strong></td>
+            <td>✅ nativ</td>
+            <td>✅</td>
+            <td class="rec-text">
+              <span class="badge badge-green">⭐ Phase 2 Alt.</span><br>
+              <span style="font-size:12px;">Beste React-Integration, meiste npm-Downloads, custom Components möglich</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Shepherd.js</strong></td>
+            <td><span class="badge badge-blue">Open Source</span></td>
+            <td><strong>Kostenlos</strong></td>
+            <td>✅</td>
+            <td>✅</td>
+            <td class="rec-text">
+              <span class="badge badge-gray">Optional</span><br>
+              <span style="font-size:12px;">Sehr anpassbar, größeres Bundle (~30KB), gut für komplexe Flows</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Intro.js</strong></td>
+            <td><span class="badge badge-blue">Open Source</span></td>
+            <td>Kostenlos / Lite</td>
+            <td>✅</td>
+            <td>✅</td>
+            <td class="rec-text">
+              <span class="badge badge-gray">Alt. zu Driver.js</span><br>
+              <span style="font-size:12px;">Bewährt, aber GPL-Lizenz kann bei kommerziellem Einsatz Probleme machen</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>UserGuiding</strong></td>
+            <td><span class="badge badge-orange">SaaS No-Code</span></td>
+            <td>ab ~$174/mo</td>
+            <td>✅</td>
+            <td>✅</td>
+            <td class="rec-text">
+              <span class="badge badge-orange">Phase 3</span><br>
+              <span style="font-size:12px;">No-Code Flows ohne Deploy, Analytics inkl. — erst sinnvoll bei &gt;50 aktiven Usern</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Appcues</strong></td>
+            <td><span class="badge badge-orange">SaaS No-Code</span></td>
+            <td>ab ~$300/mo</td>
+            <td>✅</td>
+            <td>✅</td>
+            <td class="rec-text">
+              <span class="badge badge-gray">Zu teuer jetzt</span><br>
+              <span style="font-size:12px;">Sehr mächtig, aber für Solo-Founder in Early Stage wirtschaftlich nicht sinnvoll</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Inline Manual</strong></td>
+            <td><span class="badge badge-orange">SaaS No-Code</span></td>
+            <td>ab ~$50/mo</td>
+            <td>✅</td>
+            <td>✅</td>
+            <td class="rec-text">
+              <span class="badge badge-gray">Nice to have</span><br>
+              <span style="font-size:12px;">Günstigste SaaS-Option, auch Help Center Features — wenn No-Code ein Muss ist</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Pendo</strong></td>
+            <td><span class="badge badge-red">Enterprise SaaS</span></td>
+            <td>Auf Anfrage (teuer)</td>
+            <td>✅</td>
+            <td>❓</td>
+            <td class="rec-text">
+              <span class="badge badge-red">Skip komplett</span><br>
+              <span style="font-size:12px;">Enterprise-Overkill. Kein Preis = kein Budget für Solo-Founder. Ignore.</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- D: Hattis Empfehlung -->
+  <div class="card">
+    <div class="card-header">
+      <span class="emoji">🏔️</span>
+      <div>
+        <div class="section-label">Abschnitt D</div>
+        <h2>Hattis Empfehlung für ModulAI</h2>
+      </div>
+    </div>
+
+    <p style="font-size: 15px; color: #555; margin-bottom: 28px; font-style: italic;">
+      Solo-Founder-Perspektive: Kein Over-Engineering. Maximaler Impact, minimaler Aufwand.
+      Daniel hat Lovable + Supabase + React — das ist ein verdammt guter Stack für alles was hier gebraucht wird.
+    </p>
+
+    <div class="phase-timeline">
+
+      <div class="phase-item">
+        <div class="phase-left">
+          <div class="phase-dot phase-dot-1">1</div>
+          <div class="phase-line"></div>
+        </div>
+        <div class="phase-content">
+          <div class="phase-tag tag-1">Phase 1 — Diese Woche · 0 € · ~4–6 Stunden</div>
+          <h3>Eigenes Welcome Modal bauen</h3>
+          <p>Direkt in Lovable prompen: "Erstelle ein WelcomeModal.tsx mit 5 Slides und Supabase-Integration."
+          Das ist kein Hexenwerk — React State + einfaches Modal + Supabase-Metadata-Update.
+          Kein Drittanbieter, kein Abo, volle Kontrolle.</p>
+          <ul class="phase-tasks">
+            <li>WelcomeModal.tsx mit 5 Slides bauen (Dashboard → Projekte → 🎤 Voice → Tasks → Team)</li>
+            <li>Trigger: <code>user.created_at &lt; 24h</code> AND <code>hasSeenOnboarding = false</code></li>
+            <li>Slide 3: Animiertes Mikrofon, Voice-Feature erklären — das ist das Killer-Feature</li>
+            <li>Beim Close: <code>supabase.auth.updateUser({ data: { hasSeenOnboarding: true } })</code></li>
+            <li>Empty States in Projekt- und Task-Listen mit CTAs + Voice-Hinweis updaten</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase-item">
+        <div class="phase-left">
+          <div class="phase-dot phase-dot-2">2</div>
+          <div class="phase-line"></div>
+        </div>
+        <div class="phase-content">
+          <div class="phase-tag tag-2">Phase 2 — Wenn &gt;50 aktive User · 0 € · ~1 Wochenende</div>
+          <h3>Driver.js oder React Joyride für Guided Tours</h3>
+          <p>Wenn das Modal die User aktiviert hat, aber manche trotzdem nicht verstehen wie Voice funktioniert:
+          Eine geführte 4-Step Tour einbauen. Auslöser: "Hilfe"-Button oder "Voice Tour starten" Link.</p>
+          <ul class="phase-tasks">
+            <li><code>npm install driver.js</code> — 20KB, kein React-Wrapper nötig</li>
+            <li>4-Step Tour: Mikrofon-Button finden → Record → Auto-Task → Editieren</li>
+            <li>Analytics: welche Steps werden abgebrochen? → Weak Points finden</li>
+            <li>On-Demand: Tour jederzeit neustart-bar über Hilfe-Menü</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase-item">
+        <div class="phase-left">
+          <div class="phase-dot phase-dot-3">3</div>
+          <!-- no line for last item -->
+        </div>
+        <div class="phase-content">
+          <div class="phase-tag tag-3">Phase 3 — Wenn Churn ein Problem wird · ab $50/mo</div>
+          <h3>SaaS-Tool evaluieren (UserGuiding / Inline Manual)</h3>
+          <p>Erst wenn: Churn messbar steigt, A/B-Testing von Onboarding-Flows gebraucht wird,
+          oder kein Dev-Bandwidth mehr für Onboarding-Maintenance. Dann Inline Manual ($50/mo) oder
+          UserGuiding ($174/mo) testen — beide ohne Re-Deploy aktualisierbar.</p>
+          <ul class="phase-tasks">
+            <li>Trigger: Churn &gt; 15% monatlich ODER &gt;200 MAUs</li>
+            <li>Inline Manual first — günstigster Einstieg, auch Help Center dabei</li>
+            <li>Appcues / Pendo: Skip. Zu teuer, zu komplex für diese Phase.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- E: Implementierung -->
+  <div class="card">
+    <div class="card-header">
+      <span class="emoji">⚙️</span>
+      <div>
+        <div class="section-label">Abschnitt E</div>
+        <h2>Implementierung — WelcomeModal.tsx (Lovable-Ready)</h2>
+      </div>
+    </div>
+
+    <p style="font-size: 15px; color: #555; margin-bottom: 20px;">
+      Pseudo-Code / Komponenten-Struktur — direkt als Lovable-Prompt verwenden:
+    </p>
+
+    <div class="code-block">
+<span class="c-comment">// WelcomeModal.tsx — Lovable-Ready Struktur</span>
+
+<span class="c-keyword">const</span> <span class="c-var">SLIDES</span> = [
+  { <span class="c-var">id</span>: <span class="c-string">1</span>, <span class="c-var">icon</span>: <span class="c-string">'🏗️'</span>, <span class="c-var">title</span>: <span class="c-string">'Dein Dashboard'</span>,
+    <span class="c-var">desc</span>: <span class="c-string">'Alle Projekte und offene Tasks auf einen Blick.'</span>,
+    <span class="c-var">highlight</span>: <span class="c-string">'dashboard'</span> },
+
+  { <span class="c-var">id</span>: <span class="c-string">2</span>, <span class="c-var">icon</span>: <span class="c-string">'📁'</span>, <span class="c-var">title</span>: <span class="c-string">'Projekte anlegen'</span>,
+    <span class="c-var">desc</span>: <span class="c-string">'Bauvorhaben, Büroprojekte, Bauphasen — alles strukturiert.'</span>,
+    <span class="c-var">highlight</span>: <span class="c-string">'projects'</span> },
+
+  { <span class="c-var">id</span>: <span class="c-string">3</span>, <span class="c-var">icon</span>: <span class="c-string">'🎤'</span>, <span class="c-var">title</span>: <span class="c-string">'Sprach-Memos aufnehmen'</span>,
+    <span class="c-var">desc</span>: <span class="c-string">'Auf der Baustelle — einfach Mikrofon tippen und sprechen.'</span>,
+    <span class="c-var">highlight</span>: <span class="c-string">'voice'</span>,
+    <span class="c-var">animation</span>: <span class="c-string">'pulse-mic'</span> },  <span class="c-comment">// ← animiertes Mikrofon hier!</span>
+
+  { <span class="c-var">id</span>: <span class="c-string">4</span>, <span class="c-var">icon</span>: <span class="c-string">'✅'</span>, <span class="c-var">title</span>: <span class="c-string">'Tasks & To-Dos'</span>,
+    <span class="c-var">desc</span>: <span class="c-string">'Aufgaben zuweisen, Deadlines setzen, Fortschritt tracken.'</span>,
+    <span class="c-var">highlight</span>: <span class="c-string">'tasks'</span> },
+
+  { <span class="c-var">id</span>: <span class="c-string">5</span>, <span class="c-var">icon</span>: <span class="c-string">'👥'</span>, <span class="c-var">title</span>: <span class="c-string">'Team einladen'</span>,
+    <span class="c-var">desc</span>: <span class="c-string">'Kollegen hinzufügen und Projekte gemeinsam verwalten.'</span>,
+    <span class="c-var">highlight</span>: <span class="c-string">'team'</span> },
+]
+
+<span class="c-keyword">export function</span> <span class="c-func">WelcomeModal</span>() {
+  <span class="c-comment">// Trigger-Logik</span>
+  <span class="c-keyword">const</span> <span class="c-var">showModal</span> =
+    <span class="c-func">isNewUser</span>(user.created_at) <span class="c-comment">// created_at &lt; 24h</span>
+    && !user.user_metadata?.<span class="c-var">hasSeenOnboarding</span>
+
+  <span class="c-keyword">const</span> [<span class="c-var">slide</span>, <span class="c-func">setSlide</span>] = <span class="c-func">useState</span>(<span class="c-string">0</span>)
+
+  <span class="c-keyword">const</span> <span class="c-func">handleClose</span> = <span class="c-keyword">async</span> () => {
+    <span class="c-comment">// Flag in Supabase setzen → nie wieder zeigen</span>
+    <span class="c-keyword">await</span> supabase.auth.<span class="c-func">updateUser</span>({
+      data: { <span class="c-var">hasSeenOnboarding</span>: <span class="c-string">true</span> }
+    })
+    <span class="c-func">setOpen</span>(<span class="c-string">false</span>)
+  }
+
+  <span class="c-keyword">return</span> (
+    &lt;<span class="c-type">Modal</span> open={showModal}&gt;
+      &lt;<span class="c-type">SlideContent</span> slide={SLIDES[slide]} /&gt;  <span class="c-comment">// Icon + Title + Desc</span>
+      &lt;<span class="c-type">ProgressDots</span> current={slide} total={5} /&gt;  <span class="c-comment">// ● ● ○ ○ ○</span>
+      &lt;<span class="c-type">Navigation</span>&gt;
+        &lt;<span class="c-type">Button</span> onClick={prev}&gt;Zurück&lt;/<span class="c-type">Button</span>&gt;
+        &lt;<span class="c-type">Button</span> onClick={handleClose} variant="ghost"&gt;Überspringen&lt;/<span class="c-type">Button</span>&gt;
+        {isLast
+          ? &lt;<span class="c-type">Button</span> onClick={handleClose} variant="primary"&gt;Loslegen! 🚀&lt;/<span class="c-type">Button</span>&gt;
+          : &lt;<span class="c-type">Button</span> onClick={next} variant="primary"&gt;Weiter →&lt;/<span class="c-type">Button</span>&gt;}
+      &lt;/<span class="c-type">Navigation</span>&gt;
+    &lt;/<span class="c-type">Modal</span>&gt;
+  )
+}
+    </div>
+
+    <div style="margin-top: 20px;">
+      <p style="font-size: 14px; color: #555; margin-bottom: 12px; font-weight: 600;">Die 5 Slides im Überblick:</p>
+      <div class="slide-preview">
+        <div class="slide-chip"><span class="snum">1</span> 🏗️ Dashboard</div>
+        <div class="slide-chip"><span class="snum">2</span> 📁 Projekte</div>
+        <div class="slide-chip active"><span class="snum">3</span> 🎤 Voice ← Key!</div>
+        <div class="slide-chip"><span class="snum">4</span> ✅ Tasks</div>
+        <div class="slide-chip"><span class="snum">5</span> 👥 Team</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- F: Voice Feature Spotlight -->
+  <div class="card">
+    <div class="card-header">
+      <span class="emoji">🎤</span>
+      <div>
+        <div class="section-label">Abschnitt F</div>
+        <h2>Voice Feature Spotlight — Das Killer-Feature</h2>
+      </div>
+    </div>
+
+    <div class="voice-spotlight">
+      <div class="mic-animation">🎤</div>
+      <h3>Sprach-Memo aufnehmen</h3>
+      <p>Einfach auf das Mikrofon tippen — ModulAI macht daraus eine strukturierte Aufgabe. Hände frei, Gedanken gesichert.</p>
+      <div class="voice-reasons">
+        <div class="voice-reason-chip"><span class="vr-emoji">🏗️</span> Architekten sind auf der Baustelle</div>
+        <div class="voice-reason-chip"><span class="vr-emoji">🧤</span> Hände oft schmutzig / besetzt</div>
+        <div class="voice-reason-chip"><span class="vr-emoji">⚡</span> 10× schneller als Tippen</div>
+        <div class="voice-reason-chip"><span class="vr-emoji">🧠</span> Gedanken sofort festhalten</div>
+        <div class="voice-reason-chip"><span class="vr-emoji">🤖</span> AI wandelt Sprache in Tasks um</div>
+      </div>
+    </div>
+
+    <div style="background: #F7F7F7; border-radius: 12px; padding: 20px 24px; margin-bottom: 16px;">
+      <h3 style="font-size: 16px; margin-bottom: 12px; color: #222;">⚠️ Warum das Onboarding HIER besonders wichtig ist</h3>
+      <p style="font-size: 15px; color: #555; line-height: 1.6;">
+        Voice-Features sind unsichtbar, solange man sie nicht kennt. Ein Benutzer der noch nie aufs Mikrofon getippt hat
+        <em>weiß nicht, dass es da ist</em>. Das Welcome Modal muss dieses Feature aktiv demonstrieren — nicht nur erwähnen.
+        Slide 3 sollte deshalb das animierte Mikrofon (pulsierende Welle) + einen Satz haben: "Tippe einfach auf das Mikrofon-Icon — 
+        ModulAI erkennt deine Sprache und erstellt automatisch einen Task."
+      </p>
+    </div>
+
+    <div style="background: #EEF3FF; border-radius: 12px; padding: 20px 24px;">
+      <h3 style="font-size: 16px; margin-bottom: 12px; color: #0057FF;">💡 Konkrete Slide 3 Gestaltung</h3>
+      <ul style="font-size: 14px; color: #333; line-height: 1.8; padding-left: 20px;">
+        <li>Großes animiertes Mikrofon-Icon mit Pulsiereffekt (CSS animation, inline umsetzbar)</li>
+        <li>Titel: <strong>"Sprach-Memo — dein Baustellen-Helfer"</strong></li>
+        <li>Body: <em>"Hände voll? Einfach auf 🎤 tippen, kurz sprechen — ModulAI erstellt automatisch eine Aufgabe."</em></li>
+        <li>Optional: Kleines "Try it"-Badge → direkt zur Voice-Funktion springen</li>
+        <li>Hintergrundfarbe dieser Slide: leichtes Blau (#EEF3FF) zur Differenzierung</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>🏔️ Hatti · ModulAI Onboarding Research · 14. März 2026</p>
+    <p style="margin-top: 6px;">Quellen: LogRocket, Chameleon, Userpilot, Product Tours Blog, UserGuiding, Videate · Alle Tool-Preise Stand März 2026</p>
+  </div>
+
+</div>
+</body>
+</html>
