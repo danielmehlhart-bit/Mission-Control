@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ModulAI — Wochenplan KW12</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F9FAFB;
+      color: #111827;
+      min-height: 100vh;
+      padding: 40px 20px 60px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+      padding: 36px 40px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .header-left h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #111827;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .header-left h1 span {
+      color: #F97316;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .header-date {
+      font-size: 0.9rem;
+      color: #6B7280;
+      font-weight: 500;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #FFF7ED;
+      color: #F97316;
+      border: 1px solid #FDBA74;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+    }
+
+    .kw-badge {
+      display: inline-block;
+      background: #F3F4F6;
+      color: #374151;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    /* ── Section ── */
+    .section {
+      margin-bottom: 32px;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9CA3AF;
+      margin-bottom: 14px;
+      padding-left: 4px;
+    }
+
+    /* ── Task Card ── */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.07), 0 4px 12px rgba(0,0,0,.05);
+      padding: 22px 26px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      transition: box-shadow .15s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,.1), 0 8px 24px rgba(0,0,0,.08);
+    }
+
+    .prio-dot {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .card-body {
+      flex: 1;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .card-context {
+      font-size: 0.875rem;
+      color: #6B7280;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .status-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .status-offen {
+      background: #EFF6FF;
+      color: #3B82F6;
+    }
+
+    .status-inarbeit {
+      background: #FFF7ED;
+      color: #F97316;
+    }
+
+    .status-blockiert {
+      background: #FEF2F2;
+      color: #EF4444;
+    }
+
+    /* ── Divider ── */
+    .section-divider {
+      border: none;
+      border-top: 1px solid #E5E7EB;
+      margin: 8px 0 24px;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #9CA3AF;
+      margin-top: 40px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .header { padding: 24px 20px; }
+      .header-left h1 { font-size: 1.35rem; }
+      .card { padding: 18px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <h1>ModulAI — <span>Wochenplan KW12</span></h1>
+        <div class="header-meta">
+          <span class="header-date">16. März 2026</span>
+          <span class="kw-badge">KW 12 · 16.–22. März</span>
+          <span class="badge">Architekt Connect</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Technische Aufgaben -->
+    <div class="section">
+      <div class="section-title">🛠 Technische Aufgaben</div>
+      <hr class="section-divider" />
+
+      <div class="card">
+        <div class="prio-dot">🔴</div>
+        <div class="card-body">
+          <div class="card-title">E-Mail senden aus der App</div>
+          <div class="card-context">Das Versenden von E-Mails direkt aus ModulAI ist aktuell noch nicht möglich. Feature muss implementiert und in den bestehenden Flow integriert werden.</div>
+          <span class="status-label status-offen">Offen</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="prio-dot">🔴</div>
+        <div class="card-body">
+          <div class="card-title">Inbox-Feature fertigstellen</div>
+          <div class="card-context">Postmark empfängt eingehende E-Mails noch nicht zuverlässig — der Empfang schlägt unregelmäßig fehl. Debugging des Webhooks und der Routing-Konfiguration nötig.</div>
+          <span class="status-label status-blockiert">Blockiert</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="prio-dot">🟡</div>
+        <div class="card-body">
+          <div class="card-title">Co-Pilot / Chatbot implementieren</div>
+          <div class="card-context">Bevor gebaut wird, steht Feedback-Sammlung an. Erst verstehen was Nutzer wirklich brauchen, dann Entscheidung ob und wie ein KI-Assistent integriert wird.</div>
+          <span class="status-label status-offen">Offen</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="prio-dot">🟡</div>
+        <div class="card-body">
+          <div class="card-title">Scalability & Performance Audit</div>
+          <div class="card-context">Plattform-Review: bestehende Architektur auf technische Schulden checken, Engpässe identifizieren und Skalierbarkeit für weiteres Wachstum bewerten.</div>
+          <span class="status-label status-offen">Offen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vertrieb & Kunden -->
+    <div class="section">
+      <div class="section-title">📋 Vertrieb & Kunden</div>
+      <hr class="section-divider" />
+
+      <div class="card">
+        <div class="prio-dot">🔴</div>
+        <div class="card-body">
+          <div class="card-title">Kim Weber — Review-Termin anfragen</div>
+          <div class="card-context">Kim Weber und ihr Team für einen Review-Termin kontaktieren. Ziel: Feedback aus der laufenden Nutzung einholen und nächste Schritte abstimmen.</div>
+          <span class="status-label status-offen">Offen</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="prio-dot">🟡</div>
+        <div class="card-body">
+          <div class="card-title">Judith kontaktieren</div>
+          <div class="card-context">Empfehlung über Franjo — Erstkontakt steht noch aus. Kurze Intro-Nachricht rausschicken und Interesse an ModulAI sondieren.</div>
+          <span class="status-label status-offen">Offen</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="prio-dot">🟡</div>
+        <div class="card-body">
+          <div class="card-title">Kais ansprechen</div>
+          <div class="card-context">Offener Kontakt mit konkretem Bedarf: Bautagebuch-Feature. Gespräch vertiefen und prüfen ob der Use Case kurzfristig abgedeckt werden kann.</div>
+          <span class="status-label status-offen">Offen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      Daniel Mehlhart &nbsp;·&nbsp; ModulAI Wochenplan KW12 &nbsp;·&nbsp; 16. März 2026
+    </div>
+
+  </div>
+</body>
+</html>
