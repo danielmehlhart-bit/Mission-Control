@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marktbericht - 16.03.2026</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+            color: #222;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 {
+            color: #ff5a5f;
+            font-size: 2.2em;
+            margin: 0 0 10px 0;
+            font-weight: 600;
+        }
+        .subtitle {
+            color: #767676;
+            font-size: 1.1em;
+            margin: 0;
+        }
+        .indices-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .index-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-left: 5px solid #ddd;
+        }
+        .index-card.negative {
+            border-left-color: #ff5a5f;
+        }
+        .index-card.positive {
+            border-left-color: #00a699;
+        }
+        .index-name {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .index-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .index-change {
+            font-size: 1em;
+            font-weight: 500;
+        }
+        .negative {
+            color: #ff5a5f;
+        }
+        .positive {
+            color: #00a699;
+        }
+        .content-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #484848;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        .source-link {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .source-link a {
+            color: #ff5a5f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .source-link a:hover {
+            text-decoration: underline;
+        }
+        .key-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .key-point {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #ff5a5f;
+        }
+        .oil-warning {
+            background: linear-gradient(135deg, #ff5a5f, #ff385c);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📈 Marktbericht</h1>
+            <p class="subtitle">DAX-Anleger besorgt - Alle Augen auf die Straße von Hormus</p>
+            <p class="subtitle">Stand: 13.03.2026, 18:18 Uhr</p>
+        </div>
+
+        <div class="indices-grid">
+            <div class="index-card negative">
+                <div class="index-name">DAX</div>
+                <div class="index-value">23.447</div>
+                <div class="index-change negative">-0,6% / Woche: -0,7%</div>
+            </div>
+            <div class="index-card negative">
+                <div class="index-name">MDAX</div>
+                <div class="index-value">28.819</div>
+                <div class="index-change negative">-1,45%</div>
+            </div>
+            <div class="index-card negative">
+                <div class="index-name">Dow Jones</div>
+                <div class="index-value">Erholt sich leicht</div>
+                <div class="index-change negative">Woche: -1,4%</div>
+            </div>
+        </div>
+
+        <div class="oil-warning">
+            <h3>🛢️ Ölkrise im Fokus</h3>
+            <p><strong>Brent-Öl: ~100 USD/Fass (+40% seit Kriegsbeginn)</strong></p>
+            <p>Straße von Hormus bleibt gesperrt</p>
+        </div>
+
+        <div class="content-card">
+            <div class="section-title">🎯 Haupttreiber</div>
+            <div class="key-points">
+                <div class="key-point">
+                    <strong>Iran-Krieg:</strong> Sperrung der Straße von Hormus seit 2 Wochen
+                </div>
+                <div class="key-point">
+                    <strong>Ölpreise:</strong> +40% seit Kriegsbeginn, Inflationssorgen steigen
+                </div>
+                <div class="key-point">
+                    <strong>Risikoaversion:</strong> Anleger meiden größere Positionen
+                </div>
+                <div class="key-point">
+                    <strong>Notenbanken:</strong> EZB & Fed vor schwierigen Zinsentscheidungen
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <div class="section-title">⚠️ Marktlage</div>
+            <p>Die Sperrung der Straße von Hormus dominiert die Märkte. Seit Beginn des Iran-Krieges haben sich <strong>DAX-Verluste von knapp 8%</strong> angehäuft. Die hohen Ölpreise schüren Inflationssorgen und könnten zu einer Stagflation führen.</p>
+            
+            <div class="highlight">
+                <strong>Zentralbanken-Dilemma:</strong> Soll die EZB die Zinsen erhöhen, um die Inflation zu bekämpfen, oder würgt sie damit die Konjunktur ab?
+            </div>
+
+            <p>Auch der <strong>Rentenmarkt</strong> zeigt Warnsignale: Die Rendite zehnjähriger Bundesanleihen ist auf 2,97% gestiegen - den höchsten Stand seit 2023.</p>
+        </div>
+
+        <div class="content-card">
+            <div class="section-title">📊 Einzelwerte</div>
+            <p><strong>DAX-Spitze:</strong> Zalando setzt Aufschwung nach guten Quartalszahlen fort</p>
+            <p><strong>Schwächster Wert:</strong> Siemens Energy am Ende der Tabelle</p>
+        </div>
+
+        <div class="content-card">
+            <div class="section-title">🔮 Ausblick</div>
+            <p>Experten sehen die Sperrung noch als <strong>temporäres Phänomen</strong>, warnen aber:</p>
+            <blockquote style="border-left: 3px solid #ff5a5f; padding-left: 15px; margin: 15px 0; font-style: italic;">
+                "Die Nervosität wächst täglich. Je länger die Straße von Hormus geschlossen bleibt, desto stärker dürften die Märkte in Richtung Stagflation tendieren." - Emmanuel Cau, Barclays
+            </blockquote>
+            
+            <p><strong>Fed-Erwartung:</strong> Nur noch eine statt zwei Zinssenkungen 2026 erwartet</p>
+            <p><strong>Inflation (USA):</strong> PCE-Index Januar 2,8% (Dezember: 2,9%)</p>
+        </div>
+
+        <div class="source-link">
+            <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-dow-notenbanken-geldpolitik-oel-100.html" target="_blank">
+                📄 Zum vollständigen Artikel auf tagesschau.de
+            </a>
+        </div>
+    </div>
+</body>
+</html>
