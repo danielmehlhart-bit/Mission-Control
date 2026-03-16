@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hessen Kommunalwahl 2026 – Briefing</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      padding: 24px 16px 60px;
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 32px;
+    }
+
+    header .eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: #717171;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.25;
+      color: #111;
+      margin-bottom: 8px;
+    }
+
+    header .meta {
+      font-size: 14px;
+      color: #717171;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #fff3cd;
+      color: #856404;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-top: 10px;
+      border: 1px solid #ffc107;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #717171;
+      text-transform: uppercase;
+      margin: 32px 0 12px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+    }
+
+    .card h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #111;
+    }
+
+    .card .subtitle {
+      font-size: 13px;
+      color: #717171;
+      margin-bottom: 20px;
+    }
+
+    /* Participation bar */
+    .stat-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: #444;
+      min-width: 90px;
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .stat-delta {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+
+    .delta-pos { background: #d4edda; color: #155724; }
+    .delta-neg { background: #f8d7da; color: #721c24; }
+    .delta-neu { background: #e2e3e5; color: #383d41; }
+
+    /* Party bars */
+    .party-list { margin-top: 4px; }
+
+    .party-row {
+      display: grid;
+      grid-template-columns: 90px 1fr 56px 70px;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .party-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .bar-track {
+      background: #f0f0f0;
+      border-radius: 4px;
+      height: 10px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+
+    .pct {
+      font-size: 14px;
+      font-weight: 700;
+      text-align: right;
+      color: #111;
+    }
+
+    .delta-small {
+      font-size: 12px;
+      font-weight: 600;
+      text-align: right;
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+
+    /* Party colors */
+    .cdu  { background: #161616; }
+    .afd  { background: #009ee0; }
+    .spd  { background: #e3000f; }
+    .gru  { background: #46962b; }
+    .lin  { background: #be3075; }
+    .fdp  { background: #ffed00; }
+    .son  { background: #aaa; }
+    .wg   { background: #c89f2a; }
+
+    /* Pending card */
+    .pending-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+      border-left: 4px solid #6c757d;
+    }
+
+    .pending-card h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .pending-card p {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .pending-card .source-link {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #e00;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .pending-card .source-link:hover { text-decoration: underline; }
+
+    /* Info box */
+    .info-box {
+      background: #f0f4ff;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: #444;
+      line-height: 1.6;
+    }
+
+    .info-box strong { color: #111; }
+
+    /* Sources */
+    .sources {
+      font-size: 12px;
+      color: #999;
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid #eee;
+      line-height: 1.8;
+    }
+
+    .sources a { color: #999; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+
+    /* Responsive */
+    @media (max-width: 540px) {
+      .party-row {
+        grid-template-columns: 64px 1fr 44px 56px;
+        gap: 6px;
+      }
+      header h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Wahlergebnis · Hessen</div>
+    <h1>Kommunalwahl 2026 🗳️</h1>
+    <div class="meta">15. März 2026 · Briefing erstellt: 16. März 2026, 07:05 Uhr</div>
+    <div class="badge">⚠️ Trendergebnis — vorläufig, ~64 % der Stimmzettel ausgezählt</div>
+  </header>
+
+  <!-- ============ HESSEN GESAMT ============ -->
+  <div class="section-title">Statistisches Landesergebnis Hessen</div>
+
+  <div class="card">
+    <h2>Hessen gesamt</h2>
+    <div class="subtitle">Quelle: Hessisches Statistisches Landesamt, Stand 16.03.2026, 02:32 Uhr</div>
+
+    <div class="stat-row" style="margin-bottom:20px;">
+      <div class="stat-label">Wahlbeteiligung</div>
+      <div class="stat-value">54,4 %</div>
+      <div class="stat-delta delta-pos">+4,0 PP vs. 2021</div>
+    </div>
+
+    <div class="party-list">
+      <div class="party-row">
+        <div class="party-name">CDU</div>
+        <div class="bar-track"><div class="bar-fill cdu" style="width:59.4%"></div></div>
+        <div class="pct">29,7 %</div>
+        <div class="delta-small delta-pos">+1,2</div>
+      </div>
+      <div class="party-row">
+        <div class="party-name">SPD</div>
+        <div class="bar-track"><div class="bar-fill spd" style="width:40.4%"></div></div>
+        <div class="pct">20,2 %</div>
+        <div class="delta-small delta-neg">−3,8</div>
+      </div>
+      <div class="party-row">
+        <div class="party-name">AfD</div>
+        <div class="bar-track"><div class="bar-fill afd" style="width:31.8%"></div></div>
+        <div class="pct">15,9 %</div>
+        <div class="delta-small delta-pos">+9,1</div>
+      </div>
+      <div class="party-row">
+        <div class="party-name">Grüne</div>
+        <div class="bar-track"><div class="bar-fill gru" style="width:28.8%"></div></div>
+        <div class="pct">14,4 %</div>
+        <div class="delta-small delta-neg">−4,0</div>
+      </div>
+      <div class="party-row">
+        <div class="party-name">Linke</div>
+        <div class="bar-track"><div class="bar-fill lin" style="width:11.6%"></div></div>
+        <div class="pct">5,8 %</div>
+        <div class="delta-small delta-pos">+1,8</div>
+      </div>
+      <div class="party-row">
+        <div class="party-name">FDP</div>
+        <div class="bar-track"><div class="bar-fill fdp" style="width:7.4%"></div></div>
+        <div class="pct">3,7 %</div>
+        <div class="delta-small delta-neg">−3,0</div>
+      </div>
+      <div class="party-row">
+        <div class="party-name">Sonstige</div>
+        <div class="bar-track"><div class="bar-fill son" style="width:13.2%"></div></div>
+        <div class="pct">6,6 %</div>
+        <div class="delta-small delta-neu">+1,0</div>
+      </div>
+      <div class="party-row">
+        <div class="party-name">Wählergrp.</div>
+        <div class="bar-track"><div class="bar-fill wg" style="width:7.2%"></div></div>
+        <div class="pct">3,6 %</div>
+        <div class="delta-small delta-neg">−0,6</div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong>Lage nach Kreisen:</strong> CDU gewinnt 19 von 26 Landkreisen und kreisfreien Städten. SPD bleibt stärkste Kraft in: Kreis Kassel, Werra-Meißner-Kreis, Schwalm-Eder-Kreis, Odenwaldkreis und Hanau. Grüne führen in Kassel und Darmstadt. <strong>Frankfurt:</strong> CDU erstmals auf Platz 1 (26,5 %). <strong>AfD</strong> legt in allen 26 Kreisen zu — größter Gewinner absolut.
+    </div>
+  </div>
+
+  <!-- ============ VERGLEICH 2021 ============ -->
+  <div class="card" style="padding-bottom: 20px;">
+    <h2>Im Vergleich zu 2021</h2>
+    <div class="subtitle">Endgültiges Ergebnis 2021 vs. Trendergebnis 2026</div>
+    <div style="overflow-x:auto;">
+      <table style="width:100%; border-collapse:collapse; font-size:14px;">
+        <thead>
+          <tr style="border-bottom:2px solid #eee; text-align:left;">
+            <th style="padding:8px 4px;">Partei</th>
+            <th style="padding:8px 4px; text-align:right;">2021</th>
+            <th style="padding:8px 4px; text-align:right;">2026 (Trend)</th>
+            <th style="padding:8px 4px; text-align:right;">Δ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #f0f0f0;">
+            <td style="padding:8px 4px; font-weight:600;">CDU</td>
+            <td style="padding:8px 4px; text-align:right;">28,5 %</td>
+            <td style="padding:8px 4px; text-align:right; font-weight:700;">29,7 %</td>
+            <td style="padding:8px 4px; text-align:right;"><span class="delta-small delta-pos">+1,2</span></td>
+          </tr>
+          <tr style="border-bottom:1px solid #f0f0f0;">
+            <td style="padding:8px 4px; font-weight:600;">SPD</td>
+            <td style="padding:8px 4px; text-align:right;">24,0 %</td>
+            <td style="padding:8px 4px; text-align:right; font-weight:700;">20,2 %</td>
+            <td style="padding:8px 4px; text-align:right;"><span class="delta-small delta-neg">−3,8</span></td>
+          </tr>
+          <tr style="border-bottom:1px solid #f0f0f0;">
+            <td style="padding:8px 4px; font-weight:600;">AfD</td>
+            <td style="padding:8px 4px; text-align:right;">6,8 %</td>
+            <td style="padding:8px 4px; text-align:right; font-weight:700;">15,9 %</td>
+            <td style="padding:8px 4px; text-align:right;"><span class="delta-small delta-pos">+9,1</span></td>
+          </tr>
+          <tr style="border-bottom:1px solid #f0f0f0;">
+            <td style="padding:8px 4px; font-weight:600;">Grüne</td>
+            <td style="padding:8px 4px; text-align:right;">18,4 %</td>
+            <td style="padding:8px 4px; text-align:right; font-weight:700;">14,4 %</td>
+            <td style="padding:8px 4px; text-align:right;"><span class="delta-small delta-neg">−4,0</span></td>
+          </tr>
+          <tr style="border-bottom:1px solid #f0f0f0;">
+            <td style="padding:8px 4px; font-weight:600;">Linke</td>
+            <td style="padding:8px 4px; text-align:right;">4,0 %</td>
+            <td style="padding:8px 4px; text-align:right; font-weight:700;">5,8 %</td>
+            <td style="padding:8px 4px; text-align:right;"><span class="delta-small delta-pos">+1,8</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px 4px; font-weight:600;">FDP</td>
+            <td style="padding:8px 4px; text-align:right;">6,7 %</td>
+            <td style="padding:8px 4px; text-align:right; font-weight:700;">3,7 %</td>
+            <td style="padding:8px 4px; text-align:right;"><span class="delta-small delta-neg">−3,0</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ HOCHTAUNUSKREIS ============ -->
+  <div class="section-title">Hochtaunuskreis</div>
+
+  <div class="pending-card">
+    <h2>🔄 Kreistagswahl – Ergebnis noch ausstehend</h2>
+    <p>
+      Die Auszählung der Kreistagswahl im Hochtaunuskreis war zum Zeitpunkt der Briefing-Erstellung (Montag, 16.03. 07:05 Uhr) noch nicht abgeschlossen. Das offizielle Ergebnis wird über den Votemanager der ekom21 veröffentlicht.
+    </p>
+    <p style="margin-top: 10px;">
+      <strong>Gewählt wurden:</strong> Kreistag des Hochtaunuskreises sowie in Oberursel zusätzlich Stadtverordnetenversammlung (45 Sitze), sechs Ortsbeiräte und der Ausländerbeirat.
+    </p>
+    <a class="source-link" href="https://www.hochtaunuskreis.de/index.php?object=tx%2C3419.5.1&ModID=7&FID=3419.34258.1" target="_blank">→ Offizielle Ergebnisseite Hochtaunuskreis</a>
+  </div>
+
+  <!-- ============ OBERURSEL ============ -->
+  <div class="section-title">Oberursel (Taunus)</div>
+
+  <div class="pending-card">
+    <h2>🔄 Stadtverordnetenversammlung – Ergebnis noch ausstehend</h2>
+    <p>
+      Auch für Oberursel liegen noch keine Ergebnisse vor. In Oberursel wurden am 15. März 2026 gewählt:
+    </p>
+    <ul style="margin-top: 10px; padding-left: 20px; font-size: 14px; color: #555; line-height: 2;">
+      <li><strong>Stadtverordnetenversammlung</strong> — 45 Sitze</li>
+      <li><strong>Ortsbeiräte</strong> in Bommersheim, Oberstedten, Oberursel-Mitte, Oberursel-Nord, Stierstadt und Weißkirchen (je 7 Mitglieder)</li>
+      <li><strong>Ausländerbeirat</strong> — 7 Mitglieder</li>
+    </ul>
+    <p style="margin-top: 10px; font-size: 13px; color: #777;">
+      Hinweis: In Oberursel findet 2026 keine separate Bürgermeisterwahl statt — der amtierende Bürgermeister Christoph Dahm (CDU) hat noch keine Amtszeit beendet.
+    </p>
+    <a class="source-link" href="https://votemanager-da.ekom21cdn.de/06434008/index.html" target="_blank">→ Wahlergebnisse Oberursel (ekom21 Votemanager)</a>
+  </div>
+
+  <div class="card" style="border-left: 4px solid #007aff;">
+    <h2 style="font-size: 16px; margin-bottom: 8px;">ℹ️ Wie wählt man in Hessen kommunal?</h2>
+    <p style="font-size: 14px; color: #555; line-height: 1.7;">
+      Bei hessischen Kommunalwahlen gilt das <strong>Kumulieren und Panaschieren</strong>: Jede Wählerin und jeder Wähler hat so viele Stimmen wie Sitze zu vergeben (z. B. 45 bei der Stadtverordnetenversammlung). Diese Stimmen können beliebig auf Kandidat:innen verschiedener Parteien verteilt oder bis zu drei Stimmen auf eine Person kumuliert werden. Deshalb dauert die Auszählung Tage — das Trendergebnis basiert nur auf unverändert abgegebenen Listenstimmzetteln (ca. 64 % in Hessen).
+    </p>
+  </div>
+
+  <!-- ============ SOURCES ============ -->
+  <div class="sources">
+    <strong>Quellen:</strong><br>
+    [1] <a href="https://statistik.hessen.de/presse/trendergebnisse-der-kommunalwahlen-2026-in-hessen" target="_blank">Hessisches Statistisches Landesamt — Pressemitteilung Trendergebnis, 16.03.2026</a><br>
+    [2] <a href="https://www.ffh.de/nachrichten/magazin/461156-kommunalwahl-2026-in-hessen-infos-themen-und-ergebnisse.html" target="_blank">Hit Radio FFH — Ticker Kommunalwahl Hessen 2026</a><br>
+    [3] <a href="https://www.oberursel.de/de/rathaus/stadtrecht-haushalt-wahlen/wahlen/" target="_blank">Stadt Oberursel — Wahlinformationen Kommunalwahl 2026</a><br>
+    [4] <a href="https://www.hochtaunuskreis.de/index.php?object=tx%2C3419.5.1&ModID=7&FID=3419.34258.1" target="_blank">Hochtaunuskreis — Kommunalwahl 2026</a><br>
+    [5] <a href="https://statistik.hessen.de/unsere-zahlen/wahlen/kommunalwahlen-2026-in-hessen-ergebnispraesentation" target="_blank">HSL — Ergebnispräsentation Kommunalwahlen 2026</a>
+  </div>
+
+</div>
+</body>
+</html>
