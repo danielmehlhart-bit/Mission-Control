@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alles auf Aktien - 17. März 2026</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            line-height: 1.6; 
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .header { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header .date { font-size: 1.2em; opacity: 0.9; }
+        .section { 
+            background: white; 
+            margin: 20px 0; 
+            padding: 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        .section h2 { 
+            color: #667eea; 
+            margin-bottom: 15px; 
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 8px;
+        }
+        .market-data { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 15px; 
+            margin: 20px 0; 
+        }
+        .market-item { 
+            padding: 15px; 
+            border-radius: 8px; 
+            text-align: center;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        .market-item.positive { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .market-item.negative { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .market-item .value { font-size: 1.5em; font-weight: bold; }
+        .market-item .label { font-size: 0.9em; opacity: 0.9; }
+        .stocks { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        .stock-item { 
+            padding: 15px; 
+            border-left: 4px solid #667eea; 
+            background: #f8f9ff; 
+            border-radius: 0 8px 8px 0;
+        }
+        .stock-name { font-weight: bold; color: #333; }
+        .stock-change { font-size: 1.1em; margin-top: 5px; }
+        .positive { color: #27ae60; }
+        .negative { color: #e74c3c; }
+        .youtube-link { 
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white; 
+            padding: 15px 25px; 
+            text-decoration: none; 
+            border-radius: 25px; 
+            display: inline-block; 
+            margin: 20px 0;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .youtube-link:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(238, 90, 36, 0.4); }
+        .highlight { 
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 15px 0;
+            border-left: 5px solid #ff8a65;
+        }
+        .tldr { 
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px; 
+            border-radius: 10px;
+            border-left: 5px solid #26d0ce;
+        }
+        .footer { 
+            text-align: center; 
+            padding: 20px; 
+            color: #666; 
+            border-top: 1px solid #eee; 
+            margin-top: 30px; 
+        }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 20px; }
+            .header h1 { font-size: 2em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 Alles auf Aktien</h1>
+            <div class="date">Dienstag, 17. März 2026</div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Märkte im Überblick</h2>
+            <div class="market-data">
+                <div class="market-item positive">
+                    <div class="value">+1,1%</div>
+                    <div class="label">NASDAQ 100</div>
+                </div>
+                <div class="market-item positive">
+                    <div class="value">+1,0%</div>
+                    <div class="label">S&P 500</div>
+                </div>
+                <div class="market-item">
+                    <div class="value">+0,5%</div>
+                    <div class="label">DAX</div>
+                </div>
+                <div class="market-item positive">
+                    <div class="value">+13%</div>
+                    <div class="label">Bitcoin (Monat)</div>
+                </div>
+            </div>
+            <p><strong>Grund für Optimismus:</strong> Ölpreise gaben leicht nach, positive Tech-Stimmung durch Nvidia GTC</p>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Thema des Tages: Nvidia's Billionen-Vision</h2>
+            <div class="highlight">
+                <p><strong>Jensen Huang</strong> verkündete auf der GTC eine <strong>Billionen-Dollar-Roadmap</strong> bis 2028 für KI-Rechenleistung. Der Markt reagierte euphorisch mit einem zwischenzeitlichen Spike, beruhigte sich aber wieder als klar wurde: Es ist eine Fortschreibung der bisherigen 500-Mrd.-Prognose plus 10%.</p>
+            </div>
+            
+            <h3>🔧 Die Lego-Strategie</h3>
+            <p>Nvidia baut nicht nur Chips, sondern komplette KI-Infrastruktur aus einer Hand:</p>
+            <ul style="margin: 10px 0 0 20px;">
+                <li>Prozessoren, Netzwerke, Software modular kombinierbar</li>
+                <li>Neue "KI-Fabriken" sollen Tokens statt Daten produzieren</li>
+                <li>90% Marktanteil bei KI-Beschleunigern</li>
+                <li>Jährlicher Innovations-Rhythmus statt alle 2-3 Jahre</li>
+            </ul>
+
+            <h3>🤖 Vera Rubin Architektur (2026)</h3>
+            <p>Benannt nach der Astronomin (Dunkle Materie) — für "Agentic AI" die eigenständig handelt, nicht nur reagiert.</p>
+        </div>
+
+        <div class="section">
+            <h2>💼 Top-Mover des Tages</h2>
+            <div class="stocks">
+                <div class="stock-item">
+                    <div class="stock-name">Nevios</div>
+                    <div class="stock-change positive">+15,0%</div>
+                    <p>27-Mrd.-Vertrag mit Meta für KI-Kapazitäten</p>
+                </div>
+                <div class="stock-item">
+                    <div class="stock-name">Circle Internet</div>
+                    <div class="stock-change positive">+9,1%</div>
+                    <p>USDC Stablecoin profitiert von Krieg</p>
+                </div>
+                <div class="stock-item">
+                    <div class="stock-name">Kommerzbank</div>
+                    <div class="stock-change positive">+8,6%</div>
+                    <p>Unicredit-Übernahmeofferte (30,80€/Aktie)</p>
+                </div>
+                <div class="stock-item">
+                    <div class="stock-name">Dollar Tree</div>
+                    <div class="stock-change positive">+6,3%</div>
+                    <p>Höherpreisiges Sortiment geplant</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔄 Weitere Highlights</h2>
+            <ul style="margin-left: 20px;">
+                <li><strong>Meta:</strong> 20% Stellenabbau (16.000 Jobs) spart 5-6 Mrd. Dollar (+2,3%)</li>
+                <li><strong>Bitcoin vs Gold:</strong> Crypto +13% vs Gold -5% seit Kriegsbeginn</li>
+                <li><strong>SEC prüft:</strong> Abschaffung der Quartalsberichterstattung</li>
+                <li><strong>Kommerzbank-Drama:</strong> Unicredit will mit 4% Aufschlag "sprechen" — Bund und Orcel sagen nein</li>
+                <li><strong>Gaming-Revolution:</strong> DLSS5 = "GPT-Moment für Computergrafik"</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="tldr">
+                <h2>💡 TL;DR</h2>
+                <p><strong>Nvidia dominiert</strong> mit Billionen-Roadmap den KI-Markt. <strong>Meta spart</strong> mit Massenentlassungen. <strong>Bitcoin schlägt Gold</strong> als Krisengewinner. <strong>Kommerzbank</strong> wird umworben aber wehrt sich. <strong>Märkte optimistisch</strong> aber vorsichtig.</p>
+            </div>
+        </div>
+
+        <a href="https://www.youtube.com/watch?v=Yo5V7t9P47s" class="youtube-link" target="_blank">
+            🎬 Komplette Episode ansehen
+        </a>
+
+        <div class="footer">
+            <p>Zusammenfassung erstellt von Hatti 🏔️ • <em>Die im Podcast besprochenen Aktien stellen keine Anlageempfehlungen dar</em></p>
+        </div>
+    </div>
+</body>
+</html>
