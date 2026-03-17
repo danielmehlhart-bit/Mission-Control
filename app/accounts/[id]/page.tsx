@@ -6,6 +6,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
+import CallPrepTab from "./call-prep-tab";
 
 type Account = {
   id: string; name: string; domain?: string; industry?: string; size?: string;
@@ -61,7 +62,7 @@ const ACTIVITY_ICONS: Record<string, string> = {
 const IS = { width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #1e2128", background: "#0d0f12", color: "#f0f2f5", fontSize: 13, outline: "none", boxSizing: "border-box" as const };
 const LS = { fontSize: 11, color: "#8b90a0", marginBottom: 4, display: "block" as const };
 
-type Tab = "overview" | "contacts" | "deals" | "projects" | "activities";
+type Tab = "overview" | "contacts" | "deals" | "projects" | "activities" | "callprep";
 
 export default function AccountDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -75,6 +76,7 @@ export default function AccountDetailPage() {
   const [loading, setLoading] = useState(true);
   const [calEvents, setCalEvents] = useState<CalEvent[]>([]);
   const [openNoteEventId, setOpenNoteEventId] = useState<string | null>(null);
+  const [discoveryNotesCount, setDiscoveryNotesCount] = useState(0);
 
   // Modals
   const [contactModal, setContactModal] = useState(false);
@@ -103,6 +105,7 @@ export default function AccountDetailPage() {
     setDeals((await dealRes.json()).deals ?? []);
     setProjects((await projRes.json()).projects ?? []);
     setActivities((await actRes.json()).activities ?? []);
+    fetch(`/api/discovery-notes?accountId=${id}`).then(r => r.json()).then(d => setDiscoveryNotesCount((d.discoveryNotes ?? []).length)).catch(() => {});
     setLoading(false);
   }, [id, router]);
 
@@ -185,6 +188,7 @@ export default function AccountDetailPage() {
     { key: "deals", label: "Deals", count: deals.length },
     { key: "projects", label: "Projects", count: projects.length },
     { key: "activities", label: "Activities", count: activities.length },
+    { key: "callprep", label: "Call Prep", count: discoveryNotesCount },
   ];
 
   return (
@@ -403,6 +407,11 @@ export default function AccountDetailPage() {
                 ))}
               </Card>
             </>
+          )}
+
+          {/* ─── CALL PREP TAB ─── */}
+          {tab === "callprep" && (
+            <CallPrepTab accountId={id} contacts={contacts} color={color} />
           )}
         </div>
 
