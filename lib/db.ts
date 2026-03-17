@@ -432,6 +432,65 @@ function initSchema(db: Database.Database): void {
     insertTask.run((Date.now() + 2).toString() + "3", "Solution Design Sprint terminieren — 2×2h vor Ort, Angebot 1.500€ ausarbeiten", "Ergebnis des Sprints: Fundierte Analyse + Mockup-Designs → gehören dann Eduard + Waldemar.");
   });
 
+  // Migration: Discovery Notes table for structured call prep
+  runMigration("create_discovery_notes_table", () => {
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS discovery_notes (
+        id              TEXT PRIMARY KEY,
+        account_id      TEXT NOT NULL,
+        title           TEXT NOT NULL DEFAULT '',
+        call_date       TEXT,
+        contact_id      TEXT,
+        status          TEXT NOT NULL DEFAULT 'draft',
+
+        kontext_buerotyp     TEXT DEFAULT '',
+        kontext_team         TEXT DEFAULT '',
+        kontext_projektarten TEXT DEFAULT '',
+        kontext_ablaeufe     TEXT DEFAULT '',
+
+        pain_1  TEXT DEFAULT '',
+        pain_2  TEXT DEFAULT '',
+        pain_3  TEXT DEFAULT '',
+
+        konkreter_fall_ausloeser   TEXT DEFAULT '',
+        konkreter_fall_beteiligte  TEXT DEFAULT '',
+        konkreter_fall_ablauf      TEXT DEFAULT '',
+        konkreter_fall_reibung     TEXT DEFAULT '',
+        konkreter_fall_folge       TEXT DEFAULT '',
+
+        auswirkung_haeufigkeit TEXT DEFAULT '',
+        auswirkung_zeitaufwand TEXT DEFAULT '',
+        auswirkung_betroffene  TEXT DEFAULT '',
+        auswirkung_folge       TEXT DEFAULT '',
+
+        workarounds_tools     TEXT DEFAULT '',
+        workarounds_loesungen TEXT DEFAULT '',
+        workarounds_warum_unzureichend TEXT DEFAULT '',
+
+        prioritaet_hoechste    TEXT DEFAULT '',
+        prioritaet_warum_jetzt TEXT DEFAULT '',
+
+        anforderungen_must_have TEXT DEFAULT '',
+        anforderungen_no_go     TEXT DEFAULT '',
+        anforderungen_nutzer    TEXT DEFAULT '',
+
+        naechster_schritt TEXT DEFAULT '',
+        offene_fragen     TEXT DEFAULT '',
+        hypothese_produkt TEXT DEFAULT '',
+
+        score_pain_identifiziert   INTEGER,
+        score_konkreter_fall       INTEGER,
+        score_impact_quantifiziert INTEGER,
+        score_prioritaet           INTEGER,
+        score_nicht_gepitcht       INTEGER,
+        score_naechster_schritt    INTEGER,
+
+        created_at TEXT NOT NULL DEFAULT (datetime('now')),
+        updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+      );
+    `);
+  });
+
   // Migration: ModulAI Task — Evaluierung Feature Talk to your Data (11.03.2026)
   runMigration("modulai_talk_to_data_eval_20260311", () => {
     db.prepare(`
