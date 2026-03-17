@@ -5,39 +5,79 @@ export const dynamic = "force-dynamic";
 
 const FIELDS = [
   "title", "call_date", "contact_id", "status",
+  // 1. Kontext
   "kontext_buerotyp", "kontext_team", "kontext_projektarten", "kontext_ablaeufe",
+  // 2. Pain Landscape
+  "pain_kernpain", "pain_woran_zeigt_sich", "pain_weitere_signale", "pain_einordnung",
+  // (legacy pain_1/2/3 still accepted)
   "pain_1", "pain_2", "pain_3",
+  // 3. Konkreter Fall
   "konkreter_fall_ausloeser", "konkreter_fall_beteiligte", "konkreter_fall_ablauf",
-  "konkreter_fall_reibung", "konkreter_fall_folge",
-  "auswirkung_haeufigkeit", "auswirkung_zeitaufwand", "auswirkung_betroffene", "auswirkung_folge",
-  "workarounds_tools", "workarounds_loesungen", "workarounds_warum_unzureichend",
-  "prioritaet_hoechste", "prioritaet_warum_jetzt",
+  "konkreter_fall_reibung", "konkreter_fall_doppelt", "konkreter_fall_folge",
+  "konkreter_fall_soll_ablauf",
+  // 4. Impact
+  "auswirkung_haeufigkeit", "auswirkung_zeitaufwand", "auswirkung_betroffene",
+  "auswirkung_folge", "auswirkung_warum_jetzt", "auswirkung_dringlichkeit", "auswirkung_schmerzstaerke",
+  // 5. Workarounds
+  "workarounds_tools", "workarounds_loesungen", "workarounds_ausprobiert",
+  "workarounds_warum_nicht", "workarounds_kein_standard",
+  // (legacy)
+  "workarounds_warum_unzureichend",
+  // 6. Priorisierung
+  "prioritaet_hoechste", "prioritaet_warum_jetzt", "prioritaet_nice_to_have", "prioritaet_testbar_14_tage",
+  // 7. Testbare Hypothese
+  "hypothese_problem", "hypothese_minimal", "hypothese_no_go", "hypothese_wer_nutzt", "hypothese_workflow",
+  // (legacy)
   "anforderungen_must_have", "anforderungen_no_go", "anforderungen_nutzer",
-  "naechster_schritt", "offene_fragen", "hypothese_produkt",
+  "hypothese_produkt",
+  // 8. Test Readiness
+  "test_bereitschaft", "test_beispiel", "test_unterlagen", "test_erfolgskriterium", "test_naechster_schritt",
+  // (legacy)
+  "naechster_schritt", "offene_fragen",
+  // 9. Scorecard
   "score_pain_identifiziert", "score_konkreter_fall", "score_impact_quantifiziert",
-  "score_prioritaet", "score_nicht_gepitcht", "score_naechster_schritt",
+  "score_root_cause", "score_prioritaet", "score_nicht_gepitcht",
+  "score_testfall", "score_naechster_schritt",
 ] as const;
 
 const camelToSnake: Record<string, string> = {
   callDate: "call_date", contactId: "contact_id",
+  // 1. Kontext
   kontextBuerotyp: "kontext_buerotyp", kontextTeam: "kontext_team",
   kontextProjektarten: "kontext_projektarten", kontextAblaeufe: "kontext_ablaeufe",
-  pain1: "pain_1", pain2: "pain_2", pain3: "pain_3",
+  // 2. Pain Landscape
+  painKernpain: "pain_kernpain", painWoranZeigtSich: "pain_woran_zeigt_sich",
+  painWeitereSignale: "pain_weitere_signale", painEinordnung: "pain_einordnung",
+  // 3. Konkreter Fall
   konkreterFallAusloeser: "konkreter_fall_ausloeser", konkreterFallBeteiligte: "konkreter_fall_beteiligte",
   konkreterFallAblauf: "konkreter_fall_ablauf", konkreterFallReibung: "konkreter_fall_reibung",
-  konkreterFallFolge: "konkreter_fall_folge",
+  konkreterFallDoppelt: "konkreter_fall_doppelt", konkreterFallFolge: "konkreter_fall_folge",
+  konkreterFallSollAblauf: "konkreter_fall_soll_ablauf",
+  // 4. Impact
   auswirkungHaeufigkeit: "auswirkung_haeufigkeit", auswirkungZeitaufwand: "auswirkung_zeitaufwand",
   auswirkungBetroffene: "auswirkung_betroffene", auswirkungFolge: "auswirkung_folge",
+  auswirkungWarumJetzt: "auswirkung_warum_jetzt",
+  auswirkungDringlichkeit: "auswirkung_dringlichkeit", auswirkungSchmerzstaerke: "auswirkung_schmerzstaerke",
+  // 5. Workarounds
   workaroundsTools: "workarounds_tools", workaroundsLoesungen: "workarounds_loesungen",
-  workaroundsWarumUnzureichend: "workarounds_warum_unzureichend",
+  workaroundsAusprobiert: "workarounds_ausprobiert", workaroundsWarumNicht: "workarounds_warum_nicht",
+  workaroundsKeinStandard: "workarounds_kein_standard",
+  // 6. Priorisierung
   prioritaetHoechste: "prioritaet_hoechste", prioritaetWarumJetzt: "prioritaet_warum_jetzt",
-  anforderungenMustHave: "anforderungen_must_have", anforderungenNoGo: "anforderungen_no_go",
-  anforderungenNutzer: "anforderungen_nutzer",
-  naechsterSchritt: "naechster_schritt", offeneFragen: "offene_fragen",
-  hypotheseProdukt: "hypothese_produkt",
+  prioritaetNiceToHave: "prioritaet_nice_to_have", prioritaetTestbar14Tage: "prioritaet_testbar_14_tage",
+  // 7. Testbare Hypothese
+  hypotheseProblem: "hypothese_problem", hypotheseMinimal: "hypothese_minimal",
+  hypotheseNoGo: "hypothese_no_go", hypotheseWerNutzt: "hypothese_wer_nutzt",
+  hypotheseWorkflow: "hypothese_workflow",
+  // 8. Test Readiness
+  testBereitschaft: "test_bereitschaft", testBeispiel: "test_beispiel",
+  testUnterlagen: "test_unterlagen", testErfolgskriterium: "test_erfolgskriterium",
+  testNaechsterSchritt: "test_naechster_schritt",
+  // 9. Scorecard
   scorePainIdentifiziert: "score_pain_identifiziert", scoreKonkreterFall: "score_konkreter_fall",
-  scoreImpactQuantifiziert: "score_impact_quantifiziert", scorePrioritaet: "score_prioritaet",
-  scoreNichtGepitcht: "score_nicht_gepitcht", scoreNaechsterSchritt: "score_naechster_schritt",
+  scoreImpactQuantifiziert: "score_impact_quantifiziert", scoreRootCause: "score_root_cause",
+  scorePrioritaet: "score_prioritaet", scoreNichtGepitcht: "score_nicht_gepitcht",
+  scoreTestfall: "score_testfall", scoreNaechsterSchritt: "score_naechster_schritt",
 };
 
 function snakeToCamel(s: string): string {

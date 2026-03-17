@@ -491,6 +491,45 @@ function initSchema(db: Database.Database): void {
     `);
   });
 
+  // Migration: Align discovery_notes with HTML template (pre gtm discovery.html)
+  runMigration("align_discovery_html_template", () => {
+    const add = (sql: string) => { try { db.exec(sql); } catch {} };
+    // Sektion 2: Pain Landscape (neue Struktur)
+    add("ALTER TABLE discovery_notes ADD COLUMN pain_kernpain TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN pain_woran_zeigt_sich TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN pain_weitere_signale TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN pain_einordnung TEXT DEFAULT ''");
+    // Sektion 3: Konkreter Fall (+2)
+    add("ALTER TABLE discovery_notes ADD COLUMN konkreter_fall_doppelt TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN konkreter_fall_soll_ablauf TEXT DEFAULT ''");
+    // Sektion 4: Impact (+3)
+    add("ALTER TABLE discovery_notes ADD COLUMN auswirkung_warum_jetzt TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN auswirkung_dringlichkeit INTEGER");
+    add("ALTER TABLE discovery_notes ADD COLUMN auswirkung_schmerzstaerke INTEGER");
+    // Sektion 5: Workarounds (+3)
+    add("ALTER TABLE discovery_notes ADD COLUMN workarounds_ausprobiert TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN workarounds_warum_nicht TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN workarounds_kein_standard TEXT DEFAULT ''");
+    // Sektion 6: Priorisierung (+2)
+    add("ALTER TABLE discovery_notes ADD COLUMN prioritaet_nice_to_have TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN prioritaet_testbar_14_tage TEXT DEFAULT ''");
+    // Sektion 7: Testbare Hypothese (5 neue Felder)
+    add("ALTER TABLE discovery_notes ADD COLUMN hypothese_problem TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN hypothese_minimal TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN hypothese_no_go TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN hypothese_wer_nutzt TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN hypothese_workflow TEXT DEFAULT ''");
+    // Sektion 8: Test Readiness (5 neue Felder)
+    add("ALTER TABLE discovery_notes ADD COLUMN test_bereitschaft TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN test_beispiel TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN test_unterlagen TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN test_erfolgskriterium TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN test_naechster_schritt TEXT DEFAULT ''");
+    // Scorecard +2
+    add("ALTER TABLE discovery_notes ADD COLUMN score_root_cause INTEGER");
+    add("ALTER TABLE discovery_notes ADD COLUMN score_testfall INTEGER");
+  });
+
   // Migration: ModulAI Task — Evaluierung Feature Talk to your Data (11.03.2026)
   runMigration("modulai_talk_to_data_eval_20260311", () => {
     db.prepare(`
