@@ -182,7 +182,6 @@ export default function CallPrepTab({ accountId, contacts, color }: {
                 {isExpanded && expandedNote && (
                   <ExpandedNote
                     note={expandedNote}
-                    contacts={contacts}
                     color={color}
                     onPatch={(field, value) => patchNote(note.id, field, value)}
                     onScorePatch={(field, value) => patchScoreImmediate(note.id, field, value)}
@@ -223,8 +222,8 @@ export default function CallPrepTab({ accountId, contacts, color }: {
 
 // ─── Expanded Note ───────────────────────────────────────────────────────────
 
-function ExpandedNote({ note, contacts, color, onPatch, onScorePatch }: {
-  note: DiscoveryNote; contacts: Person[]; color: string;
+function ExpandedNote({ note, color, onPatch, onScorePatch }: {
+  note: DiscoveryNote; color: string;
   onPatch: (field: string, value: string) => void;
   onScorePatch: (field: string, value: number) => void;
 }) {
