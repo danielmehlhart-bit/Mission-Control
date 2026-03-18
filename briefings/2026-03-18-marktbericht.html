@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📈 Marktbericht 18.03.2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .date-badge {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            display: inline-block;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-icon {
+            font-size: 2em;
+            margin-right: 15px;
+        }
+        
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .market-value {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .positive { color: #27ae60; }
+        .negative { color: #e74c3c; }
+        .neutral { color: #34495e; }
+        
+        .change {
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        
+        .news-item {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        
+        .news-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .news-text {
+            color: #566573;
+            font-size: 0.95em;
+        }
+        
+        .oil-alert {
+            background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 100%);
+            color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .source-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .source-link a {
+            background: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+        
+        .source-link a:hover {
+            background: #2980b9;
+        }
+        
+        .outlook {
+            background: linear-gradient(45deg, #fdbb2d 0%, #22c1c3 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .outlook h3 {
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📈 Marktbericht</h1>
+            <div class="date-badge">16. März 2026 • 18:17 Uhr</div>
+        </div>
+        
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">🇩🇪</span>
+                    <h2 class="card-title">DAX</h2>
+                </div>
+                <div class="market-value positive">23.564</div>
+                <div class="change positive">+0,5% leicht erholt</div>
+                <p style="margin-top: 15px; color: #566573;">
+                    Erholung von Tagestief trotz anhaltender Nahost-Sorgen
+                </p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">🇺🇸</span>
+                    <h2 class="card-title">Dow Jones</h2>
+                </div>
+                <div class="market-value positive">~+0,7%</div>
+                <div class="change positive">Leichte Erholung</div>
+                <p style="margin-top: 15px; color: #566573;">
+                    Wall Street zeigt vorsichtige Stabilisierung
+                </p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">🛢️</span>
+                    <h2 class="card-title">Brent Öl</h2>
+                </div>
+                <div class="market-value negative">106,50 $</div>
+                <div class="change negative">Kritisch hoch</div>
+                <p style="margin-top: 15px; color: #566573;">
+                    Straße von Hormus blockiert • IEA: "Größte Versorgungsunterbrechung der Geschichte"
+                </p>
+            </div>
+        </div>
+        
+        <div class="oil-alert">
+            <h3>⚠️ Kritische Lage im Nahen Osten</h3>
+            <p>Krieg dauert länger als erwartet • Stagflations-Sorgen wachsen • IEA gibt strategische Reserven frei</p>
+        </div>
+        
+        <div class="card">
+            <h3 style="color: #2c3e50; margin-bottom: 20px;">🏦 Haupttreiber & News</h3>
+            
+            <div class="news-item">
+                <div class="news-title">UniCredit greift Commerzbank an</div>
+                <div class="news-text">
+                    Überraschungsangebot: 0,485 UniCredit-Aktien je Commerzbank-Aktie (≈30,80€). 
+                    Commerzbank wehrt sich, Bundesregierung dagegen. Aktie +8%.
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <div class="news-title">Eurowings-Piloten stimmen für Streik</div>
+                <div class="news-text">
+                    94% Zustimmung zur Urabstimmung. Streit um Altersvorsorge wie bei Lufthansa-Kernmarke.
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <div class="news-title">Fed & EZB entscheiden diese Woche</div>
+                <div class="news-text">
+                    Keine Zinsänderungen erwartet, aber Markt wartet auf Inflations-Strategie für Frühjahr.
+                </div>
+            </div>
+        </div>
+        
+        <div class="outlook">
+            <h3>🔮 Marktausblick</h3>
+            <p>
+                <strong>Risiko Stagflation:</strong> Anhaltend hohe Energiepreise bedrohen Wachstum und befeuern Inflation. 
+                Märkte bleiben nervös, solange Nahost-Konflikt ungelöst. Notenbank-Kommunikation wird Richtung weisen.
+            </p>
+        </div>
+        
+        <div class="source-link">
+            <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-boerse-dax-dow-jones-oel-iran-100.html" target="_blank">
+                📰 Vollständiger Artikel bei Tagesschau
+            </a>
+        </div>
+    </div>
+</body>
+</html>
