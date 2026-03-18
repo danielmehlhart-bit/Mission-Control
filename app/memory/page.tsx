@@ -161,10 +161,19 @@ export default function MemoryPage() {
         setCategories(d.categories ?? []);
         setFilesByCategory(d.files ?? []);
         setLoading(false);
-        // Auto-select MEMORY.md
+        // Auto-select MEMORY.md and load content
         const coreFiles = (d.files ?? []).find((c: CategoryFiles) => c.category === "core")?.files ?? [];
         const mem = coreFiles.find((f: MemFile) => f.name === "MEMORY.md");
-        if (mem) setSelectedFile(mem);
+        if (mem) {
+          setSelectedFile(mem);
+          setContentLoading(true);
+          fetch(`/api/memory/categories?file=${encodeURIComponent(mem.path)}`)
+            .then(r => r.json())
+            .then(d2 => {
+              setContent(d2.content ?? "");
+              setContentLoading(false);
+            });
+        }
       });
   }, []);
 
@@ -179,10 +188,7 @@ export default function MemoryPage() {
       });
   }, []);
 
-  useEffect(() => {
-    if (selectedFile) loadFile(selectedFile);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
 
   const currentCatFiles = filesByCategory.find(c => c.category === activeCat)?.files ?? [];
   const currentCat = categories.find(c => c.id === activeCat);
