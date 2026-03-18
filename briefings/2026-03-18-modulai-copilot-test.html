@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ModulAI Copilot — UI/UX Test Report</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: #f9fafb; color: #111827; }
+  .header { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: white; padding: 40px 48px; }
+  .header h1 { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+  .header .sub { opacity: .75; font-size: 14px; }
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+  .score-card { background: white; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.1); padding: 32px; margin-bottom: 32px; display: flex; align-items: center; gap: 32px; }
+  .score-num { font-size: 64px; font-weight: 900; color: #dc2626; line-height: 1; }
+  .score-label { font-size: 14px; color: #6b7280; }
+  .stats { display: flex; gap: 24px; margin-left: auto; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat .num { font-size: 28px; font-weight: 800; }
+  .stat .lbl { font-size: 12px; color: #9ca3af; }
+  .card { background: white; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.1); margin-bottom: 24px; overflow: hidden; }
+  .card-title { font-size: 18px; font-weight: 700; padding: 20px 24px; border-bottom: 1px solid #f3f4f6; }
+  table { width: 100%; border-collapse: collapse; }
+  .improvements { padding: 20px 24px; }
+  .improvements ul { padding-left: 20px; }
+  .improvements li { font-size: 14px; color: #374151; line-height: 1.6; }
+  .footer { text-align: center; color: #9ca3af; font-size: 12px; padding: 24px 0; }
+  .pr-ref { display: inline-flex; align-items: center; gap: 6px; background: #ede9fe; color: #5b21b6; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 600; margin-right: 8px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🤖 ModulAI Copilot — UI/UX Test Report</h1>
+  <div class="sub">
+    18. März 2026 um 12:22 &nbsp;·&nbsp;
+    <span class="pr-ref">PR #30</span>
+    <span class="pr-ref">PR #31</span>
+    &nbsp;·&nbsp; Playwright 1.58.2 &nbsp;·&nbsp; headless Chromium
+  </div>
+</div>
+<div class="container">
+  <div class="score-card">
+    <div>
+      <div class="score-num">18%</div>
+      <div class="score-label">Test Score</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num" style="color:#059669">4</div><div class="lbl">PASS</div></div>
+      <div class="stat"><div class="num" style="color:#dc2626">7</div><div class="lbl">FAIL</div></div>
+      <div class="stat"><div class="num" style="color:#d97706">11</div><div class="lbl">WARN</div></div>
+      <div class="stat"><div class="num" style="color:#9ca3af">1</div><div class="lbl">SKIP</div></div>
+      <div class="stat"><div class="num" style="color:#374151">23</div><div class="lbl">TOTAL</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Test Cases</div>
+    <table>
+      <thead>
+        <tr style="background:#f9fafb">
+          <th style="text-align:left;padding:10px 16px;font-size:13px;color:#6b7280;font-weight:600">Test</th>
+          <th style="text-align:center;padding:10px 16px;font-size:13px;color:#6b7280;font-weight:600">Status</th>
+          <th style="text-align:left;padding:10px 16px;font-size:13px;color:#6b7280;font-weight:600">Details</th>
+        </tr>
+      </thead>
+      <tbody><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">Auth</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Login page loads</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Login-Formular vorhanden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Login erfolgreich</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">❌ FAIL</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">url.includes is not a function</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">Navigation</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Copilot in Sidebar sichtbar</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">❌ FAIL</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Kein Copilot-Nav-Eintrag gefunden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">/copilot Route erreichbar</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Seite geladen: "404"</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">Layout</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Conversation Sidebar vorhanden</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">❌ FAIL</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Kein Sidebar-Element</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Chat-Bereich vorhanden</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">❌ FAIL</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Kein Chat-Element</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Message Input sichtbar</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">❌ FAIL</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Kein Input-Feld</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Project Scope Dropdown</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Kein Dropdown gefunden (evtl. anderes UI)</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">New Conversation Button</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Nicht gefunden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Quick Actions vorhanden</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">0 Quick-Action-Elemente gefunden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Context Window Selector</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">0 Kontext-Selektor-Elemente gefunden</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">Conversations</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Neue Conversation anlegen</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#f3f4f6;color:#6b7280;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⏭️ SKIP</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">New-Button nicht gefunden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Conversations in Sidebar</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">0 Conversation-Items in Sidebar</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">Chat</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Chat Input vorhanden</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">❌ FAIL</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Input-Feld nicht sichtbar</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">QuickActions</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Quick Actions vorhanden</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Keine Quick-Action-Buttons gefunden</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">ProjectScope</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Project Dropdown</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Dropdown nicht als Standard-Element gefunden — evtl. custom UI</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">Mobile</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Mobile Navigation sichtbar</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Kein Mobile-Nav gefunden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Copilot in Mobile Nav</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Nicht in Mobile Nav</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Chat Input auf Mobile sichtbar</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Input nicht sichtbar</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Conversation-Sidebar zugänglich</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Kein Sidebar-Toggle für mobile Conversations</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Kein horizontaler Overflow</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Page height: 844px</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Kein horizontaler Scroll</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Kein horizontaler Overflow</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">System</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Test Suite</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">❌ FAIL</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">locator.count: Unexpected token "=" while parsing css selector "[class*="empty"], [class*="welcome"], [class*="placeholder"], text=Start, text=Starte". Did you mean to CSS.escape it?</td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  
+  <div class="card">
+    <div class="card-title">🛠️ Improvements & Issues</div>
+    <div class="improvements">
+      <ul><li style="margin-bottom:8px"><strong>Auth · Login erfolgreich:</strong> url.includes is not a function</li><li style="margin-bottom:8px"><strong>Navigation · Copilot in Sidebar sichtbar:</strong> Kein Copilot-Nav-Eintrag gefunden</li><li style="margin-bottom:8px"><strong>Layout · Conversation Sidebar vorhanden:</strong> Kein Sidebar-Element</li><li style="margin-bottom:8px"><strong>Layout · Chat-Bereich vorhanden:</strong> Kein Chat-Element</li><li style="margin-bottom:8px"><strong>Layout · Message Input sichtbar:</strong> Kein Input-Feld</li><li style="margin-bottom:8px"><strong>Layout · Project Scope Dropdown:</strong> Kein Dropdown gefunden (evtl. anderes UI)</li><li style="margin-bottom:8px"><strong>Layout · New Conversation Button:</strong> Nicht gefunden</li><li style="margin-bottom:8px"><strong>Layout · Quick Actions vorhanden:</strong> 0 Quick-Action-Elemente gefunden</li><li style="margin-bottom:8px"><strong>Layout · Context Window Selector:</strong> 0 Kontext-Selektor-Elemente gefunden</li><li style="margin-bottom:8px"><strong>Conversations · Conversations in Sidebar:</strong> 0 Conversation-Items in Sidebar</li><li style="margin-bottom:8px"><strong>Chat · Chat Input vorhanden:</strong> Input-Feld nicht sichtbar</li><li style="margin-bottom:8px"><strong>QuickActions · Quick Actions vorhanden:</strong> Keine Quick-Action-Buttons gefunden</li><li style="margin-bottom:8px"><strong>ProjectScope · Project Dropdown:</strong> Dropdown nicht als Standard-Element gefunden — evtl. custom UI</li><li style="margin-bottom:8px"><strong>Mobile · Mobile Navigation sichtbar:</strong> Kein Mobile-Nav gefunden</li><li style="margin-bottom:8px"><strong>Mobile · Copilot in Mobile Nav:</strong> Nicht in Mobile Nav</li><li style="margin-bottom:8px"><strong>Mobile · Chat Input auf Mobile sichtbar:</strong> Input nicht sichtbar</li><li style="margin-bottom:8px"><strong>Mobile · Conversation-Sidebar zugänglich:</strong> Kein Sidebar-Toggle für mobile Conversations</li><li style="margin-bottom:8px"><strong>System · Test Suite:</strong> locator.count: Unexpected token "=" while parsing css selector "[class*="empty"], [class*="welcome"], [class*="placeholder"], text=Start, text=Starte". Did you mean to CSS.escape it?</li></ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    Hatti 🏔️ · Playwright Automated Test · ModulAI v1.0 Copilot
+  </div>
+</div>
+</body>
+</html>
