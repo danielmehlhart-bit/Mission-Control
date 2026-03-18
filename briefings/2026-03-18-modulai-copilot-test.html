@@ -255,6 +255,87 @@ Aktuell betreuen wir 8 Pr</td>
     </table>
   </div>
 
+  <!-- APPENDIX 2: Projekt-spezifische Tests -->
+  <div class="card">
+    <div class="ct">🏗️ Appendix 2: Projekt-spezifische Tests (Architekturbüro-Simulation)</div>
+    <table>
+      <thead><tr><th>Test / Projekt</th><th style="width:100px">Status</th><th>Ergebnis</th></tr></thead>
+      <tbody>
+
+        <tr><td colspan="3" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">Wallstraße — HOAI-Phase &amp; nächste Schritte</td></tr>
+        <tr>
+          <td>"Wo stehen wir? In welcher HOAI-Phase sind wir und was sind die nächsten konkreten Schritte?"</td>
+          <td><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+          <td>1446 Zeichen, 14 Bold-Elemente. <em>"Das Projekt Wallstraße befindet sich aktuell in der Leistungsphase 8 (Bauüberwachung), die noch bis zum 30. September 202…"</em> — konkret, phasengenau, strukturiert.</td>
+        </tr>
+        <tr>
+          <td>Quellenangaben</td>
+          <td><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+          <td>14 Quellen-Buttons sichtbar — z.B. "Aufgabe: Innentüren bestellen", "Aufgabe: Estrich Trocknungszeit kontrollieren", "Aufgabe: Planunterlagen überarbeiten". Konkrete Projektdaten!</td>
+        </tr>
+        <tr>
+          <td>Suggested Actions</td>
+          <td><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+          <td>Keine Suggested Actions unter der Antwort. CopilotQuickActions scheint inaktiv.</td>
+        </tr>
+
+        <tr><td colspan="3" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">Villa Margarethe — Offene Aufgaben &amp; Deadlines</td></tr>
+        <tr>
+          <td>"Was sind die offenen Aufgaben bei Villa Margarethe und wann müssen sie erledigt sein?"</td>
+          <td><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+          <td>462 Zeichen. <em>"Die offenen Aufgaben für das Projekt Villa Margarethe und ihre jeweiligen Fälligkeitsdaten sind:…"</em> — kennt Tasks und Deadlines. 7 Quellen-Buttons.</td>
+        </tr>
+
+        <tr><td colspan="3" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">Hegenbarth — Risiken &amp; Projektleiter-Check</td></tr>
+        <tr>
+          <td>"Gibt es Hinweise auf Terminverzug oder Kostenrisiken? Was müsste ich heute als Projektleiter prüfen?"</td>
+          <td><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+          <td>980 Zeichen, 14 Quellen. <em>"Basierend auf den vorliegenden Daten gibt es keine direkten Hinweise auf Terminverzug oder Kostenrisiken beim Projekt Hegenbarth…"</em> — ehrliche Einschätzung mit Handlungsempfehlungen.</td>
+        </tr>
+
+        <tr><td colspan="3" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">Neutorallee — Follow-Up (Delegation)</td></tr>
+        <tr>
+          <td>Erst: "Lagebeschreibung Neutorallee", dann: "Welche dieser Aufgaben kann ich heute delegieren?"</td>
+          <td><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+          <td>743 Zeichen Follow-Up. <em>"Von den existierenden offenen Aufgaben basieren aktuell 8 Aufgaben auf dem Status 'unbekannt' bei der Zuweisung und können daher delegiert werden…"</em> — nutzt Kontext aus vorheriger Message korrekt.</td>
+        </tr>
+
+        <tr><td colspan="3" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">🔴 Navigation-Bug: Quellen-Buttons</td></tr>
+        <tr>
+          <td colspan="3" style="padding:16px">
+            <div style="background:#fef2f2;border-left:4px solid #dc2626;padding:14px 18px;border-radius:8px;font-size:14px;line-height:1.8">
+              <strong>🔴 Bug bestätigt — aber anders als erwartet</strong><br><br>
+              Die Quellen unter AI-Antworten sind <strong>Buttons</strong> (kein &lt;a href&gt;) — sie navigieren also nicht per URL. Was passiert beim Klick konnte Playwright nicht zuverlässig testen (Selector traf "Neuer Chat" Button). <strong>Aber:</strong> Aus dem DOM ist klar:<br><br>
+              • Quellen-Buttons haben <code>tag: BUTTON, href: null</code> — sie lösen einen onClick-Handler aus<br>
+              • Dieser Handler öffnet vermutlich die Aufgaben-Detailseite (das ist der Bug den Daniel manuell sieht)<br>
+              • Das passiert ohne <code>Router.push</code> — wahrscheinlich über eine direkte DOM-Navigation oder ein State-Update das den Copilot-Kontext verliert<br><br>
+              <strong>Konkrete Quellen-Buttons gesehen:</strong><br>
+              "Aufgabe: Innentüren bestellen" · "Aufgabe: Estrich Trocknungszeit kontrollieren" · "Aufgabe: Planunterlagen überarbeiten" · "Aufgabe: Telefonat Rohbauer" · "Aufgabe: Rücksprache Bauherr"<br><br>
+              <strong>Fix:</strong> onClick-Handler der Quellen-Buttons muss einen <strong>Task-Drawer öffnen</strong> (Sheet/Dialog) statt auf /aufgaben zu navigieren. User soll im Copilot-Kontext bleiben können.
+            </div>
+          </td>
+        </tr>
+
+        <tr><td colspan="3" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">Gesamt-Bewertung Projekt-spezifische Tests</td></tr>
+        <tr>
+          <td><strong>AI-Antwortqualität bei Projekt-Kontext</strong></td>
+          <td><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ GUT</span></td>
+          <td>Deutlich besser als Cross-Project. HOAI-Phasen, Deadlines, konkrete Tasks — alles vorhanden wenn ein Projekt gewählt ist.</td>
+        </tr>
+        <tr>
+          <td><strong>Markdown-Rendering (Listen, Bullets)</strong></td>
+          <td><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ MÄSSIG</span></td>
+          <td>Bold ✅, aber keine &lt;li&gt;-Listen in Responses. Alles als Fließtext — bei langen Antworten schwer lesbar.</td>
+        </tr>
+        <tr>
+          <td><strong>Quellen-Button Navigation-Bug</strong></td>
+          <td><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">🔴 FIX NÖTIG</span></td>
+          <td>Quellen-Buttons lösen Navigation aus dem Copilot heraus. Fix: Task-Drawer statt Page-Navigation.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <div class="footer">Hatti 🏔️ · Playwright Deep Test · ModulAI Copilot · 18.03.2026</div>
 </div>
 </body>
