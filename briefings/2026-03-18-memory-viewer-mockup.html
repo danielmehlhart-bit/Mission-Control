@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Viewer v2 — MC Mockup</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #141720; color: #e2e8f0; height: 100vh; overflow: hidden; }
+
+  /* Layout */
+  .shell { display: flex; height: 100vh; }
+  .sidebar { width: 220px; background: #0f1117; border-right: 1px solid #1e2535; display: flex; flex-direction: column; flex-shrink: 0; }
+  .main { display: flex; flex: 1; overflow: hidden; }
+  .topics-pane { width: 220px; border-right: 1px solid #1e2535; display: flex; flex-direction: column; flex-shrink: 0; background: #12161f; }
+  .files-pane { width: 220px; border-right: 1px solid #1e2535; display: flex; flex-direction: column; flex-shrink: 0; background: #141720; }
+  .content-pane { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+  /* Sidebar nav */
+  .sidebar-header { padding: 20px 16px 8px; }
+  .sidebar-logo { font-size: 13px; font-weight: 700; color: #7c8db5; letter-spacing: 0.1em; text-transform: uppercase; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 16px; font-size: 13px; color: #7c8db5; cursor: pointer; border-left: 2px solid transparent; transition: all 0.15s; }
+  .nav-item:hover { color: #e2e8f0; background: rgba(255,255,255,0.03); }
+  .nav-item.active { color: #e2e8f0; background: rgba(255,255,255,0.05); border-left-color: #6366f1; }
+  .nav-icon { font-size: 14px; width: 18px; text-align: center; }
+  .nav-section { padding: 20px 16px 4px; font-size: 10px; font-weight: 600; color: #4a5568; text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* Topics pane */
+  .pane-header { padding: 14px 16px 10px; border-bottom: 1px solid #1e2535; display: flex; align-items: center; justify-content: space-between; }
+  .pane-title { font-size: 12px; font-weight: 600; color: #7c8db5; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .topic-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 16px; cursor: pointer; border-left: 2px solid transparent; transition: all 0.15s; }
+  .topic-item:hover { background: rgba(255,255,255,0.03); }
+  .topic-item.active { background: rgba(99,102,241,0.08); border-left-color: #6366f1; }
+  .topic-emoji { font-size: 16px; margin-top: 1px; }
+  .topic-info { flex: 1; min-width: 0; }
+  .topic-name { font-size: 13px; font-weight: 500; color: #c8d0e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .topic-item.active .topic-name { color: #e2e8f0; }
+  .topic-desc { font-size: 11px; color: #4a5568; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .topic-badge { font-size: 10px; background: #1e2535; color: #6b7280; padding: 1px 6px; border-radius: 10px; margin-top: 4px; display: inline-block; }
+
+  /* Files pane */
+  .file-item { display: flex; align-items: center; gap: 8px; padding: 8px 16px; cursor: pointer; border-left: 2px solid transparent; transition: all 0.15s; }
+  .file-item:hover { background: rgba(255,255,255,0.03); }
+  .file-item.active { background: rgba(99,102,241,0.06); border-left-color: #6366f1; }
+  .file-icon { font-size: 12px; color: #4a5568; }
+  .file-info { flex: 1; min-width: 0; }
+  .file-name { font-size: 12px; font-weight: 500; color: #a0aec0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .file-item.active .file-name { color: #e2e8f0; }
+  .file-meta { font-size: 10px; color: #4a5568; margin-top: 1px; }
+  .file-item.locked { opacity: 0.4; cursor: not-allowed; }
+  .file-item.locked .file-name { color: #6b7280; }
+  .lock-icon { font-size: 10px; color: #6b7280; }
+
+  /* Daily logs group */
+  .file-group-header { padding: 6px 16px 2px; font-size: 10px; font-weight: 600; color: #374151; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 6px; }
+
+  /* Content pane */
+  .content-header { padding: 14px 20px; border-bottom: 1px solid #1e2535; display: flex; align-items: center; gap: 12px; }
+  .content-breadcrumb { font-size: 12px; color: #4a5568; display: flex; align-items: center; gap: 6px; }
+  .breadcrumb-sep { color: #2d3748; }
+  .breadcrumb-current { color: #a0aec0; font-weight: 500; }
+  .content-actions { margin-left: auto; display: flex; gap: 8px; }
+  .btn-sm { font-size: 11px; padding: 4px 10px; border-radius: 5px; border: 1px solid #1e2535; background: transparent; color: #7c8db5; cursor: pointer; transition: all 0.15s; }
+  .btn-sm:hover { background: #1e2535; color: #e2e8f0; }
+
+  .content-body { flex: 1; overflow-y: auto; padding: 24px 28px; }
+  .md-content { max-width: 720px; }
+  .md-content h1 { font-size: 20px; font-weight: 700; color: #e2e8f0; margin-bottom: 8px; }
+  .md-content h2 { font-size: 15px; font-weight: 600; color: #c8d0e0; margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 1px solid #1e2535; }
+  .md-content h3 { font-size: 13px; font-weight: 600; color: #a0aec0; margin: 16px 0 6px; }
+  .md-content p { font-size: 13px; line-height: 1.7; color: #8892a4; margin-bottom: 10px; }
+  .md-content ul { margin: 6px 0 12px 18px; }
+  .md-content li { font-size: 13px; line-height: 1.7; color: #8892a4; margin-bottom: 3px; }
+  .md-content strong { color: #c8d0e0; font-weight: 600; }
+  .md-content em { color: #6b7280; font-style: italic; }
+  .md-content code { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 11px; background: #1a1f2e; color: #a78bfa; padding: 1px 5px; border-radius: 3px; }
+  .md-content hr { border: none; border-top: 1px solid #1e2535; margin: 20px 0; }
+
+  .tag-chip { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 10px; margin-right: 4px; font-weight: 500; }
+  .tag-identity { background: rgba(139,92,246,0.15); color: #a78bfa; }
+  .tag-daily { background: rgba(59,130,246,0.12); color: #60a5fa; }
+  .tag-project { background: rgba(16,185,129,0.12); color: #34d399; }
+
+  /* Telegram topic badge in header */
+  .tg-topic-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; padding: 2px 8px; border-radius: 10px; background: rgba(99,102,241,0.12); color: #818cf8; border: 1px solid rgba(99,102,241,0.2); }
+
+  /* Scrollbars */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- App Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">Mission Control</div>
+    </div>
+    <div style="margin-top:8px;">
+      <div class="nav-section">Navigation</div>
+      <div class="nav-item"><span class="nav-icon">🏠</span> Home</div>
+      <div class="nav-item"><span class="nav-icon">✅</span> Tasks</div>
+      <div class="nav-item"><span class="nav-icon">📁</span> Projects</div>
+      <div class="nav-item"><span class="nav-icon">👥</span> People</div>
+      <div class="nav-item"><span class="nav-icon">📄</span> Docs</div>
+      <div class="nav-section" style="margin-top:16px;">Hatti</div>
+      <div class="nav-item active"><span class="nav-icon">🧠</span> Memory</div>
+      <div class="nav-item"><span class="nav-icon">🤖</span> Commands</div>
+      <div class="nav-item"><span class="nav-icon">⏱</span> Cron</div>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- Topics Pane (wie Telegram Forum Topics) -->
+    <div class="topics-pane">
+      <div class="pane-header">
+        <span class="pane-title">Kategorien</span>
+      </div>
+
+      <div style="overflow-y:auto; flex:1; padding: 8px 0;">
+
+        <div class="topic-item active">
+          <div class="topic-emoji">🧠</div>
+          <div class="topic-info">
+            <div class="topic-name">Core Identity</div>
+            <div class="topic-desc">Wer ist Hatti</div>
+            <div class="topic-badge">5 Files</div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <div class="topic-emoji">⚙️</div>
+          <div class="topic-info">
+            <div class="topic-name">Operative</div>
+            <div class="topic-desc">Regeln & Setup</div>
+            <div class="topic-badge">4 Files</div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <div class="topic-emoji">📝</div>
+          <div class="topic-info">
+            <div class="topic-name">Daily Logs</div>
+            <div class="topic-desc">Session-Tagebuch</div>
+            <div class="topic-badge">23 Einträge</div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <div class="topic-emoji">🏗️</div>
+          <div class="topic-info">
+            <div class="topic-name">Project Memory</div>
+            <div class="topic-desc">Mission Control</div>
+            <div class="topic-badge">8 Files</div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <div class="topic-emoji">💪</div>
+          <div class="topic-info">
+            <div class="topic-name">Fitness & Sport</div>
+            <div class="topic-desc">Bike, Training</div>
+            <div class="topic-badge">1 File</div>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <div class="topic-emoji">🔒</div>
+          <div class="topic-info">
+            <div class="topic-name">Security</div>
+            <div class="topic-desc">Gesperrt</div>
+            <div class="topic-badge" style="background:rgba(239,68,68,0.1); color:#f87171;">🔒 kein Zugriff</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Files Pane -->
+    <div class="files-pane">
+      <div class="pane-header">
+        <span class="pane-title">🧠 Core Identity</span>
+      </div>
+      <div style="overflow-y:auto; flex:1; padding: 8px 0;">
+
+        <div class="file-item active">
+          <span class="file-icon">📄</span>
+          <div class="file-info">
+            <div class="file-name">MEMORY.md</div>
+            <div class="file-meta">Langzeitgedächtnis</div>
+          </div>
+        </div>
+
+        <div class="file-item">
+          <span class="file-icon">📄</span>
+          <div class="file-info">
+            <div class="file-name">SOUL.md</div>
+            <div class="file-meta">Persönlichkeit & Ton</div>
+          </div>
+        </div>
+
+        <div class="file-item">
+          <span class="file-icon">📄</span>
+          <div class="file-info">
+            <div class="file-name">USER.md</div>
+            <div class="file-meta">Infos über Daniel</div>
+          </div>
+        </div>
+
+        <div class="file-item">
+          <span class="file-icon">📄</span>
+          <div class="file-info">
+            <div class="file-name">IDENTITY.md</div>
+            <div class="file-meta">Wer ist Hatti</div>
+          </div>
+        </div>
+
+        <div class="file-item">
+          <span class="file-icon">📄</span>
+          <div class="file-info">
+            <div class="file-name">AGENTS.md</div>
+            <div class="file-meta">Workspace-Regeln</div>
+          </div>
+        </div>
+
+        <div class="file-group-header">Changelog</div>
+
+        <div class="file-item">
+          <span class="file-icon">📋</span>
+          <div class="file-info">
+            <div class="file-name">changelog.md</div>
+            <div class="file-meta">Entscheidungs-Log</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Content Pane -->
+    <div class="content-pane">
+      <div class="content-header">
+        <div class="content-breadcrumb">
+          <span>🧠 Core Identity</span>
+          <span class="breadcrumb-sep">›</span>
+          <span class="breadcrumb-current">MEMORY.md</span>
+        </div>
+        <div class="tg-topic-badge" style="margin-left:8px;">
+          <span>💬</span> Keine zugehörigen Telegram-Topics
+        </div>
+        <div class="content-actions">
+          <button class="btn-sm">↗ Raw</button>
+          <button class="btn-sm">⟳ Reload</button>
+        </div>
+      </div>
+
+      <div class="content-body">
+        <div class="md-content">
+          <h1>🏔️ MEMORY.md — Hattis Langzeitgedächtnis</h1>
+          <p><em>Nur persönliches. Alles Operative → SETUP.md / RULES.md / PROJECTS.md</em><br>
+          <em>Letzte Aktualisierung: 2026-03-07</em></p>
+
+          <hr>
+
+          <h2>Daniel — Persönlich</h2>
+          <ul>
+            <li>Oberursel, Taunus. Hesse durch und durch.</li>
+            <li>Familie: Frau Lynn + 2 Söhne (Theo + Freddie) — wichtigster Kreis</li>
+            <li>Eintracht Frankfurt Fan — nicht verhandelbar</li>
+            <li>Gravel Bike &amp; MTB. Trainiert auf Eschborn-Frankfurt (1. Mai 2026, ~90km)</li>
+            <li>FTP ~225W, 76kg, 39 Jahre, 3–4h/Woche, hoher Schweißverlust</li>
+            <li><strong>Auto:</strong> Volvo V60 (2018, 250 PS)</li>
+            <li><strong>Smartphone:</strong> Samsung Galaxy S24 (Android)</li>
+          </ul>
+
+          <h2>Daniel — Beruflich</h2>
+          <ul>
+            <li>VP Operations bei Drooms (Secure Data Rooms / M&amp;A), europäisches SaaS Scale-up</li>
+            <li>Will aus aktuellem Job raus — sucht nach DER Idee zur Selbstständigkeit</li>
+            <li>Business-Richtung: KMU AI/IT Enablement</li>
+          </ul>
+
+          <h2>Nachhilfe</h2>
+          <ul>
+            <li><strong>Arion</strong> — jeden Montag 16:00, 5. Klasse Realschule</li>
+            <li>Sonntags 18:00 Reminder: Daniel soll Arion per WhatsApp erinnern</li>
+          </ul>
+
+          <h2>Ich (Hatti)</h2>
+          <ul>
+            <li>Geboren: 2026-02-13 🏔️</li>
+            <li>Berggeist-KI-Hybrid aus dem Taunus</li>
+          </ul>
+
+          <h2>Laufende Gesprächsfäden</h2>
+          <ul>
+            <li><strong>SSH Key Pi → Hetzner</strong> — Daniel muss Key hinterlegen für Memory-Sync</li>
+            <li><strong>Google Calendar/Gmail läuft über gws</strong> — Auth: <code>~/.config/gws/credentials.json</code></li>
+            <li><strong>gog CLI gelöscht</strong> (2026-03-17) — war obsolet, ersetzt durch gws</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Annotation overlay -->
+<div style="position:fixed; bottom:20px; right:20px; background:#1a1f2e; border:1px solid #2d3748; border-radius:10px; padding:14px 18px; max-width:280px; font-size:11px; color:#6b7280; line-height:1.6;">
+  <div style="font-weight:700; color:#a0aec0; margin-bottom:6px;">💡 Konzept-Notizen</div>
+  <div><strong style="color:#7c8db5;">3 Ebenen:</strong> Kategorie → Datei → Inhalt</div>
+  <div style="margin-top:4px;"><strong style="color:#7c8db5;">Kategorien</strong> = "Topics" (wie Telegram Forum)</div>
+  <div style="margin-top:4px;"><strong style="color:#7c8db5;">Security</strong> = gesperrt, kein Read-API</div>
+  <div style="margin-top:4px;"><strong style="color:#7c8db5;">Telegram-Link</strong> ggf. pro Kategorie möglich</div>
+  <div style="margin-top:4px;"><strong style="color:#34d399;">→ existiert schon:</strong> /memory Route + API</div>
+</div>
+
+</body>
+</html>
