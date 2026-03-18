@@ -45,15 +45,15 @@
     <h3>🚨 1 kritische Failures</h3>
     <p><strong>Test Suite:</strong> locator.click: Timeout 30000ms exceeded.
 Call log:
-  - waiting for locator('input[placeholder*="Frage"], input[placeholder*="frage"], input[placeholde</p>
+  - waiting for locator('button:has-text("Woche"), button:has-text("week"), button:has-text("7"), b</p>
   </div>
 
   <div class="score-row">
-    <div class="sc"><div class="num" style="color:#dc2626">50%</div><div class="lbl">Score</div></div>
-    <div class="sc"><div class="num" style="color:#059669">2</div><div class="lbl">PASS</div></div>
+    <div class="sc"><div class="num" style="color:#dc2626">31%</div><div class="lbl">Score</div></div>
+    <div class="sc"><div class="num" style="color:#059669">4</div><div class="lbl">PASS</div></div>
     <div class="sc"><div class="num" style="color:#dc2626">1</div><div class="lbl">FAIL</div></div>
-    <div class="sc"><div class="num" style="color:#d97706">1</div><div class="lbl">WARN</div></div>
-    <div class="sc"><div class="num" style="color:#9ca3af">4</div><div class="lbl">TOTAL</div></div>
+    <div class="sc"><div class="num" style="color:#d97706">8</div><div class="lbl">WARN</div></div>
+    <div class="sc"><div class="num" style="color:#9ca3af">15</div><div class="lbl">TOTAL</div></div>
   </div>
 
   <div class="card">
@@ -75,12 +75,67 @@ Call log:
         <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
         <td style="padding:12px 16px;font-size:13px;color:#374151">Gewählt: Alle Projekte</td>
         <td style="padding:12px 16px;font-size:12px;color:#9ca3af;font-style:italic"></td>
+      </tr><tr style="border-bottom:1px solid #f9fafb">
+        <td style="padding:12px 16px;font-size:14px;color:#111827">Projekt-spezifische Aufgaben-Query</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;font-size:13px;color:#374151">Keine verwertbare Response</td>
+        <td style="padding:12px 16px;font-size:12px;color:#9ca3af;font-style:italic"></td>
+      </tr><tr><td colspan="4" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">Navigation-Bug</td></tr><tr style="border-bottom:1px solid #f9fafb">
+        <td style="padding:12px 16px;font-size:14px;color:#111827">Klickbare Links in Response</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;font-size:13px;color:#374151">Keine klickbaren Links/Task-Referenzen in Response — entweder Response plain text oder keine Tasks gefunden</td>
+        <td style="padding:12px 16px;font-size:12px;color:#9ca3af;font-style:italic">Keine Links gefunden</td>
+      </tr><tr><td colspan="4" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">Response-Format</td></tr><tr style="border-bottom:1px solid #f9fafb">
+        <td style="padding:12px 16px;font-size:14px;color:#111827">Markdown-Rendering</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;font-size:13px;color:#374151">0 Markdown-Elemente (bold/headers/code)</td>
+        <td style="padding:12px 16px;font-size:12px;color:#9ca3af;font-style:italic">hasMarkdown: 0</td>
+      </tr><tr style="border-bottom:1px solid #f9fafb">
+        <td style="padding:12px 16px;font-size:14px;color:#111827">Listen-Darstellung</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;font-size:13px;color:#374151">0 List-Elemente</td>
+        <td style="padding:12px 16px;font-size:12px;color:#9ca3af;font-style:italic">hasBullets: 0</td>
+      </tr><tr style="border-bottom:1px solid #f9fafb">
+        <td style="padding:12px 16px;font-size:14px;color:#111827">Task-Links vs. Plain Text</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#ede9fe;color:#5b21b6;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">ℹ️ INFO</span></td>
+        <td style="padding:12px 16px;font-size:13px;color:#374151">Tasks als Plain Text dargestellt — sicher, aber nicht interaktiv</td>
+        <td style="padding:12px 16px;font-size:12px;color:#9ca3af;font-style:italic">Links: 0, Buttons: 0</td>
+      </tr><tr><td colspan="4" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">Prompt-Quality</td></tr><tr style="border-bottom:1px solid #f9fafb">
+        <td style="padding:12px 16px;font-size:14px;color:#111827">Blocker/Problem-Analyse</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;font-size:13px;color:#374151">Keine Response</td>
+        <td style="padding:12px 16px;font-size:12px;color:#9ca3af;font-style:italic"></td>
+      </tr><tr style="border-bottom:1px solid #f9fafb">
+        <td style="padding:12px 16px;font-size:14px;color:#111827">Management-Briefing generieren</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;font-size:13px;color:#374151">Briefing zu kurz oder leer</td>
+        <td style="padding:12px 16px;font-size:12px;color:#9ca3af;font-style:italic"></td>
+      </tr><tr><td colspan="4" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">Conversation</td></tr><tr style="border-bottom:1px solid #f9fafb">
+        <td style="padding:12px 16px;font-size:14px;color:#111827">Follow-up Kontext verarbeitet</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;font-size:13px;color:#374151">Kein erkennbarer Bezug zur vorherigen Nachricht</td>
+        <td style="padding:12px 16px;font-size:12px;color:#9ca3af;font-style:italic"></td>
+      </tr><tr><td colspan="4" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">EdgeCase</td></tr><tr style="border-bottom:1px solid #f9fafb">
+        <td style="padding:12px 16px;font-size:14px;color:#111827">Leere Nachricht — Send-Button disabled</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;font-size:13px;color:#374151">Button korrekt disabled bei leerem Input</td>
+        <td style="padding:12px 16px;font-size:12px;color:#9ca3af;font-style:italic">disabled: true</td>
+      </tr><tr style="border-bottom:1px solid #f9fafb">
+        <td style="padding:12px 16px;font-size:14px;color:#111827">Langer Input</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#ede9fe;color:#5b21b6;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">ℹ️ INFO</span></td>
+        <td style="padding:12px 16px;font-size:13px;color:#374151">Input scrollHeight: 38px bei 1950 Zeichen</td>
+        <td style="padding:12px 16px;font-size:12px;color:#9ca3af;font-style:italic"></td>
+      </tr><tr><td colspan="4" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">ContextWindow</td></tr><tr style="border-bottom:1px solid #f9fafb">
+        <td style="padding:12px 16px;font-size:14px;color:#111827">Context-Selektor klickbar (1 Woche)</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;font-size:13px;color:#374151">Klick registriert</td>
+        <td style="padding:12px 16px;font-size:12px;color:#9ca3af;font-style:italic"></td>
       </tr><tr><td colspan="4" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">System</td></tr><tr style="border-bottom:1px solid #f9fafb">
         <td style="padding:12px 16px;font-size:14px;color:#111827">Test Suite</td>
         <td style="padding:12px 16px;text-align:center"><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">❌ FAIL</span></td>
         <td style="padding:12px 16px;font-size:13px;color:#374151">locator.click: Timeout 30000ms exceeded.
 Call log:
-  - waiting for locator('input[placeholder*="Frage"], input[placeholder*="frage"], input[placeholde</td>
+  - waiting for locator('button:has-text("Woche"), button:has-text("week"), button:has-text("7"), b</td>
         <td style="padding:12px 16px;font-size:12px;color:#9ca3af;font-style:italic"></td>
       </tr></tbody>
     </table>
@@ -95,7 +150,7 @@ Call log:
         <div style="font-weight:600;font-size:14px;margin-bottom:4px">System · Test Suite</div>
         <div style="font-size:13px;color:#6b7280;line-height:1.6">locator.click: Timeout 30000ms exceeded.
 Call log:
-  - waiting for locator('input[placeholder*="Frage"], input[placeholder*="frage"], input[placeholde</div>
+  - waiting for locator('button:has-text("Woche"), button:has-text("week"), button:has-text("7"), b</div>
         
         
       </div>
@@ -106,6 +161,69 @@ Call log:
         <div style="font-weight:600;font-size:14px;margin-bottom:4px">Cross-Project · Übersicht alle Projekte</div>
         <div style="font-size:13px;color:#6b7280;line-height:1.6">Response leer oder nicht erkannt</div>
         <div style="margin-top:6px;font-size:12px"><strong>Erwartet:</strong> Liste aller aktiven Projekte mit Status</div>
+        
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #f3f4f6">
+      <div style="font-size:18px;flex-shrink:0">🟡</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px">Project-Scope · Projekt-spezifische Aufgaben-Query</div>
+        <div style="font-size:13px;color:#6b7280;line-height:1.6">Keine verwertbare Response</div>
+        <div style="margin-top:6px;font-size:12px"><strong>Erwartet:</strong> Liste offener Aufgaben im gewählten Projekt</div>
+        
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #f3f4f6">
+      <div style="font-size:18px;flex-shrink:0">🟡</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px">Navigation-Bug · Klickbare Links in Response</div>
+        <div style="font-size:13px;color:#6b7280;line-height:1.6">Keine klickbaren Links/Task-Referenzen in Response — entweder Response plain text oder keine Tasks gefunden</div>
+        <div style="margin-top:6px;font-size:12px"><strong>Erwartet:</strong> Task-Links in der AI-Response klickbar</div>
+        <div style="font-size:12px;color:#dc2626"><strong>Tatsächlich:</strong> Keine Links gefunden</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #f3f4f6">
+      <div style="font-size:18px;flex-shrink:0">🟡</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px">Response-Format · Markdown-Rendering</div>
+        <div style="font-size:13px;color:#6b7280;line-height:1.6">0 Markdown-Elemente (bold/headers/code)</div>
+        <div style="margin-top:6px;font-size:12px"><strong>Erwartet:</strong> Formatierte Antworten mit Markdown</div>
+        <div style="font-size:12px;color:#dc2626"><strong>Tatsächlich:</strong> hasMarkdown: 0</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #f3f4f6">
+      <div style="font-size:18px;flex-shrink:0">🟡</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px">Response-Format · Listen-Darstellung</div>
+        <div style="font-size:13px;color:#6b7280;line-height:1.6">0 List-Elemente</div>
+        <div style="margin-top:6px;font-size:12px"><strong>Erwartet:</strong> Aufgaben als strukturierte Liste</div>
+        <div style="font-size:12px;color:#dc2626"><strong>Tatsächlich:</strong> hasBullets: 0</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #f3f4f6">
+      <div style="font-size:18px;flex-shrink:0">🟡</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px">Prompt-Quality · Blocker/Problem-Analyse</div>
+        <div style="font-size:13px;color:#6b7280;line-height:1.6">Keine Response</div>
+        <div style="margin-top:6px;font-size:12px"><strong>Erwartet:</strong> Nennt konkrete Blocker oder meldet "keine Blocker gefunden"</div>
+        
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #f3f4f6">
+      <div style="font-size:18px;flex-shrink:0">🟡</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px">Prompt-Quality · Management-Briefing generieren</div>
+        <div style="font-size:13px;color:#6b7280;line-height:1.6">Briefing zu kurz oder leer</div>
+        <div style="margin-top:6px;font-size:12px"><strong>Erwartet:</strong> Strukturiertes Briefing mit Projektstatus, Aufgaben, Highlights</div>
+        
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #f3f4f6">
+      <div style="font-size:18px;flex-shrink:0">🟡</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px">Conversation · Follow-up Kontext verarbeitet</div>
+        <div style="font-size:13px;color:#6b7280;line-height:1.6">Kein erkennbarer Bezug zur vorherigen Nachricht</div>
+        <div style="margin-top:6px;font-size:12px"><strong>Erwartet:</strong> Antwort bezieht sich auf vorherige Briefing-Response</div>
         
       </div>
     </div></div>
