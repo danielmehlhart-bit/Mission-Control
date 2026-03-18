@@ -188,6 +188,73 @@ Aktuell betreuen wir 8 Pr</td>
     </div></div>
   </div>
 
+  <!-- APPENDIX: Response-Link Test -->
+  <div class="card">
+    <div class="ct">🔗 Appendix: Response-Link & Navigation-Bug Deep Test</div>
+    <table>
+      <thead><tr><th>Prompt</th><th style="width:100px">Status</th><th>Ergebnis</th></tr></thead>
+      <tbody>
+        <tr><td colspan="3" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">Link-Existenz in Responses</td></tr>
+        <tr>
+          <td>"Zeige mir alle offenen Aufgaben mit Links"</td>
+          <td><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+          <td>0 Links im DOM — Response plain text. Kein klickbares Element vorhanden.</td>
+        </tr>
+        <tr>
+          <td>"Liste die 5 wichtigsten Aufgaben auf und verlinke sie"</td>
+          <td><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+          <td>0 Links — AI ignoriert Verlinkungsaufforderung, gibt plain text aus.</td>
+        </tr>
+        <tr>
+          <td>"Welche Tasks sind überfällig?"</td>
+          <td><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">❌ FAIL</span></td>
+          <td><em>"Ich kann dir keine Informationen zu überfälligen Aufgaben geben, da die bereitgestellten Daten keine Fälligkeitsdaten für einzelne Aufgaben enthalten."</em></td>
+        </tr>
+        <tr>
+          <td>"Zeige mir alle offenen Aufgaben mit Verantwortlichen"</td>
+          <td><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">❌ FAIL</span></td>
+          <td><em>"Ich habe keine Daten zu einzelnen Aufgaben oder deren Verantwortlichen. Ich kann lediglich die Gesamtzahl der offenen Aufgaben pro Projekt entnehmen."</em></td>
+        </tr>
+        <tr><td colspan="3" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">Root Cause Analyse</td></tr>
+        <tr>
+          <td colspan="3" style="padding:16px">
+            <div style="background:#fef2f2;border-left:4px solid #dc2626;padding:14px 18px;border-radius:8px;font-size:14px;line-height:1.7">
+              <strong>🔴 Kernproblem: Edge Function liefert nur Aggregat-Daten</strong><br>
+              Die Edge Function <code>project-copilot</code> gibt der AI nur zusammengefasste Projekt-Daten (Status, Task-Count) — <strong>keine einzelnen Tasks, keine Fälligkeitsdaten, keine Assignees</strong>. Das erklärt:<br>
+              • Warum Responses generisch sind und keine Task-Details kennen<br>
+              • Warum keine Links entstehen (kein Task-Objekt → keine task_id → kein Link möglich)<br>
+              • Warum Queries zu Überfälligkeit oder Verantwortlichen scheitern
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="padding:16px">
+            <div style="background:#f0f9ff;border-left:4px solid #0369a1;padding:14px 18px;border-radius:8px;font-size:14px;line-height:1.7">
+              <strong>ℹ️ Zum Navigation-Bug (Daniel, manuell beobachtet)</strong><br>
+              Der Bug "Klick auf Task → landet auf Aufgaben-Board" kommt <strong>nicht aus Links in der Prose-Response</strong> (keine vorhanden), sondern vermutlich aus den <code>suggested_actions</code> Buttons die unter der Antwort erscheinen. Diese Actions (z.B. "Aufgabe anzeigen") navigieren zur <code>/aufgaben</code>-Route ohne Copilot-Kontext zu erhalten. <strong>Das ist ein echter UX-Bug</strong> der behoben werden sollte: suggested_actions sollten Tasks in einem Drawer/Modal öffnen, nicht per Page-Navigation.
+            </div>
+          </td>
+        </tr>
+        <tr><td colspan="3" style="background:#f3f4f6;font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#6b7280;padding:8px 16px">Empfohlene Fixes</td></tr>
+        <tr>
+          <td>Edge Function: Einzelne Tasks übergeben</td>
+          <td><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">🔴 Hoch</span></td>
+          <td>Tasks mit <code>id, title, due_date, assignee, status</code> in den AI-Kontext einbauen (statt nur counts). Dann kann AI auch Fälligkeiten und Verantwortliche nennen.</td>
+        </tr>
+        <tr>
+          <td>Task-IDs in Response → klickbare Chips</td>
+          <td><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">🔴 Hoch</span></td>
+          <td>CopilotMessage-Komponente: Task-IDs aus AI-Response parsen → als klickbare Badge/Chip rendern → öffnet Task-Drawer INNERHALB Copilot (kein Page-Wechsel).</td>
+        </tr>
+        <tr>
+          <td>Suggested Actions: Drawer statt Navigation</td>
+          <td><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">🔴 Hoch</span></td>
+          <td>Alle suggested_actions die Tasks öffnen: <code>router.push('/aufgaben')</code> ersetzen durch <code>openTaskDrawer(task_id)</code>. User bleibt im Copilot-Kontext.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <div class="footer">Hatti 🏔️ · Playwright Deep Test · ModulAI Copilot · 18.03.2026</div>
 </div>
 </body>
