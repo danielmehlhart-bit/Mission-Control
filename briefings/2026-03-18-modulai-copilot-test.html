@@ -7,319 +7,336 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: #f9fafb; color: #111827; }
-  .header { background: linear-gradient(135deg, #1e1b4b 0%, #4f46e5 100%); color: white; padding: 40px 48px; }
-  .header h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
-  .header .sub { opacity: .75; font-size: 14px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
-  .pill { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.15); padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 600; }
+  .header { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: white; padding: 40px 48px; }
+  .header h1 { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+  .header .sub { opacity: .75; font-size: 14px; }
   .container { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
-  
-  /* Blocker Banner */
-  .blocker-banner { background: #fef2f2; border: 2px solid #fca5a5; border-radius: 16px; padding: 24px 28px; margin-bottom: 32px; }
-  .blocker-banner h2 { color: #dc2626; font-size: 18px; font-weight: 700; margin-bottom: 10px; }
-  .blocker-banner p { color: #374151; font-size: 14px; line-height: 1.7; }
-  .blocker-banner code { background: #fee2e2; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px; }
-
-  /* Score Card */
-  .score-row { display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; }
-  .score-card { background: white; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.1); padding: 24px 28px; flex: 1; min-width: 180px; }
-  .score-card .num { font-size: 40px; font-weight: 900; line-height: 1.1; }
-  .score-card .lbl { font-size: 13px; color: #6b7280; margin-top: 4px; }
-  .green { color: #059669; }
-  .red { color: #dc2626; }
-  .amber { color: #d97706; }
-  .gray { color: #9ca3af; }
-  .blue { color: #4f46e5; }
-
-  /* Cards */
+  .score-card { background: white; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.1); padding: 32px; margin-bottom: 32px; display: flex; align-items: center; gap: 32px; }
+  .score-num { font-size: 64px; font-weight: 900; color: #dc2626; line-height: 1; }
+  .score-label { font-size: 14px; color: #6b7280; }
+  .stats { display: flex; gap: 24px; margin-left: auto; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat .num { font-size: 28px; font-weight: 800; }
+  .stat .lbl { font-size: 12px; color: #9ca3af; }
   .card { background: white; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.1); margin-bottom: 24px; overflow: hidden; }
-  .card-title { font-size: 17px; font-weight: 700; padding: 18px 24px; border-bottom: 1px solid #f3f4f6; display: flex; align-items: center; gap: 8px; }
-  
-  /* Table */
+  .card-title { font-size: 18px; font-weight: 700; padding: 20px 24px; border-bottom: 1px solid #f3f4f6; }
   table { width: 100%; border-collapse: collapse; }
-  th { text-align: left; padding: 10px 16px; font-size: 12px; color: #9ca3af; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; background: #f9fafb; }
-  td { padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #f9fafb; vertical-align: top; }
-  tr:last-child td { border-bottom: none; }
-  .cat-row td { background: #f3f4f6; font-weight: 700; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: #6b7280; padding: 8px 16px; }
-
-  /* Badges */
-  .badge { display: inline-block; padding: 2px 10px; border-radius: 99px; font-size: 12px; font-weight: 700; }
-  .badge-pass { background: #d1fae5; color: #065f46; }
-  .badge-fail { background: #fee2e2; color: #991b1b; }
-  .badge-warn { background: #fef3c7; color: #92400e; }
-  .badge-skip { background: #f3f4f6; color: #6b7280; }
-  .badge-block { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
-
-  /* Improvements */
   .improvements { padding: 20px 24px; }
-  .improvement-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f3f4f6; }
-  .improvement-item:last-child { border-bottom: none; }
-  .imp-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-  .imp-title { font-weight: 600; font-size: 14px; color: #111827; margin-bottom: 3px; }
-  .imp-desc { font-size: 13px; color: #6b7280; line-height: 1.5; }
-
-  /* Next Steps */
-  .steps { padding: 20px 24px; }
-  .step { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #f9fafb; }
-  .step:last-child { border-bottom: none; }
-  .step-num { background: #4f46e5; color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
-  .step-text { font-size: 14px; color: #374151; line-height: 1.5; }
-  .step-text strong { color: #111827; }
-
+  .improvements ul { padding-left: 20px; }
+  .improvements li { font-size: 14px; color: #374151; line-height: 1.6; }
   .footer { text-align: center; color: #9ca3af; font-size: 12px; padding: 24px 0; }
+  .pr-ref { display: inline-flex; align-items: center; gap: 6px; background: #ede9fe; color: #5b21b6; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 600; margin-right: 8px; }
 </style>
 </head>
 <body>
-
 <div class="header">
   <h1>🤖 ModulAI Copilot — UI/UX Test Report</h1>
   <div class="sub">
-    <span class="pill">📅 18. März 2026, 12:25 Uhr</span>
-    <span class="pill">🔀 PR #30 + PR #31</span>
-    <span class="pill">🎭 Playwright 1.58.2</span>
-    <span class="pill">🌐 mehlhart-ai.lovable.app</span>
+    18. März 2026 um 13:38 &nbsp;·&nbsp;
+    <span class="pr-ref">PR #30</span>
+    <span class="pr-ref">PR #31</span>
+    &nbsp;·&nbsp; Playwright 1.58.2 &nbsp;·&nbsp; headless Chromium
   </div>
 </div>
-
 <div class="container">
-
-  <!-- BLOCKER BANNER -->
-  <div class="blocker-banner">
-    <h2>🚨 Deployment-Blocker: Copilot nicht live</h2>
-    <p>
-      Die PRs #30 und #31 sind auf GitHub gemergt, aber <strong>nicht in Lovable deployed</strong>. 
-      Die Route <code>/copilot</code> gibt 404. Auch <code>/projects</code> aus dem alten PR ist nicht erreichbar — 
-      die App nutzt <code>/projekte</code> (deutsch). Alle Copilot-spezifischen Tests konnten deshalb 
-      <strong>nicht ausgeführt werden</strong>. Die Supabase-Migrations und die Edge Function 
-      <code>project-copilot</code> sind ebenfalls noch nicht deployed.
-    </p>
-    <p style="margin-top:10px">
-      <strong>Aktion erforderlich:</strong> In Lovable den neuesten Commit von GitHub pullen und deployen. 
-      In Supabase die Migrations laufen lassen. Dann Report erneut ausführen.
-    </p>
-  </div>
-
-  <!-- SCORES -->
-  <div class="score-row">
-    <div class="score-card">
-      <div class="num blue">N/A</div>
-      <div class="lbl">Copilot Test Score<br>(nicht deployed)</div>
+  <div class="score-card">
+    <div>
+      <div class="score-num">58%</div>
+      <div class="score-label">Test Score</div>
     </div>
-    <div class="score-card">
-      <div class="num green">✅</div>
-      <div class="lbl">Login funktioniert</div>
-    </div>
-    <div class="score-card">
-      <div class="num green">10</div>
-      <div class="lbl">Aktive Projekte gefunden</div>
-    </div>
-    <div class="score-card">
-      <div class="num red">0</div>
-      <div class="lbl">Copilot-Elemente live</div>
+    <div class="stats">
+      <div class="stat"><div class="num" style="color:#059669">15</div><div class="lbl">PASS</div></div>
+      <div class="stat"><div class="num" style="color:#dc2626">2</div><div class="lbl">FAIL</div></div>
+      <div class="stat"><div class="num" style="color:#d97706">9</div><div class="lbl">WARN</div></div>
+      <div class="stat"><div class="num" style="color:#9ca3af">0</div><div class="lbl">SKIP</div></div>
+      <div class="stat"><div class="num" style="color:#374151">26</div><div class="lbl">TOTAL</div></div>
     </div>
   </div>
 
-  <!-- TEST RESULTS: DEPLOYMENT CHECK -->
   <div class="card">
-    <div class="card-title">🔍 Deployment-Status-Check</div>
+    <div class="card-title">📋 Test Cases</div>
     <table>
-      <thead><tr><th>Check</th><th style="width:110px">Status</th><th>Details</th></tr></thead>
-      <tbody>
-        <tr class="cat-row"><td colspan="3">App Erreichbarkeit</td></tr>
-        <tr>
-          <td>App lädt (mehlhart-ai.lovable.app)</td>
-          <td><span class="badge badge-pass">✅ PASS</span></td>
-          <td>App erreichbar, Login-Formular sichtbar</td>
+      <thead>
+        <tr style="background:#f9fafb">
+          <th style="text-align:left;padding:10px 16px;font-size:13px;color:#6b7280;font-weight:600">Test</th>
+          <th style="text-align:center;padding:10px 16px;font-size:13px;color:#6b7280;font-weight:600">Status</th>
+          <th style="text-align:left;padding:10px 16px;font-size:13px;color:#6b7280;font-weight:600">Details</th>
         </tr>
-        <tr>
-          <td>Login mit Credentials</td>
-          <td><span class="badge badge-pass">✅ PASS</span></td>
-          <td>daniel.mehlhart@googlemail.com → Redirect auf /dashboard</td>
-        </tr>
-        <tr>
-          <td>Dashboard lädt</td>
-          <td><span class="badge badge-pass">✅ PASS</span></td>
-          <td>h1: "Guten Tag, Daniel" — App voll funktionsfähig</td>
-        </tr>
-        <tr class="cat-row"><td colspan="3">Copilot Feature (PR #30 + #31)</td></tr>
-        <tr>
-          <td>Route /copilot erreichbar</td>
-          <td><span class="badge badge-fail">❌ FAIL</span></td>
-          <td>404 — Route noch nicht registriert in App.tsx der Live-Version</td>
-        </tr>
-        <tr>
-          <td>Copilot in Sidebar-Navigation</td>
-          <td><span class="badge badge-fail">❌ FAIL</span></td>
-          <td>Kein Copilot-Eintrag in DesktopSidebar — PR #31 nicht deployed</td>
-        </tr>
-        <tr>
-          <td>Copilot in Mobile Nav</td>
-          <td><span class="badge badge-fail">❌ FAIL</span></td>
-          <td>MobileNav ohne Copilot-Eintrag — PR #31 nicht deployed</td>
-        </tr>
-        <tr>
-          <td>Feature-Flag (copilot_enabled)</td>
-          <td><span class="badge badge-fail">❌ FAIL</span></td>
-          <td>Kein Feature-Flag-Eintrag erkennbar — Supabase Migration nicht deployed</td>
-        </tr>
-        <tr>
-          <td>Edge Function project-copilot</td>
-          <td><span class="badge badge-skip">⏭️ SKIP</span></td>
-          <td>Nicht testbar da Frontend noch nicht live</td>
-        </tr>
-        <tr class="cat-row"><td colspan="3">Bestehende App-Struktur (Baseline)</td></tr>
-        <tr>
-          <td>Navigation vollständig</td>
-          <td><span class="badge badge-pass">✅ PASS</span></td>
-          <td>8 Nav-Punkte: Erste Schritte, Übersicht, Inbox, Aufgaben, Gedanken, Zeitplan, Team, Finance, Feedback, Einstellungen</td>
-        </tr>
-        <tr>
-          <td>Projekte vorhanden</td>
-          <td><span class="badge badge-pass">✅ PASS</span></td>
-          <td>Mind. 10 Projekte sichtbar (Wallstraße, Villa Margarethe, Neutorallee, Wisler, Hegenbarth, …)</td>
-        </tr>
-        <tr>
-          <td>Routing /projekte (vs. /projects)</td>
-          <td><span class="badge badge-warn">⚠️ WARN</span></td>
-          <td>App nutzt /projekte — PR #30 referenziert evtl. /projects (englisch). Konsistenz prüfen.</td>
-        </tr>
-      </tbody>
+      </thead>
+      <tbody><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">Auth</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Login page loads</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Login-Formular vorhanden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Login erfolgreich</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Redirect nach: https://mehlhart-ai.lovable.app/dashboard</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">Navigation</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Copilot in Sidebar sichtbar</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Via Text-Suche gefunden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">/copilot Route erreichbar</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Seite geladen: "Willkommen! Sollen wir dich kurz einrichten?"</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">Layout</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Conversation Sidebar vorhanden</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Sidebar-Element gefunden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Chat-Bereich vorhanden</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Chat-Element gefunden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Message Input sichtbar</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Input gefunden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Project Scope Dropdown</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Dropdown gefunden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">New Conversation Button</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Button gefunden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Quick Actions vorhanden</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">0 Quick-Action-Elemente gefunden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Context Window Selector</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">2 Kontext-Selektor-Elemente gefunden</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">Conversations</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Neue Conversation anlegen</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">❌ FAIL</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('button:has-text("New"), button:has-text("Neu"), button:has-text("+"), [aria-label*="new"], [aria-label*="New"]').first()
+    - locator resolved to <button class="inline-flex items-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 w-full gap-2 justify-start">…</button>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+    - retrying click action
+      - waiting 100ms
+    58 × waiting for element to be visible, enabled and stable
+       - element is visible, enabled and stable
+       - scrolling into view if needed
+       - done scrolling
+       - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+     - retrying click action
+       - waiting 500ms
+</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Conversations in Sidebar</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">0 Conversation-Items in Sidebar</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">Chat</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Nachricht senden Flow</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fee2e2;color:#991b1b;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">❌ FAIL</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('textarea, input[placeholder*="frag"], input[placeholder*="ask"], input[placeholder*="Frag"], input[placeholder*="message"], [contenteditable="true"]').first()
+    - locator resolved to <input value="" placeholder="Frage eingeben…" class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm h-10"/>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+    - retrying click action
+      - waiting 100ms
+    58 × waiting for element to be visible, enabled and stable
+       - element is visible, enabled and stable
+       - scrolling into view if needed
+       - done scrolling
+       - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+     - retrying click action
+       - waiting 500ms
+</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">QuickActions</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Quick Actions vorhanden</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Keine Quick-Action-Buttons gefunden</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">ProjectScope</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Project Dropdown</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('select, [role="combobox"], button:has-text("All Projects"), button:has-text("Alle"), [class*="project-select"]').first()
+    - locator resolved to <button dir="ltr" type="button" role="combobox" data-state="closed" aria-expanded="false" aria-autocomplete="none" aria-controls="radix-:rj:" class="flex items-center justify-between rounded-md border border-input bg-background px-3 py-2 ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 h-8 w-[180px] text-xs">…</button>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+    - retrying click action
+      - waiting 100ms
+    58 × waiting for element to be visible, enabled and stable
+       - element is visible, enabled and stable
+       - scrolling into view if needed
+       - done scrolling
+       - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+     - retrying click action
+       - waiting 500ms
+</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">Mobile</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Mobile Navigation sichtbar</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Kein Mobile-Nav gefunden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Copilot in Mobile Nav</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Nicht in Mobile Nav</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Chat Input auf Mobile sichtbar</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Input vorhanden</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Conversation-Sidebar zugänglich</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Kein Sidebar-Toggle für mobile Conversations</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Kein horizontaler Overflow</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Page height: 844px</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Kein horizontaler Scroll</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Kein horizontaler Overflow</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">EmptyState</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Empty State / Welcome Screen</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Empty State UI vorhanden</td>
+      </tr><tr><td colspan="3" style="background:#f9fafb;font-weight:700;color:#374151;padding:10px 16px;font-size:13px;letter-spacing:.05em;text-transform:uppercase">UX</td></tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Page Title</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">✅ PASS</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">"Mehlhart Projektmanagement"</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Chat Container scrollbar</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">overflow: unknown</td>
+      </tr><tr style="border-bottom:1px solid #f3f4f6">
+        <td style="padding:12px 16px;color:#111827;font-size:14px">Input Focus nach Click</td>
+        <td style="padding:12px 16px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700">⚠️ WARN</span></td>
+        <td style="padding:12px 16px;color:#6b7280;font-size:13px">Fokus auf: BUTTON</td>
+      </tr></tbody>
     </table>
   </div>
 
-  <!-- VORBEREITUNG FÜR COPILOT TESTS (wenn deployed) -->
+  
   <div class="card">
-    <div class="card-title">📋 Geplante Test Cases (nach Deploy)</div>
-    <table>
-      <thead><tr><th>Kategorie</th><th>Test Case</th><th>Zu prüfen</th></tr></thead>
-      <tbody>
-        <tr class="cat-row"><td colspan="3">Navigation & Einstieg</td></tr>
-        <tr><td>Navigation</td><td>Copilot-Icon in Sidebar</td><td>Bot-Icon sichtbar, Feature-Flag greift</td></tr>
-        <tr><td>Navigation</td><td>Copilot in Mobile Nav</td><td>Unterer Nav-Balken auf 390px Viewport</td></tr>
-        <tr><td>Navigation</td><td>Direktlink /copilot</td><td>Kein 404, korrekte Page lädt</td></tr>
-        <tr class="cat-row"><td colspan="3">Layout & Struktur</td></tr>
-        <tr><td>Layout</td><td>ChatGPT-Style 2-Spalten-Layout</td><td>Conversation-Sidebar links, Chat rechts</td></tr>
-        <tr><td>Layout</td><td>Project Dropdown</td><td>Optional Scoping, "Alle Projekte" als Default</td></tr>
-        <tr><td>Layout</td><td>Context Window Selector</td><td>1/2/4 Wochen, Default 7 Tage</td></tr>
-        <tr><td>Layout</td><td>Quick Actions sichtbar</td><td>Status / Briefing / Blocker / Nächste Schritte</td></tr>
-        <tr class="cat-row"><td colspan="3">Conversation Management</td></tr>
-        <tr><td>Conversations</td><td>Neue Conversation anlegen</td><td>"+" Button → leerer Chat, Sidebar-Eintrag erscheint</td></tr>
-        <tr><td>Conversations</td><td>Zwischen Conversations switchen</td><td>History bleibt erhalten, Chat-Inhalt wechselt</td></tr>
-        <tr><td>Conversations</td><td>Conversation löschen</td><td>Aus Sidebar entfernt, kein Crash</td></tr>
-        <tr><td>Conversations</td><td>Conversation-Titel</td><td>Wird gesetzt (Auto-Titel aus erster Nachricht?)</td></tr>
-        <tr class="cat-row"><td colspan="3">Chat & AI-Response</td></tr>
-        <tr><td>Chat</td><td>Nachricht senden (Enter + Button)</td><td>Beides funktioniert, Input cleared sich</td></tr>
-        <tr><td>Chat</td><td>AI-Response erscheint</td><td>Loading-Indikator → dann Antwort</td></tr>
-        <tr><td>Chat</td><td>Markdown-Rendering</td><td>Bold, Listen, Code-Blöcke korrekt dargestellt</td></tr>
-        <tr><td>Chat</td><td>Source Attribution</td><td>Quellen-Links erscheinen unter Antwort</td></tr>
-        <tr><td>Chat</td><td>Suggested Actions</td><td>Action-Chips klickbar → senden Follow-up oder erstellen Task</td></tr>
-        <tr><td>Chat</td><td>General Mode (kein Projekt)</td><td>Cross-Projekt-Summary, kein Fehler ohne Projekt-ID</td></tr>
-        <tr><td>Chat</td><td>Project-Scoped Mode</td><td>AI kennt Projektdaten, Antwort ist kontextspezifisch</td></tr>
-        <tr class="cat-row"><td colspan="3">Edge Cases</td></tr>
-        <tr><td>Edge Case</td><td>Leere Nachricht absenden</td><td>Kein Submit bei leerem Input</td></tr>
-        <tr><td>Edge Case</td><td>Sehr lange Nachricht</td><td>Input-Feld bricht um / scrollt</td></tr>
-        <tr><td>Edge Case</td><td>Edge Function Fehler</td><td>Sinnvolle Fehlermeldung statt Crash</td></tr>
-        <tr class="cat-row"><td colspan="3">Mobile (390 × 844)</td></tr>
-        <tr><td>Mobile</td><td>Conversation-Sidebar zugänglich</td><td>Toggle/Hamburger öffnet Sidebar-Sheet</td></tr>
-        <tr><td>Mobile</td><td>Chat Input immer sichtbar</td><td>Nicht von Keyboard verdeckt</td></tr>
-        <tr><td>Mobile</td><td>Kein horizontaler Scroll</td><td>Kein Overflow</td></tr>
-        <tr><td>Mobile</td><td>Quick Actions horizontal scrollbar</td><td>Overflow-X: auto bei vielen Chips</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- IMPROVEMENTS / ISSUES AUS CODE REVIEW -->
-  <div class="card">
-    <div class="card-title">🛠️ Code Review — Potential Issues aus PR-Analyse</div>
+    <div class="card-title">🛠️ Improvements & Issues</div>
     <div class="improvements">
-
-      <div class="improvement-item">
-        <div class="imp-icon">🔴</div>
-        <div>
-          <div class="imp-title">Feature-Flag fehlt im Frontend (PR #30)</div>
-          <div class="imp-desc">Die Edge Function hat eine Feature-Flag-Prüfung, aber das Frontend zeigt den Copilot-Button ohne Flag-Check in ProjectDetailPage. Falls der Flag aus ist, erscheint der Button trotzdem. → Flag-Check auch im Button-Render einbauen.</div>
-        </div>
-      </div>
-
-      <div class="improvement-item">
-        <div class="imp-icon">🔴</div>
-        <div>
-          <div class="imp-title">Route /copilot vs. /projekte — Inkonsistenz</div>
-          <div class="imp-desc">Die bestehende App nutzt deutsche Routen (/projekte, /aufgaben). PR #31 fügt /copilot (englisch) hinzu. Das sollte konsistent sein — entweder alles englisch oder alles deutsch. Empfehlung: /copilot → /kopilot oder alle Routen auf Englisch.</div>
-        </div>
-      </div>
-
-      <div class="improvement-item">
-        <div class="imp-icon">🟡</div>
-        <div>
-          <div class="imp-title">Context-Window Default: 7 Tage vs. PR-Beschreibung "4 Wochen max"</div>
-          <div class="imp-desc">PR #31 beschreibt einen Selektor mit 1/2/4 Wochen und Default 7 Tage. Die Edge Function aus PR #30 fetcht hingegen 90 Tage Tasks und 30 Tage Time Entries (hartkodiert). Diese Werte sollten aus dem context_days Parameter kommen — prüfen ob der neue Wert korrekt durchgereicht wird.</div>
-        </div>
-      </div>
-
-      <div class="improvement-item">
-        <div class="imp-icon">🟡</div>
-        <div>
-          <div class="imp-title">Conversation-Titel: Kein Auto-Title in PR #31</div>
-          <div class="imp-desc">Die DB hat ein title-Feld für Conversations, aber im PR-Code ist kein Auto-Titel aus der ersten Nachricht beschrieben. Conversations heißen vermutlich alle "Neues Gespräch" → schlechte UX bei mehreren Chats. Empfehlung: Ersten 40 Zeichen der ersten User-Nachricht als Titel.</div>
-        </div>
-      </div>
-
-      <div class="improvement-item">
-        <div class="imp-icon">🟡</div>
-        <div>
-          <div class="imp-title">Mobile: Conversation-Sidebar auf kleinen Screens</div>
-          <div class="imp-desc">PR #31 beschreibt ein 2-Spalten-Layout (Sidebar + Chat). Auf Mobile (390px) braucht das einen Toggle-Mechanismus. Aus dem PR-Code geht nicht hervor ob das ein Sheet/Drawer wird oder ob die Sidebar einfach versteckt ist. → Prüfen nach Deploy.</div>
-        </div>
-      </div>
-
-      <div class="improvement-item">
-        <div class="imp-icon">🟢</div>
-        <div>
-          <div class="imp-title">Error Handling: Edge Function hat gutes Error-Handling</div>
-          <div class="imp-desc">Die Edge Function prüft Auth, Project-Access und gibt sinnvolle HTTP-Status-Codes zurück. Frontend-seitig sollte das in der Hook aufgegriffen werden — im PR-Code vorhanden (useProjectCopilot hat error-State). Gut umgesetzt.</div>
-        </div>
-      </div>
-
-      <div class="improvement-item">
-        <div class="imp-icon">🟢</div>
-        <div>
-          <div class="imp-title">RLS Policies: Korrekt umgesetzt</div>
-          <div class="imp-desc">Die DB-Migration enthält Row-Level-Security für copilot_conversations und copilot_messages. User sieht nur eigene Conversations. Sauber.</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- NEXT STEPS -->
-  <div class="card">
-    <div class="card-title">🚀 Nächste Schritte</div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-text"><strong>Lovable deployen:</strong> In Lovable den GitHub-Commit von PR #31 pullen und einen neuen Build triggern. Aktuell ist nur der alte Stand live.</div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-text"><strong>Supabase Migrations:</strong> Die beiden SQL-Migrations (20260318120000_project_copilot.sql + 20260318130000_copilot_standalone.sql) in Supabase laufen lassen.</div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-text"><strong>Edge Function deployen:</strong> <code>supabase functions deploy project-copilot</code> ausführen. Ohne deployed Function gibt jede Copilot-Anfrage 404/500.</div>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <div class="step-text"><strong>Feature-Flag aktivieren:</strong> In der Supabase-DB den <code>copilot_enabled</code> Flag für deinen User setzen (falls Gradual Rollout aktiv).</div>
-      </div>
-      <div class="step">
-        <div class="step-num">5</div>
-        <div class="step-text"><strong>Playwright erneut laufen lassen:</strong> Nach Deploy diesen Report neu generieren — dann können alle 25+ Test Cases ausgeführt werden.</div>
-      </div>
+      <ul><li style="margin-bottom:8px"><strong>Layout · Quick Actions vorhanden:</strong> 0 Quick-Action-Elemente gefunden</li><li style="margin-bottom:8px"><strong>Conversations · Neue Conversation anlegen:</strong> locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('button:has-text("New"), button:has-text("Neu"), button:has-text("+"), [aria-label*="new"], [aria-label*="New"]').first()
+    - locator resolved to <button class="inline-flex items-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 w-full gap-2 justify-start">…</button>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+    - retrying click action
+      - waiting 100ms
+    58 × waiting for element to be visible, enabled and stable
+       - element is visible, enabled and stable
+       - scrolling into view if needed
+       - done scrolling
+       - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+     - retrying click action
+       - waiting 500ms
+</li><li style="margin-bottom:8px"><strong>Conversations · Conversations in Sidebar:</strong> 0 Conversation-Items in Sidebar</li><li style="margin-bottom:8px"><strong>Chat · Nachricht senden Flow:</strong> locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('textarea, input[placeholder*="frag"], input[placeholder*="ask"], input[placeholder*="Frag"], input[placeholder*="message"], [contenteditable="true"]').first()
+    - locator resolved to <input value="" placeholder="Frage eingeben…" class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm h-10"/>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+    - retrying click action
+      - waiting 100ms
+    58 × waiting for element to be visible, enabled and stable
+       - element is visible, enabled and stable
+       - scrolling into view if needed
+       - done scrolling
+       - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+     - retrying click action
+       - waiting 500ms
+</li><li style="margin-bottom:8px"><strong>QuickActions · Quick Actions vorhanden:</strong> Keine Quick-Action-Buttons gefunden</li><li style="margin-bottom:8px"><strong>ProjectScope · Project Dropdown:</strong> locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('select, [role="combobox"], button:has-text("All Projects"), button:has-text("Alle"), [class*="project-select"]').first()
+    - locator resolved to <button dir="ltr" type="button" role="combobox" data-state="closed" aria-expanded="false" aria-autocomplete="none" aria-controls="radix-:rj:" class="flex items-center justify-between rounded-md border border-input bg-background px-3 py-2 ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 h-8 w-[180px] text-xs">…</button>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+    - retrying click action
+      - waiting 100ms
+    58 × waiting for element to be visible, enabled and stable
+       - element is visible, enabled and stable
+       - scrolling into view if needed
+       - done scrolling
+       - <div data-state="open" aria-hidden="true" data-aria-hidden="true" class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"></div> intercepts pointer events
+     - retrying click action
+       - waiting 500ms
+</li><li style="margin-bottom:8px"><strong>Mobile · Mobile Navigation sichtbar:</strong> Kein Mobile-Nav gefunden</li><li style="margin-bottom:8px"><strong>Mobile · Copilot in Mobile Nav:</strong> Nicht in Mobile Nav</li><li style="margin-bottom:8px"><strong>Mobile · Conversation-Sidebar zugänglich:</strong> Kein Sidebar-Toggle für mobile Conversations</li><li style="margin-bottom:8px"><strong>UX · Chat Container scrollbar:</strong> overflow: unknown</li><li style="margin-bottom:8px"><strong>UX · Input Focus nach Click:</strong> Fokus auf: BUTTON</li></ul>
     </div>
   </div>
 
   <div class="footer">
-    Hatti 🏔️ · Playwright Automated Test · ModulAI Copilot v1.0 · 18.03.2026
+    Hatti 🏔️ · Playwright Automated Test · ModulAI v1.0 Copilot
   </div>
 </div>
 </body>
