@@ -432,6 +432,104 @@ function initSchema(db: Database.Database): void {
     insertTask.run((Date.now() + 2).toString() + "3", "Solution Design Sprint terminieren — 2×2h vor Ort, Angebot 1.500€ ausarbeiten", "Ergebnis des Sprints: Fundierte Analyse + Mockup-Designs → gehören dann Eduard + Waldemar.");
   });
 
+  // Migration: Discovery Notes table for structured call prep
+  runMigration("create_discovery_notes_table", () => {
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS discovery_notes (
+        id              TEXT PRIMARY KEY,
+        account_id      TEXT NOT NULL,
+        title           TEXT NOT NULL DEFAULT '',
+        call_date       TEXT,
+        contact_id      TEXT,
+        status          TEXT NOT NULL DEFAULT 'draft',
+
+        kontext_buerotyp     TEXT DEFAULT '',
+        kontext_team         TEXT DEFAULT '',
+        kontext_projektarten TEXT DEFAULT '',
+        kontext_ablaeufe     TEXT DEFAULT '',
+
+        pain_1  TEXT DEFAULT '',
+        pain_2  TEXT DEFAULT '',
+        pain_3  TEXT DEFAULT '',
+
+        konkreter_fall_ausloeser   TEXT DEFAULT '',
+        konkreter_fall_beteiligte  TEXT DEFAULT '',
+        konkreter_fall_ablauf      TEXT DEFAULT '',
+        konkreter_fall_reibung     TEXT DEFAULT '',
+        konkreter_fall_folge       TEXT DEFAULT '',
+
+        auswirkung_haeufigkeit TEXT DEFAULT '',
+        auswirkung_zeitaufwand TEXT DEFAULT '',
+        auswirkung_betroffene  TEXT DEFAULT '',
+        auswirkung_folge       TEXT DEFAULT '',
+
+        workarounds_tools     TEXT DEFAULT '',
+        workarounds_loesungen TEXT DEFAULT '',
+        workarounds_warum_unzureichend TEXT DEFAULT '',
+
+        prioritaet_hoechste    TEXT DEFAULT '',
+        prioritaet_warum_jetzt TEXT DEFAULT '',
+
+        anforderungen_must_have TEXT DEFAULT '',
+        anforderungen_no_go     TEXT DEFAULT '',
+        anforderungen_nutzer    TEXT DEFAULT '',
+
+        naechster_schritt TEXT DEFAULT '',
+        offene_fragen     TEXT DEFAULT '',
+        hypothese_produkt TEXT DEFAULT '',
+
+        score_pain_identifiziert   INTEGER,
+        score_konkreter_fall       INTEGER,
+        score_impact_quantifiziert INTEGER,
+        score_prioritaet           INTEGER,
+        score_nicht_gepitcht       INTEGER,
+        score_naechster_schritt    INTEGER,
+
+        created_at TEXT NOT NULL DEFAULT (datetime('now')),
+        updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+      );
+    `);
+  });
+
+  // Migration: Align discovery_notes with HTML template (pre gtm discovery.html)
+  runMigration("align_discovery_html_template", () => {
+    const add = (sql: string) => { try { db.exec(sql); } catch {} };
+    // Sektion 2: Pain Landscape (neue Struktur)
+    add("ALTER TABLE discovery_notes ADD COLUMN pain_kernpain TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN pain_woran_zeigt_sich TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN pain_weitere_signale TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN pain_einordnung TEXT DEFAULT ''");
+    // Sektion 3: Konkreter Fall (+2)
+    add("ALTER TABLE discovery_notes ADD COLUMN konkreter_fall_doppelt TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN konkreter_fall_soll_ablauf TEXT DEFAULT ''");
+    // Sektion 4: Impact (+3)
+    add("ALTER TABLE discovery_notes ADD COLUMN auswirkung_warum_jetzt TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN auswirkung_dringlichkeit INTEGER");
+    add("ALTER TABLE discovery_notes ADD COLUMN auswirkung_schmerzstaerke INTEGER");
+    // Sektion 5: Workarounds (+3)
+    add("ALTER TABLE discovery_notes ADD COLUMN workarounds_ausprobiert TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN workarounds_warum_nicht TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN workarounds_kein_standard TEXT DEFAULT ''");
+    // Sektion 6: Priorisierung (+2)
+    add("ALTER TABLE discovery_notes ADD COLUMN prioritaet_nice_to_have TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN prioritaet_testbar_14_tage TEXT DEFAULT ''");
+    // Sektion 7: Testbare Hypothese (5 neue Felder)
+    add("ALTER TABLE discovery_notes ADD COLUMN hypothese_problem TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN hypothese_minimal TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN hypothese_no_go TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN hypothese_wer_nutzt TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN hypothese_workflow TEXT DEFAULT ''");
+    // Sektion 8: Test Readiness (5 neue Felder)
+    add("ALTER TABLE discovery_notes ADD COLUMN test_bereitschaft TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN test_beispiel TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN test_unterlagen TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN test_erfolgskriterium TEXT DEFAULT ''");
+    add("ALTER TABLE discovery_notes ADD COLUMN test_naechster_schritt TEXT DEFAULT ''");
+    // Scorecard +2
+    add("ALTER TABLE discovery_notes ADD COLUMN score_root_cause INTEGER");
+    add("ALTER TABLE discovery_notes ADD COLUMN score_testfall INTEGER");
+  });
+
   // Migration: ModulAI Task — Evaluierung Feature Talk to your Data (11.03.2026)
   runMigration("modulai_talk_to_data_eval_20260311", () => {
     db.prepare(`
