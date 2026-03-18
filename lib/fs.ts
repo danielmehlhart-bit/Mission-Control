@@ -8,6 +8,17 @@ const ROOTS = {
   memory: process.env.MEMORY_DIR ?? DEFAULT_WORKSPACE,
 };
 
+// Memory sync layout on Hetzner:
+//   MEMORY_DIR/          → daily logs + subfolders (projects/, etc.)
+//   MEMORY_DIR/core/     → core workspace files (MEMORY.md, SOUL.md, ...)
+// Pi dev layout:
+//   MEMORY_DIR = /home/hartner/.openclaw/workspace
+//   MEMORY_DIR/memory/   → daily logs + subfolders
+//   MEMORY_DIR/*.md      → core workspace files
+//
+// Detection: if MEMORY_DIR/core/ exists → Hetzner layout, else → Pi layout
+
+
 const MAX_DEPTH = 2;
 
 function isWithinRoot(root: string, target: string) {
@@ -145,9 +156,23 @@ export type MemFile = {
   desc?: string;
 };
 
+async function detectLayout(memoryDir: string): Promise<"hetzner" | "pi"> {
+  try {
+    await fs.stat(path.join(memoryDir, "core"));
+    return "hetzner";
+  } catch {
+    return "pi";
+  }
+}
+
 export async function listMemoryByCategory(): Promise<{ category: string; files: MemFile[] }[]> {
-  const workspaceRoot = ROOTS.memory;
-  const memRoot = path.join(workspaceRoot, MEMORY_SUBDIR);
+  const memoryDir = ROOTS.memory;
+  const layout = await detectLayout(memoryDir);
+
+  // In Hetzner layout: MEMORY_DIR is the memory subdir itself
+  // In Pi layout: MEMORY_DIR is workspace root, memory/ is a subdir
+  const memRoot = layout === "hetzner" ? memoryDir : path.join(memoryDir, MEMORY_SUBDIR);
+  const coreRoot = layout === "hetzner" ? path.join(memoryDir, "core") : memoryDir;
 
   const result: { category: string; files: MemFile[] }[] = [];
 
@@ -156,7 +181,7 @@ export async function listMemoryByCategory(): Promise<{ category: string; files:
 
     if (cat.source === "workspace-root") {
       for (const fname of cat.files) {
-        const fullPath = path.join(workspaceRoot, fname);
+        const fullPath = path.join(coreRoot, fname);
         try {
           const stat = await fs.stat(fullPath);
           catFiles.push({
@@ -228,13 +253,15 @@ export async function listMemoryByCategory(): Promise<{ category: string; files:
 }
 
 export async function readMemoryFile(logicalPath: string): Promise<string> {
-  const workspaceRoot = ROOTS.memory;
-  const memRoot = path.join(workspaceRoot, MEMORY_SUBDIR);
+  const memoryDir = ROOTS.memory;
+  const layout = await detectLayout(memoryDir);
+  const memRoot = layout === "hetzner" ? memoryDir : path.join(memoryDir, MEMORY_SUBDIR);
+  const coreRoot = layout === "hetzner" ? path.join(memoryDir, "core") : memoryDir;
 
   if (logicalPath.startsWith("ws:")) {
     const fname = logicalPath.slice(3);
     if (!CORE_FILES_ALLOWLIST.includes(fname)) throw new Error("Access denied");
-    const fullPath = safeResolve(workspaceRoot, fname);
+    const fullPath = safeResolve(coreRoot, fname);
     return fs.readFile(fullPath, "utf8");
   } else if (logicalPath.startsWith("mem:")) {
     const rel = logicalPath.slice(4);
