@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkedIn Lead Scraping — Research Briefing</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      line-height: 1.6;
+    }
+    .hero {
+      background: linear-gradient(135deg, #0077b5 0%, #004d7a 100%);
+      color: white;
+      padding: 56px 32px 48px;
+      text-align: center;
+    }
+    .hero .label {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .hero p {
+      font-size: 16px;
+      opacity: 0.85;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .hero .meta {
+      margin-top: 20px;
+      font-size: 13px;
+      opacity: 0.6;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #0077b5;
+      margin-bottom: 16px;
+      margin-top: 48px;
+    }
+    .section-title:first-of-type { margin-top: 0; }
+
+    /* TL;DR Card */
+    .tldr {
+      background: #fff;
+      border-left: 4px solid #0077b5;
+      border-radius: 8px;
+      padding: 24px 28px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      margin-bottom: 32px;
+    }
+    .tldr h2 { font-size: 18px; margin-bottom: 12px; }
+    .tldr ul { padding-left: 20px; }
+    .tldr ul li { margin-bottom: 6px; font-size: 15px; }
+
+    /* Cards Grid */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 8px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .card .icon { font-size: 28px; margin-bottom: 12px; }
+    .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .card p { font-size: 14px; color: #555; }
+    .card ul { padding-left: 18px; margin-top: 8px; }
+    .card ul li { font-size: 14px; color: #555; margin-bottom: 4px; }
+
+    /* Warn Card */
+    .warn-card {
+      background: #fff8e1;
+      border: 1px solid #ffc107;
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+    }
+    .warn-card h3 { font-size: 15px; font-weight: 700; color: #b8860b; margin-bottom: 6px; }
+    .warn-card p { font-size: 14px; color: #665200; }
+
+    /* Danger Card */
+    .danger-card {
+      background: #fff0f0;
+      border: 1px solid #f44336;
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+    }
+    .danger-card h3 { font-size: 15px; font-weight: 700; color: #c62828; margin-bottom: 6px; }
+    .danger-card p { font-size: 14px; color: #7f0000; }
+
+    /* Success Card */
+    .success-card {
+      background: #f1f8e9;
+      border: 1px solid #8bc34a;
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+    }
+    .success-card h3 { font-size: 15px; font-weight: 700; color: #33691e; margin-bottom: 6px; }
+    .success-card p { font-size: 14px; color: #1b5e20; }
+
+    /* Table */
+    .table-wrap {
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      overflow-x: auto;
+      margin-bottom: 8px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th {
+      background: #f0f4f8;
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 700;
+      color: #444;
+      white-space: nowrap;
+    }
+    td { padding: 10px 14px; border-top: 1px solid #eee; vertical-align: top; }
+    tr:hover td { background: #fafafa; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .badge-green { background: #e8f5e9; color: #2e7d32; }
+    .badge-yellow { background: #fff8e1; color: #f57f17; }
+    .badge-red { background: #ffebee; color: #c62828; }
+    .badge-blue { background: #e3f2fd; color: #1565c0; }
+
+    /* Steps */
+    .steps { list-style: none; margin-bottom: 8px; }
+    .steps li {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      margin-bottom: 12px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .step-num {
+      background: #0077b5;
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .step-body h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .step-body p { font-size: 14px; color: #555; }
+    .step-body code {
+      background: #f0f4f8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 13px;
+    }
+
+    /* Limits visual */
+    .limit-bar-wrap { margin-bottom: 12px; }
+    .limit-bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+    .limit-bar { height: 10px; background: #e0e0e0; border-radius: 6px; overflow: hidden; }
+    .limit-bar-fill { height: 100%; border-radius: 6px; }
+
+    /* Sources */
+    .sources { margin-top: 40px; padding-top: 24px; border-top: 1px solid #e0e0e0; }
+    .sources h4 { font-size: 13px; color: #999; margin-bottom: 8px; }
+    .sources a { color: #0077b5; font-size: 13px; display: block; margin-bottom: 4px; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+
+    footer { text-align: center; padding: 32px; color: #aaa; font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="label">Research Briefing · 18. März 2026</div>
+  <h1>LinkedIn Lead Scraping</h1>
+  <p>Wie du automatisiert Leads ziehst, Cold Outreach startest — und nicht gebannt wirst.</p>
+  <div class="meta">Für: Daniel Mehlhart · KMU AI/IT Enablement Use Case</div>
+</div>
+
+<div class="container">
+
+  <!-- TL;DR -->
+  <div class="tldr">
+    <h2>⚡ TL;DR</h2>
+    <ul>
+      <li>LinkedIn verbietet Scraping in den ToS — aber es gibt legale, semi-legale und illegale Wege mit sehr unterschiedlichem Risiko.</li>
+      <li>Sicherster Workflow: <strong>Sales Navigator → Tool mit Cloud-Infra (Phantombuster/Expandi) → Email Enrichment (Apollo.io/Hunter.io) → Cold Email</strong></li>
+      <li>Safe Limits: Max. <strong>20 Connection Requests/Tag</strong>, verteilt über den Tag, keine Wochenend-Aktivität.</li>
+      <li>Proxycurl ist tot (LinkedIn-Klage, Juli 2025) — Apollo.io ist der beste All-in-One-Ersatz.</li>
+      <li>DSGVO-Grauzone: B2B Cold Email ist in DE erlaubt wenn <em>berechtigtes Interesse</em> nachweisbar — Opt-out-Link pflicht.</li>
+    </ul>
+  </div>
+
+  <!-- Strategy Overview -->
+  <div class="section-title">Die 3 Wege</div>
+  <div class="cards">
+    <div class="card">
+      <div class="icon">🟢</div>
+      <h3>Weg 1: LinkedIn-nativ + Enrichment</h3>
+      <p>Sales Navigator für Suche, dann Email-Finder (Apollo, Hunter) für Kontaktdaten. Kein direktes Scraping.</p>
+      <ul>
+        <li>Niedrigstes Ban-Risiko</li>
+        <li>Höchste Datenqualität</li>
+        <li>Kosten: ~$50–150/Monat</li>
+        <li>Ideal für: &lt;500 Leads/Monat</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="icon">🟡</div>
+      <h3>Weg 2: Cloud-Automation Tool</h3>
+      <p>Phantombuster oder Expandi: Cloud-basiert, IP-Rotation, menschliche Delays simuliert. Direktes Scraping mit Schutzmechanismen.</p>
+      <ul>
+        <li>Mittleres Ban-Risiko</li>
+        <li>Skalierbar bis ~2.000/Monat</li>
+        <li>Kosten: ~$70–100/Monat</li>
+        <li>Ideal für: Volume-Outreach</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="icon">🔴</div>
+      <h3>Weg 3: Direktes Scraping/Bots</h3>
+      <p>Eigene Browser-Automatisierung (Playwright, Selenium), kein Cloud-Schutz. Account-Tod vorprogrammiert.</p>
+      <ul>
+        <li>Höchstes Ban-Risiko</li>
+        <li>LinkedIn erkennt Headless-Browser</li>
+        <li>Kosten: niedrig, Risiko: hoch</li>
+        <li>Für KMU Use Cases: nicht empfohlen</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Safe Limits -->
+  <div class="section-title">Safe Limits — Was LinkedIn toleriert</div>
+  <div class="card" style="margin-bottom: 20px;">
+    <h3 style="margin-bottom: 16px;">📊 Tägliche Limits (inoffizielle Community-Benchmarks)</h3>
+    
+    <div class="limit-bar-wrap">
+      <div class="limit-bar-label"><span>Free Account — Connection Requests</span><span style="font-weight:700;">15–20/Tag</span></div>
+      <div class="limit-bar"><div class="limit-bar-fill" style="width:25%; background:#ef5350;"></div></div>
+    </div>
+    <div class="limit-bar-wrap">
+      <div class="limit-bar-label"><span>Sales Navigator — Connection Requests</span><span style="font-weight:700;">20–40/Tag</span></div>
+      <div class="limit-bar"><div class="limit-bar-fill" style="width:40%; background:#ff9800;"></div></div>
+    </div>
+    <div class="limit-bar-wrap">
+      <div class="limit-bar-label"><span>Profile Views (Automation)</span><span style="font-weight:700;">80–100/Tag max</span></div>
+      <div class="limit-bar"><div class="limit-bar-fill" style="width:60%; background:#ffc107;"></div></div>
+    </div>
+    <div class="limit-bar-wrap">
+      <div class="limit-bar-label"><span>Messages an Verbindungen</span><span style="font-weight:700;">50–80/Tag</span></div>
+      <div class="limit-bar"><div class="limit-bar-fill" style="width:55%; background:#66bb6a;"></div></div>
+    </div>
+    <div class="limit-bar-wrap">
+      <div class="limit-bar-label"><span>InMails (Sales Navigator)</span><span style="font-weight:700;">50/Monat inkl.</span></div>
+      <div class="limit-bar"><div class="limit-bar-fill" style="width:20%; background:#42a5f5;"></div></div>
+    </div>
+
+    <p style="margin-top: 16px; font-size: 13px; color: #888;">⚠️ LinkedIn justiert diese Limits dynamisch nach Account-Alter, Social Selling Index (SSI) und Aktivitätsmuster. Neue Accounts: erst 2 Wochen manuell warmup.</p>
+  </div>
+
+  <!-- Tools Vergleich -->
+  <div class="section-title">Tool-Vergleich: Die besten Optionen 2026</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Tool</th>
+          <th>Typ</th>
+          <th>Ban-Risiko</th>
+          <th>Preis/Monat</th>
+          <th>Stärken</th>
+          <th>Empfehlung</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Phantombuster</strong></td>
+          <td>Cloud Scraper</td>
+          <td><span class="badge badge-yellow">Mittel</span></td>
+          <td>~$69–169</td>
+          <td>47+ Felder, Account-Rotation, 5.000+ Leads/Run, Sales Nav Integration</td>
+          <td><span class="badge badge-green">Empfohlen für Scale</span></td>
+        </tr>
+        <tr>
+          <td><strong>Expandi</strong></td>
+          <td>Cloud Outreach</td>
+          <td><span class="badge badge-green">Niedrig</span></td>
+          <td>~$99</td>
+          <td>Beste Sicherheitsfeatures, dedizierte IP, gute Analytics</td>
+          <td><span class="badge badge-green">Empfohlen für Safety</span></td>
+        </tr>
+        <tr>
+          <td><strong>Waalaxy</strong></td>
+          <td>Browser Extension</td>
+          <td><span class="badge badge-yellow">Mittel</span></td>
+          <td>~$70–112</td>
+          <td>Einfach zu nutzen, Templates, Multichannel</td>
+          <td><span class="badge badge-blue">Gut für Einsteiger</span></td>
+        </tr>
+        <tr>
+          <td><strong>Apollo.io</strong></td>
+          <td>Email Finder + CRM</td>
+          <td><span class="badge badge-green">Niedrig</span></td>
+          <td>$49–99</td>
+          <td>210M+ Kontakte, Email-Verifizierung, Sequences, kein Scraping nötig</td>
+          <td><span class="badge badge-green">Empfohlen (All-in-One)</span></td>
+        </tr>
+        <tr>
+          <td><strong>Hunter.io</strong></td>
+          <td>Email Finder</td>
+          <td><span class="badge badge-green">Keins</span></td>
+          <td>$49</td>
+          <td>Domain Search, verifizierte Emails, simple API</td>
+          <td><span class="badge badge-blue">Gut für kleinere Teams</span></td>
+        </tr>
+        <tr>
+          <td><strong>Lusha</strong></td>
+          <td>Email + Phone Finder</td>
+          <td><span class="badge badge-green">Keins</span></td>
+          <td>$49/Seat</td>
+          <td>98% Email-Accuracy, Mobilnummern, CRM-Sync</td>
+          <td><span class="badge badge-blue">Gut für Telefon-Outreach</span></td>
+        </tr>
+        <tr>
+          <td><strong>Dux-Soup</strong></td>
+          <td>Browser Extension</td>
+          <td><span class="badge badge-yellow">Mittel</span></td>
+          <td>$15–55</td>
+          <td>Günstig, einfach</td>
+          <td><span class="badge badge-yellow">Budget-Option</span></td>
+        </tr>
+        <tr>
+          <td><strong>Proxycurl</strong></td>
+          <td>API (abgeschaltet)</td>
+          <td><span class="badge badge-red">N/A</span></td>
+          <td>—</td>
+          <td>War die beste API — LinkedIn-Klage Juli 2025</td>
+          <td><span class="badge badge-red">TOT seit Juli 2025</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Empfohlener Workflow -->
+  <div class="section-title">Empfohlener Workflow für Daniel</div>
+  <p style="font-size: 14px; color: #555; margin-bottom: 20px;">Use Case: KMU-Entscheider ansprechen für AI/IT-Enablement Angebote in DACH</p>
+
+  <ul class="steps">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>ICP definieren in Sales Navigator</h4>
+        <p>Filter: Geschäftsführer / IT-Leiter / Head of Operations · Unternehmens­größe 10–200 MA · Region DACH · Branchen: Handwerk, Handel, Dienstleister. Export als Liste.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Email-Daten anreichern via Apollo.io</h4>
+        <p>LinkedIn-Profile in Apollo importieren oder direkt im Apollo-Datensatz suchen. Apollo verifiziert Emails automatisch. Kosten: ~$0,05–0,10 pro verifiziertem Kontakt je nach Plan.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>LinkedIn-Outreach mit Expandi (Safety-first)</h4>
+        <p>Connection Request mit persönlicher Note (200–300 Zeichen). <code>Limit: 20/Tag</code>. Nur werktags. Nach Accept: 1 Follow-up DM nach 1–2 Tagen. Kein Pitch im ersten DM.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Cold Email-Sequenz parallel schalten</h4>
+        <p>Tool: Apollo.io Sequences oder Instantly.ai. 4–6 Step-Sequence: Intro → Value → Case Study → CTA (Calendly) → Breakup. Täglich max. 50–80 Mails aus warmem Domain-Account.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h4>Tracking und Iteration</h4>
+        <p>Connection Rate Ziel: 30–50%. Reply Rate Ziel: 10–20%. Meeting-Buchung: 5–10% der Replies. Wöchentlich Messages A/B-testen. Nicht performende Sequences nach 2 Wochen ersetzen.</p>
+      </div>
+    </li>
+  </ul>
+
+  <!-- Ban-Schutz -->
+  <div class="section-title">Anti-Ban Checkliste</div>
+  <div class="cards">
+    <div class="card">
+      <div class="icon">🕒</div>
+      <h3>Timing & Limits</h3>
+      <ul>
+        <li>Maximal 20 Connections/Tag</li>
+        <li>Nur Mo–Fr, zu Bürozeiten</li>
+        <li>Random Delays: 3–7 Min zwischen Aktionen</li>
+        <li>Neue Accounts: 2 Wochen manuelles Warmup</li>
+        <li>Wochenende: kein Automation-Traffic</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="icon">🔒</div>
+      <h3>Account-Hygiene</h3>
+      <ul>
+        <li>Dedicated IP / dedizierte Cloud-Infra nutzen</li>
+        <li>Kein VPN-Wechsel während Session</li>
+        <li>Profil vollständig (Foto, About, History)</li>
+        <li>SSI Score &gt; 50 anstreben</li>
+        <li>Bei Warnung: sofort pausieren, 2 Wochen</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="icon">✉️</div>
+      <h3>Message-Qualität</h3>
+      <ul>
+        <li>Keine Templates 1:1 kopieren</li>
+        <li>Personalisierung: Name, Firma, Kontext</li>
+        <li>Kein Pitch im Connection Request</li>
+        <li>Accept-Rate &gt; 25% halten (zu niedrig = Flag)</li>
+        <li>Immer Opt-out ermöglichen</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- DSGVO Hinweis -->
+  <div class="section-title">Rechtliches: DSGVO &amp; Cold Outreach</div>
+  <div class="warn-card">
+    <h3>⚖️ B2B Cold Email in Deutschland — Grauzone mit Spielraum</h3>
+    <p>B2B Cold Email ist unter DSGVO legal, wenn <strong>berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO)</strong> nachweisbar ist — also wenn das Angebot klar relevant für die berufliche Tätigkeit der Person ist. <strong>Pflicht:</strong> Opt-Out in jeder Mail, Datenschutzhinweis, nur berufliche Kontaktdaten nutzen, keine Privatpersonen.</p>
+  </div>
+  <div class="success-card">
+    <h3>✅ Was erlaubt ist</h3>
+    <p>Geschäftliche Email-Adressen ansprechen · Thema muss beruflich relevant sein · Opt-Out sofort umsetzen · Dokumentieren, woher die Daten stammen (Apollo = Public Data)</p>
+  </div>
+  <div class="danger-card">
+    <h3>🚫 Was nicht geht</h3>
+    <p>Private Personen cold emailen · Keine Opt-Out-Möglichkeit · Daten aus LinkedIn direkt extrahieren und ohne Rechtsgrundlage speichern · Masse ohne Relevanz (Spam-Tatbestand, §7 UWG)</p>
+  </div>
+
+  <!-- Kosten-Kalkulation -->
+  <div class="section-title">Kosten-Kalkulation: Setup für Daniel</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Tool</th>
+          <th>Zweck</th>
+          <th>Kosten/Monat</th>
+          <th>Notizen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Sales Navigator</strong></td>
+          <td>Lead-Suche + Filter</td>
+          <td>€79–99</td>
+          <td>Empfohlen ab 200 Leads/Monat</td>
+        </tr>
+        <tr>
+          <td><strong>Apollo.io (Basic)</strong></td>
+          <td>Email Enrichment + Sequencing</td>
+          <td>$49</td>
+          <td>Freemium zum Start testen</td>
+        </tr>
+        <tr>
+          <td><strong>Expandi</strong></td>
+          <td>LinkedIn Automation</td>
+          <td>$99</td>
+          <td>Optional: erst Apollo testen</td>
+        </tr>
+        <tr>
+          <td><strong>Domain Warmup</strong></td>
+          <td>Cold Email Deliverability</td>
+          <td>$30–50</td>
+          <td>Instantly.ai oder Mailwarm</td>
+        </tr>
+        <tr>
+          <td colspan="2"><strong>Gesamt (Starter-Setup)</strong></td>
+          <td><strong>~$130–200/Monat</strong></td>
+          <td>Skalierbar nach Erfolg</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Quick Start Empfehlung -->
+  <div class="section-title">Quick-Start Empfehlung (Woche 1–2)</div>
+  <div class="success-card">
+    <h3>🚀 Daniel's Minimal Viable Outreach Stack</h3>
+    <p><strong>1.</strong> Apollo.io gratis testen (50 Credits/Monat free) → 50 KMU-Entscheider suchen, Emails verifizieren.<br>
+    <strong>2.</strong> Manuell 10–15 personalisierte LinkedIn-Requests/Tag senden (ohne Tool, kein Ban-Risiko).<br>
+    <strong>3.</strong> Cold Emails an die Apollo-Kontakte: 3-Step Sequence, schlicht, persönlich.<br>
+    <strong>4.</strong> Nach 2 Wochen: Conversion-Rate messen → dann entscheiden ob Phantombuster/Expandi sinnvoll.<br>
+    <strong>Budget Woche 1:</strong> €0 (nur Arbeitszeit)</p>
+  </div>
+
+  <!-- Sources -->
+  <div class="sources">
+    <h4>Quellen</h4>
+    <a href="https://leadexportr.com/blog/how-to-scrape-data-from-linkedin" target="_blank">1. LeadExportr — How to Scrape LinkedIn Data (2024)</a>
+    <a href="https://phantombuster.com/blog/social-selling/linkedin-limits/" target="_blank">2. Phantombuster — LinkedIn Limits & Safe Automation Guide</a>
+    <a href="https://expandi.io/blog/linkedin-connections-limit/" target="_blank">3. Expandi — LinkedIn Connection Limits 2025</a>
+    <a href="https://phantombuster.com/blog/tools/phantombuster-vs-waalaxy-for-linkedin-prospecting-which-tool-delivers-better-results-in-2025/" target="_blank">4. Phantombuster vs. Waalaxy Comparison 2025</a>
+    <a href="https://www.trykondo.com/blog/linkedin-limits-how-many-connection-requests-can-i-send-a-day" target="_blank">5. Kondo — LinkedIn Daily Limits Guide</a>
+    <a href="https://skrapp.io/blog/apollo-io-alternatives/" target="_blank">6. Skrapp — Apollo.io Alternatives + Email Finder Vergleich 2025</a>
+    <a href="https://fullenrich.com/tools/Apolloio-vs-Proxycurl" target="_blank">7. FullEnrich — Apollo.io vs. Proxycurl (inkl. Proxycurl Shutdown)</a>
+    <a href="https://www.leadloft.com/blog/linkedin-limits" target="_blank">8. Leadloft — LinkedIn Limits und Automation Thresholds</a>
+  </div>
+
+</div>
+
+<footer>
+  Briefing erstellt von Hatti 🏔️ · 18. März 2026 · Für internen Gebrauch
+</footer>
+
+</body>
+</html>
