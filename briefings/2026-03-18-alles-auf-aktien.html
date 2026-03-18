@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alles auf Aktien | 18. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2.5rem 2rem;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.15"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+            opacity: 0.6;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header .date {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .content {
+            padding: 2.5rem;
+        }
+        
+        .summary {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            border-left: 5px solid #667eea;
+        }
+        
+        .summary h2 {
+            color: #374151;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .summary p {
+            color: #6b7280;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .section {
+            margin-bottom: 2.5rem;
+        }
+        
+        .section h3 {
+            color: #1f2937;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .markets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .market-card {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .market-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .market-name {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        
+        .market-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .positive { color: #059669; }
+        .negative { color: #dc2626; }
+        .neutral { color: #6b7280; }
+        
+        .change {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .highlights {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid #f59e0b;
+        }
+        
+        .highlights h4 {
+            color: #92400e;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .highlights ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .highlights li {
+            background: white;
+            margin-bottom: 0.8rem;
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 3px solid #f59e0b;
+            color: #92400e;
+        }
+        
+        .theme-section {
+            background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid #8b5cf6;
+        }
+        
+        .theme-section h4 {
+            color: #5b21b6;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .theme-section p {
+            color: #6d28d9;
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        
+        .schufa-section {
+            background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid #ef4444;
+        }
+        
+        .schufa-section h4 {
+            color: #991b1b;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .schufa-section p {
+            color: #b91c1c;
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .footer p {
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .youtube-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .youtube-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+        }
+        
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .markets {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎤 Alles auf Aktien</h1>
+            <div class="date">Mittwoch, 18. März 2026</div>
+        </header>
+        
+        <div class="content">
+            <div class="summary">
+                <h2>📊 Heute im Fokus</h2>
+                <p>Geopolitische Spannungen und steigende Ölpreise prägen die Märkte. Während deutsche Indizes überraschend stark performten, warnen Fondsmanager vor anhaltenden Kriegsfolgen. Im Fokus: Deutschlands Vermögensproblem und das neue Schufa-Bewertungssystem.</p>
+            </div>
+            
+            <section class="section">
+                <h3>📈 Märkte im Überblick</h3>
+                <div class="markets">
+                    <div class="market-card">
+                        <div class="market-name">DAX</div>
+                        <div class="market-value positive">23.730 Punkte</div>
+                        <div class="change positive">+0,7%</div>
+                    </div>
+                    <div class="market-card">
+                        <div class="market-name">MDAX</div>
+                        <div class="market-value positive">—</div>
+                        <div class="change positive">+1,8%</div>
+                    </div>
+                    <div class="market-card">
+                        <div class="market-name">NASDAQ 100</div>
+                        <div class="market-value positive">24.780 Punkte</div>
+                        <div class="change positive">+0,5%</div>
+                    </div>
+                    <div class="market-card">
+                        <div class="market-name">S&P 500</div>
+                        <div class="market-value positive">—</div>
+                        <div class="change positive">+0,3%</div>
+                    </div>
+                    <div class="market-card">
+                        <div class="market-name">Brent Öl</div>
+                        <div class="market-value negative">~105 USD</div>
+                        <div class="change negative">Spitze erreicht</div>
+                    </div>
+                    <div class="market-card">
+                        <div class="market-name">Bitcoin</div>
+                        <div class="market-value positive">66.000 USD</div>
+                        <div class="change positive">+9% (7 Tage)</div>
+                    </div>
+                </div>
+                
+                <div class="highlights">
+                    <h4>🚀 Performance-Highlights</h4>
+                    <ul>
+                        <li><strong>Energiewerte stark:</strong> EON +3,2%, RWE +2,4%, Siemens Energy +2%</li>
+                        <li><strong>Sartorius überzeugt:</strong> +8% nach neuen Mittelfristzielen ab 2027</li>
+                        <li><strong>Fraport solide:</strong> +6% — operatives Geschäft läuft rund</li>
+                        <li><strong>Springer Nature:</strong> +13% nach starkem Ausblick</li>
+                        <li><strong>US-Airlines profitieren:</strong> Delta +6,5%, American Airlines +3,5%</li>
+                        <li><strong>Tourismus erholt sich:</strong> Norwegian Cruise +2,2%, Expedia +4,2%, Booking +3,5%</li>
+                        <li><strong>Uber auf Robotaxi-Kurs:</strong> +4,2% nach Ankündigung autonomer Mobilität</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h3>🔥 Unter Druck</h3>
+                <div class="highlights">
+                    <h4>📉 Verlierer des Tages</h4>
+                    <ul>
+                        <li><strong>Eli Lilly:</strong> -6% nach Herunterstufung durch HSBC — Zweifel am Abnehm-Markt</li>
+                        <li><strong>Beyond Meat:</strong> -7% — Geschäftsbericht verschoben, Umsätze enttäuschen</li>
+                        <li><strong>Energiekontor:</strong> -11% nach gesenkten Warburg-Schätzungen</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h3>🎯 Unternehmen im Detail</h3>
+                <div class="highlights">
+                    <h4>📊 Audi-Bilanz: Zweischneidig</h4>
+                    <ul>
+                        <li><strong>Kernmarke schwächelt:</strong> Gewinn sank von 2,6 auf 2,3 Mrd. Euro</li>
+                        <li><strong>Konzern stark:</strong> +10% Gewinn nach Steuern auf 4,6 Mrd. Euro</li>
+                        <li><strong>Treiber:</strong> Finanzergebnis verdoppelte sich auf 2,2 Mrd. Euro</li>
+                        <li><strong>Belastung:</strong> US-Zölle, China-Wettbewerb drücken operative Marge</li>
+                        <li><strong>Ziel:</strong> Marge von 6-8% angepeilt</li>
+                    </ul>
+                </div>
+                
+                <div class="highlights">
+                    <h4>🔄 Unilever plant Umbau</h4>
+                    <ul>
+                        <li><strong>Strategischer Schwenk:</strong> Fokus auf Beauty & Wellbeing</li>
+                        <li><strong>Lebensmittel-Abspaltung:</strong> Großer Teil der Sparte soll weg</li>
+                        <li><strong>Timeline:</strong> Frühestens ab 2027 realistisch</li>
+                        <li><strong>Optionen:</strong> Von Teilabspaltung bis kompletter Trennung</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h3>⚡ Geopolitik & Energie</h3>
+                <div class="highlights">
+                    <h4>🛢️ Ölpreis-Schock</h4>
+                    <ul>
+                        <li><strong>Dieselpreis USA:</strong> Erstmals seit 2022 über 5$ pro Gallone</li>
+                        <li><strong>Brent-Öl:</strong> Spitze bei 105$ je Barrel erreicht</li>
+                        <li><strong>WTI-Öl:</strong> Anstieg auf etwa 98$</li>
+                        <li><strong>Ursache:</strong> Straße von Hormus blockiert, Iran-Konflikt</li>
+                        <li><strong>Folge:</strong> Transport- und Produktionskosten steigen</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <div class="theme-section">
+                <h4>🏠 Thema des Tages: Deutschlands Vermögens-Dilemma</h4>
+                <p><strong>Das Problem:</strong> 37% des deutschen Geldvermögens (3.474 Mrd. Euro) liegt auf Konten oder als Bargeld — bei nur 0,4% Zinsen vs. 2% Inflation.</p>
+                <p><strong>Die Folge:</strong> Trotz hoher Sparleistung haben Deutsche real noch nicht das Niveau von 2021 erreicht. Der scheinbar "sichere" Weg macht systematisch ärmer.</p>
+                <p><strong>International:</strong> Andere Länder investieren deutlich mehr am Kapitalmarkt. Der DAX brachte seit 1987 durchschnittlich 9% p.a.</p>
+                <p><strong>Die Wende:</strong> Über 14 Millionen Deutsche investieren bereits in Aktienfonds/ETFs — so viele wie nie zuvor. Diversifikation ist zum Standard geworden.</p>
+                <p><strong>Der Schutz:</strong> Bei externen Inflationsschocks hilft nur Beteiligung an globaler Wertschöpfung, nicht Bargeld-Hortung.</p>
+            </div>
+            
+            <div class="schufa-section">
+                <h4>🎯 Triple-A Idee: Neuer Schufa-Score</h4>
+                <p><strong>Revolution:</strong> Der "Next Gen Score 1.0" ersetzt komplexe Prozent-Bewertung durch transparente 12-Faktoren-Skala (100-999 Punkte).</p>
+                <p><strong>Top-Faktor:</strong> Zahlungsstörungen — wer 3 Jahre sauber ist, bekommt volle Punkte. Erledigte Störungen drücken 36 Monate (halbierbar auf 18).</p>
+                <p><strong>Stabilität zählt:</strong> Alte Konten/Kreditkarten, konstante Adresse, wenige neue Verträge wirken positiv.</p>
+                <p><strong>Weniger Stress:</strong> Kreditanfragen zählen nur 20% statt 40%. Mehrere Anfragen in 28 Tagen = eine Bewertung.</p>
+                <p><strong>Neutral:</strong> Klassische Kredit-/Hypothekenanfragen beeinflussen Score gar nicht mehr.</p>
+                <p><strong>Verfügbar:</strong> Ab Ende März kostenlos abrufbar mit detaillierter Aufschlüsselung aller 12 Kriterien.</p>
+            </div>
+            
+            <section class="section">
+                <h3>🔮 Termine heute</h3>
+                <div class="highlights">
+                    <h4>📅 Wichtige Events</h4>
+                    <ul>
+                        <li><strong>Fed-Entscheidung:</strong> Zinsentscheidung der US-Notenbank steht an</li>
+                        <li><strong>Eurostat:</strong> Inflationszahlen Februar für Eurozone</li>
+                        <li><strong>Earnings:</strong> Aumovio, HelloFresh, Micron Technology, Tencent Holdings</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+        
+        <footer class="footer">
+            <p><strong>Hosts:</strong> Lea Ötchen & Anja Etel (Abschiedssendung) | WELT Wirtschaftsredaktion</p>
+            <p><em>Disclaimer: Keine Anlageberatung. Alle Angaben ohne Gewähr.</em></p>
+            <a href="https://www.youtube.com/watch?v=RNXPkEmP3to" target="_blank" class="youtube-link">
+                📺 Vollständige Episode auf YouTube
+            </a>
+        </footer>
+    </div>
+</body>
+</html>
