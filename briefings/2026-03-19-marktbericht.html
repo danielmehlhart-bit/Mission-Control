@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marktbericht 19.03.2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .date {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+        
+        .index-card {
+            border-left: 5px solid #3498db;
+        }
+        
+        .index-positive {
+            border-left-color: #27ae60;
+        }
+        
+        .index-negative {
+            border-left-color: #e74c3c;
+        }
+        
+        .index-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .index-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .positive {
+            color: #27ae60;
+        }
+        
+        .negative {
+            color: #e74c3c;
+        }
+        
+        .neutral {
+            color: #7f8c8d;
+        }
+        
+        .change {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .highlights {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        
+        .highlights h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .highlight-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .highlight-item:last-child {
+            border-bottom: none;
+        }
+        
+        .highlight-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .highlight-text {
+            color: #7f8c8d;
+        }
+        
+        .outlook {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        
+        .outlook h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .source {
+            background: #34495e;
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .source a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .source a:hover {
+            text-decoration: underline;
+        }
+        
+        .emoji {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📈 Marktbericht</h1>
+            <div class="date">19. März 2026 • Stand: 17.03.2026 18:23 Uhr</div>
+        </div>
+
+        <div class="grid">
+            <div class="card index-card index-positive">
+                <div class="index-name">DAX</div>
+                <div class="index-value positive">23.730</div>
+                <div class="change positive">+0,7% (+165 Punkte)</div>
+            </div>
+            
+            <div class="card index-card index-positive">
+                <div class="index-name">Dow Jones</div>
+                <div class="index-value positive">~+0,3%</div>
+                <div class="change positive">Positive Tendenz</div>
+            </div>
+            
+            <div class="card index-card index-negative">
+                <div class="index-name">Rohöl Brent</div>
+                <div class="index-value negative">~102 $</div>
+                <div class="change negative">+1,0% je Barrel</div>
+            </div>
+        </div>
+
+        <div class="highlights">
+            <h2><span class="emoji">🔍</span>Haupttreiber</h2>
+            
+            <div class="highlight-item">
+                <div class="highlight-title">Iran-Krieg: Hoffnung auf baldiges Ende</div>
+                <div class="highlight-text">Zwölfter Handelstag seit US-Israel Luftschlägen gegen Iran. Einzelne Tanker dürfen Straße von Hormus passieren, militärischer Geleitschutz der USA weiterhin unsicher.</div>
+            </div>
+            
+            <div class="highlight-item">
+                <div class="highlight-title">ZEW-Index: Konjunkturhoffnungen verpufft</div>
+                <div class="highlight-text">Konjunkturerwartungen sanken von 58,8 auf -0,5 Punkte. Finanzexperten haben Optimismus wegen Iran-Krieg komplett aufgegeben.</div>
+            </div>
+            
+            <div class="highlight-item">
+                <div class="highlight-title">Nvidia: Billionen-Dollar-Markt für KI-Chips</div>
+                <div class="highlight-text">US-Halbleiterkonzern sieht bis 2027 mindestens 1 Billion Dollar Umsatzvolumen für KI-Chips (vorher: 500 Mrd. bis 2026).</div>
+            </div>
+            
+            <div class="highlight-item">
+                <div class="highlight-title">Einzelwerte: Fraport +6%, Audi überrascht positiv</div>
+                <div class="highlight-text">Fraport-Zahlen übertreffen Erwartungen. Audi steigert Gewinn um 10% auf 4,6 Mrd. Euro gegen Branchentrend.</div>
+            </div>
+        </div>
+
+        <div class="outlook">
+            <h2><span class="emoji">🔮</span>Ausblick</h2>
+            <p><strong>Diese Woche:</strong> Fed entscheidet morgen (18.03.), EZB am Donnerstag (19.03.) über Leitzinsen. Auch UK und Japan entscheiden über Zinsen.</p>
+            <p><strong>Risiken:</strong> Öl-Versorgung bleibt fragil - "Eine iranische Miliz genügt, um die Situation erneut eskalieren zu lassen" (Analyst Tony Sycamore).</p>
+            <p><strong>Chancen:</strong> Notenbanken vor Dilemma zwischen Inflation und Konjunktur - Statements werden mit Spannung erwartet.</p>
+        </div>
+
+        <div class="source">
+            <p>Quelle: <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-boerse-dax-dow-jones-oel-gas-iran-100.html" target="_blank">Tagesschau Marktbericht vom 17.03.2026</a></p>
+            <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">Erstellt am 19.03.2026 um 08:00 Uhr</p>
+        </div>
+    </div>
+</body>
+</html>
