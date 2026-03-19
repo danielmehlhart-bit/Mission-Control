@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📻 Alles auf Aktien Briefing - 19. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2c3e50;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.2rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .date {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        
+        .youtube-link {
+            display: inline-block;
+            background: #ff0000;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .youtube-link:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+        
+        .section h3 {
+            color: #34495e;
+            font-size: 1.1rem;
+            margin: 15px 0 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .market-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .market-item.negative {
+            border-left-color: #e74c3c;
+        }
+        
+        .market-item.positive {
+            border-left-color: #27ae60;
+        }
+        
+        .price {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .change.positive {
+            color: #27ae60;
+        }
+        
+        .change.negative {
+            color: #e74c3c;
+        }
+        
+        .stock-list {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .stock-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stock-name {
+            font-weight: 500;
+        }
+        
+        .scenarios {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .scenario {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #95a5a6;
+        }
+        
+        .scenario.optimistic {
+            border-left-color: #27ae60;
+        }
+        
+        .scenario.pessimistic {
+            border-left-color: #e74c3c;
+        }
+        
+        .scenario.extreme {
+            border-left-color: #8e44ad;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+        
+        .dividend-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .market-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📻 Alles auf Aktien</h1>
+            <div class="date">Morgen-Briefing vom 19. März 2026</div>
+            <a href="https://www.youtube.com/watch?v=dQ--xohQWDA" class="youtube-link" target="_blank">
+                ▶️ Episode auf YouTube ansehen
+            </a>
+        </div>
+
+        <div class="highlight-box">
+            🚨 <strong>Breaking:</strong> Iran greift Qatars größte LNG-Anlage in Raslafan an – Ölpreis explodiert auf 111$. Die Eskalation erreicht eine neue Dimension: Nicht nur Transportwege, sondern die Energieproduktion selbst wird angegriffen.
+        </div>
+
+        <div class="section">
+            <h2>📈 Marktübersicht</h2>
+            <div class="market-grid">
+                <div class="market-item negative">
+                    <div>S&P 500</div>
+                    <div class="change negative">-1,4%</div>
+                </div>
+                <div class="market-item negative">
+                    <div>NASDAQ 100</div>
+                    <div class="change negative">-1,4%</div>
+                </div>
+                <div class="market-item negative">
+                    <div>DAX</div>
+                    <div class="change negative">-1,0% → 23.500</div>
+                </div>
+                <div class="market-item positive">
+                    <div>Öl (Brent)</div>
+                    <div class="change positive">+5% → 111$</div>
+                </div>
+                <div class="market-item negative">
+                    <div>Bitcoin</div>
+                    <div class="change negative">-4% → 71.000$</div>
+                </div>
+                <div class="market-item negative">
+                    <div>Gold</div>
+                    <div class="change negative">-4%</div>
+                </div>
+            </div>
+            
+            <p><strong>Der Auslöser:</strong> US-Inflationsdaten schockierten – Großhandelspreise stiegen um 0,7% (statt erwartet 0,3%), Jahresrate bei 3,4%. Die Fed musste ihre Inflationsprognose von 2,4% auf 2,7% anheben.</p>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Gewinner des Tages</h2>
+            <div class="stock-list">
+                <div class="stock-item">
+                    <div>
+                        <div class="stock-name">Swarmer (IPO) 🤖</div>
+                        <div>KI-Drohnenschwärme für Ukraine-Krieg</div>
+                    </div>
+                    <div class="change positive">+1.000%</div>
+                </div>
+                <div class="stock-item">
+                    <div>
+                        <div class="stock-name">Micron Technology 💾</div>
+                        <div>Starke Quartalszahlen, +60% YTD</div>
+                    </div>
+                    <div class="change positive">Stark</div>
+                </div>
+                <div class="stock-item">
+                    <div>
+                        <div class="stock-name">Heidelberger Druck 🛡️</div>
+                        <div>Joint Venture für Drohnen-Abwehr</div>
+                    </div>
+                    <div class="change positive">+8%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📉 Verlierer des Tages</h2>
+            <div class="stock-list">
+                <div class="stock-item">
+                    <div>
+                        <div class="stock-name">HelloFresh 📦</div>
+                        <div>Erwartet weiteres Schrumpfen 2026</div>
+                    </div>
+                    <div class="change negative">-14,9%</div>
+                </div>
+                <div class="stock-item">
+                    <div>
+                        <div class="stock-name">General Mills 🥣</div>
+                        <div>Tiefster Stand seit 2012</div>
+                    </div>
+                    <div class="change negative">-3%</div>
+                </div>
+                <div class="stock-item">
+                    <div>
+                        <div class="stock-name">Formicon 🧬</div>
+                        <div>Verschiebt Finanzergebnisse</div>
+                    </div>
+                    <div class="change negative">-7%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🛢️ Thema des Tages: Fünf Ölpreis-Szenarien</h2>
+            <p>Der Angriff auf Qatars Raslafan-Anlage verändert die Risikologik fundamental. Nicht mehr nur Transportwege sind bedroht, sondern die Energieproduktion selbst.</p>
+            
+            <div class="scenarios">
+                <div class="scenario optimistic">
+                    <h4>1. Optimistisch (65$)</h4>
+                    <p>Schneller Frieden, Deutschland-Wachstum +0,8%, mehr Zinssenkungen möglich</p>
+                </div>
+                
+                <div class="scenario">
+                    <h4>2. Mittleres Szenario (80$)</h4>
+                    <p>Teilweise Öffnung der Hormus-Straße, gedämpftes Wachstum, Erholung erst 2027</p>
+                </div>
+                
+                <div class="scenario pessimistic">
+                    <h4>3. Zermürbungskrieg (100$)</h4>
+                    <p>Längere Blockade, Stagflation, Wachstum nahe null, Inflation über Ziel</p>
+                </div>
+                
+                <div class="scenario pessimistic">
+                    <h4>4. Echter Preisschock (140$+)</h4>
+                    <p>Massive Energiemarkt-Störungen, klassische Stagflation über Monate</p>
+                </div>
+                
+                <div class="scenario extreme">
+                    <h4>5. Extremszenario (200$)</h4>
+                    <p>Deutschland: -3% Wachstum, 5% Inflation, tiefe Rezession</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💰 Triple A: Dividenden-Rekord 2026</h2>
+            <p>Entgegen der Erwartungen: <strong>56 Milliarden Euro</strong> Gesamtausschüttung (+5% vs. 2025) prognostiziert die Deutsche Bank.</p>
+            
+            <div class="dividend-item">
+                <div class="stock-name">🏆 RTL Group</div>
+                <p><strong>5,50€ pro Aktie (+120%)</strong> – aber Achtung: 4,74€ davon sind Einmalzahlung aus RTL-Netherland-Verkauf!</p>
+                <p><em>Dividendenrendite: 15% (nicht nachhaltig)</em></p>
+            </div>
+            
+            <div class="dividend-item">
+                <div class="stock-name">📞 Freenet</div>
+                <p>Ebenfalls hohe Dividendenrendite erwartet – Details folgen</p>
+            </div>
+            
+            <p><strong>Dividendensaison startet:</strong> Anfang April mit der Deutschen Telekom-Hauptversammlung</p>
+        </div>
+
+        <div class="section">
+            <h2>📅 Heute wichtig</h2>
+            <div class="stock-list">
+                <div class="stock-item">
+                    <div>
+                        <div class="stock-name">Notenbanken 🏦</div>
+                        <div>Bank of England + EZB (keine Änderungen erwartet)</div>
+                    </div>
+                </div>
+                <div class="stock-item">
+                    <div>
+                        <div class="stock-name">Quartalszahlen 📊</div>
+                        <div>Alibaba, Accenture, FedEx</div>
+                    </div>
+                </div>
+                <div class="stock-item">
+                    <div>
+                        <div class="stock-name">IPO-Ende 🎯</div>
+                        <div>Vorion (17€, Verteidigungsenergie) – Zeichnungsfrist läuft ab</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💡 Key Takeaway</h2>
+            <p>Die Märkte preisen noch keine vollständige Eskalation ein, aber der Angriff auf Qatars LNG-Infrastruktur markiert einen Wendepunkt. Von nun an sind nicht mehr nur Transportwege, sondern die Energieproduktion selbst im Visier. Jeder weitere Angriff auf kritische Infrastruktur verschiebt die Wahrscheinlichkeiten zwischen den Szenarien – und damit die wirtschaftlichen Aussichten für Deutschland.</p>
+        </div>
+
+        <div class="footer">
+            <p>🏔️ Zusammengestellt von Hatti • <a href="https://mc.mehlhart.de" style="color: rgba(255,255,255,0.8);">mc.mehlhart.de</a> • 19. März 2026</p>
+            <p>Quelle: Alles auf Aktien Podcast (WELT) • Keine Anlageberatung</p>
+        </div>
+    </div>
+</body>
+</html>
