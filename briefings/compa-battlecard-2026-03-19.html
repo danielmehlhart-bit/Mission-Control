@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Competitor Battlecard: compa.co vs. ModulAI</title>
+  <style>
+    :root {
+      --modulai-green: #00A550;
+      --modulai-green-light: #e6f7ef;
+      --modulai-green-dark: #007a3d;
+      --compa-red: #c0392b;
+      --compa-red-light: #fdf0ef;
+      --compa-gray: #6b7280;
+      --compa-gray-light: #f3f4f6;
+      --dark: #111827;
+      --mid: #374151;
+      --light: #9ca3af;
+      --white: #ffffff;
+      --border: #e5e7eb;
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f9fafb;
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      padding: 0 2rem;
+    }
+    nav ul {
+      display: flex;
+      gap: 0;
+      list-style: none;
+      max-width: 1100px;
+      margin: 0 auto;
+      overflow-x: auto;
+    }
+    nav ul li a {
+      display: block;
+      padding: 1rem 1.25rem;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--mid);
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    nav ul li a:hover {
+      color: var(--modulai-green);
+      border-bottom-color: var(--modulai-green);
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #0f1c2e 0%, #1a2f4a 40%, #0d2035 70%, #111827 100%);
+      color: white;
+      padding: 4rem 2rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0,165,80,0.15) 0%, transparent 70%);
+    }
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(0,165,80,0.2);
+      border: 1px solid rgba(0,165,80,0.4);
+      color: #4ade80;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.375rem 0.875rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 {
+      font-size: clamp(1.75rem, 4vw, 3rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .hero h1 span.green { color: #4ade80; }
+    .hero h1 span.red { color: #f87171; }
+    .hero-meta {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 1.5rem;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    .hero-stat {
+      text-align: center;
+    }
+    .hero-stat .num {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #4ade80;
+    }
+    .hero-stat .label {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* CONTENT */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    section {
+      padding: 3rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--modulai-green);
+      margin-bottom: 0.5rem;
+    }
+    h2.section-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    .section-desc {
+      color: var(--light);
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+
+    /* CARDS */
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* PROFILE CARDS */
+    .profile-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.75rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .profile-card.modulai {
+      border-top: 4px solid var(--modulai-green);
+    }
+    .profile-card.compa {
+      border-top: 4px solid var(--compa-red);
+    }
+    .profile-logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    .profile-logo.green { color: var(--modulai-green); }
+    .profile-logo.red { color: var(--compa-red); }
+    .profile-tagline {
+      font-size: 0.85rem;
+      color: var(--light);
+      margin-bottom: 1.25rem;
+      font-style: italic;
+    }
+    .profile-stat {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.875rem;
+    }
+    .profile-stat:last-child { border-bottom: none; }
+    .profile-stat .key { color: var(--light); }
+    .profile-stat .val { font-weight: 600; }
+
+    /* FEATURE TABLE */
+    .feature-table-wrap {
+      overflow-x: auto;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      font-size: 0.875rem;
+    }
+    thead tr {
+      background: var(--dark);
+      color: white;
+    }
+    thead th {
+      padding: 1rem 1.25rem;
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    thead th.green-col { color: #4ade80; }
+    thead th.red-col { color: #f87171; }
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    tbody tr:hover { background: #f9fafb; }
+    tbody td {
+      padding: 0.875rem 1.25rem;
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      font-weight: 500;
+      color: var(--mid);
+    }
+    .check { color: var(--modulai-green); font-size: 1.1rem; font-weight: 700; }
+    .cross { color: var(--compa-red); font-size: 1.1rem; }
+    .partial { color: #d97706; font-size: 0.85rem; font-weight: 600; }
+    .winner-row { background: rgba(0,165,80,0.04); }
+
+    /* SWOT */
+    .swot-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .swot-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+    .swot-card h4 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+    }
+    .swot-card.strengths h4 { color: var(--modulai-green); }
+    .swot-card.weaknesses h4 { color: var(--compa-red); }
+    .swot-card.opportunities h4 { color: #2563eb; }
+    .swot-card.threats h4 { color: #d97706; }
+    .swot-card ul {
+      list-style: none;
+      font-size: 0.875rem;
+      color: var(--mid);
+    }
+    .swot-card ul li {
+      padding: 0.3rem 0;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+    .swot-card ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--light);
+    }
+
+    /* OBJECTION HANDLING */
+    .objection-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      margin-bottom: 1.25rem;
+      border-left: 4px solid var(--compa-red);
+      transition: transform 0.2s;
+    }
+    .objection-card:hover { transform: translateX(4px); }
+    .objection-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--compa-red);
+      margin-bottom: 0.4rem;
+    }
+    .objection-text {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--dark);
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+    .response-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .response-item h5 {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+    }
+    .response-item.answer h5 { color: var(--modulai-green); }
+    .response-item.killer h5 { color: #d97706; }
+    .response-item p {
+      font-size: 0.875rem;
+      color: var(--mid);
+      line-height: 1.5;
+    }
+    .killer-text {
+      background: linear-gradient(135deg, #fffbeb, #fef3c7);
+      border: 1px solid #fbbf24;
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 0.875rem;
+      color: #92400e;
+      font-weight: 500;
+    }
+
+    /* BATTLECARD */
+    #battlecard {
+      background: white;
+    }
+    .battlecard-section {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+    }
+    .vs-header {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .vs-team {
+      text-align: center;
+    }
+    .vs-team.modulai .name { color: var(--modulai-green); }
+    .vs-team.compa .name { color: var(--compa-red); }
+    .vs-team .name {
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+    .vs-team .tag {
+      font-size: 0.75rem;
+      color: var(--light);
+      margin-top: 0.25rem;
+    }
+    .vs-badge {
+      width: 50px;
+      height: 50px;
+      background: var(--dark);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 0.9rem;
+    }
+    .differentiator {
+      background: linear-gradient(135deg, var(--modulai-green-light), #f0fdf4);
+      border: 1px solid rgba(0,165,80,0.2);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .diff-num {
+      display: inline-block;
+      background: var(--modulai-green);
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 28px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    .differentiator h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--modulai-green-dark);
+      margin-bottom: 0.4rem;
+    }
+    .differentiator p {
+      font-size: 0.875rem;
+      color: var(--mid);
+    }
+
+    .win-lose-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .win-card {
+      background: var(--modulai-green-light);
+      border: 1px solid rgba(0,165,80,0.25);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .win-card h4 {
+      color: var(--modulai-green-dark);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+    }
+    .lose-card {
+      background: var(--compa-red-light);
+      border: 1px solid rgba(192,57,43,0.2);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .lose-card h4 {
+      color: var(--compa-red);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+    }
+    .win-card ul, .lose-card ul {
+      list-style: none;
+      font-size: 0.875rem;
+      color: var(--mid);
+    }
+    .win-card ul li { padding: 0.25rem 0; padding-left: 1.25rem; position: relative; }
+    .win-card ul li::before { content: '✓'; position: absolute; left: 0; color: var(--modulai-green); font-weight: 700; }
+    .lose-card ul li { padding: 0.25rem 0; padding-left: 1.25rem; position: relative; }
+    .lose-card ul li::before { content: '✗'; position: absolute; left: 0; color: var(--compa-red); font-weight: 700; }
+
+    .qualify-questions {
+      background: linear-gradient(135deg, #0f1c2e, #1a2f4a);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .qualify-questions h4 {
+      color: #4ade80;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+    .qualify-q {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      align-items: flex-start;
+    }
+    .qualify-q:last-child { margin-bottom: 0; }
+    .q-num {
+      background: rgba(0,165,80,0.3);
+      color: #4ade80;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .qualify-q .q-text {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.9rem;
+      font-style: italic;
+      padding-top: 3px;
+    }
+    .qualify-q .q-logic {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.45);
+      font-style: normal;
+      margin-top: 0.25rem;
+    }
+
+    /* PRICE COMPARISON */
+    .price-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .price-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .price-card.modulai { border-top: 4px solid var(--modulai-green); }
+    .price-card.compa { border-top: 4px solid var(--compa-red); }
+    .price-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+    .price-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .price-item:last-child { border-bottom: none; }
+    .price-item .price-key { color: var(--light); }
+    .price-item .price-val { font-weight: 600; }
+    .price-note {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.8rem;
+      color: var(--mid);
+      margin-top: 1rem;
+      border-left: 3px solid var(--modulai-green);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      margin-top: 4rem;
+    }
+
+    /* PRINT */
+    @media print {
+      nav, .hero { display: none; }
+      body { background: white; font-size: 11pt; }
+      #battlecard { page-break-before: always; }
+      .battlecard-section { box-shadow: none; border: 1px solid #ccc; }
+      section { padding: 1.5rem 0; }
+      .objection-card:hover { transform: none; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    @media (max-width: 640px) {
+      .response-block { grid-template-columns: 1fr; }
+      .swot-grid { grid-template-columns: 1fr; }
+      .win-lose-grid { grid-template-columns: 1fr; }
+      .price-grid { grid-template-columns: 1fr; }
+      .vs-header { grid-template-columns: 1fr; }
+      .vs-badge { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <ul>
+    <li><a href="#profil">📊 Profil</a></li>
+    <li><a href="#features">⚡ Features</a></li>
+    <li><a href="#preise">💰 Preise</a></li>
+    <li><a href="#swot">🔍 SWOT</a></li>
+    <li><a href="#objections">🛡️ Objection Handling</a></li>
+    <li><a href="#battlecard">🥊 Battlecard</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Sales Battlecard · Stand März 2026</div>
+    <h1>
+      <span class="green">ModulAI</span> vs.<br>
+      <span class="red">compa.co</span>
+    </h1>
+    <p style="color:rgba(255,255,255,0.6); font-size:1.05rem; max-width:600px; margin-top:0.75rem;">
+      Vollständige Competitor-Analyse, Objection Handling Guide und Battlecard für Sales-Gespräche mit Architekturbüros.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num">600+</div>
+        <div class="label">compa.co Büros</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">€80</div>
+        <div class="label">compa AVA / Nutzer</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">4.7/5</div>
+        <div class="label">Trustpilot compa</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">2020</div>
+        <div class="label">compa.co gegründet</div>
+      </div>
+    </div>
+    <p class="hero-meta">Erstellt von Hatti · 19. März 2026 · Auf Basis Web-Research + ModulAI Feature-Overview</p>
+  </div>
+</div>
+
+<!-- SEKTION 1: COMPETITOR-PROFIL -->
+<section id="profil">
+  <div class="section-label">Sektion 01</div>
+  <h2 class="section-title">Competitor-Profil</h2>
+  <p class="section-desc">Wer ist compa.co? Positioning, Zielgruppe und Kernaussagen auf einen Blick.</p>
+
+  <div class="card-grid">
+    <div class="profile-card modulai">
+      <div class="profile-logo green">ModulAI</div>
+      <div class="profile-tagline">"Das Betriebssystem für kleine Architekturbüros"</div>
+      <div class="profile-stat"><span class="key">Gründung</span><span class="val">2024/2025</span></div>
+      <div class="profile-stat"><span class="key">Standort</span><span class="val">Deutschland</span></div>
+      <div class="profile-stat"><span class="key">Zielgruppe</span><span class="val">Büros mit 5–15 MA</span></div>
+      <div class="profile-stat"><span class="key">Fokus</span><span class="val">PM + KI + Operations</span></div>
+      <div class="profile-stat"><span class="key">Setup-Zeit</span><span class="val">~2 Wochen</span></div>
+      <div class="profile-stat"><span class="key">KI-Features</span><span class="val">Email-Agent, Voice, Copilot</span></div>
+      <div class="profile-stat"><span class="key">HOAI</span><span class="val">LP 1–9 eingebaut</span></div>
+      <div class="profile-stat"><span class="key">Preis</span><span class="val">Auf Anfrage (SMB-Fokus)</span></div>
+    </div>
+
+    <div class="profile-card compa">
+      <div class="profile-logo red">compa.co</div>
+      <div class="profile-tagline">"OS für moderne Architektur- und Ingenieurbüros"</div>
+      <div class="profile-stat"><span class="key">Gründung</span><span class="val">2020 (Berlin)</span></div>
+      <div class="profile-stat"><span class="key">Team</span><span class="val">12 Personen</span></div>
+      <div class="profile-stat"><span class="key">Kunden</span><span class="val">600+ Büros</span></div>
+      <div class="profile-stat"><span class="key">Fokus</span><span class="val">AVA + HOAI + Kosten</span></div>
+      <div class="profile-stat"><span class="key">Setup-Zeit</span><span class="val">2 Min. (1 Projekt)</span></div>
+      <div class="profile-stat"><span class="key">KI-Features</span><span class="val">KI-Bautagebuch via WhatsApp</span></div>
+      <div class="profile-stat"><span class="key">HOAI</span><span class="val">Abrechnung LP 1–9</span></div>
+      <div class="profile-stat"><span class="key">Trustpilot</span><span class="val">4.7/5</span></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1.5rem;">
+    <h3 style="font-size:1rem; font-weight:700; margin-bottom:0.75rem; color:var(--compa-red);">compa.co — Was sie wirklich machen</h3>
+    <p style="font-size:0.9rem; color:var(--mid); line-height:1.7;">
+      compa.co ist primär eine <strong>AVA-Software (Ausschreibung, Vergabe, Abrechnung)</strong> mit HOAI-Abrechnungsfunktionen und Kostenverfolgung für Architektur- und Ingenieurbüros. 
+      Ihr stärkstes Feature: Leistungsverzeichnisse in Minuten erstellen, DIN-276-konforme Kostenschätzungen, GAEB-Export und ein KI-Bautagebuch via WhatsApp.
+      Sie <strong>positionieren sich als "OS für Planungsbüros"</strong> — aber der tatsächliche Scope ist deutlich enger als bei ModulAI: 
+      kein Kanban/Task-Management, kein Email-Agent, keine Voice-Capture, kein Umsatz-Forecast. 
+      Seit Sommer 2025 auch als <strong>"Phase0"</strong> bekannt (Rebrand läuft).
+    </p>
+  </div>
+</section>
+
+<!-- SEKTION: FEATURE-MATRIX -->
+<section id="features" style="padding-top:0;">
+  <div class="section-label">Sektion 01b</div>
+  <h2 class="section-title">Feature-Matrix</h2>
+  <p class="section-desc">Direktvergleich der Kernfunktionen. Grün = ModulAI-Stärke, Rot = compa-Stärke.</p>
+
+  <div class="feature-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:35%">Feature / Funktion</th>
+          <th class="green-col" style="width:22%">ModulAI</th>
+          <th class="red-col" style="width:22%">compa.co</th>
+          <th style="width:21%">Wer gewinnt?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="winner-row">
+          <td>HOAI Leistungsphasen LP 1–9</td>
+          <td><span class="check">✓</span> Eingebaut als Grundstruktur</td>
+          <td><span class="check">✓</span> Honorar-Abrechnung</td>
+          <td style="font-weight:600; color:var(--compa-gray);">Tie — unterschiedl. Fokus</td>
+        </tr>
+        <tr>
+          <td>Kanban Task-Management</td>
+          <td><span class="check">✓</span> Vollständig mit Review-Workflow</td>
+          <td><span class="cross">✗</span> Nicht vorhanden</td>
+          <td style="color:var(--modulai-green); font-weight:700;">ModulAI 🏆</td>
+        </tr>
+        <tr class="winner-row">
+          <td>KI-Email-Agent (Gmail)</td>
+          <td><span class="check">✓</span> Auto-Kategorisierung + Email→Aufgabe</td>
+          <td><span class="cross">✗</span> Nicht vorhanden</td>
+          <td style="color:var(--modulai-green); font-weight:700;">ModulAI 🏆</td>
+        </tr>
+        <tr>
+          <td>Voice Capture / Sprachsteuerung</td>
+          <td><span class="check">✓</span> Whisper-basiert, Sprache→Aufgabe</td>
+          <td><span class="partial">Teilweise</span> WhatsApp-Bautagebuch</td>
+          <td style="color:var(--modulai-green); font-weight:700;">ModulAI 🏆</td>
+        </tr>
+        <tr class="winner-row">
+          <td>Umsatz-Forecast (HOAI-basiert)</td>
+          <td><span class="check">✓</span> 12/18/24 Monate Forecast</td>
+          <td><span class="cross">✗</span> Nicht vorhanden</td>
+          <td style="color:var(--modulai-green); font-weight:700;">ModulAI 🏆</td>
+        </tr>
+        <tr>
+          <td>Break-Even-Analyse</td>
+          <td><span class="check">✓</span> Visuell, automatisch</td>
+          <td><span class="cross">✗</span> Nicht vorhanden</td>
+          <td style="color:var(--modulai-green); font-weight:700;">ModulAI 🏆</td>
+        </tr>
+        <tr class="winner-row">
+          <td>Bautagebuch</td>
+          <td><span class="check">✓</span> Mit Foto + Wetter, Mandanten-Sichtbarkeit</td>
+          <td><span class="check">✓</span> KI-Assistent via WhatsApp (stärker)</td>
+          <td style="color:var(--compa-red); font-weight:700;">compa.co 🏆</td>
+        </tr>
+        <tr>
+          <td>AVA / Leistungsverzeichnisse</td>
+          <td><span class="cross">✗</span> Nicht vorhanden</td>
+          <td><span class="check">✓</span> 1000+ Vorlagen, GAEB-Export</td>
+          <td style="color:var(--compa-red); font-weight:700;">compa.co 🏆</td>
+        </tr>
+        <tr class="winner-row">
+          <td>Ausschreibung & Vergabe</td>
+          <td><span class="cross">✗</span> Nicht vorhanden</td>
+          <td><span class="check">✓</span> Vollständig inkl. Preisspiegel</td>
+          <td style="color:var(--compa-red); font-weight:700;">compa.co 🏆</td>
+        </tr>
+        <tr>
+          <td>Rechnungsprüfung / Aufmaß</td>
+          <td><span class="cross">✗</span> Nicht vorhanden</td>
+          <td><span class="check">✓</span> DIN 276-konform</td>
+          <td style="color:var(--compa-red); font-weight:700;">compa.co 🏆</td>
+        </tr>
+        <tr class="winner-row">
+          <td>KI-Copilot / Projektchat</td>
+          <td><span class="check">✓</span> Kontext-bewusst, Aufgaben-Query</td>
+          <td><span class="cross">✗</span> Nur Bautagebuch-KI</td>
+          <td style="color:var(--modulai-green); font-weight:700;">ModulAI 🏆</td>
+        </tr>
+        <tr>
+          <td>Gantt-Zeitplan</td>
+          <td><span class="check">✓</span> Alle Projekte, Drag-Resize</td>
+          <td><span class="cross">✗</span> Nicht vorhanden</td>
+          <td style="color:var(--modulai-green); font-weight:700;">ModulAI 🏆</td>
+        </tr>
+        <tr class="winner-row">
+          <td>Dokumentenmanagement</td>
+          <td><span class="check">✓</span> 6 Kategorien, Mandanten-Freigabe</td>
+          <td><span class="partial">Teilweise</span> Projektdokumente</td>
+          <td style="color:var(--modulai-green); font-weight:700;">ModulAI 🏆</td>
+        </tr>
+        <tr>
+          <td>Zeiterfassung</td>
+          <td><span class="check">✓</span> Pro Aufgabe + Projekt</td>
+          <td><span class="check">✓</span> Mit Controlling + Verknüpfung</td>
+          <td style="color:var(--compa-gray);">Tie</td>
+        </tr>
+        <tr class="winner-row">
+          <td>Kundenportal (Read-Only)</td>
+          <td><span class="check">✓</span> Bauherren-Zugang zu Dokumenten</td>
+          <td><span class="check">✓</span> Kostenverfolgung exportierbar</td>
+          <td style="color:var(--compa-gray);">Tie</td>
+        </tr>
+        <tr>
+          <td>Lexware / ERP-Integration</td>
+          <td><span class="check">✓</span> Lexware CSV-Import</td>
+          <td><span class="partial">Begrenzt</span> GAEB/Excel-Export</td>
+          <td style="color:var(--modulai-green); font-weight:700;">ModulAI 🏆</td>
+        </tr>
+        <tr class="winner-row">
+          <td>Browserbasiert / Cloud</td>
+          <td><span class="check">✓</span> Vollständig</td>
+          <td><span class="check">✓</span> Vollständig, kein Install</td>
+          <td style="color:var(--compa-gray);">Tie</td>
+        </tr>
+        <tr>
+          <td>Mobile-Optimierung</td>
+          <td><span class="check">✓</span> Responsive PWA</td>
+          <td><span class="check">✓</span> + WhatsApp-Integration</td>
+          <td style="color:var(--compa-red); font-weight:700;">compa.co (WhatsApp-Edge)</td>
+        </tr>
+        <tr class="winner-row">
+          <td>Private Notizen / Gedanken-System</td>
+          <td><span class="check">✓</span> Markdown, nur für Ersteller sichtbar</td>
+          <td><span class="cross">✗</span> Nicht vorhanden</td>
+          <td style="color:var(--modulai-green); font-weight:700;">ModulAI 🏆</td>
+        </tr>
+        <tr>
+          <td>4-Rollen-Modell (inkl. Plattform-Admin)</td>
+          <td><span class="check">✓</span> Admin/Architekt/Kunde/Plattform-Admin</td>
+          <td><span class="partial">Begrenzt</span> Teamzugang vorhanden</td>
+          <td style="color:var(--modulai-green); font-weight:700;">ModulAI 🏆</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PREISVERGLEICH -->
+<section id="preise" style="padding-top:0;">
+  <div class="section-label">Sektion 01c</div>
+  <h2 class="section-title">Preisvergleich</h2>
+  <p class="section-desc">Was kostet welche Plattform wirklich?</p>
+
+  <div class="price-grid">
+    <div class="price-card modulai">
+      <h3 style="color:var(--modulai-green);">💚 ModulAI</h3>
+      <div class="price-item"><span class="price-key">Modell</span><span class="price-val">SaaS / Pro Nutzer</span></div>
+      <div class="price-item"><span class="price-key">Preisliste</span><span class="price-val">Auf Anfrage (SMB-fokussiert)</span></div>
+      <div class="price-item"><span class="price-key">Setup</span><span class="price-val">~2 Wochen</span></div>
+      <div class="price-item"><span class="price-key">Keine Implementierungskosten</span><span class="price-val">✓</span></div>
+      <div class="price-item"><span class="price-key">Free Trial</span><span class="price-val">Verfügbar</span></div>
+      <div class="price-note">💡 ROI-Argument: €200.000 Verwaltungskosten/Jahr bei 5-Personen-Büro. Break-Even unter 2 Wochen.</div>
+    </div>
+
+    <div class="price-card compa">
+      <h3 style="color:var(--compa-red);">🔴 compa.co (modular)</h3>
+      <div class="price-item"><span class="price-key">AVA / Ausschreibung</span><span class="price-val">€80/Nutzer/Monat</span></div>
+      <div class="price-item"><span class="price-key">HOAI + Zeiterfassung</span><span class="price-val">€80/Nutzer/Monat</span></div>
+      <div class="price-item"><span class="price-key">Zeiterfassung only</span><span class="price-val">€15/Nutzer/Monat</span></div>
+      <div class="price-item"><span class="price-key">KI-Bautagebuch</span><span class="price-val">€20/Monat</span></div>
+      <div class="price-item"><span class="price-key">Preisdatenbank (Add-on)</span><span class="price-val">€200/Jahr</span></div>
+      <div class="price-item"><span class="price-key">Free Trial</span><span class="price-val">14 Tage kostenlos</span></div>
+      <div class="price-note" style="border-color:var(--compa-red);">⚠️ Modular = Hidden Cost: Wer AVA + HOAI + Bautagebuch braucht, zahlt schnell €200+/Nutzer/Monat.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SWOT -->
+<section id="swot" style="padding-top:0;">
+  <div class="section-label">Sektion 01d</div>
+  <h2 class="section-title">compa.co SWOT-Analyse</h2>
+  <p class="section-desc">Ehrliche Einschätzung: Was kann compa wirklich, wo sind die Lücken?</p>
+
+  <div class="swot-grid">
+    <div class="swot-card strengths">
+      <h4>💪 Stärken (für compa)</h4>
+      <ul>
+        <li>Marktführend bei AVA / Leistungsverzeichnissen für KMU</li>
+        <li>1000+ LV-Vorlagen, GAEB-Export — echter Workflow-Vorteil</li>
+        <li>KI-Bautagebuch via WhatsApp: niedriger Adoption-Hürde</li>
+        <li>600+ Büros — soziale Bewährtheit, Referenzen</li>
+        <li>4.7/5 Trustpilot — echter Beweis für Kundenzufriedenheit</li>
+        <li>14-Tage-Test ohne Demo — frictionless Onboarding</li>
+        <li>DIN 276-konforme Kostenschätzung ab Box</li>
+      </ul>
+    </div>
+    <div class="swot-card weaknesses">
+      <h4>🔴 Schwächen (compa-Lücken)</h4>
+      <ul>
+        <li>Kein echtes Task-Management / Kanban</li>
+        <li>Kein KI-Email-Agent — E-Mails bleiben Problem #1</li>
+        <li>Kein Umsatz-Forecast / Break-Even</li>
+        <li>Kein Gedankensystem / Private Notizen</li>
+        <li>Kein @Mention System / Kollaborations-Layer</li>
+        <li>Rebrand-Verwirrung: compa.co → Phase0 unklar</li>
+        <li>Modularer Preis kann teuer werden</li>
+      </ul>
+    </div>
+    <div class="swot-card opportunities">
+      <h4>🎯 Opportunities für ModulAI</h4>
+      <ul>
+        <li>Büros die compa.co nutzen, brauchen trotzdem Task-Tool</li>
+        <li>Email-Chaos ist ungelöstes Problem #1 — hier angreifen</li>
+        <li>compa.co-Nutzer als Upsell: "compa für AVA, ModulAI für alles andere"</li>
+        <li>Rebrand-Verwirrung erzeugt Wechselbereitschaft</li>
+        <li>Finanzdaten-Integration (Lexware) als starkes Differenzierungsmerkmal</li>
+      </ul>
+    </div>
+    <div class="swot-card threats">
+      <h4>⚠️ Risiken / Herausforderungen</h4>
+      <ul>
+        <li>compa.co hat 600+ Büros — hohe Markenbekanntheit in Zielgruppe</li>
+        <li>AVA-Lücke bei ModulAI: "Wir machen kein LV" ist echter Einwand</li>
+        <li>WhatsApp-Integration von compa ist sehr niedrigschwellig für Bauleiter</li>
+        <li>14-Tage-Trial ohne Demo ist schwer zu schlagen im Onboarding</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SEKTION 2: OBJECTION HANDLING -->
+<section id="objections">
+  <div class="section-label">Sektion 02</div>
+  <h2 class="section-title">Objection Handling Guide</h2>
+  <p class="section-desc">Die häufigsten Einwände — und wie du sie entwaffnest. Jede Situation: Einwand → Antwort → Killer-Argument.</p>
+
+  <!-- OBJ 1 -->
+  <div class="objection-card">
+    <div class="objection-label">Einwand 01</div>
+    <div class="objection-text">"compa.co macht das auch."</div>
+    <div class="response-block">
+      <div class="response-item answer">
+        <h5>📢 Deine Antwort</h5>
+        <p>Stimmt, compa macht AVA und HOAI-Abrechnung gut. Aber was macht compa, wenn die E-Mail-Flut überläuft? Wenn Aufgaben zwischen den Tools fallen? Wenn du wissen willst, ob das Büro im nächsten Quartal Break-Even ist? Das ist die Lücke.</p>
+      </div>
+      <div class="response-item killer">
+        <h5>💥 Killer-Argument</h5>
+        <div class="killer-text">
+          "compa ist eine hervorragende LV-Software. ModulAI ist dein Operations-System. Viele unserer Kunden nutzen beides — compa für Ausschreibungen, ModulAI für alles was danach kommt. Die Frage ist nicht ob compa Features hat, sondern ob compa dein Büro am Laufen hält."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBJ 2 -->
+  <div class="objection-card">
+    <div class="objection-label">Einwand 02</div>
+    <div class="objection-text">"compa.co ist günstiger / bekannter."</div>
+    <div class="response-block">
+      <div class="response-item answer">
+        <h5>📢 Deine Antwort</h5>
+        <p>Günstiger auf den ersten Blick — aber compa ist modular. AVA kostet €80/Nutzer, HOAI nochmal €80/Nutzer. Wer beides braucht: €160/Nutzer. Bekannter ja — aber Bekanntheit löst kein Chaos. Was kostet eine Stunde deiner Zeit?</p>
+      </div>
+      <div class="response-item killer">
+        <h5>💥 Killer-Argument</h5>
+        <div class="killer-text">
+          "30–50% der Arbeitszeit geht für E-Mails und Verwaltung drauf. Bei 5 Personen sind das €200.000 im Jahr. ModulAI löst das. compa.co macht keine E-Mails. Günstiger ist nicht dasselbe wie billiger."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBJ 3 -->
+  <div class="objection-card">
+    <div class="objection-label">Einwand 03</div>
+    <div class="objection-text">"Wir haben compa.co schon angeschaut."</div>
+    <div class="response-block">
+      <div class="response-item answer">
+        <h5>📢 Deine Antwort</h5>
+        <p>Super — dann wisst ihr was compa kann und was nicht. Was hat euch gefehlt? Fast immer: kein Aufgaben-Management, kein E-Mail-Handling, kein Überblick über Finanzen. Das ist genau die Lücke, die ModulAI füllt.</p>
+      </div>
+      <div class="response-item killer">
+        <h5>💥 Killer-Argument</h5>
+        <div class="killer-text">
+          "compa anzuschauen ist der beste Einstieg ins Gespräch über ModulAI. Ihr wisst jetzt, was AVA-Software ist — jetzt zeige ich euch was ein Operations-System drüber hinaus kann. Darf ich?"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBJ 4 -->
+  <div class="objection-card">
+    <div class="objection-label">Einwand 04</div>
+    <div class="objection-text">"Was ist der Unterschied zu compa.co?"</div>
+    <div class="response-block">
+      <div class="response-item answer">
+        <h5>📢 Deine Antwort</h5>
+        <p>compa ist stark bei Ausschreibung und HOAI-Abrechnung. Das ist ihr Kern. ModulAI ist das Betriebssystem dahinter: E-Mails, Aufgaben, Sprache, Forecast, Team-Kommunikation — alles was Verwaltungszeit frisst und bei compa nicht existiert.</p>
+      </div>
+      <div class="response-item killer">
+        <h5>💥 Killer-Argument</h5>
+        <div class="killer-text">
+          "compa = dein AVA-Spezialist. ModulAI = dein Büro-OS. Die Frage ist: Willst du nur Ausschreibungen digitalisieren — oder dein ganzes Büro?"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBJ 5 -->
+  <div class="objection-card">
+    <div class="objection-label">Einwand 05</div>
+    <div class="objection-text">"compa.co hat 600+ Büros — die müssen doch gut sein."</div>
+    <div class="response-block">
+      <div class="response-item answer">
+        <h5>📢 Deine Antwort</h5>
+        <p>Absolut richtig — compa ist im AVA-Bereich etabliert und gut bewertet. Vertrauen ist verdient. Aber Marktgröße bedeutet nicht, dass es das richtige Tool für euer Problem ist. Welches Problem löst ihr gerade am dringendsten?</p>
+      </div>
+      <div class="response-item killer">
+        <h5>💥 Killer-Argument</h5>
+        <div class="killer-text">
+          "Excel hat Milliarden Nutzer — trotzdem nutzt ihr kein Excel für Projektmanagement. Viele Nutzer heißt: gutes Tool für einen Zweck. Was ist euer Zweck?"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBJ 6 -->
+  <div class="objection-card">
+    <div class="objection-label">Einwand 06</div>
+    <div class="objection-text">"Das KI-Bautagebuch via WhatsApp bei compa ist genial — das nutzen wir schon."</div>
+    <div class="response-block">
+      <div class="response-item answer">
+        <h5>📢 Deine Antwort</h5>
+        <p>Das ist ein wirklich starkes Feature von compa — WhatsApp-Adoption ist unschlagbar niedrig. ModulAI hat auch ein Bautagebuch. Aber: die Frage ist, was mit dem Bautagebuch-Eintrag danach passiert. In ModulAI wird er Teil des Projektkontexts den der KI-Copilot kennt.</p>
+      </div>
+      <div class="response-item killer">
+        <h5>💥 Killer-Argument</h5>
+        <div class="killer-text">
+          "compa speichert den Bautagebuch-Eintrag. ModulAI macht ihn zum Ausgangspunkt — als Aufgabe, als Kontext für den KI-Copilot, als Teil der Projekt-Timeline. Ist ein isoliertes Bautagebuch genug?"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBJ 7 -->
+  <div class="objection-card">
+    <div class="objection-label">Einwand 07</div>
+    <div class="objection-text">"Wir wollen nicht zu viele Tools — compa reicht doch."</div>
+    <div class="response-block">
+      <div class="response-item answer">
+        <h5>📢 Deine Antwort</h5>
+        <p>Das ist exakt der Punkt: ModulAI ersetzt Tools, nicht ergänzt sie. compa bleibt für AVA. Aber E-Mails in Gmail, Aufgaben in Asana, Zahlen in Excel — das ist heute euer Tool-Chaos. ModulAI konsolidiert das.</p>
+      </div>
+      <div class="response-item killer">
+        <h5>💥 Killer-Argument</h5>
+        <div class="killer-text">
+          "Weniger Tools ist genau das Ziel. Ihr habt heute compa + Gmail + Excel + irgendwas für Aufgaben = 4 Tools. Mit ModulAI: compa für LVs + ModulAI für alles andere = 2 Tools. Das ist weniger."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBJ 8 -->
+  <div class="objection-card">
+    <div class="objection-label">Einwand 08</div>
+    <div class="objection-text">"compa ist bekannt, ModulAI kenne ich nicht — das Risiko ist hoch."</div>
+    <div class="response-block">
+      <div class="response-item answer">
+        <h5>📢 Deine Antwort</h5>
+        <p>Verständlich. Deswegen gibt es keine 6-Monats-Implementierung, kein Enterprise-Vertrag und kein Berater-Projekt. In 2 Wochen seid ihr produktiv — wenn's nicht passt, habt ihr zwei Wochen investiert, nicht zwei Monate.</p>
+      </div>
+      <div class="response-item killer">
+        <h5>💥 Killer-Argument</h5>
+        <div class="killer-text">
+          "Compa war 2020 auch unbekannt. Sie haben mit 100 Berliner Büros angefangen. ModulAI wurde mit echten Architekturbüros entwickelt — nicht im Elfenbeinturm. Das Risiko ist eine 2-Wochen-Testphase."
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEKTION 3: BATTLECARD -->
+<section id="battlecard">
+  <div class="section-label">Sektion 03</div>
+  <h2 class="section-title">Battlecard</h2>
+  <p class="section-desc">Print-freundlich. Head-to-head Vergleich für Sales-Gespräche.</p>
+
+  <div class="battlecard-section">
+    <!-- VS Header -->
+    <div class="vs-header">
+      <div class="vs-team modulai">
+        <div class="name">ModulAI</div>
+        <div class="tag">Büro-Betriebssystem für 5–15 MA</div>
+      </div>
+      <div class="vs-badge">VS</div>
+      <div class="vs-team compa">
+        <div class="name">compa.co</div>
+        <div class="tag">AVA + HOAI-Abrechnung (600+ Büros)</div>
+      </div>
+    </div>
+
+    <!-- 3 Killer-Differenzierer -->
+    <h3 style="font-size:1rem; font-weight:700; margin-bottom:1rem; color:var(--modulai-green-dark);">⚡ 3 Killer-Differenzierer von ModulAI</h3>
+
+    <div class="differentiator">
+      <div class="diff-num">1</div>
+      <h4>KI-Email-Agent — das ungelöste Problem #1</h4>
+      <p>compa.co ignoriert E-Mails vollständig. ModulAI transformiert Gmail-Chaos in strukturierte, priorisierte Aufgaben — automatisch. Ein Klick: E-Mail wird zur Kanban-Karte mit Projekt und Verantwortlichem. Niemand sonst auf dem Markt macht das für Architekturbüros.</p>
+    </div>
+
+    <div class="differentiator">
+      <div class="diff-num">2</div>
+      <h4>HOAI-nativer Umsatz-Forecast — nicht Excel, nicht compa</h4>
+      <p>ModulAI kennt Leistungsphasen als Finanzgrundlage. Forecast für 12/18/24 Monate, Break-Even-Analyse, Lexware-Import — alles verbunden. compa.co zeigt Projektkosten. ModulAI zeigt ob das Büro in drei Monaten profitabel ist. Das ist der Unterschied zwischen AVA und Operations.</p>
+    </div>
+
+    <div class="differentiator">
+      <div class="diff-num">3</div>
+      <h4>Voice First auf der Baustelle — ohne WhatsApp-Lock-in</h4>
+      <p>compa nutzt WhatsApp als Kanal — praktisch, aber privat vermischt mit geschäftlich. ModulAI-Voice läuft direkt im Browser, transkribiert mit Whisper, erstellt Aufgaben + Bautagebuch-Einträge. Kein WhatsApp, kein Datenschutz-Graubereich, voller Projektkontext.</p>
+    </div>
+
+    <!-- Wann gewinnen/verlieren wir -->
+    <h3 style="font-size:1rem; font-weight:700; margin:1.5rem 0 1rem; color:var(--dark);">🎯 Wann gewinnen wir — wann verlieren wir</h3>
+    <div class="win-lose-grid">
+      <div class="win-card">
+        <h4>✅ Wann ModulAI gewinnt</h4>
+        <ul>
+          <li>Büro kämpft mit E-Mail-Chaos und verlorenem Überblick</li>
+          <li>Kein Überblick über Büroprofitabilität / Finanzen</li>
+          <li>Aufgaben fallen zwischen Tools (Excel, WhatsApp, E-Mail)</li>
+          <li>Teamgröße 5–15 MA mit Wachstumsplänen</li>
+          <li>Büro will modernes, KI-gestütztes Tool (kein "altes System")</li>
+          <li>Lexware im Einsatz und Soll-Ist-Vergleich fehlt</li>
+          <li>Datenschutzsensibel (kein WhatsApp für Projektdaten)</li>
+        </ul>
+      </div>
+      <div class="lose-card">
+        <h4>❌ Wann compa gewinnt (ehrlich!)</h4>
+        <ul>
+          <li>Büro braucht primär Ausschreibung / Leistungsverzeichnisse</li>
+          <li>GAEB-Export ist Pflicht (compa hat das, ModulAI nicht)</li>
+          <li>Bauleiter-lastiges Team, WhatsApp-Bautagebuch reicht</li>
+          <li>Budget sehr knapp und AVA-Feature-Set ausreichend</li>
+          <li>Büro mit 1–3 Personen ohne Teamkollaborations-Bedarf</li>
+          <li>Hauptproblem: Honorarabrechnung (nicht Operations)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Qualifying Questions -->
+    <div class="qualify-questions">
+      <h4>🎤 Top 3 Qualifying-Fragen die compa.co disqualifizieren</h4>
+      <div class="qualify-q">
+        <div class="q-num">1</div>
+        <div>
+          <div class="q-text">"Wie viel Zeit verbringt ihr pro Woche mit E-Mails — und wie viele Aufgaben daraus gehen verloren?"</div>
+          <div class="q-logic">→ Wenn Antwort > 5h/Woche oder "viele" → compa löst das nicht. ModulAI schon.</div>
+        </div>
+      </div>
+      <div class="qualify-q">
+        <div class="q-num">2</div>
+        <div>
+          <div class="q-text">"Kannst du mir heute sagen, ob euer Büro im nächsten Quartal profitabel sein wird — und woher weißt du das?"</div>
+          <div class="q-logic">→ "Nein" oder "Excel" → compa gibt keine Antwort. ModulAI mit HOAI-Forecast schon.</div>
+        </div>
+      </div>
+      <div class="qualify-q">
+        <div class="q-num">3</div>
+        <div>
+          <div class="q-text">"Wenn ihr heute ein neues Projekt habt — wie lange dauert es, bis alle Teammitglieder wissen was zu tun ist?"</div>
+          <div class="q-logic">→ "Zu lang" oder "keiner weiß wer was macht" → Task-Management-Lücke = ModulAI-Kernfeature.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Battlecard erstellt von Hatti 🏔️ · 19. März 2026 · Quellen: compa.co, web research, ModulAI Feature-Overview</p>
+  <p style="margin-top:0.5rem;">Für internen Sales-Gebrauch · Vor Kundenverwendung auf Aktualität prüfen</p>
+</footer>
+
+</body>
+</html>
