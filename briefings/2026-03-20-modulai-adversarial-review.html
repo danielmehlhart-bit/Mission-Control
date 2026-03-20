@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ModulAI — Adversarial Code Review: Performance-Commits</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #F9FAFB;
+      color: #111827;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 40px;
+    }
+    .header-meta {
+      font-size: 13px;
+      color: #6B7280;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .header-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 6px;
+    }
+    .header-sub {
+      font-size: 15px;
+      color: #6B7280;
+    }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+      padding: 28px 32px;
+      margin-bottom: 24px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6B7280;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+
+    p { margin-bottom: 12px; }
+    p:last-child { margin-bottom: 0; }
+
+    ul, ol {
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+    li { margin-bottom: 4px; }
+
+    /* Verdict Banner */
+    .verdict-banner {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #ECFDF5;
+      border: 1.5px solid #6EE7B7;
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+    }
+    .verdict-banner.warning {
+      background: #FFFBEB;
+      border-color: #FCD34D;
+    }
+    .verdict-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+    .verdict-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: #065F46;
+    }
+    .verdict-banner.warning .verdict-text {
+      color: #92400E;
+    }
+    .verdict-sub {
+      font-size: 13px;
+      color: #047857;
+      margin-top: 2px;
+    }
+    .verdict-banner.warning .verdict-sub {
+      color: #B45309;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .badge-critical { background: #FEE2E2; color: #991B1B; }
+    .badge-high { background: #FEF3C7; color: #92400E; }
+    .badge-medium { background: #FEF9C3; color: #713F12; }
+    .badge-low { background: #F3F4F6; color: #374151; }
+    .badge-info { background: #EEF2FF; color: #3730A3; }
+    .badge-green { background: #ECFDF5; color: #065F46; }
+    .badge-outscope { background: #F3F4F6; color: #6B7280; }
+
+    /* Scope Table */
+    .scope-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+    .scope-table th {
+      text-align: left;
+      font-weight: 600;
+      color: #6B7280;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 8px 12px;
+      border-bottom: 1.5px solid #E5E7EB;
+    }
+    .scope-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #F3F4F6;
+      vertical-align: top;
+    }
+    .scope-table tr:last-child td { border-bottom: none; }
+    .scope-table .file { font-family: monospace; font-size: 12px; color: #374151; }
+
+    /* Finding Card */
+    .finding {
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+    }
+    .finding-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .finding-title {
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .finding-desc {
+      font-size: 14px;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+    .finding-fix {
+      font-size: 13px;
+      color: #047857;
+      background: #F0FDF4;
+      border-left: 3px solid #6EE7B7;
+      padding: 8px 12px;
+      border-radius: 0 6px 6px 0;
+    }
+    .finding-fix strong { color: #065F46; }
+
+    /* Debt Item */
+    .debt-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .debt-item:last-child { border-bottom: none; }
+    .debt-prio {
+      font-size: 11px;
+      font-weight: 700;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .debt-prio-1 { background: #FEE2E2; color: #991B1B; }
+    .debt-prio-2 { background: #FEF3C7; color: #92400E; }
+    .debt-prio-3 { background: #F3F4F6; color: #374151; }
+
+    /* Score Card */
+    .score-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .score-box {
+      border: 1.5px solid #E5E7EB;
+      border-radius: 10px;
+      padding: 16px 20px;
+      text-align: center;
+    }
+    .score-box.winner {
+      border-color: #6EE7B7;
+      background: #F0FDF4;
+    }
+    .score-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6B7280;
+      margin-bottom: 6px;
+    }
+    .score-num {
+      font-size: 36px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .score-box.winner .score-num { color: #065F46; }
+    .score-verdict {
+      font-size: 12px;
+      color: #6B7280;
+      margin-top: 4px;
+    }
+
+    /* Steps */
+    .steps { list-style: none; padding: 0; }
+    .step {
+      display: flex;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid #F3F4F6;
+      align-items: flex-start;
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #111827;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-content { flex: 1; }
+    .step-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+    .step-desc { font-size: 13px; color: #6B7280; }
+
+    /* Stability meter */
+    .stability-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .stability-item:last-child { border-bottom: none; }
+    .stability-icon { font-size: 18px; flex-shrink: 0; }
+    .stability-name { font-weight: 500; font-size: 14px; width: 220px; flex-shrink: 0; }
+    .stability-desc { font-size: 13px; color: #374151; }
+    .stability-verdict {
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    code {
+      font-family: monospace;
+      font-size: 12px;
+      background: #F3F4F6;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 600px) {
+      .card { padding: 20px 16px; }
+      .score-grid { grid-template-columns: 1fr; }
+      .stability-name { width: 140px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-meta">Adversarial Code Review · 20.03.2026</div>
+    <div class="header-title">ModulAI — Performance-Commits</div>
+    <div class="header-sub">Review der letzten 10 Commits · Auth-Flow · Lazy Loading · Realtime Debouncing · Task-Pagination</div>
+  </div>
+
+  <!-- 1. Executive Summary -->
+  <div class="verdict-banner">
+    <div class="verdict-icon">✅</div>
+    <div>
+      <div class="verdict-text">Deploy-Empfehlung: JA — safe to deploy</div>
+      <div class="verdict-sub">Die 10 Commits sind isolierte Frontend-Performance-Fixes ohne neue Angriffsfläche. Eine Kleinigkeit (Subtask-UI-Refresh) sollte kurz geprüft werden, aber kein Blocker. Pre-existing Security-Issues (die real und ernst sind) brauchen einen separaten Sprint — hängen aber nicht an diesen Commits.</div>
+    </div>
+  </div>
+
+  <!-- 2. Scope-Analyse -->
+  <div class="card">
+    <div class="card-title">Scope-Analyse</div>
+    <h2>Was haben die 10 Commits tatsächlich geändert?</h2>
+    <p style="color:#6B7280;font-size:14px;">16 Dateien · 270 Insertions · 210 Deletions · Ausschließlich <code>src/</code> — kein Backend, keine Migrations, keine Edge Functions</p>
+
+    <table class="scope-table" style="margin-top:16px;">
+      <thead>
+        <tr>
+          <th>Commit</th>
+          <th>Was wurde geändert</th>
+          <th>Natur</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>d44e57a</code></td>
+          <td>Mobile Navigation Freeze — 3 Root Causes behoben, <code>useIsMobile</code> Fix, <code>AppLayout.tsx</code> Suspense-Refactor</td>
+          <td><span class="badge badge-green">Perf Fix</span></td>
+        </tr>
+        <tr>
+          <td><code>c876938</code></td>
+          <td>Realtime Debouncing (2s) für projects- und tasks-Channels, scoped Invalidierungen statt global</td>
+          <td><span class="badge badge-green">Perf Fix</span></td>
+        </tr>
+        <tr>
+          <td><code>eedb930</code></td>
+          <td>Task Page: Lazy-load project members, <code>useIsMobile</code> Korrekturen</td>
+          <td><span class="badge badge-green">Perf Fix</span></td>
+        </tr>
+        <tr>
+          <td><code>4e71726</code></td>
+          <td>Task Page Render-Volumen: ~275 → ~100 Komponenten, <code>useMemo</code> für teure Berechnungen</td>
+          <td><span class="badge badge-green">Perf Fix</span></td>
+        </tr>
+        <tr>
+          <td><code>ad034fb</code></td>
+          <td>Auth-Flow: 8 → 5 Queries via JOIN, <code>getSession()</code> entfernt, <code>authReady</code> Flag + 5s Failsafe-Timer</td>
+          <td><span class="badge badge-green">Perf Fix</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:18px;padding:14px 16px;background:#F8FAFC;border-radius:8px;border:1px solid #E5E7EB;">
+      <strong style="font-size:13px;">Was NICHT angefasst wurde:</strong>
+      <ul style="margin-top:6px;font-size:13px;color:#374151;">
+        <li><code>supabase/functions/</code> — kein einziger Edge-Function-Commit</li>
+        <li><code>supabase/migrations/</code> — keine Datenbankänderungen</li>
+        <li>RLS-Policies — unverändert</li>
+        <li><code>src/hooks/useSupabase.ts</code> — nicht im Diff</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3. In-Scope Findings -->
+  <div class="card">
+    <div class="card-title">In-Scope Findings</div>
+    <h2>Was in diesen 10 Commits tatsächlich relevant ist</h2>
+
+    <div class="finding" style="border-color:#FCD34D;">
+      <div class="finding-header">
+        <span class="badge badge-medium">MEDIUM</span>
+        <span class="finding-title">Subtask-UI refresht nicht nach Status-Update oder neuer Subtask</span>
+      </div>
+      <div class="finding-desc">
+        In <code>useTaskHooks.ts</code> wurde <code>qc.invalidateQueries({ queryKey: ["subtasks"] })</code> aus zwei Mutationen entfernt:
+        <code>useUpdateTaskStatus</code> und <code>useCreateSubtask</code>. Das bedeutet: wenn du den Status eines Tasks änderst oder eine neue Subtask erstellst, aktualisiert die Subtask-Liste in der UI sich <em>nicht automatisch</em> — erst nach dem nächsten Realtime-Debounce (2s) oder manuellem Reload.
+      </div>
+      <div class="finding-fix">
+        <strong>Fix:</strong> Beide Zeilen wieder einfügen (<code>qc.invalidateQueries({ queryKey: ["subtasks"] })</code>), oder explizit prüfen ob Subtasks via Realtime-Update sauber nachladen. Kein Security-Issue — aber spürbare UX-Regression.
+      </div>
+    </div>
+
+    <div class="finding" style="border-color:#D1FAE5;">
+      <div class="finding-header">
+        <span class="badge badge-green">OK</span>
+        <span class="finding-title">AuthContext: getSession() entfernt, onAuthStateChange als Single Source of Truth</span>
+      </div>
+      <div class="finding-desc">
+        Das ist laut Supabase-Dokumentation der korrekte Ansatz. <code>getSession()</code> gibt einen gecachten Wert zurück und war der Auslöser für Race Conditions. <code>onAuthStateChange</code> feuert <code>INITIAL_SESSION</code> beim Mount. Der 5s Failsafe-Timer verhindert ewiges Loading auf langsamen Netzwerken. <code>fetchProfileAndRole</code> lädt Profile und Tenant jetzt in einem JOIN statt zwei separaten Queries.
+      </div>
+      <div class="finding-fix">
+        <strong>Kein Fix nötig.</strong> Technisch sauber und performance-orientiert. Das mountedRef-Pattern verhindert setState nach unmount.
+      </div>
+    </div>
+
+    <div class="finding" style="border-color:#D1FAE5;">
+      <div class="finding-header">
+        <span class="badge badge-green">OK</span>
+        <span class="finding-title">TOKEN_REFRESHED Cache-Invalidierung entfernt</span>
+      </div>
+      <div class="finding-desc">
+        Supabase-Client verwendet den refreshten Token automatisch für alle nachfolgenden Requests. Die explizite <code>queryClient.invalidateQueries()</code> bei Token-Refresh war unnötig und hat Performance-Probleme verursacht (alle Queries wurden auf einmal neu geladen).
+      </div>
+      <div class="finding-fix"><strong>Kein Fix nötig.</strong></div>
+    </div>
+  </div>
+
+  <!-- 4. Pre-Existing Issues -->
+  <div class="card">
+    <div class="card-title">Pre-Existing Issues</div>
+    <h2>Technical Debt Backlog <span style="font-size:14px;font-weight:400;color:#6B7280;">(nicht Teil dieser Commits)</span></h2>
+    <p style="font-size:14px;color:#6B7280;margin-bottom:20px;">Diese Issues sind real und ernst — aber sie existierten <em>bevor</em> diese 10 Commits gemacht wurden. Sie sind kein Regressionsrisiko dieser PRs. Separater Security-Sprint empfohlen.</p>
+
+    <div class="debt-item">
+      <div class="debt-prio debt-prio-1">1</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;">Hardcoded Encryption Key <code>'your-super-secret-key'</code></div>
+        <div style="font-size:13px;color:#374151;margin-top:3px;">Alle OAuth-Tokens können von jedem mit DB-Zugriff entschlüsselt werden. Echten Key in Env-Variable auslagern. <span class="badge badge-critical" style="margin-left:6px;">CRITICAL</span></div>
+      </div>
+    </div>
+
+    <div class="debt-item">
+      <div class="debt-prio debt-prio-1">2</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;">Edge Functions ohne Auth-Check</div>
+        <div style="font-size:13px;color:#374151;margin-top:3px;"><code>create-gedanke</code>, <code>enrich-bautagebuch-weather</code>, <code>voice-command</code>, <code>transcribe-audio</code>, <code>process-email</code>, <code>sync-emails</code> — alle ohne Bearer-Token-Validierung. API-Quota kann ausgeraubt werden. <span class="badge badge-critical" style="margin-left:6px;">CRITICAL</span></div>
+      </div>
+    </div>
+
+    <div class="debt-item">
+      <div class="debt-prio debt-prio-1">3</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;"><code>oauth_state</code> Tabelle ohne Row Level Security</div>
+        <div style="font-size:13px;color:#374151;margin-top:3px;">Ermöglicht OAuth-State-Manipulation und potenzielles Token-Hijacking zwischen Tenants. RLS aktivieren + Policies erstellen. <span class="badge badge-critical" style="margin-left:6px;">CRITICAL</span></div>
+      </div>
+    </div>
+
+    <div class="debt-item">
+      <div class="debt-prio debt-prio-1">4</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;"><code>delete-team-member</code> ohne Cross-Tenant-Check</div>
+        <div style="font-size:13px;color:#374151;margin-top:3px;">Admin von Tenant A kann User aus Tenant B löschen. Sicherheitskritisch bei Multi-Tenant-Setup. <span class="badge badge-critical" style="margin-left:6px;">CRITICAL</span></div>
+      </div>
+    </div>
+
+    <div class="debt-item">
+      <div class="debt-prio debt-prio-1">5</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;"><code>invite-team-member</code>: <code>role="sudo"</code> Privilege Escalation</div>
+        <div style="font-size:13px;color:#374151;margin-top:3px;">Admin kann Nutzer mit sudo-Rolle einladen → vollständige Plattform-Kompromittierung. <code>role</code> validieren, sudo explizit ausschließen. <span class="badge badge-critical" style="margin-left:6px;">CRITICAL</span></div>
+      </div>
+    </div>
+
+    <div class="debt-item">
+      <div class="debt-prio debt-prio-1">6</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;"><code>task_comments</code> INSERT-Policy ohne Tenant-Check</div>
+        <div style="font-size:13px;color:#374151;margin-top:3px;">Alte <code>"Users can insert own comments"</code>-Policy noch aktiv — Cross-Tenant Comment Injection möglich. Alte Policies droppen. <span class="badge badge-critical" style="margin-left:6px;">CRITICAL</span></div>
+      </div>
+    </div>
+
+    <div class="debt-item">
+      <div class="debt-prio debt-prio-1">7</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;"><code>project_members</code> Policy ohne Tenant-Binding im INSERT</div>
+        <div style="font-size:13px;color:#374151;margin-top:3px;">Admin kann sich in Projekte anderer Tenants eintragen → Vollzugriff auf deren Daten. WITH CHECK um Tenant-Prüfung ergänzen. <span class="badge badge-critical" style="margin-left:6px;">CRITICAL</span></div>
+      </div>
+    </div>
+
+    <div class="debt-item">
+      <div class="debt-prio debt-prio-2">8</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;"><code>recalculate_forecast</code> RPC ohne Rollen-Check</div>
+        <div style="font-size:13px;color:#374151;margin-top:3px;">Jeder Auth-User kann alle Forecast-Daten aller Tenants löschen und neu berechnen lassen. <span class="badge badge-high" style="margin-left:6px;">HIGH</span></div>
+      </div>
+    </div>
+
+    <div class="debt-item">
+      <div class="debt-prio debt-prio-2">9</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;">Race Condition bei Projekt-Erstellung (keine Transaktion)</div>
+        <div style="font-size:13px;color:#374151;margin-top:3px;"><code>useCreateProjectWithPhases</code>: Projekt-Insert und Phasen-Insert sind separate Calls — bei Netzwerkfehler entstehen Orphan-Projekte. <span class="badge badge-high" style="margin-left:6px;">HIGH</span></div>
+      </div>
+    </div>
+
+    <div class="debt-item">
+      <div class="debt-prio debt-prio-3">10</div>
+      <div>
+        <div style="font-weight:600;font-size:14px;">Admin → sudo Privilege Escalation via <code>user_roles</code></div>
+        <div style="font-size:13px;color:#374151;margin-top:3px;">Admin-Policy erlaubt INSERT/UPDATE mit beliebiger Rolle inkl. sudo. <span class="badge badge-medium" style="margin-left:6px;">MEDIUM</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Stabilitäts-Assessment -->
+  <div class="card">
+    <div class="card-title">Stabilitäts-Assessment</div>
+    <h2>Helfen diese Commits bei Daniels Timeout-Problem?</h2>
+    <p style="font-size:14px;color:#374151;margin-bottom:16px;"><strong>Kurze Antwort: Ja, direkt und gezielt.</strong> Die Commits adressieren genau die Symptome, die Lovable-Preview-Timeouts verursachen.</p>
+
+    <div class="stability-item">
+      <div class="stability-icon">⚡</div>
+      <div class="stability-name">Auth-Flow (8→5 Queries)</div>
+      <div class="stability-desc">Statt 3 sequentielle DB-Calls (profile → role → tenant) jetzt ein einziger JOIN. Reduziert Login-Latenz spürbar, besonders auf mobilem Netz oder cold start in Lovable-Preview.</div>
+      <div class="stability-verdict"><span class="badge badge-green">Hilft ✓</span></div>
+    </div>
+
+    <div class="stability-item">
+      <div class="stability-icon">🔄</div>
+      <div class="stability-name">Realtime Debouncing (2s)</div>
+      <div class="stability-desc">Vorher: jede DB-Änderung löste sofort eine Query-Welle aus. Jetzt: Änderungen werden 2s gebündelt. Bei vielen gleichzeitigen Realtime-Events (z.B. viele Task-Updates) verhindert das Cascade-Rendering.</div>
+      <div class="stability-verdict"><span class="badge badge-green">Hilft ✓</span></div>
+    </div>
+
+    <div class="stability-item">
+      <div class="stability-icon">📦</div>
+      <div class="stability-name">Task Page: 275 → 100 Komponenten</div>
+      <div class="stability-desc">Das ist der wahrscheinlich größte Fix. 275 gerenderte Komponenten blockieren den JS-Thread und führen zu Timeout-Errors in der Preview. Auf 100 reduziert = weniger Freeze, schnellere TTI.</div>
+      <div class="stability-verdict"><span class="badge badge-green">Hilft ✓</span></div>
+    </div>
+
+    <div class="stability-item">
+      <div class="stability-icon">💤</div>
+      <div class="stability-name">Lazy Loading Project Members</div>
+      <div class="stability-desc">Project-Members werden nicht mehr beim initialen Page-Load abgerufen — only-on-demand. Reduziert waterfall requests beim Start.</div>
+      <div class="stability-verdict"><span class="badge badge-green">Hilft ✓</span></div>
+    </div>
+
+    <div class="stability-item">
+      <div class="stability-icon">⏱️</div>
+      <div class="stability-name">5s Failsafe-Timer im Auth</div>
+      <div class="stability-desc">Verhindert, dass die App im Lovable-Preview ewig im Loading-Zustand hängt wenn Supabase-Auth-Events nicht ankommen. Direkter Fix für "App lädt nicht" Symptome.</div>
+      <div class="stability-verdict"><span class="badge badge-green">Hilft ✓</span></div>
+    </div>
+
+    <div class="stability-item">
+      <div class="stability-icon">⚠️</div>
+      <div class="stability-name">Subtask-Invalidierung entfernt</div>
+      <div class="stability-desc">Kleine Regression: Subtasks refreshen nach Status-Update nicht sofort. Kein Timeout-Risiko, aber spürbare UX-Regression wenn du Subtasks häufig nutzt.</div>
+      <div class="stability-verdict"><span class="badge badge-medium">Prüfen</span></div>
+    </div>
+
+    <div style="margin-top:16px;padding:14px 16px;background:#ECFDF5;border-radius:8px;border:1px solid #6EE7B7;font-size:14px;color:#065F46;">
+      <strong>Fazit:</strong> Diese Commits sind gebaut um genau dein Problem zu lösen. Kein einziger davon erhöht das Timeout-Risiko. Der Subtask-Bug ist nervig aber kein Blocker.
+    </div>
+  </div>
+
+  <!-- 6. Referee Verdict -->
+  <div class="card">
+    <div class="card-title">Referee Verdict</div>
+    <h2>Finder vs. Challenger — Wer hat recht?</h2>
+
+    <div class="score-grid" style="margin-bottom:20px;">
+      <div class="score-box">
+        <div class="score-label">🔥 Finder</div>
+        <div class="score-num" style="color:#DC2626;">0</div>
+        <div class="score-verdict">25 Findings — alle Out-of-Scope</div>
+      </div>
+      <div class="score-box winner">
+        <div class="score-label">🛡️ Challenger</div>
+        <div class="score-num">+23</div>
+        <div class="score-verdict">Scope-Analyse korrekt · kleines Miss</div>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:12px;">Begründung</h3>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-weight:600;font-size:14px;margin-bottom:6px;color:#DC2626;">Finder: Scope-Fehler erster Ordnung</div>
+      <p style="font-size:14px;color:#374151;">Der Finder hat exzellente Security-Arbeit geleistet — die gefundenen Issues sind real, ernst und gefährlich. Aber: <strong>alle 25 Findings stammen aus Code, der nicht Teil der 10 Commits war.</strong> <code>supabase/functions/</code>, <code>supabase/migrations/</code>, <code>useSupabase.ts</code> — nichts davon wurde in diesen PRs angefasst. Ein Code Review bewertet Änderungen, nicht den gesamten Codestand. Score: 0 Punkte (nicht weil die Findings falsch sind, sondern weil sie dem falschen Review-Scope zugeordnet wurden).</p>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-weight:600;font-size:14px;margin-bottom:6px;color:#065F46;">Challenger: Fast perfekt</div>
+      <p style="font-size:14px;color:#374151;">Der Challenger hat den Git-Diff korrekt gelesen, alle 25 Out-of-Scope-Findings identifiziert und die eigentlichen Commits sauber analysiert. Nur ein Miss: die entfernte Subtask-Invalidierung wurde als "möglicher UI-Bug" erwähnt aber nicht stark genug bewertet — das ist eine echte UX-Regression, die vor dem Deploy geprüft werden sollte. Score: +23 von 25 möglichen Punkten.</p>
+    </div>
+
+    <table class="scope-table">
+      <thead>
+        <tr><th>Finding-Gruppe</th><th>Finder</th><th>Challenger</th><th>Referee</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>8× CRITICAL (supabase/functions, migrations)</td>
+          <td><span class="badge badge-critical">+80 beansprucht</span></td>
+          <td><span class="badge badge-green">Out-of-Scope ✓</span></td>
+          <td>Challenger: <strong>+8</strong></td>
+        </tr>
+        <tr>
+          <td>6× HIGH (Edge Functions, useSupabase)</td>
+          <td><span class="badge badge-high">+30 beansprucht</span></td>
+          <td><span class="badge badge-green">Out-of-Scope ✓</span></td>
+          <td>Challenger: <strong>+6</strong></td>
+        </tr>
+        <tr>
+          <td>5× MEDIUM (RLS, useSupabase)</td>
+          <td><span class="badge badge-medium">+25 beansprucht</span></td>
+          <td><span class="badge badge-green">Out-of-Scope ✓</span></td>
+          <td>Challenger: <strong>+5</strong></td>
+        </tr>
+        <tr>
+          <td>7× LOW (Edge Functions, migrations)</td>
+          <td><span class="badge badge-low">+7 beansprucht</span></td>
+          <td><span class="badge badge-green">Out-of-Scope ✓</span></td>
+          <td>Challenger: <strong>+7</strong></td>
+        </tr>
+        <tr>
+          <td>Subtask-Invalidierung (useTaskHooks.ts)</td>
+          <td><span class="badge badge-outscope">nicht gefunden</span></td>
+          <td><span class="badge badge-medium">erwähnt aber schwach</span></td>
+          <td>Challenger: <strong>-3</strong> (Miss)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 7. Nächste Schritte -->
+  <div class="card">
+    <div class="card-title">Empfohlene nächste Schritte</div>
+    <h2>Priorisiert</h2>
+
+    <ul class="steps">
+      <li class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Deploy jetzt durchführen ✅</div>
+          <div class="step-desc">Diese 10 Commits können ohne Einschränkung deployed werden. Sie adressieren direkt deine Timeout-Probleme in der Preview.</div>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Subtask-UX nach Deploy testen ⚠️</div>
+          <div class="step-desc">Schnell prüfen: Task-Status ändern → Subtask-Liste aktuell? Wenn nicht, eine Zeile re-adden (<code>qc.invalidateQueries({ queryKey: ["subtasks"] })</code>). 5-Minuten-Fix.</div>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Security-Sprint planen 🚨</div>
+          <div class="step-desc">Die 7 CRITICAL-Issues im Technical Debt Backlog sind ernst und brauchen einen dedizierten Sprint. Reihenfolge: (1) Encryption Key, (2) Edge Function Auth-Checks, (3) oauth_state RLS, (4) invite/delete Cross-Tenant-Fixes.</div>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Edge Function Auth-Template erstellen 🔒</div>
+          <div class="step-desc">Ein Auth-Check-Boilerplate für alle neuen Edge Functions schreiben, damit dieser Fehler nicht weiter vorkommt. Einmal bauen, überall nutzen.</div>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">Monitoring für Lovable Preview 📊</div>
+          <div class="step-desc">Nach Deploy beobachten ob Timeouts weg sind. Wenn ja: Performance-Baseline dokumentieren. Wenn nicht: Profiler aufmachen und nächste Bottlenecks (vermutlich Finance-Dashboard) angehen.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;color:#9CA3AF;font-size:12px;margin-top:16px;">
+    Adversarial Review · Referee: Hatti 🏔️ · ModulAI · 20.03.2026
+  </div>
+
+</div>
+</body>
+</html>
