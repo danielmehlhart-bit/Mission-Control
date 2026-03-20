@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📈 Marktbericht 20.03.2026</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c3e50;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .header .date {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .indices {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .index-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .index-item.negative {
+            border-left-color: #e74c3c;
+            background: #fdf2f2;
+        }
+        
+        .index-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+        
+        .index-value {
+            text-align: right;
+        }
+        
+        .index-points {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .index-change {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        
+        .positive { color: #27ae60; }
+        .negative { color: #e74c3c; }
+        
+        .news-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .news-item {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .news-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .news-content {
+            color: #5d6d7e;
+            line-height: 1.6;
+        }
+        
+        .alert-box {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(238, 90, 82, 0.3);
+        }
+        
+        .alert-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .alert-title::before {
+            content: "⚠️";
+            margin-right: 10px;
+        }
+        
+        .source-link {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+        
+        .source-link:hover {
+            background: #2980b9;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-grid, .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            body {
+                padding: 15px;
+            }
+        }
+        
+        .energy-prices {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            color: #2c3e50;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+        }
+        
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📈 Marktbericht</h1>
+            <div class="date">Donnerstag, 20. März 2026</div>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Indices -->
+            <div class="card">
+                <h2 class="section-title">Hauptindices</h2>
+                <div class="indices">
+                    <div class="index-item negative">
+                        <div>
+                            <div class="index-name">DAX</div>
+                        </div>
+                        <div class="index-value">
+                            <div class="index-points">22.839</div>
+                            <div class="index-change negative">-2,8% (-656 Punkte)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="index-item negative">
+                        <div>
+                            <div class="index-name">Dow Jones</div>
+                        </div>
+                        <div class="index-value">
+                            <div class="index-points">45.875</div>
+                            <div class="index-change negative">-0,8%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="index-item negative">
+                        <div>
+                            <div class="index-name">S&P 500</div>
+                        </div>
+                        <div class="index-value">
+                            <div class="index-points">6.571</div>
+                            <div class="index-change negative">-0,8%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="index-item negative">
+                        <div>
+                            <div class="index-name">Nasdaq</div>
+                        </div>
+                        <div class="index-value">
+                            <div class="index-points">21.911</div>
+                            <div class="index-change negative">-1,1%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Highlights -->
+            <div class="card">
+                <h2 class="section-title">Energiepreise</h2>
+                <div class="energy-prices">
+                    <div class="price-item">
+                        <span>🛢️ Brent Öl</span>
+                        <span><strong>~120 USD</strong></span>
+                    </div>
+                    <div class="price-item">
+                        <span>🛢️ WTI Öl</span>
+                        <span><strong>~100 USD</strong></span>
+                    </div>
+                    <div class="price-item">
+                        <span>⛽ EU Gas</span>
+                        <span><strong>65,60 EUR (+20%)</strong></span>
+                    </div>
+                    <div class="price-item">
+                        <span>⛽ TFF Hub</span>
+                        <span><strong>74 EUR (+28%)</strong></span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3);">
+                    <div class="index-value">
+                        <div class="index-name">💶 EUR/USD</div>
+                        <div class="index-points">1,1510</div>
+                        <div class="index-change positive">+0,5 Cent</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Section -->
+        <div class="alert-box">
+            <div class="alert-title">Nahost-Eskalation erschüttert Märkte</div>
+            <div>
+                Iran-Raketenangriff auf Katars LNG-Anlagen (20% der Weltproduktion). US-Präsident Trump droht mit Vergeltung gegen Gasfeld "South Pars". DAX unter 23.000 Punkte gefallen - tiefster Stand seit April 2025.
+            </div>
+        </div>
+
+        <!-- News Section -->
+        <div class="news-section">
+            <h2 class="section-title">Haupttreiber</h2>
+            
+            <div class="grid-2">
+                <div class="news-item">
+                    <div class="news-title">🔥 Energiekrise verschärft sich</div>
+                    <div class="news-content">
+                        Katars Ras-Laffan-Komplex (20% der weltweiten LNG-Produktion) schwer beschädigt. Gaspreise steigen um bis zu 28% auf höchste Stände seit Januar 2023. "Katastrophales Gaskrisen-Szenario" befürchtet.
+                    </div>
+                </div>
+                
+                <div class="news-item">
+                    <div class="news-title">🏦 Notenbanken halten Zinsen stabil</div>
+                    <div class="news-content">
+                        Fed, EZB, SNB und BoE lassen Leitzinsen unverändert. EZB erwartet Inflation von 2,6% für 2026. "Deutlich unsicherere Aussichten" durch Nahost-Krieg.
+                    </div>
+                </div>
+                
+                <div class="news-item">
+                    <div class="news-title">📉 Welthandel unter Druck</div>
+                    <div class="news-content">
+                        WTO prognostiziert Verlangsamung auf nur 1,9% Wachstum im günstigsten Szenario. Steigende Energiepreise und gestörte Transportwege belasten globalen Handel.
+                    </div>
+                </div>
+                
+                <div class="news-item">
+                    <div class="news-title">🏠 Vonovia trotz Marktturbulenzen robust</div>
+                    <div class="news-content">
+                        Deutschlands größter Immobilienkonzern steigert operatives Ergebnis dank höherer Mieteinnahmen. Aktie aber -10% aufgrund Zinsängste. Schuldenabbau wird beschleunigt.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Outlook -->
+        <div class="card">
+            <h2 class="section-title">Ausblick</h2>
+            <div class="news-content">
+                Die Märkte bleiben extrem volatil solange die Nahost-Krise anhält. Kritischer Punkt: Wird der Iran-Krieg zu einem Energiekrieg? Unterbrechung der LNG-Lieferungen könnte Monate bis Jahre andauern. Investoren fokussieren auf Entwicklungen an der Straße von Hormus und mögliche US-Vergeltung.
+            </div>
+            
+            <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-boerse-110.html" 
+               class="source-link" target="_blank">
+                📰 Vollständiger Marktbericht (Tagesschau)
+            </a>
+        </div>
+    </div>
+</body>
+</html>
