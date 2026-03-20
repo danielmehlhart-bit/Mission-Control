@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎤 Alles auf Aktien — 20. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+        
+        .date {
+            color: #64748b;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .youtube-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 12px 24px;
+            background: #dc2626;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .youtube-link:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+        
+        .section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+        }
+        
+        .section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 0.5rem;
+        }
+        
+        .market-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .market-card {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid;
+        }
+        
+        .market-card.negative {
+            border-color: #dc2626;
+        }
+        
+        .market-card.positive {
+            border-color: #059669;
+        }
+        
+        .market-card.neutral {
+            border-color: #6b7280;
+        }
+        
+        .market-card h3 {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        
+        .market-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .negative .market-value {
+            color: #dc2626;
+        }
+        
+        .positive .market-value {
+            color: #059669;
+        }
+        
+        .neutral .market-value {
+            color: #6b7280;
+        }
+        
+        .key-points {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-points h3 {
+            color: #92400e;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .key-points ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .key-points li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .key-points li:before {
+            content: "⚡";
+            position: absolute;
+            left: 0;
+        }
+        
+        .picks {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .pick {
+            background: #f0f9ff;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #3b82f6;
+        }
+        
+        .pick-positive {
+            background: #f0fdf4;
+            border-color: #059669;
+        }
+        
+        .pick-negative {
+            background: #fef2f2;
+            border-color: #dc2626;
+        }
+        
+        .pick h4 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .pick-positive h4 {
+            color: #059669;
+        }
+        
+        .pick-negative h4 {
+            color: #dc2626;
+        }
+        
+        .tl-dr {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .tl-dr h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .market-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 Alles auf Aktien</h1>
+            <div class="date">Freitag, 20. März 2026</div>
+            <a href="https://www.youtube.com/watch?v=FjOcplwG92M" class="youtube-link" target="_blank">
+                🎬 Episode auf YouTube ansehen
+            </a>
+        </div>
+
+        <div class="section">
+            <h2>📊 Marktüberblick</h2>
+            <div class="market-overview">
+                <div class="market-card negative">
+                    <h3>DAX</h3>
+                    <div class="market-value">-2,8%</div>
+                    <div>22.839 Punkte</div>
+                    <small>Unter die 23.000er Marke gefallen</small>
+                </div>
+                
+                <div class="market-card negative">
+                    <h3>MDAX</h3>
+                    <div class="market-value">-3,7%</div>
+                    <small>Härter getroffen als der DAX</small>
+                </div>
+                
+                <div class="market-card negative">
+                    <h3>EuroStoxx 50</h3>
+                    <div class="market-value">-2,1%</div>
+                    <small>Europaweit unter Druck</small>
+                </div>
+                
+                <div class="market-card neutral">
+                    <h3>S&P 500 / NASDAQ</h3>
+                    <div class="market-value">-0,3%</div>
+                    <small>Leichte Erholung nach anfänglichen Verlusten</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="key-points">
+                <h3>🔥 Hauptthemen der Sendung</h3>
+                <ul>
+                    <li><strong>Das Gold-Rätsel:</strong> Warum selbst "sichere Häfen" wie Gold (-3,3%) plötzlich fallen</li>
+                    <li><strong>Vonovia-Verzweiflung:</strong> -12% trotz auf dem Papier solider Zahlen</li>
+                    <li><strong>Irankrieg-Impact:</strong> Ölpreis +60% seit Kriegsbeginn, neue Inflationssorgen</li>
+                    <li><strong>Energieaktien-Rally:</strong> APA Corp +3,9%, Chevron +1,4%</li>
+                    <li><strong>Planet Labs Wow-Moment:</strong> +15% nachbörslich durch Google-Partnerschaft</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Stock Picks & Bewegungen</h2>
+            <div class="picks">
+                <div class="pick pick-positive">
+                    <h4>🚀 Planet Labs</h4>
+                    <p>+15% nachbörslich • Umsatz Q4: +41% • Auftragsbestand: +79% auf fast 1 Mrd. USD • Google-Partnerschaft für Weltraum-Rechenzentren</p>
+                </div>
+                
+                <div class="pick pick-positive">
+                    <h4>📦 FedEx</h4>
+                    <p>+10% nachbörslich • Überraschend starkes Weihnachtsgeschäft • Gewinnprognose deutlich angehoben</p>
+                </div>
+                
+                <div class="pick pick-positive">
+                    <h4>🛜 1&1 / United Internet</h4>
+                    <p>1&1: +11% • United Internet: +2,8% • Wachsende Neukunden-Zahlen</p>
+                </div>
+                
+                <div class="pick pick-negative">
+                    <h4>🏘️ Vonovia</h4>
+                    <p>-12% • Loan-to-Value stagniert bei 45,4% • Strukturelle Probleme im deutschen Immobiliensektor</p>
+                </div>
+                
+                <div class="pick pick-negative">
+                    <h4>🛒 Alibaba</h4>
+                    <p>-8% • Gewinn -67% • Druck auf KI-Investitionen zu liefern • 100 Mrd. USD Cloud/KI-Ziel bis 2031</p>
+                </div>
+                
+                <div class="pick pick-negative">
+                    <h4>💾 Micron Technology</h4>
+                    <p>-3,8% • Höhere Ausgabepläne bei steigenden Kreditkosten kritisch gesehen</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🏛️ Thema des Tages: Das Gold-Rätsel</h2>
+            <p><strong>Warum fallen sichere Häfen in unsicheren Zeiten?</strong></p>
+            
+            <p>Gold verlor gestern 3,3% und notiert 20% unter seinem Allzeithoch. Paradoxerweise verstärkt der Irankrieg kurzfristig den Dollar (Re-Dollarisierung durch Petrodollar), während die Hoffnung auf Zinssenkungen verfliegt.</p>
+            
+            <p><strong>Die Crux:</strong> Steigende Inflationserwartungen machen auch Bundesanleihen unattraktiv. Eine neue 10-jährige Bundesanleihe mit 2,96% Rendite stieß nur auf maue Nachfrage.</p>
+            
+            <p><strong>Das Fazit:</strong> "Cash ist King" - Anleger flüchten in Liquidität, da alle traditionellen Anlageklassen unter dem Druck steigender Zinsen und Inflationssorgen leiden.</p>
+        </div>
+
+        <div class="section">
+            <h2>🏠 Triple-A Fokus: Vonovia's Strukturproblem</h2>
+            <p>Trotz auf dem Papier solider Zahlen (Gewinn +6%, steigende Mieten, höhere Immobilienwerte) sackte Vonovia um 12% ab.</p>
+            
+            <p><strong>Das Problem:</strong> Das Geschäftsmodell "Vermieten in Deutschland" funktioniert für börsennotierte Konzerne nicht mehr:</p>
+            <ul style="margin-left: 2rem; margin-top: 1rem;">
+                <li>Einnahmenseite politisch gedeckelt (Mietpreisbremse)</li>
+                <li>Kostenseite nicht reguliert</li>
+                <li>Loan-to-Value-Ratio stagniert bei 45,4% (kaum Fortschritt bei Schuldenabbau)</li>
+                <li>Zinsrisiko bei anhaltend hohen Zinsen</li>
+            </ul>
+            
+            <p style="margin-top: 1rem;"><strong>Zum Vergleich:</strong> TAG Immobilien mit besserem Loan-to-Value von 41% hält sich deutlich stabiler.</p>
+        </div>
+
+        <div class="tl-dr">
+            <h3>💡 TL;DR</h3>
+            <p>Irankrieg +60% Ölpreis → neue Inflationswelle → keine Zinssenkungen → selbst "sichere" Anlagen wie Gold (-3,3%) und Anleihen fallen. Vonovia (-12%) zeigt strukturelle Probleme des deutschen Immobiliensektors. Lichtblicke: Planet Labs (+15%) dank Google-Partnerschaft für Weltraum-Rechenzentren, FedEx (+10%) nach starkem Weihnachtsgeschäft.</p>
+        </div>
+
+        <div class="footer">
+            <p>Erstellt am 20. März 2026 • Quelle: Alles auf Aktien (WELT) • Keine Anlageberatung</p>
+        </div>
+    </div>
+</body>
+</html>
