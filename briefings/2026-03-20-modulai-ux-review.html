@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ModulAI — UX Review: Desktop + Mobile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #F9FAFB;
+      color: #111827;
+      line-height: 1.6;
+      padding: 32px 16px 64px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 40px;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .badge-date {
+      background: #FFF7ED;
+      color: #F97316;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 99px;
+      border: 1px solid #FDBA74;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .badge-type {
+      background: #F3F4F6;
+      color: #6B7280;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 99px;
+    }
+
+    .header h1 {
+      font-size: 34px;
+      font-weight: 800;
+      color: #111827;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .header h1 span {
+      color: #F97316;
+    }
+
+    .header .subtitle {
+      font-size: 16px;
+      color: #6B7280;
+      font-weight: 400;
+    }
+
+    .header-divider {
+      height: 3px;
+      background: linear-gradient(90deg, #F97316, #FB923C, transparent);
+      border-radius: 99px;
+      margin-top: 24px;
+    }
+
+    /* Stats Row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04);
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 28px;
+      font-weight: 800;
+      color: #F97316;
+      letter-spacing: -0.03em;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #9CA3AF;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 28px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #9CA3AF;
+      margin-bottom: 14px;
+      padding-left: 2px;
+    }
+
+    /* Card */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px 32px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04);
+      margin-bottom: 16px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: #9CA3AF;
+      margin-top: 2px;
+      font-weight: 400;
+    }
+
+    /* Severity Badges */
+    .severity {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 99px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .severity-red {
+      background: #FEF2F2;
+      color: #DC2626;
+      border: 1px solid #FECACA;
+    }
+
+    .severity-orange {
+      background: #FFF7ED;
+      color: #EA580C;
+      border: 1px solid #FDBA74;
+    }
+
+    .severity-yellow {
+      background: #FEFCE8;
+      color: #CA8A04;
+      border: 1px solid #FDE68A;
+    }
+
+    .severity-green {
+      background: #F0FDF4;
+      color: #16A34A;
+      border: 1px solid #BBF7D0;
+    }
+
+    /* Finding List */
+    .finding-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .finding-list li {
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #374151;
+    }
+
+    .finding-list li .icon {
+      flex-shrink: 0;
+      width: 18px;
+      margin-top: 2px;
+      text-align: center;
+    }
+
+    .finding-list li.good {
+      color: #166534;
+    }
+
+    .finding-list li.problem {
+      color: #111827;
+    }
+
+    .finding-list li strong {
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .finding-list li.good strong {
+      color: #166534;
+    }
+
+    /* Divider in card */
+    .card-divider {
+      height: 1px;
+      background: #F3F4F6;
+      margin: 16px 0;
+    }
+
+    /* Exec summary */
+    .exec-summary p {
+      font-size: 15px;
+      color: #374151;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .exec-summary p:last-child {
+      margin-bottom: 0;
+    }
+
+    .tested-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .tested-chip {
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 99px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #374151;
+    }
+
+    /* Priority Matrix */
+    .priority-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .priority-table thead th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #9CA3AF;
+      padding: 8px 12px;
+      border-bottom: 2px solid #F3F4F6;
+    }
+
+    .priority-table tbody tr {
+      border-bottom: 1px solid #F9FAFB;
+      transition: background 0.15s;
+    }
+
+    .priority-table tbody tr:hover {
+      background: #FAFAFA;
+    }
+
+    .priority-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .priority-table td {
+      padding: 12px 12px;
+      font-size: 14px;
+      color: #374151;
+      vertical-align: middle;
+    }
+
+    .priority-table td:first-child {
+      width: 36px;
+      font-weight: 700;
+      color: #9CA3AF;
+      font-size: 13px;
+    }
+
+    .priority-table td:nth-child(2) {
+      width: 80px;
+    }
+
+    .priority-table td:last-child {
+      font-weight: 500;
+      color: #111827;
+    }
+
+    /* Tech notes */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .tech-item {
+      background: #F9FAFB;
+      border-radius: 10px;
+      padding: 14px 16px;
+      border: 1px solid #E5E7EB;
+    }
+
+    .tech-item .tech-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #9CA3AF;
+      margin-bottom: 4px;
+    }
+
+    .tech-item .tech-value {
+      font-size: 13px;
+      font-weight: 500;
+      color: #374151;
+    }
+
+    /* Console error */
+    .code-block {
+      background: #1E293B;
+      color: #F1F5F9;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: 'Menlo', 'Monaco', 'Fira Code', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-top: 12px;
+      overflow-x: auto;
+    }
+
+    .code-block .error-label {
+      color: #FB7185;
+      font-weight: 600;
+    }
+
+    /* Two-column grid for subsections */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* Mobile section highlight */
+    .mobile-banner {
+      background: linear-gradient(135deg, #FFF7ED, #FEF3C7);
+      border: 1px solid #FDBA74;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #92400E;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .two-col { grid-template-columns: 1fr; }
+      .tech-grid { grid-template-columns: 1fr; }
+      .card { padding: 20px; }
+      .header h1 { font-size: 26px; }
+      .card-header { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-meta">
+      <span class="badge-date">20. März 2026</span>
+      <span class="badge-type">UX Review</span>
+    </div>
+    <h1>ModulAI — <span>UX Review</span>: Desktop + Mobile</h1>
+    <p class="subtitle">Playwright-basierter End-to-End-Test mit Screenshot-Analyse</p>
+    <div class="header-divider"></div>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">15</div>
+      <div class="stat-label">Screenshots analysiert</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:#DC2626">3</div>
+      <div class="stat-label">Kritische Issues 🔴</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:#EA580C">4</div>
+      <div class="stat-label">Hohe Priorität 🟠</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:#CA8A04">3</div>
+      <div class="stat-label">Medium Priority 🟡</div>
+    </div>
+  </div>
+
+  <!-- 1. Executive Summary -->
+  <div class="section">
+    <div class="section-title">01 — Executive Summary</div>
+    <div class="card exec-summary">
+      <p>Die App ist funktional und das visuelle Design ist <strong>solide</strong> — saubere Typografie, konsistente Brand-Farbe. Es gibt jedoch <strong>signifikante UX-Probleme</strong>, besonders auf Mobile, die vor einem Kunden-Rollout gefixt werden müssen.</p>
+      <p>15 Screenshots wurden analysiert (Desktop 1440×900 + Mobile iPhone 14, 390×844 Viewport). Getestet wurden alle zentralen User Flows.</p>
+      <div class="tested-items">
+        <span class="tested-chip">🔐 Login</span>
+        <span class="tested-chip">📊 Dashboard</span>
+        <span class="tested-chip">📋 Aufgaben-Board (Kanban)</span>
+        <span class="tested-chip">➕ Task-Erstellung</span>
+        <span class="tested-chip">📄 Task-Detail</span>
+        <span class="tested-chip">📁 Dokumente</span>
+        <span class="tested-chip">🤖 Copilot</span>
+        <span class="tested-chip">📱 Bottom-Navigation</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Desktop Findings -->
+  <div class="section">
+    <div class="section-title">02 — Desktop Findings</div>
+
+    <!-- 2.1 Dashboard -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">2.1 Dashboard</div>
+          <div class="card-subtitle">Startseite nach Login</div>
+        </div>
+        <span class="severity severity-green">✅ Gut</span>
+      </div>
+      <ul class="finding-list">
+        <li class="good"><span class="icon">✅</span><span>Übersichtliches Card-Grid mit 8 Projekten</span></li>
+        <li class="good"><span class="icon">✅</span><span>Klare Greeting-Personalisierung</span></li>
+        <li class="problem"><span class="icon">⚠️</span><span><strong>Kein Suchfeld, keine Filter-Optionen</strong> bei wachsender Projektanzahl — kritischer Gap ab ~12+ Projekten</span></li>
+        <li class="problem"><span class="icon">⚠️</span><span><strong>"+8 weitere →" Links zu klein</strong> als Klickziel — Mindest-Klickziel 44×44pt nicht erfüllt</span></li>
+      </ul>
+    </div>
+
+    <!-- 2.2 Kanban -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">2.2 Aufgaben-Board / Kanban</div>
+          <div class="card-subtitle">Kern-Workflow: Projektaufgaben verwalten</div>
+        </div>
+        <span class="severity severity-yellow">🟡 Probleme</span>
+      </div>
+      <ul class="finding-list">
+        <li class="good"><span class="icon">✅</span><span>4-Spalten Kanban funktioniert grundsätzlich</span></li>
+        <li class="good"><span class="icon">✅</span><span>"25 weitere laden" Pagination vorhanden</span></li>
+        <li class="problem"><span class="icon">🔴</span><span><strong>"Offen" hat 45 Items</strong> → massive Spalten-Imbalance, erfordert endloses Scrollen</span></li>
+        <li class="problem"><span class="icon">🟡</span><span><strong>Status-Dropdown auf jeder Card UND Spalten-Zuordnung</strong> = redundantes Dual-Control. Untergräbt die Kanban-Metapher.</span></li>
+        <li class="problem"><span class="icon">🟡</span><span><strong>Keine Drag-and-Drop-Affordance</strong> sichtbar — User weiß nicht, dass Cards draggable sind</span></li>
+        <li class="problem"><span class="icon">🟡</span><span><strong>Keine Sortierung</strong> innerhalb der Spalten (nach Datum, Priorität, Projekt)</span></li>
+        <li class="problem"><span class="icon">🔴</span><span><strong>Kein Suchfeld</strong> auf der Aufgaben-Seite — bei 45+ offenen Tasks inakzeptabel</span></li>
+      </ul>
+    </div>
+
+    <!-- 2.3 Neue Aufgabe -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">2.3 Neue Aufgabe Dialog</div>
+          <div class="card-subtitle">Task-Erstellungs-Formular</div>
+        </div>
+        <span class="severity severity-orange">🟠 Probleme</span>
+      </div>
+      <ul class="finding-list">
+        <li class="good"><span class="icon">✅</span><span>Klare Button-Hierarchie (Abbrechen vs. Erstellen)</span></li>
+        <li class="problem"><span class="icon">🟠</span><span><strong>Kein Zuweisungs-Feld (Assignee)</strong> im Erstellungs-Dialog — muss nachträglich editiert werden</span></li>
+        <li class="problem"><span class="icon">🟠</span><span><strong>Kein Phasen-Feld (Leistungsphase)</strong> — obwohl Phasen überall in der App angezeigt werden</span></li>
+        <li class="problem"><span class="icon">🟠</span><span><strong>Status-Feld zeigt "Offen" als disabled Input</strong> ohne Erklärung — sieht kaputt aus</span></li>
+        <li class="problem"><span class="icon">🟠</span><span><strong>Validierung nur per Toast</strong> unten rechts — keine Inline-Fehler am Feld (roter Rand + Fehlertext fehlt)</span></li>
+        <li class="problem"><span class="icon">🟠</span><span><strong>3 verschiedene Datumsformate</strong> in der App: <code>"dd/mm/yyyy"</code> (Dialog) · <code>"2026-04-20"</code> (Cards) · <code>"20.03."</code> (Dashboard)</span></li>
+      </ul>
+    </div>
+
+    <!-- 2.4 Task-Detail -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">2.4 Task-Detail Dialog</div>
+          <div class="card-subtitle">Aufgaben-Detailansicht</div>
+        </div>
+        <span class="severity severity-green">✅ Funktional</span>
+      </div>
+      <ul class="finding-list">
+        <li class="good"><span class="icon">✅</span><span>Tabs für Details, Kommentare, Dateien vorhanden</span></li>
+        <li class="good"><span class="icon">✅</span><span>Titel editierbar</span></li>
+        <li class="good"><span class="icon">✅</span><span>Subtasks-Section mit Eingabefeld</span></li>
+        <li class="good"><span class="icon">✅</span><span>Speichern-Button sichtbar</span></li>
+        <li class="problem"><span class="icon">🟡</span><span><strong>Dialog-Inhalt muss gescrollt werden</strong> um Subtasks zu sehen — wichtige Section Below the Fold</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3. Mobile Findings -->
+  <div class="section">
+    <div class="section-title">03 — Mobile Findings (iPhone 14 · 390×844)</div>
+
+    <div class="mobile-banner">
+      📱 Viewport: 390×844px &nbsp;·&nbsp; hasTouch: true &nbsp;·&nbsp; iPhone 14 Simulation
+    </div>
+
+    <!-- 3.1 Bottom Nav -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">3.1 Bottom Navigation</div>
+          <div class="card-subtitle">Primäre Navigation auf Mobile</div>
+        </div>
+        <span class="severity severity-red">🔴 Kritisch</span>
+      </div>
+      <ul class="finding-list">
+        <li class="problem"><span class="icon">🔴</span><span><strong>7 Items in der Tab-Bar</strong> (Übersicht, Aufgaben, Gedanken, Sprache/Mic, Copilot, Finanzen, Profil) — Apple HIG empfiehlt max 5</span></li>
+        <li class="problem"><span class="icon">🔴</span><span><strong>Touch-Targets ~40–45pt</strong> — unter dem Apple-Minimum von 44pt</span></li>
+        <li class="problem"><span class="icon">🔴</span><span><strong>"Profil" wird truncated/abgeschnitten</strong> auf 390px</span></li>
+        <li class="problem"><span class="icon">🟠</span><span><strong>Mikrofon-Button in der Mitte</strong> bricht das Tab-Bar-Muster — ist es Navigation oder Aktion?</span></li>
+        <li class="problem"><span class="icon">🟠</span><span><strong>"Dokumente" hat KEINEN Tab</strong>, obwohl für Bau-PM essentiell — dafür hat "Gedanken" einen Tab</span></li>
+      </ul>
+    </div>
+
+    <!-- 3.2 Aufgaben Mobile -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">3.2 Aufgaben-Liste Mobile</div>
+          <div class="card-subtitle">Task-Board auf kleinem Viewport</div>
+        </div>
+        <span class="severity severity-yellow">🟡 Probleme</span>
+      </div>
+      <ul class="finding-list">
+        <li class="problem"><span class="icon">🟠</span><span><strong>Filter-Bereich nimmt ~40% des Viewports</strong> ein (Button + 2 Dropdowns + 4 Status-Chips) — nur ~1.5 Task-Cards sichtbar ohne Scrollen</span></li>
+        <li class="problem"><span class="icon">🟠</span><span><strong>Status-Filter-Chips ~30pt Höhe</strong> — unter dem 44pt Touch-Minimum</span></li>
+        <li class="problem"><span class="icon">🟡</span><span><strong>Prioritäts-Labels zeigen "Normal**" / "Hoch**"</strong> — Rendering-Bug mit Sternchen (Markdown nicht gerendert)</span></li>
+        <li class="problem"><span class="icon">🟡</span><span><strong>Inline-Status-Dropdown auf jeder Card</strong> ist auf Mobile fehleranfällig — versehentliche Taps beim Scrollen</span></li>
+      </ul>
+    </div>
+
+    <!-- 3.3 Neue Aufgabe Mobile -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">3.3 Neue Aufgabe Mobile</div>
+          <div class="card-subtitle">Task-Erstellung als Drawer/Sheet</div>
+        </div>
+        <span class="severity severity-yellow">🟡 Probleme</span>
+      </div>
+      <ul class="finding-list">
+        <li class="good"><span class="icon">✅</span><span>Drawer/Sheet Pattern wird korrekt verwendet</span></li>
+        <li class="problem"><span class="icon">🟠</span><span><strong>X-Button zum Schließen nur ~24px</strong> — drastisch unter Mindest-Touch-Target</span></li>
+        <li class="problem"><span class="icon">🟡</span><span><strong>Textarea hat Desktop-Resize-Handle</strong> auf Mobile — sinnlos und irritierend</span></li>
+        <li class="problem"><span class="icon">🟡</span><span><strong>Validierungs-Toast am unteren Bildschirmrand</strong> — kollidiert potenziell mit iPhone Home Indicator (Safe Area)</span></li>
+        <li class="problem"><span class="icon">🟡</span><span><strong>Keine Inline-Validierung</strong> am Feld</span></li>
+      </ul>
+    </div>
+
+    <!-- 3.4 Dokumente -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">3.4 Dokumente</div>
+          <div class="card-subtitle">Datei-Verwaltung</div>
+        </div>
+        <span class="severity severity-orange">🟠 Dead End</span>
+      </div>
+      <ul class="finding-list">
+        <li class="problem"><span class="icon">🟠</span><span><strong>Leere Seite:</strong> "Dokumente werden von Teammitgliedern über die Projektseite hochgeladen" — ohne Button, ohne Link</span></li>
+        <li class="problem"><span class="icon">🟠</span><span><strong>Kein Upload-CTA</strong>, kein Link zur Projektseite — Nutzer ist gestrandet ohne Handlungsoption</span></li>
+        <li class="problem"><span class="icon">🟠</span><span>Empty State ist eine <strong>Sackgasse (Dead End)</strong> — klassisches UX-Anti-Pattern</span></li>
+      </ul>
+    </div>
+
+    <!-- 3.5 Copilot -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">3.5 Copilot</div>
+          <div class="card-subtitle">KI-Feature</div>
+        </div>
+        <span class="severity severity-red">🔴 Kritisch</span>
+      </div>
+      <ul class="finding-list">
+        <li class="problem"><span class="icon">🔴</span><span><strong>Seite ist KOMPLETT LEER</strong> — kein Input-Feld, keine Prompts, kein Onboarding, kein Placeholder</span></li>
+        <li class="problem"><span class="icon">🔴</span><span><strong>Bottom-Navigation fehlt</strong> auf dieser Seite — Nutzer ist ohne Rückweg (nur OS-Geste)</span></li>
+        <li class="problem"><span class="icon">🔴</span><span>Für ein <strong>AI-Feature als zentrales Differenzierungsmerkmal</strong> ist das inakzeptabel</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. Übergreifende Probleme -->
+  <div class="section">
+    <div class="section-title">04 — Übergreifende Probleme</div>
+
+    <div class="two-col">
+      <!-- 4.1 Datumsformate -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">4.1 Datumsformate (3 verschiedene!)</div>
+        </div>
+        <ul class="finding-list" style="margin-bottom:14px">
+          <li class="problem"><span class="icon">📍</span><span>Dashboard: <code>"20.03."</code> — deutsch, ohne Jahr</span></li>
+          <li class="problem"><span class="icon">📍</span><span>Kanban-Cards: <code>"2026-04-20"</code> — ISO 8601</span></li>
+          <li class="problem"><span class="icon">📍</span><span>Dialog: <code>"dd/mm/yyyy"</code> — Browser-Default</span></li>
+        </ul>
+        <div style="background:#FFF7ED;border:1px solid #FDBA74;border-radius:10px;padding:10px 14px;font-size:13px;color:#92400E;font-weight:600;">
+          → Empfehlung: <strong>dd.mm.yyyy (deutsch) überall</strong> vereinheitlichen
+        </div>
+      </div>
+
+      <!-- 4.2 Onboarding -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">4.2 Onboarding-Modal</div>
+        </div>
+        <ul class="finding-list">
+          <li class="problem"><span class="icon">🟡</span><span><strong>Modal + Banner gleichzeitig</strong> = doppeltes Onboarding für dasselbe Feature</span></li>
+          <li class="problem"><span class="icon">🟡</span><span><strong>3 Dismiss-Optionen:</strong> X, "Nicht mehr anzeigen", "Später" — Decision Fatigue</span></li>
+          <li class="problem"><span class="icon">🟡</span><span>Modal blockiert sofort nach Login — kein Orientieren möglich</span></li>
+          <li class="problem"><span class="icon">🟡</span><span><strong>localStorage-Bug:</strong> Dismiss wurde nicht persistent gespeichert — Modal erschien bei Tests wiederholt</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- 4.3 Kein Suchfeld -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">4.3 Kein globales Suchfeld</div>
+        </div>
+        <ul class="finding-list">
+          <li class="problem"><span class="icon">🔴</span><span>Weder auf Dashboard noch auf Aufgaben-Seite gibt es ein Suchfeld</span></li>
+          <li class="problem"><span class="icon">🔴</span><span>Bei <strong>45+ offenen Tasks und 8+ Projekten</strong> ist das ein kritischer Gap</span></li>
+        </ul>
+      </div>
+
+      <!-- 4.4 Console-Fehler -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">4.4 Console-Fehler</div>
+        </div>
+        <div class="code-block">
+          <span class="error-label">NotFoundError:</span> Failed to execute<br>
+          'removeChild' on 'Node':<br>
+          The node to be removed is not<br>
+          a child of this node.
+        </div>
+        <p style="font-size:13px;color:#6B7280;margin-top:10px;">Onboarding-Modal verursacht DOM-Konflikte wenn programmatisch entfernt.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Prioritäts-Matrix -->
+  <div class="section">
+    <div class="section-title">05 — Prioritäts-Matrix (Top 10 Fixes)</div>
+    <div class="card" style="padding: 24px 28px;">
+      <table class="priority-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Severity</th>
+            <th>Fix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><span class="severity severity-red">🔴 Kritisch</span></td>
+            <td>Copilot-Seite implementieren (leere Seite = Feature existiert nicht)</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><span class="severity severity-red">🔴 Kritisch</span></td>
+            <td>Bottom-Nav auf 5 Items reduzieren (Sprache als FAB, Profil in Header, Dokumente als Tab)</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><span class="severity severity-red">🔴 Kritisch</span></td>
+            <td>Suchfeld auf Aufgaben-Seite + Dashboard</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><span class="severity severity-orange">🟠 Hoch</span></td>
+            <td>Inline Form-Validierung statt Toast-only</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><span class="severity severity-orange">🟠 Hoch</span></td>
+            <td>Assignee-Feld im Neue-Aufgabe-Dialog</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><span class="severity severity-orange">🟠 Hoch</span></td>
+            <td>Datumsformat vereinheitlichen (dd.mm.yyyy deutsch überall)</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td><span class="severity severity-orange">🟠 Hoch</span></td>
+            <td>Dokumente Empty-State mit CTA und Link zur Projektseite</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td><span class="severity severity-yellow">🟡 Medium</span></td>
+            <td>Onboarding vereinfachen (nur 1 Dismiss-Option, kein doppeltes Modal + Banner)</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td><span class="severity severity-yellow">🟡 Medium</span></td>
+            <td>Prioritäts-Label Rendering-Bug fixen ("Normal**" / "Hoch**")</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td><span class="severity severity-yellow">🟡 Medium</span></td>
+            <td>Filter-Bereich auf Mobile klappbar machen (Accordion/Collapse)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 6. Technische Notizen -->
+  <div class="section">
+    <div class="section-title">06 — Technische Notizen</div>
+    <div class="card">
+      <div class="tech-grid">
+        <div class="tech-item">
+          <div class="tech-label">Test-Framework</div>
+          <div class="tech-value">Playwright 1.58.2</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-label">Test-Hardware</div>
+          <div class="tech-value">Raspberry Pi 5, headless Chromium</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-label">Desktop Viewport</div>
+          <div class="tech-value">1440 × 900 px</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-label">Mobile Viewport</div>
+          <div class="tech-value">390 × 844 px · iPhone 14 · hasTouch: true</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-label">App URL</div>
+          <div class="tech-value">mehlhart-ai.lovable.app (Lovable)</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-label">Onboarding-Modal Workaround</div>
+          <div class="tech-value">force-click / JS-Removal erforderlich</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
