@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eintracht Briefing - 20. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #dc3545;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .date {
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        .summary {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+            border-left: 5px solid #dc3545;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .article-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .article-content {
+            padding: 25px;
+        }
+
+        .article-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .article-title a {
+            text-decoration: none;
+            color: #dc3545;
+            transition: color 0.3s ease;
+        }
+
+        .article-title a:hover {
+            color: #a02834;
+        }
+
+        .article-time {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .article-summary {
+            color: #495057;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #dc3545;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 10px 5px 0 0;
+            font-weight: 500;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏔️ Eintracht Briefing</h1>
+            <div class="date">Donnerstag, 20. März 2026</div>
+        </div>
+
+        <div class="summary">
+            <h3>📊 Tagesübersicht</h3>
+            <p><strong>10 Artikel</strong> von gestern (19. März) • <strong>Top-Themen:</strong> Amenda-WM-Träume, Nagelsmann zu Toppmöller, Knauff & Theate zurück im Training</p>
+        </div>
+
+        <div class="articles-grid">
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-time">19.03.2026, 21:19</div>
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/eintracht-star-nennt-im-video-gruende-fuer-transfer-wende-zr-94226645.html" target="_blank">
+                            Eintracht-Star nennt im Video Gründe für Transfer-Wende
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        Aurèle Amenda spricht offen über seine schwierige Phase mit Wechselgedanken. Der 22-Jährige wollte nur spielen und erklärt, warum ihn Gespräche zum Bleiben bei der Eintracht bewegten. Trotz der Probleme entschied er sich, für seinen Traum zu kämpfen.
+                    </div>
+                    <span class="tag">Transfer</span>
+                    <span class="tag">Amenda</span>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-time">19.03.2026, 21:13</div>
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/nach-gegentor-flut-eintracht-star-macht-im-video-klare-ansage-fuer-saisonfinale-zr-94226641.html" target="_blank">
+                            Nach Gegentor-Flut: Eintracht-Star macht klare Ansage für Saisonfinale
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        Trotz einer Achterbahnfahrt-Saison mit vielen Gegentoren zeigt sich Aurèle Amenda kämpferisch. Er richtet den Blick nach vorne und schwört die Mannschaft auf die verbleibenden Spiele ein – eine klare Kampfansage für das Saisonfinale.
+                    </div>
+                    <span class="tag">Saisonfinale</span>
+                    <span class="tag">Amenda</span>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-time">19.03.2026, 17:22</div>
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/eintracht-trainer-riera-nach-koch-sperre-vor-abwehr-raetsel-zr-94226367.html" target="_blank">
+                            Eintracht-Trainer Riera vor Abwehr-Rätsel – kommt die große Überraschung?
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        Robin Koch fehlt gesperrt gegen Mainz 05, Trainer Albert Riera muss die Abwehr umbauen. Mehrere Optionen stehen zur Verfügung, eine davon wäre eine echte Sensation. Arthur Theate könnte den Abwehrchef ersetzen.
+                    </div>
+                    <span class="tag">Aufstellung</span>
+                    <span class="tag">Riera</span>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-time">19.03.2026, 16:04</div>
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/dfb-coach-nagelsmann-trauert-trainer-freund-toppmoeller-hinterher-zr-94226100.html" target="_blank">
+                            DFB-Coach Nagelsmann trauert Ex-Eintracht-Trainer Toppmöller hinterher
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        Bundestrainer Julian Nagelsmann lobte auf der Pressekonferenz die positive Entwicklung der Eintracht unter Riera. Gleichzeitig hatte er freundliche Worte für Ex-Coach Dino Toppmöller übrig, mit dem er bei Bayern zusammenarbeitete.
+                    </div>
+                    <span class="tag">Nagelsmann</span>
+                    <span class="tag">Toppmöller</span>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-time">19.03.2026, 16:02</div>
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/amenda-traeumt-nach-schwierigen-monaten-bei-der-eintracht-von-der-wm-94226096.html" target="_blank">
+                            Amenda träumt nach schwierigen Monaten bei der Eintracht von der WM
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        Der Schweizer ist nach dem Trainerwechsel endlich Stammspieler und träumt von der WM 2026. "Das ist ein großer Traum", sagt der 22-Jährige aus Biel. Die Chancen stehen gut für eine Nominierung der Schweizer Nationalmannschaft.
+                    </div>
+                    <span class="tag">WM 2026</span>
+                    <span class="tag">Amenda</span>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-time">19.03.2026, 15:28</div>
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/die-eintracht-erobert-mit-dem-sieg-gegen-hoffenheim-den-dritten-platz-zurueck-und-will-beim-hsv-nachlegen-94225970.html" target="_blank">
+                            Heimstärke als Frankfurter Trumpf
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        Die Eintracht-Frauen eroberten mit dem Sieg gegen Hoffenheim den dritten Platz zurück. Das Eigenheim am Brentanobad ist eine echte Festung – nur Bayern München konnte sich bislang in Frankfurt durchsetzen.
+                    </div>
+                    <span class="tag">Frauen</span>
+                    <span class="tag">Hoffenheim</span>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-time">19.03.2026, 15:17</div>
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/visier-eintracht-frankfurt-nimmt-bochums-cajetan-lenz-ins-94225934.html" target="_blank">
+                            Eintracht Frankfurt nimmt Bochums Cajetan Lenz ins Visier
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        Hugo Larsson müht sich im Mittelfeld unter Riera. Als möglicher Verstärkung steht Cajetan Lenz vom VfL Bochum auf dem Wunschzettel der Frankfurter. Der Zweitliga-Star könnte bald bei der SGE übernehmen.
+                    </div>
+                    <span class="tag">Transfer</span>
+                    <span class="tag">Lenz</span>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-time">19.03.2026, 14:15</div>
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/eintracht-stuermer-burkardt-nicht-fuer-dfb-kader-nominiert-zr-94225680.html" target="_blank">
+                            Ist der WM-Zug für Eintracht-Stürmer Burkardt endgültig abgefahren?
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        Bundestrainer Julian Nagelsmann gab den DFB-Kader für die kommenden Länderspiele bekannt. Eintracht-Star Jonathan Burkardt ist nicht dabei – eine herbe Enttäuschung vor der letzten Länderspielpause vor der WM.
+                    </div>
+                    <span class="tag">DFB</span>
+                    <span class="tag">Burkardt</span>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-time">19.03.2026, 12:40</div>
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/eintracht-stars-knauff-und-theate-feiern-trainings-comeback-zr-94225540.html" target="_blank">
+                            Knauff und Theate feiern Comeback im Mannschaftstraining
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        Vor dem Derby gegen Mainz 05 gibt es gute Nachrichten: Die Leistungsträger Ansgar Knauff und Arthur Theate kehrten ins Mannschaftstraining zurück. Passend zur entscheidenden Saisonphase melden sich wichtige Spieler zurück.
+                    </div>
+                    <span class="tag">Comeback</span>
+                    <span class="tag">Knauff</span>
+                    <span class="tag">Theate</span>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-time">19.03.2026, 10:44</div>
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/eintracht-juwel-brown-darf-sich-grosse-hoffnungen-auf-wm-teilnahme-machen-zr-94225282.html" target="_blank">
+                            Bundestrainer Nagelsmann schwärmt von Eintracht-Talent Brown
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        DFB-Coach Julian Nagelsmann gab den Kader für die letzte Länderspielpause vor der WM bekannt. Mit dabei: Eintracht-Verteidiger Nathaniel Brown. Nagelsmann schwärmt vom jungen Talent und dessen WM-Chancen steigen.
+                    </div>
+                    <span class="tag">DFB</span>
+                    <span class="tag">Brown</span>
+                    <span class="tag">WM-Kader</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Generiert am 20. März 2026 um 06:35 • Quelle: Frankfurter Rundschau</p>
+        </div>
+    </div>
+</body>
+</html>
