@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlanRadar — Competitive Intelligence | LUMA</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #f4f4f6; color: #1a1b22; padding: 48px 24px; line-height: 1.6; }
+  .container { max-width: 960px; margin: 0 auto; }
+  .header { margin-bottom: 40px; }
+  .eyebrow { font-size: 12px; font-weight: 600; color: #7c3aed; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+  .meta { font-size: 13px; color: #9ca3af; }
+  .meta span { color: #6b7280; }
+
+  /* Score badge */
+  .score-bar { display: flex; gap: 16px; flex-wrap: wrap; margin: 28px 0; }
+  .score-card { background: #fff; border-radius: 14px; padding: 20px 24px; flex: 1; min-width: 160px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .score-card .label { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+  .score-card .value { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  .score-card .sub { font-size: 12px; color: #9ca3af; margin-top: 2px; }
+  .green { color: #16a34a; }
+  .red { color: #dc2626; }
+  .amber { color: #d97706; }
+  .violet { color: #7c3aed; }
+
+  /* Sections */
+  .section { margin-bottom: 32px; }
+  .section-title { font-size: 13px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
+
+  /* Cards */
+  .card { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04); margin-bottom: 16px; }
+  .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .card p { font-size: 14px; color: #4b5563; line-height: 1.7; }
+
+  /* Grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  @media (max-width: 700px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  /* Tags */
+  .tag { display: inline-block; font-size: 11px; font-weight: 600; border-radius: 100px; padding: 3px 10px; margin: 2px; }
+  .tag-green { background: #dcfce7; color: #15803d; }
+  .tag-red { background: #fee2e2; color: #b91c1c; }
+  .tag-violet { background: #f0ebff; color: #7c3aed; }
+  .tag-amber { background: #fef3c7; color: #b45309; }
+  .tag-blue { background: #dbeafe; color: #1d4ed8; }
+
+  /* Feature list */
+  .feature-list { list-style: none; padding: 0; }
+  .feature-list li { font-size: 14px; color: #4b5563; padding: 7px 0; border-bottom: 1px solid #f3f4f6; display: flex; align-items: flex-start; gap: 10px; }
+  .feature-list li:last-child { border-bottom: none; }
+  .feature-list li::before { content: '✓'; color: #7c3aed; font-weight: 700; font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+
+  /* Quote */
+  .quote { background: #f9fafb; border-left: 3px solid #7c3aed; border-radius: 0 12px 12px 0; padding: 16px 20px; margin: 12px 0; }
+  .quote p { font-size: 14px; color: #374151; font-style: italic; line-height: 1.7; }
+  .quote .attribution { font-size: 12px; color: #9ca3af; margin-top: 6px; font-style: normal; font-weight: 500; }
+
+  /* Competitor comparison */
+  .vs-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .vs-table th { background: #f9fafb; font-weight: 600; color: #6b7280; text-align: left; padding: 10px 14px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .vs-table td { padding: 12px 14px; border-bottom: 1px solid #f3f4f6; color: #374151; vertical-align: top; }
+  .vs-table tr:last-child td { border-bottom: none; }
+  .vs-table .planradar { color: #dc2626; font-weight: 600; }
+  .vs-table .luma { color: #7c3aed; font-weight: 600; }
+
+  /* Opportunity box */
+  .opportunity { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border: 1px solid #ddd6fe; border-radius: 16px; padding: 28px; margin-bottom: 16px; }
+  .opportunity h3 { color: #5b21b6; font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .opportunity p { font-size: 14px; color: #4c1d95; line-height: 1.7; }
+
+  /* Footer */
+  .footer { font-size: 12px; color: #d1d5db; text-align: center; padding-top: 32px; border-top: 1px solid #f0f0f2; margin-top: 40px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="eyebrow">Competitive Intelligence · LUMA</div>
+    <h1>PlanRadar — Deep Dive</h1>
+    <div class="meta">Gecrawlt: <span>21.03.2026</span> · 40 Seiten · 83.423 Wörter · Quelle: planradar.com</div>
+  </div>
+
+  <!-- Score Cards -->
+  <div class="score-bar">
+    <div class="score-card">
+      <div class="label">Marktposition</div>
+      <div class="value violet">Stark</div>
+      <div class="sub">Etablierter Player, DACH-Fokus</div>
+    </div>
+    <div class="score-card">
+      <div class="label">Nutzer</div>
+      <div class="value green">170K+</div>
+      <div class="sub">in 75+ Ländern</div>
+    </div>
+    <div class="score-card">
+      <div class="label">Mitarbeiter</div>
+      <div class="value">400+</div>
+      <div class="sub">16 globale Standorte</div>
+    </div>
+    <div class="score-card">
+      <div class="label">Zielgruppe</div>
+      <div class="value amber">Groß</div>
+      <div class="sub">GU bis Konzern</div>
+    </div>
+    <div class="score-card">
+      <div class="label">LUMA-Bedrohung</div>
+      <div class="value amber">Mittel</div>
+      <div class="sub">Andere Zielgruppe</div>
+    </div>
+  </div>
+
+  <!-- Positioning -->
+  <div class="section">
+    <div class="section-title">Positionierung & Messaging</div>
+    <div class="card">
+      <h3>Kernversprechen</h3>
+      <p><strong>„Klare Prozesse, verlässliche Ergebnisse – unterstützt durch KI."</strong></p>
+      <p style="margin-top: 10px;">PlanRadar positioniert sich als <strong>360°-Plattform für Bau, Facility Management & Immobilien</strong>. Das Messaging dreht sich um Zeitersparnis, Mängelmanagement und digitale Dokumentation. KI ist sichtbar, aber als Support-Funktion — nicht als Kern-Differenziator.</p>
+      <div style="margin-top: 12px;">
+        <span class="tag tag-violet">Bau & Immobilien</span>
+        <span class="tag tag-violet">360° Dokumentation</span>
+        <span class="tag tag-violet">Mobile-First</span>
+        <span class="tag tag-blue">KI-gestützt</span>
+        <span class="tag tag-blue">Mängelmanagement</span>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Warum Kunden wechseln</h3>
+        <ul class="feature-list">
+          <li>Intuitivste Lösung im Vergleichstest (AUG. PRIEN: 4 Tools getestet)</li>
+          <li>Flexible Formulare & Berichtsvorlagen</li>
+          <li>Schnelle Akzeptanz durch Nicht-Techniker</li>
+          <li>Mobile App als Hauptinterface</li>
+          <li>75% der Kunden wählen wegen Nutzerfreundlichkeit</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Kommunizierte Ergebnisse</h3>
+        <ul class="feature-list">
+          <li>25% Arbeitszeitersparnis (Apleona Wolfferts)</li>
+          <li>20.000 m² in 25 min dokumentiert (vs. 3h vorher)</li>
+          <li>80% weniger Zeitaufwand (Büring Architekten)</li>
+          <li>7h/Woche Zeitersparnis (Industriebau)</li>
+          <li>Fehler & Misskommunikation "stark reduziert"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Produkt -->
+  <div class="section">
+    <div class="section-title">Produktstrategie</div>
+    <div class="grid-3">
+      <div class="card">
+        <h3>🏗️ Baumanagement</h3>
+        <p>Kernprodukt: digitale Ticket-Erstellung auf Plänen, Aufgabenmanagement, Bautagebuch, Audits, Qualitätssicherung, Übergaben. Export als PDF in Sekunden.</p>
+      </div>
+      <div class="card">
+        <h3>📄 Dokumentenmanagement</h3>
+        <p>AI-gestützte Suche, Microsoft 365-Integration, mehrstufige Freigabe-Workflows, Versionierung, rollenbasierte Zugriffsrechte.</p>
+      </div>
+      <div class="card">
+        <h3>📷 SiteView (360°)</h3>
+        <p>360°-Kamera am Helm → AI mappt Bilder auf 2D-Plan. Kein Training nötig. Fernzugriff auf Baustelle. Neuestes Feature — stark beworben.</p>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>📅 Bauzeitenplanung</h3>
+        <p>Zeitplan-Ansicht für alle Aufgaben, Phasen & Meilensteine, Abhängigkeiten, Echtzeit-Updates bei Verzögerungen.</p>
+      </div>
+      <div class="card">
+        <h3>🔌 Integrationen</h3>
+        <p>Microsoft 365 (explizit erwähnt), BIM-Unterstützung (3D-Ansicht), offene API nicht prominent beworben. Zoho CRM für Partner-Portal.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zielgruppen -->
+  <div class="section">
+    <div class="section-title">Zielgruppen & Segmente</div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Primäre Zielgruppen</h3>
+        <ul class="feature-list">
+          <li>Bauunternehmen (GU & Subunternehmer)</li>
+          <li>Architekten & Ingenieure</li>
+          <li>Projektentwickler & Eigentümer</li>
+          <li>Property & Facility Management</li>
+          <li>Gebäudetechnik & Brandschutz (TGA)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Industrien</h3>
+        <ul class="feature-list">
+          <li>Industriebau (Versorgung, Fertigung, Pharma, Auto)</li>
+          <li>Öffentlicher Sektor (Schulen, Krankenhäuser, Behörden)</li>
+          <li>Mobilität & Transport</li>
+          <li>Wohnungsbau</li>
+          <li>Nicht explizit: kleine Architekturbüros</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kunden Quotes -->
+  <div class="section">
+    <div class="section-title">Kundenstimmen (Original-Zitate)</div>
+    <div class="quote">
+      <p>„Mit SiteView erfasse ich 20.000 m² in 25 Minuten – früher habe ich dafür bis zu 3 Stunden gebraucht."</p>
+      <div class="attribution">— Philipp Chmelar, Örtliche Bauaufsicht</div>
+    </div>
+    <div class="quote">
+      <p>„Durch den Einsatz von PlanRadar spare ich mir auf dieser Baustelle ein Viertel meiner Arbeitszeit, welche ich anderweitig zur Optimierung der Prozesse einsetzen kann."</p>
+      <div class="attribution">— Bernd Fritz, Bauleiter Apleona Wolfferts</div>
+    </div>
+    <div class="quote">
+      <p>„Wir haben eine umfangreiche Testphase mit vier verschiedenen Tools gemacht und haben alle miteinander im Einsatz verglichen. Unsere Wahl fiel auf PlanRadar, weil es ein intuitives Tool ist und uns auf den Baustellen den meisten Mehrwert bietet."</p>
+      <div class="attribution">— Thorsten Hoyer, Abteilungsleiter Digitalisierung, AUG. PRIEN (700 MA, 150 Jahre Erfahrung)</div>
+    </div>
+  </div>
+
+  <!-- Go-To-Market -->
+  <div class="section">
+    <div class="section-title">Go-To-Market & Vertrieb</div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Direktvertrieb</h3>
+        <p>Primär über Demo-Anfragen ("Demo vereinbaren") und 30-Tage Free Trial. Starke Lead-Generierung über Case Studies und Webinare. Kein Self-Service-Pricing sichtbar → Sales-assisted.</p>
+      </div>
+      <div class="card">
+        <h3>Partner-Programm</h3>
+        <p>200+ Growth Partners weltweit. Zwei Modelle: <strong>Network Partner</strong> (Referrals, Provision) und <strong>Premium Partner</strong> (Land-&-Expand-Strategie, langfristig). Eigenes Partner-Portal (Zoho).</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Content & Inbound</h3>
+      <p>Starkes Content-Marketing: ausführliche Case Studies (Apleona, AUG. PRIEN, Carpus), Webinare ("TGA-Bauausführung ohne Verzögerungen"), eBooks, Pressemitteilungen (34.000 Wörter Presse-Seite). Blog aktiv. 40+ Länder-Versionen der Website.</p>
+    </div>
+  </div>
+
+  <!-- SWOT vs LUMA -->
+  <div class="section">
+    <div class="section-title">PlanRadar vs. LUMA — Direkte Analyse</div>
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <table class="vs-table">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th class="planradar">PlanRadar</th>
+            <th class="luma">LUMA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Hauptzielgruppe</strong></td>
+            <td>Große Bauunternehmen, GU, Konzerne</td>
+            <td>Kleine Architekturbüros (1–20 MA)</td>
+          </tr>
+          <tr>
+            <td><strong>Einstieg</strong></td>
+            <td>Sales-assisted, Demo required</td>
+            <td>Self-service, Lovable-Stack</td>
+          </tr>
+          <tr>
+            <td><strong>KI-Tiefe</strong></td>
+            <td>KI als Feature (Suche, SiteView)</td>
+            <td>KI als Kern (Copilot, Inbox-Agent)</td>
+          </tr>
+          <tr>
+            <td><strong>HOAI-Kontext</strong></td>
+            <td>Nicht erwähnt</td>
+            <td>Eingebaut (Leistungsphasen)</td>
+          </tr>
+          <tr>
+            <td><strong>Bautagebuch</strong></td>
+            <td>✓ Vorhanden (als Teil von Mängelmanagement)</td>
+            <td>✓ Vorhanden — PDF-Export geplant</td>
+          </tr>
+          <tr>
+            <td><strong>Preismodell</strong></td>
+            <td>Nicht transparent (Sales-Call)</td>
+            <td>Transparent, kleines Büro-freundlich</td>
+          </tr>
+          <tr>
+            <td><strong>Stärke</strong></td>
+            <td>Großprojekte, 360°-Dokumentation, Partner-Netz</td>
+            <td>HOAI, KI-Copilot, Einfachheit</td>
+          </tr>
+          <tr>
+            <td><strong>Schwäche</strong></td>
+            <td>Zu komplex für kleine Büros, kein HOAI-Fokus</td>
+            <td>Noch früh, kein Partner-Netz</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Opportunities -->
+  <div class="section">
+    <div class="section-title">Chancen für LUMA</div>
+    <div class="opportunity">
+      <h3>🎯 Direkter Differenziator: HOAI + kleines Büro</h3>
+      <p>PlanRadar spricht explizit <strong>keine kleinen Architekturbüros</strong> an. Die Zielgruppe (1–15 MA, HOAI-gebunden) taucht in keinem einzigen Content-Stück auf. Das ist ein klares Vakuum. LUMAs Stärke ist genau dieser Kontext — Leistungsphasen, Honorarplanung, HOAI-basierter Workflow.</p>
+    </div>
+    <div class="opportunity">
+      <h3>💡 KI-Positionierung: Copilot vs. Feature</h3>
+      <p>PlanRadar nutzt KI als Feature-Ergänzung (AI-Suche in Docs, SiteView-Mapping). LUMA kann KI als <strong>zentrale Produktphilosophie</strong> positionieren — der Copilot, der ein kleines Büro wie ein größeres arbeiten lässt. Das ist eine fundamentally andere Story.</p>
+    </div>
+    <div class="opportunity">
+      <h3>📊 Transparenz als Vorteil</h3>
+      <p>PlanRadar hat kein öffentliches Pricing — alles läuft über Demo-Anfrage. Kleine Büros scheuen Sales-Calls. LUMA kann mit transparentem, selbst-servierbarem Pricing punkten: "In 10 Minuten live, kein Anruf nötig."</p>
+    </div>
+    <div class="opportunity">
+      <h3>🏗️ Bautagebuch-PDF: Shared Feature, andere Umsetzung</h3>
+      <p>PlanRadar hat Bautagebuch-Export — aber als Teil eines komplexen Systems für große Bauprojekte. LUMAs Ansatz (leichtgewichtig, PDF mit Corporate Design, konfigurierbar) ist für kleine Büros zugänglicher. Kim hat hier bereits konkrete Anforderungen definiert.</p>
+    </div>
+  </div>
+
+  <!-- Zusammenfassung -->
+  <div class="section">
+    <div class="section-title">Zusammenfassung</div>
+    <div class="card">
+      <h3>Einordnung für LUMA</h3>
+      <p>PlanRadar ist <strong>kein direkter Wettbewerber</strong> für LUMAs Kernzielgruppe — kleine Architekturbüros. PlanRadar spielt in einer anderen Liga: 170.000 Nutzer, 400 MA, globale Präsenz, Enterprise-Sales. Die Zielgruppe sind Bauunternehmen, GU und große Immobilienprojekte.</p>
+      <p style="margin-top: 10px;">Was relevant ist: PlanRadar zeigt, <strong>was der Markt will</strong> (Zeitersparnis, mobile Dokumentation, Mängelmanagement) und was die <strong>Erfolgs-KPIs</strong> sind (25% Zeitersparnis, 80% weniger Aufwand). Diese Sprache kann LUMA übernehmen — für den kleineren Kontext.</p>
+      <p style="margin-top: 10px;"><strong>Sales-Taktik:</strong> Wenn ein Prospect PlanRadar kennt: "PlanRadar ist für Großprojekte — LUMA ist das Äquivalent für euer Büro. Mit HOAI-Kontext den ihr braucht."</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    Hatti · LUMA Competitive Intelligence · planradar.com · 40 Seiten gecrawlt · 83.423 Wörter analysiert · 21.03.2026
+  </div>
+
+</div>
+</body>
+</html>
