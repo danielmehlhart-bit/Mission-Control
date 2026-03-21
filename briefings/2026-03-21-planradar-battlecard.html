@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlanRadar Battlecard — Competitive Intelligence</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      line-height: 1.6;
+    }
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+      color: white;
+      padding: 56px 32px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "⚔️";
+      position: absolute;
+      font-size: 200px;
+      opacity: 0.04;
+      top: -30px;
+      right: -20px;
+    }
+    .hero .label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; margin-bottom: 12px; }
+    .hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 12px; }
+    .hero p { font-size: 16px; opacity: 0.8; max-width: 600px; margin: 0 auto; }
+    .hero .meta { margin-top: 20px; font-size: 13px; opacity: 0.5; }
+    .hero .badge-hero {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-top: 12px;
+      letter-spacing: 1px;
+    }
+    .container { max-width: 980px; margin: 0 auto; padding: 40px 24px; }
+    .section-title {
+      font-size: 12px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: #888;
+      margin-bottom: 16px; margin-top: 48px;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 8px;
+    }
+
+    /* TL;DR */
+    .tldr {
+      background: #fff; border-left: 5px solid #0f3460;
+      border-radius: 10px; padding: 24px 28px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 8px;
+    }
+    .tldr h2 { font-size: 17px; font-weight: 800; margin-bottom: 14px; color: #0f3460; }
+    .tldr ul { padding-left: 20px; }
+    .tldr ul li { margin-bottom: 8px; font-size: 14.5px; }
+
+    /* Cards */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 8px; }
+    .card { background: #fff; border-radius: 10px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .card .icon { font-size: 26px; margin-bottom: 12px; }
+    .card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .card p { font-size: 14px; color: #555; }
+    .card ul { padding-left: 18px; margin-top: 8px; }
+    .card ul li { font-size: 13.5px; color: #555; margin-bottom: 5px; }
+
+    /* Battlecard spezifisch */
+    .bc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 8px; }
+    @media (max-width: 640px) { .bc-grid { grid-template-columns: 1fr; } }
+    .bc-card { background: #fff; border-radius: 10px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .bc-card.green { border-top: 4px solid #4caf50; }
+    .bc-card.red { border-top: 4px solid #f44336; }
+    .bc-card.blue { border-top: 4px solid #2196f3; }
+    .bc-card.orange { border-top: 4px solid #ff9800; }
+    .bc-card h3 { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+    .bc-card.green h3 { color: #2e7d32; }
+    .bc-card.red h3 { color: #c62828; }
+    .bc-card.blue h3 { color: #1565c0; }
+    .bc-card.orange h3 { color: #e65100; }
+    .bc-card ul { list-style: none; padding: 0; }
+    .bc-card ul li { font-size: 13.5px; color: #444; padding: 6px 0; border-bottom: 1px solid #f0f0f0; display: flex; gap: 8px; align-items: flex-start; }
+    .bc-card ul li:last-child { border-bottom: none; }
+    .bc-card ul li::before { content: "›"; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .bc-card.green ul li::before { color: #4caf50; }
+    .bc-card.red ul li::before { color: #f44336; }
+    .bc-card.blue ul li::before { color: #2196f3; }
+    .bc-card.orange ul li::before { color: #ff9800; }
+
+    /* Alert Cards */
+    .warn-card { background: #fff8e1; border: 1px solid #ffc107; border-radius: 10px; padding: 20px 24px; margin-bottom: 16px; }
+    .warn-card h3 { font-size: 14px; font-weight: 700; color: #b8860b; margin-bottom: 8px; }
+    .warn-card p, .warn-card ul { font-size: 13.5px; color: #665200; }
+    .warn-card ul { padding-left: 18px; margin-top: 6px; }
+    .warn-card ul li { margin-bottom: 4px; }
+    .danger-card { background: #fff0f0; border: 1px solid #f44336; border-radius: 10px; padding: 20px 24px; margin-bottom: 16px; }
+    .danger-card h3 { font-size: 14px; font-weight: 700; color: #c62828; margin-bottom: 8px; }
+    .danger-card p, .danger-card ul { font-size: 13.5px; color: #7f0000; }
+    .danger-card ul { padding-left: 18px; margin-top: 6px; }
+    .danger-card ul li { margin-bottom: 4px; }
+    .success-card { background: #f1f8e9; border: 1px solid #8bc34a; border-radius: 10px; padding: 20px 24px; margin-bottom: 16px; }
+    .success-card h3 { font-size: 14px; font-weight: 700; color: #33691e; margin-bottom: 8px; }
+    .success-card p, .success-card ul { font-size: 13.5px; color: #1b5e20; }
+    .success-card ul { padding-left: 18px; margin-top: 6px; }
+    .success-card ul li { margin-bottom: 4px; }
+
+    /* Table */
+    .table-wrap { background: #fff; border-radius: 10px; padding: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); overflow-x: auto; margin-bottom: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    th { background: #f0f4f8; text-align: left; padding: 10px 14px; font-weight: 700; color: #444; white-space: nowrap; }
+    td { padding: 10px 14px; border-top: 1px solid #eee; vertical-align: top; }
+    tr:hover td { background: #fafafa; }
+    .badge { display: inline-block; padding: 2px 9px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+    .badge-green { background: #e8f5e9; color: #2e7d32; }
+    .badge-yellow { background: #fff8e1; color: #f57f17; }
+    .badge-red { background: #ffebee; color: #c62828; }
+    .badge-blue { background: #e3f2fd; color: #1565c0; }
+    .badge-gray { background: #f0f0f0; color: #555; }
+
+    /* Objection Handler */
+    .objection { background: #fff; border-radius: 10px; padding: 0; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 12px; overflow: hidden; }
+    .obj-q { background: #ffeaea; padding: 14px 20px; font-weight: 700; font-size: 14px; color: #c62828; border-left: 4px solid #f44336; }
+    .obj-a { padding: 14px 20px; font-size: 13.5px; color: #333; }
+    .obj-a strong { display: block; margin-bottom: 4px; color: #1a1a2e; }
+
+    /* Profil-Box */
+    .profile-box { background: #1a1a2e; color: white; border-radius: 10px; padding: 28px; margin-bottom: 8px; }
+    .profile-box .pb-header { display: flex; gap: 16px; align-items: center; margin-bottom: 20px; }
+    .profile-box .pb-logo { font-size: 40px; }
+    .profile-box .pb-name { font-size: 22px; font-weight: 800; }
+    .profile-box .pb-sub { font-size: 13px; opacity: 0.6; margin-top: 2px; }
+    .profile-box .pb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+    .profile-box .pb-stat { }
+    .profile-box .pb-stat .label { font-size: 11px; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .profile-box .pb-stat .value { font-size: 18px; font-weight: 700; }
+
+    /* Sources */
+    .sources { margin-top: 40px; padding-top: 24px; border-top: 1px solid #e0e0e0; }
+    .sources h4 { font-size: 12px; color: #aaa; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
+    .sources a { color: #0077b5; font-size: 13px; display: inline-block; margin: 2px 12px 2px 0; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+
+    footer { text-align: center; padding: 32px; color: #aaa; font-size: 12px; }
+    .tag { display: inline-block; background: #e3f2fd; color: #1565c0; padding: 3px 10px; border-radius: 12px; font-size: 12px; margin: 2px; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="label">Competitive Intelligence · Battlecard</div>
+  <h1>⚔️ PlanRadar</h1>
+  <p>So schlägst du PlanRadar — Stärken, Schwächen, Objection Handling, Gesprächsleitfaden</p>
+  <div class="badge-hero">DACH · Bau & Architektur · Stand März 2026</div>
+  <div class="meta">Erstellt von Hatti 🏔️ für Daniel Mehlhart · LUMA / Architekt Connect</div>
+</div>
+
+<div class="container">
+
+  <!-- TL;DR -->
+  <div class="tldr">
+    <h2>⚡ Kernaussagen auf einen Blick</h2>
+    <ul>
+      <li>PlanRadar ist ein skaliertes PropTech aus Wien (€90M+ Funding, 150.000 Nutzer, 75 Länder) — kein KMU-Tool, sondern Mittelstand-bis-Enterprise</li>
+      <li>Stärke: Mängelmanagement + Baudokumentation auf der Baustelle. Schwäche: teuer, unflexibel, kein echter KI-Layer</li>
+      <li>Preise ab €26/Nutzer/Monat (Basic) bis €129 (Pro) — ohne Subunternehmer-Kosten. Bei kleinen Büros schnell teuer.</li>
+      <li>Architekten-Büros nutzen es meist für Bauleitung/LPH 8–9. Die frühen Phasen (LPH 1–5, Planung, Koordination) deckt PlanRadar kaum ab</li>
+      <li>Häufige Beschwerden: Sync-Probleme, starre Workflows, schlechte Adoption bei Nachunternehmern, kaum Individualisierung</li>
+      <li><strong>Deine Lücke:</strong> AI-First, Architekten-spezifisch (HOAI-Phasen), Voice-to-Task, leichter Einstieg — das ist alles, was PlanRadar nicht ist</li>
+    </ul>
+  </div>
+
+  <!-- Unternehmens-Profil -->
+  <div class="section-title">Wer ist PlanRadar?</div>
+  <div class="profile-box">
+    <div class="pb-header">
+      <div class="pb-logo">🏗️</div>
+      <div>
+        <div class="pb-name">PlanRadar GmbH</div>
+        <div class="pb-sub">Wien, Österreich · gegründet 2013 · SaaS, PropTech / ConTech</div>
+      </div>
+    </div>
+    <div class="pb-grid">
+      <div class="pb-stat"><div class="label">Funding</div><div class="value">€90M+</div></div>
+      <div class="pb-stat"><div class="label">Nutzer</div><div class="value">150.000+</div></div>
+      <div class="pb-stat"><div class="label">Kunden</div><div class="value">18.000+</div></div>
+      <div class="pb-stat"><div class="label">Länder</div><div class="value">75+</div></div>
+      <div class="pb-stat"><div class="label">Mitarbeiter</div><div class="value">400+</div></div>
+      <div class="pb-stat"><div class="label">ICP</div><div class="value">Mid-Market</div></div>
+    </div>
+  </div>
+
+  <!-- Stärken / Schwächen -->
+  <div class="section-title">Stärken & Schwächen</div>
+  <div class="bc-grid">
+    <div class="bc-card green">
+      <h3>✅ Stärken PlanRadar</h3>
+      <ul>
+        <li>Mängelmanagement & Punch Lists — Marktstandard auf Baustellen</li>
+        <li>Mobile-First: iOS + Android, Offline-Modus</li>
+        <li>Unbegrenzte Subunternehmer in allen Plänen</li>
+        <li>Fotodokumentation direkt auf Bauplänen</li>
+        <li>360°-Fotos (SiteView-Add-on)</li>
+        <li>Starke Marke im DACH-Raum — bekannt bei Bauleitern</li>
+        <li>BIM-Integration (Pro-Plan)</li>
+        <li>30 Tage kostenlose Testphase</li>
+      </ul>
+    </div>
+    <div class="bc-card red">
+      <h3>🚨 Schwächen PlanRadar</h3>
+      <ul>
+        <li>Kein KI-Layer — keine AI-Automatisierung</li>
+        <li>Fokus nur LPH 8–9 (Bauphase) — Planung/frühe Phasen fehlen</li>
+        <li>Hohe Kosten bei kleinen Büros (€26–129/User/Monat)</li>
+        <li>Sync-Probleme Mobile ↔ Desktop bei großen Projekten</li>
+        <li>Fotos können nach Upload nicht bearbeitet werden</li>
+        <li>Adoption-Problem: Nachunternehmer lehnen App oft ab</li>
+        <li>Berichte wenig anpassbar — Standard-Templates fix</li>
+        <li>Kein Voice-to-Task, kein natürlicher Spracheingang</li>
+        <li>Cancellation-Fallen: Jahresabo, Kündigungsfristen versteckt</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Feature-Vergleich Tabelle -->
+  <div class="section-title">Feature-Vergleich: PlanRadar vs. LUMA / Architekt Connect</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>PlanRadar</th>
+          <th>LUMA / Architekt Connect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Zielgruppe</strong></td>
+          <td>Bauleiter, GU, Facility Management</td>
+          <td><span class="badge badge-blue">Architekten, kleinere Büros</span></td>
+        </tr>
+        <tr>
+          <td><strong>HOAI-Phasen abgedeckt</strong></td>
+          <td>LP 8–9 (Bauausführung)</td>
+          <td><span class="badge badge-green">LP 1–9 (vollständig)</span></td>
+        </tr>
+        <tr>
+          <td><strong>KI / AI-Funktionen</strong></td>
+          <td><span class="badge badge-red">Keine</span></td>
+          <td><span class="badge badge-green">Voice-to-Task, AI-Vorschläge</span></td>
+        </tr>
+        <tr>
+          <td><strong>Voice-to-Task</strong></td>
+          <td><span class="badge badge-red">Nein</span></td>
+          <td><span class="badge badge-green">Ja (Kernfeature)</span></td>
+        </tr>
+        <tr>
+          <td><strong>Mängelmanagement</strong></td>
+          <td><span class="badge badge-green">Sehr stark</span></td>
+          <td><span class="badge badge-yellow">Vorhanden (leichter)</span></td>
+        </tr>
+        <tr>
+          <td><strong>Bautagebuch</strong></td>
+          <td><span class="badge badge-green">Ja</span></td>
+          <td><span class="badge badge-green">Ja</span></td>
+        </tr>
+        <tr>
+          <td><strong>Projekt-Kanban / Task Board</strong></td>
+          <td><span class="badge badge-yellow">Eingeschränkt</span></td>
+          <td><span class="badge badge-green">Vollständig</span></td>
+        </tr>
+        <tr>
+          <td><strong>Zeiterfassung</strong></td>
+          <td><span class="badge badge-red">Nein</span></td>
+          <td><span class="badge badge-green">Ja</span></td>
+        </tr>
+        <tr>
+          <td><strong>Dokumente / DMS</strong></td>
+          <td><span class="badge badge-green">Ja (Starter+)</span></td>
+          <td><span class="badge badge-green">Ja</span></td>
+        </tr>
+        <tr>
+          <td><strong>BIM-Integration</strong></td>
+          <td><span class="badge badge-yellow">Pro-Plan (Aufpreis)</span></td>
+          <td><span class="badge badge-gray">TBD</span></td>
+        </tr>
+        <tr>
+          <td><strong>Einstiegspreis</strong></td>
+          <td>€26/User/Monat (Basic)</td>
+          <td><span class="badge badge-green">Günstiger / Flat-Rate geplant</span></td>
+        </tr>
+        <tr>
+          <td><strong>Setup-Aufwand</strong></td>
+          <td>~1 Woche, Training nötig</td>
+          <td><span class="badge badge-green">1 Tag, kein Training</span></td>
+        </tr>
+        <tr>
+          <td><strong>Offline-Modus</strong></td>
+          <td><span class="badge badge-green">Ja</span></td>
+          <td><span class="badge badge-yellow">In Entwicklung</span></td>
+        </tr>
+        <tr>
+          <td><strong>Subunternehmer-Zugang</strong></td>
+          <td><span class="badge badge-green">Kostenlos, unbegrenzt</span></td>
+          <td><span class="badge badge-yellow">Geplant</span></td>
+        </tr>
+        <tr>
+          <td><strong>Fokus</strong></td>
+          <td>Baustelendokumentation</td>
+          <td><span class="badge badge-blue">Architektur-Workflow ganzheitlich</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Preisvergleich -->
+  <div class="section-title">Preise PlanRadar (aktuell, EUR)</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Plan</th>
+          <th>Preis/User/Monat</th>
+          <th>10 User / Jahr</th>
+          <th>Besonderheiten</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Basic</strong></td>
+          <td>€26</td>
+          <td>~€3.120</td>
+          <td>Max. 30 Pläne/User, E-Mail-Support</td>
+        </tr>
+        <tr>
+          <td><strong>Starter</strong></td>
+          <td>€89</td>
+          <td>~€10.680</td>
+          <td>DMS, schnellerer Support, 30 Pläne/User</td>
+        </tr>
+        <tr>
+          <td><strong>Pro</strong></td>
+          <td>€129</td>
+          <td>~€15.480</td>
+          <td>Custom Templates, Reports, BIM (1 Modell/User)</td>
+        </tr>
+        <tr>
+          <td><strong>Enterprise</strong></td>
+          <td>Auf Anfrage</td>
+          <td>—</td>
+          <td>SiteView 360°, Approval Workflows, SLA</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="warn-card">
+    <h3>⚠️ Preisfalle für kleine Büros</h3>
+    <p>Ein kleines Architekturbüro mit 5 Architekten zahlt bereits <strong>€780–3.870/Jahr</strong> — ohne BIM, ohne 360°-Fotos. Zusätzliche Features wie SiteView kosten extra. Und: Jahresverträge mit versteckten Kündigungsfristen. Ein Nutzer berichtet von €2.000+ für ein ungenutztes Abo.</p>
+  </div>
+
+  <!-- Wettbewerbsumfeld -->
+  <div class="section-title">Wettbewerb im Markt</div>
+  <div class="cards">
+    <div class="card">
+      <div class="icon">🏗️</div>
+      <h3>Procore</h3>
+      <p>US-Enterprise-Platzhirsch. Sehr teuer ($375+/Monat). Zu komplex für kleine Büros. Stark bei GU und großen Projekten.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🔧</div>
+      <h3>Fieldwire (Hilti)</h3>
+      <p>Gut für Subunternehmer. Einfacher als PlanRadar. Kein DACH-Fokus, keine HOAI-Logik. Backed by Hilti.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🇨🇭</div>
+      <h3>smino</h3>
+      <p>Aus der Schweiz. Günstigere Alternative im DACH-Raum. BIM + Aufgaben + Mängel. Wächst, aber kleiner als PlanRadar.</p>
+    </div>
+    <div class="card">
+      <div class="icon">📐</div>
+      <h3>capmo</h3>
+      <p>Deutsches KMU-Tool für Baumanagement. Günstiger, einfacher. Keine AI, keine HOAI-Logik.</p>
+    </div>
+    <div class="card">
+      <div class="icon">☁️</div>
+      <h3>Autodesk Construction Cloud</h3>
+      <p>Teil des Autodesk-Ökosystems. Komplex, teuer, für Enterprise. CAD/BIM-heavy, kein KMU-Einstieg.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🏔️</div>
+      <h3>LUMA (du)</h3>
+      <p>AI-First, Architekten-spezifisch, HOAI-Phasen, Voice-to-Task. Deckt ab, was PlanRadar bewusst nicht macht: frühe Phasen + AI.</p>
+    </div>
+  </div>
+
+  <!-- Objection Handling -->
+  <div class="section-title">Objection Handling — Was Kunden sagen werden</div>
+
+  <div class="objection">
+    <div class="obj-q">„Wir nutzen schon PlanRadar. Warum soll ich wechseln?"</div>
+    <div class="obj-a">
+      <strong>Antwort:</strong>
+      PlanRadar ist gut für Bauleitung in LP 8–9. Aber: Was passiert in LP 1–5? Planung, Abstimmungen, Entscheidungen, Koordination — das läuft alles noch in Mails und Excel. LUMA deckt den gesamten Projektverlauf ab, inklusive AI, die dir Arbeit abnimmt. PlanRadar ist ein Werkzeug für die Baustelle — LUMA ist dein Büro-Betriebssystem.
+    </div>
+  </div>
+
+  <div class="objection">
+    <div class="obj-q">„PlanRadar ist der Marktstandard — alle kennen das."</div>
+    <div class="obj-a">
+      <strong>Antwort:</strong>
+      Genau das ist das Problem: alle kennen es, aber die wenigsten mögen es. Die Adoption bei Nachunternehmern ist schlecht, die Kosten steigen schnell, und Anpassungen sind kaum möglich. "Bekannt" ≠ "gut für euch."
+    </div>
+  </div>
+
+  <div class="objection">
+    <div class="obj-q">„PlanRadar hat BIM-Integration. Habt ihr das?"</div>
+    <div class="obj-a">
+      <strong>Antwort:</strong>
+      BIM in PlanRadar ist ein Pro-Plan-Feature (€129/User) — und nur 1 Modell pro Nutzer. Für die meisten kleineren Büros overkill und teuer. LUMA fokussiert sich zunächst auf die Workflow-Kernfunktionen, die täglich genutzt werden — und BIM ist auf der Roadmap.
+    </div>
+  </div>
+
+  <div class="objection">
+    <div class="obj-q">„Wir haben kein Budget für ein weiteres Tool."</div>
+    <div class="obj-a">
+      <strong>Antwort:</strong>
+      Wie viel zahlst du aktuell für PlanRadar pro Nutzer? Bei 5 Architekten im Pro-Plan sind das €7.740/Jahr — ohne Extras. LUMA ist günstiger, und ersetzt nicht nur PlanRadar, sondern auch die diversen anderen Tools, die ihr parallel nutzt.
+    </div>
+  </div>
+
+  <div class="objection">
+    <div class="obj-q">„Mir fehlt die Zeit für ein neues System."</div>
+    <div class="obj-a">
+      <strong>Antwort:</strong>
+      Das ist genau der Punkt — LUMA spart Zeit ab Tag 1. Setup in einem Tag, keine Schulung nötig, Voice-to-Task statt Tippen. PlanRadar braucht laut eigenem Onboarding-Guide mindestens eine Woche bis zur produktiven Nutzung.
+    </div>
+  </div>
+
+  <!-- Gesprächsleitfaden -->
+  <div class="section-title">Gesprächsleitfaden — Wenn PlanRadar erwähnt wird</div>
+  <div class="success-card">
+    <h3>✅ Einstiegsfragen (Discovery)</h3>
+    <ul>
+      <li>„Nutzt ihr PlanRadar schon — und wenn ja, für welche Projektphasen genau?"</li>
+      <li>„Wie viele Nutzer sind im System? Zahlt ihr pro Nutzer?"</li>
+      <li>„Wie ist die Adoption bei euren Nachunternehmern — laufen die alle mit?"</li>
+      <li>„Was fehlt euch bei PlanRadar — was macht ihr noch in Excel oder per Mail?"</li>
+      <li>„Nutzt ihr aktuell AI in eurem Workflow irgendwo?"</li>
+    </ul>
+  </div>
+  <div class="danger-card">
+    <h3>🚫 Was du NICHT sagen sollst</h3>
+    <ul>
+      <li>Nicht sagen: „PlanRadar ist schlecht" — zu direkt, wirkt unsicher</li>
+      <li>Nicht sagen: „Wir sind besser" — zeige es, sag es nicht</li>
+      <li>Nicht über Features reden, die noch nicht live sind — kein Vapor-Selling</li>
+      <li>Nicht auf BIM eingehen, wenn du noch keine Lösung hast — umlenken auf Stärken</li>
+    </ul>
+  </div>
+  <div class="warn-card">
+    <h3>⚖️ PlanRadar-Nutzer sind kein leichter Win</h3>
+    <p>Wer PlanRadar aktiv und zufrieden nutzt, ist schwer zu überzeugen. Leichtere Targets: Büros, die PlanRadar haben aber nicht richtig nutzen — oder die aktiv nach Alternativen suchen, weil die Kosten skalieren. Diese erkennst du an der Frage: "Was zahlen wir eigentlich gerade dafür?"</p>
+  </div>
+
+  <!-- Deine Killer-Argumente -->
+  <div class="section-title">Deine 3 Killer-Argumente gegen PlanRadar</div>
+  <div class="bc-grid">
+    <div class="bc-card blue">
+      <h3>🧠 AI wo PlanRadar schläft</h3>
+      <ul>
+        <li>Voice-to-Task: Sprache rein, Aufgabe draußen</li>
+        <li>KI-Vorschläge für Nächste Schritte in jeder Projektphase</li>
+        <li>Kein manuelles Ticketing mehr — AI strukturiert für dich</li>
+        <li>PlanRadar hat 0 AI-Features (Stand März 2026)</li>
+      </ul>
+    </div>
+    <div class="bc-card orange">
+      <h3>📐 Architekten-DNA</h3>
+      <ul>
+        <li>HOAI-Phasen LP 1–9 als Basis, nicht als Addon</li>
+        <li>Gebaut für Architekten, nicht für Bauleiter</li>
+        <li>Projektphasen, Dokumentation, Koordination = ein System</li>
+        <li>PlanRadar startet erst ab LP 8 (Bauausführung)</li>
+      </ul>
+    </div>
+    <div class="bc-card green">
+      <h3>💶 Kosten & Einfachheit</h3>
+      <ul>
+        <li>Kein teures Per-User-Pricing für kleine Büros</li>
+        <li>Setup in 1 Tag, kein Training nötig</li>
+        <li>Keine versteckten Addons (BIM, SiteView, etc.)</li>
+        <li>PlanRadar kostet 10 User ~€15.000/Jahr im Pro-Plan</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Quellen -->
+  <div class="sources">
+    <h4>Quellen</h4>
+    <a href="https://www.planradar.com/de/pricing/" target="_blank">PlanRadar Preisseite (DE)</a>
+    <a href="https://www.g2.com/products/planradar/reviews" target="_blank">G2 Reviews PlanRadar</a>
+    <a href="https://www.softwareadvice.com/product/167287-PlanRadar/" target="_blank">Software Advice Bewertungen</a>
+    <a href="https://www.planradar.com/de/ueber-uns/" target="_blank">PlanRadar Über Uns</a>
+    <a href="https://www.g2.com/products/planradar/competitors/alternatives" target="_blank">G2 Alternativen zu PlanRadar</a>
+    <a href="https://bmapp.ch/en/7-inexpensive-plan-radar-alternatives/" target="_blank">PlanRadar Alternativen DACH</a>
+    <a href="https://www.vc-magazin.de/blog/2022/01/20/planradar-erhaelt-ueber-60-millionen-euro-investment-drittgroesste-series-b-runde-der-heimischen-startup-geschichte/" target="_blank">PlanRadar Series B €60M+</a>
+    <a href="https://www.planradar.com/de/bautagebuch-app/" target="_blank">PlanRadar Bautagebuch DACH</a>
+  </div>
+
+</div>
+
+<footer>
+  Battlecard erstellt von Hatti 🏔️ · März 2026 · Nur für internen Gebrauch · LUMA / Architekt Connect
+</footer>
+
+</body>
+</html>
