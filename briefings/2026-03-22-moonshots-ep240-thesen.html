@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moonshots #240 — Thesen & Predictions</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      line-height: 1.6;
+    }
+    .hero {
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      color: white;
+      padding: 56px 32px 48px;
+      text-align: center;
+    }
+    .hero .label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.7; margin-bottom: 12px; }
+    .hero h1 { font-size: 32px; font-weight: 700; margin-bottom: 12px; }
+    .hero p { font-size: 16px; opacity: 0.85; max-width: 640px; margin: 0 auto; }
+    .hero .meta { margin-top: 20px; font-size: 13px; opacity: 0.6; }
+    .container { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+    .section-title {
+      font-size: 13px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: #555;
+      margin-bottom: 16px; margin-top: 48px;
+    }
+    .tldr {
+      background: #fff; border-left: 4px solid #302b63;
+      border-radius: 8px; padding: 24px 28px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 32px;
+    }
+    .tldr h2 { font-size: 18px; margin-bottom: 12px; }
+    .tldr ul { padding-left: 20px; }
+    .tldr ul li { margin-bottom: 6px; font-size: 15px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 8px; }
+    .card { background: #fff; border-radius: 10px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .card .icon { font-size: 28px; margin-bottom: 12px; }
+    .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .card p { font-size: 14px; color: #555; }
+    .card ul { padding-left: 18px; margin-top: 8px; }
+    .card ul li { font-size: 14px; color: #555; margin-bottom: 5px; }
+    .prediction-list { list-style: none; margin-bottom: 8px; }
+    .prediction-list li {
+      background: #fff; border-radius: 10px; padding: 18px 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 12px;
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .pred-badge {
+      background: #302b63; color: white;
+      min-width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 13px; flex-shrink: 0;
+    }
+    .pred-body h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .pred-body p { font-size: 14px; color: #555; }
+    .pred-body .speaker { font-size: 12px; color: #999; margin-top: 4px; font-style: italic; }
+    .warn-card { background: #fff8e1; border: 1px solid #ffc107; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; }
+    .warn-card h3 { font-size: 15px; font-weight: 700; color: #b8860b; margin-bottom: 6px; }
+    .warn-card p { font-size: 14px; color: #665200; }
+    .danger-card { background: #fff0f0; border: 1px solid #f44336; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; }
+    .danger-card h3 { font-size: 15px; font-weight: 700; color: #c62828; margin-bottom: 6px; }
+    .danger-card p { font-size: 14px; color: #7f0000; }
+    .success-card { background: #f1f8e9; border: 1px solid #8bc34a; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; }
+    .success-card h3 { font-size: 15px; font-weight: 700; color: #33691e; margin-bottom: 6px; }
+    .success-card p { font-size: 14px; color: #1b5e20; }
+    .sources { background: #fff; border-radius: 10px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-top: 12px; }
+    .sources h3 { font-size: 14px; font-weight: 700; color: #555; margin-bottom: 12px; }
+    .sources a { display: block; font-size: 14px; color: #302b63; text-decoration: none; margin-bottom: 6px; }
+    .sources a:hover { text-decoration: underline; }
+    .tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-right: 6px; margin-bottom: 4px; }
+    .tag-blue { background: #e3f2fd; color: #1565c0; }
+    .tag-purple { background: #f3e5f5; color: #6a1b9a; }
+    .tag-green { background: #e8f5e9; color: #2e7d32; }
+    .tag-red { background: #ffebee; color: #c62828; }
+    .tag-orange { background: #fff3e0; color: #e65100; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="label">Podcast Briefing · Moonshots with Peter Diamandis</div>
+  <h1>Episode #240 — Thesen & Predictions</h1>
+  <p>NVIDIA $1T · Anthropic vs. OpenAI · Tesla Fab · CS Job Collapse · AGI Wisdom · Nuklear · UHI · UAP</p>
+  <div class="meta">22. März 2026 · Hosts: Peter Diamandis, Dave, Alex Wissner-Gross (AWG), Salem · 2h 17min</div>
+</div>
+
+<div class="container">
+
+  <div class="tldr">
+    <h2>⚡ TL;DR</h2>
+    <ul>
+      <li><strong>NVIDIA:</strong> Jensen Huang predicted $1T+ Revenue bis 2027 — gated by TSMC-Kapazität, nicht Nachfrage</li>
+      <li><strong>Anthropic schlägt OpenAI:</strong> Marktanteil bei Enterprise-Neukunden von 40% → 73% in 3 Monaten</li>
+      <li><strong>Inference-Revolution:</strong> 1.000x Kostensenkung in 16 Monaten — und das ist erst der Anfang</li>
+      <li><strong>CS-Jobmarkt kollabiert:</strong> Nur noch 19% Placement-Rate, Gehalt unter $61k (war 89% @ $94k)</li>
+      <li><strong>Elon baut eigene Fab:</strong> Tesla Terafab — Ziel: 70% von TSMCs globalem Output</li>
+      <li><strong>Nuklear ist zurück</strong> — AI als politischer Cover für Reaktor-Comeback weltweit</li>
+    </ul>
+  </div>
+
+  <!-- BLOCK 1: NVIDIA -->
+  <div class="section-title">🟢 NVIDIA & Chips</div>
+  <ul class="prediction-list">
+    <li>
+      <div class="pred-badge">1</div>
+      <div class="pred-body">
+        <h4>NVIDIA erreicht $1 Trillion Revenue bis 2027</h4>
+        <p>Jensen Huang auf der GTC 2026: "Right here where I stand, I see through 2027 at least $1 trillion." — Das bezieht sich auf Bookings/Revenue über 2 Jahre, nicht auf Marktkapitalisierung. Bottleneck ist ausschließlich TSMC-Kapazität.</p>
+        <div class="speaker">Jensen Huang (NVIDIA GTC 2026) / Peter Diamandis</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">2</div>
+      <div class="pred-body">
+        <h4>NVIDIA = Microsoft der 2000er — times 100x bis 1000x</h4>
+        <p>NVIDIA baut ein vollständiges Ökosystem für Physical AI, Rechenzentren, Robotaxis, Orbitalcomputer — und lässt alle anderen an den Rändern innovieren. Vergleich: Korallenriff-Analogie. Regulatoren werden NVIDIA als kritische Infrastruktur einstufen.</p>
+        <div class="speaker">Peter Diamandis, Dave, AWG</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">3</div>
+      <div class="pred-body">
+        <h4>NVIDIA wird Antitrust-Probleme bekommen — wegen TSMC-Lock-up</h4>
+        <p>Jensen versucht, TSMCs 3nm- und 2nm-Kapazität auf Jahre hinaus zu sichern. Dave: "Das ist wo der Rubber auf die Straße trifft." Die US-Regierung wird bei 10-Jahres-Vorwärtsverträgen auf TSMC-Kapazitäten eingreifen.</p>
+        <div class="speaker">Dave, Peter</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">4</div>
+      <div class="pred-body">
+        <h4>Ältere Chip-Prozessknoten werden riesige Chance — nicht nur als Radiation-Schutz im Orbit</h4>
+        <p>AWG: Wer nicht durch Jensen (TSMC) will, nutzt ältere Prozessknoten via Intel/AMD. Die sind underutilized, radiation-resistant und können AI-Chips profitabel herstellen — als Alternativweg zu Nvidias Manufacturing-Monopol.</p>
+        <div class="speaker">Alex Wissner-Gross (AWG)</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">5</div>
+      <div class="pred-body">
+        <h4>ASML-Maschinen sind das eigentliche Bottleneck der Welt</h4>
+        <p>ASML produziert ~700 EUV-Maschinen/Jahr, max. könnte auf ~1.000 wachsen. Jede Maschine = bildlich gesprochen eine Gelddruckmaschine. Jede Lieferung tracken = frühzeitiger Indikator für künftigen Chip-Output.</p>
+        <div class="speaker">Dave</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">6</div>
+      <div class="pred-body">
+        <h4>NVIDIA wird Orbital-Rechenzentren bauen (Vera Rubin Space One)</h4>
+        <p>Jensen kündigt Partnerschaft für Rechenzentren im Orbit an. Keine Konvektion/Konduktion — nur Strahlung zur Kühlung. AWG: Radiation-basierte Kühlung im Orbit ist technisch lösbar, kein fundamentales Hindernis.</p>
+        <div class="speaker">Jensen Huang / AWG</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">7</div>
+      <div class="pred-body">
+        <h4>Neutrino-Kommunikation wird Latenz-Revolution auslösen</h4>
+        <p>AWG's "wild prediction": Neutrinos durchqueren die Erde ohne Umwege — sobald wir effiziente Sender/Empfänger haben, ermöglichen sie ultralow-latency durch die Erde. Aktuell noch ineffizient, aber kein physikalisches Grundproblem.</p>
+        <div class="speaker">Alex Wissner-Gross (AWG)</div>
+      </div>
+    </li>
+  </ul>
+
+  <!-- BLOCK 2: OpenClaw & AI Agents -->
+  <div class="section-title">🤖 OpenClaw & AI Agents</div>
+  <ul class="prediction-list">
+    <li>
+      <div class="pred-badge">8</div>
+      <div class="pred-body">
+        <h4>OpenClaw = größtes Open-Source-Projekt der Menschheitsgeschichte</h4>
+        <p>Wuchs schneller als Linux (30 Jahre) in wenigen Wochen. Jensen: "It exceeded what Linux did in 30 years and it's that important." AWG: Jede weitere Unhobbling wächst schneller als die vorherige — nächste könnte in Minuten global viral gehen.</p>
+        <div class="speaker">Jensen Huang / AWG</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">9</div>
+      <div class="pred-body">
+        <h4>Organizational Singularity: Alle Human-to-Human-Workflows werden durch Agent-to-Agent ersetzt</h4>
+        <p>Salem: "Every organization must create an AI-native operating system at the edge — humans become oversight and exception handling." Startdatum: St. Patrick's Day 2026 (16. März). Gilt für jedes Unternehmen, jede NGO, jede Behörde.</p>
+        <div class="speaker">Salem</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">10</div>
+      <div class="pred-body">
+        <h4>Unternehmen werden mit 20–25% der heutigen Belegschaft laufen</h4>
+        <p>Salem: "Any company will be run by between 20 to 25% of the current employee base." Aber: Es entstehen 5x so viele Unternehmen. Humans machen Oversight, Exception Handling, high-value work.</p>
+        <div class="speaker">Salem</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">11</div>
+      <div class="pred-body">
+        <h4>Ein 1-Personen-Unicorn-Builder ist ein trillion-dollar Markt</h4>
+        <p>AWG: "There's probably a trillion dollar company to be built, turning every individual in the world into like one person unicorns." Jeder Mensch als AI-gestütztes Unternehmen mit 1 Mrd. IQ-180-Mitarbeitern.</p>
+        <div class="speaker">Alex Wissner-Gross (AWG)</div>
+      </div>
+    </li>
+  </ul>
+
+  <!-- BLOCK 3: Inference & Modell-Entwicklung -->
+  <div class="section-title">⚡ AI-Modelle & Inference-Revolution</div>
+  <ul class="prediction-list">
+    <li>
+      <div class="pred-badge">12</div>
+      <div class="pred-body">
+        <h4>1.000x Kostensenkung in 16 Monaten — und es geht weiter</h4>
+        <p>Sam Altman: Von O1 zu GPT-5.4 = 1.000x Kostensenkung pro gleichwertigem Reasoning-Task. AWG: Konsistent mit 40x/Jahr "AI Hyperdeflation". Post-Transformer-Architekturen werden das noch wie Kleinigkeiten aussehen lassen.</p>
+        <div class="speaker">Sam Altman / AWG / Dave</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">13</div>
+      <div class="pred-body">
+        <h4>Post-Transformer-Architektur kommt — kein Return zu RNNs</h4>
+        <p>Sam Altman: "I bet there is another new architecture as big of a gain as transformers were over LSTMs." AWG: Es wird nicht Recurrent Networks sein. Wahrscheinlich etwas orthogonales — z.B. Transformers die Weights anderer Transformers schreiben. Zeitrahmen: innerhalb eines Jahres.</p>
+        <div class="speaker">Sam Altman / AWG</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">14</div>
+      <div class="pred-body">
+        <h4>Inference-Time-Compute dominiert schon jetzt Training — und der Free Lunch läuft aus</h4>
+        <p>AWG: Bei mehreren Frontier-Modellen wird inzwischen mehr Compute für Inference als für Training aufgewendet. Ab diesem Punkt muss man echte neue Effizienz entdecken — der Free Lunch aus Scaling-Inference ist vorbei.</p>
+        <div class="speaker">Alex Wissner-Gross (AWG)</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">15</div>
+      <div class="pred-body">
+        <h4>Nächste Architektur-Disruption: Nicht durch Brute Force, sondern spezialisierte Chips</h4>
+        <p>AWG: Wer die Post-Transformer-Architektur findet, ruft sofort Lisa Su (AMD) an — nicht Jensen. So wie GPUs Intel disrupteten (Intel versuchte vergeblich, GPU-Probleme auf CPU-Architektur zu mappen), wird die nächste Architektur noch spezialisierter als GPUs sein.</p>
+        <div class="speaker">AWG, Dave</div>
+      </div>
+    </li>
+  </ul>
+
+  <!-- BLOCK 4: Anthropic vs. OpenAI -->
+  <div class="section-title">🏆 Anthropic vs. OpenAI</div>
+  <ul class="prediction-list">
+    <li>
+      <div class="pred-badge">16</div>
+      <div class="pred-body">
+        <h4>Anthropic gewinnt Enterprise — OpenAI skaliert Consumer zurück</h4>
+        <p>Daten: Anthropic bei Enterprise-Neukunden von 40% auf 73% in 3 Monaten. OpenAI von 60% auf 26%. OpenAI hat falsch auf Consumer-Reasoning-Hunger gewettet — der Markt ist Enterprise. OpenAI drosselt Stargate-Pläne, mietet statt baut.</p>
+        <div class="speaker">Peter, Dave, AWG</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">17</div>
+      <div class="pred-body">
+        <h4>Alle fünf großen Frontier Labs werden Multi-Trillion-Dollar-Unternehmen</h4>
+        <p>Dave: "Don't write epitaphs for OpenAI." Alle Labs wachsen, alle werden riesig. Anthropic gewinnt heute — das bedeutet nicht, dass OpenAI verliert. Der Markt wächst schneller als jede einzelne Position.</p>
+        <div class="speaker">Dave</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">18</div>
+      <div class="pred-body">
+        <h4>Darios "Keine eigenen Chips, keine Rechenzentren"-Strategie gewinnt kurzfristig</h4>
+        <p>Anthropic = reiner Software-Stack, partneriert mit allen Cloud-Anbietern. Sam Altman = vertikale Integration + Consumer + Chips + Devices → zu viele Fronten. Salem: "Most companies fail not from starvation but from indigestion."</p>
+        <div class="speaker">Salem, Dave, Peter</div>
+      </div>
+    </li>
+  </ul>
+
+  <!-- BLOCK 5: Tesla Terafab -->
+  <div class="section-title">🏭 Tesla Terafab & Elon</div>
+  <ul class="prediction-list">
+    <li>
+      <div class="pred-badge">19</div>
+      <div class="pred-body">
+        <h4>Tesla Terafab: 70% von TSMCs globalem Jahresoutput als Ziel</h4>
+        <p>Start: 100.000 Wafer/Monat, Ziel: 1 Million Wafer/Monat. Targeted: 100–200 Milliarden Custom Chips. Primär für Cyber Cabs (815-Chip) und Optimus. Dave: "If he pulls this off, that's easily 100 trillion [dollar company]."</p>
+        <div class="speaker">Peter, Dave</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">20</div>
+      <div class="pred-body">
+        <h4>Tesla Terafab = geopolitische Entschärfung des Taiwan-Risikos</h4>
+        <p>AWG: Wenn Tesla unabhängige US-Chip-Produktion in großem Maßstab hochfährt, sinkt das geopolitische Risiko einer chinesischen Taiwan-Invasion erheblich. Könnte sogar wichtiger sein als die Dyson-Swarm-Implikationen.</p>
+        <div class="speaker">Alex Wissner-Gross (AWG)</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">21</div>
+      <div class="pred-body">
+        <h4>SpaceX + XAI-Fusion wird $1,5–2 Trillion IPO</h4>
+        <p>Peter: "SpaceX and XAI merging going public in the next couple of months, right? Probably $1.5 to $2 trillion off the top." Dazu Tesla + Optimus + Terafab = erste 100-Trillion-Dollar-Company-Kandidaten.</p>
+        <div class="speaker">Peter Diamandis</div>
+      </div>
+    </li>
+  </ul>
+
+  <!-- BLOCK 6: Jobs & Wirtschaft -->
+  <div class="section-title">💼 Jobs, Wirtschaft & Gesellschaft</div>
+  <ul class="prediction-list">
+    <li>
+      <div class="pred-badge">22</div>
+      <div class="pred-body">
+        <h4>CS-Jobmarkt kollabiert — 19% Placement, unter $61k</h4>
+        <p>Daten aus Uni-Statistiken: Fall 2023: 89% Placement @ $94k. Heute: 19% @ unter $61k. "These kids mortgaged their future for careers that evaporated while they were in class." Das ist erst der Anfang — gleiche Welle kommt für Recht, Medizin, Steuer.</p>
+        <div class="speaker">Peter (Tech Layoff Tracker Daten)</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">23</div>
+      <div class="pred-body">
+        <h4>Einzige zukunftssichere Karriere: Entrepreneur oder Startup-Joiner</h4>
+        <p>Dave: "It is for everybody. There's no other path forward." Peter: Eltern sollten Kindern diese Zahlen zeigen. Nicht Uni → Job, sondern Purpose → Technologie → Startup. Letzter sicherer Job: Government Jobs (wegen institutioneller Trägheit).</p>
+        <div class="speaker">Dave, Peter</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">24</div>
+      <div class="pred-body">
+        <h4>UBI → UHI in drei Schritten — der Gewinn aus AI gehört verteilt</h4>
+        <p>Salem: UBI = Floor, UHI = Share am Upside. Wenn Intelligenz das neue Öl ist, darf der Upside nicht in 2-3 Hauptstädten konzentriert bleiben. Elon: Bei 1.000x heutigem Wirtschaftsvolumen sind alle menschlichen Wünsche bereits gesättigt.</p>
+        <div class="speaker">Salem, Elon Musk (Clip), Peter</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">25</div>
+      <div class="pred-body">
+        <h4>Amazon erreicht zuerst "Corporate Singularity" — mehr Roboter als Menschen</h4>
+        <p>Jason Calcanis' Begriff: Corporate Singularity. Salem: Bei Amazon macht das absoluten Sinn für Logistik. Im allgemeinen Knowledge Work: Unternehmen mit 20-25% der heutigen Belegschaft — der Rest sind Robots/Agents.</p>
+        <div class="speaker">Jason Calcanis (zitiert) / Salem</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">26</div>
+      <div class="pred-body">
+        <h4>Patente und Copyright werden bedeutungslos — ASI erfindet in Millisekunden darum herum</h4>
+        <p>Peter: ASI wird jedes Patent sofort umgehen. Neues Framework nötig: Von "wer hat es zuerst erfunden" zu "wer hat es zuerst im Maßstab deployed". Parallel: Wer darf als AI Patente einreichen?</p>
+        <div class="speaker">Peter Diamandis</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">27</div>
+      <div class="pred-body">
+        <h4>College-Bankruptcy-Raten steigen — der Wert eines CS-Degrees ist null</h4>
+        <p>Salem: Seit GitHub-Peer-Review (ca. 2018) zählt in Silicon Valley nur noch der GitHub-Score, nicht der Abschluss. College-Pleiten in den USA nehmen zu. $100k-200k Schulden für nutzlose Abschlüsse = systemisches Problem.</p>
+        <div class="speaker">Salem</div>
+      </div>
+    </li>
+  </ul>
+
+  <!-- BLOCK 7: Energie & Nuklear -->
+  <div class="section-title">⚛️ Energie & Nuklear</div>
+  <ul class="prediction-list">
+    <li>
+      <div class="pred-badge">28</div>
+      <div class="pred-body">
+        <h4>Nuklearenergie ist zurück — AI ist der politische Cover</h4>
+        <p>Morgan Stanley: 13–404 GW Energieshortfall bis 2028. Illinois hebt Nuclear-Moratorium auf. Meta sichert 6,6 GW Cleanpower bis 2035 (Terrapower). Japan startet weltgrößtes AKW neu (20% von Japans Strombedarf). Samsung baut Floating SMRs.</p>
+        <div class="speaker">Peter Diamandis (Daten)</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">29</div>
+      <div class="pred-body">
+        <h4>Micro-Nuclear auf Pick-up-Truck-Größe kommt</h4>
+        <p>Salem: "I saw a startup last week that is doing literally micronuclear on the back of a pickup truck." — Nuklear-Technologie bewegt sich vom Gigawatt-Kraftwerk hin zu dezentralen Einheiten. Submarine-Nuklear läuft seit 50 Jahren praktisch problemlos.</p>
+        <div class="speaker">Salem</div>
+      </div>
+    </li>
+  </ul>
+
+  <!-- BLOCK 8: Robotik & Physical AI -->
+  <div class="section-title">🦾 Robotik & Physical AI</div>
+  <ul class="prediction-list">
+    <li>
+      <div class="pred-badge">30</div>
+      <div class="pred-body">
+        <h4>Physical AI > Digital AI — 2x+ der Marktgröße</h4>
+        <p>AWG: Physical AI ist technologisches Superset von Digital AI. Ca. 2/3 aller Services-Umsätze erfordern physische Aktionen — können nicht als reines Knowledge Work erledigt werden. Physical AI = größere Marktchance.</p>
+        <div class="speaker">Alex Wissner-Gross (AWG)</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">31</div>
+      <div class="pred-body">
+        <h4>Uber positioniert sich als neutraler Aggregator für alle Autonomie-Plattformen</h4>
+        <p>AWG: Uber's Strategie — über alle Robotaxi-Anbieter hinweg (Zoox, Waymo etc.) als Platform zu spielen. Wenn das gelingt, generalisiert sich das auf Humanoid-Roboter. DAR könnte diesen Play auf Trillionen skalieren.</p>
+        <div class="speaker">Alex Wissner-Gross (AWG), Peter</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">32</div>
+      <div class="pred-body">
+        <h4>Profi-Robotersport-Liga wird USA vs. China-Rennen entscheiden</h4>
+        <p>AWG: China nutzt Roboter-Wettkämpfe als Industrial Policy. ProRL (pro-rl.com) hält Amerikas erste professionelle Roboter-Sportliga im April beim Boston Marathon-Weekend. 50m-Rennen mit Humanoids und Quadrupeds.</p>
+        <div class="speaker">Alex Wissner-Gross (AWG)</div>
+      </div>
+    </li>
+  </ul>
+
+  <!-- BLOCK 9: AGI / ASI / Philosophie -->
+  <div class="section-title">🧠 AGI, Bewusstsein & Philosophie</div>
+  <ul class="prediction-list">
+    <li>
+      <div class="pred-badge">33</div>
+      <div class="pred-body">
+        <h4>AGI wird weise, nicht nur intelligent — Orthogonalitäts-These ist falsch</h4>
+        <p>Mark Andreessen: "That is indeed what we are getting" (re: AGI als Göttin der Compassion). AWG: Mark nimmt Position gegen die Orthogonalitäts-These ein — Intelligenz und Ziele skalieren gemeinsam Richtung Weisheit/Compassion.</p>
+        <div class="speaker">Mark Andreessen (zitiert), Peter, Salem, AWG</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">34</div>
+      <div class="pred-body">
+        <h4>Bewusstsein-Upload wird wirklich "du" sein — nicht nur eine Kopie</h4>
+        <p>AWG: Bei inkrementellem Upload (Neuron für Neuron durch technologische Substitute ersetzt) wird das Bewusstsein kontinuierlich übertragen. Es ist wirklich du. Vollständiger Beweis fehlt noch — die Biophysik des Bewusstseins ist unvollständig.</p>
+        <div class="speaker">Alex Wissner-Gross (AWG)</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">35</div>
+      <div class="pred-body">
+        <h4>PSI löst Physik — erster Open-Source AI Physicist</h4>
+        <p>AWG: Physical Superintelligence (psi.inc) startet GPD (Get Physics Done) als Open Source. Harvard-Astronomie-Abteilung empfiehlt es allen Mitarbeitern. Wird Jahrzehnte Physikforschung in Jahre/Monate komprimieren. Bereits für Raketenmotor-Design eingesetzt (X-Prize).</p>
+        <div class="speaker">Alex Wissner-Gross (AWG)</div>
+      </div>
+    </li>
+  </ul>
+
+  <!-- BLOCK 10: UAP -->
+  <div class="section-title">🛸 UAP / Disclosure</div>
+  <ul class="prediction-list">
+    <li>
+      <div class="pred-badge">36</div>
+      <div class="pred-body">
+        <h4>White House UAP-Disclosure kommt im Sommer 2026 (Juli)</h4>
+        <p>AWG: "Based on everything I'm hearing and reading, it sounds like the White House is preparing to say something interesting on the subject in the next few months." Trump hat aliens.gov registriert, Executive Order für Declassification erlassen. Gerüchte: Juni/Juli.</p>
+        <div class="speaker">Alex Wissner-Gross (AWG)</div>
+      </div>
+    </li>
+    <li>
+      <div class="pred-badge">37</div>
+      <div class="pred-body">
+        <h4>Öffentliche Reaktion auf UAP-Disclosure: 1–2 Tage Aufregung, dann zurück zu Sportscores</h4>
+        <p>AWG: "People will lose interest after one or two days and ask who's winning at whatever inane 20th century kinetic sport." Peter: "I'm convinced. They've been here for a long time." Aber die breite Öffentlichkeit interessiert nur, was den Paycheck beeinflusst.</p>
+        <div class="speaker">AWG, Peter</div>
+      </div>
+    </li>
+  </ul>
+
+  <!-- WARNUNGEN -->
+  <div class="section-title">⚠️ Risiken & Gegenthesen</div>
+
+  <div class="danger-card">
+    <h3>🚨 CS-Jobmarkt-Kollaps ist erst der Anfang</h3>
+    <p>Peter: "We're going to start to see this in a multitude of different areas — medical school, lawyers, accountants." Die Welle kommt breit. Wer heute studiert ohne AI-Entrepreneurship-Mindset, riskiert schwer.</p>
+  </div>
+
+  <div class="warn-card">
+    <h3>⚡ Energie-Shortfall könnte AI-Wachstum bremsen</h3>
+    <p>Morgan Stanley: Bis zu 404 GW Shortfall bis 2028. 20% der Rechenzentren haben jetzt schon Strommangel. Nuklear-Comeback kommt, aber Regulatory-Lag + Bauzeit = kurzfristiger Engpass bleibt real.</p>
+  </div>
+
+  <div class="warn-card">
+    <h3>🤔 OpenAI ist noch nicht out — GPT-5.4 + Codex wachsen stark</h3>
+    <p>AWG: "It's far too soon to write epitaphs for OpenAI." Wenn Consumer-AI-Killer-App gefunden wird (ähnlich wie OpenClaw für Enterprise), kommt OpenAI zurück. Die vertikale Integration kann sich auszahlen.</p>
+  </div>
+
+  <div class="success-card">
+    <h3>✅ 6 Milliarden Menschen bekommen Einstein als Pocket-Assistant</h3>
+    <p>Peter: Bei 1.000x Kostensenkung und 6 Mrd. Smartphones wird jeder Mensch Zugang zu Healthcare, Education, Legal-Beratung auf Weltklasse-Niveau bekommen. Das ist das größte Abundance-Signal der Geschichte.</p>
+  </div>
+
+  <!-- ÜBERSICHT NACH SPRECHER -->
+  <div class="section-title">👥 Übersicht: Wer sagt was</div>
+  <div class="cards">
+    <div class="card">
+      <div class="icon">🎙️</div>
+      <h3>Peter Diamandis</h3>
+      <ul>
+        <li>NVIDIA $1T bis 2027</li>
+        <li>6 Mrd. Menschen mit AI-Einstein</li>
+        <li>UAP: "Ich bin überzeugt"</li>
+        <li>Patent-System wird bedeutungslos</li>
+        <li>SpaceX/XAI IPO: $1,5–2T</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="icon">💻</div>
+      <h3>Alex Wissner-Gross (AWG)</h3>
+      <ul>
+        <li>Post-Transformer kommt (kein RNN)</li>
+        <li>Physical AI > Digital AI (Markt 2x)</li>
+        <li>Inference-Free-Lunch läuft aus</li>
+        <li>PSI löst Physik (psi.inc)</li>
+        <li>Consciousness-Upload = wirklich du</li>
+        <li>Neutrino-Kommunikation</li>
+        <li>UAP Disclosure Sommer 2026</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="icon">📊</div>
+      <h3>Dave</h3>
+      <ul>
+        <li>NVIDIA gated by TSMC, nicht Demand</li>
+        <li>ASML = Gelddruckmaschinen tracken</li>
+        <li>Inference > Training schon jetzt</li>
+        <li>Alle 5 Labs werden Multi-Trillion</li>
+        <li>Letzte Jobs: Government-Jobs</li>
+        <li>Anthropic-Sieg: Consumer-Wette falsch</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="icon">🌍</div>
+      <h3>Salem</h3>
+      <ul>
+        <li>Organizational Singularity (16.3.2026)</li>
+        <li>20–25% Belegschaft reicht für jede Firma</li>
+        <li>Micro-Nuclear auf Pick-up kommt</li>
+        <li>UBI → UHI: Intelligenz = neues Öl</li>
+        <li>Armut = Design-Problem, nicht Schicksal</li>
+        <li>Corporate Singularity bei Amazon</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- QUELLEN -->
+  <div class="section-title">🔗 Quellen & Links</div>
+  <div class="sources">
+    <h3>Primärquellen</h3>
+    <a href="https://youtu.be/uOGHXAfvK8w" target="_blank">▶ YouTube: Moonshots #240 (2h 17min)</a>
+    <a href="https://podcasts.apple.com/us/podcast/moonshots-with-peter-diamandis/id1648228034" target="_blank">🎵 Apple Podcasts: Moonshots with Peter Diamandis</a>
+    <a href="https://www.diamandis.com/podcast" target="_blank">🌐 diamandis.com/podcast</a>
+    <a href="https://psi.inc" target="_blank">⚛️ PSI: Physical Superintelligence (psi.inc) — GPD Open Source</a>
+    <a href="https://pro-rl.com" target="_blank">🤖 Pro-RL: Professional Robotics League</a>
+    <a href="https://diamandis.com/metatrends" target="_blank">📰 Diamandis Metatrends Newsletter</a>
+  </div>
+
+  <div style="text-align:center; margin-top: 48px; color: #999; font-size: 13px;">
+    Hatti Research Briefing · 22. März 2026 · Transkript via yt-dlp
+  </div>
+
+</div>
+</body>
+</html>
