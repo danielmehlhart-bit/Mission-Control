@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alles auf Aktien - 23. März 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: #64748b;
+            margin-bottom: 16px;
+        }
+        
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .highlight-box h3 {
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .stock-move {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin: 2px;
+        }
+        
+        .stock-up {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .stock-down {
+            background-color: #ef4444;
+            color: white;
+        }
+        
+        .stock-neutral {
+            background-color: #6b7280;
+            color: white;
+        }
+        
+        .key-points {
+            list-style: none;
+            margin: 16px 0;
+        }
+        
+        .key-points li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .key-points li:before {
+            content: "▶";
+            color: #667eea;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        
+        .youtube-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 20px;
+            transition: transform 0.2s ease;
+        }
+        
+        .youtube-link:hover {
+            transform: translateY(-2px);
+            text-decoration: none;
+            color: white;
+        }
+        
+        .tldr {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 24px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .header, .card {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🎤 Alles auf Aktien</h1>
+            <div class="subtitle">Der tägliche Börsen-Shot — Briefing vom 23. März 2026</div>
+            <div class="meta">
+                <div class="meta-item">📅 Episode vom 17. März 2026</div>
+                <div class="meta-item">⏱️ 26:34 Minuten</div>
+                <div class="meta-item">👥 Holger Zschäpitz & Anja Ettel</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🏛️ Märkte im Überblick</h2>
+            <div class="highlight-box">
+                <h3>Börsen-Performance (16. März):</h3>
+                <div style="margin: 12px 0;">
+                    <span class="stock-up">NASDAQ 100: +1,1%</span>
+                    <span class="stock-up">S&P 500: +1,0%</span>
+                    <span class="stock-up">DAX: +0,5%</span>
+                </div>
+                <p><strong>Grund:</strong> Ölpreise gaben nach, positive Tech-Stimmung durch Nvidia GTC-Konferenz</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🔥 Hauptthemen der Episode</h2>
+            <ul class="key-points">
+                <li><strong>Nvidia GTC-Konferenz:</strong> Jensen Huang kündigt 1 Billion Dollar KI-Infrastruktur-Nachfrage bis 2027 an. Aktie: <span class="stock-up">+15% (zwischenzeitlich)</span></li>
+                <li><strong>Meta-Stellenabbau:</strong> 20% der 80.000 Mitarbeiter sollen gehen (16.000 Jobs). Einsparungen: 5-6 Mrd. Dollar. Aktie: <span class="stock-up">+2,3%</span></li>
+                <li><strong>Unicredit vs. Commerzbank:</strong> Übernahmeangebot 30,80€/Aktie (0,485 eigene Papiere). Commerzbank: <span class="stock-up">+8,6%</span></li>
+                <li><strong>Bitcoin als Krisengewinner:</strong> +13% während Iran-Konflikt, Gold verlor 5%</li>
+                <li><strong>Scalable Capital Zinskrieg:</strong> 2,5% Tagesgeld dauerhaft vs. Trade Republic's 2,0%</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🚀 Thema des Tages: Nvidia's KI-Vision</h2>
+            <div class="highlight-box">
+                <h3>Die Billion-Dollar-These:</h3>
+                <p>Jensen Huang präsentiert Roadmap bis 2028 mit 1 Billion Dollar Nachfrage nach KI-Infrastruktur. Nvidia positioniert sich als Plattform für die komplette automatisierte Wirtschaft.</p>
+            </div>
+            <ul class="key-points">
+                <li><strong>Neue Chip-Architektur "Rubin":</strong> Kommt H2 2026, 3nm-Verfahren, für "Agentic AI"</li>
+                <li><strong>Innovation beschleunigt:</strong> Neue Chipgeneration jetzt jährlich statt alle 2-3 Jahre</li>
+                <li><strong>90% Marktanteil</strong> bei KI-Beschleunigern — seltene Dominanz</li>
+                <li><strong>Physical AI:</strong> Robotik-Plattform "Gr00" (Marvel-Anspielung) für humanoide Roboter</li>
+                <li><strong>Uber-Kooperation:</strong> Autonome Fahrzeuge ab 2027 in LA & San Francisco</li>
+                <li><strong>Gaming-Revolution:</strong> DLSS5 als "GPT-Moment" für Computergrafik</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>💰 Triple-A-Idee: Scalable vs. Trade Republic</h2>
+            <div class="highlight-box">
+                <h3>Zinskrieg der Neobroker:</h3>
+                <p><strong>Scalable Capital:</strong> 2,5% Tagesgeld dauerhaft, ohne Limit, für alle Kunden<br>
+                <strong>Trade Republic:</strong> 2,0% nach EZB-Satz</p>
+            </div>
+            <ul class="key-points">
+                <li><strong>Das Problem:</strong> Scalable zahlt bei jedem Euro drauf (EZB-Satz nur 2,0%)</li>
+                <li><strong>Die Strategie:</strong> Marketing-Budget — Tagesgeld als Köder für Trading-Kunden</li>
+                <li><strong>Sicherheit Prime+:</strong> 500.000€ Schutz (5 Banken × 100k€)</li>
+                <li><strong>Sicherheit Free:</strong> 100k€ staatlich garantiert, darüber Geldmarktfonds</li>
+                <li><strong>Fazit:</strong> Gut für Sparer, solange die Zinswette aufgeht</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>📈 Einzelwerte & Bewegungen</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-top: 16px;">
+                <div>
+                    <h4>🚀 Gewinner:</h4>
+                    <span class="stock-up">Nvidia: +15% (zwischenzeitlich)</span><br>
+                    <span class="stock-up">Micron: +3,7%</span><br>
+                    <span class="stock-up">SanDisk: +6,4%</span><br>
+                    <span class="stock-up">Western Digital: +5,1%</span><br>
+                    <span class="stock-up">Circle Internet: +9,1%</span><br>
+                    <span class="stock-up">Dollar Tree: +6,3%</span>
+                </div>
+                <div>
+                    <h4>📊 Krypto & Trends:</h4>
+                    <span class="stock-up">Bitcoin: Krisengewinner (+13% im März)</span><br>
+                    <span class="stock-up">USDC: Marktkapitalisierung von 55 auf 79 Mrd.$</span><br>
+                    <span class="stock-down">Gold: -5% im März (Vergleich)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🎯 Key Takeaways</h2>
+            <div class="tldr">
+                <h3>TL;DR:</h3>
+                <ul style="margin-left: 20px; margin-top: 12px;">
+                    <li><strong>Nvidia dominiert KI-Zukunft</strong> — 1 Billion Dollar Nachfrage-Prognose bis 2027</li>
+                    <li><strong>Meta wird schlanker</strong> — 16.000 Jobs weg, Fokus auf KI</li>
+                    <li><strong>Bitcoin schlägt Gold</strong> — Digitales Asset als Krisengewinner</li>
+                    <li><strong>Zinskrieg bei Neobrokern</strong> — Scalable greift Trade Republic mit 2,5% an</li>
+                    <li><strong>Banken-Poker</strong> — Unicredit will Commerzbank, Politik sagt nein</li>
+                </ul>
+            </div>
+        </div>
+
+        <a href="https://www.youtube.com/watch?v=Yo5V7t9P47s" class="youtube-link" target="_blank">
+            🎥 Episode auf YouTube ansehen
+        </a>
+
+        <div class="footer">
+            <p>Briefing generiert am 23. März 2026 | Mission Control Dashboard</p>
+        </div>
+    </div>
+</body>
+</html>
