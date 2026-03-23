@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUMA Onboarding Playbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#F9FAFB;color:#1F2937;line-height:1.6}
+.container{max-width:960px;margin:0 auto;padding:32px 24px 64px}
+.header{margin-bottom:40px}
+.header h1{font-size:32px;font-weight:800;color:#111827;margin-bottom:8px}
+.header .subtitle{font-size:16px;color:#6B7280;font-weight:400}
+.badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-right:8px;margin-bottom:8px}
+.badge-orange{background:#FFF7ED;color:#EA580C;border:1px solid #FDBA7440}
+.badge-green{background:#ECFDF5;color:#059669;border:1px solid #6EE7B740}
+.badge-blue{background:#EFF6FF;color:#2563EB;border:1px solid #93C5FD40}
+.badge-purple{background:#F5F3FF;color:#7C3AED;border:1px solid #C4B5FD40}
+.meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;margin-bottom:32px}
+
+.card{background:#fff;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);padding:28px;margin-bottom:24px;border:1px solid #F3F4F6}
+.card h2{font-size:20px;font-weight:700;color:#111827;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.card h2 .num{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:10px;background:#F97316;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+.card h3{font-size:15px;font-weight:600;color:#374151;margin:18px 0 8px}
+.card p,.card li{font-size:14px;color:#4B5563}
+.card ul{padding-left:20px;margin:8px 0}
+.card li{margin-bottom:6px}
+
+.highlight{background:#FFF7ED;border-left:4px solid #F97316;padding:14px 18px;border-radius:0 12px 12px 0;margin:16px 0;font-size:14px;color:#92400E}
+.highlight strong{color:#78350F}
+
+.timeline{display:flex;flex-direction:column;gap:0;margin:16px 0}
+.timeline-item{display:flex;gap:16px;padding:12px 0;position:relative}
+.timeline-item:not(:last-child)::after{content:'';position:absolute;left:15px;top:40px;bottom:0;width:2px;background:#E5E7EB}
+.timeline-dot{width:32px;height:32px;border-radius:50%;background:#F97316;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;flex-shrink:0;z-index:1}
+.timeline-content{flex:1}
+.timeline-content .title{font-size:14px;font-weight:600;color:#111827}
+.timeline-content .desc{font-size:13px;color:#6B7280;margin-top:2px}
+.timeline-content .time{font-size:12px;color:#9CA3AF;margin-top:2px}
+
+.checklist{list-style:none;padding:0;margin:12px 0}
+.checklist li{display:flex;align-items:flex-start;gap:10px;padding:8px 0;font-size:14px;color:#374151;border-bottom:1px solid #F9FAFB}
+.checklist li:last-child{border:none}
+.check{width:20px;height:20px;border-radius:6px;border:2px solid #D1D5DB;flex-shrink:0;margin-top:1px}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+
+.kpi-card{background:#F9FAFB;border-radius:12px;padding:20px;text-align:center;border:1px solid #E5E7EB}
+.kpi-card .number{font-size:28px;font-weight:800;color:#F97316}
+.kpi-card .label{font-size:12px;color:#6B7280;margin-top:4px;font-weight:500}
+
+.footer{margin-top:48px;padding-top:24px;border-top:1px solid #E5E7EB;font-size:12px;color:#9CA3AF;text-align:center}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>🚀 LUMA Onboarding Playbook</h1>
+  <p class="subtitle">Schlankes Onboarding für Architekturbüros — Pre-GTM Phase</p>
+  <div class="meta">
+    <span class="badge badge-orange">Pre-GTM</span>
+    <span class="badge badge-green">Stand: 23.03.2026</span>
+    <span class="badge badge-blue">Ziel: 7 neue Büros bis Ende April</span>
+    <span class="badge badge-purple">~1,5h pro Büro</span>
+  </div>
+</div>
+
+<!-- Status Quo -->
+<div class="card">
+  <h2><span class="num">📊</span> Status Quo</h2>
+  <div class="grid2" style="margin-top:16px">
+    <div class="kpi-card">
+      <div class="number">2</div>
+      <div class="label">Büros aktiv</div>
+    </div>
+    <div class="kpi-card">
+      <div class="number">~13</div>
+      <div class="label">Aktive Nutzer (täglich)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="number">3–4</div>
+      <div class="label">Warm Leads in Pipeline</div>
+    </div>
+    <div class="kpi-card">
+      <div class="number">7</div>
+      <div class="label">Neue Büros bis Ende April</div>
+    </div>
+  </div>
+  <div class="highlight" style="margin-top:20px">
+    <strong>Realitätscheck:</strong> 1 Woche Urlaub ab 5. April. Effektive Zeit bis Ende April: ~4 Wochen minus 1 = 3 Wochen. Das heißt: ~2 Büros pro Woche onboarden.
+  </div>
+</div>
+
+<!-- Baustein 1: Loom Video -->
+<div class="card">
+  <h2><span class="num">1</span> Vorab-Video (Loom, 5–7 Min)</h2>
+  <p style="color:#6B7280;margin-bottom:12px">Einmal aufnehmen, jedem neuen Büro vorab schicken. Spart dir die gleiche Erklärung x-mal.</p>
+  
+  <h3>Inhalt / Drehbuch</h3>
+  <ul class="checklist">
+    <li><span class="check"></span> <strong>Intro (30s):</strong> "Hi, ich bin Daniel. Kurz zeige ich euch, wie LUMA funktioniert, damit ihr direkt loslegen könnt."</li>
+    <li><span class="check"></span> <strong>Dashboard (1 Min):</strong> Übersicht erklären — Projekte, Tasks, was man auf einen Blick sieht</li>
+    <li><span class="check"></span> <strong>Erstes Projekt anlegen (2 Min):</strong> Neues Projekt → Leistungsphasen → Tasks erstellen → Verantwortliche zuweisen</li>
+    <li><span class="check"></span> <strong>Täglicher Workflow (1,5 Min):</strong> Task-Board nutzen, Status ändern, Kommentare, Dokumente</li>
+    <li><span class="check"></span> <strong>Tipps (1 Min):</strong> Die 2-3 Features die am meisten Wert bringen</li>
+    <li><span class="check"></span> <strong>Outro (30s):</strong> "Wir machen einen kurzen Call mit eurem Team, dann legen wir gemeinsam euer erstes echtes Projekt an."</li>
+  </ul>
+
+  <div class="highlight">
+    <strong>Tracking-Tipp:</strong> Loom zeigt dir, ob und wie lange Leute schauen. Wenn keiner guckt, weißt du es nach 2 Wochen. Die Investition (15-20 Min Aufnahme) ist minimal.
+  </div>
+</div>
+
+<!-- Baustein 2: Live Session -->
+<div class="card">
+  <h2><span class="num">2</span> Live Onboarding Session (30 Min, Google Meet)</h2>
+  <p style="color:#6B7280;margin-bottom:12px">Das Herzstück. Kein Demo-Projekt, sondern ein echtes Projekt des Büros durchgehen.</p>
+  
+  <h3>Ablauf</h3>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot">1</div>
+      <div class="timeline-content">
+        <div class="title">Check-in & Kontext</div>
+        <div class="desc">Video geschaut? Fragen? Was ist euer aktuelles Projekt?</div>
+        <div class="time">5 Min</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">2</div>
+      <div class="timeline-content">
+        <div class="title">Echtes Projekt anlegen</div>
+        <div class="desc">Gemeinsam ihr aktuelles Projekt in LUMA anlegen. Leistungsphasen, Tasks, Team-Zuordnung. Sie machen es selbst, du coachst.</div>
+        <div class="time">15 Min</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">3</div>
+      <div class="timeline-content">
+        <div class="title">Quick Wins zeigen</div>
+        <div class="desc">2-3 Features die ihren spezifischen Pain lösen. Basierend auf dem Discovery Call.</div>
+        <div class="time">5 Min</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">4</div>
+      <div class="timeline-content">
+        <div class="title">Nächste Schritte & Support-Kanal</div>
+        <div class="desc">Telegram/WhatsApp-Gruppe einrichten. "2 Wochen direkter Draht zu mir." Nächsten Check-in in 1 Woche vereinbaren.</div>
+        <div class="time">5 Min</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <strong>Wichtig:</strong> Sie machen, du coachst. Nicht du screensharst und sie schauen zu. Hands-on = Retention.
+  </div>
+</div>
+
+<!-- Baustein 3: Support-Phase -->
+<div class="card">
+  <h2><span class="num">3</span> Support-Phase (14 Tage)</h2>
+  <p style="color:#6B7280;margin-bottom:12px">Kurze Leine am Anfang, dann loslassen. Nicht endlos betreuen.</p>
+  
+  <h3>Setup</h3>
+  <ul>
+    <li><strong>Telegram- oder WhatsApp-Gruppe</strong> pro Büro (max. 3–5 Personen)</li>
+    <li>Klare Ansage: "2 Wochen direkter Draht. Fragen jederzeit. Danach Support über die reguläre Schiene."</li>
+    <li>Reaktionszeit: innerhalb von paar Stunden, nicht sofort (du hast noch einen Job)</li>
+  </ul>
+
+  <h3>Nach 14 Tagen</h3>
+  <ul>
+    <li>Kurzer Check-in (15 Min): Was läuft? Was nicht?</li>
+    <li>Gruppe schließen oder auf "Feedback bei Bedarf" umstellen</li>
+    <li>Feedback dokumentieren → Produkt-Backlog</li>
+  </ul>
+
+  <div class="highlight">
+    <strong>Goldmine:</strong> Die Fragen in den ersten 2 Wochen zeigen dir exakt, was unklar ist, was fehlt und was du verbessern musst. Dokumentier jede einzelne.
+  </div>
+</div>
+
+<!-- Zeitinvestment -->
+<div class="card">
+  <h2><span class="num">⏱️</span> Zeitinvestment pro Büro</h2>
+  <div style="margin-top:12px">
+    <table style="width:100%;border-collapse:collapse;font-size:14px">
+      <tr style="border-bottom:1px solid #E5E7EB">
+        <td style="padding:10px 0;color:#374151;font-weight:500">Vorab-Video (einmalig!)</td>
+        <td style="padding:10px 0;text-align:right;color:#6B7280">20 Min (nur 1x)</td>
+      </tr>
+      <tr style="border-bottom:1px solid #E5E7EB">
+        <td style="padding:10px 0;color:#374151;font-weight:500">Live Onboarding Session</td>
+        <td style="padding:10px 0;text-align:right;color:#6B7280">30 Min</td>
+      </tr>
+      <tr style="border-bottom:1px solid #E5E7EB">
+        <td style="padding:10px 0;color:#374151;font-weight:500">Support-Gruppe (2 Wochen)</td>
+        <td style="padding:10px 0;text-align:right;color:#6B7280">~45 Min gesamt</td>
+      </tr>
+      <tr style="border-bottom:1px solid #E5E7EB">
+        <td style="padding:10px 0;color:#374151;font-weight:500">Check-in nach 14 Tagen</td>
+        <td style="padding:10px 0;text-align:right;color:#6B7280">15 Min</td>
+      </tr>
+      <tr>
+        <td style="padding:12px 0;color:#111827;font-weight:700;font-size:15px">Gesamt pro Büro</td>
+        <td style="padding:12px 0;text-align:right;color:#F97316;font-weight:700;font-size:15px">~1,5 Stunden</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- Wochenplan -->
+<div class="card">
+  <h2><span class="num">📅</span> Fahrplan bis Ende April</h2>
+  <div class="timeline" style="margin-top:16px">
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:#059669">W1</div>
+      <div class="timeline-content">
+        <div class="title">KW 13 (24.–28. März)</div>
+        <div class="desc">Loom-Video aufnehmen. 2 Leads aktivieren. Email-Templates fixen (Registration, PW Reset, PW Forgot).</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:#059669">W2</div>
+      <div class="timeline-content">
+        <div class="title">KW 14 (31. März – 4. April)</div>
+        <div class="desc">2 Büros onboarden. Restliche Leads nachfassen. Vor Urlaub: alles Nötige vorbereiten.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:#9CA3AF">🏖️</div>
+      <div class="timeline-content">
+        <div class="title">KW 15 (5.–11. April) — Urlaub</div>
+        <div class="desc">Finger weg. Support-Gruppen laufen asynchron. Keine neuen Onboardings.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:#059669">W3</div>
+      <div class="timeline-content">
+        <div class="title">KW 16 (14.–18. April)</div>
+        <div class="desc">3 Büros onboarden. Feedback aus W1/W2 einarbeiten. Check-ins mit ersten Büros.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:#059669">W4</div>
+      <div class="timeline-content">
+        <div class="title">KW 17 (21.–25. April)</div>
+        <div class="desc">2 Büros onboarden (Puffer). Retrospektive: Was funktioniert? Playbook updaten.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Checkliste vor jedem Onboarding -->
+<div class="card">
+  <h2><span class="num">✅</span> Checkliste vor jedem Onboarding</h2>
+  <ul class="checklist">
+    <li><span class="check"></span> Account für das Büro angelegt (Admin-User + Team-Mitglieder)</li>
+    <li><span class="check"></span> Loom-Video-Link verschickt</li>
+    <li><span class="check"></span> Google Meet Termin erstellt (30 Min)</li>
+    <li><span class="check"></span> Discovery-Notizen gelesen — Pain Points des Büros kennen</li>
+    <li><span class="check"></span> Telegram/WhatsApp-Gruppe vorbereitet</li>
+    <li><span class="check"></span> Email-Templates funktionieren (Registrierung, PW Reset)</li>
+  </ul>
+</div>
+
+<div class="footer">
+  LUMA Onboarding Playbook · Erstellt 23.03.2026 · Pre-GTM Phase
+</div>
+
+</div>
+</body>
+</html>
