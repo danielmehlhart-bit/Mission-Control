@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eintracht Briefing - 24. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: #484848;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .header h1 {
+            color: white;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .header .date {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+        
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+        
+        .article-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+        }
+        
+        .article-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .article-title a {
+            color: #2d3748;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .article-title a:hover {
+            color: #667eea;
+        }
+        
+        .article-summary {
+            color: #718096;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        
+        .meta-info {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+            color: #a0aec0;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .article-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚽ Eintracht Frankfurt Briefing</h1>
+            <div class="date">Montag, 24. März 2026</div>
+        </div>
+        
+        <div class="articles-grid">
+            <article class="article-card">
+                <h2 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/nathaniel-brown-reist-trotz-schmerzen-tapfer-zum-dfb-team-94232338.html" target="_blank">
+                        Nathaniel Brown reist trotz Schmerzen tapfer zum DFB-Team
+                    </a>
+                </h2>
+                <div class="article-summary">
+                    Brown erzielte trotz Verletzung das Ausgleichstor gegen Mainz, musste aber zur Pause raus. Er reist dennoch zur deutschen Nationalmannschaft, während Pavlovic (Bayern) und Nmecha (Dortmund) verletzungsbedingt absagen mussten. Angelo Stiller wurde nachnominiert und könnte gute Einsatzchancen haben.
+                </div>
+                <div class="meta-info">23. März 2026 | Jan Christian Müller</div>
+            </article>
+            
+            <article class="article-card">
+                <h2 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/diagnose-bei-eintracht-duo-da-droht-ein-langer-ausfall-zr-94232206.html" target="_blank">
+                        Diagnose bei Eintracht-Duo da – droht ein langer Ausfall?
+                    </a>
+                </h2>
+                <div class="article-summary">
+                    Bitter für die Eintracht: Nnamdi Collins (Sprunggelenksverletzung) und Jean-Matteo Bahoya (Oberschenkelverletzung) fallen nach dem Mainz-Spiel aus. Beide mussten ihre U21-Länderspiele absagen. Collins könnte wochenlang fehlen – ein herber Verlust für die defensive Stabilität.
+                </div>
+                <div class="meta-info">23. März 2026 | Isabella Strehmann</div>
+            </article>
+            
+            <article class="article-card">
+                <h2 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/trainer-albert-riera-nach-mainz-pleite-in-der-kritik-94231612.html" target="_blank">
+                        Trainer Albert Riera nach Mainz-Pleite in der Kritik
+                    </a>
+                </h2>
+                <div class="article-summary">
+                    Rieras Götze-Ausbootung und das daraus resultierende Positionschaos sorgten für Irritationen. Die Eintracht konnte trotz 66% Ballbesitz nur drei Torchancen kreieren. Spieler wie Burkardt beklagten fehlende Klarheit, während Riera der Mannschaft eine Woche Pause gab.
+                </div>
+                <div class="meta-info">23. März 2026 | Josef Schmitt</div>
+            </article>
+            
+            <article class="article-card">
+                <h2 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/europa-league-held-der-eintracht-nach-vereinslosigkeit-mittlerweile-in-liga-94231862.html" target="_blank">
+                        Europa-League-Held Almamy Touré mittlerweile in 4. Liga
+                    </a>
+                </h2>
+                <div class="article-summary">
+                    Der ehemalige Eintracht-Verteidiger und Europa-League-Sieger von 2022 spielt nach Vereinslosigkeit nun für Girondins Bordeaux in der französischen National 2. Nach schwierigen Jahren will der 29-Jährige dem Traditionsverein beim Wiederaufstieg helfen.
+                </div>
+                <div class="meta-info">23. März 2026 | Sascha Mehr</div>
+            </article>
+            
+            <article class="article-card">
+                <h2 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/mario-goetze-steht-unmittelbar-vor-verlaengerung-bei-eintracht-frankfurt-zr-94231821.html" target="_blank">
+                        Mario Götze steht vor Vertragsverlängerung bis 2027
+                    </a>
+                </h2>
+                <div class="article-summary">
+                    Trotz der Ausbootung gegen Mainz verlängert Götze seinen Vertrag bis 2027. Der Weltmeister identifiziert sich stark mit Verein und Fans und möchte weitere sportliche Ziele erreichen. Die Kader-Degradierung war laut Riera nur eine Verschnaufpause aufgrund körperlicher Probleme.
+                </div>
+                <div class="meta-info">23. März 2026 | Christopher Michel & Isabella Strehmann</div>
+            </article>
+        </div>
+        
+        <div class="footer">
+            Erstellt für Mission Control • 24. März 2026
+        </div>
+    </div>
+</body>
+</html>
