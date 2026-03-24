@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUMA Outreach Playbook</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #f8f7ff; color: #1a1a2e; min-height: 100vh; }
+
+    .header {
+      background: linear-gradient(135deg, #7C3AED 0%, #5b21b6 100%);
+      color: white;
+      padding: 48px 40px 40px;
+    }
+    .header-label { font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; opacity: 0.75; margin-bottom: 12px; }
+    .header h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+    .header .subtitle { font-size: 16px; opacity: 0.85; }
+    .header-meta { display: flex; gap: 24px; margin-top: 24px; flex-wrap: wrap; }
+    .meta-badge { background: rgba(255,255,255,0.15); border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
+
+    .problem-box {
+      background: white;
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 32px;
+      border-left: 4px solid #7C3AED;
+      box-shadow: 0 2px 12px rgba(124,58,237,0.08);
+    }
+    .problem-box h2 { font-size: 16px; font-weight: 700; color: #7C3AED; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+    .problem-box p { font-size: 15px; line-height: 1.7; color: #374151; }
+
+    .sequence { display: flex; flex-direction: column; gap: 20px; margin-bottom: 40px; }
+
+    .touch-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .touch-header {
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .touch-number {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 16px;
+      flex-shrink: 0;
+    }
+    .touch-1 .touch-number { background: #ede9fe; color: #7C3AED; }
+    .touch-2 .touch-number { background: #dbeafe; color: #2563eb; }
+    .touch-3 .touch-number { background: #d1fae5; color: #059669; }
+    .touch-4 .touch-number { background: #fef3c7; color: #d97706; }
+    .touch-5 .touch-number { background: #fee2e2; color: #dc2626; }
+
+    .touch-meta h3 { font-size: 16px; font-weight: 700; color: #111827; }
+    .touch-meta .touch-day { font-size: 13px; color: #6b7280; margin-top: 2px; }
+    .touch-goal {
+      margin-left: auto;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .touch-1 .touch-goal { background: #ede9fe; color: #7C3AED; }
+    .touch-2 .touch-goal { background: #dbeafe; color: #2563eb; }
+    .touch-3 .touch-goal { background: #d1fae5; color: #059669; }
+    .touch-4 .touch-goal { background: #fef3c7; color: #d97706; }
+    .touch-5 .touch-goal { background: #fee2e2; color: #dc2626; }
+
+    .touch-body { padding: 24px 28px; }
+    .touch-template {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 20px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #374151;
+      white-space: pre-wrap;
+      font-family: inherit;
+      margin-top: 4px;
+    }
+    .touch-tip {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #6b7280;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .touch-tip::before { content: "💡"; flex-shrink: 0; }
+
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .rule-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px 22px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border-top: 3px solid #7C3AED;
+    }
+    .rule-card .rule-icon { font-size: 20px; margin-bottom: 8px; }
+    .rule-card h4 { font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 6px; }
+    .rule-card p { font-size: 13px; color: #6b7280; line-height: 1.6; }
+
+    .tool-box {
+      background: linear-gradient(135deg, #7C3AED 0%, #5b21b6 100%);
+      border-radius: 16px;
+      padding: 28px 32px;
+      color: white;
+      margin-bottom: 40px;
+    }
+    .tool-box h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+    .tool-steps { display: flex; flex-direction: column; gap: 10px; }
+    .tool-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .tool-step .step-num {
+      width: 24px; height: 24px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .stat-card .stat-num { font-size: 28px; font-weight: 800; color: #7C3AED; }
+    .stat-card .stat-label { font-size: 12px; color: #6b7280; margin-top: 4px; font-weight: 500; }
+
+    .footer { text-align: center; padding: 32px; color: #9ca3af; font-size: 12px; }
+    .footer a { color: #7C3AED; text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .header { padding: 32px 24px; }
+      .header h1 { font-size: 24px; }
+      .stats-row { grid-template-columns: 1fr; }
+      .touch-goal { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">LUMA Sales</div>
+  <h1>Outreach Playbook</h1>
+  <div class="subtitle">5-Touch Sequenz für Warm & Cold Leads — Architekturbüros</div>
+  <div class="header-meta">
+    <div class="meta-badge">📅 Stand: März 2026</div>
+    <div class="meta-badge">🎯 Zielgruppe: Kleine Architekturbüros DE</div>
+    <div class="meta-badge">✉️ Sender: daniel@luma-app.io</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Problem -->
+  <div class="problem-box">
+    <h2>Das Problem</h2>
+    <p>Die meisten Leads sagen "klingt interessant" — und dann hört man nichts mehr. Das Problem ist nicht die Lead-Qualität. Es ist fehlende Konsequenz im Follow-up. Die sagen das ehrlich, aber du bist für sie nicht dringend. Diese Sequenz macht dich dringend — ohne zu nerven.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Touchpoints</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">28</div>
+      <div class="stat-label">Tage gesamt</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">15–20%</div>
+      <div class="stat-label">Erwartete Reply Rate</div>
+    </div>
+  </div>
+
+  <!-- Sequence -->
+  <div class="sequence">
+
+    <div class="touch-card touch-1">
+      <div class="touch-header">
+        <div class="touch-number">1</div>
+        <div class="touch-meta">
+          <h3>Erstkontakt</h3>
+          <div class="touch-day">Tag 0</div>
+        </div>
+        <div class="touch-goal">Neugier wecken</div>
+      </div>
+      <div class="touch-body">
+        <div class="touch-template">Hallo [Name],
+
+ich baue gerade LUMA — ein Projektmanagement-Tool speziell für kleine Architekturbüros. Zwei Büros hier aus der Region nutzen es bereits im Alltag.
+
+Wäre ein kurzer 20-Minuten-Call interessant, einfach um zu zeigen was's kann? Kein Pitch, kein Druck.
+
+[Booking-Link: luma-app.io/demo]
+
+Viele Grüße,
+Daniel</div>
+        <div class="touch-tip">Kein Pitch, keine Features-Liste. Nur eine einfache Frage. Booking-Link immer mit rein.</div>
+      </div>
+    </div>
+
+    <div class="touch-card touch-2">
+      <div class="touch-header">
+        <div class="touch-number">2</div>
+        <div class="touch-meta">
+          <h3>Sanftes Follow-up</h3>
+          <div class="touch-day">Tag 4</div>
+        </div>
+        <div class="touch-goal">Niedrigschwellig klopfen</div>
+      </div>
+      <div class="touch-body">
+        <div class="touch-template">Hallo [Name],
+
+wollte kurz nachfragen ob meine Nachricht ankam — Inbox-Overflow kenn ich 😄
+
+Falls du neugierig bist: [Booking-Link]
+
+Kein Stress, falls's grad nicht passt.
+
+Grüße,
+Daniel</div>
+        <div class="touch-tip">Kurz halten. Humor ist erlaubt. Kein "nur mal nachhaken" ohne Mehrwert — aber hier reicht kurze Erinnerung.</div>
+      </div>
+    </div>
+
+    <div class="touch-card touch-3">
+      <div class="touch-header">
+        <div class="touch-number">3</div>
+        <div class="touch-meta">
+          <h3>Wert liefern</h3>
+          <div class="touch-day">Tag 10</div>
+        </div>
+        <div class="touch-goal">Insight geben</div>
+      </div>
+      <div class="touch-body">
+        <div class="touch-template">Hallo [Name],
+
+hab letzte Woche mit einem Architekturbüro in Frankfurt gesprochen — die haben mir erzählt wie sie Bauzeitenplan, Mängelmanagement und Kundenkommunikation in 3 verschiedenen Tools jonglieren.
+
+Das kenne ich aus vielen Gesprächen. Hab kurz aufgeschrieben was LUMA da konkret löst: [Link zu luma-app.io/demo]
+
+Falls du's sehen willst — Termin: [Booking-Link]
+
+Grüße,
+Daniel</div>
+        <div class="touch-tip">NIEMALS "nur kurz nachhaken". Dieser Touch MUSS Mehrwert liefern — eine Beobachtung, ein Insight, eine konkrete Story aus der Praxis.</div>
+      </div>
+    </div>
+
+    <div class="touch-card touch-4">
+      <div class="touch-header">
+        <div class="touch-number">4</div>
+        <div class="touch-meta">
+          <h3>Soziale Bestätigung</h3>
+          <div class="touch-day">Tag 18</div>
+        </div>
+        <div class="touch-goal">FOMO erzeugen</div>
+      </div>
+      <div class="touch-body">
+        <div class="touch-template">Hallo [Name],
+
+kurzes Update: wir onboarden gerade 3 neue Büros. Aktuell noch kostenlose Beta — das ändert sich wenn wir die Beta-Plätze voll haben.
+
+Falls du noch rein willst solange's gratis ist: [Booking-Link]
+
+Grüße,
+Daniel</div>
+        <div class="touch-tip">"Andere machen's schon" ist ein echter Motivator. Die Knappheit (Beta-Plätze) muss ehrlich sein — nicht erfunden.</div>
+      </div>
+    </div>
+
+    <div class="touch-card touch-5">
+      <div class="touch-header">
+        <div class="touch-number">5</div>
+        <div class="touch-meta">
+          <h3>Break-up Mail</h3>
+          <div class="touch-day">Tag 28</div>
+        </div>
+        <div class="touch-goal">Klares Ende setzen</div>
+      </div>
+      <div class="touch-body">
+        <div class="touch-template">Hey [Name],
+
+ich mach's kurz: ich hab mich jetzt mehrfach gemeldet und vermute, das Timing passt gerade einfach nicht — total okay.
+
+Ich streich dich von meiner Liste. Falls sich was ändert, weißt du wo ich bin.
+
+Viel Erfolg mit den Projekten!
+
+Daniel</div>
+        <div class="touch-tip">Break-up Mails haben überraschend hohe Reply Rates — oft melden sich Leute genau dann. Das "Loslassen" löst psychologischen Druck auf beiden Seiten.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Regeln -->
+  <h2 style="font-size:18px;font-weight:700;margin-bottom:16px;color:#111827;">⚙️ Die Regeln</h2>
+  <div class="rules-grid">
+    <div class="rule-card">
+      <div class="rule-icon">📅</div>
+      <h4>Max. 1× pro Woche</h4>
+      <p>Nie zweimal in 7 Tagen beim selben Lead. Abstand einhalten.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-icon">✍️</div>
+      <h4>Immer personalisiert</h4>
+      <p>Mindestens Büroname und/oder Ort einbauen. Massenmails spürt man.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-icon">🎯</div>
+      <h4>Ein klarer CTA</h4>
+      <p>Booking-Link ODER konkrete Frage — nie beides gleichzeitig.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-icon">🚫</div>
+      <h4>Kein "nur nachhaken"</h4>
+      <p>Jede Nachricht braucht eigenen Wert — Insight, Story, Update.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-icon">📎</div>
+      <h4>Kein Anhang</h4>
+      <p>PDFs öffnet niemand. Links schon. Alles über luma-app.io.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-icon">✉️</div>
+      <h4>Absender: luma-app.io</h4>
+      <p>Immer von daniel@luma-app.io — nie von mehlhart.de für LUMA-Outreach.</p>
+    </div>
+  </div>
+
+  <!-- Tool Setup -->
+  <div class="tool-box">
+    <h2>🛠️ Setup: Instantly.ai</h2>
+    <div class="tool-steps">
+      <div class="tool-step"><div class="step-num">1</div><div>Account anlegen auf instantly.ai (~$37/Monat, 14 Tage Trial)</div></div>
+      <div class="tool-step"><div class="step-num">2</div><div>daniel@luma-app.io verbinden + SPF/DKIM für Google Workspace einrichten (10 Min, Hatti kann anleiten)</div></div>
+      <div class="tool-step"><div class="step-num">3</div><div>Sequenz einmalig aufsetzen — 5 Templates rein, Zeitabstände einstellen</div></div>
+      <div class="tool-step"><div class="step-num">4</div><div>183 Hessen-Leads CSV importieren (scraping fertig, liegt auf dem Pi)</div></div>
+      <div class="tool-step"><div class="step-num">5</div><div>Warm Leads ("klingt interessant"-Gruppe) als separate Kampagne ab Touch 2</div></div>
+    </div>
+  </div>
+
+  <!-- Tracking -->
+  <h2 style="font-size:18px;font-weight:700;margin-bottom:16px;color:#111827;">📊 Was du tracken solltest</h2>
+  <div class="rules-grid">
+    <div class="rule-card">
+      <div class="rule-icon">📩</div>
+      <h4>Letzter Kontakt</h4>
+      <p>Wann zuletzt was rausgeschickt — Instantly trackt das automatisch.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-icon">🔢</div>
+      <h4>Touch-Nummer</h4>
+      <p>Bei welchem Schritt ist jeder Lead — 1 bis 5.</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-icon">💬</div>
+      <h4>Reaktion</h4>
+      <p>Kein Reply / "interessant" / Termin vereinbart / Nein. Vier Kategorien reichen.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Erstellt von Hatti 🏔️ · <a href="https://luma-app.io/demo">luma-app.io/demo</a> · Stand 24.03.2026
+</div>
+
+</body>
+</html>
