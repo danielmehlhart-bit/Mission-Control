@@ -89,6 +89,10 @@ export default function AccountDetailPage() {
   const [editModal, setEditModal] = useState(false);
   const [editForm, setEditForm] = useState({ name: "", domain: "", industry: "", size: "", status: "prospect", color: "#6366f1", notes: "" });
   const [saving, setSaving] = useState(false);
+  const [dealEditModal, setDealEditModal] = useState(false);
+  const [editingDeal, setEditingDeal] = useState<Deal | null>(null);
+  const [dealEditForm, setDealEditForm] = useState({ title: "", value: "", stage: "lead", probability: "50", expectedClose: "", notes: "" });
+  const [dealDeleteConfirm, setDealDeleteConfirm] = useState(false);
 
   const load = useCallback(async () => {
     const [accRes, contactRes, dealRes, projRes, actRes] = await Promise.all([
@@ -162,6 +166,42 @@ export default function AccountDetailPage() {
     }) });
     setSaving(false); setActivityModal(false);
     setActivityForm({ type: "call", title: "", summary: "" });
+    load();
+  };
+
+  const openDealEdit = (d: Deal) => {
+    setEditingDeal(d);
+    setDealEditForm({
+      title: d.title, value: d.value != null ? String(d.value) : "",
+      stage: d.stage, probability: String(d.probability),
+      expectedClose: d.expectedClose ?? "", notes: d.notes ?? "",
+    });
+    setDealDeleteConfirm(false);
+    setDealEditModal(true);
+  };
+
+  const saveDealEdit = async () => {
+    if (!editingDeal || !dealEditForm.title.trim()) return;
+    setSaving(true);
+    await fetch(`/api/deals?id=${editingDeal.id}`, {
+      method: "PATCH", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: dealEditForm.title,
+        value: dealEditForm.value ? parseInt(dealEditForm.value) : null,
+        stage: dealEditForm.stage,
+        probability: parseInt(dealEditForm.probability) || 0,
+        expectedClose: dealEditForm.expectedClose || null,
+        notes: dealEditForm.notes || null,
+      }),
+    });
+    setSaving(false); setDealEditModal(false); setEditingDeal(null);
+    load();
+  };
+
+  const deleteDealById = async () => {
+    if (!editingDeal) return;
+    await fetch(`/api/deals?id=${editingDeal.id}`, { method: "DELETE" });
+    setDealEditModal(false); setEditingDeal(null);
     load();
   };
 
@@ -334,6 +374,7 @@ export default function AccountDetailPage() {
                       <span style={{ padding: "2px 8px", borderRadius: 999, fontSize: 10, fontWeight: 600, background: `${stc}18`, color: stc, border: `1px solid ${stc}30` }}>{DEAL_STAGE_LABEL[d.stage]}</span>
                       <span style={{ fontSize: 13, fontWeight: 600, color: "#f0f2f5", flex: 1 }}>{d.title}</span>
                       {d.value != null && <span style={{ fontSize: 13, fontWeight: 700, color }}>€{d.value.toLocaleString("de-DE")}</span>}
+                      <button onClick={() => openDealEdit(d)} style={{ padding: "3px 8px", borderRadius: 5, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 11, cursor: "pointer", flexShrink: 0 }}>✏️</button>
                     </div>
                     <div style={{ display: "flex", gap: 12, fontSize: 11, color: "#4a5068" }}>
                       <span>{d.probability}% probability</span>
@@ -529,6 +570,42 @@ export default function AccountDetailPage() {
           </div>
           <div><label style={LS}>Summary</label><textarea style={{ ...IS, resize: "vertical" }} rows={3} value={activityForm.summary} onChange={e => setActivityForm(f => ({ ...f, summary: e.target.value }))} placeholder="Was wurde besprochen?" /></div>
           <ModalActions onClose={() => setActivityModal(false)} onSave={saveActivity} saving={saving} disabled={!activityForm.title.trim()} />
+        </Modal>
+      )}
+
+      {/* Deal Edit Modal */}
+      {dealEditModal && editingDeal && (
+        <Modal title="Deal bearbeiten" onClose={() => setDealEditModal(false)}>
+          <div><label style={LS}>Titel *</label><input style={IS} value={dealEditForm.title} onChange={e => setDealEditForm(f => ({ ...f, title: e.target.value }))} /></div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div><label style={LS}>Wert (€)</label><input style={IS} type="number" value={dealEditForm.value} onChange={e => setDealEditForm(f => ({ ...f, value: e.target.value }))} /></div>
+            <div>
+              <label style={LS}>Stage</label>
+              <select style={{ ...IS, cursor: "pointer" }} value={dealEditForm.stage} onChange={e => setDealEditForm(f => ({ ...f, stage: e.target.value }))}>
+                {Object.entries(DEAL_STAGE_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+              </select>
+            </div>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div><label style={LS}>Probability (%)</label><input style={IS} type="number" min="0" max="100" value={dealEditForm.probability} onChange={e => setDealEditForm(f => ({ ...f, probability: e.target.value }))} /></div>
+            <div><label style={LS}>Expected Close</label><input style={IS} type="date" value={dealEditForm.expectedClose} onChange={e => setDealEditForm(f => ({ ...f, expectedClose: e.target.value }))} /></div>
+          </div>
+          <div><label style={LS}>Notes</label><textarea style={{ ...IS, resize: "vertical" }} rows={2} value={dealEditForm.notes} onChange={e => setDealEditForm(f => ({ ...f, notes: e.target.value }))} /></div>
+          <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
+            {dealDeleteConfirm ? (
+              <>
+                <span style={{ fontSize: 12, color: "#ef4444", display: "flex", alignItems: "center", flex: 1 }}>Wirklich löschen?</span>
+                <button onClick={() => setDealDeleteConfirm(false)} style={{ padding: "9px 14px", borderRadius: 8, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 13, cursor: "pointer" }}>Nein</button>
+                <button onClick={deleteDealById} style={{ padding: "9px 14px", borderRadius: 8, border: "none", background: "#ef4444", color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>Löschen</button>
+              </>
+            ) : (
+              <>
+                <button onClick={() => setDealDeleteConfirm(true)} style={{ padding: "9px 12px", borderRadius: 8, border: "1px solid #ef444440", background: "transparent", color: "#ef4444", fontSize: 13, cursor: "pointer" }}>🗑</button>
+                <button onClick={() => setDealEditModal(false)} style={{ flex: 1, padding: "9px 0", borderRadius: 8, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 13, cursor: "pointer" }}>Abbrechen</button>
+                <button onClick={saveDealEdit} disabled={saving || !dealEditForm.title.trim()} style={{ flex: 2, padding: "9px 0", borderRadius: 8, border: "none", background: saving ? "#0a7a50" : "#10B981", color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>{saving ? "Speichern…" : "Speichern"}</button>
+              </>
+            )}
+          </div>
         </Modal>
       )}
 
