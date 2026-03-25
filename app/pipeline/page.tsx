@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
-import { useRouter } from "next/navigation";
 
 type Deal = {
   id: string; accountId: string; accountName?: string; accountColor?: string;
@@ -25,7 +24,6 @@ const LS = { fontSize: 11, color: "#8b90a0", marginBottom: 4, display: "block" a
 type Account = { id: string; name: string; color: string };
 
 export default function PipelinePage() {
-  const router = useRouter();
   const [deals, setDeals] = useState<Deal[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,6 +31,11 @@ export default function PipelinePage() {
   const [modal, setModal] = useState(false);
   const [form, setForm] = useState({ title: "", accountId: "", value: "", stage: "lead", probability: "50", expectedClose: "", notes: "" });
   const [saving, setSaving] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [editDeal, setEditDeal] = useState<Deal | null>(null);
+  const [editForm, setEditForm] = useState({ title: "", accountId: "", value: "", stage: "lead", probability: "50", expectedClose: "", notes: "" });
+  const [editSaving, setEditSaving] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
   const dragOverStage = useRef<string | null>(null);
 
   const load = useCallback(async () => {
@@ -72,6 +75,51 @@ export default function PipelinePage() {
     if (dealId) moveStage(dealId, stageKey);
     setDraggingId(null);
     dragOverStage.current = null;
+  };
+
+  const openEditModal = (deal: Deal) => {
+    setEditDeal(deal);
+    setEditForm({
+      title: deal.title,
+      accountId: deal.accountId,
+      value: deal.value != null ? String(deal.value) : "",
+      stage: deal.stage,
+      probability: String(deal.probability),
+      expectedClose: deal.expectedClose ?? "",
+      notes: deal.notes ?? "",
+    });
+    setDeleteConfirm(false);
+    setEditModal(true);
+  };
+
+  const saveEdit = async () => {
+    if (!editDeal || !editForm.title.trim()) return;
+    setEditSaving(true);
+    await fetch(`/api/deals?id=${editDeal.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: editForm.title,
+        accountId: editForm.accountId,
+        value: editForm.value ? parseInt(editForm.value) : null,
+        stage: editForm.stage,
+        probability: parseInt(editForm.probability) || 0,
+        expectedClose: editForm.expectedClose || null,
+        notes: editForm.notes || null,
+      }),
+    });
+    setEditSaving(false);
+    setEditModal(false);
+    setEditDeal(null);
+    load();
+  };
+
+  const deleteDeal = async () => {
+    if (!editDeal) return;
+    await fetch(`/api/deals?id=${editDeal.id}`, { method: "DELETE" });
+    setEditModal(false);
+    setEditDeal(null);
+    load();
   };
 
   const saveDeal = async () => {
@@ -149,10 +197,7 @@ export default function PipelinePage() {
                         draggable
                         onDragStart={e => onDragStart(e, deal.id)}
                         onDragEnd={() => setDraggingId(null)}
-                        onClick={() => {
-                          // Navigate to account
-                          if (deal.accountId) router.push(`/accounts/${deal.accountId}`);
-                        }}
+                        onClick={() => openEditModal(deal)}
                         style={{
                           background: "#141720", border: `1px solid ${draggingId === deal.id ? stage.color + "50" : "#1e2128"}`,
                           borderRadius: 10, padding: "10px 12px", cursor: "grab",
@@ -212,6 +257,53 @@ export default function PipelinePage() {
             <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
               <button onClick={() => setModal(false)} style={{ flex: 1, padding: "9px 0", borderRadius: 8, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 13, cursor: "pointer" }}>Abbrechen</button>
               <button onClick={saveDeal} disabled={saving || !form.title.trim() || !form.accountId} style={{ flex: 2, padding: "9px 0", borderRadius: 8, border: "none", background: saving ? "#0a7a50" : "#10B981", color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>{saving ? "Speichern…" : "Speichern"}</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Edit Deal Modal */}
+      {editModal && editDeal && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 300, padding: 20 }} onClick={() => setEditModal(false)}>
+          <div style={{ background: "#141720", border: "1px solid #1e2128", borderRadius: 16, padding: 24, width: "100%", maxWidth: 480, display: "flex", flexDirection: "column", gap: 14 }} onClick={e => e.stopPropagation()}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <h2 style={{ fontSize: 16, fontWeight: 700 }}>Deal bearbeiten</h2>
+              <button onClick={() => setEditModal(false)} style={{ background: "none", border: "none", color: "#8b90a0", fontSize: 18, cursor: "pointer", lineHeight: 1 }}>×</button>
+            </div>
+            <div>
+              <label style={LS}>Account</label>
+              <select style={{ ...IS, cursor: "pointer" }} value={editForm.accountId} onChange={e => setEditForm(f => ({ ...f, accountId: e.target.value }))}>
+                {accounts.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
+              </select>
+            </div>
+            <div><label style={LS}>Titel *</label><input style={IS} value={editForm.title} onChange={e => setEditForm(f => ({ ...f, title: e.target.value }))} /></div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div><label style={LS}>Wert (€)</label><input style={IS} type="number" value={editForm.value} onChange={e => setEditForm(f => ({ ...f, value: e.target.value }))} /></div>
+              <div>
+                <label style={LS}>Stage</label>
+                <select style={{ ...IS, cursor: "pointer" }} value={editForm.stage} onChange={e => setEditForm(f => ({ ...f, stage: e.target.value }))}>
+                  {STAGES.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
+                </select>
+              </div>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div><label style={LS}>Probability (%)</label><input style={IS} type="number" min="0" max="100" value={editForm.probability} onChange={e => setEditForm(f => ({ ...f, probability: e.target.value }))} /></div>
+              <div><label style={LS}>Expected Close</label><input style={IS} type="date" value={editForm.expectedClose} onChange={e => setEditForm(f => ({ ...f, expectedClose: e.target.value }))} /></div>
+            </div>
+            <div><label style={LS}>Notes</label><textarea style={{ ...IS, resize: "vertical" }} rows={2} value={editForm.notes} onChange={e => setEditForm(f => ({ ...f, notes: e.target.value }))} /></div>
+            <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
+              {deleteConfirm ? (
+                <>
+                  <span style={{ fontSize: 12, color: "#ef4444", display: "flex", alignItems: "center", flex: 1 }}>Wirklich löschen?</span>
+                  <button onClick={() => setDeleteConfirm(false)} style={{ padding: "9px 14px", borderRadius: 8, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 13, cursor: "pointer" }}>Nein</button>
+                  <button onClick={deleteDeal} style={{ padding: "9px 14px", borderRadius: 8, border: "none", background: "#ef4444", color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>Löschen</button>
+                </>
+              ) : (
+                <>
+                  <button onClick={() => setDeleteConfirm(true)} style={{ padding: "9px 12px", borderRadius: 8, border: "1px solid #ef444440", background: "transparent", color: "#ef4444", fontSize: 13, cursor: "pointer" }}>🗑</button>
+                  <button onClick={() => setEditModal(false)} style={{ flex: 1, padding: "9px 0", borderRadius: 8, border: "1px solid #1e2128", background: "transparent", color: "#8b90a0", fontSize: 13, cursor: "pointer" }}>Abbrechen</button>
+                  <button onClick={saveEdit} disabled={editSaving || !editForm.title.trim()} style={{ flex: 2, padding: "9px 0", borderRadius: 8, border: "none", background: editSaving ? "#0a7a50" : "#10B981", color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>{editSaving ? "Speichern…" : "Speichern"}</button>
+                </>
+              )}
             </div>
           </div>
         </div>
