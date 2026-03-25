@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUMA — Cold LinkedIn Outreach Playbook</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f0f0f;
+      color: #e5e5e5;
+      min-height: 100vh;
+    }
+    .hero {
+      background: linear-gradient(135deg, #7C3AED 0%, #4f46e5 100%);
+      padding: 56px 40px 48px;
+    }
+    .hero-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .hero-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.8);
+      max-width: 560px;
+      line-height: 1.6;
+    }
+    .hero-meta {
+      margin-top: 24px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .meta-pill {
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.9);
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+    .section {
+      margin-bottom: 48px;
+    }
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #7C3AED;
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .card p {
+      font-size: 14px;
+      color: #aaa;
+      line-height: 1.7;
+    }
+    .card ul {
+      list-style: none;
+      margin-top: 10px;
+    }
+    .card ul li {
+      font-size: 14px;
+      color: #aaa;
+      padding: 4px 0;
+      padding-left: 18px;
+      position: relative;
+      line-height: 1.6;
+    }
+    .card ul li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #7C3AED;
+    }
+    /* Sequence steps */
+    .sequence {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .step {
+      display: flex;
+      gap: 20px;
+      position: relative;
+    }
+    .step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      left: 19px;
+      top: 48px;
+      bottom: -24px;
+      width: 2px;
+      background: #2a2a2a;
+    }
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #7C3AED;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+      z-index: 1;
+    }
+    .step-body {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 20px 24px;
+      flex: 1;
+      margin-bottom: 24px;
+    }
+    .step-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+    .step-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .step-goal {
+      font-size: 12px;
+      color: #7C3AED;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .step-timing {
+      font-size: 12px;
+      color: #666;
+      margin-left: auto;
+    }
+    .step-template {
+      background: #111;
+      border-left: 3px solid #7C3AED;
+      border-radius: 0 8px 8px 0;
+      padding: 16px;
+      margin-top: 14px;
+      font-size: 13.5px;
+      color: #ccc;
+      line-height: 1.8;
+      white-space: pre-line;
+    }
+    .step-note {
+      margin-top: 12px;
+      font-size: 12.5px;
+      color: #666;
+      font-style: italic;
+    }
+    /* Angles */
+    .angles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .angle-card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .angle-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7C3AED;
+      margin-bottom: 10px;
+    }
+    .angle-card h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .angle-hook {
+      background: #111;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: #ccc;
+      font-style: italic;
+      line-height: 1.6;
+    }
+    /* CTAs */
+    .cta-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .cta-item {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 14px;
+      color: #e5e5e5;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .cta-item.best {
+      border-color: #7C3AED;
+      background: rgba(124, 58, 237, 0.08);
+    }
+    .cta-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: #7C3AED;
+      color: #fff;
+      border-radius: 4px;
+      padding: 3px 7px;
+      flex-shrink: 0;
+    }
+    /* KPIs */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .kpi-card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      padding: 18px;
+      text-align: center;
+    }
+    .kpi-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+    .kpi-label {
+      font-size: 12px;
+      color: #888;
+      line-height: 1.5;
+    }
+    /* Do / Don't */
+    .donts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .donts-grid { grid-template-columns: 1fr; }
+      .hero { padding: 40px 20px; }
+      .hero h1 { font-size: 26px; }
+    }
+    .do-card {
+      background: rgba(16, 185, 129, 0.06);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .dont-card {
+      background: rgba(239, 68, 68, 0.06);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .do-card h3 { color: #10b981; font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+    .dont-card h3 { color: #ef4444; font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+    .do-card li, .dont-card li {
+      font-size: 13px;
+      color: #aaa;
+      padding: 4px 0;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.6;
+      list-style: none;
+    }
+    .do-card li::before { content: "✓"; position: absolute; left: 0; color: #10b981; }
+    .dont-card li::before { content: "✗"; position: absolute; left: 0; color: #ef4444; }
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(124,58,237,0.15) 0%, rgba(79,70,229,0.1) 100%);
+      border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .highlight-box p {
+      font-size: 15px;
+      color: #e5e5e5;
+      line-height: 1.7;
+      font-weight: 500;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid #222;
+      margin: 48px 0;
+    }
+    .footer {
+      text-align: center;
+      padding: 32px 0 16px;
+      font-size: 12px;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="hero-label">luma · Sales Playbook</div>
+    <h1>Cold LinkedIn Outreach</h1>
+    <p class="hero-sub">5-Schritt-Sequenz für Architekturbüros. Ziel: nicht das Produkt verkaufen — ein Gespräch öffnen.</p>
+    <div class="hero-meta">
+      <span class="meta-pill">🎯 Zielgruppe: Inhaber & Projektleiter</span>
+      <span class="meta-pill">📦 Batch: 20–30 Anfragen</span>
+      <span class="meta-pill">⏱ Sequenz: ~2 Wochen</span>
+      <span class="meta-pill">Stand: März 2026</span>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Kernbotschaft -->
+    <div class="section">
+      <div class="section-title">Kernbotschaft</div>
+      <div class="highlight-box">
+        <p>luma hilft Architekturbüros, Projektchaos zu reduzieren und mehr Klarheit in Baustellendoku, Aufgaben und Projektkontext zu bringen.</p>
+      </div>
+      <div class="card">
+        <h3>Wer wird angeschrieben</h3>
+        <ul>
+          <li>Inhaber kleiner Architekturbüros (3–20 MA)</li>
+          <li>Projektleiter mit Baustellenbezug und viel Koordination</li>
+          <li>Büros mit messbarem Abstimmungsaufwand</li>
+        </ul>
+        <p style="margin-top: 14px; color: #666; font-size: 13px;">Lieber 50 sehr passende Leads als 300 beliebige.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Sequenz -->
+    <div class="section">
+      <div class="section-title">Die 5-Schritt-Sequenz</div>
+      <div class="sequence">
+
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-header">
+              <span class="step-title">Kontaktanfrage</span>
+              <span class="step-goal">Ziel: Vernetzung</span>
+            </div>
+            <div class="step-template">Hi [Name],
+ich spreche gerade mit Architekturbüros über ein wiederkehrendes Thema: zu viel Abstimmung, verteilte Projektinfos und zu wenig Klarheit im Alltag. Vernetzen wir uns?</div>
+            <div class="step-note">⭐ Beste Variante von drei getesteten. Kein Link, keine Feature-Liste.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-header">
+              <span class="step-title">Nach Annahme</span>
+              <span class="step-goal">Ziel: Relevanz erzeugen</span>
+            </div>
+            <div class="step-template">Hi [Name], danke fürs Vernetzen.
+Ich spreche gerade mit Architekturbüros, bei denen im Alltag viel Zeit für E-Mails, Nachfragen, Baustellendoku und verteilte Infos draufgeht.
+
+Genau an diesem Punkt setze ich mit luma an.
+Ist das bei euch aktuell ein relevantes Thema oder eher nicht?</div>
+            <div class="step-note">Problemnah · keine Feature-Flut · Ja/Nein-Frage — macht Antworten leichter.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-header">
+              <span class="step-title">Follow-up 1</span>
+              <span class="step-goal">Ziel: konkret werden</span>
+              <span class="step-timing">nach 3–4 Tagen</span>
+            </div>
+            <div class="step-template">Hi [Name], ich mache es konkreter:
+Ein Use Case, der gerade besonders gut ankommt, ist Bautagebuch direkt von der Baustelle per Spracheingabe, inklusive Fotos und automatischer Ablage im Projekt.
+
+Der größere Hebel ist meist aber der bessere Überblick über Aufgaben, Status und Projektkontext.
+Wäre ein kurzer Austausch dazu interessant?</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-header">
+              <span class="step-title">Follow-up 2</span>
+              <span class="step-goal">Ziel: Nutzen greifbar machen</span>
+              <span class="step-timing">nach weiteren 4–5 Tagen</span>
+            </div>
+            <div class="step-template">Hi [Name], ich sehe bei vielen Büros ein ähnliches Muster:
+Nicht die eigentliche Architektur frisst die Zeit, sondern alles drumherum. Nachfassen, Suchen, Dokumentieren, Abstimmen.
+
+Genau dafür baue ich luma.
+Wenn du magst, schicke ich dir einfach 2 Screenshots oder wir schauen 15 Minuten gemeinsam drauf.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-header">
+              <span class="step-title">Break-up</span>
+              <span class="step-goal">Ziel: sauber rausgehen</span>
+            </div>
+            <div class="step-template">Hi [Name], ich schließe den Loop erstmal.
+Falls das Thema Projektorganisation, Baustellendoku und weniger Abstimmungsaufwand bei euch relevant wird, melde dich gern.
+
+Dann zeige ich dir luma kurz und du siehst sofort, ob es für euch passt.</div>
+            <div class="step-note">Druck rausnehmen. Tür offen lassen.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Angles -->
+    <div class="section">
+      <div class="section-title">Drei Test-Angles</div>
+      <div class="angles-grid">
+        <div class="angle-card">
+          <div class="angle-tag">Angle 1</div>
+          <h3>Baustellendoku</h3>
+          <p style="font-size:12px;color:#666;margin-bottom:10px;">Für Büros mit starker Baustellenarbeit</p>
+          <div class="angle-hook">"Baustellendoku läuft oft nebenher und wird später nachgezogen."</div>
+        </div>
+        <div class="angle-card">
+          <div class="angle-tag">Angle 2</div>
+          <h3>Weniger Nachfragen</h3>
+          <p style="font-size:12px;color:#666;margin-bottom:10px;">Für Inhaber und Teamleiter</p>
+          <div class="angle-hook">"Zu viel Zeit geht für Nachfassen, Abstimmen und Suchen drauf."</div>
+        </div>
+        <div class="angle-card">
+          <div class="angle-tag">Angle 3</div>
+          <h3>Projektklarheit</h3>
+          <p style="font-size:12px;color:#666;margin-bottom:10px;">Für breitere Ansprache</p>
+          <div class="angle-hook">"Projektinfos liegen verteilt in E-Mails, Ordnern, Chats und Köpfen."</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- CTAs -->
+    <div class="section">
+      <div class="section-title">CTAs — immer nur einen wählen</div>
+      <div class="cta-list">
+        <div class="cta-item best">
+          <span class="cta-badge">Favorit</span>
+          „Ist das bei euch aktuell relevant oder eher nicht?"
+        </div>
+        <div class="cta-item">„Wäre ein kurzer Austausch dazu interessant?"</div>
+        <div class="cta-item">„Soll ich dir 2 Screenshots schicken?"</div>
+        <div class="cta-item">„Offen für 15 Minuten?"</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Do / Don't -->
+    <div class="section">
+      <div class="section-title">Do / Don't</div>
+      <div class="donts-grid">
+        <div class="do-card">
+          <h3>✓ Machen</h3>
+          <ul>
+            <li>Kurz — eine Botschaft pro Nachricht</li>
+            <li>Einen konkreten Schmerzpunkt benennen</li>
+            <li>Personalisieren nur mit Substanz</li>
+            <li>In Chargen à 20–30 Anfragen arbeiten</li>
+            <li>Erst skalieren wenn Antworten kommen</li>
+          </ul>
+        </div>
+        <div class="dont-card">
+          <h3>✗ Nicht machen</h3>
+          <ul>
+            <li>"Ich habe eine App gebaut"</li>
+            <li>"KI-gestützte Plattform mit Features"</li>
+            <li>5 Features in einer Nachricht</li>
+            <li>Link in der ersten Nachricht</li>
+            <li>Sofort nach E-Mail fragen</li>
+            <li>"Tolles Profil / Spannende Erfahrung"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- KPIs -->
+    <div class="section">
+      <div class="section-title">4 KPIs die zählen</div>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon">📨</div>
+          <div class="kpi-label">Annahmerate<br>Kontaktanfrage</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">💬</div>
+          <div class="kpi-label">Antwortquote<br>erste Nachricht</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">🙋</div>
+          <div class="kpi-label">„Interessant,<br>schick mal mehr"</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">📞</div>
+          <div class="kpi-label">Calls / Demos<br>pro 100 Anfragen</div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <h3>Diagnose-Logik</h3>
+        <ul>
+          <li>Anfrage angenommen, aber keine Antwort → Follow-up zu generisch oder produktlastig</li>
+          <li>Schlechte Annahmerate → Einstieg zu salesy oder unklar</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer">
+      luma · Cold Outreach Playbook · Stand März 2026
+    </div>
+
+  </div>
+</body>
+</html>
