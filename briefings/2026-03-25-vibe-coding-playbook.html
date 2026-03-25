@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professional Vibe Coding Playbook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F9FAFB;
+      color: #6B7280;
+      line-height: 1.6;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #E5E7EB;
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: #EDE9FE;
+      color: #7C3AED;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+
+    .header h1 {
+      color: #111827;
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      font-size: 1rem;
+      color: #9CA3AF;
+    }
+
+    /* Section titles */
+    .section-title {
+      color: #111827;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-title .icon {
+      width: 28px;
+      height: 28px;
+      background: #EDE9FE;
+      color: #7C3AED;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.06);
+      padding: 1.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .card h3 {
+      color: #111827;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      margin-bottom: 0.5rem;
+    }
+
+    .card ul {
+      padding-left: 1.25rem;
+      font-size: 0.9rem;
+    }
+
+    .card ul li {
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+    }
+
+    /* Philosophy card — special */
+    .philosophy-card {
+      background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
+      color: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(124,58,237,0.3);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .philosophy-card h2 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 1.25rem;
+      color: #fff;
+    }
+
+    .philosophy-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .philosophy-item .dot {
+      width: 8px;
+      height: 8px;
+      background: #C4B5FD;
+      border-radius: 50%;
+      margin-top: 0.45rem;
+      flex-shrink: 0;
+    }
+
+    .philosophy-item p {
+      color: rgba(255,255,255,0.92);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .philosophy-item strong {
+      color: #fff;
+    }
+
+    /* MD File grid */
+    .md-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 640px) {
+      .md-grid { grid-template-columns: 1fr; }
+      .header h1 { font-size: 1.5rem; }
+    }
+
+    .md-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.06);
+      padding: 1.5rem;
+    }
+
+    .md-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .md-card-header .file-badge {
+      background: #F3F4F6;
+      color: #7C3AED;
+      font-family: 'Courier New', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid #E5E7EB;
+    }
+
+    .md-card h4 {
+      color: #111827;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #9CA3AF;
+    }
+
+    .md-card p {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+
+    .md-card .tip {
+      background: #F5F3FF;
+      border-left: 3px solid #7C3AED;
+      border-radius: 0 8px 8px 0;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      color: #5B21B6;
+      margin-top: 0.75rem;
+    }
+
+    /* Parallel build */
+    .parallel-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    @media (max-width: 640px) {
+      .parallel-steps { grid-template-columns: 1fr 1fr; }
+    }
+
+    .parallel-step {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.06);
+      padding: 1.25rem 1rem;
+      text-align: center;
+    }
+
+    .parallel-step .step-num {
+      width: 36px;
+      height: 36px;
+      background: #EDE9FE;
+      color: #7C3AED;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.75rem;
+    }
+
+    .parallel-step h4 {
+      color: #111827;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+
+    .parallel-step p {
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .parallel-insight {
+      background: #ECFDF5;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      font-size: 0.875rem;
+      color: #065F46;
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+
+    /* Debugging */
+    .debug-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .debug-step {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 2px 8px rgba(0,0,0,0.05);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .debug-step .num {
+      width: 32px;
+      height: 32px;
+      background: #7C3AED;
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .debug-step .content h4 {
+      color: #111827;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .debug-step .content p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+    }
+
+    .debug-rule {
+      background: #FEF3C7;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      font-size: 0.875rem;
+      color: #92400E;
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+
+    /* Recommendations */
+    .rec-list {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .rec-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #F3F4F6;
+      transition: background 0.15s;
+    }
+
+    .rec-item:last-child { border-bottom: none; }
+    .rec-item:hover { background: #FAFAFA; }
+
+    .rec-item .rec-num {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #7C3AED;
+      min-width: 28px;
+      padding-top: 0.05rem;
+    }
+
+    .rec-item p {
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: #374151;
+    }
+
+    .rec-item p strong {
+      color: #111827;
+    }
+
+    /* Quotes */
+    .quotes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 640px) {
+      .quotes-grid { grid-template-columns: 1fr; }
+    }
+
+    .quote-block {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.06);
+      padding: 1.5rem;
+      border-top: 4px solid #7C3AED;
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '"';
+      font-size: 4rem;
+      color: #EDE9FE;
+      font-family: Georgia, serif;
+      line-height: 1;
+      position: absolute;
+      top: 0.5rem;
+      left: 1rem;
+    }
+
+    .quote-block p {
+      font-size: 0.9rem;
+      color: #374151;
+      font-style: italic;
+      line-height: 1.65;
+      padding-top: 1.5rem;
+    }
+
+    /* Section wrapper */
+    .section {
+      margin-bottom: 2.5rem;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #E5E7EB;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 0.8rem;
+      color: #9CA3AF;
+      margin-bottom: 0.25rem;
+    }
+
+    footer a {
+      color: #7C3AED;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-badge">Playbook · März 2026</div>
+      <h1>Professional Vibe Coding Playbook<br>Kontext, MD-Files &amp; Best Practices</h1>
+      <p>Basierend auf Lazar Yavanovich (Lovable) bei Lenny's Podcast, März 2026</p>
+    </div>
+
+    <!-- 1. Kern-Philosophie -->
+    <div class="section">
+      <div class="philosophy-card">
+        <h2>🧠 Die Kern-Philosophie</h2>
+        <div class="philosophy-item">
+          <div class="dot"></div>
+          <p><strong>80% Planning, 20% Executing.</strong> Die meiste Arbeit passiert im Kopf und im Chat — nicht im Editor.</p>
+        </div>
+        <div class="philosophy-item">
+          <div class="dot"></div>
+          <p><strong>Coding ist gelöst.</strong> Optimiere nicht für schnelleren Output, sondern für Clarity, Judgment und Taste.</p>
+        </div>
+        <div class="philosophy-item">
+          <div class="dot"></div>
+          <p><strong>"Positively delusional"</strong> — Glaube, dass alles möglich ist, bis das Gegenteil bewiesen ist. Zweifel blockieren mehr als schlechter Code.</p>
+        </div>
+        <div class="philosophy-item">
+          <div class="dot"></div>
+          <p><strong>Nicht für Speed optimieren.</strong> Wir werden nicht für schnelleren Raw Output belohnt — sondern für besseres Urteilsvermögen.</p>
+        </div>
+        <div class="philosophy-item">
+          <div class="dot"></div>
+          <p><strong>Agent Output lesen, nicht Code Output.</strong> Was der Agent beschreibt und erklärt ist wichtiger als der Code selbst.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. MD-File System -->
+    <div class="section">
+      <div class="section-title">
+        <span class="icon">📁</span>
+        Das MD-File System — Dein Kontext-Stack
+      </div>
+
+      <div class="md-grid">
+
+        <!-- master-plan.md -->
+        <div class="md-card">
+          <div class="md-card-header">
+            <span class="file-badge">master-plan.md</span>
+          </div>
+          <h4>Der Kompass</h4>
+          <p>10.000-Fuß-Überblick: <em>Warum bauen wir das? Für wen? Wie soll es sich anfühlen?</em> Beschreibt die Vision, nicht die Features.</p>
+          <p>Referenziert andere Dateien ("für Design-Details siehe design-guidelines.md") und dient als Nordpol für alle anderen PRDs.</p>
+          <div class="tip">💡 Wenn du nicht in 3 Sätzen erklären kannst was du baust — ist das master-plan noch nicht fertig.</div>
+        </div>
+
+        <!-- implementation-plan.md -->
+        <div class="md-card">
+          <div class="md-card-header">
+            <span class="file-badge">implementation-plan.md</span>
+          </div>
+          <h4>Die Sequenz</h4>
+          <p>Reihenfolge des Builds: Backend → Auth → API → UI. Wie ein Gespräch mit einem technischen Co-Founder: <em>"Wenn du das bauen willst, hier ist die Reihenfolge."</em></p>
+          <p>Kein Detail-Level — nur Sequenz und Abhängigkeiten. Der Agent weiß, was als nächstes kommt.</p>
+          <div class="tip">💡 Kein "wie" — nur "was zuerst". Details kommen in tasks.md.</div>
+        </div>
+
+        <!-- design-guidelines.md -->
+        <div class="md-card">
+          <div class="md-card-header">
+            <span class="file-badge">design-guidelines.md</span>
+          </div>
+          <h4>Der visuelle Rahmen</h4>
+          <p>Wie soll die App aussehen und sich anfühlen? Farben, Fonts, Spacing, Animationen, CSS-Elemente.</p>
+          <p>Wichtig weil AI manchmal "over creative" ist — Design braucht Steuerung, sonst improvisiert der Agent.</p>
+          <div class="tip">💡 Code-Snippets &gt; Beschreibungen. "AI interpretiert Code besser als Englisch."</div>
+        </div>
+
+        <!-- user-journeys.md -->
+        <div class="md-card">
+          <div class="md-card-header">
+            <span class="file-badge">user-journeys.md</span>
+          </div>
+          <h4>Der Flow</h4>
+          <p>Wie navigiert der User? Was passiert nach Registrierung? Nach Step 1? Nach einem Fehler?</p>
+          <p>Definiert den <strong>Flow</strong>, nicht die Features. Gibt dem Agent Gesamtkontext über User-Verhalten.</p>
+          <div class="tip">💡 Schreibe es wie eine Geschichte: "User kommt auf Landingpage → klickt Sign Up → sieht Onboarding..."</div>
+        </div>
+
+        <!-- tasks.md -->
+        <div class="md-card">
+          <div class="md-card-header">
+            <span class="file-badge">tasks.md</span>
+          </div>
+          <h4>Die Execution-Roadmap ⭐</h4>
+          <p>Die granulare Aufgabenliste. Wird AUS den anderen PRDs generiert — ist aber das mächtigste File überhaupt.</p>
+          <p>Macht alle anderen Files fast irrelevant für den täglichen Workflow. Agent-Anweisung: <em>"Lies tasks.md, nimm den nächsten Task, führe ihn aus, berichte was du getan hast."</em></p>
+          <div class="tip">💡 Tasks werden aus den PRDs generiert — das dauert 10 Minuten und spart Stunden.</div>
+        </div>
+
+        <!-- rules.md / agent.md -->
+        <div class="md-card">
+          <div class="md-card-header">
+            <span class="file-badge">rules.md / agent.md</span>
+          </div>
+          <h4>Das Agent-Gehirn</h4>
+          <p>Verhaltensregeln: <em>"Lies alle PRDs bevor du etwas tust. Nach Completion: Sage was du getan hast und wie ich testen soll."</em></p>
+          <p>Wird iterativ erweitert: Nach jedem Bug-Fix → "Was hätte ich besser prompten können?" → Antwort in rules.md aufnehmen.</p>
+          <div class="tip">💡 Das ist der Selbst-Training-Loop: Der Agent lernt aus vergangenen Fehlern — und eliminiert dich aus der Gleichung.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 3. Parallel Build Workflow -->
+    <div class="section">
+      <div class="section-title">
+        <span class="icon">⚡</span>
+        Der Parallel-Build-Workflow
+      </div>
+
+      <div class="parallel-steps">
+        <div class="parallel-step">
+          <div class="step-num">1</div>
+          <h4>Brain Dump</h4>
+          <p>Voice/Text, reines Ideenstadium. Keine Struktur, nur Idee.</p>
+        </div>
+        <div class="parallel-step">
+          <div class="step-num">2</div>
+          <h4>Strukturierter Prompt</h4>
+          <p>Features und Pages bekannt, klar formuliert.</p>
+        </div>
+        <div class="parallel-step">
+          <div class="step-num">3</div>
+          <h4>Design-Referenz</h4>
+          <p>Screenshots von Mobin, Dribbble oder ähnlichen Quellen.</p>
+        </div>
+        <div class="parallel-step">
+          <div class="step-num">4</div>
+          <h4>Code-Snippet</h4>
+          <p>Template von 21st.dev o.ä. als Basis-Kontext.</p>
+        </div>
+      </div>
+
+      <div class="parallel-insight">
+        <span>✅</span>
+        <p><strong>Winner schnell erkennen</strong> → dann PRDs für den Winner bauen. Spart massiv Credits/Tokens — weil du nicht die falsche Richtung monatelang fixt.</p>
+      </div>
+    </div>
+
+    <!-- 4. 4x4 Debugging Framework -->
+    <div class="section">
+      <div class="section-title">
+        <span class="icon">🔧</span>
+        Das 4×4 Debugging Framework
+      </div>
+      <p style="margin-bottom: 1.25rem; font-size: 0.875rem;">Vier Schritte — jeden nur <strong style="color: #111827;">EINMAL</strong> versuchen. Dann weiter.</p>
+
+      <div class="debug-steps">
+        <div class="debug-step">
+          <div class="num">1</div>
+          <div class="content">
+            <h4>Tool fixen lassen</h4>
+            <p>"Try to fix" Button drücken — Agent-eigene Fehlererkennung nutzen. Einmal. Wenn's nicht klappt, weiter zu Schritt 2.</p>
+          </div>
+        </div>
+        <div class="debug-step">
+          <div class="num">2</div>
+          <div class="content">
+            <h4>Awareness Layer</h4>
+            <p>Console Logs schreiben lassen. Error-Output aus der Konsole kopieren und direkt pasten. Kontext erhöhen, nicht raten.</p>
+          </div>
+        </div>
+        <div class="debug-step">
+          <div class="num">3</div>
+          <div class="content">
+            <h4>Externer Consultant</h4>
+            <p>Codex oder Claude Code als Diagnostik-Tool hinzuziehen. Repomix nutzen für kompletten Codebase-Export als Kontext-Basis.</p>
+          </div>
+        </div>
+        <div class="debug-step">
+          <div class="num">4</div>
+          <div class="content">
+            <h4>Revert + Neu prompten</h4>
+            <p>3 Schritte zurück. Pause. Besserer Prompt. Manchmal ist der sauberste Fix das Wegwerfen der letzten Schritte.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="debug-rule">
+        <span>⚠️</span>
+        <p><strong>DANACH immer:</strong> Agent fragen <em>"Wie hätte ich dich besser prompten können?"</em> — die Antwort kommt in rules.md. So trainiert sich der Agent selbst.</p>
+      </div>
+    </div>
+
+    <!-- 5. Top 10 Empfehlungen -->
+    <div class="section">
+      <div class="section-title">
+        <span class="icon">🎯</span>
+        Die 10 wichtigsten Empfehlungen
+      </div>
+
+      <div class="rec-list">
+        <div class="rec-item">
+          <span class="rec-num">01</span>
+          <p><strong>Clarity &gt; Speed</strong> — 80% Planen, 20% Bauen. Immer.</p>
+        </div>
+        <div class="rec-item">
+          <span class="rec-num">02</span>
+          <p><strong>Lies den Agent Output religiously</strong> — ignoriere den Code. Was der Agent dir erklärt ist der eigentliche Output.</p>
+        </div>
+        <div class="rec-item">
+          <span class="rec-num">03</span>
+          <p><strong>Baue 4–5 Versionen parallel</strong> bevor du dich committed. Winner erkennen, dann investieren.</p>
+        </div>
+        <div class="rec-item">
+          <span class="rec-num">04</span>
+          <p><strong>PRDs/MD-Files sind dein größter Hebel</strong> — sie machen den Token-Context dynamisch und wiederverwendbar.</p>
+        </div>
+        <div class="rec-item">
+          <span class="rec-num">05</span>
+          <p><strong>Token-Window ist knapp:</strong> Referenziere Dateien statt alles im Chat zu erklären. Komprimiere Kontext, nicht Qualität.</p>
+        </div>
+        <div class="rec-item">
+          <span class="rec-num">06</span>
+          <p><strong>Agent Output nach Bug-Fix → rules.md</strong> aufnehmen. Der Agent trainiert sich selbst aus deinen vergangenen Sessions.</p>
+        </div>
+        <div class="rec-item">
+          <span class="rec-num">07</span>
+          <p><strong>Design ist der nächste große Skill</strong> — nicht Coding. Taste und Ästhetik sind nicht automatisierbar.</p>
+        </div>
+        <div class="rec-item">
+          <span class="rec-num">08</span>
+          <p><strong>"English is the #1 programming language"</strong> — aber Code-Snippets sind noch besser als Beschreibungen.</p>
+        </div>
+        <div class="rec-item">
+          <span class="rec-num">09</span>
+          <p><strong>Exposure Time:</strong> Bewusst Zeit in Design-Inspiration investieren (Dribbble, Mobin, 21st.dev). Taste braucht Input.</p>
+        </div>
+        <div class="rec-item">
+          <span class="rec-num">10</span>
+          <p><strong>Tech Stack ist irrelevant.</strong> Quality, Taste und Design sind alles. Der Stack ist Mittel zum Zweck.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Zitate -->
+    <div class="section">
+      <div class="section-title">
+        <span class="icon">💬</span>
+        Zitate
+      </div>
+
+      <div class="quotes-grid">
+        <div class="quote-block">
+          <p>The ceiling on AI isn't model intelligence. It's what the model sees before it acts.</p>
+        </div>
+        <div class="quote-block">
+          <p>We won't be rewarded for faster raw output. We will be rewarded for better judgment.</p>
+        </div>
+        <div class="quote-block">
+          <p>Coding is going to be like calligraphy. It's going to be so rare that it becomes an art.</p>
+        </div>
+        <div class="quote-block">
+          <p>If you don't know what you're doing, you're just going to produce garbage faster.</p>
+        </div>
+        <div class="quote-block">
+          <p>AI is very obedient and agreeable. It's going to lie to you.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>Quelle: Lenny's Podcast — <em>"The rise of the professional vibe coder"</em> mit Lazar Yavanovich (Lovable), März 2026</p>
+      <p><a href="https://youtu.be/0XNkUdzxiZI" target="_blank">▶ Zum Podcast auf YouTube →</a></p>
+    </footer>
+
+  </div>
+</body>
+</html>
