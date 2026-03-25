@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUMA Repo — Markdown Audit · 2026-03-25</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F9FAFB;
+      color: #6B7280;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* Header */
+    .page-header {
+      margin-bottom: 40px;
+    }
+    .page-header .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7C3AED;
+      margin-bottom: 8px;
+    }
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    .page-header .subtitle {
+      font-size: 14px;
+      color: #6B7280;
+    }
+    .meta-row {
+      display: flex;
+      gap: 24px;
+      margin-top: 16px;
+      font-size: 12px;
+      color: #9CA3AF;
+    }
+    .meta-row span { display: flex; align-items: center; gap: 4px; }
+
+    /* Section headers */
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #9CA3AF;
+      margin: 48px 0 16px;
+    }
+    .section-heading {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+    .section-desc {
+      color: #6B7280;
+      margin-bottom: 20px;
+      font-size: 13px;
+    }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      border: 1px solid #F3F4F6;
+    }
+    .card:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+    }
+
+    /* Status badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge-green  { background: #D1FAE5; color: #065F46; }
+    .badge-yellow { background: #FEF3C7; color: #92400E; }
+    .badge-red    { background: #FEE2E2; color: #991B1B; }
+    .badge-purple { background: #EDE9FE; color: #5B21B6; }
+    .badge-gray   { background: #F3F4F6; color: #374151; }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th {
+      text-align: left;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #9CA3AF;
+      padding: 10px 12px;
+      border-bottom: 1px solid #E5E7EB;
+      white-space: nowrap;
+    }
+    td {
+      padding: 12px 12px;
+      border-bottom: 1px solid #F3F4F6;
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #FAFAFA; }
+    .file-path {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 11px;
+      color: #374151;
+      font-weight: 500;
+    }
+    .file-path .dir { color: #9CA3AF; }
+
+    /* Problem cards */
+    .problem-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      margin-bottom: 20px;
+      overflow: hidden;
+      border: 1px solid #F3F4F6;
+    }
+    .problem-card-header {
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .problem-card-header h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111827;
+    }
+    .problem-card-body {
+      padding: 20px 24px;
+    }
+
+    /* Issue rows */
+    .issue-row {
+      display: flex;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #F9FAFB;
+    }
+    .issue-row:last-child { border-bottom: none; }
+    .issue-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      margin-top: 1px;
+    }
+    .icon-red    { background: #FEE2E2; color: #DC2626; }
+    .icon-yellow { background: #FEF3C7; color: #D97706; }
+    .icon-blue   { background: #DBEAFE; color: #2563EB; }
+    .issue-text { color: #374151; font-size: 13px; line-height: 1.5; }
+    .issue-text strong { color: #111827; }
+    .issue-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .label-red    { color: #DC2626; }
+    .label-yellow { color: #D97706; }
+    .label-blue   { color: #2563EB; }
+
+    /* Code block */
+    code {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 11px;
+      background: #F3F4F6;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #7C3AED;
+    }
+
+    /* Recommendation grid */
+    .rec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .rec-grid { grid-template-columns: 1fr; }
+    }
+    .rec-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      padding: 20px;
+      border: 1px solid #F3F4F6;
+    }
+    .rec-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 12px;
+    }
+    .rec-list {
+      list-style: none;
+    }
+    .rec-list li {
+      font-size: 13px;
+      color: #374151;
+      padding: 5px 0;
+      border-bottom: 1px solid #F9FAFB;
+      display: flex;
+      gap: 8px;
+    }
+    .rec-list li:last-child { border-bottom: none; }
+    .rec-list .action { flex-shrink: 0; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 4px; margin-top: 2px; height: fit-content; }
+    .action-delete { background: #FEE2E2; color: #991B1B; }
+    .action-keep   { background: #D1FAE5; color: #065F46; }
+    .action-update { background: #FEF3C7; color: #92400E; }
+    .action-merge  { background: #DBEAFE; color: #1E40AF; }
+    .action-new    { background: #EDE9FE; color: #5B21B6; }
+
+    /* New structure */
+    .struct-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .struct-card {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #E5E7EB;
+      padding: 16px;
+    }
+    .struct-card .struct-file {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: #7C3AED;
+      margin-bottom: 4px;
+    }
+    .struct-card .struct-desc {
+      font-size: 12px;
+      color: #6B7280;
+    }
+
+    /* Verdict box */
+    .verdict-box {
+      background: linear-gradient(135deg, #7C3AED15 0%, #7C3AED05 100%);
+      border: 1px solid #7C3AED30;
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 40px;
+    }
+    .verdict-box h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 12px;
+    }
+    .verdict-box p {
+      color: #374151;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    /* Divider */
+    hr {
+      border: none;
+      border-top: 1px solid #E5E7EB;
+      margin: 8px 0;
+    }
+
+    /* Overlap card */
+    .overlap-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .overlap-item:last-child { border-bottom: none; }
+    .overlap-dot {
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 6px;
+    }
+    .dot-conflict { background: #EF4444; }
+    .dot-duplicate { background: #F59E0B; }
+    .overlap-content h4 { font-size: 13px; font-weight: 600; color: #111827; margin-bottom: 2px; }
+    .overlap-content p { font-size: 12px; color: #6B7280; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="eyebrow">Repo Audit · 2026-03-25</div>
+    <h1>LUMA Markdown Audit</h1>
+    <p class="subtitle">Analyse aller 35 Markdown-Dateien im /modulai Repo — schonungslos.</p>
+    <div class="meta-row">
+      <span>📁 35 Dateien analysiert</span>
+      <span>🔴 14 veraltet/falsch</span>
+      <span>🟡 12 teilweise veraltet</span>
+      <span>🟢 9 aktuell</span>
+      <span>⚡ Prio: Umbenennung + Bereinigung</span>
+    </div>
+  </div>
+
+  <!-- Summary verdict -->
+  <div class="verdict-box">
+    <h3>🔍 Kurzzusammenfassung</h3>
+    <p>Das Repo heißt noch <code>modulai</code>, die App heißt <code>LUMA</code> — aber das steht nirgendwo. Kein einziges MD-File sagt "LUMA". Das ist das größte Problem: Builder-Agents kriegen den falschen Namen ins Gedächtnis.</p>
+    <p>Die technische Dokumentation (<code>docs/knowledge.md</code>) ist überraschend gut und aktuell. Aber rund herum liegt ein Friedhof aus Planungsdokumenten, Pre-Sales-Artefakten, und widersprüchlichen Security-Dateien die kein Agent braucht — und die verwirren.</p>
+    <p>Von 35 Dateien sind <strong>12 sofort löschbar</strong>, <strong>7 zusammenzuführen</strong>, und nur <strong>9 wirklich gebraucht</strong>. Der Rest ist Ballast.</p>
+  </div>
+
+  <!-- ===== SECTION A: INVENTAR ===== -->
+  <div class="section-title">Section A</div>
+  <div class="section-heading">Datei-Inventar</div>
+  <p class="section-desc">Alle 35 MD-Dateien bewertet. Status: 🟢 Aktuell · 🟡 Teilweise veraltet · 🔴 Veraltet/Falsch</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Datei</th>
+          <th>Zweck</th>
+          <th>Status</th>
+          <th>Relevanz</th>
+          <th>Zeilen</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- Root files -->
+        <tr>
+          <td><span class="file-path">AGENTS.md</span></td>
+          <td>Projekt-Überblick, Routing-Hinweis, Architektur-Basics für Builder-Agents</td>
+          <td><span class="badge badge-yellow">🟡 Teilweise veraltet</span></td>
+          <td>Kernstück — aber Name ist falsch, Weber-Herkunftsgeschichte verwirrt</td>
+          <td>63</td>
+        </tr>
+        <tr>
+          <td><span class="file-path">CLAUDE.md</span></td>
+          <td>Router-Datei für Claude Code: welche Regeln bei welchem Task lesen</td>
+          <td><span class="badge badge-yellow">🟡 Teilweise veraltet</span></td>
+          <td>Gut strukturiert, aber "ModulAI" falsch, Deployment-Regeln können komprimiert werden</td>
+          <td>121</td>
+        </tr>
+        <tr>
+          <td><span class="file-path">README.md</span></td>
+          <td>Lovable-Boilerplate — generisch, kein projektspezifischer Inhalt</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>REPLACE_WITH_PROJECT_ID niemals befüllt. Für Agents wertlos.</td>
+          <td>73</td>
+        </tr>
+        <tr>
+          <td><span class="file-path">knowledge.md</span> <span style="color:#9CA3AF;font-size:11px">(root)</span></td>
+          <td>Frühe HAM-Architekten Discovery Notes, MVP-Scope-Planung</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>Pre-Build-Dokument. Komplett überholt durch <code>docs/knowledge.md</code></td>
+          <td>72</td>
+        </tr>
+        <tr>
+          <td><span class="file-path">NEXT-STEPS.md</span></td>
+          <td>Aktionsplan + Email-Draft für Alex Hamm (Akquise-Phase)</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>Pre-Sales-Artefakt. Gehört nicht ins Code-Repo.</td>
+          <td>93</td>
+        </tr>
+        <tr>
+          <td><span class="file-path">INBOX_AGENT_SETUP.md</span></td>
+          <td>Setup-Anleitung Google Cloud Console + Supabase für Gmail OAuth</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>"ModulAI" Branding, REPLACE_WITH_PROJECT_ID Placeholders. Nie vollständig befüllt.</td>
+          <td>85</td>
+        </tr>
+        <tr>
+          <td><span class="file-path">SECURITY_FIXES_REALLY_APPLIED.md</span></td>
+          <td>Behauptet dass Encryption + CSRF-Schutz implementiert wurden</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>Widerspricht dem tatsächlichen Code: hardcoded Key 'your-super-secret-key' steht noch drin</td>
+          <td>28</td>
+        </tr>
+        <tr>
+          <td><span class="file-path">alex-answers-2026-03-06.md</span></td>
+          <td>Antworten von Alex Hamm (HAMM Architekten) aus Discovery-Call</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>Sales/Discovery-Artefakt. Nicht für Builder-Agents gedacht. Gehört nicht ins Repo.</td>
+          <td>89</td>
+        </tr>
+
+        <!-- docs/ -->
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/</span>knowledge.md</span></td>
+          <td>Master-Referenz: Schema, Hooks, Komponenten, Routing, Edge Functions, Conventions</td>
+          <td><span class="badge badge-green">🟢 Aktuell</span></td>
+          <td>Das beste Dokument im Repo. Last updated 2026-03-20. Sagt aber noch "ModulAI".</td>
+          <td>401</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/</span>DESIGN_CONSTITUTION.md</span></td>
+          <td>Verbindliche Design-Referenz: Farben, Typo, Spacing, Components</td>
+          <td><span class="badge badge-yellow">🟡 Teilweise veraltet</span></td>
+          <td>Inhaltlich gut. Sagt "Architekt Connect", Farbschema "noch nicht final" — aber es ist final: Violet #7C3AED.</td>
+          <td>~280</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/</span>BACKEND_SPEC.md</span></td>
+          <td>Original Backend-Spec für Single-Tenant "Weber Architekten PM Tool"</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>Single-Tenant ohne tenant_id, alte Rollen (admin/architekt/kunde ohne sudo). Komplett überholt.</td>
+          <td>~780</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/</span>DISCOVERY_TO_BUILD.md</span></td>
+          <td>Workflow-Framework: Discovery → Spec → Contract → Build → Review → Ship</td>
+          <td><span class="badge badge-yellow">🟡 Teilweise veraltet</span></td>
+          <td>Konzept gut. Pfadangaben veraltet (modulai statt luma). Eher für Hatti als für Builder.</td>
+          <td>~100</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/</span>documentation-update-2026-03-05.md</span></td>
+          <td>Meta-Dokument über einen Doku-Update</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>Changelog-Artefakt. Kein Mehrwert für Builder-Agents. Sofort löschbar.</td>
+          <td>31</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/</span>security-audit-2026-02-20.md</span></td>
+          <td>Security-Audit aus Feb 2026: P0/P1 Issues, Backup-System, Skalierung</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>Für "Architekt Connect" erstellt (pre Multi-Tenancy). Backup-Analyse veraltet. Einige Findings relevant aber durch finder-report v2 überholt.</td>
+          <td>~280</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/</span>user-stories.md</span></td>
+          <td>User Stories aus Weber-Discovery-Call (Kim & Paul, Feb 2026)</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>"Architekt Connect", Single-Tenant, keine Multi-Tenant-Konzepte. Pre-Build. Löschbar.</td>
+          <td>331</td>
+        </tr>
+
+        <!-- docs/pipeline/ -->
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/pipeline/</span>01-discovery.md</span></td>
+          <td>Pipeline-Schritt 1: Discovery-Ergebnisse aus Weber-Call</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>Historisches Planungsartefakt. App ist gebaut. Für Builder irrelevant.</td>
+          <td>320</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/pipeline/</span>02-user-research.md</span></td>
+          <td>User Research Phase</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>Historisches Planungsartefakt.</td>
+          <td>362</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/pipeline/</span>03-prioritization.md</span></td>
+          <td>Feature-Priorisierung Phase</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>Historisches Planungsartefakt.</td>
+          <td>355</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/pipeline/</span>04-solution-architecture.md</span></td>
+          <td>Solution-Architektur (pre-Build)</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>Historisches Planungsartefakt. 1099 Zeilen, superseded durch docs/knowledge.md.</td>
+          <td>1099</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/pipeline/</span>05-security.md</span></td>
+          <td>Security-Planung Phase</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>1030 Zeilen pre-Build Security-Konzept. Überholt durch rules/supabase.md + knowledge.md.</td>
+          <td>1030</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/pipeline/</span>06-product-marketing.md</span></td>
+          <td>Product-Marketing Planung</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>Pre-GTM-Dokument. Nicht für Builder.</td>
+          <td>581</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/pipeline/</span>07-delivery.md</span></td>
+          <td>Delivery-Plan (1678 Zeilen — größtes einzelnes MD-File)</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>War der ursprüngliche Build-Prompt. Alles darin ist längst implementiert oder überholt.</td>
+          <td>1678</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/pipeline/</span>FINAL-BUILD-PROMPT.md</span></td>
+          <td>Finaler Build-Prompt für initialen Lovable-Build</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>Einmalig verwendet, längst überholt.</td>
+          <td>259</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/pipeline/</span>GAP-ANALYSIS.md</span></td>
+          <td>Gap-Analyse: Pipeline vs. bestehendem Code (Feb 2026)</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>"70% UI done, Supabase fehlt" — das ist längst implemented. Stand Feb 14, 2026.</td>
+          <td>241</td>
+        </tr>
+
+        <!-- docs/prd/ -->
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/prd/</span>checklist-automation.md</span></td>
+          <td>PRD für Checklist-Automation Feature</td>
+          <td><span class="badge badge-yellow">🟡 Teilweise veraltet</span></td>
+          <td>PRD-Format gut. Ob Feature noch geplant ist, unklar. Kein Status-Flag.</td>
+          <td>411</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">docs/prd/</span>inbox-agent.md</span></td>
+          <td>PRD für Inbox Agent Feature</td>
+          <td><span class="badge badge-yellow">🟡 Teilweise veraltet</span></td>
+          <td>Konzept gut, aber widerspricht INBOX_AGENT_SETUP.md (anderes Datenmodell). Braucht Sync.</td>
+          <td>327</td>
+        </tr>
+
+        <!-- review/ -->
+        <tr>
+          <td><span class="file-path"><span class="dir">review/</span>finder-report.md</span></td>
+          <td>Adversarial Review Ergebnisse (Finder-Agent)</td>
+          <td><span class="badge badge-yellow">🟡 Teilweise veraltet</span></td>
+          <td>Enthält kritischen Fund: hardcoded encryption key. Relevant bis das gefixt ist.</td>
+          <td>464</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">review/</span>challenger-report.md</span></td>
+          <td>Adversarial Review — Challenger-Agent V1</td>
+          <td><span class="badge badge-yellow">🟡 Teilweise veraltet</span></td>
+          <td>Durch V2 überholt.</td>
+          <td>100</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">review/</span>challenger-report-v2.md</span></td>
+          <td>Adversarial Review — Challenger-Agent V2</td>
+          <td><span class="badge badge-yellow">🟡 Teilweise veraltet</span></td>
+          <td>Historisches Review-Artefakt. Einmalig nützlich, danach Archiv.</td>
+          <td>225</td>
+        </tr>
+
+        <!-- rules/ -->
+        <tr>
+          <td><span class="file-path"><span class="dir">rules/</span>coding.md</span></td>
+          <td>Coding-Konventionen: TypeScript, React, Rollen, Git</td>
+          <td><span class="badge badge-green">🟢 Aktuell</span></td>
+          <td>Kompakt und korrekt. Kann in AGENTS.md integriert werden.</td>
+          <td>36</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">rules/</span>deployment.md</span></td>
+          <td>Deployment-Regeln: Lovable, After-Push-Checkliste</td>
+          <td><span class="badge badge-green">🟢 Aktuell</span></td>
+          <td>Korrekt und nützlich. Redundant mit CLAUDE.md Deployment-Sektion.</td>
+          <td>17</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">rules/</span>inbox-agent.md</span></td>
+          <td>Inbox Agent Feature Spec (Architecture, Data Model, Edge Function)</td>
+          <td><span class="badge badge-yellow">🟡 Teilweise veraltet</span></td>
+          <td>Gutes Konzept. Widerspricht docs/prd/inbox-agent.md (unterschiedliche Tabellennamen: inbox_connections vs email_connections).</td>
+          <td>109</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">rules/</span>multi-tenant.md</span></td>
+          <td>Multi-Tenancy Architektur, Rollen, RLS-Pattern, Regeln</td>
+          <td><span class="badge badge-green">🟢 Aktuell</span></td>
+          <td>Korrekt und essenziell. Gut. Redundant mit AGENTS.md + knowledge.md Teilen.</td>
+          <td>54</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">rules/</span>supabase.md</span></td>
+          <td>Supabase-Regeln: RLS, Migrations, Edge Functions, Storage</td>
+          <td><span class="badge badge-green">🟢 Aktuell</span></td>
+          <td>Kompakt, korrekt, direkt nützlich.</td>
+          <td>30</td>
+        </tr>
+        <tr>
+          <td><span class="file-path"><span class="dir">rules/</span>testing.md</span></td>
+          <td>Testing-Checkliste + Adversarial Review Protokoll</td>
+          <td><span class="badge badge-green">🟢 Aktuell</span></td>
+          <td>Gut. Kurz und klar.</td>
+          <td>16</td>
+        </tr>
+
+        <!-- prompts/ -->
+        <tr>
+          <td><span class="file-path"><span class="dir">prompts/</span>codex-task-features.md</span></td>
+          <td>Codex-Prompt für Task Context Menu, Comments, Notifications (Architekt Connect)</td>
+          <td><span class="badge badge-red">🔴 Veraltet/Falsch</span></td>
+          <td>Single-Tenant, "Architekt Connect" Branding, Shadow-System stimmt nicht mehr. Pre-Multi-Tenant.</td>
+          <td>187</td>
+        </tr>
+
+        <!-- .lovable/ -->
+        <tr>
+          <td><span class="file-path"><span class="dir">.lovable/</span>plan.md</span></td>
+          <td>Mini-Plan: Bot-Icon durch Sparkles ersetzen</td>
+          <td><span class="badge badge-yellow">🟡 Teilweise veraltet</span></td>
+          <td>Entweder schon erledigt (dann löschen) oder noch offen (dann als Task in NEXT-STEPS).</td>
+          <td>20</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== SECTION B: INHALTLICHE PROBLEME ===== -->
+  <div class="section-title">Section B</div>
+  <div class="section-heading">Inhaltliche Probleme</div>
+  <p class="section-desc">Konkrete Fehler, Lücken und Widersprüche — dateiweise.</p>
+
+  <!-- Problem 1 -->
+  <div class="problem-card">
+    <div class="problem-card-header">
+      <div>
+        <h3>AGENTS.md + CLAUDE.md</h3>
+        <span class="file-path" style="font-size:11px;color:#9CA3AF;">Root-Level Builder-Instruktionen</span>
+      </div>
+      <span class="badge badge-yellow">🟡 Teilweise veraltet</span>
+    </div>
+    <div class="problem-card-body">
+      <div class="issue-row">
+        <div class="issue-icon icon-red">!</div>
+        <div class="issue-text">
+          <div class="issue-label label-red">Falsch: Projektname</div>
+          Beide Files nennen das Projekt <strong>"ModulAI"</strong> — überall. Builder-Agents übernehmen den Namen in Code, Commits und Lovable-Prompts. Das Branding in der App ist aber bereits LUMA (go.luma-app.io). Builder halluzinieren "ModulAI" in neue Komponenten.
+        </div>
+      </div>
+      <div class="issue-row">
+        <div class="issue-icon icon-yellow">?</div>
+        <div class="issue-text">
+          <div class="issue-label label-yellow">Verwirrend: Herkunftsgeschichte</div>
+          AGENTS.md erklärt: "Fork/Remix von Architekt Connect, Weber Architekten bleibt auf Original-Repo". Das ist historischer Kontext den kein Builder braucht. Für einen Agent der code schreibt ist irrelevant woher das Repo stammt.
+        </div>
+      </div>
+      <div class="issue-row">
+        <div class="issue-icon icon-yellow">?</div>
+        <div class="issue-text">
+          <div class="issue-label label-yellow">Redundanz: Deployment-Regeln</div>
+          CLAUDE.md enthält Deployment-Regeln (Fuckup-Score, Lovable-Deployment-Checkliste) <em>und</em> <code>rules/deployment.md</code> enthält ähnliches. Zwei Quellen für dasselbe Thema = Agent weiß nicht welche gilt.
+        </div>
+      </div>
+      <div class="issue-row">
+        <div class="issue-icon icon-yellow">?</div>
+        <div class="issue-text">
+          <div class="issue-label label-yellow">Fehlt: Aktive Kunden</div>
+          AGENTS.md erwähnt Multi-Tenancy aber sagt nichts darüber, dass <strong>Weber Architekten</strong> und <strong>HAMM Architekten</strong> live sind mit ~13 aktiven Usern. Builder könnten unwissentlich Breaking Changes deployen ohne die Konsequenz zu verstehen.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Problem 2 -->
+  <div class="problem-card">
+    <div class="problem-card-header">
+      <div>
+        <h3>README.md</h3>
+        <span class="file-path" style="font-size:11px;color:#9CA3AF;">Root-Level</span>
+      </div>
+      <span class="badge badge-red">🔴 Veraltet/Falsch</span>
+    </div>
+    <div class="problem-card-body">
+      <div class="issue-row">
+        <div class="issue-icon icon-red">!</div>
+        <div class="issue-text">
+          <div class="issue-label label-red">Placeholder niemals befüllt</div>
+          <strong>REPLACE_WITH_PROJECT_ID</strong> steht 3x im Dokument. Lovable hat eine echte Project-URL, aber die steht nicht drin. Für externe Entwickler oder Onboarding völlig nutzlos. Für Builder-Agents genau null Mehrwert.
+        </div>
+      </div>
+      <div class="issue-row">
+        <div class="issue-icon icon-red">!</div>
+        <div class="issue-text">
+          <div class="issue-label label-red">Reines Lovable-Template</div>
+          Der gesamte Inhalt ist 1:1 der Lovable-Boilerplate-Text. Kein LUMA-spezifischer Inhalt, kein Stack-Hinweis, keine Erwähnung von Multi-Tenancy, Supabase, aktiven Kunden oder Domain.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Problem 3 -->
+  <div class="problem-card">
+    <div class="problem-card-header">
+      <div>
+        <h3>SECURITY_FIXES_REALLY_APPLIED.md</h3>
+        <span class="file-path" style="font-size:11px;color:#9CA3AF;">Root-Level — gefährlichstes Dokument im Repo</span>
+      </div>
+      <span class="badge badge-red">🔴 Veraltet/Falsch</span>
+    </div>
+    <div class="problem-card-body">
+      <div class="issue-row">
+        <div class="issue-icon icon-red">!</div>
+        <div class="issue-text">
+          <div class="issue-label label-red">Kritisch: Behauptet was nicht stimmt</div>
+          Das File sagt: <em>"C-01: Token Encryption — access_token und refresh_token werden mit pgp_sym_encrypt verschlüsselt."</em> — Der Finder-Report zeigt: <code>'your-super-secret-key'</code> ist hardcoded in <code>supabase/functions/_shared/encryption.ts</code>. Das ist keine Verschlüsselung, das ist Security-Theater.
+        </div>
+      </div>
+      <div class="issue-row">
+        <div class="issue-icon icon-red">!</div>
+        <div class="issue-text">
+          <div class="issue-label label-red">Kritisch: Falsche Sicherheitszusicherung</div>
+          Ein Builder-Agent der dieses File liest, geht davon aus das Problem sei gelöst. Er wird es <strong>nicht</strong> nochmal prüfen. Das ist aktiv gefährlich. Das File muss entweder den echten Status zeigen oder gelöscht werden.
+        </div>
+      </div>
+      <div class="issue-row">
+        <div class="issue-icon icon-red">!</div>
+        <div class="issue-text">
+          <div class="issue-label label-red">Fehlt: oauth_state RLS</div>
+          File behauptet CSRF-Schutz sei implementiert (C-02). Finder-Report zeigt: <code>oauth_state</code> Tabelle hat kein RLS, nie aktiviert worden.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Problem 4 -->
+  <div class="problem-card">
+    <div class="problem-card-header">
+      <div>
+        <h3>docs/BACKEND_SPEC.md</h3>
+        <span class="file-path" style="font-size:11px;color:#9CA3AF;">docs/ — 780 Zeilen nutzloser Kontext</span>
+      </div>
+      <span class="badge badge-red">🔴 Veraltet/Falsch</span>
+    </div>
+    <div class="problem-card-body">
+      <div class="issue-row">
+        <div class="issue-icon icon-red">!</div>
+        <div class="issue-text">
+          <div class="issue-label label-red">Komplett überholt</div>
+          Dieser Spec war für <strong>Single-Tenant "Weber Architekten PM Tool"</strong>. Enthält Schema ohne <code>tenant_id</code>, alte Rollen (admin/architekt/kunde ohne sudo), kein Feature-Flag System, kein Inbox-Agent. Kein einziger Aspekt ist noch aktuell.
+        </div>
+      </div>
+      <div class="issue-row">
+        <div class="issue-icon icon-red">!</div>
+        <div class="issue-text">
+          <div class="issue-label label-red">Risiko: Falsche SQL-Snippets</div>
+          Enthält 780 Zeilen SQL und TypeScript-Code für die alte Architektur. Wenn ein Builder dieses File liest und Code davon kopiert, baut er Single-Tenant-Code in ein Multi-Tenant-System — RLS-Bypass garantiert.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Problem 5 -->
+  <div class="problem-card">
+    <div class="problem-card-header">
+      <div>
+        <h3>docs/DESIGN_CONSTITUTION.md</h3>
+        <span class="file-path" style="font-size:11px;color:#9CA3AF;">docs/ — inhaltlich gut, aber braucht Update</span>
+      </div>
+      <span class="badge badge-yellow">🟡 Teilweise veraltet</span>
+    </div>
+    <div class="problem-card-body">
+      <div class="issue-row">
+        <div class="issue-icon icon-yellow">?</div>
+        <div class="issue-text">
+          <div class="issue-label label-yellow">Falsch: Projektname</div>
+          Header sagt <strong>"Design Constitution — Architekt Connect"</strong>. Das ist zwei Rebrands alt.
+        </div>
+      </div>
+      <div class="issue-row">
+        <div class="issue-icon icon-yellow">?</div>
+        <div class="issue-text">
+          <div class="issue-label label-yellow">Fehlt: Finale Farbentscheidung dokumentiert</div>
+          Sektion 2.2 sagt: <em>"⚠️ Das Farbschema (aktuell Violet) ist noch nicht final abgestimmt"</em>. Es ist final. <code>#7C3AED</code> ist LUMA-Violet, luma-app.io ist live. Diese Warnung muss weg — sie verunsichert Builder.
+        </div>
+      </div>
+      <div class="issue-row">
+        <div class="issue-icon icon-yellow">?</div>
+        <div class="issue-text">
+          <div class="issue-label label-yellow">Fehlt: Font-Klarheit</div>
+          Inter ist für alles. Fredoka <strong>nur</strong> fürs Logo-Wordmark. Das steht nicht drin — könnte zu Fredoka in UI-Komponenten führen.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Problem 6 -->
+  <div class="problem-card">
+    <div class="problem-card-header">
+      <div>
+        <h3>rules/inbox-agent.md vs docs/prd/inbox-agent.md</h3>
+        <span class="file-path" style="font-size:11px;color:#9CA3AF;">Widersprüchliche Specs für dasselbe Feature</span>
+      </div>
+      <span class="badge badge-red">🔴 Veraltet/Falsch</span>
+    </div>
+    <div class="problem-card-body">
+      <div class="issue-row">
+        <div class="issue-icon icon-red">!</div>
+        <div class="issue-text">
+          <div class="issue-label label-red">Widerspruch: Tabellennamen</div>
+          <code>rules/inbox-agent.md</code> definiert Tabellen: <code>inbox_connections</code>, <code>inbox_items</code>, <code>inbox_sender_map</code><br>
+          <code>docs/knowledge.md</code> zeigt die tatsächlich implementierten Tabellen: <code>email_connections</code>, <code>email_inbox</code>, <code>email_tasks</code>, <code>inbox_sender_map</code><br>
+          → Builder der rules/inbox-agent.md liest und dann neuen Code schreibt, referenziert nicht-existierende Tabellen.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Problem 7 -->
+  <div class="problem-card">
+    <div class="problem-card-header">
+      <div>
+        <h3>knowledge.md (root) vs docs/knowledge.md</h3>
+        <span class="file-path" style="font-size:11px;color:#9CA3AF;">Zwei Knowledge Bases — eine davon veraltet</span>
+      </div>
+      <span class="badge badge-red">🔴 Veraltet/Falsch</span>
+    </div>
+    <div class="problem-card-body">
+      <div class="issue-row">
+        <div class="issue-icon icon-red">!</div>
+        <div class="issue-text">
+          <div class="issue-label label-red">Falsche Quelle wird zuerst gefunden</div>
+          CLAUDE.md verlinkt auf <code>docs/knowledge.md</code> — aber die Root-Datei <code>knowledge.md</code> ist kürzer, leicht zu verwechseln, und zeigt HAM-Architekten-Kontext aus März 2026 (pre-Build). Wenn ein Agent die Root-Version liest, denkt er das Projekt ist in der Discovery-Phase.
+        </div>
+      </div>
+      <div class="issue-row">
+        <div class="issue-icon icon-yellow">?</div>
+        <div class="issue-text">
+          <div class="issue-label label-yellow">Root knowledge.md nennt falschen Repo-Pfad</div>
+          Sagt: <code>github.com/danielmehlhart-bit/modulai</code> — Repo wird zu <code>luma</code> umbenannt. Veralteter Link.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION C: DUPLIKATE ===== -->
+  <div class="section-title">Section C</div>
+  <div class="section-heading">Duplikate & Überlappungen</div>
+  <p class="section-desc">Wo sich Dateien inhaltlich wiederholen oder widersprechen.</p>
+
+  <div class="card">
+    <div class="overlap-item">
+      <div class="overlap-dot dot-conflict"></div>
+      <div class="overlap-content">
+        <h4>CONFLICT: SECURITY_FIXES_REALLY_APPLIED.md ↔ review/finder-report.md</h4>
+        <p>Security-File behauptet Encryption ist gefixt. Finder-Report zeigt hardcoded Key. Direkter Widerspruch. Einer von beiden muss weg — der Finder-Report hat Recht.</p>
+      </div>
+    </div>
+    <div class="overlap-item">
+      <div class="overlap-dot dot-conflict"></div>
+      <div class="overlap-content">
+        <h4>CONFLICT: rules/inbox-agent.md ↔ docs/knowledge.md (Tabellennamen)</h4>
+        <p>inbox_connections / inbox_items (rules/) vs email_connections / email_inbox (knowledge.md/tatsächlich implementiert). Wer zuerst liest, arbeitet mit falschen Tabellennamen.</p>
+      </div>
+    </div>
+    <div class="overlap-item">
+      <div class="overlap-dot dot-duplicate"></div>
+      <div class="overlap-content">
+        <h4>DUPLIKAT: knowledge.md (root) ↔ docs/knowledge.md</h4>
+        <p>Root-Version ist Pre-Build Discovery-Notizen. Docs-Version ist der aktuelle technische Master. Gleicher Name, komplett unterschiedlicher Inhalt und Aktualität.</p>
+      </div>
+    </div>
+    <div class="overlap-item">
+      <div class="overlap-dot dot-duplicate"></div>
+      <div class="overlap-content">
+        <h4>DUPLIKAT: AGENTS.md Multi-Tenant ↔ rules/multi-tenant.md ↔ docs/knowledge.md §3</h4>
+        <p>Multi-Tenancy Architektur steht dreifach. AGENTS.md hat kompakten Überblick, rules/multi-tenant.md hat detailliertere Regeln, knowledge.md §3 hat die vollständige Spec. Agents müssen wissen: knowledge.md ist die Quelle, der Rest ist Zusammenfassung.</p>
+      </div>
+    </div>
+    <div class="overlap-item">
+      <div class="overlap-dot dot-duplicate"></div>
+      <div class="overlap-content">
+        <h4>DUPLIKAT: Deployment-Regeln in CLAUDE.md ↔ rules/deployment.md</h4>
+        <p>CLAUDE.md hat Fuckup-Score + Deployment-Checkliste (sehr detailliert). rules/deployment.md hat ähnliche but kürzere Regeln. Nicht vollständig konsistent.</p>
+      </div>
+    </div>
+    <div class="overlap-item">
+      <div class="overlap-dot dot-duplicate"></div>
+      <div class="overlap-content">
+        <h4>DUPLIKAT: docs/pipeline/* (7 Files, ~4.600 Zeilen) ↔ docs/knowledge.md</h4>
+        <p>Alle Pipeline-Dokumente beschreiben die pre-Build Phase. Was davon gebaut wurde, steht in knowledge.md. Was nicht gebaut wurde, ist entweder verworfen oder steht als PRD in docs/prd/. Die Pipeline-Docs haben null Residualwert für Builder.</p>
+      </div>
+    </div>
+    <div class="overlap-item">
+      <div class="overlap-dot dot-duplicate"></div>
+      <div class="overlap-content">
+        <h4>DUPLIKAT: docs/BACKEND_SPEC.md ↔ docs/knowledge.md §5 (Schema)</h4>
+        <p>Backend-Spec hat das alte Single-Tenant-Schema. Knowledge.md hat das aktuelle Multi-Tenant-Schema. Wer BACKEND_SPEC.md liest, lernt das falsche Schema.</p>
+      </div>
+    </div>
+    <div class="overlap-item">
+      <div class="overlap-dot dot-duplicate"></div>
+      <div class="overlap-content">
+        <h4>DUPLIKAT: review/challenger-report.md + challenger-report-v2.md</h4>
+        <p>V1 ist durch V2 komplett überholt. Beide im Repo. V1 hat keinen Mehrwert mehr.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION D: EMPFEHLUNG ===== -->
+  <div class="section-title">Section D</div>
+  <div class="section-heading">Empfehlung: Neue MD-Struktur</div>
+  <p class="section-desc">Was löschen, was behalten, was zusammenführen — und wie die ideale LUMA-Doku aussieht.</p>
+
+  <div class="rec-grid">
+    <div class="rec-card">
+      <h4>🗑️ Sofort löschen (12 Files)</h4>
+      <ul class="rec-list">
+        <li><span class="action action-delete">DEL</span> README.md (leerer Boilerplate)</li>
+        <li><span class="action action-delete">DEL</span> knowledge.md (root) (by docs/knowledge.md)</li>
+        <li><span class="action action-delete">DEL</span> NEXT-STEPS.md (Sales-Artefakt)</li>
+        <li><span class="action action-delete">DEL</span> alex-answers-2026-03-06.md (Sales-Artefakt)</li>
+        <li><span class="action action-delete">DEL</span> docs/BACKEND_SPEC.md (überholt + gefährlich)</li>
+        <li><span class="action action-delete">DEL</span> docs/documentation-update-2026-03-05.md</li>
+        <li><span class="action action-delete">DEL</span> docs/security-audit-2026-02-20.md (outdated)</li>
+        <li><span class="action action-delete">DEL</span> docs/user-stories.md (Architekt Connect Ära)</li>
+        <li><span class="action action-delete">DEL</span> docs/pipeline/ (alle 7 Files, ~4.600 Zeilen)</li>
+        <li><span class="action action-delete">DEL</span> prompts/codex-task-features.md (Single-Tenant)</li>
+        <li><span class="action action-delete">DEL</span> review/challenger-report.md (by v2)</li>
+        <li><span class="action action-delete">DEL</span> .lovable/plan.md (wenn Icon-Task erledigt)</li>
+      </ul>
+    </div>
+
+    <div class="rec-card">
+      <h4>✏️ Aktualisieren (7 Files)</h4>
+      <ul class="rec-list">
+        <li><span class="action action-update">UPD</span> AGENTS.md — Name: LUMA, Herkunft raus, aktive Kunden rein</li>
+        <li><span class="action action-update">UPD</span> CLAUDE.md — Name: LUMA, Deployment-Redundanz kürzen</li>
+        <li><span class="action action-update">UPD</span> docs/knowledge.md — "ModulAI" → "LUMA" überall</li>
+        <li><span class="action action-update">UPD</span> docs/DESIGN_CONSTITUTION.md — Name, Farb-Final-Flag setzen, Fredoka-Regel ergänzen</li>
+        <li><span class="action action-update">UPD</span> SECURITY_FIXES_REALLY_APPLIED.md → umbenennen zu SECURITY_STATUS.md mit ehrlichem Status</li>
+        <li><span class="action action-update">UPD</span> rules/inbox-agent.md — Tabellennamen auf actual DB alignen</li>
+        <li><span class="action action-update">UPD</span> docs/prd/inbox-agent.md — konsistent mit rules/inbox-agent.md machen</li>
+      </ul>
+    </div>
+
+    <div class="rec-card">
+      <h4>✅ Behalten wie ist (8 Files)</h4>
+      <ul class="rec-list">
+        <li><span class="action action-keep">OK</span> docs/knowledge.md (nach Name-Update)</li>
+        <li><span class="action action-keep">OK</span> rules/coding.md</li>
+        <li><span class="action action-keep">OK</span> rules/deployment.md</li>
+        <li><span class="action action-keep">OK</span> rules/multi-tenant.md</li>
+        <li><span class="action action-keep">OK</span> rules/supabase.md</li>
+        <li><span class="action action-keep">OK</span> rules/testing.md</li>
+        <li><span class="action action-keep">OK</span> review/finder-report.md (bis Security gefixt)</li>
+        <li><span class="action action-keep">OK</span> review/challenger-report-v2.md (Archiv)</li>
+      </ul>
+    </div>
+
+    <div class="rec-card">
+      <h4>🆕 Neu erstellen (3 Files)</h4>
+      <ul class="rec-list">
+        <li><span class="action action-new">NEW</span> README.md — Echter LUMA-Inhalt: Domain, Stack, Kunden, Lovable-URL</li>
+        <li><span class="action action-new">NEW</span> SECURITY_STATUS.md — Ehrlicher aktueller Security-Status (hardcoded key ungefixt!)</li>
+        <li><span class="action action-new">NEW</span> INBOX_AGENT_SETUP.md — Neu schreiben mit aktuellen Tabellennamen + echten Credentials-Hinweisen</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Ideale Struktur -->
+  <div style="margin-top:32px;">
+    <h3 style="font-size:15px;font-weight:700;color:#111827;margin-bottom:16px;">Ideale Ziel-Struktur (nach Bereinigung)</h3>
+    <div class="struct-grid">
+      <div class="struct-card">
+        <div class="struct-file">AGENTS.md</div>
+        <div class="struct-desc">Haupteinstieg. LUMA-Überblick, Rollen, Stack, aktive Kunden, Routing-Hinweis zu CLAUDE.md</div>
+      </div>
+      <div class="struct-card">
+        <div class="struct-file">CLAUDE.md</div>
+        <div class="struct-desc">Task-Router. Kein Inhalt doppeln — nur "für X lies Y". Fuckup-Score-Tabelle bleibt.</div>
+      </div>
+      <div class="struct-card">
+        <div class="struct-file">README.md</div>
+        <div class="struct-desc">Echter LUMA-Inhalt: Lovable-URL, Domain, Stack, zwei aktive Tenants, Quick-Start</div>
+      </div>
+      <div class="struct-card">
+        <div class="struct-file">SECURITY_STATUS.md</div>
+        <div class="struct-desc">Offener Security-Status. Hardcoded Key: ⚠️ offen. RLS oauth_state: ⚠️ offen. Ehrlich.</div>
+      </div>
+      <div class="struct-card">
+        <div class="struct-file">docs/knowledge.md</div>
+        <div class="struct-desc">Master-Referenz. Schema, Hooks, Components, Routing, Edge Functions. Einzige Quelle der Wahrheit.</div>
+      </div>
+      <div class="struct-card">
+        <div class="struct-file">docs/DESIGN_CONSTITUTION.md</div>
+        <div class="struct-desc">Design-Tokens, Komponenten-Patterns, Farben (FINAL: #7C3AED), Fonts (Inter + Fredoka nur Logo)</div>
+      </div>
+      <div class="struct-card">
+        <div class="struct-file">docs/DISCOVERY_TO_BUILD.md</div>
+        <div class="struct-desc">Workflow-Framework für Hatti. Pfade auf luma aktualisieren.</div>
+      </div>
+      <div class="struct-card">
+        <div class="struct-file">docs/prd/*.md</div>
+        <div class="struct-desc">Feature-PRDs mit Status-Flag (planned/in-progress/done). Checklist-Automation + Inbox-Agent.</div>
+      </div>
+      <div class="struct-card">
+        <div class="struct-file">rules/coding.md</div>
+        <div class="struct-desc">Coding-Konventionen. Bleibt kompakt.</div>
+      </div>
+      <div class="struct-card">
+        <div class="struct-file">rules/deployment.md</div>
+        <div class="struct-desc">Deployment-Regeln. Oder in CLAUDE.md integrieren.</div>
+      </div>
+      <div class="struct-card">
+        <div class="struct-file">rules/multi-tenant.md</div>
+        <div class="struct-desc">Multi-Tenant-Regeln. Bleibt als eigenes File (kritisch).</div>
+      </div>
+      <div class="struct-card">
+        <div class="struct-file">rules/supabase.md</div>
+        <div class="struct-desc">Supabase-Regeln. Bleibt.</div>
+      </div>
+      <div class="struct-card">
+        <div class="struct-file">rules/testing.md</div>
+        <div class="struct-desc">Testing-Checkliste. Bleibt.</div>
+      </div>
+      <div class="struct-card">
+        <div class="struct-file">rules/inbox-agent.md</div>
+        <div class="struct-desc">Inbox-Agent Spec. Nach DB-Alignment aktualisiert.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ideale AGENTS.md / CLAUDE.md -->
+  <div class="card" style="margin-top:32px; border-left: 4px solid #7C3AED;">
+    <h3 style="font-size:14px;font-weight:700;color:#111827;margin-bottom:12px;">🤖 Was eine ideale AGENTS.md / CLAUDE.md für Lovable + Claude Code leisten muss</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#7C3AED;margin-bottom:8px;">AGENTS.md (Single Source of Truth)</div>
+        <ul style="list-style:none;font-size:13px;color:#374151;">
+          <li style="padding:4px 0;border-bottom:1px solid #F3F4F6;">✅ Produktname: LUMA (mit Domain)</li>
+          <li style="padding:4px 0;border-bottom:1px solid #F3F4F6;">✅ Stack: React + Vite + Supabase + Lovable</li>
+          <li style="padding:4px 0;border-bottom:1px solid #F3F4F6;">✅ Aktive Tenants + User-Count (Live-Konsequenz!)</li>
+          <li style="padding:4px 0;border-bottom:1px solid #F3F4F6;">✅ Rollen (sudo/admin/architekt/kunde)</li>
+          <li style="padding:4px 0;border-bottom:1px solid #F3F4F6;">✅ Tenant Isolation ist non-negotiable</li>
+          <li style="padding:4px 0;border-bottom:1px solid #F3F4F6;">✅ Wichtigste Pfade + welche Files NIE editieren</li>
+          <li style="padding:4px 0;">✅ Git-Workflow (Commit + Lovable-Push)</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#7C3AED;margin-bottom:8px;">CLAUDE.md (Router — kein Inhalt)</div>
+        <ul style="list-style:none;font-size:13px;color:#374151;">
+          <li style="padding:4px 0;border-bottom:1px solid #F3F4F6;">✅ "Lies erst AGENTS.md" als Schritt 1</li>
+          <li style="padding:4px 0;border-bottom:1px solid #F3F4F6;">✅ Task-Routing-Tabelle (kurz!)</li>
+          <li style="padding:4px 0;border-bottom:1px solid #F3F4F6;">✅ Fuckup-Score-Tabelle (bleibt, ist wertvoll)</li>
+          <li style="padding:4px 0;border-bottom:1px solid #F3F4F6;">✅ Hard Constraints (3-5 Punkte, nicht 20)</li>
+          <li style="padding:4px 0;border-bottom:1px solid #F3F4F6;">❌ Keine eigenen Deployment-Details (→ rules/deployment.md)</li>
+          <li style="padding:4px 0;border-bottom:1px solid #F3F4F6;">❌ Kein Schema (→ docs/knowledge.md)</li>
+          <li style="padding:4px 0;">❌ Keine Lovable-Prompt-Templates (→ rules/deployment.md)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Was Builder-Agents wirklich brauchen -->
+  <div class="card" style="margin-top:16px;">
+    <h3 style="font-size:14px;font-weight:700;color:#111827;margin-bottom:12px;">⚡ Was Builder-Agents wirklich brauchen (und was nicht)</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#065F46;margin-bottom:8px;">Ja, immer</div>
+        <ul style="list-style:none;font-size:13px;color:#374151;">
+          <li style="padding:3px 0;">→ AGENTS.md (Projekt-Überblick)</li>
+          <li style="padding:3px 0;">→ CLAUDE.md (Task-Router)</li>
+          <li style="padding:3px 0;">→ docs/knowledge.md (Schema + Hooks)</li>
+          <li style="padding:3px 0;">→ Relevante rules/ File für den Task</li>
+          <li style="padding:3px 0;">→ docs/DESIGN_CONSTITUTION.md (UI-Tasks)</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#991B1B;margin-bottom:8px;">Nein, nie</div>
+        <ul style="list-style:none;font-size:13px;color:#374151;">
+          <li style="padding:3px 0;">→ docs/pipeline/* (historisch)</li>
+          <li style="padding:3px 0;">→ docs/BACKEND_SPEC.md (gefährlich falsch)</li>
+          <li style="padding:3px 0;">→ alex-answers, NEXT-STEPS (Sales)</li>
+          <li style="padding:3px 0;">→ review/* (außer bei Security-Issues)</li>
+          <li style="padding:3px 0;">→ README.md (leer) / knowledge.md root</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top 3 sofort -->
+  <div class="section-title" style="margin-top:48px;">Sofortmaßnahmen</div>
+  <div class="section-heading">Top 3 die heute passieren sollten</div>
+
+  <div class="card" style="border-left: 4px solid #DC2626;">
+    <div style="display:flex;align-items:flex-start;gap:16px;">
+      <div style="flex-shrink:0;width:32px;height:32px;background:#FEE2E2;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#DC2626;font-size:14px;">1</div>
+      <div>
+        <h4 style="font-size:14px;font-weight:700;color:#111827;margin-bottom:4px;">Security-Issue fixen: hardcoded encryption key</h4>
+        <p style="font-size:13px;color:#374151;"><code>supabase/functions/_shared/encryption.ts</code> — <code>'your-super-secret-key'</code> durch echten Environment-Variable-Wert ersetzen. Dann <code>SECURITY_FIXES_REALLY_APPLIED.md</code> löschen oder ehrlich als <code>SECURITY_STATUS.md</code> neu schreiben.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left: 4px solid #D97706;">
+    <div style="display:flex;align-items:flex-start;gap:16px;">
+      <div style="flex-shrink:0;width:32px;height:32px;background:#FEF3C7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#D97706;font-size:14px;">2</div>
+      <div>
+        <h4 style="font-size:14px;font-weight:700;color:#111827;margin-bottom:4px;">AGENTS.md + CLAUDE.md auf "LUMA" umbenennen</h4>
+        <p style="font-size:13px;color:#374151;">Jedes Vorkommen von "ModulAI" und "Architekt Connect" durch "LUMA" ersetzen. Domain <code>luma-app.io</code> / <code>go.luma-app.io</code> ergänzen. Aktive Kunden nennen. Herkunftsgeschichte (Weber-Fork) raus.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left: 4px solid #7C3AED;">
+    <div style="display:flex;align-items:flex-start;gap:16px;">
+      <div style="flex-shrink:0;width:32px;height:32px;background:#EDE9FE;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#7C3AED;font-size:14px;">3</div>
+      <div>
+        <h4 style="font-size:14px;font-weight:700;color:#111827;margin-bottom:4px;">docs/pipeline/ komplett löschen + docs/BACKEND_SPEC.md löschen</h4>
+        <p style="font-size:13px;color:#374151;">~5.400 Zeilen pre-Build-Artefakte die gefährlich falsche Infos enthalten. Kein Builder-Agent sollte diese jemals lesen. Löschen reduziert auch den Token-Footprint bei jedem Context-Load erheblich.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="margin-top:60px;padding-top:24px;border-top:1px solid #E5E7EB;display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <div style="font-size:12px;font-weight:600;color:#111827;">LUMA MD Audit</div>
+      <div style="font-size:11px;color:#9CA3AF;">Erstellt: 2026-03-25 · Hatti · 35 Dateien · 8.252 Zeilen analysiert</div>
+    </div>
+    <div style="font-size:11px;color:#9CA3AF;text-align:right;">
+      <div>12 sofort löschbar</div>
+      <div>7 zu aktualisieren</div>
+      <div>3 neu erstellen</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
