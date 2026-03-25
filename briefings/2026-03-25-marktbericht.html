@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📈 Marktbericht - 25.03.2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header .date {
+            font-size: 1.1em;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .market-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .market-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .market-card.positive {
+            border-left-color: #28a745;
+        }
+        
+        .market-card.negative {
+            border-left-color: #dc3545;
+        }
+        
+        .market-card.neutral {
+            border-left-color: #6c757d;
+        }
+        
+        .market-card h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #495057;
+        }
+        
+        .market-value {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .positive .market-value {
+            color: #28a745;
+        }
+        
+        .negative .market-value {
+            color: #dc3545;
+        }
+        
+        .neutral .market-value {
+            color: #6c757d;
+        }
+        
+        .change {
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #495057;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .news-card {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .news-card h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .news-card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .highlight h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .source-link {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 30px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .source-link:hover {
+            background: #0056b3;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            text-align: center;
+            color: #6c757d;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 12px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .market-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📈 Marktbericht</h1>
+            <div class="date">Dienstag, 25. März 2026</div>
+        </div>
+        
+        <div class="content">
+            <div class="market-overview">
+                <div class="market-card negative">
+                    <h3>DAX</h3>
+                    <div class="market-value">22.636</div>
+                    <div class="change">-0,1% (-23 Punkte)</div>
+                </div>
+                
+                <div class="market-card neutral">
+                    <h3>Dow Jones</h3>
+                    <div class="market-value">~40.500*</div>
+                    <div class="change">+0,2% (erste Handelsstunden)</div>
+                </div>
+                
+                <div class="market-card negative">
+                    <h3>Brent Öl</h3>
+                    <div class="market-value">$104</div>
+                    <div class="change">+4,0% (+$4)</div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>🎯 Marktüberblick</h2>
+                <div class="highlight">
+                    <h3>Hauptthema: Iran-Krieg Unsicherheit</h3>
+                    <p>Nach dem Kurssprung am Montag (+1,2%) ist wieder Ernüchterung eingekehrt. Unklarheit über USA-Iran Gespräche lässt Investoren an der Seitenlinie warten.</p>
+                </div>
+                
+                <p><strong>Stimmung:</strong> Vorsichtig abwartend. Viele Investoren halten höhere Kassenbestände und warten auf Klarheit aus den vermeintlichen Friedensgesprächen.</p>
+            </div>
+            
+            <div class="section">
+                <h2>📊 Haupttreiber</h2>
+                <div class="news-grid">
+                    <div class="news-card">
+                        <h3>⛽ Ölpreise steigen wieder</h3>
+                        <p>Brent-Öl +4% auf $104. Benzinpreise in Deutschland +15%, USA +30%. Inflationsschub im März "unausweichlich" laut Helaba-Experten.</p>
+                    </div>
+                    
+                    <div class="news-card">
+                        <h3>🇩🇪 Deutschland besonders betroffen</h3>
+                        <p>Industrieproduktion abhängig von günstiger Energie. Kostenbasis der Unternehmen steigt, belastet konjunkturelle Perspektiven.</p>
+                    </div>
+                    
+                    <div class="news-card">
+                        <h3>📉 SAP unter Druck</h3>
+                        <p>JPMorgan stuft von "Übergewichten" auf "Neutral" ab. Kursziel drastisch von €260 auf €175 reduziert. Tiefster Stand seit Januar 2024.</p>
+                    </div>
+                    
+                    <div class="news-card">
+                        <h3>🚗 Volkswagen Rückruf</h3>
+                        <p>90.000+ E-Autos weltweit (VW & Cupra) wegen Batterie-Problemen. Brandgefahr möglich. Aktie trotzt erfolgreich der Nachricht.</p>
+                    </div>
+                    
+                    <div class="news-card">
+                        <h3>💊 Bayer: Investor steigt aus</h3>
+                        <p>Aktivistischer Investor Inclusive Capital verkauft 8,5 Mio Anteile zu €37,45. Jeffrey Ubben bleibt bis 2028 im Aufsichtsrat.</p>
+                    </div>
+                    
+                    <div class="news-card">
+                        <h3>🚙 EU-Automarkt +1,4%</h3>
+                        <p>Februar: 865.437 Neuzulassungen (+1,4% YoY). Elektroanteil steigt auf 18,8% (vs. 15,2% Vorjahr). Jahresstart dennoch -1,2%.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>🔮 Ausblick</h2>
+                <div class="news-grid">
+                    <div class="news-card">
+                        <h3>⚠️ Kurzfristige Risiken</h3>
+                        <p>• Iran-Krieg Entwicklung ungewiss<br>• Ölpreise volatil, Inflationsdruck<br>• Investoren warten auf Klarheit</p>
+                    </div>
+                    
+                    <div class="news-card">
+                        <h3>📈 Potenzielle Katalysatoren</h3>
+                        <p>• Friedensverhandlungen USA-Iran<br>• Entspannung am Energiemarkt<br>• Rückkehr des Risikoappetits</p>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-trump-oelpreis-dax-dow-iran-100.html" class="source-link" target="_blank">
+                📰 Vollständigen Artikel lesen
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p>Quelle: tagesschau.de Marktbericht vom 24.03.2026 • Erstellt: 25.03.2026 08:00</p>
+            <p style="margin-top: 5px; font-size: 0.9em;">* Dow Jones Wert geschätzt basierend auf Handelsverlauf</p>
+        </div>
+    </div>
+</body>
+</html>
