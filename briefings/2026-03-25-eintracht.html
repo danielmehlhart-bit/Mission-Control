@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eintracht Briefing - 25. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            color: #e60012;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .article-grid {
+            display: grid;
+            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
+        
+        .article-card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border: 1px solid #f0f0f0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        
+        .article-card h2 {
+            margin-bottom: 16px;
+        }
+        
+        .article-card h2 a {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        
+        .article-card h2 a:hover {
+            color: #e60012;
+        }
+        
+        .summary {
+            color: #555;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .date-badge {
+            background: #e60012;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .article-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 30px 16px;
+            }
+            
+            .article-card {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚽ Eintracht Frankfurt</h1>
+            <div class="date-badge">24. März 2026 — Nachrichten</div>
+            <p>Alle wichtigen News vom gestrigen Tag</p>
+        </div>
+        
+        <div class="article-grid">
+            <div class="article-card">
+                <h2><a href="https://www.fr.de/eintracht-frankfurt/eintracht-star-goetze-verzichtet-fuer-verlaengerung-auf-millionenbetrag-zr-94233146.html" target="_blank">Götze verlängert: Verzicht auf 1,5 Millionen Euro</a></h2>
+                <p class="summary">Mario Götze wird seinen Vertrag bei Eintracht Frankfurt um ein Jahr bis 2027 verlängern — mit einer ordentlichen Gehaltskürzung. Das Grundgehalt sinkt von 3,5 auf 2 Millionen Euro. Der Weltmeister von 2014 verzichtet bewusst auf die Kohle, weil ihm Frankfurt und die Familie wichtiger sind.</p>
+            </div>
+            
+            <div class="article-card">
+                <h2><a href="https://www.fr.de/eintracht-frankfurt/sge-star-larsson-stichelt-gegen-ex-coach-toppmoeller-zr-94233922.html" target="_blank">Larsson stichelt gegen Ex-Coach Toppmöller</a></h2>
+                <p class="summary">Hugo Larsson ist sauer auf seinen Ex-Trainer Dino Toppmöller, weil der ihn wegen wiederholter Krankheiten öffentlich kritisiert hatte. "Als Trainer schützt man normalerweise seine Spieler, aber das tat er damals nicht", sagt der Schwede. Er lässt sich im Sommer die Mandeln rausnehmen.</p>
+            </div>
+            
+            <div class="article-card">
+                <h2><a href="https://www.fr.de/eintracht-frankfurt/eintracht-star-larsson-in-kontakt-mit-teams-aus-premier-league-und-la-liga-zr-94232926.html" target="_blank">Larsson heiß umworben von Premier League und La Liga</a></h2>
+                <p class="summary">Klubs aus England und Spanien haben bereits Kontakt zu Hugo Larssons Berater aufgenommen. Bei einem Marktwert von 32 Millionen Euro und Vertrag bis 2029 dürfte eine ordentliche Summe über den Tisch gehen. Die Eintracht wäre bereit, ihn abzugeben.</p>
+            </div>
+            
+            <div class="article-card">
+                <h2><a href="https://www.fr.de/eintracht-frankfurt/ex-eintracht-trainer-adi-huetter-bei-tottenham-hotspur-im-gespraech-zr-94233804.html" target="_blank">Adi Hütter bei Tottenham im Gespräch</a></h2>
+                <p class="summary">Ex-Eintracht-Trainer Adi Hütter steht bei Tottenham Hotspur auf der Kandidatenliste als neuer Cheftrainer. Die Spurs stehen als Tabellen-17. vor dem Abstieg und müssen handeln. Hütter ist seit seiner Entlassung bei AS Monaco vereinslos und hätte Bock auf die Premier League.</p>
+            </div>
+            
+            <div class="article-card">
+                <h2><a href="https://www.fr.de/eintracht-frankfurt/langjaehriger-eintracht-coach-jetzt-co-trainer-beim-fc-koeln-94233986.html" target="_blank">Armin Reutershahn wird Co-Trainer in Köln</a></h2>
+                <p class="summary">Der ehemalige Eintracht-Co-Trainer ist jetzt beim 1. FC Köln und soll im Abstiegskampf helfen. Reutershahn war zwischen 2004-2009 bei der SGE und hat den Aufstieg in die Bundesliga sowie das DFB-Pokalfinale 2006 miterlebt. Ein echter Erfahrungs-Boost für die Geißböcke.</p>
+            </div>
+            
+            <div class="article-card">
+                <h2><a href="https://www.fr.de/eintracht-frankfurt/frankfurt-trainer-albert-riera-in-der-kritik-zr-94232690.html" target="_blank">Riera in der Kritik: "Schneller weg als Deutsch lernen"</a></h2>
+                <p class="summary">Albert Riera polarisiert heftig in seinen ersten Wochen. Besonders die Götze-Ausbootung gegen Mainz sorgt für Wirbel. Der neue Trainer eckt mit seinen Aussagen regelmäßig an und die Fans werden ungeduldig mit seinem Stil.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Mission Control Briefing — Erstellt am 25. März 2026, 06:35 Uhr</p>
+            <p>6 Artikel vom 24. März 2026 analysiert</p>
+        </div>
+    </div>
+</body>
+</html>
