@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Cowork für KHB Ingenieure</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #F9FAFB;
+      color: #111827;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 50%, #3B82F6 100%);
+      color: white;
+      padding: 60px 24px 48px;
+      text-align: center;
+    }
+
+    .hero .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .hero p.subtitle {
+      font-size: clamp(15px, 2.5vw, 18px);
+      opacity: 0.85;
+      max-width: 580px;
+      margin: 0 auto 28px;
+      font-weight: 400;
+    }
+
+    .hero .meta {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    .hero .meta span {
+      margin: 0 8px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .intro-card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 40px;
+      border-left: 4px solid #2563EB;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+    }
+
+    .intro-card p {
+      color: #374151;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .intro-card p + p {
+      margin-top: 12px;
+    }
+
+    section {
+      margin-bottom: 48px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .section-number {
+      width: 32px;
+      height: 32px;
+      background: #2563EB;
+      color: white;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .section-header h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111827;
+      letter-spacing: -0.01em;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px 32px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+    }
+
+    .card p {
+      color: #374151;
+      font-size: 15px;
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .card p:last-child { margin-bottom: 0; }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .feature-item {
+      background: white;
+      border-radius: 12px;
+      padding: 20px 22px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+      border-top: 3px solid #2563EB;
+    }
+
+    .feature-item .icon {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .feature-item h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .feature-item p {
+      font-size: 14px;
+      color: #6B7280;
+      line-height: 1.6;
+    }
+
+    /* Pricing pills */
+    .pricing-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .price-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      border-radius: 10px;
+      padding: 12px 18px;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .price-pill .plan-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1D4ED8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .price-pill .plan-price {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .price-pill .plan-desc {
+      font-size: 12px;
+      color: #6B7280;
+    }
+
+    /* Agent mapping cards */
+    .agent-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .agent-card {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 640px) {
+      .agent-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .agent-card-left {
+      padding: 20px 22px;
+      background: #F8FAFF;
+      border-right: 1px solid #E5E7EB;
+    }
+
+    .agent-card-right {
+      padding: 20px 22px;
+    }
+
+    .agent-card-left .label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #9CA3AF;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .agent-card-left h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .agent-card-left .sub {
+      font-size: 13px;
+      color: #6B7280;
+    }
+
+    .agent-card-right .label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #2563EB;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .agent-card-right p {
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.6;
+    }
+
+    .arrow-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #2563EB;
+      margin: 4px 0;
+    }
+
+    /* What stays at Microsoft */
+    .stays-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .stays-item {
+      background: white;
+      border-radius: 12px;
+      padding: 18px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .stays-item .icon {
+      font-size: 22px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .stays-item h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .stays-item p {
+      font-size: 13px;
+      color: #6B7280;
+      line-height: 1.5;
+    }
+
+    /* Limitations */
+    .limit-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .limit-item {
+      background: white;
+      border-radius: 10px;
+      padding: 14px 18px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      border-left: 3px solid #F59E0B;
+    }
+
+    .limit-item .dot {
+      width: 6px;
+      height: 6px;
+      background: #F59E0B;
+      border-radius: 50%;
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    .limit-item p {
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.5;
+    }
+
+    .limit-item strong {
+      color: #111827;
+    }
+
+    /* Next steps */
+    .steps-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .step-item {
+      background: white;
+      border-radius: 12px;
+      padding: 18px 22px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      background: #2563EB;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step-item.optional .step-num {
+      background: #D1D5DB;
+      color: #6B7280;
+    }
+
+    .step-item h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 3px;
+    }
+
+    .step-item p {
+      font-size: 13px;
+      color: #6B7280;
+      line-height: 1.5;
+    }
+
+    .step-item.optional h3 {
+      color: #6B7280;
+    }
+
+    /* Sources */
+    .sources {
+      margin-top: 56px;
+      padding-top: 32px;
+      border-top: 1px solid #E5E7EB;
+    }
+
+    .sources h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #9CA3AF;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+
+    .sources-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .sources-links a {
+      color: #2563EB;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .sources-links a:hover {
+      background: #DBEAFE;
+      border-color: #93C5FD;
+    }
+
+    /* CTA footer */
+    .cta-footer {
+      margin-top: 40px;
+      background: linear-gradient(135deg, #1D4ED8, #2563EB);
+      border-radius: 16px;
+      padding: 36px 32px;
+      text-align: center;
+      color: white;
+    }
+
+    .cta-footer h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .cta-footer p {
+      font-size: 15px;
+      opacity: 0.85;
+      max-width: 500px;
+      margin: 0 auto 20px;
+    }
+
+    .cta-footer a {
+      display: inline-block;
+      background: white;
+      color: #2563EB;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 11px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .cta-footer a:hover { opacity: 0.9; }
+
+    /* Tag */
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .tag-blue { background: #DBEAFE; color: #1D4ED8; }
+    .tag-green { background: #D1FAE5; color: #065F46; }
+    .tag-yellow { background: #FEF3C7; color: #92400E; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">Persönliche Empfehlung · März 2026</div>
+  <h1>Claude Cowork für KHB Ingenieure</h1>
+  <p class="subtitle">Wie du deine Agenten-Idee ohne Copilot Studio umsetzen kannst</p>
+  <div class="meta">
+    <span>✉️ Von Daniel an Kais</span>
+    <span>·</span>
+    <span>KHB Ingenieure · 5–10 Personen</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Intro -->
+  <div class="intro-card">
+    <p>Hey Kais, ich weiß, dass du gerade mit Copilot Studio kämpfst — Power Automate Flows, kryptische Fehlermeldungen, Agenten die sich nicht so verhalten wie sie sollen. Das ist kein Problem, das du hast, weil du es falsch machst. Das ist Copilot Studio.</p>
+    <p>Ich hab mir das angeschaut und will dir zeigen, was Claude Cowork kann. Nicht als Marketing-Pitch, sondern weil ich ehrlich glaube, dass das für euch einfacher, schneller und genauso mächtig wäre. Hier ist meine Einschätzung.</p>
+  </div>
+
+  <!-- Section 1: Was ist Claude Cowork -->
+  <section>
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <h2>Was ist Claude Cowork?</h2>
+    </div>
+
+    <div class="card" style="margin-bottom: 16px;">
+      <p>Claude Cowork ist eine Funktion der <strong>Claude Desktop App</strong> von Anthropic — dem Unternehmen hinter dem Sprachmodell Claude. Die Idee dahinter: kein Chat-Interface mehr, sondern ein autonomer Assistent, der auf deinem Mac läuft, auf deine Dateien zugreift und mehrstufige Aufgaben selbstständig erledigt.</p>
+      <p>Du gibst ihm eine Aufgabe — er plant, führt aus, fragt bei Unklarheit nach. Kein Flow-Builder, kein "Trigger-Action"-Denken. Einfach: <em>"Erstell mir aus den Projektordnern ein Status-Update für nächste Woche."</em></p>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="icon">🗂️</div>
+        <h3>Dateizugriff</h3>
+        <p>Liest und schreibt in Ordnern, die du freigibst. Kein Zugriff auf alles andere — kontrollierte Permissions.</p>
+      </div>
+      <div class="feature-item">
+        <div class="icon">🧠</div>
+        <h3>Autonomes Planen</h3>
+        <p>Claude erstellt selbst Schrittfolgen, arbeitet sie ab und meldet sich wenn er feststeckt.</p>
+      </div>
+      <div class="feature-item">
+        <div class="icon">📅</div>
+        <h3>Scheduled Tasks</h3>
+        <p>Wiederkehrende Aufgaben automatisch ausführen — z.B. jeden Morgen ein Briefing.</p>
+      </div>
+      <div class="feature-item">
+        <div class="icon">🔒</div>
+        <h3>Sandboxed & sicher</h3>
+        <p>Läuft lokal auf macOS. Du entscheidest welche Ordner Claude sehen darf.</p>
+      </div>
+    </div>
+
+    <div class="pricing-row">
+      <div class="price-pill">
+        <div>
+          <div class="plan-name">Pro Plan</div>
+          <div class="plan-price">$20<span style="font-size:14px;font-weight:400;color:#6B7280">/Monat</span></div>
+          <div class="plan-desc">Reicht für die meisten Tasks im kleinen Büro</div>
+        </div>
+      </div>
+      <div class="price-pill">
+        <div>
+          <div class="plan-name">Max Plan</div>
+          <div class="plan-price">$100–200<span style="font-size:14px;font-weight:400;color:#6B7280">/Monat</span></div>
+          <div class="plan-desc">Für intensivere Nutzung und mehr Kapazität</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Was Cowork besser kann -->
+  <section>
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <h2>Was Claude Cowork kann, was Copilot Studio nicht so leicht schafft</h2>
+    </div>
+
+    <div class="card" style="margin-bottom: 16px;">
+      <p>Der größte Unterschied: Copilot Studio denkt in Flows. Du definierst Trigger, Actions, Bedingungen — alles explizit. Claude Cowork denkt in <em>Aufgaben</em>. Du sagst was du willst, Claude findet den Weg selbst.</p>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="icon">🚫</div>
+        <h3>Keine Flows nötig</h3>
+        <p>Claude plant und führt selbst aus. Kein Power Automate, kein Flow-Builder, kein Debugging von Trigger-Chains.</p>
+      </div>
+      <div class="feature-item">
+        <div class="icon">📁</div>
+        <h3>Folder Instructions</h3>
+        <p>Pro Ordner eigene Anweisungen hinterlegen. Der Projektordner "Bauprojekt A" kriegt Kontext über das Projekt — Claude weiß dann automatisch worum es geht.</p>
+      </div>
+      <div class="feature-item">
+        <div class="icon">🔌</div>
+        <h3>MCP Connectors</h3>
+        <p>Anbindung an Slack, Google Drive, Notion und über 50 weitere Tools. Alle sprechen über das gleiche offene Protokoll.</p>
+      </div>
+      <div class="feature-item">
+        <div class="icon">🏢</div>
+        <h3>Microsoft 365 Connector</h3>
+        <p>Claude greift auf SharePoint, OneDrive, Outlook und Teams zu. Read-only, aber für Status-Checks und Briefings mehr als ausreichend. <span class="tag tag-blue">Team/Enterprise</span></p>
+      </div>
+      <div class="feature-item">
+        <div class="icon">🗣️</div>
+        <h3>Natürliche Sprache</h3>
+        <p>Kein Flow-Know-how nötig. Du redest mit Claude wie mit einem Kollegen. Er fragt nach wenn er etwas nicht versteht.</p>
+      </div>
+      <div class="feature-item">
+        <div class="icon">⏰</div>
+        <h3>Scheduled Tasks</h3>
+        <p>Wiederkehrende Aufgaben automatisch ausführen. Morgen-Briefing, Wochenreview, Fristprüfung — alles planbar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Agent Mapping -->
+  <section>
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <h2>Deine Agenten-Pyramide — mit Claude umgesetzt</h2>
+    </div>
+
+    <div class="card" style="margin-bottom: 20px;">
+      <p>Du hast dir 6 Agenten überlegt. Das ist ein gutes Bild. Hier zeige ich dir, wie Claude Cowork jeden davon abdecken würde — ohne eigene Agent-Logik, ohne Flow-Builder.</p>
+    </div>
+
+    <div class="agent-grid">
+
+      <div class="agent-card">
+        <div class="agent-card-left">
+          <div class="label">Kais' Agent</div>
+          <h3>🧭 Haupt-Agent</h3>
+          <div class="sub">Routing zu den Fach-Agenten</div>
+        </div>
+        <div class="agent-card-right">
+          <div class="label">Claude Cowork Lösung</div>
+          <p><strong>Cowork IS der Haupt-Agent.</strong> Du stellst eine Frage in natürlicher Sprache — Claude entscheidet selbst ob er Projektdaten abruft, den Kalender checkt oder ein Dokument erstellt. Kein Routing nötig.</p>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-card-left">
+          <div class="label">Kais' Agent</div>
+          <h3>📋 Projekt-Agent</h3>
+          <div class="sub">Status, Abgaben, offene Punkte</div>
+        </div>
+        <div class="agent-card-right">
+          <div class="label">Claude Cowork Lösung</div>
+          <p>Folder Instructions pro Projekt + SharePoint-Zugriff via M365 Connector. Claude liest den Projektordner, liest die Kontext-Datei mit Deadlines, gibt dir einen Status. Eine <code>projekt-kontext.md</code> pro Projekt reicht.</p>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-card-left">
+          <div class="label">Kais' Agent</div>
+          <h3>🌅 Morgen-Briefing-Agent</h3>
+          <div class="sub">Top 3–5 Aufgaben des Tages</div>
+        </div>
+        <div class="agent-card-right">
+          <div class="label">Claude Cowork Lösung</div>
+          <p>Scheduled Task: Jeden Morgen um 07:30 Projektordner + Kalender lesen, Top-5-Aufgaben generieren. Output als Markdown-Datei oder direkt in einen Teams-Kanal posten.</p>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-card-left">
+          <div class="label">Kais' Agent</div>
+          <h3>📚 Wissens- & Workflow-Agent</h3>
+          <div class="sub">Anleitungen, Vorlagen, Prozesse</div>
+        </div>
+        <div class="agent-card-right">
+          <div class="label">Claude Cowork Lösung</div>
+          <p>Einen Ordner mit Vorlagen und Prozessdokumenten freigeben. Claude durchsucht und findet — keine Indexierung wie bei OneNote nötig. "Gib mir die Vorlage für einen Bauantrag" funktioniert einfach.</p>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-card-left">
+          <div class="label">Kais' Agent</div>
+          <h3>📧 Kommunikations-Agent</h3>
+          <div class="sub">E-Mails, Mailbox, Priorisierung</div>
+        </div>
+        <div class="agent-card-right">
+          <div class="label">Claude Cowork Lösung</div>
+          <p>M365 Connector: Outlook read-only Zugriff. Claude fasst Mails zusammen, priorisiert nach Projekt-Kontext, erstellt Antwort-Entwürfe als Textdateien. Senden musst du selbst — aber das wäre ich auch nicht anders wollen.</p>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-card-left">
+          <div class="label">Kais' Agent</div>
+          <h3>📅 Termin-Agent</h3>
+          <div class="sub">Fristen, Deadlines, Erinnerungen</div>
+        </div>
+        <div class="agent-card-right">
+          <div class="label">Claude Cowork Lösung</div>
+          <p>Kalender-Zugriff via M365 Connector + Scheduled Tasks. Claude checkt täglich Kalender und Projekt-Kontext-Dateien auf nahende Fristen und schreibt dir eine Erinnerung.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 4: Was bleibt bei Microsoft -->
+  <section>
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <h2>Was bleibt bei Microsoft?</h2>
+    </div>
+
+    <div class="card" style="margin-bottom: 16px;">
+      <p>Das hier ist kein "weg von Microsoft" Vorschlag. Euer M365-Stack bleibt — Claude nutzt ihn einfach als Datenquelle.</p>
+    </div>
+
+    <div class="stays-grid">
+      <div class="stays-item">
+        <div class="icon">🏛️</div>
+        <div>
+          <h3>SharePoint</h3>
+          <p>Bleibt die Datenablage. Claude greift read-only drauf zu — ihr ändert nichts an eurer Struktur.</p>
+        </div>
+      </div>
+      <div class="stays-item">
+        <div class="icon">💬</div>
+        <div>
+          <h3>Teams Kanäle</h3>
+          <p>Bleiben für Kommunikation. Claude kann Briefings dort posten, aber Teams-Kultur ändert sich nicht.</p>
+        </div>
+      </div>
+      <div class="stays-item">
+        <div class="icon">📊</div>
+        <div>
+          <h3>Excel Projektliste</h3>
+          <p>Claude kann Excel-Dateien lesen und auswerten. Kein Umbau eurer Tabellen nötig.</p>
+        </div>
+      </div>
+      <div class="stays-item">
+        <div class="icon">⚡</div>
+        <div>
+          <h3>Power Automate</h3>
+          <p>Nur noch für simple Trigger (Datei-Upload → Notification). Keine komplexe Logik mehr nötig.</p>
+        </div>
+      </div>
+      <div class="stays-item">
+        <div class="icon">🧾</div>
+        <div>
+          <h3>Lexoffice</h3>
+          <p>Separate Integration, nicht über Claude. Bleibt wie es ist.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Einschränkungen -->
+  <section>
+    <div class="section-header">
+      <div class="section-number">5</div>
+      <h2>Ehrlichkeit: Was nicht geht</h2>
+    </div>
+
+    <div class="card" style="margin-bottom: 16px;">
+      <p>Ich will dir nicht verkaufen, dass alles perfekt ist. Hier sind die echten Einschränkungen — die du kennen solltest bevor du anfängst:</p>
+    </div>
+
+    <div class="limit-list">
+      <div class="limit-item">
+        <div class="dot"></div>
+        <p><strong>Nur macOS.</strong> Claude Desktop App läuft aktuell nur auf dem Mac. Kein Windows, kein Web-Interface. Wenn dein Team überwiegend Windows nutzt, ist das ein echtes Problem.</p>
+      </div>
+      <div class="limit-item">
+        <div class="dot"></div>
+        <p><strong>M365 Connector ist read-only.</strong> Claude kann Mails lesen, aber nicht senden. Dateien in SharePoint lesen, aber nicht schreiben. Für Briefings und Status-Updates reicht das — für automatisches Ablegen nicht.</p>
+      </div>
+      <div class="limit-item">
+        <div class="dot"></div>
+        <p><strong>M365 Connector braucht Team/Enterprise + Entra ID Admin.</strong> Das ist kein "einfach aktivieren". Euer IT-Admin oder euer M365-Partner muss einmal ran. Einmalig, aber nötig.</p>
+      </div>
+      <div class="limit-item">
+        <div class="dot"></div>
+        <p><strong>Claude muss offen sein.</strong> Die App läuft lokal. Wenn du den Mac zumachst oder die App schließt, stoppen laufende Scheduled Tasks. Kein Cloud-Service der immer läuft.</p>
+      </div>
+      <div class="limit-item">
+        <div class="dot"></div>
+        <p><strong>Keine native Teams-Integration wie Copilot.</strong> Microsoft Copilot sitzt direkt in Teams. Claude ist eine externe App — tiefere Teams-Integration fehlt.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Nächste Schritte -->
+  <section>
+    <div class="section-header">
+      <div class="section-number">6</div>
+      <h2>Nächste Schritte — so würde ich es angehen</h2>
+    </div>
+
+    <div class="card" style="margin-bottom: 20px;">
+      <p>Kein großes Setup, kein Copilot Studio — du kannst in einer Stunde produktiv sein. Hier mein Vorschlag für einen sauberen Pilot:</p>
+    </div>
+
+    <div class="steps-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div>
+          <h3>Claude Pro Account anlegen</h3>
+          <p>claude.ai → $20/Monat. Reicht für den Anfang vollständig aus.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div>
+          <h3>Claude Desktop installieren</h3>
+          <p>claude.ai/download → macOS App. Dauert 2 Minuten.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div>
+          <h3>Einen Projektordner als Pilot nehmen</h3>
+          <p>Wähl ein laufendes Projekt. Den Ordner im Claude Desktop freigeben — das ist dein Testfeld.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div>
+          <h3>Folder Instructions mit Projektkontext anlegen</h3>
+          <p>Eine <code>projekt-kontext.md</code> im Ordner: Projektname, Auftraggeber, offene Punkte, nächste Deadlines. Claude liest das automatisch.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div>
+          <h3>Morgen-Briefing als ersten Scheduled Task einrichten</h3>
+          <p>"Jeden Morgen um 07:30: Projektordner lesen, Top-5-Aufgaben als Markdown ausgeben." Das ist dein erster echter Agent.</p>
+        </div>
+      </div>
+      <div class="step-item optional">
+        <div class="step-num">6</div>
+        <div>
+          <h3>Optional: M365 Connector aktivieren</h3>
+          <p>Braucht deinen IT-Admin und einen Team/Enterprise Plan. Macht Sinn wenn der Pilot gut läuft — nicht als erster Schritt.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-footer">
+    <h3>Mein Fazit für KHB Ingenieure</h3>
+    <p>Deine Agenten-Idee ist gut. Der Ansatz ist richtig. Copilot Studio ist nur das falsche Werkzeug für ein 5-10-Personen-Büro. Claude Cowork kriegt das simpler hin — und du bist in einer Stunde drin statt in drei Wochen.</p>
+    <a href="https://claude.ai" target="_blank">claude.ai öffnen →</a>
+  </div>
+
+  <!-- Sources -->
+  <div class="sources">
+    <h3>Quellen & Links</h3>
+    <div class="sources-links">
+      <a href="https://claude.ai" target="_blank">claude.ai</a>
+      <a href="https://support.anthropic.com/de/articles/10169038-ueber-claude-fur-desktop" target="_blank">Claude Desktop Docs</a>
+      <a href="https://www.anthropic.com/news/claude-computer-use" target="_blank">Anthropic Blog: Computer Use</a>
+      <a href="https://www.anthropic.com/claude" target="_blank">anthropic.com/claude</a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
