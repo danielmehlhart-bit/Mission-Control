@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marktbericht 26.03.2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+        
+        .date {
+            color: #7f8c8d;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 64px rgba(0,0,0,0.15);
+        }
+        
+        .card h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .index-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .index-item {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .index-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .index-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .index-change {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .positive {
+            color: #27ae60;
+        }
+        
+        .negative {
+            color: #e74c3c;
+        }
+        
+        .neutral {
+            color: #7f8c8d;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .highlight .index-item {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .highlight .index-name,
+        .highlight .index-value {
+            color: white;
+        }
+        
+        .oil-price {
+            background: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%);
+            color: white;
+            text-align: center;
+            padding: 25px;
+            border-radius: 16px;
+            margin: 20px 0;
+            box-shadow: 0 8px 32px rgba(255,107,107,0.3);
+        }
+        
+        .oil-price h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .oil-price .price {
+            font-size: 32px;
+            font-weight: 700;
+        }
+        
+        .summary {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .summary h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .summary ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .summary li {
+            padding: 12px 0;
+            border-bottom: 1px solid #ecf0f1;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .summary li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #3498db;
+            font-weight: bold;
+        }
+        
+        .summary li:last-child {
+            border-bottom: none;
+        }
+        
+        .source {
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .source a {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+            box-shadow: 0 4px 16px rgba(52,152,219,0.3);
+        }
+        
+        .source a:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(52,152,219,0.4);
+        }
+        
+        .timestamp {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="date">Mittwoch, 26. März 2026</div>
+            <h1>📈 Marktbericht</h1>
+        </div>
+        
+        <div class="grid">
+            <div class="card highlight">
+                <h2>Deutsche Börse</h2>
+                <div class="index-grid">
+                    <div class="index-item">
+                        <div class="index-name">DAX</div>
+                        <div class="index-value">22.636</div>
+                        <div class="index-change negative">-0,1%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>US-Märkte</h2>
+                <div class="index-grid">
+                    <div class="index-item">
+                        <div class="index-name">Dow Jones</div>
+                        <div class="index-value">+0,2%</div>
+                        <div class="index-change positive">Leicht im Plus</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="oil-price">
+            <h3>Öl-Preis Brent</h3>
+            <div class="price">104 $ <span style="font-size: 20px;">+4%</span></div>
+        </div>
+        
+        <div class="summary">
+            <h2>Haupttreiber & Entwicklungen</h2>
+            <ul>
+                <li><strong>Iran-Krieg dominiert:</strong> Unsicherheit über Fortgang der Konflikte lässt Anleger zögern</li>
+                <li><strong>Ölpreise steigen stark:</strong> Brent auf 104 Dollar (+4%), Inflationssorgen wachsen</li>
+                <li><strong>Investoren abwartend:</strong> Viele mit höheren Kassenbeständen an Seitenlinien</li>
+                <li><strong>Benzinpreise explodieren:</strong> Deutschland +15%, USA +30% - "Inflationsschub unausweichlich"</li>
+                <li><strong>SAP unter Druck:</strong> JPMorgan stuft von "Übergewichten" auf "Neutral" ab</li>
+                <li><strong>Bayer-Rückschlag:</strong> Aktivistischer Investor Inclusive Capital steigt aus</li>
+                <li><strong>VW-Rückruf:</strong> 90.000 E-Autos wegen Brandgefahr in Werkstatt</li>
+            </ul>
+        </div>
+        
+        <div class="summary">
+            <h2>Ausblick</h2>
+            <ul>
+                <li><strong>Geopolitik bleibt Taktgeber:</strong> USA-Iran Gespräche noch nicht konkret</li>
+                <li><strong>Energie-Abhängigkeit:</strong> Deutsche Industrie besonders von Ölpreis-Entwicklung betroffen</li>
+                <li><strong>Zinsniveau:</strong> Steigende Kosten belasten konjunkturelle Perspektiven</li>
+                <li><strong>Inflation:</strong> März wird deutliche Teuerung bringen durch Energiekosten</li>
+            </ul>
+        </div>
+        
+        <div class="source">
+            <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-trump-oelpreis-dax-dow-iran-100.html" target="_blank">
+                📰 Vollständiger Artikel bei Tagesschau
+            </a>
+        </div>
+        
+        <div class="timestamp">
+            Erstellt am 26.03.2026 um 08:00 Uhr | Daten vom 24.03.2026, 18:23 Uhr
+        </div>
+    </div>
+</body>
+</html>
