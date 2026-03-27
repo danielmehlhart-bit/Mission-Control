@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Cowork Skills & Plugins — KHB Ingenieure</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #F9FAFB;
+      color: #111827;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 50%, #3B82F6 100%);
+      color: white;
+      padding: 64px 24px 48px;
+      margin-bottom: 48px;
+    }
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.9);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .header p {
+      font-size: 18px;
+      opacity: 0.85;
+      max-width: 600px;
+    }
+    .header-meta {
+      margin-top: 32px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      opacity: 0.75;
+    }
+    .header-meta span::before {
+      margin-right: 6px;
+    }
+
+    /* ── INTRO ── */
+    .intro-box {
+      background: white;
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 40px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+      border-left: 4px solid #2563EB;
+    }
+    .intro-box p {
+      color: #374151;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .intro-box p + p {
+      margin-top: 12px;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 52px;
+    }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #2563EB;
+      margin-bottom: 8px;
+    }
+    .section h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+    .section p {
+      color: #374151;
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 16px 32px rgba(0,0,0,0.06);
+      transform: translateY(-2px);
+    }
+
+    /* ── PLUGIN INTRO CARDS ── */
+    .plugin-intro-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .plugin-intro-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    }
+    .plugin-intro-card .icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+    .plugin-intro-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .plugin-intro-card p {
+      font-size: 14px;
+      color: #6B7280;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* ── 4 BAUSTEINE CARDS ── */
+    .bausteine-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .baustein-card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+      border-top: 3px solid #2563EB;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .baustein-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 16px 32px rgba(0,0,0,0.06);
+      transform: translateY(-2px);
+    }
+    .baustein-icon {
+      font-size: 32px;
+      margin-bottom: 14px;
+    }
+    .baustein-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+    .baustein-card .tag {
+      display: inline-block;
+      background: #EFF6FF;
+      color: #2563EB;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      font-family: 'Courier New', monospace;
+    }
+    .baustein-card p {
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .baustein-card .example {
+      background: #F3F4F6;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #4B5563;
+      border-left: 3px solid #D1D5DB;
+      font-style: italic;
+    }
+
+    /* ── CODE BLOCK ── */
+    .code-block {
+      background: #1E293B;
+      border-radius: 12px;
+      padding: 28px;
+      overflow-x: auto;
+      margin: 20px 0;
+    }
+    .code-block pre {
+      font-family: 'Courier New', 'Fira Code', monospace;
+      font-size: 13.5px;
+      line-height: 1.8;
+      color: #E2E8F0;
+      white-space: pre;
+    }
+    .code-block pre .comment {
+      color: #64748B;
+    }
+    .code-block pre .file {
+      color: #7DD3FC;
+    }
+    .code-block pre .dir {
+      color: #86EFAC;
+      font-weight: 600;
+    }
+    .code-block pre .highlight {
+      color: #FCD34D;
+    }
+
+    /* ── PLUGIN TABLE ── */
+    .plugin-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    }
+    .plugin-table thead {
+      background: #2563EB;
+      color: white;
+    }
+    .plugin-table thead th {
+      padding: 14px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: left;
+      letter-spacing: 0.03em;
+    }
+    .plugin-table tbody tr {
+      border-bottom: 1px solid #F3F4F6;
+      transition: background 0.15s;
+    }
+    .plugin-table tbody tr:last-child { border-bottom: none; }
+    .plugin-table tbody tr:hover { background: #F9FAFB; }
+    .plugin-table tbody td {
+      padding: 14px 20px;
+      font-size: 14px;
+      color: #374151;
+      vertical-align: top;
+    }
+    .plugin-table tbody td:first-child {
+      font-weight: 600;
+      color: #111827;
+    }
+    .badge-start {
+      display: inline-block;
+      background: #DCFCE7;
+      color: #16A34A;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 100px;
+      margin-left: 8px;
+    }
+
+    /* ── STEPS ── */
+    .steps-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .steps-list li {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      background: white;
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: #2563EB;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+    .step-content h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+    .step-content p {
+      font-size: 14px;
+      color: #6B7280;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .step-content code {
+      background: #F3F4F6;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #1D4ED8;
+    }
+
+    /* ── HIGHLIGHT BLOCK (KHB Beispiel) ── */
+    .highlight-block {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(37,99,235,0.08), 0 1px 4px rgba(0,0,0,0.06);
+      border: 1px solid #DBEAFE;
+    }
+    .highlight-block-header {
+      background: linear-gradient(135deg, #1D4ED8, #2563EB);
+      color: white;
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .highlight-block-header .plugin-icon {
+      font-size: 36px;
+    }
+    .highlight-block-header h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .highlight-block-header p {
+      font-size: 14px;
+      opacity: 0.8;
+      margin: 0;
+    }
+    .highlight-block-body {
+      padding: 32px;
+    }
+    .highlight-section {
+      margin-bottom: 28px;
+    }
+    .highlight-section:last-child { margin-bottom: 0; }
+    .highlight-section h4 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #2563EB;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #EFF6FF;
+    }
+    .item-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .item-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #F9FAFB;
+      font-size: 14px;
+    }
+    .item-list li:last-child { border-bottom: none; }
+    .item-list li code {
+      background: #EFF6FF;
+      color: #1D4ED8;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 12.5px;
+      flex-shrink: 0;
+    }
+    .item-list li span {
+      color: #4B5563;
+      line-height: 1.5;
+    }
+    .item-list li .arrow {
+      color: #9CA3AF;
+      flex-shrink: 0;
+    }
+    .connector-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #F0FDF4;
+      color: #15803D;
+      border: 1px solid #BBF7D0;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      margin: 4px 4px 4px 0;
+    }
+
+    /* ── LIMITATIONS ── */
+    .limitations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .limit-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
+      border-left: 3px solid #F59E0B;
+      display: flex;
+      gap: 12px;
+    }
+    .limit-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .limit-card h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .limit-card p {
+      font-size: 13px;
+      color: #6B7280;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* ── CTA ── */
+    .cta-box {
+      background: linear-gradient(135deg, #1D4ED8, #2563EB);
+      border-radius: 20px;
+      padding: 40px;
+      color: white;
+      text-align: center;
+    }
+    .cta-box h2 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .cta-box p {
+      font-size: 16px;
+      opacity: 0.85;
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+    .cta-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 480px;
+      margin: 0 auto 32px;
+      text-align: left;
+    }
+    .cta-step {
+      background: rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .cta-step .num {
+      background: rgba(255,255,255,0.2);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: white;
+      color: #1D4ED8;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 14px 32px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .cta-btn:hover { opacity: 0.9; }
+
+    /* ── SOURCES ── */
+    .sources {
+      margin-top: 52px;
+      padding-top: 32px;
+      border-top: 1px solid #E5E7EB;
+    }
+    .sources h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #9CA3AF;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .sources-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: white;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      color: #374151;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .source-link:hover {
+      border-color: #2563EB;
+      color: #2563EB;
+    }
+    .source-link .source-icon { font-size: 14px; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 40px 24px 24px;
+      font-size: 13px;
+      color: #9CA3AF;
+    }
+
+    @media (max-width: 600px) {
+      .bausteine-grid { grid-template-columns: 1fr; }
+      .limitations-grid { grid-template-columns: 1fr; }
+      .highlight-block-body { padding: 20px; }
+      .cta-box { padding: 28px 20px; }
+      .header { padding: 40px 20px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-badge">Claude Cowork · Folge-Briefing</div>
+      <h1>Skills &amp; Plugins</h1>
+      <p>Wie du Claude für KHB Ingenieure maßschneidern kannst — konkret und ohne Programmierkenntnisse.</p>
+      <div class="header-meta">
+        <span>📅 27. März 2026</span>
+        <span>✍️ Von Daniel an Kais</span>
+        <span>⏱ ~8 Min. Lesen</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- INTRO -->
+    <div class="intro-box">
+      <p>Hey Kais, du hast jetzt ein Bild davon, was Claude Cowork grundsätzlich kann. Jetzt gehen wir einen Schritt tiefer: das Plugin-System ist der entscheidende Unterschied zwischen "einem generischen KI-Assistenten" und "deinem KHB-Assistenten, der weiß wie eure Projekte aufgebaut sind".</p>
+      <p>Ich zeig dir wie das technisch funktioniert — und wie ihr in einem Nachmittag ein Plugin bauen könnt, das sich anfühlt als ob Claude seit Jahren bei KHB arbeitet.</p>
+    </div>
+
+    <!-- SECTION 1: Was sind Plugins -->
+    <div class="section">
+      <div class="section-label">01 / Grundlagen</div>
+      <h2>Was sind Plugins in Claude Cowork?</h2>
+      <p>
+        Stell dir vor, du hast gerade Claude Desktop installiert — er ist klug, aber er kennt KHB noch nicht. Er weiß nichts von eurer Ordnerstruktur, den HOAI-Leistungsphasen, euren Abläufen. Er ist wie ein sehr fähiger Neuer am ersten Arbeitstag.
+      </p>
+      <p>
+        Ein Plugin ändert das. Du installierst "KHB Projektmanagement" und plötzlich kennt Claude eure V3-Ordnerstruktur, weiß was LPH 3 bedeutet, und kann mit einem Befehl den Projektstatus für alle 37 aktiven Projekte abrufen. Wie eine App auf dem Smartphone — du installierst "Kamera" und dein Telefon kann plötzlich fotografieren.
+      </p>
+
+      <div class="plugin-intro-grid" style="margin-top:24px">
+        <div class="plugin-intro-card">
+          <div class="icon">🏪</div>
+          <h3>Fertige Plugins von Anthropic</h3>
+          <p>Legal, Finance, Sales, Data, Engineering, Operations, Product Management — 11 Starter-Plugins, direkt verwendbar oder als Basis zum Anpassen.</p>
+        </div>
+        <div class="plugin-intro-card">
+          <div class="icon">🔧</div>
+          <h3>Eigene Plugins bauen</h3>
+          <p>Für firmenspezifische Workflows. Kein Code nötig — alles über Markdown-Dateien und ein kurzes Gespräch mit Claude.</p>
+        </div>
+        <div class="plugin-intro-card">
+          <div class="icon">🐙</div>
+          <h3>Open Source auf GitHub</h3>
+          <p>Alle Starter-Plugins offen einsehbar und fork-bar unter <strong>github.com/anthropics/knowledge-work-plugins</strong> — du siehst genau was drin steckt.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: Die 4 Bausteine -->
+    <div class="section">
+      <div class="section-label">02 / Aufbau</div>
+      <h2>Die 4 Bausteine eines Plugins</h2>
+      <p>Jedes Plugin besteht aus denselben vier Komponenten. Du kannst alle vier nutzen — oder nur die, die du brauchst.</p>
+
+      <div class="bausteine-grid" style="margin-top:24px">
+
+        <!-- Skills -->
+        <div class="baustein-card">
+          <div class="baustein-icon">📋</div>
+          <h3>Skills</h3>
+          <div class="tag">skills/ Ordner</div>
+          <p>Markdown-Dateien die Wissen und Workflows enthalten. Claude liest sie beim Start und verhält sich entsprechend. Dein Firmen-Know-how als Text.</p>
+          <div class="example">„Unsere Projektordner sind nach dem V3-Schema aufgebaut: Eingang / Ausgang / Bearbeitung..."</div>
+        </div>
+
+        <!-- Slash Commands -->
+        <div class="baustein-card">
+          <div class="baustein-icon">⚡</div>
+          <h3>Slash Commands</h3>
+          <div class="tag">commands/ Ordner</div>
+          <p>Markdown-Dateien die Schnellbefehle definieren. Du tippst <code>/projektstatus</code> und Claude führt einen definierten Workflow aus — ohne langes Erklären.</p>
+          <div class="example">/briefing → Claude erstellt Top-5-Aufgaben für heute aus allen aktiven Projekten</div>
+        </div>
+
+        <!-- Connectors -->
+        <div class="baustein-card">
+          <div class="baustein-icon">🔌</div>
+          <h3>Connectors</h3>
+          <div class="tag">.mcp.json</div>
+          <p>Verbinden Claude mit externen Tools. MCP (Model Context Protocol) ist ein offener Standard. Für KHB relevant: SharePoint, Outlook, Excel, Lexoffice.</p>
+          <div class="example">SharePoint-Connector → Claude kann direkt in euren Projektordnern lesen und suchen</div>
+        </div>
+
+        <!-- Sub-Agents -->
+        <div class="baustein-card">
+          <div class="baustein-icon">🤖</div>
+          <h3>Sub-Agents</h3>
+          <div class="tag">agents/ Ordner</div>
+          <p>Spezialisierte Mini-Agenten für delegierte Aufgaben. Claude teilt komplexe Jobs auf und gibt Teilaufgaben weiter — Recherche, Dateiorganisation, Analyse.</p>
+          <div class="example">„Recherchiere für Projekt X alle Normen und fasse sie zusammen" → delegiert an Sub-Agent</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION 3: Dateistruktur -->
+    <div class="section">
+      <div class="section-label">03 / Architektur</div>
+      <h2>So sieht ein Plugin aus — von innen</h2>
+      <p>Hier die komplette Ordnerstruktur. Alles Markdown — kein Code, keine Programmierung. Wer Word-Dokumente schreiben kann, kann auch ein Plugin bauen.</p>
+
+      <div class="code-block">
+        <pre><span class="dir">mein-plugin/</span>
+├── <span class="file">plugin.json</span>         <span class="comment">← Name, Version, Beschreibung des Plugins</span>
+├── <span class="file">.mcp.json</span>           <span class="comment">← Connector-Konfigurationen (SharePoint, Outlook, ...)</span>
+│
+├── <span class="dir">commands/</span>
+│   ├── <span class="file">projektstatus.md</span>  <span class="comment">← Wird zu /projektstatus im Chat</span>
+│   ├── <span class="file">briefing.md</span>       <span class="comment">← Wird zu /briefing im Chat</span>
+│   └── <span class="file">abgabe-check.md</span>   <span class="comment">← Wird zu /abgabe-check im Chat</span>
+│
+└── <span class="dir">skills/</span>
+    ├── <span class="file">projektstruktur.md</span> <span class="comment">← V3-Ordnerstruktur, erklärt für Claude</span>
+    ├── <span class="file">lph-phasen.md</span>      <span class="comment">← HOAI LPH 1–9, Deliverables pro Phase</span>
+    └── <span class="file">abgabe-checkliste.md</span> <span class="comment">← Was vor Abgaben geprüft wird</span></pre>
+      </div>
+
+      <p style="color:#6B7280; font-size:14px; margin-top:8px;">💡 Die <code>plugin.json</code> ist ein paar Zeilen JSON (Name, Beschreibung, Version) — Claude kann sie für dich generieren. Die Skills und Commands schreibst du auf Deutsch, in normaler Sprache.</p>
+    </div>
+
+    <!-- SECTION 4: Fertige Plugins -->
+    <div class="section">
+      <div class="section-label">04 / Starter-Plugins</div>
+      <h2>Fertige Plugins — was für KHB interessant ist</h2>
+      <p>Von Anthropic gibt es 11 Plugins die sofort funktionieren — oder als Ausgangsbasis für euer eigenes dienen:</p>
+
+      <table class="plugin-table" style="margin-top:20px">
+        <thead>
+          <tr>
+            <th>Plugin</th>
+            <th>Für KHB nützlich weil…</th>
+            <th>Empfehlung</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>⚙️ Engineering</td>
+            <td>Dokumentation, technische Workflows, Debugging-Prozesse — als Basis gut geeignet auch für Ingenieurbüros</td>
+            <td>Als Basis anpassen</td>
+          </tr>
+          <tr>
+            <td>📊 Operations / Project Management <span class="badge-start">Startpunkt</span></td>
+            <td>Reports, Deliverable-Tracking, interne Koordination — trifft eure Kernarbeit am besten. Das ist der Plugin-Typ für KHB.</td>
+            <td>Sofort testen</td>
+          </tr>
+          <tr>
+            <td>💶 Finance</td>
+            <td>Account Reconciliation, Angebotsanalyse — interessant wenn Lexoffice eingebunden wird</td>
+            <td>Später ergänzen</td>
+          </tr>
+          <tr>
+            <td>🔨 Plugin Management</td>
+            <td>Meta-Plugin das beim Bauen anderer Plugins hilft — Claude guided dich durch den Setup</td>
+            <td>Direkt am Anfang</td>
+          </tr>
+          <tr>
+            <td>⚖️ Legal</td>
+            <td>Vertragsmanagement, Compliance — relevant bei Ausschreibungen und HOAI-Verträgen</td>
+            <td>Optional</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 5: Plugin bauen -->
+    <div class="section">
+      <div class="section-label">05 / Setup</div>
+      <h2>Eigenes KHB-Plugin bauen — so geht's</h2>
+      <p>Du brauchst keinen Entwickler dafür. Der Prozess ist bewusst conversational gehalten.</p>
+
+      <ul class="steps-list" style="margin-top:20px">
+        <li>
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Plugin Management installieren</h4>
+            <p>Claude Desktop öffnen → Cowork Tab → Plugins → "Plugin Create" installieren. Das ist ein eingebautes Meta-Plugin das dir beim Bauen hilft.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Claude briefen — ganz normal im Chat</h4>
+            <p>Schreib: <em>"Erstelle mir ein Plugin für ein Ingenieurbüro mit 10 Personen. Wir brauchen Skills für Projektstatusabfragen, Morgen-Briefings, und Dokumentensuche in SharePoint."</em></p>
+          </div>
+        </li>
+        <li>
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Claude führt dich durch den Setup</h4>
+            <p>Conversational, kein Code nötig. Claude stellt Fragen, generiert die Dateien, du überprüfst und passt an. Dauert ca. 30–60 Minuten.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Alternativ: Starter-Plugin nehmen und anpassen</h4>
+            <p>Operations-Plugin von GitHub laden, die <code>skills/</code> Dateien durch KHB-spezifische ersetzen. Schneller Weg wenn du weißt was du willst.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>Skills in Markdown schreiben</h4>
+            <p>Einfach auf Deutsch beschreiben: "Unsere Projektstruktur ist V3, Ordner heißen Eingang/Ausgang/Bearbeitung..." — Claude kann das auch für dich schreiben wenn du es ihm erklärst.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <h4>Slash Commands testen</h4>
+            <p>Plugin aktivieren, <code>/briefing</code> eintippen, schauen ob Claude das tut was du erwartest. Iterieren bis es passt.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-num">7</div>
+          <div class="step-content">
+            <h4>Optional: Im Team verteilen</h4>
+            <p>Mit Enterprise Plan kannst du das Plugin für alle 10 Personen im Büro bereitstellen — via internem Marketplace oder direktes Teilen des Plugin-Ordners.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- SECTION 6: KHB Beispiel-Plugin -->
+    <div class="section">
+      <div class="section-label">06 / Konkretes Beispiel</div>
+      <h2>So könnte das KHB-Plugin aussehen</h2>
+      <p>Hier ein konkreter Entwurf was "KHB Projektmanagement" als Plugin enthalten würde — das wäre mein Vorschlag als Startpunkt:</p>
+
+      <div class="highlight-block" style="margin-top:24px">
+        <div class="highlight-block-header">
+          <div class="plugin-icon">🏗️</div>
+          <div>
+            <h3>KHB Projektmanagement</h3>
+            <p>Custom Plugin · Version 1.0 · Für KHB Ingenieure GmbH</p>
+          </div>
+        </div>
+        <div class="highlight-block-body">
+
+          <div class="highlight-section">
+            <h4>📋 Skills (Firmenwissen)</h4>
+            <ul class="item-list">
+              <li>
+                <code>projektstruktur-v3.md</code>
+                <span class="arrow">→</span>
+                <span>Beschreibt die V3-Ordnerstruktur: Eingang / Ausgang / Bearbeitung — Claude weiß wo welche Dateien liegen</span>
+              </li>
+              <li>
+                <code>lph-workflow.md</code>
+                <span class="arrow">→</span>
+                <span>HOAI-Leistungsphasen 1–9 mit typischen Deliverables pro Phase. Claude versteht was "wir sind in LPH 4" bedeutet</span>
+              </li>
+              <li>
+                <code>abgabe-checkliste.md</code>
+                <span class="arrow">→</span>
+                <span>Was vor einer Abgabe geprüft werden muss. Welche Dokumente, welche Freigaben, welche Formate</span>
+              </li>
+              <li>
+                <code>khb-style-guide.md</code>
+                <span class="arrow">→</span>
+                <span>Wie KHB Dokumente formatiert — Namenskonventionen, Kopfzeilen, Revisionsstände</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="highlight-section">
+            <h4>⚡ Slash Commands (Schnellbefehle)</h4>
+            <ul class="item-list">
+              <li>
+                <code>/projektstatus [Name]</code>
+                <span class="arrow">→</span>
+                <span>Scannt Projektordner, zeigt offene Punkte, nächste Deadline, letzten Fortschritt</span>
+              </li>
+              <li>
+                <code>/briefing</code>
+                <span class="arrow">→</span>
+                <span>Morgen-Briefing mit Top-5 Aufgaben aus allen aktiven Projekten — täglich als Start</span>
+              </li>
+              <li>
+                <code>/abgabe-check [Name]</code>
+                <span class="arrow">→</span>
+                <span>Prüft Vollständigkeit vor Abgabe: sind alle Pläne vorhanden, Checkliste abhaken</span>
+              </li>
+              <li>
+                <code>/suche [Begriff]</code>
+                <span class="arrow">→</span>
+                <span>Durchsucht Projektordner und SharePoint nach Vorlagen, alten Dokumenten, Beispielen</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="highlight-section">
+            <h4>🔌 Connectors (Externe Tools)</h4>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+              <span class="connector-tag">📁 SharePoint (M365) — Projektordner lesen</span>
+              <span class="connector-tag">📧 Outlook (M365) — Projekt-relevante Mails</span>
+              <span class="connector-tag">📊 Excel — Stammdaten der 37 Projekte</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 7: Einschränkungen -->
+    <div class="section">
+      <div class="section-label">07 / Ehrlichkeit</div>
+      <h2>Was du wissen solltest — die Grenzen</h2>
+      <p>Ich will transparent sein, was das System noch nicht kann oder wo es Aufwand gibt:</p>
+
+      <div class="limitations-grid" style="margin-top:20px">
+        <div class="limit-card">
+          <div class="limit-icon">💳</div>
+          <div>
+            <h4>Bezahlter Plan nötig</h4>
+            <p>Custom Plugins laufen nur auf Pro ($20/Mo) oder höher. Der Free Plan hat keinen Plugin-Support.</p>
+          </div>
+        </div>
+        <div class="limit-card">
+          <div class="limit-icon">💾</div>
+          <div>
+            <h4>Lokal gespeichert</h4>
+            <p>Plugins liegen lokal auf dem Gerät — kein automatischer Cloud-Sync zwischen Geräten. Muss man manuell synchronisieren.</p>
+          </div>
+        </div>
+        <div class="limit-card">
+          <div class="limit-icon">🎯</div>
+          <div>
+            <h4>Klare Prompts nötig</h4>
+            <p>Sub-Agents brauchen präzise Anweisungen. Bei vagen Beschreibungen improvisiert Claude — manchmal falsch.</p>
+          </div>
+        </div>
+        <div class="limit-card">
+          <div class="limit-icon">🏢</div>
+          <div>
+            <h4>Team-Features brauchen Enterprise</h4>
+            <p>Interner Marketplace, Auto-Install, zentrale Verwaltung für alle 10 Personen — das ist Enterprise-Terrain ($$$).</p>
+          </div>
+        </div>
+        <div class="limit-card">
+          <div class="limit-icon">🔄</div>
+          <div>
+            <h4>Skills müssen gepflegt werden</h4>
+            <p>Wenn sich Prozesse ändern, muss die Markdown-Datei angepasst werden. Kein großer Aufwand, aber jemand muss es tun.</p>
+          </div>
+        </div>
+        <div class="limit-card">
+          <div class="limit-icon">🔐</div>
+          <div>
+            <h4>Connector-Setup braucht IT</h4>
+            <p>Den M365-Connector für SharePoint einrichten braucht einmalig jemanden mit IT-Zugang. Danach läuft es.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 8: CTA -->
+    <div class="section">
+      <div class="cta-box">
+        <h2>Mein Vorschlag für den Einstieg</h2>
+        <p>Du kannst das binnen eines Nachmittags haben. Hier der konkrete Plan:</p>
+
+        <div class="cta-steps">
+          <div class="cta-step">
+            <div class="num">1</div>
+            <span>Operations-Plugin von GitHub als Basis nehmen — 5 Minuten</span>
+          </div>
+          <div class="cta-step">
+            <div class="num">2</div>
+            <span>2–3 Skills auf KHB anpassen: Projektstruktur, LPH, Briefing — 1–2 Stunden</span>
+          </div>
+          <div class="cta-step">
+            <div class="num">3</div>
+            <span>/projektstatus und /briefing einrichten und testen — 30 Minuten</span>
+          </div>
+          <div class="cta-step">
+            <div class="num">4</div>
+            <span>Erst auf deinem Rechner testen, dann für das Team freigeben</span>
+          </div>
+        </div>
+
+        <a href="mailto:daniel@mehlhart.de?subject=KHB%20Plugin%20Setup" class="cta-btn">Lass uns das zusammen aufsetzen →</a>
+      </div>
+    </div>
+
+    <!-- SOURCES -->
+    <div class="sources">
+      <h3>Quellen &amp; Links</h3>
+      <div class="sources-grid">
+        <a href="https://github.com/anthropics/knowledge-work-plugins" class="source-link" target="_blank">
+          <span class="source-icon">🐙</span> GitHub: knowledge-work-plugins
+        </a>
+        <a href="https://www.anthropic.com/claude/cowork" class="source-link" target="_blank">
+          <span class="source-icon">📖</span> Claude Cowork Docs
+        </a>
+        <a href="https://modelcontextprotocol.io" class="source-link" target="_blank">
+          <span class="source-icon">🔌</span> MCP — Model Context Protocol
+        </a>
+        <a href="https://support.anthropic.com" class="source-link" target="_blank">
+          <span class="source-icon">💬</span> Anthropic Support
+        </a>
+        <a href="https://claude.ai/download" class="source-link" target="_blank">
+          <span class="source-icon">⬇️</span> Claude Desktop Download
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+
+  <footer>
+    Erstellt am 27. März 2026 · Von Daniel Mehlhart für Kais Hassan Bashariar / KHB Ingenieure · Vertraulich
+  </footer>
+
+</body>
+</html>
