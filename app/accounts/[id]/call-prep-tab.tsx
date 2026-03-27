@@ -281,49 +281,33 @@ function ExpandedNote({ note, color, onPatch, onScorePatch }: {
       </Section>
 
       {/* 2. Pain Landscape */}
-      <Section title="2. Pain Landscape" hint="Kernpain priorisieren, weitere Signale nur mitschreiben">
-        <Field label="Kernpain heute" value={note.painKernpain} onChange={v => onPatch("painKernpain", v)} placeholder="Wo verliert das Büro am meisten Zeit oder Energie? Was ist der größte wiederkehrende Schmerz?" rows={3} />
+      <Section title="2. Pain Landscape" hint="Schmerzpunkte rund um Koordination & Kommunikation">
+        <Field label="Wie läuft eine typische Planänderung ab?" value={note.painKernpain} onChange={v => onPatch("painKernpain", v)} placeholder="Beschreiben Sie den Weg einer Info vom Eingang bei Ihnen bis zur Umsetzung auf der Baustelle. Wer leitet was an wen weiter?" rows={3} />
         <Grid cols={2} mt={14}>
-          <Field label="Woran zeigt sich der Kernpain konkret?" value={note.painWoranZeigtSich} onChange={v => onPatch("painWoranZeigtSich", v)} placeholder="z. B. Nachhaken, Informationsverlust, doppelte Arbeit, fehlende Transparenz" />
-          <Field label="Weitere genannte Probleme / Signale" value={note.painWeitereSignale} onChange={v => onPatch("painWeitereSignale", v)} placeholder="z. B. Zeiterfassung, Profitabilitätsüberblick, Urlaubsplanung, Doku" />
-        </Grid>
-        <div style={{ marginTop: 14 }}>
-          <Field label="Erste Einordnung" value={note.painEinordnung} onChange={v => onPatch("painEinordnung", v)} placeholder="Was wirkt nach Kernproblem, was eher nach Symptom oder späterem Roadmap-Thema?" />
-        </div>
-      </Section>
-
-      {/* 3. Letzter konkreter Fall */}
-      <Section title="3. Letzter konkreter Fall" hint="Letztes Beispiel sezieren, nicht abstrakt bleiben">
-        <Grid cols={2}>
-          <Field label="Auslöser" value={note.konkreterFallAusloeser} onChange={v => onPatch("konkreterFallAusloeser", v)} placeholder="Was war der Trigger?" />
-          <Field label="Beteiligte" value={note.konkreterFallBeteiligte} onChange={v => onPatch("konkreterFallBeteiligte", v)} placeholder="Wer war beteiligt? Intern und extern?" />
-          <Field label="Ablauf heute" value={note.konkreterFallAblauf} onChange={v => onPatch("konkreterFallAblauf", v)} placeholder="Wie lief es Schritt für Schritt?" rows={3} />
-          <Field label="Reibungspunkt" value={note.konkreterFallReibung} onChange={v => onPatch("konkreterFallReibung", v)} placeholder="Wo genau ist die Reibung entstanden?" rows={3} />
-          <Field label="Was musste doppelt gemacht werden?" value={note.konkreterFallDoppelt} onChange={v => onPatch("konkreterFallDoppelt", v)} placeholder="z. B. Rückfragen, Weiterleitung, erneute Abstimmung, Nachpflege" />
-          <Field label="Folge" value={note.konkreterFallFolge} onChange={v => onPatch("konkreterFallFolge", v)} placeholder="Was war am Ende die Folge? Verzögerung, Wartezeit, Suchaufwand, Frust?" />
-        </Grid>
-        <div style={{ marginTop: 14 }}>
-          <Field label="Idealer Soll-Ablauf" value={note.konkreterFallSollAblauf} onChange={v => onPatch("konkreterFallSollAblauf", v)} placeholder="Wie hätte dieser Fall idealerweise laufen sollen?" />
-        </div>
-      </Section>
-
-      {/* 4. Impact */}
-      <Section title="4. Impact" hint="Häufigkeit, Aufwand, Dringlichkeit, Business-Folge">
-        <Grid cols={3}>
-          <Field label="Häufigkeit" value={note.auswirkungHaeufigkeit} onChange={v => onPatch("auswirkungHaeufigkeit", v)} placeholder="täglich, wöchentlich, pro Projekt?" rows={1} />
-          <Field label="Zeitaufwand" value={note.auswirkungZeitaufwand} onChange={v => onPatch("auswirkungZeitaufwand", v)} placeholder="30 Min/Woche oder 5h/Woche?" rows={1} />
-          <Field label="Betroffene Rollen" value={note.auswirkungBetroffene} onChange={v => onPatch("auswirkungBetroffene", v)} placeholder="Wer ist betroffen? Wie viele?" rows={1} />
-        </Grid>
-        <Grid cols={2} mt={14}>
-          <Field label="Geschäftliche / operative Folge" value={note.auswirkungFolge} onChange={v => onPatch("auswirkungFolge", v)} placeholder="Effizienz, Qualität, Fristen, Risiko, Marge, Kapazitätsverlust" />
-          <Field label="Warum ist das gerade jetzt relevant?" value={note.auswirkungWarumJetzt} onChange={v => onPatch("auswirkungWarumJetzt", v)} placeholder="Warum sprechen wir heute und nicht vor 6 Monaten?" />
-        </Grid>
-        <Grid cols={2} mt={14}>
-          <NumberField label="Dringlichkeit (1-10)" value={note.auswirkungDringlichkeit} onChange={v => onPatch("auswirkungDringlichkeit", v)} min={1} max={10} />
-          <NumberField label="Schmerzstärke (1-10)" value={note.auswirkungSchmerzstaerke} onChange={v => onPatch("auswirkungSchmerzstaerke", v)} min={1} max={10} />
+          <Field label="Was sind die größten Störfaktoren / Unterbrechungen im Alltag?" value={note.painWoranZeigtSich} onChange={v => onPatch("painWoranZeigtSich", v)} placeholder="Wie oft werden Sie oder Projektleiter aus der Konzentration gerissen, um kurze Infos weiterzugeben?" />
+          <Field label="Was war das letzte Mal, dass eine Aufgabe liegen blieb?" value={note.painWeitereSignale} onChange={v => onPatch("painWeitereSignale", v)} placeholder="...weil die zuständige Person nicht wusste, dass der Ball bei ihr liegt?" />
         </Grid>
       </Section>
 
+      {/* 3. Impact */}
+      <Section title="3. Impact" hint="Konsequenzen & Kosten des Informations-Overheads">
+        <Grid cols={1}>
+        <Field label="Wie finden Sie nach dem Urlaub heraus, was wirklich passiert ist?" value={note.konkreterFallAusloeser} onChange={v => onPatch("konkreterFallAusloeser", v)} placeholder="Wie verschaffen Sie sich schnell einen Überblick über alle wichtigen Projekte?" />
+        </Grid>
+        <Grid cols={2} mt={14}>
+          <Field label="Wie lange brauchen Sie, um eine Entscheidung von vor 3 Monaten zu finden?" value={note.konkreterFallBeteiligte} onChange={v => onPatch("konkreterFallBeteiligte", v)} placeholder="Wo und wie suchen Sie, wenn ein Bauherr anruft?" />
+          <Field label="Wie wird ein neues Teammitglied auf ein laufendes Projekt gebrieft?" value={note.konkreterFallAblauf} onChange={v => onPatch("konkreterFallAblauf", v)} placeholder="Wie stellen Sie sicher, dass alle relevanten Infos & die Historie ankommen?" />
+        </Grid>
+      </Section>
+
+      {/* 4. Hypothesen-Validierung */}
+      <Section title="4. Hypothesen-Validierung" hint="Den Bedarf für einen 'Agenten' testen">
+          <Field label="Die 'Zauberstab-Frage'" value={note.auswirkungHaeufigkeit} onChange={v => onPatch("auswirkungHaeufigkeit", v)} placeholder="Wenn Sie einen perfekten Assistenten in der Software hätten, der zuhören und Aufgaben erledigen kann: Welche 3 Sätze würden Sie den ganzen Tag zu ihm sagen?" rows={3} />
+          <div style={{marginTop: 14}}>
+            <Field label="Welche wiederkehrenden Aufgaben fressen die meiste Zeit?" value={note.auswirkungZeitaufwand} onChange={v => onPatch("auswirkungZeitaufwand", v)} placeholder="z.B. Protokolle zusammenfassen, Status-Updates formulieren, Bautagebuch schreiben..." rows={2} />
+          </div>
+      </Section>
+      
       {/* 5. Heutige Lösung / Workarounds */}
       <Section title="5. Heutige Lösung / Workarounds" hint="Verstehen, warum das bisher nicht sauber gelöst ist">
         <Grid cols={2}>
@@ -336,28 +320,23 @@ function ExpandedNote({ note, color, onPatch, onScorePatch }: {
           <Field label="Warum gibt es bis heute keinen funktionierenden Standard?" value={note.workaroundsKeinStandard} onChange={v => onPatch("workaroundsKeinStandard", v)} placeholder="Was verhindert nachhaltige Einführung?" />
         </div>
       </Section>
+      
+      {/* 6. Critical Event & Decision */}
+       <Section title="6. Critical Event & Decision" hint="Warum jetzt? Wer entscheidet? Was passiert wenn nicht?">
+         <Grid cols={2}>
+           <Field label="Warum ist das gerade jetzt relevant?" value={note.auswirkungWarumJetzt} onChange={v => onPatch("auswirkungWarumJetzt", v)} placeholder="Was hat sich verändert, dass das Thema auf dem Tisch liegt?" />
+           <Field label="Was passiert, wenn Sie das in den nächsten 6 Monaten nicht lösen?" value={note.auswirkungFolge} onChange={v => onPatch("auswirkungFolge", v)} placeholder="Effizienz, Qualität, Fristen, Risiko, Marge, Kapazitätsverlust" />
+         </Grid>
+       </Section>
 
-      {/* 6. Priorisierung */}
-      <Section title="6. Priorisierung" hint="Ein Startpunkt, keine Wunschliste">
+      {/* 7. Priorisierung */}
+      <Section title="7. Priorisierung" hint="Ein Startpunkt, keine Wunschliste">
         <Grid cols={2}>
           <Field label="Größtes Thema" value={note.prioritaetHoechste} onChange={v => onPatch("prioritaetHoechste", v)} placeholder="Was ist wirklich die höchste Priorität?" />
           <Field label="Was hätte sofort spürbaren Wert?" value={note.prioritaetWarumJetzt} onChange={v => onPatch("prioritaetWarumJetzt", v)} placeholder="Woran würde das Büro unmittelbar merken, dass etwas besser läuft?" />
           <Field label="Was wäre nice-to-have, aber nicht zuerst wichtig?" value={note.prioritaetNiceToHave} onChange={v => onPatch("prioritaetNiceToHave", v)} placeholder="Was sollte bewusst geparkt werden?" />
           <Field label="Welcher Pain wäre in 14 Tagen real testbar?" value={note.prioritaetTestbar14Tage} onChange={v => onPatch("prioritaetTestbar14Tage", v)} placeholder="Welches Thema eignet sich für einen kleinen echten Test?" />
         </Grid>
-      </Section>
-
-      {/* 7. Testbare Lösungshypothese */}
-      <Section title="7. Testbare Lösungshypothese" hint="Nicht die ganze Plattform definieren, nur den ersten glaubwürdigen Test">
-        <Grid cols={2}>
-          <Field label="Welches Problem soll der erste Test konkret adressieren?" value={note.hypotheseProblem} onChange={v => onPatch("hypotheseProblem", v)} placeholder="Ein klarer Use Case, kein Sammelbecken" />
-          <Field label="Was müsste der Test minimal können?" value={note.hypotheseMinimal} onChange={v => onPatch("hypotheseMinimal", v)} placeholder="Minimaler Nutzwert, der im Alltag spürbar wäre" />
-          <Field label="Was darf auf keinen Fall schiefgehen?" value={note.hypotheseNoGo} onChange={v => onPatch("hypotheseNoGo", v)} placeholder="z. B. zu komplex, zu viel Pflege, unklare Zuständigkeit" />
-          <Field label="Wer müsste den Test real nutzen?" value={note.hypotheseWerNutzt} onChange={v => onPatch("hypotheseWerNutzt", v)} placeholder="Inhaber, Bauleiter, Zeichnerin, Team?" />
-        </Grid>
-        <div style={{ marginTop: 14 }}>
-          <Field label="In welchem echten Workflow würden wir testen?" value={note.hypotheseWorkflow} onChange={v => onPatch("hypotheseWorkflow", v)} placeholder="z. B. Planänderung auf Baustelle → Info-Erfassung → Aufgabenübergabe → Sichtbarkeit" />
-        </div>
       </Section>
 
       {/* 8. Test Readiness / Nächster Schritt */}
