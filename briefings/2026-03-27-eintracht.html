@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eintracht Briefing - 27.03.2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: #222;
+            margin-bottom: 10px;
+        }
+        
+        .date {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+        }
+        
+        .article-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .article-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+        
+        .article-title a {
+            color: #111827;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+        
+        .article-title a:hover {
+            border-bottom-color: #3b82f6;
+            color: #3b82f6;
+        }
+        
+        .article-summary {
+            color: #4b5563;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px 0;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚽ Eintracht Briefing</h1>
+            <div class="date">27. März 2026</div>
+        </div>
+        
+        <div class="articles-grid">
+            <div class="article-card">
+                <h2 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-frankfurt-bestaetigt-vertragsverlaengerung-von-sturm-juwel-94237520.html" target="_blank">
+                        Eintracht Frankfurt bestätigt Vertragsverlängerung von Sturm-Talent
+                    </a>
+                </h2>
+                <p class="article-summary">
+                    Junior Nhampule hat seinen Vertrag bei der SGE verlängert. Das 20-jährige Sturmtalent gilt als dynamischer Angreifer mit Tempo und guter Abschlussqualität. Er wird in der Saison 2026/27 in der U19 zum Einsatz kommen und ist als ehemaliger deutscher U16-Nationalspieler gelistet.
+                </p>
+            </div>
+            
+            <div class="article-card">
+                <h2 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-sportdirektor-hardung-verraet-was-man-sich-vom-fc-bayern-abschauen-kann-zr-94237049.html" target="_blank">
+                        Sportdirektor Hardung verrät, was man sich vom FC Bayern abschauen kann
+                    </a>
+                </h2>
+                <p class="article-summary">
+                    Timmo Hardung erklärt, was die Eintracht vom Rekordmeister lernen kann: Bayern hat es geschafft, sich trotz internationalem Wettbewerb dauerhaft konkurrenzfähig aufzustellen. Der Transfermarkt sei heute transparenter und die Konkurrenz größer geworden, weshalb die SGE ihren Weg weiterentwickeln und mutig bleiben müsse.
+                </p>
+            </div>
+            
+            <div class="article-card">
+                <h2 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-youngster-will-verkorkste-saison-noch-retten-dafuer-muss-aber-der-trainer-mitspielen-94236923.html" target="_blank">
+                        Baum schlägt keine Wurzeln - Youngster will verkorkste Saison noch retten
+                    </a>
+                </h2>
+                <p class="article-summary">
+                    Elias Baum hatte eine schwierige Saison mit nur 62 Minuten Einsatzzeit in vier Spielen. Der 20-jährige Rechtsverteidiger kämpft mit Verletzungen und mangelnder Spielpraxis. Trainer Albert Riera setzte ihn zuletzt gegen Mainz ein, doch ohne die verletzten Kristensen und Collins könnte er noch eine Chance bekommen.
+                </p>
+            </div>
+            
+            <div class="article-card">
+                <h2 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/danny-da-costa-chattet-nach-sieg-gegen-sge-mit-eintracht-legende-uwe-bein-zr-94236768.html" target="_blank">
+                        Da Costa chattet nach Sieg gegen SGE mit Eintracht-Legende Bein
+                    </a>
+                </h2>
+                <p class="article-summary">
+                    Danny da Costa ist mit der Tochter von Eintracht-Legende Uwe Bein verheiratet. Nach Mainz' 2:1-Sieg gegen die SGE gratulierte Bein seinem Schwiegersohn mit einem Augenzwinkern: "Glückwunsch zum Sieg, aber so richtig toll gespielt habt ihr ja auch nicht. Wir waren nur noch schlechter."
+                </p>
+            </div>
+            
+            <div class="article-card">
+                <h2 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/verlaengert-abloesefreier-wechsel-im-sommer-vertrag-von-mahmoud-dahoud-wird-nicht-zr-94236604.html" target="_blank">
+                        Vertrag von Dahoud bei Eintracht Frankfurt wird nicht verlängert
+                    </a>
+                </h2>
+                <p class="article-summary">
+                    Mahmoud Dahoud wird die Eintracht im Sommer verlassen. Der 30-jährige Mittelfeldspieler kam 2024 ablösefrei von Brighton, konnte sich aber nicht als feste Größe etablieren. Unter Trainer Albert Riera stand er zuletzt nicht mal im Kader - sein Marktwert fiel von sechs auf zwei Millionen Euro.
+                </p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Automatisch generiert • Mission Control Briefing System
+        </div>
+    </div>
+</body>
+</html>
