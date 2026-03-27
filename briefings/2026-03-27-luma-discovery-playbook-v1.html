@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUMA Discovery Call Playbook v1</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f7f8fa; color: #1a1a2e; line-height: 1.6; }
+  .hero { background: linear-gradient(135deg, #1a1a2e 0%, #f97316 100%); color: white; padding: 40px 32px 32px; }
+  .hero-meta { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .hero h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .hero .sub { font-size: 14px; color: rgba(255,255,255,0.75); }
+  .container { max-width: 780px; margin: 0 auto; padding: 32px 24px; }
+  .section { background: white; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+  .section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #f97316; margin-bottom: 16px; border-bottom: 2px solid #f974162a; padding-bottom: 8px; }
+  h2 { font-size: 16px; font-weight: 700; color: #1a1a2e; margin-bottom: 10px; }
+  p { font-size: 14px; color: #374151; margin-bottom: 10px; }
+  ul { padding-left: 0; list-style: none; margin-bottom: 10px; }
+  ul li { font-size: 14px; color: #374151; padding: 6px 0 6px 20px; position: relative; border-bottom: 1px solid #f3f4f6; }
+  ul li:last-child { border-bottom: none; }
+  ul li::before { content: "→"; position: absolute; left: 0; color: #f97316; font-weight: 700; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .block { background: #f9fafb; border-radius: 8px; padding: 16px; border-left: 3px solid #f97316; }
+  .block-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #6b7280; margin-bottom: 8px; }
+  .block p { font-size: 13px; }
+  .quote { background: #fff8f0; border-left: 4px solid #f97316; border-radius: 8px; padding: 16px 20px; margin: 16px 0; font-size: 15px; font-style: italic; color: #374151; }
+  .quote strong { color: #f97316; font-style: normal; }
+  .checklist { list-style: none; padding: 0; }
+  .checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0; border-bottom: 1px solid #f3f4f6; font-size: 14px; color: #374151; }
+  .checklist li::before { content: "☐"; font-size: 18px; color: #d1d5db; flex-shrink: 0; line-height: 1.2; }
+  .checklist li:last-child { border-bottom: none; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge-orange { background: #fff0e0; color: #f97316; border: 1px solid #fdd5a8; }
+  .badge-green { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+  .badge-red { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+  .spiced-block { border: 1px solid #e5e7eb; border-radius: 10px; margin-bottom: 14px; overflow: hidden; }
+  .spiced-header { background: #f9fafb; padding: 10px 16px; display: flex; align-items: center; gap: 10px; }
+  .spiced-letter { width: 28px; height: 28px; border-radius: 50%; background: #f97316; color: white; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .spiced-letter.hypothesis { background: #7c3aed; }
+  .spiced-label { font-size: 13px; font-weight: 700; color: #1a1a2e; }
+  .spiced-sublabel { font-size: 11px; color: #6b7280; margin-left: auto; }
+  .spiced-body { padding: 12px 16px; }
+  .spiced-body ul li { font-size: 13px; padding: 5px 0 5px 18px; }
+  .hypothesis-block { border: 1px solid #ede9fe; border-radius: 10px; margin-bottom: 14px; overflow: hidden; }
+  .hypothesis-block .spiced-header { background: #f5f3ff; }
+  .hypothesis-block .spiced-body { background: #fdfcff; }
+  .hypothesis-block .quote { background: #f5f3ff; border-left-color: #7c3aed; }
+  .hypothesis-block .quote strong { color: #7c3aed; }
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .timeline-item { display: flex; gap: 16px; }
+  .timeline-line { display: flex; flex-direction: column; align-items: center; }
+  .timeline-dot { width: 10px; height: 10px; border-radius: 50%; background: #f97316; flex-shrink: 0; margin-top: 4px; }
+  .timeline-bar { flex: 1; width: 2px; background: #e5e7eb; margin: 2px 0; }
+  .timeline-content { padding-bottom: 16px; }
+  .timeline-time { font-size: 11px; font-weight: 700; color: #f97316; text-transform: uppercase; letter-spacing: 0.5px; }
+  .timeline-text { font-size: 13px; color: #374151; }
+  .sub-section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #7c3aed; margin: 12px 0 6px; }
+  footer { text-align: center; font-size: 12px; color: #9ca3af; padding: 24px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-meta">Discovery Call · LUMA · Gesprächsleitfaden v1</div>
+  <h1>LUMA Discovery Call Playbook v1</h1>
+  <div class="sub">Wiederverwendbare Vorlage &nbsp;·&nbsp; SPICED Framework + Hypothesen-Validierung &nbsp;·&nbsp; 60 Min</div>
+</div>
+
+<div class="container">
+
+  <!-- Kontext & Ziele -->
+  <div class="section">
+    <div class="section-title">Situation auf einen Blick</div>
+    <div class="grid2">
+      <div class="block">
+        <div class="block-title">Fokus dieses Calls</div>
+        <p>Kommunikations- und Koordinations-Schmerzpunkte validieren. Bedarf für einen agentischen Assistenten testen.</p>
+      </div>
+      <div class="block">
+        <div class="block-title">Kern-Hypothese</div>
+        <p>Projektleiter verbringen zu viel Zeit als <strong>"menschliche Router"</strong> — Information weiterleiten statt Projekte voranzubringen.</p>
+      </div>
+      <div class="block">
+        <div class="block-title">Dein Ziel</div>
+        <p>Pains quantifizieren. Problem verstehen — <strong>nicht</strong> Lösung verkaufen. 80% Gesprächspartner redet, 20% du.</p>
+      </div>
+      <div class="block">
+        <div class="block-title">Nächster Schritt nach dem Call</div>
+        <p>Konkreten Follow-Up mit quantifiziertem Impact + Terminvorschlag für Prototyp oder Proposal.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gesprächs-Ablauf -->
+  <div class="section">
+    <div class="section-title">Ablauf (60 Min)</div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-bar"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">0–5 Min · Warm-Up</div>
+          <div class="timeline-text">Ankommen, kurzer Small Talk. <em>"Schön, dass wir uns heute Zeit nehmen. Ich würde gerne verstehen, wie Sie heute arbeiten — bevor ich irgendwas von uns erzähle."</em></div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-bar"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">5–20 Min · Situation</div>
+          <div class="timeline-text">Status Quo verstehen. Prozesse, Tools, Team. Kein Werten, nur zuhören.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-bar"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">20–40 Min · Pain + Impact</div>
+          <div class="timeline-text">Schmerzpunkte finden, ihn <strong>selbst rechnen lassen</strong>. Stunden × Stundensatz × 52 Wochen. Konsequenzen des Status Quo erarbeiten.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-bar"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">40–50 Min · Hypothesen-Validierung</div>
+          <div class="timeline-text">Die "Zauberstab-Frage" stellen. Reaktion auf agentischen Assistenten testen. Konkreten Use Case identifizieren.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-bar"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">50–57 Min · Critical Event + Decision</div>
+          <div class="timeline-text">Warum jetzt? Wer entscheidet? Was passiert wenn nicht gelöst?</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-line"><div class="timeline-dot"></div></div>
+        <div class="timeline-content">
+          <div class="timeline-time">57–60 Min · Wrap-Up</div>
+          <div class="timeline-text">Zusammenfassen was du gehört hast. Konkreten nächsten Schritt vereinbaren.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPICED Fragen -->
+  <div class="section">
+    <div class="section-title">SPICED + H — Gesprächsleitfaden</div>
+
+    <div class="spiced-block">
+      <div class="spiced-header">
+        <div class="spiced-letter">S</div>
+        <div class="spiced-label">Situation</div>
+        <div class="spiced-sublabel">Status Quo ohne Wertung</div>
+      </div>
+      <div class="spiced-body">
+        <ul>
+          <li>„Erzählen Sie mal, wie läuft ein typisches Bauprojekt bei Ihnen von der Planung bis zur Übergabe ab?"</li>
+          <li>„Welche Tools und Systeme nutzen Sie dafür aktuell — für Kommunikation, Dokumentation, Aufgaben?"</li>
+          <li>„Wie groß ist Ihr Team — wer macht was, wie viele Projekte laufen parallel?"</li>
+          <li>„Wie koordinieren Sie die Kommunikation zwischen Büro, Baustelle und externen Partnern (Architekten, Statiker, Handwerker)?"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="spiced-block">
+      <div class="spiced-header">
+        <div class="spiced-letter">P</div>
+        <div class="spiced-label">Pain</div>
+        <div class="spiced-sublabel">Mensch als Router — Schmerz finden &amp; rechnen lassen</div>
+      </div>
+      <div class="spiced-body">
+        <div class="sub-section-label">Fragen zu "Mensch als Router"</div>
+        <ul>
+          <li>„Beschreiben Sie mal den Weg einer wichtigen Information – z.B. eine Planänderung vom Statiker – vom Eingang bei Ihnen bis zur Umsetzung auf der Baustelle. Wer leitet was an wen weiter?"</li>
+          <li>„Wie oft am Tag werden Sie oder Ihre Projektleiter aus tiefer Konzentration gerissen, nur um eine kurze Info an jemanden im Team weiterzugeben oder eine Rückfrage zu beantworten?"</li>
+          <li>„Was war das letzte Mal, dass eine Aufgabe liegen geblieben ist, weil die zuständige Person nicht wusste, dass der Ball bei ihr liegt?"</li>
+        </ul>
+        <p style="margin-top:10px; font-size:12px; color:#6b7280;"><strong>Anschlussfrage (Quantifizierung):</strong> „Wenn Sie das hochrechnen — wie viele Stunden pro Woche schätzen Sie, geht für solche Weiterleitungen und Rückfragen drauf? Und was kostet Sie eine Stunde Projektleiter-Zeit grob?"</p>
+      </div>
+    </div>
+
+    <div class="spiced-block">
+      <div class="spiced-header">
+        <div class="spiced-letter">I</div>
+        <div class="spiced-label">Impact</div>
+        <div class="spiced-sublabel">Projekt-Gedächtnis — Konsequenzen des Status Quo</div>
+      </div>
+      <div class="spiced-body">
+        <div class="sub-section-label">Fragen zum "Projekt-Gedächtnis"</div>
+        <ul>
+          <li>„Wenn Sie eine Woche im Urlaub sind, wie finden Sie am ersten Tag zurück im Büro schnell heraus, was in Ihren wichtigsten Projekten <em>wirklich</em> passiert ist?"</li>
+          <li>„Stellen Sie sich vor, ein Bauherr ruft an und fragt nach dem Stand einer Entscheidung von vor drei Monaten. Wie lange brauchen Sie, um die Antwort zu finden?"</li>
+          <li>„Wie stellen Sie sicher, dass ein neues Teammitglied alle relevanten Infos und die bisherige Historie eines laufenden Projekts bekommt?"</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Neue Sektion: Hypothesen-Validierung -->
+    <div class="hypothesis-block spiced-block">
+      <div class="spiced-header">
+        <div class="spiced-letter hypothesis">H</div>
+        <div class="spiced-label">Hypothesen-Validierung</div>
+        <div class="spiced-sublabel">Der "magische Assistent"</div>
+      </div>
+      <div class="spiced-body">
+        <div class="quote">
+          <strong>Die "Zauberstab-Frage":</strong> „Stellen Sie sich vor, Sie hätten einen perfekten persönlichen Assistenten direkt in Ihrer Projekt-Software. Er kann zuhören und alle Aufgaben darin erledigen, aber nichts außerhalb. Welche drei Sätze würden Sie den ganzen Tag zu ihm sagen, um sich die Arbeit zu erleichtern?"
+        </div>
+        <div class="sub-section-label">Zusatzfrage</div>
+        <ul>
+          <li>„Welche wiederkehrenden Aufgaben (z.B. Protokolle zusammenfassen, Status-Updates formulieren) fressen die meiste Zeit, obwohl sie eigentlich nur Fleißarbeit sind?"</li>
+        </ul>
+        <p style="font-size:12px; color:#6b7280; margin-top:8px;"><strong>Worauf achten:</strong> Nennt er spontan konkrete Befehle? Spricht er über Kommunikation/Koordination oder über Buchhaltung/ERP? Je konkreter und kommunikativer die Antwort, desto besser passt LUMA.</p>
+      </div>
+    </div>
+
+    <div class="spiced-block">
+      <div class="spiced-header">
+        <div class="spiced-letter">C</div>
+        <div class="spiced-label">Critical Event</div>
+        <div class="spiced-sublabel">Warum jetzt?</div>
+      </div>
+      <div class="spiced-body">
+        <ul>
+          <li>„Was hat sich verändert, dass das Thema gerade jetzt auf dem Tisch liegt?"</li>
+          <li>„Gibt es einen konkreten Anlass — neue Projekte, Wachstum, Personalengpässe?"</li>
+          <li>„Was passiert, wenn Sie das in den nächsten 6 Monaten nicht lösen?"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="spiced-block">
+      <div class="spiced-header">
+        <div class="spiced-letter">E</div>
+        <div class="spiced-label">Existing Gaps</div>
+        <div class="spiced-sublabel">Was aktuelle Tools nicht lösen</div>
+      </div>
+      <div class="spiced-body">
+        <div class="quote">
+          <strong>Die Lücken-Frage:</strong> „Nehmen wir mal an, alle Ihre aktuellen Tools wären morgen perfekt implementiert. Welches Problem wäre dann <em>immer noch</em> nicht gelöst? Wo bräuchte es immer noch einen Menschen, der zwischen Systemen und Personen vermittelt?"
+        </div>
+      </div>
+    </div>
+
+    <div class="spiced-block">
+      <div class="spiced-header">
+        <div class="spiced-letter">D</div>
+        <div class="spiced-label">Decision Process</div>
+        <div class="spiced-sublabel">Wer entscheidet wie?</div>
+      </div>
+      <div class="spiced-body">
+        <ul>
+          <li>„Wenn wir die perfekte Lösung hätten — wie würde der Entscheidungsprozess bei Ihnen aussehen?"</li>
+          <li>„Wer muss noch mit ins Boot?"</li>
+          <li>„Was wäre für Sie ein klares Signal, dass wir die richtige Richtung einschlagen?"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pre-Call Checkliste -->
+  <div class="section">
+    <div class="section-title">Pre-Call Checkliste</div>
+    <ul class="checklist">
+      <li>Gesprächspartner und Unternehmen recherchiert (Größe, Projekte, Team)</li>
+      <li>Kern-Hypothese im Kopf: Projektleiter als "menschliche Router"</li>
+      <li>SPICED+H-Fragen parat (dieses Sheet offen)</li>
+      <li>Du redest 20%, Gesprächspartner redet 80%</li>
+      <li>Ihn den Business Case selbst rechnen lassen (Stunden × Stundensatz × 52 Wochen)</li>
+      <li>Zauberstab-Frage nicht vergessen — ist der Kern der Hypothesen-Validierung</li>
+      <li>Nach Critical Event fragen — warum jetzt?</li>
+      <li>Decision Process klären</li>
+      <li>Konkreten nächsten Termin am Ende vorschlagen</li>
+    </ul>
+  </div>
+
+  <!-- Post-Call -->
+  <div class="section">
+    <div class="section-title">Post-Call (innerhalb 2 Stunden!)</div>
+    <ul class="checklist">
+      <li>SPICED+H Scorecard in Meeting-Notizen ausfüllen</li>
+      <li>Hypothese bestätigt oder falsifiziert? → In PROJECTS.md dokumentieren</li>
+      <li>Follow-Up Email: quantifizierter Impact <em>(„Das Problem kostet Sie ca. X€/Jahr...")</em></li>
+      <li>Konkreten nächsten Termin vorschlagen — Prototyp oder Proposal</li>
+      <li>Lead im Mission Control aktualisieren (Stage + Opportunity Value)</li>
+      <li>Hatti briefen für Nachbereitung</li>
+    </ul>
+  </div>
+
+</div>
+<footer>Erstellt von Hatti 🏔️ · LUMA Discovery Call Playbook v1 · 27.03.2026</footer>
+</body>
+</html>
