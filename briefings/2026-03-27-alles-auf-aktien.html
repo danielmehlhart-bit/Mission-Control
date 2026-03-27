@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alles auf Aktien - 27. März 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fafafa;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            border-radius: 8px;
+        }
+        
+        .date {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .youtube-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 16px;
+            background: #ff0000;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .youtube-link:hover {
+            background: #cc0000;
+        }
+        
+        .section {
+            margin: 25px 0;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+        
+        h3 {
+            color: #34495e;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .market-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .market-item {
+            padding: 15px;
+            border-radius: 6px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+        }
+        
+        .positive { 
+            background: #d4edda; 
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+        
+        .negative { 
+            background: #f8d7da; 
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+        
+        .neutral {
+            background: #fff3cd;
+            color: #856404;
+            border-color: #ffeaa7;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+        
+        .stock-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .stock-item {
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .tldr {
+            background: #e8f4fd;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .tldr h3 {
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 600px) {
+            .container { padding: 15px; margin-top: 10px; }
+            h1 { font-size: 1.8em; }
+            .market-overview { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="date">Freitag, 27. März 2026</div>
+            <h1>🎤 Alles auf Aktien</h1>
+            <div class="subtitle">Tobacco moment for Big Tech and 11 buyback aristocrats</div>
+            <a href="https://www.youtube.com/watch?v=aGS7GHwhTmU" class="youtube-link" target="_blank">📺 Episode ansehen</a>
+        </div>
+
+        <div class="section">
+            <h2>🔥 Hauptthemen des Tages</h2>
+            <div class="highlight">
+                <strong>🚨 BREAKING:</strong> "Tobacco Moment" für Big Tech — Meta und Google von Jury wegen "süchtig machender" Plattformen verurteilt. Über 3.000 weitere Klagen anhängig.
+            </div>
+            <ul>
+                <li><strong>Iran-Krise:</strong> Trump verschiebt Militär-Deadline um 10 Tage (bis 6. April)</li>
+                <li><strong>Markt-Crash:</strong> S&P 500 auf tiefsten Stand seit September</li>
+                <li><strong>Gold-Drama:</strong> Türkei verkauft 60 Tonnen in 2 Wochen</li>
+                <li><strong>DAX-Rückkäufe:</strong> 26 Milliarden Euro für 2026 geplant</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>📊 Märkte im Überblick</h2>
+            <div class="market-overview">
+                <div class="market-item negative">
+                    <h3>S&P 500</h3>
+                    <div>-2,1% • Tiefster Stand seit September</div>
+                </div>
+                <div class="market-item negative">
+                    <h3>NASDAQ 100</h3>
+                    <div>-2,4% • Fast 10% vom Oktober-Hoch entfernt</div>
+                </div>
+                <div class="market-item negative">
+                    <h3>DAX</h3>
+                    <div>-1,5% • Bereits -8% seit Jahresbeginn</div>
+                </div>
+                <div class="market-item positive">
+                    <h3>VIX (Angst-Index)</h3>
+                    <div>+8,3% auf 27,44</div>
+                </div>
+                <div class="market-item neutral">
+                    <h3>US 10J-Rendite</h3>
+                    <div>4,42% (+8 Basispunkte)</div>
+                </div>
+                <div class="market-item neutral">
+                    <h3>DE 10J-Rendite</h3>
+                    <div>3,07% (+11 Basispunkte)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚨 "Tobacco Moment" für Big Tech</h2>
+            
+            <div class="highlight">
+                <h3>🏛️ Gerichtsentscheid in Los Angeles</h3>
+                <p><strong>Klage gegen Meta & Google erfolgreich:</strong> Jury erklärt Unternehmen für "fahrlässig", weil Plattform-Design psychisch abhängig macht.</p>
+            </div>
+
+            <h3>💰 Finanzielle Folgen</h3>
+            <ul>
+                <li><strong>Sofort:</strong> Meta zahlt 4,2 Mio. $, Google 1,8 Mio. $ (Kleingeld)</li>
+                <li><strong>Risiko:</strong> Über 3.000 ähnliche Klagen anhängig</li>
+                <li><strong>Worst Case:</strong> Bloomberg-Prognose 50-200 Mrd. $ bundesweit</li>
+                <li><strong>Meta-Einschätzung:</strong> "Hohe zweistellige Milliardenbeiträge" möglich</li>
+            </ul>
+
+            <h3>🎯 Das steht auf dem Prüfstand</h3>
+            <ul>
+                <li>Endloses Scrollen</li>
+                <li>Automatisches Abspielen</li>
+                <li>Algorithmus-basierte Empfehlungen</li>
+                <li>Dopamin-manipulierende Benachrichtigungen</li>
+            </ul>
+
+            <div class="stock-list">
+                <div class="stock-item negative">Meta: -8,0%</div>
+                <div class="stock-item negative">Alphabet: -3,4%</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💻 Tech-Sektor unter Druck</h2>
+            
+            <h3>📉 Verlierer</h3>
+            <div class="stock-list">
+                <div class="stock-item negative">AMD: -7,5%</div>
+                <div class="stock-item negative">Micron: -7,0%</div>
+                <div class="stock-item negative">Intel: -6,0%</div>
+                <div class="stock-item negative">Nvidia: -4,0%</div>
+                <div class="stock-item negative">Lam Research: -9,0%</div>
+                <div class="stock-item negative">ASML: -3,8%</div>
+            </div>
+
+            <h3>📈 Gewinner</h3>
+            <div class="stock-list">
+                <div class="stock-item positive">Autodesk: +2,0%</div>
+                <div class="stock-item positive">Salesforce: +2,0%</div>
+                <div class="stock-item positive">CrowdStrike: +2,0%</div>
+                <div class="stock-item positive">Fortinet: +3,0%</div>
+                <div class="stock-item positive">Netflix: +1,6%</div>
+            </div>
+
+            <div class="highlight">
+                <strong>🤖 OpenAI Strategiewechsel:</strong> Fokus von "Experimentieren" auf "Profitabilität" und Enterprise-Kunden. KI-Infrastrukturboom könnte gedrosselt werden.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🏆 DAX-Rückkäufe: 26 Mrd. € für 2026</h2>
+            
+            <h3>Top-Programme</h3>
+            <ul>
+                <li><strong>SAP:</strong> bis zu 10 Mrd. €</li>
+                <li><strong>Deutsche Post:</strong> ~6 Mrd. €</li>
+                <li><strong>Siemens:</strong> ~6 Mrd. €</li>
+                <li><strong>Siemens Energy:</strong> ~6 Mrd. €</li>
+            </ul>
+
+            <div class="highlight">
+                <strong>🇺🇸 US-Rekord:</strong> S&P 500 Unternehmen kauften 2025 eigene Aktien für 1,02 Billionen Dollar zurück (+11% vs. Vorjahr). Apple führt mit 96,7 Mrd. $ und hat seit 2013 44% der Aktien eingezogen.
+            </div>
+
+            <h3>Goldman Sachs Studie: "Buyback-Aristokraten"</h3>
+            <p>Unternehmen mit 4%+ jährlicher Aktienreduktion schlagen Markt um 3 Prozentpunkte p.a.</p>
+        </div>
+
+        <div class="section">
+            <h2>🏅 Einzelwerte-Highlights</h2>
+            <div class="market-overview">
+                <div class="market-item positive">
+                    <h3>Olaplex +51,1%</h3>
+                    <div>Henkel übernimmt Haarpflege-Marke für 1,4 Mrd. $</div>
+                </div>
+                <div class="market-item positive">
+                    <h3>CTS Eventim +9%</h3>
+                    <div>Erstmals 3+ Mrd. € Umsatz, EBITDA +7,7%</div>
+                </div>
+                <div class="market-item negative">
+                    <h3>Deutz -7,2%</h3>
+                    <div>Schwache Profitabilitätsziele für 2026</div>
+                </div>
+                <div class="market-item negative">
+                    <h3>Siemens Energy -5,2%</h3>
+                    <div>Gewinnmitnahmen nach starker Rally</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🗓️ Termine heute</h2>
+            <ul>
+                <li><strong>Carnival Corp:</strong> Q4-Zahlen (Iran-Auswirkungen auf Kreuzfahrten?)</li>
+                <li><strong>USA:</strong> Michigan Consumer Sentiment Index</li>
+                <li><strong>Deutschland:</strong> KfW Bilanz & Ausblick 2026</li>
+                <li><strong>MDAX:</strong> Zahlen von Jung Heinrich & Wüstenrot</li>
+            </ul>
+        </div>
+
+        <div class="tldr">
+            <h3>💡 TL;DR - Das Wichtigste in 30 Sekunden</h3>
+            <p><strong>Geopolitik trifft Tech-Regulierung:</strong> Während Trump Iran-Deadline verschiebt und Märkte kurzzeitig stabilisiert, droht Big Tech ein strukturelles "Tobacco Moment". Gerichtsentscheid gegen Meta/Google wegen "süchtig machender" Designs könnte Milliardenkosten und Produktänderungen zur Folge haben. DAX-Konzerne setzen derweil auf Aktienrückkäufe (26 Mrd. € geplant) als Kursstütze. <strong>Ausblick:</strong> Kurzfristig Iran-abhängig, langfristig Tech-Regulierung als Gamechanger.</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; padding: 15px; background: #f8f9fa; border-radius: 6px; font-size: 0.9em; color: #666;">
+            📊 Erstellt von Hatti • <a href="https://mc.mehlhart.de" style="color: #3498db;">Mission Control</a> • <a href="https://www.youtube.com/watch?v=aGS7GHwhTmU" style="color: #ff0000;">YouTube</a>
+        </div>
+    </div>
+</body>
+</html>
