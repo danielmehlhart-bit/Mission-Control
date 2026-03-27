@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marktbericht 27.03.2026</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #222;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            font-weight: 600;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        h2 {
+            font-size: 20px;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        .indices {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .index {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 16px;
+            border-left: 4px solid;
+        }
+        .index.positive {
+            border-left-color: #28a745;
+        }
+        .index.negative {
+            border-left-color: #dc3545;
+        }
+        .index-name {
+            font-weight: 500;
+            font-size: 18px;
+        }
+        .index-value {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .index-change {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .positive .index-change {
+            color: #28a745;
+        }
+        .negative .index-change {
+            color: #dc3545;
+        }
+        .summary p, .outlook p {
+            margin-bottom: 10px;
+        }
+        .source {
+            font-size: 14px;
+            color: #888;
+            margin-top: 20px;
+        }
+        .source a {
+            color: #007aff;
+            text-decoration: none;
+        }
+        .source a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>📈 Marktbericht</h1>
+            <div class="source">27. März 2026</div>
+
+            <h2>Indizes im Überblick</h2>
+            <div class="indices">
+                <div class="index positive">
+                    <div class="index-name">DAX</div>
+                    <div class="index-value">22.957</div>
+                    <div class="index-change">+1,4 %</div>
+                </div>
+                <div class="index positive">
+                    <div class="index-name">Dow Jones</div>
+                    <div class="index-value">46.448</div>
+                    <div class="index-change">+0,7 %</div>
+                </div>
+                <div class="index positive">
+                    <div class="index-name">Nasdaq 100</div>
+                    <div class="index-value">24.268</div>
+                    <div class="index-change">+1,1 %</div>
+                </div>
+            </div>
+
+            <h2 class="summary">Zusammenfassung</h2>
+            <p>Die Börsen schlossen gestern positiv, angetrieben von der Hoffnung auf eine Deeskalation im Nahen Osten. Berichte über einen 15-Punkte-Plan der USA zur Beendigung des Krieges sorgten für Erleichterung und ließen den Ölpreis (Brent) deutlich unter 100 Dollar fallen.</p>
+
+            <h2 class="outlook">Ausblick</h2>
+            <p>Die Lage bleibt volatil. Analysten betonen, dass es für eine vollständige Entwarnung zu früh ist, da die Situation von widersprüchlichen Nachrichten und Gerüchten geprägt ist. Zudem zeigt der im März gesunkene ifo-Geschäftsklimaindex, dass der Konflikt bereits die Stimmung in der deutschen Wirtschaft belastet und Hoffnungen auf einen baldigen Aufschwung dämpft.</p>
+
+            <div class="source">
+                Quelle: <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-iran-ifo-100.html" target="_blank">Tagesschau.de</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
