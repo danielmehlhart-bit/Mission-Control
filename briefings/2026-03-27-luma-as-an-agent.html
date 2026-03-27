@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMA als Agent – Strategie-Briefing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F9FAFB;
+      color: #111827;
+      line-height: 1.7;
+    }
+
+    /* HEADER */
+    .hero {
+      background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 60%, #4C1D95 100%);
+      color: white;
+      padding: 72px 24px 64px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .hero h1 span {
+      opacity: 0.65;
+    }
+    .hero p {
+      font-size: 1.125rem;
+      opacity: 0.85;
+      max-width: 560px;
+      margin: 0 auto;
+      font-weight: 400;
+    }
+    .hero-meta {
+      margin-top: 32px;
+      font-size: 0.8rem;
+      opacity: 0.55;
+      letter-spacing: 0.04em;
+    }
+
+    /* LAYOUT */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 64px 0;
+    }
+    section + section {
+      border-top: 1px solid #E5E7EB;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #7C3AED;
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #111827;
+      margin-bottom: 16px;
+    }
+    h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+    p {
+      color: #374151;
+      margin-bottom: 12px;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    /* VISION QUOTES */
+    .quote-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .quote-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px 22px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+      border-left: 4px solid #7C3AED;
+    }
+    .quote-card .chat-bubble {
+      font-size: 0.9rem;
+      color: #374151;
+      font-style: italic;
+    }
+    .quote-card .chat-bubble::before { content: '"'; color: #7C3AED; font-weight: 700; font-style: normal; margin-right: 2px; }
+    .quote-card .chat-bubble::after  { content: '"'; color: #7C3AED; font-weight: 700; font-style: normal; margin-left: 2px; }
+    .quote-meta {
+      margin-top: 10px;
+      font-size: 0.75rem;
+      color: #9CA3AF;
+      font-weight: 500;
+    }
+
+    /* YES/BUT */
+    .verdict-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 32px;
+    }
+    @media (max-width: 600px) { .verdict-grid { grid-template-columns: 1fr; } }
+    .verdict-card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+    }
+    .verdict-card.yes { border-top: 4px solid #10B981; }
+    .verdict-card.but { border-top: 4px solid #F59E0B; }
+    .verdict-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .verdict-card.yes .verdict-title { color: #059669; }
+    .verdict-card.but .verdict-title { color: #D97706; }
+
+    /* ARCHITECTURE CARDS */
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+    }
+    @media (max-width: 700px) { .arch-grid { grid-template-columns: 1fr; } }
+    .arch-card {
+      background: white;
+      border-radius: 20px;
+      padding: 32px 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 8px 32px rgba(0,0,0,0.07);
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .arch-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 16px rgba(124,58,237,0.12), 0 12px 40px rgba(0,0,0,0.1);
+    }
+    .arch-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 20px;
+    }
+    .arch-card:nth-child(1) .arch-icon { background: #EDE9FE; }
+    .arch-card:nth-child(2) .arch-icon { background: #FEF3C7; }
+    .arch-card:nth-child(3) .arch-icon { background: #D1FAE5; }
+    .arch-card .arch-num {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #9CA3AF;
+      margin-bottom: 6px;
+    }
+    .arch-card h3 {
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+    .arch-card .arch-subtitle {
+      font-size: 0.8rem;
+      color: #7C3AED;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .arch-card p {
+      font-size: 0.875rem;
+      color: #6B7280;
+      text-align: left;
+    }
+
+    /* WORKFLOW */
+    .workflow-box {
+      background: white;
+      border-radius: 20px;
+      padding: 36px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 8px 32px rgba(0,0,0,0.07);
+      margin-top: 32px;
+    }
+    .prompt-display {
+      background: #1E1B4B;
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .prompt-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #7C3AED;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .prompt-text {
+      font-family: 'Inter', monospace;
+      color: #E0E7FF;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .prompt-label {
+      font-size: 10px;
+      color: #818CF8;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .flow-step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .flow-step-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .step-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #7C3AED;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step-line {
+      width: 2px;
+      flex: 1;
+      min-height: 24px;
+      background: linear-gradient(to bottom, #7C3AED, #E5E7EB);
+      margin: 4px 0;
+    }
+    .flow-step:last-child .step-line { display: none; }
+    .flow-step-content {
+      padding-bottom: 28px;
+      padding-top: 6px;
+    }
+    .flow-step-content h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+    .flow-step-content p {
+      font-size: 0.875rem;
+      color: #6B7280;
+      margin: 0;
+    }
+
+    /* THINK STEPS */
+    .think-chain {
+      background: #F5F3FF;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-top: 6px;
+    }
+    .think-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: #4C1D95;
+      padding: 4px 0;
+    }
+    .think-step-icon { flex-shrink: 0; color: #7C3AED; font-size: 13px; }
+    .think-step code {
+      background: #DDD6FE;
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 0.78rem;
+      color: #5B21B6;
+      font-family: 'Courier New', monospace;
+    }
+
+    /* SUCCESS MESSAGE */
+    .success-bubble {
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 0.875rem;
+      color: #065F46;
+      margin-top: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    /* MAGIC / REACT */
+    .magic-box {
+      background: white;
+      border-radius: 20px;
+      padding: 36px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 8px 32px rgba(0,0,0,0.07);
+      margin-top: 32px;
+    }
+    .react-example {
+      margin-top: 24px;
+    }
+    .react-prompt {
+      background: #1E1B4B;
+      border-radius: 12px;
+      padding: 16px 20px;
+      color: #E0E7FF;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+    .react-prompt::before { content: '💬  '; }
+    .react-steps-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #7C3AED;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .react-chain {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .react-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #F5F3FF;
+      border-radius: 10px;
+      padding: 12px 16px;
+    }
+    .react-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #7C3AED;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .react-text {
+      font-size: 0.85rem;
+      color: #4C1D95;
+    }
+    .react-text code {
+      background: #DDD6FE;
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 0.78rem;
+      color: #5B21B6;
+      font-family: 'Courier New', monospace;
+    }
+    .magic-insight {
+      margin-top: 28px;
+      background: linear-gradient(135deg, #7C3AED15, #5B21B610);
+      border: 1px solid #DDD6FE;
+      border-radius: 14px;
+      padding: 22px 24px;
+      font-size: 0.9rem;
+      color: #4C1D95;
+      line-height: 1.7;
+    }
+    .magic-insight strong { color: #7C3AED; }
+
+    /* ROADMAP */
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+    }
+    @media (max-width: 700px) { .roadmap-grid { grid-template-columns: 1fr; } }
+    .roadmap-card {
+      background: white;
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 8px 32px rgba(0,0,0,0.07);
+    }
+    .phase-badge {
+      display: inline-block;
+      border-radius: 8px;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .roadmap-card:nth-child(1) .phase-badge { background: #EDE9FE; color: #7C3AED; }
+    .roadmap-card:nth-child(2) .phase-badge { background: #FEF3C7; color: #D97706; }
+    .roadmap-card:nth-child(3) .phase-badge { background: #D1FAE5; color: #059669; }
+    .roadmap-card:nth-child(1) { border-top: 3px solid #7C3AED; }
+    .roadmap-card:nth-child(2) { border-top: 3px solid #F59E0B; }
+    .roadmap-card:nth-child(3) { border-top: 3px solid #10B981; }
+    .phase-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #111827;
+    }
+    .phase-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .phase-items li {
+      display: flex;
+      gap: 10px;
+      font-size: 0.875rem;
+      color: #374151;
+      align-items: flex-start;
+    }
+    .phase-items li::before {
+      content: '→';
+      color: #7C3AED;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .phase-goal {
+      margin-top: 18px;
+      font-size: 0.8rem;
+      color: #9CA3AF;
+      font-style: italic;
+    }
+    .phase-goal strong { color: #7C3AED; font-style: normal; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      font-size: 0.8rem;
+      color: #9CA3AF;
+      border-top: 1px solid #E5E7EB;
+    }
+    footer span { color: #7C3AED; font-weight: 600; }
+
+    code {
+      background: #F3F4F6;
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-size: 0.82em;
+      color: #7C3AED;
+      font-family: 'Courier New', monospace;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Internes Strategie-Briefing</div>
+  <h1>LUMA <span>als</span> Agent</h1>
+  <p>Der Weg zur intelligenten, steuerbaren Plattform</p>
+  <div class="hero-meta">27. März 2026 · Für: Daniel Mehlhart · Vertraulich</div>
+</div>
+
+<div class="container">
+
+  <!-- SECTION 1: VISION -->
+  <section>
+    <div class="section-label">01 — Die Vision</div>
+    <h2>LUMA als "Open Floor"</h2>
+    <p>
+      Was wäre, wenn Alex Hamm seine Projektarbeit nicht mehr durch Menüs klickt — sondern einfach reintippt, was er braucht?
+      Ein zentraler Chat in LUMA. Kein Ticket-System, keine Dropdown-Menüs. Nur natürliche Sprache und eine Plattform,
+      die versteht, was gemeint ist und sofort handelt.
+    </p>
+    <p>
+      Das ist keine Science-Fiction. Das ist der nächste logische Schritt für Projektmanagement-Software — und LUMA ist
+      in der perfekten Position, diesen Schritt zu machen.
+    </p>
+
+    <div class="quote-grid">
+      <div class="quote-card">
+        <div class="chat-bubble">Erstelle eine neue Aufgabe für Neubau Meier: Brandschutzkonzept prüfen, fällig nächsten Freitag, für Paul.</div>
+        <div class="quote-meta">→ Aufgabe wird sofort angelegt</div>
+      </div>
+      <div class="quote-card">
+        <div class="chat-bubble">Zeig mir alle überfälligen Punkte im Projekt Müller-Bau.</div>
+        <div class="quote-meta">→ Gefilterte Aufgabenliste erscheint</div>
+      </div>
+      <div class="quote-card">
+        <div class="chat-bubble">Welche Rechnungen für Projekt Weiss sind noch offen?</div>
+        <div class="quote-meta">→ Direkter Blick in die Finanzen</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: MÖGLICH? -->
+  <section>
+    <div class="section-label">02 — Einschätzung</div>
+    <h2>Ist das möglich?</h2>
+    <p>Die kurze Antwort: <strong>Ja, absolut.</strong> Der Stack (Vite/React + Supabase) ist wie gemacht dafür. Aber es ist wichtig, den Scope richtig einzuschätzen.</p>
+
+    <div class="verdict-grid">
+      <div class="verdict-card yes">
+        <div class="verdict-title">✅ Ja — der Stack ist perfekt</div>
+        <p style="font-size:0.875rem; color:#374151;">Supabase Edge Functions als Backend, React als Frontend — beides ist ideal für eine Agenten-Architektur. Es gibt keine technische Hürde, die uns blockiert.</p>
+        <p style="font-size:0.875rem; color:#374151; margin-top:10px;">LLM-APIs (Claude, GPT-4) sind einfach einzubinden, gut dokumentiert und kostengünstig skalierbar.</p>
+      </div>
+      <div class="verdict-card but">
+        <div class="verdict-title">⚠️ Aber — kein "kleines Feature"</div>
+        <p style="font-size:0.875rem; color:#374151;">Es ist eine neue Architektur-Schicht, die auf der bestehenden aufbaut. Kein Nachmittagsprojekt — aber auch kein Neustart von null.</p>
+        <p style="font-size:0.875rem; color:#374151; margin-top:10px;">Die gute Nachricht: Wir bauen es in Phasen. Phase 1 ist ein MVP, das in wenigen Wochen läuft.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: ARCHITEKTUR -->
+  <section>
+    <div class="section-label">03 — Das Konzept</div>
+    <h2>Die Agenten-Architektur</h2>
+    <p>Drei Komponenten. Jede hat eine klare Aufgabe. Zusammen ergeben sie einen Agenten, der handelt.</p>
+
+    <div class="arch-grid">
+      <div class="arch-card">
+        <div class="arch-icon">💬</div>
+        <div class="arch-num">Komponente 1</div>
+        <h3>LUMA Cockpit</h3>
+        <div class="arch-subtitle">Frontend (React)</div>
+        <p>Ein neuer Chat-Interface-Baustein in der bestehenden React-App. Nimmt den User-Input entgegen und zeigt die Antworten und Ergebnisse des Agenten an — wie ein WhatsApp-Chat, der mit der DB verbunden ist.</p>
+      </div>
+      <div class="arch-card">
+        <div class="arch-icon">🧠</div>
+        <div class="arch-num">Komponente 2</div>
+        <h3>LUMA Brain</h3>
+        <div class="arch-subtitle">Agenten-Kern (Supabase Edge Function)</div>
+        <p>Eine neue Edge Function <code>/agent</code> empfängt den Prompt. Hier sitzt das LLM (Claude / GPT-4). Seine Aufgabe: den Befehl verstehen, in Schritte zerlegen und entscheiden, welche Skills gebraucht werden.</p>
+      </div>
+      <div class="arch-card">
+        <div class="arch-icon">🔧</div>
+        <div class="arch-num">Komponente 3</div>
+        <h3>LUMA Skills</h3>
+        <div class="arch-subtitle">Die Werkzeugkiste (API-Endpoints)</div>
+        <p>Der entscheidende Teil. Jeder atomare Vorgang in LUMA — Aufgabe erstellen, Projekt finden, Datei hochladen — wird als sichere API-Funktion verfügbar. Das Brain ruft diese Skills auf, wenn es sie braucht.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: WORKFLOW -->
+  <section>
+    <div class="section-label">04 — Der Workflow am Beispiel</div>
+    <h2>Was passiert hinter den Kulissen?</h2>
+    <p>Ein konkreter Prompt, durchgespielt in sechs Schritten.</p>
+
+    <div class="workflow-box">
+      <div class="prompt-display">
+        <div class="prompt-avatar">👤</div>
+        <div>
+          <div class="prompt-label">Alex Hamm tippt</div>
+          <div class="prompt-text">
+            "Erstelle eine neue Aufgabe für das Projekt 'Neubau Meier' mit dem Titel 'Brandschutzkonzept prüfen', fällig nächsten Freitag, und weise sie Paul zu."
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-steps">
+
+        <div class="flow-step">
+          <div class="flow-step-left">
+            <div class="step-dot">1</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="flow-step-content">
+            <h4>User tippt → Cockpit sendet</h4>
+            <p>Der Prompt landet im Chat-Interface. Das Cockpit schickt ihn per API-Call an die <code>/agent</code> Edge Function.</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-left">
+            <div class="step-dot">2</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="flow-step-content">
+            <h4>Brain analysiert & plant</h4>
+            <div class="think-chain">
+              <div class="think-step"><span class="think-step-icon">→</span><span>"Okay, ich muss eine Aufgabe erstellen. Ich brauche: Projekt-ID, Titel, Fälligkeitsdatum, zugewiesene Person."</span></div>
+              <div class="think-step"><span class="think-step-icon">→</span><span>Ich rufe <code>find_project_by_name</code> mit "Neubau Meier" auf → gibt Projekt-ID zurück.</span></div>
+              <div class="think-step"><span class="think-step-icon">→</span><span>Ich rufe <code>find_user_by_name</code> mit "Paul" auf → gibt User-ID zurück.</span></div>
+              <div class="think-step"><span class="think-step-icon">→</span><span>Ich berechne "nächsten Freitag" → konkretes Datum.</span></div>
+              <div class="think-step"><span class="think-step-icon">→</span><span>Ich rufe <code>create_task</code> mit allen gesammelten Infos auf.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-left">
+            <div class="step-dot">3</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="flow-step-content">
+            <h4>Skills führen aus</h4>
+            <p>Die <code>create_task</code>-Funktion schreibt direkt in die Supabase-Datenbank. Atomare Operation, sicher, vollständig geloggt.</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-left">
+            <div class="step-dot">4</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="flow-step-content">
+            <h4>Brain bestätigt → Cockpit zeigt an</h4>
+            <div class="success-bubble">
+              ✅&nbsp; "Erledigt. Ich habe die Aufgabe 'Brandschutzkonzept prüfen' im Projekt 'Neubau Meier' für Paul angelegt, fällig am Freitag, 04.04.2026."
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: MAGIE -->
+  <section>
+    <div class="section-label">05 — Die Magie</div>
+    <h2>Wie LUMA schlau genug wird</h2>
+    <p>Bis hier ist LUMA ein smarter Assistent. Das hier macht es zum echten Agenten: die Fähigkeit, auch <em>neue</em> Probleme zu lösen, für die es keinen direkten, vorkonfigurierten Befehl gibt.</p>
+
+    <div class="magic-box">
+      <h3>Konzept: ReAct (Reason + Act)</h3>
+      <p style="color:#6B7280; font-size:0.875rem; margin-top:6px;">Das Brain bekommt nicht die Lösung — es bekommt nur Werkzeuge und die Fähigkeit, über deren Einsatz nachzudenken.</p>
+
+      <div class="react-example">
+        <div class="react-prompt">
+          Finde alle überfälligen Aufgaben im Projekt Meier und schick dem Verantwortlichen eine Erinnerung.
+        </div>
+        <div class="react-steps-title">🤔 Denkprozess des Agenten</div>
+        <div class="react-chain">
+          <div class="react-item">
+            <div class="react-num">1</div>
+            <div class="react-text">Ich brauche die überfälligen Aufgaben → <code>find_overdue_tasks(projekt_id)</code></div>
+          </div>
+          <div class="react-item">
+            <div class="react-num">2</div>
+            <div class="react-text">Ich muss wissen, wer verantwortlich ist → <code>get_task_assignee(task_id)</code></div>
+          </div>
+          <div class="react-item">
+            <div class="react-num">3</div>
+            <div class="react-text">Ich brauche die Kontaktdaten → <code>get_user_email(user_id)</code></div>
+          </div>
+          <div class="react-item">
+            <div class="react-num">4</div>
+            <div class="react-text">Ich sende die Erinnerung → <code>send_email(to, subject, body)</code> — für jede überfällige Aufgabe.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="magic-insight">
+        <strong>Der Trick:</strong> Man gibt dem Agenten nicht die Lösung vor — nur die Werkzeuge (Skills) und die Fähigkeit, über deren Einsatz nachzudenken. Das ist der Unterschied zwischen einem Regelwerk und einem echten Agenten.<br><br>
+        Neue Anwendungsfälle kosten nichts Neues — sie entstehen durch die <strong>Kombination bestehender Skills</strong>.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: ROADMAP -->
+  <section>
+    <div class="section-label">06 — Die Roadmap</div>
+    <h2>Was muss gebaut werden?</h2>
+    <p>Drei Phasen. Jede liefert echten Mehrwert. Jede baut auf der vorherigen auf.</p>
+
+    <div class="roadmap-grid">
+      <div class="roadmap-card">
+        <div class="phase-badge">Phase 1 · MVP</div>
+        <div class="phase-title">Der Assistent</div>
+        <ul class="phase-items">
+          <li>Neue Supabase Edge Function <code>/agent-core</code></li>
+          <li>Chat-Interface als neuer React-Baustein</li>
+          <li>Ersten Skill implementieren: <code>create_task</code></li>
+          <li>LLM-Integration (Claude API)</li>
+        </ul>
+        <div class="phase-goal"><strong>Ziel:</strong> Beweisen, dass der Grund-Flow funktioniert.</div>
+      </div>
+      <div class="roadmap-card">
+        <div class="phase-badge">Phase 2 · Expansion</div>
+        <div class="phase-title">Der Werkzeugkasten</div>
+        <ul class="phase-items">
+          <li>Alle Kernfunktionen als Skills: <code>edit_task</code>, <code>find_project</code>, <code>add_comment</code> …</li>
+          <li>Brain lernt, den richtigen Skill auszuwählen</li>
+          <li>Skill-Registry aufbauen</li>
+          <li>Error Handling & Fallbacks</li>
+        </ul>
+        <div class="phase-goal"><strong>Ziel:</strong> LUMA ist für 80% der Alltagsaufgaben per Chat steuerbar.</div>
+      </div>
+      <div class="roadmap-card">
+        <div class="phase-badge">Phase 3 · Autonomie</div>
+        <div class="phase-title">Der Agent</div>
+        <ul class="phase-items">
+          <li>ReAct-Logik im Brain verankern</li>
+          <li>Multi-Step Reasoning aktivieren</li>
+          <li>Skills kombinieren für komplexe Anfragen</li>
+          <li>Automatisierungen & Trigger</li>
+        </ul>
+        <div class="phase-goal"><strong>Ziel:</strong> LUMA handelt proaktiv. Nicht nur reaktiv.</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>LUMA Strategie-Briefing · <span>Intern &amp; Vertraulich</span> · 27. März 2026</p>
+</footer>
+
+</body>
+</html>
