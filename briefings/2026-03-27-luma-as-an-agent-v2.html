@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUMA als Agent v2 – Internes Strategie-Briefing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #F9FAFB;
+      color: #1A1A2E;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    /* ── Hero Header ── */
+    .hero {
+      background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 60%, #3B0764 100%);
+      color: #fff;
+      padding: 60px 24px 50px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 30%, rgba(167,139,250,0.25) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 100px;
+      padding: 5px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      backdrop-filter: blur(8px);
+    }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    .hero h1 span { color: #DDD6FE; }
+    .hero p {
+      font-size: 17px;
+      color: rgba(255,255,255,0.8);
+      max-width: 520px;
+      margin: 0 auto 28px;
+    }
+    .hero-meta {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hero-meta span {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Section header ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      margin-top: 56px;
+    }
+    .section-header:first-child { margin-top: 0; }
+    .section-icon {
+      width: 44px; height: 44px;
+      background: #EDE9FE;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .section-header h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1A1A2E;
+      letter-spacing: -0.02em;
+    }
+    .section-header .section-num {
+      font-size: 11px;
+      font-weight: 600;
+      color: #7C3AED;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+      padding: 28px 32px;
+      margin-bottom: 16px;
+    }
+    .card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1A1A2E;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p { color: #4B5563; font-size: 14.5px; line-height: 1.7; }
+    .card p + p { margin-top: 10px; }
+
+    /* ── IST vs SOLL grid ── */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 620px) { .compare-grid { grid-template-columns: 1fr; } }
+
+    .compare-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .compare-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .compare-card.ist::before { background: #D1D5DB; }
+    .compare-card.soll::before { background: linear-gradient(90deg, #7C3AED, #A78BFA); }
+
+    .compare-card .label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .compare-card.ist .label { color: #9CA3AF; }
+    .compare-card.soll .label { color: #7C3AED; }
+
+    .compare-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #1A1A2E;
+    }
+    .compare-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .compare-card ul li {
+      font-size: 14px;
+      color: #4B5563;
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .compare-card ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      font-size: 16px;
+    }
+    .compare-card.ist ul li::before { color: #D1D5DB; }
+    .compare-card.soll ul li::before { color: #7C3AED; }
+
+    .limitation-box {
+      background: #FEF3C7;
+      border: 1px solid #FDE68A;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-top: 14px;
+      font-size: 13.5px;
+      color: #92400E;
+    }
+    .limitation-box strong { color: #78350F; }
+
+    /* ── ReAct concept ── */
+    .react-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+      padding: 32px;
+      margin-bottom: 16px;
+    }
+    .react-loop {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 24px 0;
+    }
+    .react-step {
+      background: #EDE9FE;
+      border: 1.5px solid #C4B5FD;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #5B21B6;
+      text-align: center;
+    }
+    .react-arrow {
+      color: #A78BFA;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .two-things {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 20px;
+    }
+    @media (max-width: 580px) { .two-things { grid-template-columns: 1fr; } }
+
+    .thing-card {
+      border: 1.5px solid #EDE9FE;
+      border-radius: 12px;
+      padding: 20px;
+      background: #FAFAFA;
+    }
+    .thing-card .thing-icon { font-size: 28px; margin-bottom: 10px; }
+    .thing-card h4 { font-size: 14px; font-weight: 700; color: #1A1A2E; margin-bottom: 6px; }
+    .thing-card p { font-size: 13.5px; color: #6B7280; line-height: 1.6; }
+
+    /* ── Roadmap ── */
+    .roadmap {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+    .roadmap::before {
+      content: '';
+      position: absolute;
+      left: 27px;
+      top: 28px;
+      bottom: 28px;
+      width: 2px;
+      background: linear-gradient(180deg, #7C3AED, #C4B5FD, #EDE9FE);
+    }
+    .phase {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+      padding: 24px 28px 24px 72px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .phase-dot {
+      position: absolute;
+      left: 16px;
+      top: 24px;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: #7C3AED;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px #7C3AED;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .phase-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #7C3AED;
+      margin-bottom: 4px;
+    }
+    .phase h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1A1A2E;
+      margin-bottom: 12px;
+    }
+    .phase ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 14px;
+    }
+    .phase ul li {
+      font-size: 14px;
+      color: #4B5563;
+      padding-left: 18px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .phase ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #A78BFA;
+      font-size: 13px;
+    }
+    .phase-goal {
+      background: #F5F3FF;
+      border-left: 3px solid #7C3AED;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      font-size: 13.5px;
+      color: #5B21B6;
+    }
+    .phase-goal strong { font-weight: 700; }
+
+    /* ── Summary / Diff ── */
+    .diff-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 620px) { .diff-grid { grid-template-columns: 1fr; } }
+
+    .diff-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .diff-card::after {
+      content: attr(data-emoji);
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      font-size: 36px;
+      opacity: 0.15;
+    }
+    .diff-card .diff-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .diff-card.old .diff-label { color: #9CA3AF; }
+    .diff-card.new .diff-label { color: #7C3AED; }
+    .diff-card h3 { font-size: 17px; font-weight: 700; color: #1A1A2E; margin-bottom: 14px; }
+
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13.5px;
+      color: #4B5563;
+    }
+    .flow-step .arrow { color: #A78BFA; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .diff-card.old .flow-step .arrow { color: #D1D5DB; }
+    .flow-step.action { color: #5B21B6; font-weight: 600; }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid #E5E7EB;
+      margin: 40px 0 0;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 32px 24px 40px;
+      color: #9CA3AF;
+      font-size: 12.5px;
+    }
+    .footer a { color: #7C3AED; text-decoration: none; }
+
+    code {
+      background: #F3F4F6;
+      border: 1px solid #E5E7EB;
+      border-radius: 5px;
+      padding: 1px 6px;
+      font-size: 13px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      color: #7C3AED;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="hero-badge">Internes Strategie-Briefing · Version 2</div>
+  <h1>LUMA als <span>Agent v2</span></h1>
+  <p>Vom Assistenten zum echten Co-Piloten — was sich ändern muss, warum es sich lohnt, und wie wir dahin kommen.</p>
+  <div class="hero-meta">
+    <span>📅 27. März 2026</span>
+    <span>👤 Daniel Mehlhart</span>
+    <span>🔒 Intern</span>
+  </div>
+</div>
+
+<!-- ── Main Content ── -->
+<div class="container">
+
+  <!-- ── Section 1: IST vs SOLL ── -->
+  <div class="section-header">
+    <div class="section-icon">🔭</div>
+    <div>
+      <span class="section-num">Section 1</span>
+      <h2>IST vs. SOLL: Wo wir stehen und wo wir hinwollen</h2>
+    </div>
+  </div>
+
+  <div class="compare-grid">
+    <!-- IST -->
+    <div class="compare-card ist">
+      <div class="label">Heute · Der Assistent</div>
+      <h3>Was wir haben ✅</h3>
+      <ul>
+        <li>Solide Basis: Sprach-zu-Aktion für Tasks &amp; Bautagebuch</li>
+        <li>Co-Pilot Chat über statische <code>project-knowledge.md</code></li>
+        <li>Beantwortet Fragen: "Was ist ein Bautagebuch?"</li>
+      </ul>
+      <div class="limitation-box">
+        ⚠️ <strong>Limitierung:</strong> Er kann nur Fragen beantworten, keine Befehle ausführen. "Finde Aufgabe X und weise sie Y zu" — geht nicht. Er ist eine <strong>Frage-Antwort-Maschine</strong>, kein <em>Macher</em>.
+      </div>
+    </div>
+
+    <!-- SOLL -->
+    <div class="compare-card soll">
+      <div class="label">Morgen · Der Agent</div>
+      <h3>Was wir wollen 🎯</h3>
+      <ul>
+        <li>Der Chat wird zum <strong>zentralen Hub</strong> der App</li>
+        <li>Komplexe, mehrstufige Befehle in natürlicher Sprache</li>
+        <li>Agent versteht, plant und <strong>führt Aktionen aus</strong></li>
+        <li>LUMA-Skills werden kombiniert — dynamisch</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── Section 2: Die Brücke ── -->
+  <div class="section-header" style="margin-top: 48px;">
+    <div class="section-icon">🧠</div>
+    <div>
+      <span class="section-num">Section 2</span>
+      <h2>Die Brücke: Was fehlt zum echten Agenten?</h2>
+    </div>
+  </div>
+
+  <div class="react-card">
+    <h3 style="font-size:18px; font-weight:700; color:#1A1A2E; margin-bottom:8px;">Das Schlüsselkonzept: <span style="color:#7C3AED;">Reason + Act (ReAct)</span></h3>
+    <p style="color:#4B5563; font-size:14.5px; margin-bottom:4px;">Der aktuelle Co-Pilot kann denken, aber nicht handeln. Ein echter Agent kann beides — in einer Schleife.</p>
+
+    <div class="react-loop">
+      <div class="react-step">Befehl empfangen</div>
+      <div class="react-arrow">→</div>
+      <div class="react-step">🤔 Denken</div>
+      <div class="react-arrow">→</div>
+      <div class="react-step">🔧 Werkzeug aufrufen</div>
+      <div class="react-arrow">→</div>
+      <div class="react-step">📊 Ergebnis auswerten</div>
+      <div class="react-arrow">→</div>
+      <div class="react-step">🤔 Wieder denken</div>
+      <div class="react-arrow">→</div>
+      <div class="react-step">✅ Ziel erreicht</div>
+    </div>
+
+    <p style="color:#6B7280; font-size:13.5px; text-align:center;">Der ReAct-Loop läuft so lange, bis das Ziel erfüllt ist — vollständig autonom.</p>
+
+    <div class="two-things">
+      <div class="thing-card">
+        <div class="thing-icon">🧰</div>
+        <h4>Werkzeugkiste (Skills)</h4>
+        <p>Jede Funktion in LUMA muss als eigenständiges, aufrufbares Werkzeug existieren — sauber gekapselt, einzeln testbar.</p>
+      </div>
+      <div class="thing-card">
+        <div class="thing-icon">🧠</div>
+        <h4>Gehirn (Agenten-Laufzeit)</h4>
+        <p>Eine Logik-Schicht, die einen Befehl in Schritte zerlegt und entscheidet, welches Werkzeug wann und wie benutzt wird.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Section 3: Roadmap ── -->
+  <div class="section-header" style="margin-top: 48px;">
+    <div class="section-icon">🗺️</div>
+    <div>
+      <span class="section-num">Section 3</span>
+      <h2>Die angepasste Roadmap: Der Weg zum Co-Piloten</h2>
+    </div>
+  </div>
+
+  <div class="roadmap">
+    <!-- Phase 1 -->
+    <div class="phase">
+      <div class="phase-dot">1</div>
+      <div class="phase-label">Phase 1 · Fundament</div>
+      <h3>🧰 Werkzeuge schmieden — API-fizierung aller Funktionen</h3>
+      <ul>
+        <li>Jede Aktion in LUMA wird in eine saubere Supabase Edge Function gekapselt</li>
+        <li>Beispiele: <code>create_task</code>, <code>edit_project</code>, <code>find_user</code>, <code>add_comment</code>, <code>upload_file</code></li>
+        <li>Jede Funktion hat klaren Input, Output und Fehlerbehandlung</li>
+      </ul>
+      <div class="phase-goal">
+        🎯 <strong>Ziel:</strong> Eine vollständige "Werkzeugkiste" an Skills — auf die ein Agent zugreifen kann. Bonus: Die Codebasis wird sauberer und besser testbar.
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase">
+      <div class="phase-dot">2</div>
+      <div class="phase-label">Phase 2 · Das Gehirn</div>
+      <h3>🧠 Das Gehirn aufrüsten — Agenten-Laufzeit implementieren</h3>
+      <ul>
+        <li>Neue Supabase Edge Function <code>/agent-v2</code> implementiert den ReAct-Loop</li>
+        <li>Frameworks wie LangChain oder LlamaIndex können helfen</li>
+        <li>Start mit 2-3 einfachen Skills: <code>find_project</code> + <code>create_task</code></li>
+        <li>Der Loop wird iterativ getestet und validiert</li>
+      </ul>
+      <div class="phase-goal">
+        🎯 <strong>Ziel:</strong> Der Agent löst erstmals eine komplexe Anfrage wie "Erstelle Aufgabe X im Projekt Y" — selbstständig, durch Kombination zweier Werkzeuge.
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase">
+      <div class="phase-dot">3</div>
+      <div class="phase-label">Phase 3 · Der Austausch</div>
+      <h3>🔄 Integration &amp; Rollout — Der Co-Pilot lebt</h3>
+      <ul>
+        <li>Frontend-Backend des Co-Pilot-Chats wird ausgetauscht</li>
+        <li>Statt alter Q&amp;A-Funktion → neues <code>/agent-v2</code> Backend</li>
+        <li>Skills aus Phase 1 werden schrittweise für den Agenten freigeschaltet</li>
+      </ul>
+      <div class="phase-goal">
+        🎯 <strong>Ziel:</strong> Der "dumme" Assistent ist vollständig durch den "schlauen" Agenten ersetzt. Nutzer können komplexe, mehrstufige Aufgaben per Chat erledigen.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Section 4: Summary ── -->
+  <div class="section-header" style="margin-top: 48px;">
+    <div class="section-icon">⚡</div>
+    <div>
+      <span class="section-num">Section 4</span>
+      <h2>Der entscheidende Unterschied</h2>
+    </div>
+  </div>
+
+  <div class="diff-grid">
+    <div class="diff-card old" data-emoji="🤖">
+      <div class="diff-label">Assistent · Heute</div>
+      <h3>Die Frage-Antwort-Maschine</h3>
+      <div class="flow-steps">
+        <div class="flow-step"><span class="arrow">→</span> User stellt eine Frage</div>
+        <div class="flow-step"><span class="arrow">→</span> LLM schaut in Wissens-DB</div>
+        <div class="flow-step"><span class="arrow">→</span> LLM antwortet mit Text</div>
+        <div class="flow-step"><span class="arrow">→</span> <span style="color:#9CA3AF;">Ende. Keine Aktion.</span></div>
+      </div>
+    </div>
+
+    <div class="diff-card new" data-emoji="🚀">
+      <div class="diff-label">Agent · Morgen</div>
+      <h3>Der echte Co-Pilot</h3>
+      <div class="flow-steps">
+        <div class="flow-step"><span class="arrow">→</span> User gibt einen Befehl</div>
+        <div class="flow-step action"><span class="arrow">→</span> Agenten-Gehirn denkt</div>
+        <div class="flow-step action"><span class="arrow">→</span> Ruft Skill 1 auf → Daten</div>
+        <div class="flow-step action"><span class="arrow">→</span> Denkt wieder</div>
+        <div class="flow-step action"><span class="arrow">→</span> Ruft Skill 2 auf → Aktion</div>
+        <div class="flow-step action"><span class="arrow">→</span> ✅ Agent meldet Erfolg</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+</div>
+
+<!-- ── Footer ── -->
+<div class="footer">
+  <p>LUMA · Internes Strategie-Briefing v2 · 27. März 2026</p>
+  <p style="margin-top:4px;">Erstellt für Daniel Mehlhart · <span style="color:#7C3AED;">🏔️ Hatti</span></p>
+</div>
+
+</body>
+</html>
