@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🔍 Hatti System-Check — 28. März 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #F9FAFB;
+      color: #1A1A2E;
+      line-height: 1.6;
+      padding: 24px 16px 60px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
+      border-radius: 20px;
+      padding: 36px 40px;
+      color: white;
+      margin-bottom: 32px;
+    }
+    .hero-meta {
+      font-size: 13px;
+      opacity: 0.75;
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .hero-score {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .score-badge {
+      background: rgba(255,255,255,0.18);
+      border: 1.5px solid rgba(255,255,255,0.35);
+      border-radius: 50px;
+      padding: 8px 20px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .score-label {
+      font-size: 16px;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+    .hero-compare {
+      margin-top: 14px;
+      font-size: 14px;
+      opacity: 0.8;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 14px;
+    }
+
+    /* ── Section Headers ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 36px 0 16px;
+    }
+    .section-header h2 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #7C3AED;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #E5E7EB;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05);
+      margin-bottom: 12px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title .num {
+      background: #F3F4F6;
+      color: #7C3AED;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+    }
+    .card-body {
+      font-size: 14px;
+      color: #4B5563;
+    }
+    .card-body p { margin-bottom: 6px; }
+    .card-body p:last-child { margin-bottom: 0; }
+
+    /* ── Status pills ── */
+    .ok   { background: #D1FAE5; color: #065F46; padding: 2px 8px; border-radius: 6px; font-size: 13px; font-weight: 600; }
+    .warn { background: #FEF3C7; color: #92400E; padding: 2px 8px; border-radius: 6px; font-size: 13px; font-weight: 600; }
+    .err  { background: #FEE2E2; color: #991B1B; padding: 2px 8px; border-radius: 6px; font-size: 13px; font-weight: 600; }
+
+    .status-line {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 5px 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .status-line:last-child { border-bottom: none; }
+    .status-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .status-text { font-size: 14px; color: #374151; line-height: 1.5; }
+
+    /* ── Table ── */
+    .table-wrap { overflow-x: auto; margin-top: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th {
+      background: #F3F4F6;
+      color: #6B7280;
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 12px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    thead th:first-child { border-radius: 8px 0 0 8px; }
+    thead th:last-child  { border-radius: 0 8px 8px 0; }
+    tbody td { padding: 9px 12px; color: #374151; border-bottom: 1px solid #F9FAFB; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: #FAFAFA; }
+    .consecutive-3 { color: #DC2626; font-weight: 700; }
+    .consecutive-2 { color: #D97706; font-weight: 600; }
+
+    /* ── Score Grid ── */
+    .score-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 4px;
+    }
+    @media (max-width: 600px) { .score-grid { grid-template-columns: 1fr; } }
+    .score-box {
+      border-radius: 12px;
+      padding: 16px 18px;
+    }
+    .score-box.good { background: #D1FAE5; }
+    .score-box.bad  { background: #FEE2E2; }
+    .score-box h4 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 10px;
+    }
+    .score-box.good h4 { color: #065F46; }
+    .score-box.bad h4  { color: #991B1B; }
+    .score-box ul { list-style: none; padding: 0; }
+    .score-box ul li {
+      font-size: 13px;
+      padding: 3px 0;
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+    }
+    .score-box.good ul li { color: #065F46; }
+    .score-box.bad ul li  { color: #7F1D1D; }
+
+    /* ── Priority ── */
+    .priority-card {
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .priority-card.p1 { background: #FEE2E2; border-left: 4px solid #DC2626; }
+    .priority-card.p2 { background: #FEF3C7; border-left: 4px solid #F59E0B; }
+    .priority-card.p3 { background: #FEF3C7; border-left: 4px solid #F59E0B; }
+    .priority-icon { font-size: 20px; flex-shrink: 0; }
+    .priority-content h4 { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .priority-content p  { font-size: 13px; color: #4B5563; }
+    .priority-card.p1 .priority-content h4 { color: #991B1B; }
+    .priority-card.p2 .priority-content h4 { color: #92400E; }
+
+    /* ── Compare ── */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    @media (max-width: 560px) { .compare-grid { grid-template-columns: 1fr; } }
+    .compare-item {
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .compare-item.pos { background: #D1FAE5; color: #065F46; }
+    .compare-item.neg { background: #FEE2E2; color: #7F1D1D; }
+
+    /* ── Token table ── */
+    .token-total td { font-weight: 700; background: #F5F3FF; color: #5B21B6; }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 12px;
+      color: #9CA3AF;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ═══ HERO ═══ -->
+  <div class="hero">
+    <div class="hero-meta">Hatti · System-Check · 28. März 2026, 21:39 CET</div>
+    <h1>🔍 System-Check Report</h1>
+    <div class="hero-score">
+      <div class="score-badge">6.5 / 10</div>
+      <div class="score-label">Solide Basis, aber Hygiene-Schulden</div>
+    </div>
+    <div class="hero-compare">
+      📊 Vergleich zum 13. März: leicht verbessert (damals ~6/10) — Fortschritte bei Skills &amp; Tooling, aber Telegram-Outbound-Bug ist kritisch und changelog bleibt vernachlässigt.
+    </div>
+  </div>
+
+
+  <!-- ═══ DATEIEN & MEMORY ═══ -->
+  <div class="section-header"><h2>📁 Dateien &amp; Memory-Struktur</h2></div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">1</span> Primary Files im Workspace-Root</div>
+    <div class="card-body">
+      <div class="status-line">
+        <span class="status-icon">✅</span>
+        <span class="status-text">Alle 8 Primary Files vorhanden: <code>AGENTS.md</code>, <code>SOUL.md</code>, <code>USER.md</code>, <code>SETUP.md</code>, <code>RULES.md</code>, <code>PROJECTS.md</code>, <code>MEMORY.md</code>, <code>SECURITY.md</code></span>
+      </div>
+      <div class="status-line">
+        <span class="status-icon">⚠️</span>
+        <span class="status-text">PLUS: 78 weitere <code>.md</code>-Dateien im Root — davon <strong>58 veraltet (&gt;30 Tage)</strong>. Massiver Aufräumbedarf.</span>
+      </div>
+      <div class="status-line">
+        <span class="status-icon">ℹ️</span>
+        <span class="status-text">Zusätzliche aktive Files: <code>TOPICS.md</code>, <code>TOOLS.md</code>, <code>IDENTITY.md</code>, <code>HEARTBEAT.md</code>, <code>CRON-HEALTH-ALERT.md</code></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">2</span> SETUP.md <span class="warn">15 Tage veraltet</span></div>
+    <div class="card-body">
+      <div class="status-line">
+        <span class="status-icon">⚠️</span>
+        <span class="status-text"><strong>Cron-Inventar-Delta:</strong> Dokumentiert 23 aktiv + 16 deaktiviert = 39 — Real: 24 aktiv + 18 deaktiviert = 42</span>
+      </div>
+      <div class="status-line">
+        <span class="status-icon">📝</span>
+        <span class="status-text">Fehlende Crons in Doku: Daily Log schreiben, 🔔 Drooms Q1 Outcomes, 🔔 Copilot Feature Reminder, 🔍 ModulAI Health Monitor, Hessen Wahlergebnis Briefing</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">3</span> RULES.md — 228 Zeilen, 11 Sektionen</div>
+    <div class="card-body">
+      <div class="status-line">
+        <span class="status-icon">✅</span>
+        <span class="status-text">Sektionen vorhanden: Propagations-Pflicht, Delivery-Pflicht, Kalender-Regeln, Telegram-Formatierung, Email-Policy, Task-Routing, Diagnostik-Pflicht, Security-Regeln, Sub-Agent-Regeln, Coding-Workflow, Briefing-Vorgaben, Memory-Regeln, Prompt Injection Protection, Proaktives Verhalten</span>
+      </div>
+      <div class="status-line">
+        <span class="status-icon">⚠️</span>
+        <span class="status-text">Discovery Summary Format ist <strong>doppelt definiert</strong> (2× identische Sektion)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">4</span> PROJECTS.md — 179 Zeilen</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">5 aktive Projekte: Mission Control, BPP Core CRM, LUMA, Concord, HAMM Architekten</span></div>
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">1 Lead: Eduard Raab &nbsp;·&nbsp; 1 Konzept: Hatti2Go</span></div>
+      <div class="status-line"><span class="status-icon">⚠️</span><span class="status-text">Eduard Raab Status zeigt "Call Mo 10.03. 10:00 geplant" — ist <strong>18 Tage her</strong>, Status veraltet</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">5</span> MEMORY.md — 86 Zeilen <span class="warn">+6 über Ziel</span></div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">⚠️</span><span class="status-text">Über Ziel von 80 Zeilen (86 aktuell). Kein dramatischer Überlauf, aber Trimm-Kandidaten vorhanden.</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">6</span> AGENTS.md — 83 Zeilen, 7 Sektionen</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">Sektionen: First Run, Workspace-Dateien, Every Session, Propagations-Pflicht, Safety-Basics, Group Chats, Heartbeats</span></div>
+      <div class="status-line"><span class="status-icon">⚠️</span><span class="status-text">Propagations-Pflicht ist <strong>Duplikat</strong> aus RULES.md (identischer Text)</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">7</span> SOUL.md — 56 Zeilen</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">6 Dos definiert, 2 Don'ts definiert</span></div>
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">Kommunikationsstil, Humor, Meinungen klar definiert</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">8</span> memory/changelog.md <span class="err">Kritisch</span></div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">❌</span><span class="status-text"><strong>NUR 1 Eintrag!</strong> Letzter: 2026-03-27 (Playwright-Scraper Skill). Massiv veraltet — Propagations-Pflicht wird seit Wochen nicht eingehalten. Dutzende Änderungen an SETUP/RULES/PROJECTS ohne changelog-Eintrag.</span></div>
+    </div>
+  </div>
+
+
+  <!-- ═══ CRONS & MONITORING ═══ -->
+  <div class="section-header"><h2>⏰ Crons &amp; Monitoring</h2></div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">9</span> Cron-Übersicht</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text"><strong>24 aktive</strong> Crons, 18 deaktivierte = 42 total</span></div>
+      <div class="status-line"><span class="status-icon">⚠️</span><span class="status-text">Von 18 deaktivierten: <strong>11 sind abgelaufene One-Shots</strong> (deleteAfterRun aber nie gelöscht)</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">10</span> Cron-Fehler letzte 48h <span class="err">8 Fehler</span></div>
+    <div class="card-body">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Cron</th>
+              <th>Fehler</th>
+              <th>Consecutive</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>📅 Kalender-Briefing morgen</td>
+              <td>Outbound not configured for channel: telegram</td>
+              <td class="consecutive-3">3 ❌</td>
+            </tr>
+            <tr>
+              <td>🧭 Selbstständigkeit Leitplanken</td>
+              <td>Outbound not configured</td>
+              <td class="consecutive-2">2 ⚠️</td>
+            </tr>
+            <tr>
+              <td>Copilot Feature Reminder</td>
+              <td>Outbound not configured</td>
+              <td class="consecutive-2">2 ⚠️</td>
+            </tr>
+            <tr>
+              <td>🚴 Post-Ride Report</td>
+              <td>Outbound not configured</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>📈 Marktbericht</td>
+              <td>Outbound not configured</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>📧 Gmail 18:00</td>
+              <td>Timeout</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>🚴 Trainingsreport</td>
+              <td>Timeout</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>☀️ Commute-Wetter</td>
+              <td>Message failed</td>
+              <td>1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:12px; font-size:13px; color:#6B7280;">
+        <strong>Root Cause:</strong> "Outbound not configured for channel: telegram" — betrifft alle Crons mit <code>delivery.mode="announce"</code>. Crons mit <code>delivery.mode="none"</code> + internem message tool funktionieren.
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">11</span> Daily Cron Health Check</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">Letzter Run: 28.03. 21:00 — Status: OK</span></div>
+      <div class="status-line"><span class="status-icon">⚠️</span><span class="status-text">Alert in CRON-HEALTH-ALERT.md vom 27.03. dokumentiert die Outbound-Probleme</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">12</span> Weekly Token Health Check</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">Letzter Run: Mo 24.03. 09:30 — Status: OK. Alle Tokens (Google, Strava, Supabase) gesund.</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">13</span> Crons mit &gt;3 Tagen ohne Erfolg</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">⚠️</span><span class="status-text">Kalender-Briefing morgen: <strong>3 consecutive errors</strong></span></div>
+      <div class="status-line"><span class="status-icon">⚠️</span><span class="status-text">Trainingsreport: Letzter Erfolg Do 20.03. — <strong>8 Tage ohne Erfolg!</strong></span></div>
+    </div>
+  </div>
+
+
+  <!-- ═══ GUARDRAILS & SECURITY ═══ -->
+  <div class="section-header"><h2>🛡️ Guardrails &amp; Security</h2></div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">14</span> core-file-guard.sh</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">Existiert, executable, Schnelltest before+after bestanden</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">15</span> Core-File-Liste Konsistenz</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">Security-Regeln und Sub-Agent-Regeln listen identische 7 Files: AGENTS.md, SOUL.md, RULES.md, SETUP.md, SECURITY.md, MEMORY.md, PROJECTS.md</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">16 + 17</span> Delivery-Pflicht &amp; Diagnostik-Pflicht</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">Delivery-Pflicht: Eigene Sektion in RULES.md (Abschnitt 2, direkt nach Propagations-Pflicht)</span></div>
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">Diagnostik-Pflicht: Eigene Sektion in RULES.md</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">18</span> WiFi Watchdog <span class="err">Fehlt</span></div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">❌</span><span class="status-text">Kein WiFi Watchdog vorhanden. Keine Log-Datei, kein Cron. Pi läuft über WiFi 24/7 — <strong>kein automatischer Reconnect</strong> bei Verbindungsabbrüchen.</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">19</span> Backup</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">Letztes rclone Backup: 28.03. 03:03 — 100% erfolgreich, 102.9 MiB, 94 Dateien übertragen</span></div>
+    </div>
+  </div>
+
+
+  <!-- ═══ SKILLS ═══ -->
+  <div class="section-header"><h2>🧰 Skills</h2></div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">20</span> Skills-Übersicht — 20 Skills</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">Alle 20 Skills haben SKILL.md: adversarial-review, dashboard-update, discovery-to-build, gamma-deck, github, gws, legal-agent, legal-contracts, lovable-deploy, mc-deploy, playwright-scraper, research-briefing, rss-news, security, skill-vetting, spawn-and-deliver, strava, supabase-concord, twitter-research, web-crawler</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">21 + 22</span> spawn-and-deliver &amp; adversarial-review</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">spawn-and-deliver: <code>runTimeoutSeconds: 420</code> (korrekt)</span></div>
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">adversarial-review: Schritt 0 (PFLICHT) mit before/after ist dokumentiert</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">23 + 24</span> Legal-Agent &amp; python-docx</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">legal-agent: SKILL.md vorhanden, Templates in templates/legal/: absender.md, agb-saas.md, angebot-vorlage.md</span></div>
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">absender.md befüllt (Daniel Mehlhart, Wiederholtstraße 5, 61440 Oberursel)</span></div>
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">legal-contracts Skill ebenfalls vorhanden</span></div>
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">python-docx: Version 1.2.0 installiert</span></div>
+    </div>
+  </div>
+
+
+  <!-- ═══ TOPICS ═══ -->
+  <div class="section-header"><h2>💬 Topics</h2></div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">25</span> TOPICS.md</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">Existiert, 10 Topics gelistet: LUMA (HAMM), Architekt Connect, BPP CRM, Concord, Research, Fitness, Security, DRMS-SPA26, Sales Support, Legal (TBD)</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">26</span> openclaw.json Topics</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">⚠️</span><span class="status-text">openclaw.json hat Topics: 13, 14, 15, 16, 17, 18, 165, 333, 836, 1548 — Topic <strong>165 nicht in TOPICS.md</strong> gelistet ("orphan" Topic)</span></div>
+      <div class="status-line"><span class="status-icon">⚠️</span><span class="status-text">Konnte systemPrompt-Inhalte nicht parsen (nur Keys sichtbar). Ob "Session-Start (PFLICHT)" in allen Topics steht: nicht verifizierbar ohne tiefen JSON-Parse.</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">27</span> memory/projects/ Unterordner</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">10 Unterordner vorhanden: architekt-connect, bpp, concord, fitness, legal, luma, mission-control, research, sales, security</span></div>
+      <div class="status-line"><span class="status-icon">❌</span><span class="status-text"><strong>DRMS-SPA26 hat KEINEN Unterordner</strong> (memory/projects/drms/ fehlt) — in TOPICS.md aber referenziert</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">28</span> Topic-Aktivität letzte Woche</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">⚠️</span><span class="status-text">Nicht direkt messbar über File-Timestamps. Bekannt aktiv: LUMA (HAMM), Sales Support, Research (basierend auf Daily Logs)</span></div>
+    </div>
+  </div>
+
+
+  <!-- ═══ KONSISTENZ ═══ -->
+  <div class="section-header"><h2>🔗 Konsistenz</h2></div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">29</span> SOUL.md vs RULES.md</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✅</span><span class="status-text">Keine inhaltlichen Duplikate. SOUL definiert "wer", RULES definiert "wie". Telegram-Formatierung aus unterschiedlicher Perspektive (Ton vs. Regeln).</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">30</span> AGENTS.md vs RULES.md</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">⚠️</span><span class="status-text">Propagations-Pflicht ist <strong>DOPPELT</strong>: Identischer 4-Schritte-Block in AGENTS.md (Z. 46–50) und RULES.md (Z. 3–8). Sollte nur in RULES.md stehen, AGENTS.md nur Verweis.</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">31</span> Veraltete .md-Dateien im Root <span class="err">58 Dateien</span></div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">❌</span><span class="status-text">58 Dateien älter als 30 Tage! Älteste von 2026-02-13 (IDENTITY.md, HEARTBEAT.md).</span></div>
+      <div class="status-line"><span class="status-icon">📦</span><span class="status-text">Größte Cluster: drms-* (11), architekt-connect-* (7), security-* (6), weber-* (5)</span></div>
+      <div class="status-line"><span class="status-icon">💡</span><span class="status-text">Empfehlung: In <code>memory/archive/</code> verschieben oder löschen</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">32</span> Unreferenzierte Dateien im Root</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">⚠️</span><span class="status-text">Unreferenziert: GUARDRAILS.md, POLICY.md, RECOVERY-PLAN.md, SECURITY-FINAL.md, SECURITY-URGENT.md, URGENT-SECURITY-ALERT.md, PODCAST_GEMINI_SETUP.md, PODCAST_WORKFLOW.md, status-dashboard.md, tmp-next-steps-alex.md, bpp-event-ai-implementation.md, cloud-cowork-comparison-2026.md, newsletter-abbestellen-liste.md, ntfy-secure-setup.md, ssh-key-setup-SAFE.md</span></div>
+      <div class="status-line"><span class="status-icon">❌</span><span class="status-text"><strong>credentials.md (strato)</strong> — potentielles Sicherheitsrisiko! Credentials-Datei liegt offen im Workspace.</span></div>
+    </div>
+  </div>
+
+
+  <!-- ═══ TOKEN-BUDGET ═══ -->
+  <div class="section-header"><h2>🪙 Token-Budget &amp; Kosten</h2></div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">33</span> Gesamtzeilen Primary Files</div>
+    <div class="card-body">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Datei</th><th>Zeilen</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>RULES.md</td><td>228</td></tr>
+            <tr><td>SETUP.md</td><td>203</td></tr>
+            <tr><td>PROJECTS.md</td><td>179</td></tr>
+            <tr><td>MEMORY.md</td><td>86</td></tr>
+            <tr><td>AGENTS.md</td><td>83</td></tr>
+            <tr><td>SOUL.md</td><td>56</td></tr>
+            <tr><td>USER.md</td><td>28</td></tr>
+            <tr><td>SECURITY.md</td><td>9</td></tr>
+            <tr class="token-total"><td><strong>TOTAL</strong></td><td><strong>872</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:12px; font-size:13px; color:#6B7280;">Geschätzte Tokens: ~3.500–4.000 (bei ~4 Tokens/Zeile). ✅ Unter 5.000 Token System-Context — effizient.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="num">34</span> Trimm-Kandidaten</div>
+    <div class="card-body">
+      <div class="status-line"><span class="status-icon">✂️</span><span class="status-text">Discovery Summary Format: doppelt definiert → eine Version löschen (-25 Zeilen)</span></div>
+      <div class="status-line"><span class="status-icon">✂️</span><span class="status-text">AGENTS.md Propagations-Pflicht: Duplikat entfernen, nur Verweis auf RULES.md (-5 Zeilen)</span></div>
+      <div class="status-line"><span class="status-icon">✂️</span><span class="status-text">MEMORY.md: 86 → 80 durch Trimmen von "Transkriptor Workflow" (veraltet?) + Komprimierung</span></div>
+    </div>
+  </div>
+
+
+  <!-- ═══ GESAMTBEWERTUNG ═══ -->
+  <div class="section-header"><h2>📊 Gesamtbewertung</h2></div>
+
+  <div class="card">
+    <div class="card-title">Systemreife: 6.5 / 10</div>
+    <div class="card-body">
+      <div class="score-grid">
+        <div class="score-box good">
+          <h4>✅ Was gut läuft</h4>
+          <ul>
+            <li>✅ Core-File-Guard zuverlässig</li>
+            <li>✅ Backup täglich, 100% Erfolgsrate</li>
+            <li>✅ Security Monitor stündlich aktiv</li>
+            <li>✅ 20 Skills, alle mit SKILL.md</li>
+            <li>✅ Legal-Agent komplett</li>
+            <li>✅ Token Health Check wöchentlich</li>
+            <li>✅ python-docx installiert</li>
+            <li>✅ Primary Files strukturell sauber</li>
+          </ul>
+        </div>
+        <div class="score-box bad">
+          <h4>❌ Was kritisch ist</h4>
+          <ul>
+            <li>❌ Telegram Outbound Bug (5+ Crons)</li>
+            <li>❌ changelog.md — 1 Eintrag</li>
+            <li>❌ 58 veraltete Dateien im Root</li>
+            <li>❌ DRMS Projektordner fehlt</li>
+            <li>❌ WiFi Watchdog fehlt</li>
+            <li>❌ strato credentials.md im Workspace</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Vergleich zum 13. März</div>
+    <div class="card-body">
+      <div class="compare-grid">
+        <div class="compare-item pos">✅ Skills: +2 (playwright-scraper, legal-contracts)</div>
+        <div class="compare-item pos">✅ Legal: komplett neu aufgebaut</div>
+        <div class="compare-item pos">✅ Cron Health Check: funktioniert jetzt</div>
+        <div class="compare-item pos">✅ Daily Log Writer: neu</div>
+        <div class="compare-item neg">❌ Outbound-Bug neu seit ~27.03.</div>
+        <div class="compare-item neg">❌ changelog weiterhin vernachlässigt</div>
+        <div class="compare-item neg">❌ Aufräumen weiterhin nicht gemacht</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎯 Top-3 Prioritäten</div>
+    <div class="card-body" style="padding-top: 4px;">
+      <div class="priority-card p1">
+        <div class="priority-icon">🔴</div>
+        <div class="priority-content">
+          <h4>1. Telegram Outbound Fix</h4>
+          <p>delivery.mode="announce" reparieren oder alle betroffenen Crons auf delivery.mode="none" + internes message tool umstellen</p>
+        </div>
+      </div>
+      <div class="priority-card p2">
+        <div class="priority-icon">🟡</div>
+        <div class="priority-content">
+          <h4>2. Workspace aufräumen</h4>
+          <p>58 alte Dateien in memory/archive/ verschieben, strato credentials.md entfernen/sichern</p>
+        </div>
+      </div>
+      <div class="priority-card p3">
+        <div class="priority-icon">🟡</div>
+        <div class="priority-content">
+          <h4>3. SETUP.md aktualisieren</h4>
+          <p>Cron-Inventar synchronisieren, "Letzte Prüfung" auf heute setzen</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Hatti System-Check · 28. März 2026, 21:39 CET · Generiert von Hatti 🏔️
+  </div>
+
+</div>
+</body>
+</html>
