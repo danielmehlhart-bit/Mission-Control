@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Cowork für den BPP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #F9FAFB;
+      color: #1A1A2E;
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    .hero {
+      background: linear-gradient(135deg, #1A1A2E 0%, #16213E 60%, #0F3460 100%);
+      color: #fff;
+      padding: 72px 24px 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(249,115,22,0.25) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 240px; height: 240px;
+      background: radial-gradient(circle, rgba(249,115,22,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(249,115,22,0.2);
+      border: 1px solid rgba(249,115,22,0.4);
+      color: #FB923C;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero h1 span { color: #F97316; }
+    .hero p {
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: rgba(255,255,255,0.7);
+      max-width: 540px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 64px 0;
+    }
+    section + section {
+      border-top: 1px solid #E5E7EB;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #F97316;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: clamp(22px, 3.5vw, 32px);
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 16px;
+    }
+    .section-intro {
+      font-size: 17px;
+      color: #4B5563;
+      max-width: 700px;
+      line-height: 1.75;
+    }
+
+    /* ── INTRO CARDS ── */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-top: 36px;
+    }
+    .intro-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+      border: 1px solid #F3F4F6;
+    }
+    .intro-card .icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+    .intro-card .icon.orange { background: #FFF7ED; }
+    .intro-card .icon.blue   { background: #EFF6FF; }
+    .intro-card .icon.green  { background: #F0FDF4; }
+    .intro-card .icon.purple { background: #FAF5FF; }
+    .intro-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+    .intro-card p {
+      font-size: 14px;
+      color: #6B7280;
+      line-height: 1.65;
+    }
+    .price-badge {
+      display: inline-block;
+      background: #F0FDF4;
+      color: #16A34A;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-top: 10px;
+      border: 1px solid #BBF7D0;
+    }
+
+    /* ── PAIN / SOLUTION CARDS ── */
+    .pain-cards { margin-top: 40px; display: flex; flex-direction: column; gap: 24px; }
+
+    .pain-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.07);
+    }
+
+    .pain-side {
+      background: #FFF7ED;
+      border-right: 1px solid #FED7AA;
+      padding: 28px 24px;
+    }
+    .pain-side .tag {
+      display: inline-block;
+      background: #FEF3C7;
+      color: #B45309;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+      border: 1px solid #FDE68A;
+      margin-bottom: 12px;
+    }
+    .pain-side h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #92400E;
+      margin-bottom: 10px;
+    }
+    .pain-side p {
+      font-size: 14px;
+      color: #B45309;
+      line-height: 1.65;
+    }
+    .pain-side .pain-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .solution-side {
+      background: #F0FDF4;
+      padding: 28px 24px;
+    }
+    .solution-side .tag {
+      display: inline-block;
+      background: #DCFCE7;
+      color: #166534;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+      border: 1px solid #BBF7D0;
+      margin-bottom: 12px;
+    }
+    .solution-side h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #166534;
+      margin-bottom: 10px;
+    }
+    .solution-side .command {
+      background: #1A1A2E;
+      color: #A3E635;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      line-height: 1.6;
+      margin: 12px 0;
+      border-left: 3px solid #F97316;
+    }
+    .solution-side .result {
+      font-size: 13px;
+      color: #15803D;
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+    .solution-side .result strong { color: #166534; }
+
+    @media (max-width: 640px) {
+      .pain-card { grid-template-columns: 1fr; }
+      .pain-side { border-right: none; border-bottom: 1px solid #FED7AA; }
+    }
+
+    /* ── CHATGPT VS COWORK ── */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 36px;
+    }
+    .comp-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 32px 28px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .comp-card.gpt {
+      border: 2px solid #E5E7EB;
+    }
+    .comp-card.cowork {
+      border: 2px solid #F97316;
+    }
+    .comp-card .comp-logo {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+    .comp-card h3 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .comp-card.gpt h3 { color: #374151; }
+    .comp-card.cowork h3 { color: #F97316; }
+    .comp-list {
+      list-style: none;
+    }
+    .comp-list li {
+      font-size: 14px;
+      color: #4B5563;
+      padding: 8px 0;
+      border-bottom: 1px solid #F3F4F6;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.55;
+    }
+    .comp-list li:last-child { border-bottom: none; }
+    .comp-list li .bullet {
+      flex-shrink: 0;
+      font-size: 14px;
+      margin-top: 1px;
+    }
+    .comp-card.gpt .comp-list li .bullet { color: #9CA3AF; }
+    .comp-card.cowork .comp-list li .bullet { color: #22C55E; }
+
+    .metaphor-box {
+      background: linear-gradient(135deg, #1A1A2E, #0F3460);
+      border-radius: 16px;
+      padding: 32px 28px;
+      margin-top: 28px;
+      color: #fff;
+    }
+    .metaphor-box p {
+      font-size: 15px;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.85);
+    }
+    .metaphor-box p strong {
+      color: #F97316;
+    }
+    .metaphor-box .quote-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 640px) {
+      .comparison-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── LIMITS ── */
+    .limits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 36px;
+    }
+    .limit-item {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px 18px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid #F3F4F6;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .limit-item .licon {
+      font-size: 20px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .limit-item p {
+      font-size: 14px;
+      color: #4B5563;
+      line-height: 1.55;
+    }
+
+    /* ── STEPS ── */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 36px;
+    }
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .step-number {
+      width: 44px; height: 44px;
+      background: #F97316;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-content h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 6px;
+    }
+    .step-content p {
+      font-size: 14px;
+      color: #6B7280;
+      line-height: 1.65;
+    }
+    .step-content .url {
+      color: #F97316;
+      font-weight: 600;
+    }
+    .step-hint {
+      background: #FFF7ED;
+      border: 1px solid #FED7AA;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-top: 28px;
+    }
+    .step-hint p {
+      font-size: 14px;
+      color: #92400E;
+      line-height: 1.65;
+    }
+
+    /* ── BIG PICTURE ── */
+    .bpp-os {
+      background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+      border-radius: 20px;
+      padding: 40px 36px;
+      color: #fff;
+      margin-top: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .bpp-os::before {
+      content: '';
+      position: absolute;
+      top: -50px; right: -50px;
+      width: 200px; height: 200px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+    }
+    .bpp-os h3 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+    .os-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .os-card {
+      background: rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 20px 18px;
+      backdrop-filter: blur(4px);
+    }
+    .os-card h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .os-card p {
+      font-size: 13px;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+    .os-card .os-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 8px;
+    }
+    .os-result {
+      background: rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 20px 18px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .os-result p {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .os-result .big {
+      font-size: 36px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    @media (max-width: 640px) {
+      .os-grid { grid-template-columns: 1fr; }
+      .bpp-os { padding: 28px 20px; }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      background: #F3F4F6;
+      border-top: 1px solid #E5E7EB;
+    }
+    footer p {
+      font-size: 14px;
+      color: #9CA3AF;
+    }
+    footer strong { color: #6B7280; }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════ HERO ════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-tag">Persönliches Briefing</div>
+  <h1>Claude Cowork<br/><span>für den BPP</span></h1>
+  <p>Was KI für dich tun kann — neben dem CRM</p>
+</div>
+
+<!-- ════════════════════════════════ SECTION 1 ════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">01 — Intro</div>
+    <h2 class="section-title">Seba, kennst du Claude Cowork?</h2>
+    <p class="section-intro">
+      Kurz gesagt: nein, das ist kein Chatbot. Ich zeige dir hier was ich meine — und warum ich glaube, dass das für dich einen echten Unterschied macht.
+    </p>
+
+    <div class="intro-grid">
+      <div class="intro-card">
+        <div class="icon orange">🤖</div>
+        <h3>Kein Chatbot im Browser</h3>
+        <p>Claude Cowork läuft als App auf deinem Mac. Du tipps keine Fragen — du gibst Aufgaben. Der Assistent plant die Schritte selbst, führt sie aus, und meldet sich wenn er fertig ist.</p>
+      </div>
+      <div class="intro-card">
+        <div class="icon blue">💻</div>
+        <h3>Direkter Zugriff auf deine Welt</h3>
+        <p>Lokale Dateien, Ordner, Tabellen, Dokumente — Cowork kann drauf zugreifen. Du musst nichts hochladen. Alles liegt bei dir, er arbeitet damit.</p>
+      </div>
+      <div class="intro-card">
+        <div class="icon green">📧</div>
+        <h3>Mails, Docs, Analysen</h3>
+        <p>Postfach lesen, Zusammenfassungen schreiben, Excel-Daten auswerten, Newsletter erstellen — das sind keine Features. Das sind Aufgaben, die du ihm gibst.</p>
+      </div>
+      <div class="intro-card">
+        <div class="icon purple">💶</div>
+        <h3>Einstieg</h3>
+        <p>Claude Pro Account bei claude.ai, Claude Desktop App auf den Mac, einloggen — fertig. Keine IT-Abteilung, keine Installation durch einen Techniker.</p>
+        <span class="price-badge">$20 / Monat</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ SECTION 2 ════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">02 — Deine Baustellen</div>
+    <h2 class="section-title">Was ich bei dir gesehen habe — und was Cowork lösen kann</h2>
+    <p class="section-intro">
+      Ich kenn deine operative Realität ein bisschen. Lass mich durchgehen, wo du Zeit verlierst — und was du stattdessen sagen könntest.
+    </p>
+
+    <div class="pain-cards">
+
+      <!-- 1 -->
+      <div class="pain-card">
+        <div class="pain-side">
+          <div class="pain-icon">✍️</div>
+          <span class="tag">Problem</span>
+          <h3>Newsletter schreiben</h3>
+          <p>Jedes Mal neu anfangen, jedes Mal Stunden drauf. Teilnehmerlisten suchen, Texte formulieren, Sponsor einbauen — alles manuell.</p>
+        </div>
+        <div class="solution-side">
+          <span class="tag">Cowork-Lösung</span>
+          <h3>Du sagst einmal:</h3>
+          <div class="command">"Schreib einen Newsletter für unsere Mitglieder über den kommenden Lichtsetzungs-Workshop in Frankfurt. Sponsor ist Canon. Nimm die Teilnehmerliste vom letzten Workshop als Basis für die Ansprache."</div>
+          <p class="result">→ Cowork durchsucht deine Ordner, findet die Liste, schreibt den Newsletter, legt ihn als Word-Datei ab. Du reviewst, fertig.</p>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="pain-card">
+        <div class="pain-side">
+          <div class="pain-icon">📢</div>
+          <span class="tag">Problem</span>
+          <h3>Vermarktungstexte</h3>
+          <p>Instagram braucht anderen Text als die E-Mail. Für jedes Event neu schreiben, nie sicher ob's passt — kostet Überwindung und Zeit.</p>
+        </div>
+        <div class="solution-side">
+          <span class="tag">Cowork-Lösung</span>
+          <h3>Du sagst einmal:</h3>
+          <div class="command">"Erstelle einen Einladungstext für Instagram und einen für E-Mail für unseren nächsten Workshop: Thema Lichtsetzung, Referent Thomas Bergmann, Frankfurt, 12 Plätze, 450€."</div>
+          <p class="result">→ Cowork schreibt beide Versionen, plattformgerecht — Instagram kurz und knackig, Mail mit allen Details.</p>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="pain-card">
+        <div class="pain-side">
+          <div class="pain-icon">🤝</div>
+          <span class="tag">Problem</span>
+          <h3>Consulting-Vorbereitung</h3>
+          <p>Du gehst in Gespräche und hast nicht die Zeit, jeden Fotografen vorher wirklich zu recherchieren. Portfolio, Positionierung, Preise — du kennst sie kaum.</p>
+        </div>
+        <div class="solution-side">
+          <span class="tag">Cowork-Lösung</span>
+          <h3>Du sagst einmal:</h3>
+          <div class="command">"Recherchiere den Fotografen Max Müller. Schau dir seine Website www.mueller-foto.de an, analysiere sein Portfolio und seine Positionierung. Gib mir 5 Talking Points für unser Beratungsgespräch morgen."</div>
+          <p class="result">→ Cowork öffnet die Website, analysiert sie, und legt dir ein kompaktes Briefing als Datei auf den Desktop.</p>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="pain-card">
+        <div class="pain-side">
+          <div class="pain-icon">📬</div>
+          <span class="tag">Problem</span>
+          <h3>E-Mail-Flut</h3>
+          <p>Täglich wächst der Rückstand. Wichtige Mails gehen unter. Du weißt selbst: du kommst nicht hinterher.</p>
+        </div>
+        <div class="solution-side">
+          <span class="tag">Cowork-Lösung</span>
+          <h3>Du sagst einmal:</h3>
+          <div class="command">"Lies meine letzten 20 E-Mails. Fasse jede in einem Satz zusammen, markiere welche dringend sind, und erstelle Antwort-Entwürfe für die drei wichtigsten."</div>
+          <p class="result">→ Cowork liest dein M365-Postfach, priorisiert, und legt dir Entwürfe bereit. Du entscheidest, was rausgeht.</p>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="pain-card">
+        <div class="pain-side">
+          <div class="pain-icon">💸</div>
+          <span class="tag">Problem</span>
+          <h3>Zahlungserinnerungen</h3>
+          <p>3x gemahnt, nichts passiert. Jede Mail einzeln schreiben, personalisieren, Rechnungsnummern raussuchen — ermüdend.</p>
+        </div>
+        <div class="solution-side">
+          <span class="tag">Cowork-Lösung</span>
+          <h3>Du sagst einmal:</h3>
+          <div class="command">"Schau in meine offene-Rechnungen-Tabelle. Erstelle für alle Mitglieder mit Rechnungen älter als 60 Tage eine freundliche aber bestimmte Zahlungserinnerung. Personalisiere jede mit Name und Rechnungsnummer."</div>
+          <p class="result">→ Cowork liest die Excel-Datei, erstellt individuelle Mails — du kopierst sie rüber und sendest ab.</p>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="pain-card">
+        <div class="pain-side">
+          <div class="pain-icon">🎙️</div>
+          <span class="tag">Problem</span>
+          <h3>Podcast-Content (Daily Inspirations)</h3>
+          <p>Du hast das Format, die Ideen fehlen nicht — aber 5 Skripte schreiben dauert einen halben Tag, den du nicht hast.</p>
+        </div>
+        <div class="solution-side">
+          <span class="tag">Cowork-Lösung</span>
+          <h3>Du sagst einmal:</h3>
+          <div class="command">"Schreib mir 5 Podcast-Skripte (je 2 Min) für 'Daily Inspiration': Preisgestaltung für Anfänger, Licht ohne Blitz, Kundenkommunikation nach dem Shooting, Portfolio-Aufbau, Social Media für Fotografen."</div>
+          <p class="result">→ Cowork schreibt alle 5, legt sie als separate Dateien ab. Fertig zum Einlesen.</p>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="pain-card">
+        <div class="pain-side">
+          <div class="pain-icon">📊</div>
+          <span class="tag">Problem</span>
+          <h3>Surveys erstellen & auswerten</h3>
+          <p>Du willst Daten von deinen Mitgliedern — aber weder die Umfrage erstellen noch die Antworten auswerten macht Spaß alleine.</p>
+        </div>
+        <div class="solution-side">
+          <span class="tag">Cowork-Lösung</span>
+          <h3>Zweimal lohnend:</h3>
+          <div class="command">"Erstelle eine Umfrage mit 10 Fragen für unsere Mitglieder: Kamera, Software, Umsatz, größte Herausforderung. Formatiere es für Google Forms."</div>
+          <div class="command">"Hier sind die 47 Antworten als CSV. Analysiere die Daten, finde Muster, schreib mir die Top-3-Erkenntnisse."</div>
+          <p class="result">→ Cowork macht beides: erstellen und auswerten.</p>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="pain-card">
+        <div class="pain-side">
+          <div class="pain-icon">🗓️</div>
+          <span class="tag">Problem</span>
+          <h3>Strategische Workshop-Planung</h3>
+          <p>Welche Themen laufen? Wo kommen die Mitglieder her? Wer kommt immer wieder? Du hast die Daten — aber keine Zeit, sie auszuwerten.</p>
+        </div>
+        <div class="solution-side">
+          <span class="tag">Cowork-Lösung</span>
+          <h3>Du sagst einmal:</h3>
+          <div class="command">"Hier ist die Teilnehmerliste der letzten 12 Workshops als Excel. Analysiere: Welche Themen liefen am besten? Gibt es regionale Cluster? Welche Mitglieder kommen regelmäßig? Empfehle mir die nächsten 3 Workshops."</div>
+          <p class="result">→ Cowork wertet die Daten aus und gibt dir eine datenbasierte Empfehlung statt Bauchgefühl.</p>
+        </div>
+      </div>
+
+    </div><!-- /pain-cards -->
+  </div>
+</section>
+
+<!-- ════════════════════════════════ SECTION 3 ════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">03 — Der Unterschied</div>
+    <h2 class="section-title">ChatGPT vs. Cowork — für dich erklärt</h2>
+    <p class="section-intro">
+      Du nutzt ChatGPT im Browser. Das ist gut. Aber es ist ein anderes Werkzeug. Hier ist der entscheidende Unterschied:
+    </p>
+
+    <div class="comparison-grid">
+      <div class="comp-card gpt">
+        <div class="comp-logo">💬</div>
+        <h3>ChatGPT</h3>
+        <ul class="comp-list">
+          <li><span class="bullet">○</span> Du stellst eine Frage, bekommst eine Antwort</li>
+          <li><span class="bullet">○</span> Neue Frage? Neues Gespräch. Kein roter Faden.</li>
+          <li><span class="bullet">○</span> Kennt deine Dateien nicht</li>
+          <li><span class="bullet">○</span> Kann nichts auf deinem Computer tun</li>
+          <li><span class="bullet">○</span> Du bist der Ausführende — er nur der Ratgeber</li>
+          <li><span class="bullet">○</span> Gut für: schnelle Fragen, Texte ausprobieren, Ideen sammeln</li>
+        </ul>
+      </div>
+      <div class="comp-card cowork">
+        <div class="comp-logo">⚡</div>
+        <h3>Claude Cowork</h3>
+        <ul class="comp-list">
+          <li><span class="bullet">✓</span> Du gibst eine Aufgabe — er erledigt sie</li>
+          <li><span class="bullet">✓</span> Plant selbst, führt Schritte aus, meldet sich wenn fertig</li>
+          <li><span class="bullet">✓</span> Greift auf deine Ordner und Dateien zu</li>
+          <li><span class="bullet">✓</span> Erstellt, liest und bearbeitet Dokumente direkt</li>
+          <li><span class="bullet">✓</span> Du bist der Chef — er erledigt die Ausführung</li>
+          <li><span class="bullet">✓</span> Gut für: alles was dich operativ kostet</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="metaphor-box">
+      <div class="quote-icon">❝</div>
+      <p>
+        <strong>ChatGPT</strong> ist ein Telefonat mit einem Experten. Du rufst an, fragst, er erklärt dir was du tun sollst. Du legst auf — und machst es selbst.<br/><br/>
+        <strong>Cowork</strong> ist ein Mitarbeiter, der neben dir sitzt, deinen Bildschirm sieht, deine Ablage kennt — und den du einfach sagst: <em>"Mach das."</em>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ SECTION 4 ════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">04 — Ehrlichkeit</div>
+    <h2 class="section-title">Was Cowork NICHT kann</h2>
+    <p class="section-intro">
+      Ich verkaufe dir nichts. Hier sind die echten Grenzen, damit du weißt womit du es zu tun hast:
+    </p>
+
+    <div class="limits-grid">
+      <div class="limit-item">
+        <span class="licon">🗄️</span>
+        <p><strong>Kein CRM-Ersatz.</strong> Mitgliederdaten strukturiert verwalten — das ist das CRM, das wir separat bauen.</p>
+      </div>
+      <div class="limit-item">
+        <span class="licon">🧾</span>
+        <p><strong>Keine rechtskonformen Rechnungen.</strong> Dafür bleibt SevDesk oder dein bisheriges Tool.</p>
+      </div>
+      <div class="limit-item">
+        <span class="licon">🍎</span>
+        <p><strong>Nur Mac.</strong> Kein Windows, kein Web-Interface für die Automatisierung. Du brauchst einen Mac.</p>
+      </div>
+      <div class="limit-item">
+        <span class="licon">⏸️</span>
+        <p><strong>App zu = gestoppt.</strong> Cowork läuft nur wenn die App offen ist. Keine Hintergrundprozesse ohne Konfiguration.</p>
+      </div>
+      <div class="limit-item">
+        <span class="licon">📤</span>
+        <p><strong>E-Mails lesen, nicht senden.</strong> Auf dem Pro Plan liest er dein Postfach, aber senden musst du selbst.</p>
+      </div>
+      <div class="limit-item">
+        <span class="licon">🧠</span>
+        <p><strong>Kein Gedächtnis zwischen Sessions.</strong> Was er heute getan hat, weiß er morgen nicht mehr — dafür ist das CRM da.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ SECTION 5 ════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">05 — Loslegen</div>
+    <h2 class="section-title">So würde ich starten</h2>
+    <p class="section-intro">
+      Drei Schritte. Nicht mehr. Kein Setup-Marathon, keine IT-Ticket.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>Claude Pro Account anlegen</h3>
+          <p>Geh auf <span class="url">claude.ai</span>, leg einen Account an, wähle den Pro Plan. <strong>$20/Monat</strong>, jederzeit kündbar. Weniger als ein Mittagessen in Frankfurt.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>Claude Desktop App auf den Mac</h3>
+          <p>Lade die App direkt von claude.ai herunter. Installiere sie, meld dich mit deinem Account an. Fertig. Die Verbindung zu deinen lokalen Dateien richtest du in 2 Minuten ein.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Ersten echten Test machen</h3>
+          <p>Öffne einen Ordner mit echten BPP-Workshop-Infos als Kontext. Sag dann: <em>"Schreib mir einen Newsletter für den nächsten BPP Workshop."</em> — und schau was passiert.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-hint">
+      <p>
+        🎯 <strong>Wenn du den Mehrwert spürst</strong> — und das wirst du — können wir im nächsten Schritt Plugins und Scheduled Tasks einrichten, damit Cowork noch tiefer in deinen Workflow integriert ist. Aber erstmal: einfach anfangen.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ SECTION 6 ════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">06 — Das große Bild</div>
+    <h2 class="section-title">CRM + Cowork = BPP Operating System</h2>
+    <p class="section-intro">
+      Zwei Tools, eine Vision: du und Wolf arbeitet endlich strategisch statt operativ.
+    </p>
+
+    <div class="bpp-os">
+      <h3>Das BPP Operating System</h3>
+
+      <div class="os-grid">
+        <div class="os-card">
+          <div class="os-label">📊 Deine Datenbasis</div>
+          <h4>Das CRM</h4>
+          <p>Wer sind deine Mitglieder, was buchen sie, wer zahlt, wann laufen Mitgliedschaften aus. Strukturiert, durchsuchbar, dauerhaft.</p>
+        </div>
+        <div class="os-card">
+          <div class="os-label">⚡ Dein Assistent</div>
+          <h4>Claude Cowork</h4>
+          <p>Nutzt diese Daten, um dir Arbeit abzunehmen — Newsletter, Analysen, Briefings, Texte, Auswertungen. Täglich, on-demand.</p>
+        </div>
+      </div>
+
+      <div class="os-result">
+        <p>Zusammen ersetzen sie</p>
+        <div class="big">80%</div>
+        <p>der manuellen Arbeit, die dich heute davon abhält, strategisch zu arbeiten.<br/>
+        <strong>Mehr Zeit für Produktentwicklung, Industriepartner-Akquise, Mitgliederwachstum.</strong></p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════ FOOTER ════════════════════════════════ -->
+<footer>
+  <p><strong>Von Daniel</strong> — März 2026</p>
+  <p style="margin-top:6px;">Persönliches Briefing für Sebastian Weißmann, BPP</p>
+</footer>
+
+</body>
+</html>
