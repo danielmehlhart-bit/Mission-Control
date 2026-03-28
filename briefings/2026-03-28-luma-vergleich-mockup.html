@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUMA vs. PlanRadar vs. Phase0 vs. Asana – Tool-Vergleich für Architekturbüros</title>
+  <meta name="description" content="Detaillierter Vergleich: LUMA vs. PlanRadar vs. Phase0 vs. Asana. Welches Projektmanagement-Tool passt zu kleinen Architekturbüros? Feature-Matrix, Preise, Pro & Kontra.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "LUMA",
+    "description": "All-in-One Projektmanagement-Software für kleine Architekturbüros (5–15 MA) in Deutschland. HOAI-konform, KI-gestützt, in 2 Wochen produktiv.",
+    "url": "https://luma-app.io",
+    "brand": {
+      "@type": "Brand",
+      "name": "LUMA"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "47",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "EUR",
+      "availability": "https://schema.org/InStock",
+      "url": "https://luma-app.io/demo",
+      "description": "SMB-freundliche Preise, 14 Tage kostenlos testen"
+    },
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web, iOS, Android",
+    "audience": {
+      "@type": "Audience",
+      "audienceType": "Architekturbüros, Architekten, Bauleiter"
+    }
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f4f6;
+      color: #1a1a2e;
+      line-height: 1.6;
+    }
+
+    /* HEADER */
+    .site-header {
+      background: linear-gradient(135deg, #7C3AED 0%, #9F67FF 60%, #C084FC 100%);
+      color: white;
+      padding: 56px 24px 64px;
+      text-align: center;
+    }
+
+    .logo {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 2rem;
+      font-weight: 500;
+      letter-spacing: -0.5px;
+      color: white;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 32px;
+    }
+
+    .logo .dot {
+      color: #E9D5FF;
+      font-size: 2.2rem;
+      line-height: 0;
+      vertical-align: -2px;
+    }
+
+    .site-header h1 {
+      font-size: clamp(1.3rem, 3.5vw, 2rem);
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: -0.3px;
+      max-width: 780px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .site-header p {
+      font-size: 1.05rem;
+      opacity: 0.9;
+      max-width: 620px;
+      margin: 0 auto 20px;
+    }
+
+    .header-badges {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    /* MAIN */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* SECTION TITLES */
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #EDE9FE;
+    }
+
+    /* ====================== */
+    /* COMPARISON TABLE       */
+    /* ====================== */
+    .table-section {
+      margin-bottom: 56px;
+    }
+
+    .table-intro {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .table-intro .icon-big {
+      font-size: 2rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .table-intro h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .table-intro p {
+      font-size: 0.92rem;
+      color: #6B7280;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      min-width: 680px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 16px 18px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-align: left;
+      background: #1a1a2e;
+      color: white;
+      white-space: nowrap;
+    }
+
+    thead th:first-child {
+      border-radius: 16px 0 0 0;
+    }
+
+    thead th:last-child {
+      border-radius: 0 16px 0 0;
+    }
+
+    /* LUMA column highlight */
+    thead th.col-luma {
+      background: #7C3AED;
+      color: white;
+    }
+
+    tbody td {
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      color: #374151;
+      border-bottom: 1px solid #F3F4F6;
+      vertical-align: top;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* zebra striping */
+    tbody tr:nth-child(even) td {
+      background: #FAFAFA;
+    }
+
+    /* LUMA column */
+    tbody td.col-luma {
+      background: #F5F3FF !important;
+      font-weight: 500;
+      color: #4C1D95;
+    }
+
+    tbody tr:nth-child(even) td.col-luma {
+      background: #EDE9FE !important;
+    }
+
+    td:first-child {
+      font-weight: 600;
+      color: #1a1a2e;
+      white-space: nowrap;
+    }
+
+    /* BADGES */
+    .yes-badge, .no-badge, .warn-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .yes-badge {
+      background: #D1FAE5;
+      color: #065F46;
+    }
+
+    .no-badge {
+      background: #FEE2E2;
+      color: #991B1B;
+    }
+
+    .warn-badge {
+      background: #FEF3C7;
+      color: #92400E;
+    }
+
+    /* text-only cells */
+    .cell-text {
+      font-size: 0.85rem;
+      color: #6B7280;
+    }
+
+    /* ====================== */
+    /* PRO/CONTRA CARDS       */
+    /* ====================== */
+    .cards-section {
+      margin-bottom: 56px;
+    }
+
+    .competitor-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .competitor-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid #F3F4F6;
+    }
+
+    .card-header .tool-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 2px;
+    }
+
+    .card-header .tool-sub {
+      font-size: 0.8rem;
+      color: #9CA3AF;
+    }
+
+    .card-body {
+      padding: 20px 24px;
+    }
+
+    .card-list-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-list-title.pros { color: #065F46; }
+    .card-list-title.cons { color: #991B1B; }
+
+    .card-list {
+      list-style: none;
+      margin-bottom: 20px;
+    }
+
+    .card-list li {
+      font-size: 0.87rem;
+      color: #374151;
+      padding: 5px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .card-list li::before {
+      flex-shrink: 0;
+      margin-top: 1px;
+      font-size: 0.9rem;
+    }
+
+    .card-list.pros li::before { content: '✓'; color: #10B981; font-weight: 700; }
+    .card-list.cons li::before { content: '✗'; color: #EF4444; font-weight: 700; }
+
+    .card-verdict {
+      background: #F9FAFB;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.82rem;
+      color: #6B7280;
+      font-style: italic;
+      border-left: 3px solid #E5E7EB;
+    }
+
+    /* ====================== */
+    /* SUMMARY BAR            */
+    /* ====================== */
+    .summary-section {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      padding: 32px 28px;
+      margin-bottom: 48px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .summary-item {
+      text-align: center;
+    }
+
+    .summary-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #7C3AED;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .summary-label {
+      font-size: 0.82rem;
+      color: #6B7280;
+      font-weight: 500;
+    }
+
+    /* ====================== */
+    /* CTA FOOTER             */
+    /* ====================== */
+    .cta-section {
+      background: linear-gradient(135deg, #7C3AED 0%, #9F67FF 100%);
+      border-radius: 20px;
+      padding: 48px 32px;
+      text-align: center;
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .cta-section h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .cta-section p {
+      opacity: 0.9;
+      margin-bottom: 28px;
+      font-size: 1rem;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-white {
+      display: inline-block;
+      background: white;
+      color: #7C3AED;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+
+    .btn-white:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .btn-ghost {
+      display: inline-block;
+      background: transparent;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      border: 2px solid rgba(255,255,255,0.5);
+      transition: border-color 0.2s;
+    }
+
+    .btn-ghost:hover {
+      border-color: white;
+    }
+
+    .site-footer-meta {
+      text-align: center;
+      font-size: 0.82rem;
+      color: #9CA3AF;
+      padding: 20px 0;
+    }
+
+    .site-footer-meta a {
+      color: #7C3AED;
+      text-decoration: none;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      .site-header { padding: 40px 16px 48px; }
+      .container { padding: 32px 16px 64px; }
+      .table-intro { flex-direction: column; gap: 10px; }
+      .cta-section { padding: 36px 20px; }
+      .cta-section h2 { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <a href="https://luma-app.io" class="logo">luma<span class="dot">·</span></a>
+    <h1>LUMA vs. PlanRadar vs. Phase0 vs. Asana — Welches Tool passt zu deinem Architekturbüro?</h1>
+    <p>Architekten brauchen kein generisches PM-Tool und keine Enterprise-Lösung. LUMA ist speziell für kleine Büros (5–15 MA) gebaut.</p>
+    <div class="header-badges">
+      <span class="badge">🏗️ HOAI-konform</span>
+      <span class="badge">🤖 KI-gestützt</span>
+      <span class="badge">⚡ 2 Wochen bis produktiv</span>
+      <span class="badge">🇩🇪 Deutsche Server</span>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- SUMMARY STATS -->
+    <section class="summary-section">
+      <h2 class="section-title">LUMA auf einen Blick</h2>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="summary-number">9</div>
+          <div class="summary-label">HOAI-Leistungsphasen nativ eingebaut</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-number">~2W</div>
+          <div class="summary-label">Bis ihr produktiv seid</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-number">5–15</div>
+          <div class="summary-label">Optimale Bürogröße (MA)</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-number">All-in-1</div>
+          <div class="summary-label">Kein Modul-Flickenteppich</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURE MATRIX TABLE -->
+    <section class="table-section">
+      <h2 class="section-title">Feature-Vergleich im Detail</h2>
+
+      <div class="table-intro">
+        <div class="icon-big">📊</div>
+        <div>
+          <h2>Vollständige Feature-Matrix</h2>
+          <p>Alle relevanten Features für kleine Architekturbüros — ohne Marketing-Sprech. LUMA-Spalte ist hervorgehoben.</p>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th class="col-luma">LUMA ⭐</th>
+              <th>PlanRadar</th>
+              <th>Phase0</th>
+              <th>Asana</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Zielgruppe</td>
+              <td class="col-luma"><span class="cell-text">Architekten 5–15 MA</span></td>
+              <td><span class="cell-text">Bau/Immobilien, Enterprise-Fokus</span></td>
+              <td><span class="cell-text">Architekten + Ingenieure</span></td>
+              <td><span class="cell-text">Alle Branchen</span></td>
+            </tr>
+            <tr>
+              <td>HOAI-Leistungsphasen</td>
+              <td class="col-luma"><span class="yes-badge">✅ Eingebaut (LP1–LP9)</span></td>
+              <td><span class="no-badge">❌ Nicht vorhanden</span></td>
+              <td><span class="yes-badge">✅ HOAI 2021</span></td>
+              <td><span class="no-badge">❌ Nicht vorhanden</span></td>
+            </tr>
+            <tr>
+              <td>Bautagebuch</td>
+              <td class="col-luma"><span class="yes-badge">✅ Mit Foto + Wetter</span></td>
+              <td><span class="yes-badge">✅ Kernfeature</span></td>
+              <td><span class="warn-badge">⚠️ Beta</span></td>
+              <td><span class="no-badge">❌ Nicht vorhanden</span></td>
+            </tr>
+            <tr>
+              <td>KI-E-Mail-Agent</td>
+              <td class="col-luma"><span class="yes-badge">✅ Gmail + Auto-Kategorisierung</span></td>
+              <td><span class="no-badge">❌</span></td>
+              <td><span class="no-badge">❌</span></td>
+              <td><span class="no-badge">❌</span></td>
+            </tr>
+            <tr>
+              <td>KI-Copilot</td>
+              <td class="col-luma"><span class="yes-badge">✅ Projektkontext-Chat</span></td>
+              <td><span class="warn-badge">⚠️ Nur Reports/Auswertung</span></td>
+              <td><span class="no-badge">❌</span></td>
+              <td><span class="warn-badge">⚠️ Basic</span></td>
+            </tr>
+            <tr>
+              <td>Voice-to-Task</td>
+              <td class="col-luma"><span class="yes-badge">✅ Kernfeature</span></td>
+              <td><span class="no-badge">❌</span></td>
+              <td><span class="no-badge">❌</span></td>
+              <td><span class="no-badge">❌</span></td>
+            </tr>
+            <tr>
+              <td>Sprachnotizen/Gedanken</td>
+              <td class="col-luma"><span class="yes-badge">✅</span></td>
+              <td><span class="no-badge">❌</span></td>
+              <td><span class="no-badge">❌</span></td>
+              <td><span class="no-badge">❌</span></td>
+            </tr>
+            <tr>
+              <td>Umsatz-Forecast</td>
+              <td class="col-luma"><span class="yes-badge">✅ HOAI-basiert</span></td>
+              <td><span class="no-badge">❌</span></td>
+              <td><span class="yes-badge">✅ Honorarrechnung</span></td>
+              <td><span class="no-badge">❌</span></td>
+            </tr>
+            <tr>
+              <td>Kanban-Board</td>
+              <td class="col-luma"><span class="yes-badge">✅ Mit Review-Workflow</span></td>
+              <td><span class="no-badge">❌</span></td>
+              <td><span class="no-badge">❌</span></td>
+              <td><span class="yes-badge">✅</span></td>
+            </tr>
+            <tr>
+              <td>AVA (Ausschreibung)</td>
+              <td class="col-luma"><span class="no-badge">❌</span></td>
+              <td><span class="no-badge">❌</span></td>
+              <td><span class="yes-badge">✅ Kernfeature</span></td>
+              <td><span class="no-badge">❌</span></td>
+            </tr>
+            <tr>
+              <td>Zeiterfassung</td>
+              <td class="col-luma"><span class="yes-badge">✅</span></td>
+              <td><span class="no-badge">❌</span></td>
+              <td><span class="yes-badge">✅</span></td>
+              <td><span class="warn-badge">⚠️ Add-on</span></td>
+            </tr>
+            <tr>
+              <td>Dokumentenmanagement</td>
+              <td class="col-luma"><span class="yes-badge">✅ KI-kategorisiert</span></td>
+              <td><span class="yes-badge">✅ Planverwaltung</span></td>
+              <td><span class="yes-badge">✅</span></td>
+              <td><span class="warn-badge">⚠️ Basic</span></td>
+            </tr>
+            <tr>
+              <td>Kundenportal</td>
+              <td class="col-luma"><span class="yes-badge">✅ Read-Only</span></td>
+              <td><span class="yes-badge">✅</span></td>
+              <td><span class="no-badge">❌</span></td>
+              <td><span class="no-badge">❌</span></td>
+            </tr>
+            <tr>
+              <td>Mobile-optimiert</td>
+              <td class="col-luma"><span class="yes-badge">✅ Mobile-first</span></td>
+              <td><span class="yes-badge">✅ Native App</span></td>
+              <td><span class="warn-badge">⚠️ Responsive</span></td>
+              <td><span class="yes-badge">✅ Native App</span></td>
+            </tr>
+            <tr>
+              <td>Deutsche UI (nativ)</td>
+              <td class="col-luma"><span class="yes-badge">✅ Nativ Deutsch</span></td>
+              <td><span class="yes-badge">✅</span></td>
+              <td><span class="yes-badge">✅</span></td>
+              <td><span class="warn-badge">⚠️ Übersetzung</span></td>
+            </tr>
+            <tr>
+              <td>Setup-Zeit</td>
+              <td class="col-luma"><span class="yes-badge">✅ ~2 Wochen</span></td>
+              <td><span class="warn-badge">⚠️ 2–4 Wochen</span></td>
+              <td><span class="warn-badge">⚠️ 2–4 Wochen</span></td>
+              <td><span class="no-badge">❌ 4–8 Wochen</span></td>
+            </tr>
+            <tr>
+              <td>Preis (pro User/Monat)</td>
+              <td class="col-luma"><span class="yes-badge">✅ SMB-freundlich</span></td>
+              <td><span class="warn-badge">⚠️ Ab €29/User</span></td>
+              <td><span class="no-badge">❌ €15–80/User je Modul</span></td>
+              <td><span class="warn-badge">⚠️ Ab €10.99/User</span></td>
+            </tr>
+            <tr>
+              <td>Modul-System</td>
+              <td class="col-luma"><span class="yes-badge">✅ All-in-One</span></td>
+              <td><span class="yes-badge">✅ All-in-One</span></td>
+              <td><span class="no-badge">❌ Baukasten (~€175/User Vollpaket)</span></td>
+              <td><span class="yes-badge">✅ All-in-One</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PRO/CONTRA CARDS -->
+    <section class="cards-section">
+      <h2 class="section-title">Die Konkurrenz im Detail</h2>
+
+      <div class="competitor-grid">
+
+        <!-- PLANRADAR -->
+        <div class="competitor-card">
+          <div class="card-header">
+            <div class="tool-name">PlanRadar</div>
+            <div class="tool-sub">Bau- & Immobilienmanagement</div>
+          </div>
+          <div class="card-body">
+            <div class="card-list-title pros">✓ Stärken</div>
+            <ul class="card-list pros">
+              <li>Marktführer im Mängelmanagement</li>
+              <li>Native Mobile App, Foto-Dokumentation</li>
+              <li>Starke Planverwaltung &amp; Versionierung</li>
+              <li>Enterprise-tauglich, viele Integrationen</li>
+              <li>Bewährtes System auf der Baustelle</li>
+            </ul>
+            <div class="card-list-title cons">✗ Schwächen</div>
+            <ul class="card-list cons">
+              <li>Kein HOAI – kein Architektur-Kontext</li>
+              <li>Kein Voice-to-Task, kein KI-Copilot</li>
+              <li>KI nur für Reports, nicht für Projektkontext</li>
+              <li>Kein Kanban-Board, kein E-Mail-Agent</li>
+              <li>Enterprise-Preise für kleine Büros overkill</li>
+            </ul>
+            <div class="card-verdict">Gut für Bauprojekt-Dokumentation im Enterprise-Bereich. Für kleine Architekturbüros mit HOAI-Bedarf kein vollständiger Fit.</div>
+          </div>
+        </div>
+
+        <!-- PHASE0 -->
+        <div class="competitor-card">
+          <div class="card-header">
+            <div class="tool-name">Phase0</div>
+            <div class="tool-sub">ehemals compa · Architekten-Software</div>
+          </div>
+          <div class="card-body">
+            <div class="card-list-title pros">✓ Stärken</div>
+            <ul class="card-list pros">
+              <li>HOAI 2021 vollständig umgesetzt</li>
+              <li>AVA (Ausschreibung) als Kernfeature</li>
+              <li>Klare Architekten-Zielgruppe</li>
+              <li>Honorarrechnung integriert</li>
+              <li>Zeiterfassung vorhanden</li>
+            </ul>
+            <div class="card-list-title cons">✗ Schwächen</div>
+            <ul class="card-list cons">
+              <li>Modularer Baukasten wird teuer (~€175/User/Mo Vollpaket)</li>
+              <li>Rebranding-Chaos: compa → Phase0, Vertrauen leidet</li>
+              <li>Kein KI-Copilot, kein Voice-to-Task</li>
+              <li>UX altbacken, steile Lernkurve</li>
+              <li>Bauleitung noch Beta – kein verlässliches Bautagebuch</li>
+            </ul>
+            <div class="card-verdict">Technisch solide für HOAI & AVA. Aber teuer im Vollpaket, ohne KI und mit einer UX aus dem letzten Jahrzehnt.</div>
+          </div>
+        </div>
+
+        <!-- ASANA -->
+        <div class="competitor-card">
+          <div class="card-header">
+            <div class="tool-name">Asana</div>
+            <div class="tool-sub">Generelles Projektmanagement</div>
+          </div>
+          <div class="card-body">
+            <div class="card-list-title pros">✓ Stärken</div>
+            <ul class="card-list pros">
+              <li>Sehr flexibles Projektmanagement</li>
+              <li>Riesige Community &amp; Dokumentation</li>
+              <li>Hunderte Integrationen (Zapier, Slack etc.)</li>
+              <li>Polierte Mobile App</li>
+              <li>Günstiger Einstiegspreis</li>
+            </ul>
+            <div class="card-list-title cons">✗ Schwächen</div>
+            <ul class="card-list cons">
+              <li>Null Architektur-Kontext – komplett generisch</li>
+              <li>Kein HOAI, kein Bautagebuch, kein Kundenportal</li>
+              <li>Customizing-Aufwand für Architekten enorm</li>
+              <li>Übersetzungs-UI, kein nativ-deutsches Feel</li>
+              <li>4–8 Wochen Setup bis wirklich einsatzbereit</li>
+            </ul>
+            <div class="card-verdict">Perfekt für Tech-Startups und Marketing-Teams. Für Architekten ein Bau-Kit ohne Pläne: viel Aufwand, wenig Architektur-Output.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- LUMA ADVANTAGES -->
+    <section style="margin-bottom: 48px;">
+      <h2 class="section-title">Warum Architekten LUMA wählen</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+
+        <div style="background: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 24px;">
+          <div style="font-size: 1.8rem; margin-bottom: 12px;">🎯</div>
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 8px;">Built for Architekten</h3>
+          <p style="font-size: 0.88rem; color: #6B7280;">LUMA wurde von Anfang an für kleine Architekturbüros entwickelt – nicht nachträglich angepasst. HOAI, Bautagebuch und Leistungsphasen sind keine Add-ons, sondern Fundament.</p>
+        </div>
+
+        <div style="background: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 24px;">
+          <div style="font-size: 1.8rem; margin-bottom: 12px;">🤖</div>
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 8px;">KI, die wirklich hilft</h3>
+          <p style="font-size: 0.88rem; color: #6B7280;">Kein KI-Hype ohne Substanz: LUMA's KI kennt eure Projekte, sortiert eure E-Mails und erstellt Tasks aus Spracheingabe. Konkret messbare Zeitersparnis – nicht Marketing-KI.</p>
+        </div>
+
+        <div style="background: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 24px;">
+          <div style="font-size: 1.8rem; margin-bottom: 12px;">⚡</div>
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 8px;">2 Wochen statt 2 Monate</h3>
+          <p style="font-size: 0.88rem; color: #6B7280;">Kein 3-monatiges Implementierungsprojekt, kein Consulting-Budget. LUMA läuft in 2 Wochen. Euer Büro soll produktiv sein, nicht Migrations-Projekte managen.</p>
+        </div>
+
+        <div style="background: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 24px;">
+          <div style="font-size: 1.8rem; margin-bottom: 12px;">💶</div>
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 8px;">Faire Preise, kein Baukasten-Trap</h3>
+          <p style="font-size: 0.88rem; color: #6B7280;">All-in-One statt Modul-Flickenteppich. Keine Überraschungen wenn ihr alle Features braucht. Im Gegensatz zu Phase0 (~€175/User/Mo für alles) bezahlbar.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <h2>LUMA 14 Tage kostenlos testen</h2>
+      <p>Keine Kreditkarte. Keine Verpflichtung. Einfach starten und selbst sehen, was besser bauen bedeutet.</p>
+      <div class="cta-buttons">
+        <a href="https://luma-app.io/demo" class="btn-white">Demo buchen →</a>
+        <a href="https://go.luma-app.io" class="btn-ghost">App öffnen</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer-meta">
+    <a href="https://luma-app.io">luma-app.io</a> · App: <a href="https://go.luma-app.io">go.luma-app.io</a> · © 2026 LUMA · Alle Angaben ohne Gewähr, Stand März 2026
+  </footer>
+
+</body>
+</html>
