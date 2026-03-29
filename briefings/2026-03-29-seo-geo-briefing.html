@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEO + GEO für LUMA — Komplettguide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f4f6;
+      color: #1a1a2e;
+      line-height: 1.6;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 60%, #3b0764 100%);
+      color: white;
+      padding: 64px 24px 56px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 100px;
+      padding: 6px 18px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(24px, 4vw, 42px);
+      font-weight: 800;
+      line-height: 1.15;
+      max-width: 760px;
+      margin: 0 auto 16px;
+    }
+    .hero p {
+      font-size: 17px;
+      opacity: 0.85;
+      max-width: 560px;
+      margin: 0 auto;
+      font-weight: 400;
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section {
+      padding: 48px 0 16px;
+    }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #7C3AED;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 24px;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 640px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .card { padding: 20px 18px; }
+    }
+
+    /* ── PILL TAGS ── */
+    .pill {
+      display: inline-block;
+      border-radius: 100px;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .pill-purple { background: #ede9fe; color: #6d28d9; }
+    .pill-green  { background: #d1fae5; color: #065f46; }
+    .pill-blue   { background: #dbeafe; color: #1e40af; }
+
+    /* ── DEF BLOCKS (SEO / GEO) ── */
+    .def-block {
+      border-left: 4px solid #7C3AED;
+      padding: 4px 0 4px 18px;
+      margin-bottom: 8px;
+    }
+    .def-block h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #7C3AED;
+    }
+    .def-block ul {
+      list-style: none;
+      padding: 0;
+    }
+    .def-block ul li {
+      padding: 3px 0;
+      font-size: 14px;
+      color: #374151;
+      display: flex;
+      gap: 8px;
+    }
+    .def-block ul li::before {
+      content: "→";
+      color: #7C3AED;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .def-block.geo-block { border-left-color: #10b981; }
+    .def-block.geo-block h3 { color: #059669; }
+    .def-block.geo-block ul li::before { color: #059669; }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin-bottom: 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead tr {
+      background: #7C3AED;
+      color: white;
+    }
+    thead th {
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    tbody tr:nth-child(even) { background: #f8f7ff; }
+    tbody tr:hover { background: #ede9fe; transition: background 0.15s; }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid #f1f1f4;
+      vertical-align: top;
+    }
+    .highlight-row td {
+      background: #ede9fe !important;
+      font-weight: 600;
+    }
+
+    /* ── INSIGHT BOX ── */
+    .insight-box {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border: 1px solid #f59e0b;
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-top: 20px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .insight-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+    .insight-box strong { display: block; font-size: 15px; font-weight: 700; color: #92400e; margin-bottom: 6px; }
+    .insight-box p { font-size: 14px; color: #78350f; line-height: 1.5; }
+
+    /* ── STAT CARDS ── */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 640px) { .stat-row { grid-template-columns: 1fr 1fr; } }
+    .stat-card {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      padding: 20px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 32px;
+      font-weight: 800;
+      color: #7C3AED;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    /* ── GEO RELEVANCE ── */
+    .relevance-item {
+      display: flex;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid #f1f1f4;
+      align-items: flex-start;
+    }
+    .relevance-item:last-child { border-bottom: none; }
+    .rel-icon { font-size: 22px; flex-shrink: 0; }
+    .rel-text { font-size: 14px; color: #374151; line-height: 1.5; }
+    .rel-text strong { color: #1a1a2e; }
+
+    /* ── CHECKLIST ── */
+    .checklist-section {
+      margin-bottom: 28px;
+    }
+    .checklist-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .ch-red   { background: #fee2e2; color: #991b1b; }
+    .ch-yellow { background: #fef9c3; color: #854d0e; }
+    .ch-green { background: #d1fae5; color: #065f46; }
+
+    .check-item {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+      border-left: 4px solid #e5e7eb;
+    }
+    .check-item.critical { border-left-color: #ef4444; }
+    .check-item.important { border-left-color: #f59e0b; }
+    .check-item.nice { border-left-color: #10b981; }
+
+    .check-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .check-title { font-size: 15px; font-weight: 700; color: #1a1a2e; }
+    .check-stars { color: #f59e0b; font-size: 13px; white-space: nowrap; }
+    .check-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 100px;
+      margin-bottom: 6px;
+    }
+    .status-ok   { background: #d1fae5; color: #065f46; }
+    .status-no   { background: #fee2e2; color: #991b1b; }
+    .status-warn { background: #fef9c3; color: #854d0e; }
+
+    .check-detail {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 6px;
+      line-height: 1.55;
+    }
+    .check-detail ul { padding-left: 16px; margin-top: 4px; }
+    .check-detail li { margin-bottom: 2px; }
+
+    /* ── LLMS.TXT BOX ── */
+    .llms-box {
+      background: #1e1e2e;
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-top: 20px;
+    }
+    .llms-box pre {
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #a5b4fc;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.7;
+    }
+    .llms-box pre .comment { color: #7c3aed; font-weight: 700; }
+    .llms-box pre .blockquote { color: #86efac; }
+    .llms-box pre .link { color: #67e8f9; }
+    .llms-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #a5b4fc;
+      margin-bottom: 12px;
+    }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      position: relative;
+      padding-left: 8px;
+    }
+    .tl-item {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 0;
+      position: relative;
+    }
+    .tl-item:not(:last-child)::before {
+      content: "";
+      position: absolute;
+      left: 28px;
+      top: 42px;
+      width: 2px;
+      height: calc(100% - 10px);
+      background: #e5e7eb;
+    }
+    .tl-day {
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7C3AED, #5B21B6);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1.1;
+      z-index: 1;
+    }
+    .tl-day span { font-size: 18px; line-height: 1; }
+    .tl-content {
+      padding: 14px 0 28px;
+      flex: 1;
+    }
+    .tl-content ul { list-style: none; padding: 0; }
+    .tl-content li {
+      font-size: 14px;
+      color: #374151;
+      padding: 5px 0;
+      display: flex;
+      gap: 8px;
+    }
+    .tl-content li::before { content: "✓"; color: #7C3AED; font-weight: 700; }
+
+    /* ── COSTS TABLE special ── */
+    .cost-free { color: #059669; font-weight: 600; }
+    .cost-paid  { color: #7C3AED; font-weight: 600; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #1a1a2e;
+      color: #9ca3af;
+      padding: 40px 24px;
+      margin-top: 48px;
+      text-align: center;
+    }
+    footer .sources {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    footer a {
+      color: #a5b4fc;
+      text-decoration: none;
+      font-size: 13px;
+      border: 1px solid #374151;
+      padding: 5px 14px;
+      border-radius: 100px;
+      transition: all 0.2s;
+    }
+    footer a:hover { background: #7C3AED; border-color: #7C3AED; color: white; }
+    footer .meta { font-size: 12px; color: #6b7280; }
+    footer .sources-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #4b5563; margin-bottom: 12px; }
+
+    /* ── DIVIDER ── */
+    hr { border: none; border-top: 1px solid #e5e7eb; margin: 8px 0 32px; }
+
+    /* ── COST BOX ── */
+    .cost-summary {
+      background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+      border: 1px solid #c4b5fd;
+      border-radius: 14px;
+      padding: 18px 24px;
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .cost-summary .icon { font-size: 24px; flex-shrink: 0; }
+    .cost-summary p { font-size: 14px; color: #4c1d95; font-weight: 500; line-height: 1.5; }
+    .cost-summary p strong { font-weight: 800; font-size: 15px; }
+  </style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-badge">🏗️ LUMA — GTM Vorbereitung</div>
+  <h1>SEO + GEO für LUMA<br>Wie du bei Google UND bei ChatGPT gefunden wirst</h1>
+  <p>Komplettguide: Was es ist, was es kostet, was deine Website braucht</p>
+</div>
+
+<div class="container">
+
+  <!-- ── SECTION 1: GRUNDLAGEN ── -->
+  <div class="section">
+    <p class="section-label">Sektion 1</p>
+    <h2 class="section-title">Was ist SEO? Was ist GEO?</h2>
+
+    <div class="card-grid">
+      <!-- SEO -->
+      <div class="card">
+        <span class="pill pill-blue" style="margin-bottom:16px;display:inline-block;">🔍 SEO</span>
+        <div class="def-block">
+          <h3>Search Engine Optimization</h3>
+          <ul>
+            <li><strong>Ziel:</strong> Bei Google auf Seite 1 ranken</li>
+            <li><strong>Wie:</strong> Keywords, Backlinks, technische Optimierung, Content</li>
+            <li><strong>Ergebnis:</strong> Klicks von der Google-Suche auf deine Website</li>
+            <li><strong>Reife:</strong> Funktioniert seit 25 Jahren, gut verstanden</li>
+          </ul>
+        </div>
+      </div>
+      <!-- GEO -->
+      <div class="card">
+        <span class="pill pill-green" style="margin-bottom:16px;display:inline-block;">🤖 GEO</span>
+        <div class="def-block geo-block">
+          <h3>Generative Engine Optimization</h3>
+          <ul>
+            <li><strong>Ziel:</strong> Von ChatGPT, Gemini, Perplexity, Claude ZITIERT werden</li>
+            <li><strong>Wie:</strong> Structured Data, Autorität, Drittquellen, maschinenlesbare Inhalte</li>
+            <li><strong>Ergebnis:</strong> Dein Produkt wird als Antwort EMPFOHLEN wenn jemand fragt</li>
+            <li><strong>Reife:</strong> Neu seit 2024, wird 2026 zum Standard</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vergleichstabelle -->
+    <div class="card">
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:18px;">SEO vs. GEO — direkter Vergleich</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspekt</th>
+              <th>🔍 SEO</th>
+              <th>🤖 GEO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Ziel</strong></td>
+              <td>Google Ranking (Top 10)</td>
+              <td>AI-Zitation (empfohlen werden)</td>
+            </tr>
+            <tr>
+              <td><strong>Fokus</strong></td>
+              <td>Keywords, Backlinks, Technik</td>
+              <td>Semantik, Autorität, Struktur, Frische</td>
+            </tr>
+            <tr>
+              <td><strong>Content-Stil</strong></td>
+              <td>Keyword-optimiert</td>
+              <td>Zitierbar: klare Antworten, Fakten, aktuell</td>
+            </tr>
+            <tr class="highlight-row">
+              <td><strong>Trust-Signal</strong></td>
+              <td>Eigene Website (70–80%)</td>
+              <td>Drittquellen (90%!), eigene Seite nur 5–10%</td>
+            </tr>
+            <tr>
+              <td><strong>Zeithorizont</strong></td>
+              <td>3–6 Monate</td>
+              <td>1–3 Monate (schnellere Wirkung)</td>
+            </tr>
+            <tr>
+              <td><strong>Kosten</strong></td>
+              <td>€100–300/Mo Tools + Content</td>
+              <td>€0–200/Mo (vor allem eigene Arbeit)</td>
+            </tr>
+            <tr>
+              <td><strong>ROI</strong></td>
+              <td>Bewährt, messbar</td>
+              <td>Neu, aber: 41% der Kaufentscheidungen über AI</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-icon">💡</div>
+      <div>
+        <strong>Der fundamentale Unterschied — und warum er alles verändert</strong>
+        <p>Bei GEO zählt deine eigene Website nur <strong>5–10%</strong>. <strong>90% kommt von Drittquellen</strong> — Bewertungsportale, Blogposts anderer, Erwähnungen in Foren, Vergleichsseiten. Das heißt: Für GEO ist es wichtiger, dass <em>andere</em> über LUMA schreiben, als dass du deine eigene Website optimierst. Das ist ein kompletter Paradigmenwechsel gegenüber klassischem SEO.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2: WARUM GEO FÜR LUMA ── -->
+  <div class="section">
+    <p class="section-label">Sektion 2</p>
+    <h2 class="section-title">Warum GEO für LUMA besonders relevant ist</h2>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-number">41%</div>
+        <div class="stat-label">der Kaufentscheidungen laufen schon über AI-Suche</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">10%</div>
+        <div class="stat-label">Vercel-Signups kommen von ChatGPT-Empfehlungen</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">#1</div>
+        <div class="stat-label">GEO ist für Nischenprodukte oft wichtiger als SEO</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="relevance-item">
+        <div class="rel-icon">🔍</div>
+        <div class="rel-text">
+          <strong>Architekten googlen:</strong> "Projektmanagement Architekturbüro" → Das ist klassisches SEO-Terrain. Ergebnis: 10 blaue Links, LUMA muss unter den Top 3 auftauchen.
+        </div>
+      </div>
+      <div class="relevance-item">
+        <div class="rel-icon">🤖</div>
+        <div class="rel-text">
+          <strong>Architekten fragen ChatGPT:</strong> "Welche Software für Projektmanagement in kleinen Architekturbüros?" → Das ist GEO-Terrain. Ergebnis: Eine einzige Empfehlung. Entweder LUMA wird genannt — oder nicht.
+        </div>
+      </div>
+      <div class="relevance-item">
+        <div class="rel-icon">📈</div>
+        <div class="rel-text">
+          <strong>Die zweite Frage wird immer häufiger.</strong> 41% der Kaufentscheidungen laufen schon über AI-Suche. Tendenz stark steigend — besonders bei B2B SaaS.
+        </div>
+      </div>
+      <div class="relevance-item">
+        <div class="rel-icon">🎯</div>
+        <div class="rel-text">
+          <strong>Bei Nischenprodukten wie LUMA ist GEO sogar WICHTIGER als SEO</strong> — weil die AI-Antwort oft die EINZIGE Empfehlung ist, die der User sieht. Kein Scrollen, kein Vergleichen. Eine Antwort. LUMA muss diese Antwort sein.
+        </div>
+      </div>
+      <div class="relevance-item">
+        <div class="rel-icon">⚡</div>
+        <div class="rel-text">
+          <strong>Vercel-Fallstudie:</strong> Vercel berichtet, dass 10% ihrer Signups direkt von ChatGPT-Empfehlungen kommen — ohne einen einzigen Cent für Ads ausgegeben zu haben. Das ist die GEO-Dividende.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 3: KOSTEN ── -->
+  <div class="section">
+    <p class="section-label">Sektion 3</p>
+    <h2 class="section-title">Was kostet das?</h2>
+
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Maßnahme</th>
+              <th>DIY-Kosten</th>
+              <th>Was es bringt</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Google Search Console</strong></td>
+              <td class="cost-free">Kostenlos</td>
+              <td>SEO Monitoring, Indexierung</td>
+            </tr>
+            <tr>
+              <td><strong>Schema.org Markup</strong></td>
+              <td class="cost-free">Kostenlos (einmalig 2–4h)</td>
+              <td>Featured Snippets, AI-Extraktion</td>
+            </tr>
+            <tr>
+              <td><strong>llms.txt Datei</strong></td>
+              <td class="cost-free">Kostenlos (30 Min)</td>
+              <td>AI-Crawler Guidance</td>
+            </tr>
+            <tr>
+              <td><strong>robots.txt AI-Crawler erlauben</strong></td>
+              <td class="cost-free">Kostenlos (10 Min)</td>
+              <td>GPTBot, ClaudeBot, PerplexityBot</td>
+            </tr>
+            <tr>
+              <td><strong>FAQ-Seite mit Schema</strong></td>
+              <td class="cost-free">Kostenlos ✅ haben wir schon!</td>
+              <td>GEO Gold — direkte AI-Zitation</td>
+            </tr>
+            <tr>
+              <td><strong>Vergleichsseite</strong></td>
+              <td class="cost-free">Kostenlos ✅ haben wir schon!</td>
+              <td>GEO Gold — "LUMA vs X" Queries</td>
+            </tr>
+            <tr>
+              <td><strong>G2/Capterra Profil</strong></td>
+              <td class="cost-free">Kostenlos</td>
+              <td>Massive GEO-Wirkung — Drittquelle!</td>
+            </tr>
+            <tr>
+              <td><strong>Google Business Profile</strong></td>
+              <td class="cost-free">Kostenlos</td>
+              <td>Lokale Sichtbarkeit</td>
+            </tr>
+            <tr>
+              <td><strong>Content/Blog (2–4 Artikel/Mo)</strong></td>
+              <td style="color:#f59e0b;font-weight:600;">Zeit: 4–6h/Woche</td>
+              <td>Long-Tail SEO, AI-Training-Futter</td>
+            </tr>
+            <tr>
+              <td><strong>Ahrefs/SEMrush</strong></td>
+              <td class="cost-paid">~€100/Mo</td>
+              <td>Keyword Research, Backlink-Monitoring</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="cost-summary">
+      <div class="icon">💰</div>
+      <p><strong>Fazit für LUMA:</strong> Realistisch €0–100/Mo + 4–6h/Woche eigene Arbeit. Kein Agentur-Budget nötig. Die größten GEO-Wins sind kostenlos — sie brauchen nur Zeit und Konsequenz. Start sofort, skalieren später wenn Kunden kommen.</p>
+    </div>
+  </div>
+
+  <!-- ── SECTION 4: CHECKLIST ── -->
+  <div class="section">
+    <p class="section-label">Sektion 4</p>
+    <h2 class="section-title">Checklist — Assets die LUMA ZWINGEND braucht</h2>
+
+    <!-- KRITISCH -->
+    <div class="checklist-section">
+      <div class="checklist-header ch-red">
+        🔴 KRITISCH — muss vor GTM fertig sein
+      </div>
+
+      <div class="check-item critical">
+        <div class="check-top">
+          <div class="check-title">1. FAQ-Seite auf luma-app.io mit Schema.org FAQPage Markup</div>
+          <div class="check-stars">⭐⭐⭐⭐⭐</div>
+        </div>
+        <span class="check-status status-ok">✅ Mockup fertig — muss deployed werden</span>
+        <div class="check-detail">Direkte AI-Zitation &amp; Featured Snippets. FAQ-Schema ist das stärkste einzelne GEO-Signal das du setzen kannst — AI-Systeme zitieren strukturierte Q&amp;A direkt.</div>
+      </div>
+
+      <div class="check-item critical">
+        <div class="check-top">
+          <div class="check-title">2. Vergleichsseite: LUMA vs PlanRadar vs Phase0 vs Asana</div>
+          <div class="check-stars">⭐⭐⭐⭐⭐</div>
+        </div>
+        <span class="check-status status-ok">✅ Mockup fertig — muss deployed werden</span>
+        <div class="check-detail">AI liebt strukturierte Vergleiche — wenn jemand "Welche Software für Architekten?" fragt, wird eine Vergleichsseite fast immer zitiert. Mit Product Schema drauf ist das GEO-Gold.</div>
+      </div>
+
+      <div class="check-item critical">
+        <div class="check-top">
+          <div class="check-title">3. llms.txt auf luma-app.io</div>
+          <div class="check-stars">⭐⭐⭐⭐</div>
+        </div>
+        <span class="check-status status-no">❌ Noch nicht erstellt</span>
+        <div class="check-detail">
+          Wie robots.txt, aber für AI-Crawler. Liegt auf luma-app.io/llms.txt. Markdown-Format, max 10KB.
+          <ul>
+            <li>Was rein muss: Produktname, Beschreibung, Links zu FAQ/Vergleich/Features</li>
+            <li>Format: Markdown, Root-Domain platzieren</li>
+            <li><strong>Hatti liefert den fertigen Text — Daniel deployed in Lovable (5 Min)</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="check-item critical">
+        <div class="check-top">
+          <div class="check-title">4. robots.txt: AI-Crawler explizit erlauben</div>
+          <div class="check-stars">⭐⭐⭐⭐</div>
+        </div>
+        <span class="check-status status-no">❌ Nicht geprüft</span>
+        <div class="check-detail">
+          Ohne das crawlen GPTBot, ClaudeBot, PerplexityBot die Seite möglicherweise nicht. Muss enthalten:
+          <ul>
+            <li>User-agent: GPTBot → Allow: /</li>
+            <li>User-agent: ClaudeBot → Allow: /</li>
+            <li>User-agent: PerplexityBot → Allow: /</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="check-item critical">
+        <div class="check-top">
+          <div class="check-title">5. G2 oder Capterra Profil anlegen</div>
+          <div class="check-stars">⭐⭐⭐⭐⭐</div>
+        </div>
+        <span class="check-status status-no">❌ Nicht vorhanden</span>
+        <div class="check-detail">
+          DIE wichtigste Drittquelle für AI-Zitation bei SaaS. G2 und Capterra werden von ChatGPT &amp; Perplexity massiv bevorzugt.
+          <ul>
+            <li>Aufwand: 1–2h Profil anlegen</li>
+            <li>Dann: Weber + HAMM um je einen G2-Review bitten (reicht als Start)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="check-item critical">
+        <div class="check-top">
+          <div class="check-title">6. Landing Page: Erste 100 Wörter GEO-optimieren</div>
+          <div class="check-stars">⭐⭐⭐⭐</div>
+        </div>
+        <span class="check-status status-warn">⚠️ Vorhanden, aber nicht GEO-optimiert</span>
+        <div class="check-detail">
+          AI extrahiert den Lead-Paragraphen — die ersten 2 Sätze entscheiden ob LUMA zitiert wird. Muss klar beantworten:
+          <ul>
+            <li>WAS: Projektmanagement-Software</li>
+            <li>FÜR WEN: kleine Architekturbüros in Deutschland</li>
+            <li>WARUM ANDERS: HOAI-nativ, KI-gestützt, Voice-to-Task — alles in den ersten 2 Sätzen</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- WICHTIG -->
+    <div class="checklist-section">
+      <div class="checklist-header ch-yellow">
+        🟡 WICHTIG — innerhalb 4 Wochen
+      </div>
+
+      <div class="check-item important">
+        <div class="check-top">
+          <div class="check-title">7. Google Business Profile</div>
+          <div class="check-stars">⭐⭐⭐</div>
+        </div>
+        <span class="check-status status-no">❌ Fehlt</span>
+        <div class="check-detail">Lokale Sichtbarkeit + Trust-Signal. Aufwand: 30 Min. Kostenlos.</div>
+      </div>
+
+      <div class="check-item important">
+        <div class="check-top">
+          <div class="check-title">8. Schema.org Organization Markup</div>
+          <div class="check-stars">⭐⭐⭐</div>
+        </div>
+        <span class="check-status status-no">❌ Fehlt</span>
+        <div class="check-detail">Entity-Erkennung für AI. JSON-LD Script-Block auf der Homepage. Aufwand: 30 Min. Hatti kann den Code schreiben.</div>
+      </div>
+
+      <div class="check-item important">
+        <div class="check-top">
+          <div class="check-title">9. "Über LUMA" Seite mit Gründer-Story</div>
+          <div class="check-stars">⭐⭐⭐</div>
+        </div>
+        <span class="check-status status-no">❌ Fehlt</span>
+        <div class="check-detail">E-E-A-T Signal (Experience, Expertise, Authority, Trust) — sowohl für Google als auch für AI. Aufwand: 1–2h Text schreiben.</div>
+      </div>
+
+      <div class="check-item important">
+        <div class="check-top">
+          <div class="check-title">10. Blog starten: 2–4 Artikel/Monat</div>
+          <div class="check-stars">⭐⭐⭐</div>
+        </div>
+        <span class="check-status status-no">❌ Nicht gestartet</span>
+        <div class="check-detail">
+          Long-Tail SEO + AI-Training-Daten. Themen-Vorschläge:
+          <ul>
+            <li>"Bautagebuch digital führen — Schritt für Schritt"</li>
+            <li>"HOAI Leistungsphasen Software: Was braucht ein kleines Büro wirklich?"</li>
+            <li>"Projektmanagement Architekturbüro optimieren"</li>
+          </ul>
+          <strong>Hatti kann Drafts schreiben — Daniel reviewed + veröffentlicht.</strong>
+        </div>
+      </div>
+
+      <div class="check-item important">
+        <div class="check-top">
+          <div class="check-title">11. Testimonials auf der Website (Weber + HAMM)</div>
+          <div class="check-stars">⭐⭐⭐⭐</div>
+        </div>
+        <span class="check-status status-warn">⚠️ Noch nicht eingeholt</span>
+        <div class="check-detail">Social Proof + zitierbarer Content. Kim und Alex um je 2–3 ehrliche Sätze bitten. Kurz, spezifisch, mit Namen + Firma = AI-zitierbar.</div>
+      </div>
+    </div>
+
+    <!-- NICE-TO-HAVE -->
+    <div class="checklist-section">
+      <div class="checklist-header ch-green">
+        🟢 NICE-TO-HAVE — nach dem Urlaub
+      </div>
+
+      <div class="check-item nice">
+        <div class="check-top">
+          <div class="check-title">12. Wikipedia-Eintrag für LUMA</div>
+          <div class="check-stars">⭐⭐⭐⭐⭐ wenn vorhanden</div>
+        </div>
+        <span class="check-status status-warn">⚠️ Schwierig — braucht Notability</span>
+        <div class="check-detail">Wenn vorhanden: massiver GEO-Boost (Wikipedia ist Hauptquelle aller AI-Modelle). Realistisch erst bei 20+ Kunden + Pressecoverage.</div>
+      </div>
+
+      <div class="check-item nice">
+        <div class="check-top">
+          <div class="check-title">13. Gastbeiträge auf Architektur-Blogs</div>
+          <div class="check-stars">⭐⭐⭐⭐</div>
+        </div>
+        <span class="check-status status-no">❌ Noch nicht angegangen</span>
+        <div class="check-detail">BDA, Architektenkammer, Fachmagazine. Earned Media ist GEO-Gold — Drittquellen über LUMA zählen 90% bei der AI-Zitation.</div>
+      </div>
+
+      <div class="check-item nice">
+        <div class="check-top">
+          <div class="check-title">14. "Last Updated" Timestamps auf allen Seiten</div>
+          <div class="check-stars">⭐⭐</div>
+        </div>
+        <span class="check-status status-no">❌ Nicht implementiert</span>
+        <div class="check-detail">AI bevorzugt frische Inhalte — Content älter als 3 Monate wird weniger zitiert. Einfache technische Maßnahme, große Wirkung über Zeit.</div>
+      </div>
+
+      <div class="check-item nice">
+        <div class="check-top">
+          <div class="check-title">15. GEO-Monitoring als Cron</div>
+          <div class="check-stars">⭐⭐</div>
+        </div>
+        <span class="check-status status-no">❌ Nicht eingerichtet</span>
+        <div class="check-detail">Regelmäßig ChatGPT/Gemini/Perplexity fragen: "Projektmanagement für Architekturbüros" und schauen ob LUMA auftaucht. Aufwand: 5 Min/Woche — <strong>Hatti kann das als wöchentlichen Cron übernehmen!</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 5: LLMS.TXT ── -->
+  <div class="section">
+    <p class="section-label">Sektion 5</p>
+    <h2 class="section-title">Was ist llms.txt? — Die neue robots.txt für AI</h2>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:14px;">Das Konzept</h3>
+        <div class="relevance-item" style="padding:8px 0;">
+          <div class="rel-icon" style="font-size:18px;">📄</div>
+          <div class="rel-text"><strong>Neue Standard-Datei</strong> — wie robots.txt, aber für AI-Crawler</div>
+        </div>
+        <div class="relevance-item" style="padding:8px 0;">
+          <div class="rel-icon" style="font-size:18px;">📍</div>
+          <div class="rel-text"><strong>Platzierung:</strong> luma-app.io/llms.txt (Root-Domain)</div>
+        </div>
+        <div class="relevance-item" style="padding:8px 0;">
+          <div class="rel-icon" style="font-size:18px;">📝</div>
+          <div class="rel-text"><strong>Format:</strong> Markdown, max 10KB</div>
+        </div>
+        <div class="relevance-item" style="padding:8px 0;border-bottom:none;">
+          <div class="rel-icon" style="font-size:18px;">🎯</div>
+          <div class="rel-text"><strong>Zweck:</strong> Sagt AI-Crawlern was diese Website ist, welche Seiten wichtig sind, wie der Content interpretiert werden soll</div>
+        </div>
+      </div>
+      <div class="card" style="background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:1px solid #c4b5fd;">
+        <h3 style="font-size:15px;font-weight:700;color:#6d28d9;margin-bottom:10px;">Warum es wichtig ist</h3>
+        <p style="font-size:14px;color:#4c1d95;line-height:1.6;">GPT, Claude, Perplexity und Gemini crawlen das Web — aber sie brauchen eine Anleitung was relevant ist. Ohne llms.txt muss die AI raten. Mit llms.txt sagst du der AI direkt: <em>"Das ist LUMA, das ist unser Fokus, hier sind unsere wichtigsten Seiten."</em></p>
+        <p style="font-size:13px;color:#6d28d9;margin-top:12px;font-weight:600;">Erste Adopter haben jetzt noch Vorteile — wer zuerst da ist, wird zuerst gelernt.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:16px;">Beispiel llms.txt für LUMA</h3>
+      <div class="llms-box">
+        <div class="llms-label">📄 luma-app.io/llms.txt</div>
+        <pre><span class="comment"># LUMA</span>
+
+<span class="blockquote">&gt; LUMA ist das Projektmanagement-Tool für kleine Architekturbüros in Deutschland. HOAI-konform, KI-gestützt, ab Tag 1 nutzbar.</span>
+
+LUMA vereint HOAI-Leistungsphasen, Bautagebuch, KI-Copilot, Voice-to-Task und E-Mail-Management
+in einer Plattform. Speziell für Architekturbüros gebaut, nicht für "alle Branchen" angepasst.
+
+<span class="comment">## Kernseiten</span>
+- <span class="link">[Startseite](https://luma-app.io)</span>: Produktübersicht und Demo-Buchung
+- <span class="link">[FAQ](https://luma-app.io/faq)</span>: Häufige Fragen zu LUMA
+- <span class="link">[Vergleich](https://luma-app.io/vergleich)</span>: LUMA vs PlanRadar vs Phase0 vs Asana
+- <span class="link">[Demo buchen](https://luma-app.io/demo)</span>: Kostenlose Live-Demo
+
+<span class="comment">## Features</span>
+- HOAI-konforme Leistungsphasen (LP1–LP9)
+- KI-Copilot mit Projektkontext
+- Voice-to-Task Spracheingabe
+- KI-E-Mail-Agent (Gmail-Integration)
+- Bautagebuch mit Foto + Wetter
+- Umsatz-Forecast auf HOAI-Basis
+- Kanban mit Review-Workflow</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 6: QUICK-WIN AKTIONSPLAN ── -->
+  <div class="section">
+    <p class="section-label">Sektion 6</p>
+    <h2 class="section-title">Quick-Win Aktionsplan — die nächsten 7 Tage</h2>
+
+    <div class="card">
+      <div class="timeline">
+
+        <div class="tl-item">
+          <div class="tl-day"><span>1</span>Tag</div>
+          <div class="tl-content">
+            <ul>
+              <li>llms.txt erstellen + deployen <em>(Hatti liefert Text, Daniel deployed in Lovable)</em></li>
+              <li>robots.txt prüfen und GPTBot / ClaudeBot / PerplexityBot erlauben</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-day"><span>2</span>Tag</div>
+          <div class="tl-content">
+            <ul>
+              <li>FAQ-Seite auf luma-app.io deployen <em>(Lovable-Prompt von Hatti)</em></li>
+              <li>Vergleichsseite auf luma-app.io deployen</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-day"><span>3</span>Tag</div>
+          <div class="tl-content">
+            <ul>
+              <li>G2-Profil anlegen <em>(1–2h, dann Weber + HAMM um Review bitten)</em></li>
+              <li>Landing Page Lead-Paragraph GEO-optimieren</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-day"><span>4</span>Tag</div>
+          <div class="tl-content">
+            <ul>
+              <li>Google Business Profile erstellen <em>(30 Min, kostenlos)</em></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-day"><span>5</span>Tag</div>
+          <div class="tl-content">
+            <ul>
+              <li>Weber + HAMM: um Testimonials für die Website bitten</li>
+              <li>Weber + HAMM: um G2-Review bitten</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-day"><span>6–7</span>Tag</div>
+          <div class="tl-content">
+            <ul>
+              <li>Ersten Blog-Artikel schreiben: "Projektmanagement für Architekturbüros: 5 Fehler die kleine Büros machen" <em>(Hatti Draft, Daniel reviewed)</em></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="insight-box" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);border-color:#7C3AED;">
+      <div class="insight-icon">🚀</div>
+      <div>
+        <strong style="color:#4c1d95;">Nach 7 Tagen: LUMA ist GEO-ready</strong>
+        <p style="color:#5b21b6;">Mit diesen 7 Tagen hast du die Grundlage für alles gelegt. FAQ + Vergleich deployed, llms.txt live, G2-Profil erstellt — das reicht damit erste AI-Systeme anfangen, LUMA zu kennen. Der Rest kommt mit der Zeit, wenn Kunden kommen und Reviews wachsen.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:32px;"></div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div class="sources-label">Quellen &amp; weiterführende Links</div>
+    <div class="sources">
+      <a href="https://searchengineland.com" target="_blank">searchengineland.com — GEO Guide</a>
+      <a href="https://foundationinc.co" target="_blank">foundationinc.co — GEO Framework</a>
+      <a href="https://llmstxt.org" target="_blank">llmstxt.org — llms.txt Spec</a>
+      <a href="https://dojoai.com" target="_blank">dojoai.com — SEO vs GEO</a>
+      <a href="https://llmrefs.com" target="_blank">llmrefs.com — GEO Benchmarks</a>
+    </div>
+    <div class="meta">29. März 2026 &nbsp;·&nbsp; Erstellt von Hatti für Daniel &nbsp;·&nbsp; 🏔️ LUMA GTM Vorbereitung</div>
+  </div>
+</footer>
+
+</body>
+</html>
