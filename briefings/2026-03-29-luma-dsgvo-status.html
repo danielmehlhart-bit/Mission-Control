@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMA DSGVO & Datenspeicherung — Status Quo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f4f6;
+      color: #1a1a2e;
+      line-height: 1.6;
+      padding: 32px 16px 64px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, #7C3AED 0%, #5b21b6 100%);
+      border-radius: 20px;
+      padding: 48px 40px;
+      margin-bottom: 32px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 240px; height: 240px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 50%;
+    }
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -40px;
+      width: 300px; height: 300px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 800;
+      margin-bottom: 12px;
+      line-height: 1.2;
+      position: relative;
+      z-index: 1;
+    }
+    .header p {
+      font-size: 16px;
+      opacity: 0.85;
+      max-width: 600px;
+      position: relative;
+      z-index: 1;
+    }
+    .header-meta {
+      margin-top: 24px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      opacity: 0.75;
+      position: relative;
+      z-index: 1;
+    }
+    .header-meta span { display: flex; align-items: center; gap: 6px; }
+
+    /* LEGEND */
+    .legend {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      padding: 20px 28px;
+      margin-bottom: 32px;
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .legend-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
+
+    /* SECTION */
+    .section {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+      padding: 36px 36px 32px;
+      margin-bottom: 28px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #f4f4f6;
+    }
+    .section-icon {
+      width: 44px; height: 44px;
+      background: #f3f0ff;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+    .section-subtitle {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+
+    /* TABLE */
+    .table-wrapper { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: #f8f7ff;
+      color: #7C3AED;
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 2px solid #ede9fe;
+    }
+    thead th:first-child { border-radius: 10px 0 0 10px; }
+    thead th:last-child { border-radius: 0 10px 10px 0; }
+    tbody tr {
+      border-bottom: 1px solid #f0f0f4;
+      transition: background 0.15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #faf9ff; }
+    tbody td {
+      padding: 14px 16px;
+      vertical-align: top;
+      color: #374151;
+      line-height: 1.5;
+    }
+    td.service-name { font-weight: 700; color: #1a1a2e; white-space: nowrap; }
+    td.type-cell {
+      font-size: 12px;
+      color: #7C3AED;
+      font-weight: 600;
+      background: #f3f0ff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      white-space: nowrap;
+      display: inline-block;
+      margin: 2px 0;
+    }
+    .type-wrap { padding: 14px 16px; vertical-align: top; }
+
+    /* STATUS BADGE */
+    .status {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    /* STATUS CARDS (Section 2) */
+    .status-cards { display: grid; gap: 16px; }
+    .status-card {
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+    .status-card.green { background: #f0fdf4; border: 1.5px solid #bbf7d0; }
+    .status-card.yellow { background: #fffbeb; border: 1.5px solid #fde68a; }
+    .status-card.red { background: #fff1f2; border: 1.5px solid #fecdd3; }
+    .status-card-header {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .status-card.green .status-card-header { color: #15803d; }
+    .status-card.yellow .status-card-header { color: #b45309; }
+    .status-card.red .status-card-header { color: #be123c; }
+    .status-card ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .status-card li {
+      font-size: 14px;
+      padding-left: 16px;
+      position: relative;
+      color: #374151;
+      line-height: 1.5;
+    }
+    .status-card li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .status-card.green li::before { color: #16a34a; }
+    .status-card.yellow li::before { color: #d97706; }
+    .status-card.red li::before { color: #e11d48; }
+    .alt-list {
+      margin-top: 8px;
+      padding-left: 12px;
+      list-style: decimal;
+      font-size: 13px;
+      color: #6b7280;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .alt-list li { padding-left: 0; }
+    .alt-list li::before { display: none; }
+
+    /* DPA TABLE */
+    .dpa-status { font-size: 13px; font-weight: 600; }
+    .dpa-yes { color: #16a34a; }
+    .dpa-no { color: #e11d48; }
+    .dpa-maybe { color: #d97706; }
+
+    /* TODO */
+    .todo-section { margin-bottom: 24px; }
+    .todo-section:last-child { margin-bottom: 0; }
+    .todo-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 14px;
+    }
+    .todo-label.urgent { background: #fff1f2; color: #be123c; border: 1.5px solid #fecdd3; }
+    .todo-label.soon { background: #fffbeb; color: #b45309; border: 1.5px solid #fde68a; }
+    .todo-label.later { background: #f0f9ff; color: #0369a1; border: 1.5px solid #bae6fd; }
+    .todo-list { display: flex; flex-direction: column; gap: 10px; }
+    .todo-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #fafaf9;
+      border-radius: 10px;
+      padding: 14px 16px;
+      border: 1px solid #f0f0f4;
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.5;
+    }
+    .todo-num {
+      flex-shrink: 0;
+      width: 26px; height: 26px;
+      background: #ede9fe;
+      color: #7C3AED;
+      font-weight: 700;
+      font-size: 12px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .todo-item.urgent-item .todo-num { background: #fff1f2; color: #be123c; }
+    .todo-item.soon-item .todo-num { background: #fffbeb; color: #b45309; }
+    .todo-item.later-item .todo-num { background: #f0f9ff; color: #0369a1; }
+    .todo-text { flex: 1; }
+    .todo-text code {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      background: #f0eeff;
+      color: #7C3AED;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    /* WARNING BOX */
+    .warning-box {
+      background: linear-gradient(135deg, #fff1f2 0%, #fff7f0 100%);
+      border: 2px solid #fca5a5;
+      border-radius: 14px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+    }
+    .warning-header {
+      font-size: 18px;
+      font-weight: 800;
+      color: #be123c;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .warning-box ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 0;
+    }
+    .warning-box li {
+      font-size: 14px;
+      color: #9f1239;
+      padding-left: 16px;
+      position: relative;
+      font-weight: 500;
+    }
+    .warning-box li::before {
+      content: '✗';
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+      color: #e11d48;
+    }
+
+    .fix-box {
+      border-radius: 14px;
+      padding: 24px 28px;
+      display: grid;
+      gap: 16px;
+    }
+    .fix-option {
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+      border-radius: 12px;
+      padding: 18px 22px;
+    }
+    .fix-option h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #15803d;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .fix-option p {
+      font-size: 13px;
+      color: #374151;
+      line-height: 1.6;
+      font-style: italic;
+    }
+    .fix-section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 13px;
+      color: #9ca3af;
+      line-height: 1.7;
+    }
+    .footer a { color: #7C3AED; text-decoration: none; font-weight: 500; }
+    .footer a:hover { text-decoration: underline; }
+    .footer-sources {
+      background: white;
+      border-radius: 14px;
+      padding: 20px 28px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .footer-sources h4 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+      margin-bottom: 12px;
+    }
+    .sources-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+    .source-chip {
+      background: #f3f0ff;
+      color: #7C3AED;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .section { padding: 24px 20px; }
+      .header { padding: 32px 24px; }
+      .legend { gap: 16px; padding: 16px 20px; }
+      .warning-box { padding: 20px 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-badge">🔒 DSGVO-Analyse · LUMA</div>
+    <h1>LUMA DSGVO & Datenspeicherung<br>— Status Quo</h1>
+    <p>Wo liegen welche Daten? Was ist DSGVO-konform? Was muss geändert werden?</p>
+    <div class="header-meta">
+      <span>📅 29. März 2026</span>
+      <span>🏗️ Architektur-Review</span>
+      <span>⚠️ Keine Rechtsberatung</span>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <span class="legend-title">Status-Ampel:</span>
+    <div class="legend-item">🟢 <span>OK — DSGVO-konform</span></div>
+    <div class="legend-item">🟡 <span>Prüfung nötig / Aktion erforderlich</span></div>
+    <div class="legend-item">🔴 <span>Handlungsbedarf — nicht konform</span></div>
+  </div>
+
+  <!-- SECTION 1: ARCHITECTURE OVERVIEW -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🗺️</div>
+      <div>
+        <div class="section-title">Übersicht — Wo liegen LUMAs Daten?</div>
+        <div class="section-subtitle">Architektur-Übersicht aller Dienste und Datenspeicherorte</div>
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Dienst</th>
+            <th>Typ</th>
+            <th>Daten die dort liegen</th>
+            <th>Server-Standort</th>
+            <th>DSGVO-Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="service-name">Supabase<br><small style="font-weight:400;color:#6b7280;">(Datenbank)</small></td>
+            <td class="type-wrap"><span class="type-cell">PostgreSQL + Auth + Storage</span></td>
+            <td>Alle Projektdaten, User-Accounts, Dokumente, Aufgaben, Bautagebuch-Einträge, Zeiterfassung</td>
+            <td>AWS — Region beim Projekt-Setup gewählt.<br><strong style="color:#d97706;">⚠ MUSS GEPRÜFT WERDEN:</strong> eu-central-1 (Frankfurt) oder US?</td>
+            <td><span class="status">🟡 Hängt von der gewählten Region ab.<br>Wenn Frankfurt → 🟢<br>Wenn US → 🔴</span></td>
+          </tr>
+          <tr>
+            <td class="service-name">Supabase Auth<br><small style="font-weight:400;color:#6b7280;">(GoTrue)</small></td>
+            <td class="type-wrap"><span class="type-cell">Authentifizierung</span></td>
+            <td>User-Credentials, Sessions, Tokens</td>
+            <td>Gleiche Region wie Datenbank (co-located)</td>
+            <td><span class="status">🟡 Wie Datenbank</span></td>
+          </tr>
+          <tr>
+            <td class="service-name">Supabase<br><small style="font-weight:400;color:#6b7280;">Edge Functions</small></td>
+            <td class="type-wrap"><span class="type-cell">Serverless Functions</span></td>
+            <td>Ausführung von Backend-Logik, API-Calls</td>
+            <td>In der gleichen Region wie das Projekt</td>
+            <td><span class="status">🟡 Wie Datenbank</span></td>
+          </tr>
+          <tr>
+            <td class="service-name">Lovable Cloud</td>
+            <td class="type-wrap"><span class="type-cell">App-Hosting (Frontend)</span></td>
+            <td>Statische Dateien (HTML, JS, CSS),<br>kein User-Data</td>
+            <td>3 Regionen wählbar: Americas, Europe, Asia Pacific. Auto-Auswahl basierend auf User-Location.</td>
+            <td><span class="status">🟡 Muss geprüft werden — Europe sollte gewählt sein</span></td>
+          </tr>
+          <tr>
+            <td class="service-name" style="color:#be123c;">Postmark</td>
+            <td class="type-wrap"><span class="type-cell" style="background:#fff1f2;color:#be123c;">Transakt. E-Mails</span></td>
+            <td>E-Mail-Inhalte (Registrierung, PW-Reset, Benachrichtigungen), E-Mail-Adressen, Metadaten</td>
+            <td>🔴 <strong style="color:#be123c;">USA (Chicago + AWS US).<br>KEINE EU-Server verfügbar.</strong></td>
+            <td><span class="status">🔴 US-Datenverarbeitung. Legal via SCCs + EU-US Data Privacy Framework, aber Daten verlassen die EU.</span></td>
+          </tr>
+          <tr>
+            <td class="service-name">OpenAI<br><small style="font-weight:400;color:#6b7280;">Whisper API</small></td>
+            <td class="type-wrap"><span class="type-cell">Sprache-zu-Text</span></td>
+            <td>Audio-Aufnahmen (Voice-to-Task, Sprachnotizen), Transkripte</td>
+            <td>🟡 Default: USA.<br><strong style="color:#16a34a;">ABER:</strong> Seit 2025 EU-Region wählbar (eu.api.openai.com). Muss umgestellt werden.</td>
+            <td><span class="status">🟡 EU-Region verfügbar, muss aktiviert werden</span></td>
+          </tr>
+          <tr>
+            <td class="service-name">Gmail API<br><small style="font-weight:400;color:#6b7280;">(OAuth)</small></td>
+            <td class="type-wrap"><span class="type-cell">E-Mail-Integration</span></td>
+            <td>E-Mail-Metadaten (Subject, From, Date), kategorisierte Inbox-Daten</td>
+            <td>Google-Infrastruktur, EU-Rechenzentren verfügbar</td>
+            <td><span class="status">🟡 Google DPA vorhanden, aber Google routet global</span></td>
+          </tr>
+          <tr>
+            <td class="service-name">OpenAI<br><small style="font-weight:400;color:#6b7280;">GPT API</small></td>
+            <td class="type-wrap"><span class="type-cell">KI-Copilot</span></td>
+            <td>Chat-Verläufe, Projektkontext-Queries, Antworten</td>
+            <td>🟡 Default: USA.<br><strong style="color:#16a34a;">Europe Region seit 2025 verfügbar.</strong></td>
+            <td><span class="status">🟡 EU-Region verfügbar, muss aktiviert werden</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 2: DSGVO COMPLIANCE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">⚖️</div>
+      <div>
+        <div class="section-title">Was ist DSGVO-konform? Was nicht?</div>
+        <div class="section-subtitle">Bewertung nach aktuellem Stand — Annahmen gelten vorbehaltlich Region-Prüfung</div>
+      </div>
+    </div>
+    <div class="status-cards">
+
+      <div class="status-card green">
+        <div class="status-card-header">🟢 Vermutlich OK — wenn Region korrekt konfiguriert</div>
+        <ul>
+          <li><strong>Supabase Datenbank + Auth:</strong> Wenn Region eu-central-1 (Frankfurt) → alle Projektdaten, User-Daten, Dokumente in Deutschland. DPA verfügbar.</li>
+          <li><strong>Supabase Storage:</strong> Dokumente und Fotos co-located mit Datenbank — kein separates Region-Problem.</li>
+          <li><strong>Lovable Cloud Frontend:</strong> Wenn Europe-Region gewählt, kein User-Data dort gespeichert. Nur statische Assets.</li>
+        </ul>
+      </div>
+
+      <div class="status-card yellow">
+        <div class="status-card-header">🟡 Muss geprüft / umgestellt werden</div>
+        <ul>
+          <li><strong>OpenAI Whisper API:</strong> EU-Region seit 2025 verfügbar. Neues Project mit Europe-Region anlegen → <code style="background:#fef9c3;color:#b45309;padding:1px 5px;border-radius:4px;font-size:12px;">eu.api.openai.com</code> nutzen. Audio-Daten werden dann in der EU verarbeitet, Zero Data Retention.</li>
+          <li><strong>OpenAI GPT API (KI-Copilot):</strong> Gleiche Lösung — Europe Project anlegen, EU-Endpoint verwenden.</li>
+          <li><strong>Gmail API:</strong> Google hat DPA, routet aber global. Minimales Risiko da LUMA nur Metadaten liest (Subject, From, Date), keinen Body. DPA-Status prüfen.</li>
+        </ul>
+      </div>
+
+      <div class="status-card red">
+        <div class="status-card-header">🔴 Handlungsbedarf — jetzt</div>
+        <ul>
+          <li>
+            <strong>Postmark:</strong> Alle transaktionalen E-Mails (Registrierung, PW-Reset, Benachrichtigungen) werden über US-Server verarbeitet. Postmark hat <strong>KEIN EU-Hosting</strong>. Optionen:
+            <ol class="alt-list">
+              <li>🇪🇺 EU-basierter E-Mail-Provider: <strong>Lettermint</strong> (NL), <strong>Mailjet</strong> (EU), <strong>Brevo/Sendinblue</strong> (EU)</li>
+              <li>📄 Postmark behalten mit DPA + SCCs — legal, aber kein "Deutsche Server" Claim möglich</li>
+              <li>📧 Eigener SMTP über Google Workspace (daniel@luma-app.io) — E-Mails bleiben bei Google</li>
+            </ol>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 3: DPA STATUS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📋</div>
+      <div>
+        <div class="section-title">DPA-Status — Auftragsverarbeitungsverträge</div>
+        <div class="section-subtitle">AVV nach Art. 28 DSGVO — Pflicht bei allen Auftragsverarbeitern</div>
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Dienst</th>
+            <th>DPA verfügbar?</th>
+            <th>DPA angefordert?</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="service-name">Supabase</td>
+            <td><span class="dpa-status dpa-yes">✅ Ja</span><br><small style="color:#6b7280;font-size:12px;">Dashboard oder support@supabase.io</small></td>
+            <td><span class="dpa-status dpa-no">❌ Noch nicht</span></td>
+            <td><span class="status">🔴 Muss angefordert werden</span></td>
+          </tr>
+          <tr>
+            <td class="service-name">Postmark</td>
+            <td><span class="dpa-status dpa-yes">✅ Ja</span><br><small style="color:#6b7280;font-size:12px;">postmarkapp.com/dpa, inkl. SCCs</small></td>
+            <td><span class="dpa-status dpa-no">❌ Noch nicht</span></td>
+            <td><span class="status">🔴 Muss angefordert werden</span></td>
+          </tr>
+          <tr>
+            <td class="service-name">OpenAI</td>
+            <td><span class="dpa-status dpa-yes">✅ Ja</span><br><small style="color:#6b7280;font-size:12px;">DPA + Data Processing Addendum</small></td>
+            <td><span class="dpa-status dpa-no">❌ Noch nicht</span></td>
+            <td><span class="status">🔴 Muss angefordert werden</span></td>
+          </tr>
+          <tr>
+            <td class="service-name">Lovable</td>
+            <td><span class="dpa-status dpa-maybe">❓ Unklar</span><br><small style="color:#6b7280;font-size:12px;">Muss geprüft werden</small></td>
+            <td><span class="dpa-status dpa-no">❌ Noch nicht</span></td>
+            <td><span class="status">🟡 Beim Lovable-Support anfragen</span></td>
+          </tr>
+          <tr>
+            <td class="service-name">Google<br><small style="font-weight:400;color:#6b7280;">(Gmail API)</small></td>
+            <td><span class="dpa-status dpa-yes">✅ Ja</span><br><small style="color:#6b7280;font-size:12px;">Google Workspace DPA</small></td>
+            <td><span class="dpa-status dpa-maybe">❓ Via Google Workspace Admin</span></td>
+            <td><span class="status">🟡 Prüfen ob automatisch aktiv</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 4: TODO -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">✅</div>
+      <div>
+        <div class="section-title">TODO-Liste — Was Daniel tun muss</div>
+        <div class="section-subtitle">Priorisierte Checkliste für DSGVO-Compliance</div>
+      </div>
+    </div>
+
+    <div class="todo-section">
+      <div class="todo-label urgent">🔴 Sofort — diese Woche</div>
+      <div class="todo-list">
+        <div class="todo-item urgent-item">
+          <div class="todo-num">1</div>
+          <div class="todo-text">Supabase Dashboard öffnen → <code>Settings → General → Region</code> prüfen. Wenn NICHT <code>eu-central-1</code> (Frankfurt): Neues Projekt in Frankfurt anlegen und migrieren.</div>
+        </div>
+        <div class="todo-item urgent-item">
+          <div class="todo-num">2</div>
+          <div class="todo-text">Supabase DPA anfordern — via Dashboard oder an <code>support@supabase.io</code></div>
+        </div>
+        <div class="todo-item urgent-item">
+          <div class="todo-num">3</div>
+          <div class="todo-text">Postmark DPA unterzeichnen → <code>postmarkapp.com/dpa</code></div>
+        </div>
+        <div class="todo-item urgent-item">
+          <div class="todo-num">4</div>
+          <div class="todo-text">OpenAI API: Neues Project mit <strong>Europe Region</strong> anlegen → Whisper + GPT über <code>eu.api.openai.com</code> routen</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="todo-section">
+      <div class="todo-label soon">🟡 Bald — vor öffentlichem Launch</div>
+      <div class="todo-list">
+        <div class="todo-item soon-item">
+          <div class="todo-num">5</div>
+          <div class="todo-text">Lovable Cloud Region prüfen → <code>Settings → Connectors → Lovable Cloud → Region = Europe?</code></div>
+        </div>
+        <div class="todo-item soon-item">
+          <div class="todo-num">6</div>
+          <div class="todo-text">Lovable DPA anfragen beim Lovable-Support</div>
+        </div>
+        <div class="todo-item soon-item">
+          <div class="todo-num">7</div>
+          <div class="todo-text">Datenschutzerklärung auf <code>luma-app.io</code> aktualisieren: Alle Unterauftragnehmer mit Standort listen</div>
+        </div>
+        <div class="todo-item soon-item">
+          <div class="todo-num">8</div>
+          <div class="todo-text"><strong>Entscheidung:</strong> Postmark behalten (mit DPA + SCCs) oder zu EU-Provider wechseln? (Optionen: Lettermint, Mailjet, Brevo)</div>
+        </div>
+        <div class="todo-item soon-item">
+          <div class="todo-num">9</div>
+          <div class="todo-text">Google Workspace DPA-Status prüfen → <code>admin.google.com</code></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="todo-section">
+      <div class="todo-label later">🔵 Langfristig</div>
+      <div class="todo-list">
+        <div class="todo-item later-item">
+          <div class="todo-num">10</div>
+          <div class="todo-text">Verzeichnis der Verarbeitungstätigkeiten nach <strong>Art. 30 DSGVO</strong> erstellen</div>
+        </div>
+        <div class="todo-item later-item">
+          <div class="todo-num">11</div>
+          <div class="todo-text">AVV-Ordner anlegen: Alle DPAs zentral und sicher ablegen</div>
+        </div>
+        <div class="todo-item later-item">
+          <div class="todo-num">12</div>
+          <div class="todo-text">Cookie-Banner / Consent Management prüfen (aktuell nur 1 technisches Cookie?)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: RECOMMENDATION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🏷️</div>
+      <div>
+        <div class="section-title">Empfehlung — "Deutsche Server" behaupten?</div>
+        <div class="section-subtitle">Was LUMA aktuell sagen kann vs. was nach den Fixes möglich ist</div>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <div class="warning-header">🚨 Aktuell NICHT möglich: "Alle Daten auf deutschen Servern"</div>
+      <ul>
+        <li><strong>Postmark:</strong> definitiv USA — keine EU-Server verfügbar</li>
+        <li><strong>Supabase:</strong> Region muss erst geprüft werden — könnte EU sein, könnte US sein</li>
+        <li><strong>OpenAI:</strong> Default USA — EU optional, aber noch nicht aktiviert</li>
+      </ul>
+    </div>
+
+    <div class="fix-section-title">✅ Nach den Fixes — zwei mögliche Aussagen:</div>
+    <div class="fix-box">
+      <div class="fix-option">
+        <h4>🔄 Option A — Postmark behalten (DPA + SCCs)</h4>
+        <p>"Projektdaten werden in deutschen Rechenzentren gespeichert (AWS Frankfurt). KI-Verarbeitung erfolgt in der EU. E-Mail-Zustellung über US-Provider mit EU-US Data Privacy Framework."</p>
+      </div>
+      <div class="fix-option">
+        <h4>🌍 Option B — Wechsel zu EU-E-Mail-Provider (Ideal)</h4>
+        <p>"Alle Daten werden ausschließlich in der EU verarbeitet und gespeichert. DSGVO-konform, Auftragsverarbeitungsverträge (AVV) mit allen Dienstleistern abgeschlossen."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-sources">
+      <h4>📚 Quellen</h4>
+      <div class="sources-list">
+        <span class="source-chip">supabase.com/docs/guides/platform/regions</span>
+        <span class="source-chip">postmarkapp.com/eu-privacy</span>
+        <span class="source-chip">openai.com/index/introducing-data-residency-in-europe</span>
+        <span class="source-chip">docs.lovable.dev/integrations/cloud</span>
+        <span class="source-chip">llmstxt.org</span>
+      </div>
+    </div>
+    <p>
+      📅 29. März 2026 &nbsp;·&nbsp; Erstellt von Hatti für Daniel<br>
+      <strong>⚠️ Keine Rechtsberatung — bei Unsicherheiten Datenschutzberater konsultieren.</strong>
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
