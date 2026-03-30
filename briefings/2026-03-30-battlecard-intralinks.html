@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚔️ SS&C Intralinks — Competitive Battlecard (Drooms)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f4f4f6;
+      color: #1a1a2e;
+      line-height: 1.6;
+      padding: 24px 16px 64px;
+    }
+
+    .container { max-width: 960px; margin: 0 auto; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
+      border-radius: 20px;
+      padding: 40px 40px 36px;
+      color: white;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '⚔️';
+      position: absolute; right: 32px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 80px; opacity: 0.15;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .hero h1 { font-size: clamp(22px, 4vw, 32px); font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
+    .hero p { font-size: 14px; opacity: 0.8; }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 16px;
+      margin-top: 20px; font-size: 13px; opacity: 0.85;
+    }
+    .hero-meta span { display: flex; align-items: center; gap: 6px; }
+
+    /* CARDS */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 16px; font-weight: 700; color: #7C3AED;
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card-title::after {
+      content: ''; flex: 1; height: 2px; background: #f0ebfe; border-radius: 2px;
+    }
+
+    /* SNAPSHOT GRID */
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    .snapshot-item {
+      background: #f9f7ff; border-radius: 12px;
+      padding: 16px; border-left: 3px solid #7C3AED;
+    }
+    .snapshot-item .label {
+      font-size: 11px; font-weight: 600; color: #7C3AED;
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;
+    }
+    .snapshot-item .value { font-size: 15px; font-weight: 600; color: #1a1a2e; }
+    .snapshot-item .source { font-size: 10px; color: #9ca3af; margin-top: 4px; }
+
+    /* STATS ROW */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px; margin-bottom: 20px;
+    }
+    .stat-card {
+      background: #fff; border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      padding: 24px; text-align: center;
+    }
+    .stat-number { font-size: 28px; font-weight: 800; color: #7C3AED; line-height: 1; margin-bottom: 6px; }
+    .stat-label { font-size: 13px; color: #6b7280; font-weight: 500; }
+    .stat-source { font-size: 10px; color: #d1d5db; margin-top: 4px; }
+
+    /* PRICING */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .pricing-plan {
+      border: 2px solid #f3f4f6; border-radius: 14px;
+      padding: 20px; position: relative;
+    }
+    .pricing-plan.highlight { border-color: #7C3AED; }
+    .pricing-plan .plan-badge {
+      display: inline-block;
+      background: #7C3AED; color: white;
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      padding: 2px 8px; border-radius: 8px; margin-bottom: 8px;
+    }
+    .pricing-plan .plan-name { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+    .pricing-plan .plan-price .amount { font-size: 22px; font-weight: 800; color: #7C3AED; }
+    .pricing-plan .plan-price .unit { font-size: 13px; color: #6b7280; }
+    .pricing-plan .plan-note { font-size: 12px; color: #9ca3af; margin: 6px 0 12px; }
+    .pricing-plan .plan-modules { font-size: 12px; color: #4b5563; line-height: 1.8; list-style: none; }
+    .pricing-plan .plan-modules li { padding-left: 14px; position: relative; }
+    .pricing-plan .plan-modules li::before { content: '·'; position: absolute; left: 4px; color: #7C3AED; }
+    .plan-source { font-size: 10px; color: #d1d5db; margin-top: 8px; }
+
+    /* FEATURE MATRIX */
+    .table-wrapper { overflow-x: auto; border-radius: 12px; }
+    .matrix-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .matrix-table thead th {
+      background: #7C3AED; color: white;
+      padding: 12px 16px; text-align: left;
+      font-weight: 600; font-size: 12px;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .matrix-table thead th:first-child { border-radius: 10px 0 0 0; }
+    .matrix-table thead th:last-child { border-radius: 0 10px 0 0; }
+    .matrix-table tbody tr:nth-child(even) { background: #f9f7ff; }
+    .matrix-table tbody tr:hover { background: #f0ebfe; }
+    .matrix-table td {
+      padding: 11px 16px; border-bottom: 1px solid #f3f4f6;
+      vertical-align: middle;
+    }
+    .matrix-table td:first-child { font-weight: 500; color: #374151; }
+    .matrix-table td .source-tag { font-size: 10px; color: #9ca3af; display: block; margin-top: 2px; }
+    .badge-yes {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #dcfce7; color: #15803d;
+      font-size: 12px; font-weight: 600;
+      padding: 2px 10px; border-radius: 20px;
+    }
+    .badge-no {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #fee2e2; color: #dc2626;
+      font-size: 12px; font-weight: 600;
+      padding: 2px 10px; border-radius: 20px;
+    }
+    .badge-warn {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #fef9c3; color: #b45309;
+      font-size: 12px; font-weight: 600;
+      padding: 2px 10px; border-radius: 20px;
+    }
+    .badge-drooms {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #ede9fe; color: #7C3AED;
+      font-size: 11px; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px;
+    }
+
+    /* SW GRID */
+    .sw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .sw-box { border-radius: 14px; padding: 20px; }
+    .sw-box.strengths { background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .sw-box.weaknesses { background: #fef2f2; border: 1px solid #fecaca; }
+    .sw-box h3 { font-size: 14px; font-weight: 700; margin-bottom: 14px; }
+    .sw-box.strengths h3 { color: #15803d; }
+    .sw-box.weaknesses h3 { color: #dc2626; }
+    .sw-list { list-style: none; }
+    .sw-list li {
+      font-size: 13px; color: #374151;
+      padding: 6px 0; border-bottom: 1px solid rgba(0,0,0,0.05);
+      display: flex; gap: 8px; line-height: 1.4;
+    }
+    .sw-list li:last-child { border-bottom: none; }
+    .sw-list li .icon { flex-shrink: 0; margin-top: 1px; }
+    .sw-list li .src { display: block; font-size: 10px; color: #9ca3af; margin-top: 2px; }
+
+    /* TALKING POINTS */
+    .talking-points { list-style: none; }
+    .talking-points li {
+      background: #f9f7ff;
+      border-left: 4px solid #7C3AED;
+      border-radius: 0 12px 12px 0;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      font-size: 14px; color: #1a1a2e; line-height: 1.5;
+    }
+    .talking-points li .tp-title {
+      font-weight: 700; color: #7C3AED;
+      display: block; margin-bottom: 2px;
+    }
+
+    /* TESTIMONIALS */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .testimonial { background: #f9f7ff; border-radius: 12px; padding: 18px; }
+    .testimonial blockquote {
+      font-size: 13px; color: #374151; font-style: italic;
+      line-height: 1.6; margin-bottom: 10px;
+    }
+    .testimonial .author { font-size: 12px; font-weight: 700; color: #1a1a2e; }
+    .testimonial .role { font-size: 11px; font-weight: 600; color: #7C3AED; }
+    .testimonial .source-tag { font-size: 10px; color: #9ca3af; display: block; margin-top: 2px; }
+
+    /* KI ALERT */
+    .ki-alert {
+      background: #f0fdf4; border: 2px solid #86efac;
+      border-radius: 14px; padding: 20px 24px;
+      display: flex; gap: 16px; align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .ki-alert .ki-icon { font-size: 32px; flex-shrink: 0; }
+    .ki-alert h3 { font-size: 16px; font-weight: 700; color: #15803d; margin-bottom: 6px; }
+    .ki-alert p { font-size: 13px; color: #374151; line-height: 1.5; }
+    .ki-alert .ki-source { font-size: 11px; color: #9ca3af; margin-top: 6px; }
+
+    .ki-alert.danger {
+      background: #fef2f2; border: 2px solid #fca5a5;
+    }
+    .ki-alert.danger h3 { color: #dc2626; }
+
+    /* FEATURES LIST */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 10px;
+    }
+    .feature-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 12px;
+      background: #f9f7ff; border-radius: 10px; font-size: 13px;
+    }
+    .feature-item .feat-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .feature-item .feat-name { font-weight: 600; color: #1a1a2e; }
+    .feature-item .feat-detail { font-size: 11px; color: #6b7280; }
+    .feature-item .feat-source { font-size: 10px; color: #9ca3af; }
+
+    /* DISCLAIMER */
+    .disclaimer {
+      background: #f9f7ff; border: 1px solid #e5e7eb;
+      border-radius: 12px; padding: 16px 20px;
+      font-size: 11px; color: #9ca3af; line-height: 1.6; margin-top: 24px;
+    }
+    .disclaimer strong { color: #6b7280; }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .sw-grid { grid-template-columns: 1fr; }
+      .hero { padding: 28px 20px; }
+      .card { padding: 20px; }
+      .matrix-table { font-size: 12px; }
+      .matrix-table td, .matrix-table th { padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">Competitive Intelligence · Drooms Internal</div>
+    <h1>⚔️ SS&amp;C Intralinks — Competitive Battlecard</h1>
+    <p>Crawl-basierte Analyse · 60 Seiten gecrawlt · Stand März 2026</p>
+    <div class="hero-meta">
+      <span>🌐 intralinks.com</span>
+      <span>🏢 SS&amp;C Technologies (NYSE: SSNC)</span>
+      <span>🇺🇸 Boston / New York</span>
+      <span>📍 115 Offices in 35 Ländern</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">$35T+</div>
+      <div class="stat-label">Transaktionsvolumen auf Plattform</div>
+      <div class="stat-source">Quelle: intralinks.com/about-intralinks</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">10.000+</div>
+      <div class="stat-label">M&amp;A Deals pro Jahr</div>
+      <div class="stat-source">Quelle: intralinks.com/about-intralinks</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">6,6M+</div>
+      <div class="stat-label">Registrierte User weltweit</div>
+      <div class="stat-source">Quelle: intralinks.com/products/dealcentre-ai</div>
+    </div>
+  </div>
+
+  <!-- COMPANY SNAPSHOT -->
+  <div class="card">
+    <div class="card-title">🏢 Company Snapshot</div>
+    <div class="snapshot-grid">
+      <div class="snapshot-item">
+        <div class="label">Claim</div>
+        <div class="value">"Where deals get done. Intelligently."</div>
+        <div class="source">Quelle: Homepage H1</div>
+      </div>
+      <div class="snapshot-item">
+        <div class="label">Muttergesellschaft</div>
+        <div class="value">SS&amp;C Technologies · $6B+ Jahresumsatz · Börsennotiert</div>
+        <div class="source">Quelle: /products/dealcentre-ai</div>
+      </div>
+      <div class="snapshot-item">
+        <div class="label">Gründung VDR</div>
+        <div class="value">Pioneer des VDR — vor ~30 Jahren</div>
+        <div class="source">Quelle: /products</div>
+      </div>
+      <div class="snapshot-item">
+        <div class="label">R&amp;D Investment</div>
+        <div class="value">$200M+ über 5 Jahre</div>
+        <div class="source">Quelle: Homepage + /products</div>
+      </div>
+      <div class="snapshot-item">
+        <div class="label">Zertifizierung</div>
+        <div class="value">ISO 27701 — erster VDR-Anbieter mit höchster Datenschutz-Zertifizierung</div>
+        <div class="source">Quelle: Homepage + /products</div>
+      </div>
+      <div class="snapshot-item">
+        <div class="label">Marktposition</div>
+        <div class="value">#1 M&amp;A · #1 GP-LP Community · #1 Fundraising Platform</div>
+        <div class="source">Quelle: Homepage</div>
+      </div>
+    </div>
+
+    <!-- Target Segments -->
+    <div style="margin-top: 20px;">
+      <div style="font-size: 12px; color: #6b7280; font-weight: 600; margin-bottom: 10px;">Zielgruppen <span style="font-size: 10px; color: #9ca3af;">(Quelle: /clients/*)</span></div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+        <span style="background: #ede9fe; color: #7C3AED; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px;">Investment Banks &amp; Advisors</span>
+        <span style="background: #ede9fe; color: #7C3AED; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px;">Private Equity</span>
+        <span style="background: #ede9fe; color: #7C3AED; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px;">Corporates</span>
+        <span style="background: #ede9fe; color: #7C3AED; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px;">Law Firms</span>
+        <span style="background: #ede9fe; color: #7C3AED; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px;">Hedge Funds</span>
+        <span style="background: #ede9fe; color: #7C3AED; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px;">Venture Capital</span>
+        <span style="background: #ede9fe; color: #7C3AED; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px;">Real Estate</span>
+        <span style="background: #ede9fe; color: #7C3AED; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px;">IT / InfoSec Teams</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS OVERVIEW -->
+  <div class="card">
+    <div class="card-title">📦 Produktfamilie</div>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feat-icon">🏠</div>
+        <div>
+          <div class="feat-name">VDRPro™</div>
+          <div class="feat-detail">Klassischer Virtual Data Room — AI-powered, bank-grade security</div>
+          <div class="feat-source">Quelle: /products</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">🤖</div>
+        <div>
+          <div class="feat-name">DealCentre AI™</div>
+          <div class="feat-detail">AI-Plattform für den gesamten M&amp;A-Deal-Lifecycle (Prep → Marketing → Diligence → Management)</div>
+          <div class="feat-source">Quelle: /products/dealcentre-ai</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">💼</div>
+        <div>
+          <div class="feat-name">FundCentre™</div>
+          <div class="feat-detail">Front-Office-Plattform für Fundraising, LP-Reporting, Investor Onboarding</div>
+          <div class="feat-source">Quelle: /products/fundcentre</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">📋</div>
+        <div>
+          <div class="feat-name">Deal Services™</div>
+          <div class="feat-detail">Managed Services: AI-Redaktion, NDA-Management, Übersetzungen, Transaction Support</div>
+          <div class="feat-source">Quelle: /products/dealservices/*</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">🗄️</div>
+        <div>
+          <div class="feat-name">DealVault™</div>
+          <div class="feat-detail">Cloud-basiertes Deal-Archiv für wertvolle Transaktionsunterlagen</div>
+          <div class="feat-source">Quelle: /products/dealcentre/dealvault</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">📊</div>
+        <div>
+          <div class="feat-name">InView™</div>
+          <div class="feat-detail">Fund-Report-Aggregation und Datenextraktion für LPs</div>
+          <div class="feat-source">Quelle: /products/fundcentre/inview</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">🔗</div>
+        <div>
+          <div class="feat-name">Intralinks Link (AI Engine)</div>
+          <div class="feat-detail">Proprietäre KI: Dok-Zusammenfassungen, Ask Link (konversationell), AI-Redaktion, PII-Erkennung, Q&amp;A-Automation</div>
+          <div class="feat-source">Quelle: /products/dealcentre/link + /products/dealcentre-ai</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">🔐</div>
+        <div>
+          <div class="feat-name">UNshare® / Security Hub™</div>
+          <div class="feat-detail">Lifetime Document Control — Dokument-Zugriff nach Teilen widerrufen</div>
+          <div class="feat-source">Quelle: Homepage + /products</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI SECTION -->
+  <div class="ki-alert">
+    <div class="ki-icon">🤖</div>
+    <div>
+      <h3>AI ist Kernbestandteil — nicht Beilage</h3>
+      <p>Intralinks hat KI tief in die Plattform integriert: <strong>"Link"</strong> ist die proprietäre AI-Engine mit konversationellem Chatbot ("Ask Link"), automatischer Dokumenten-Zusammenfassung, PII-Erkennung in 80+ Datenelementen, AI-Redaktion (80% Kosten-/Zeitersparnis laut Website), Q&amp;A-Automation und Keyword-Extraktion. DealCentre AI positioniert sich als "first true AI-powered dealmaking platform".</p>
+      <div class="ki-source">Quellen: /products/dealcentre-ai · /products/dealcentre/link · /products/dealservices/redaction</div>
+    </div>
+  </div>
+
+  <!-- PRICING -->
+  <div class="card">
+    <div class="card-title">💶 Pricing</div>
+    <div class="pricing-grid">
+      <div class="pricing-plan">
+        <div class="plan-name">VDRPro™</div>
+        <div class="plan-price"><span class="amount">Auf Anfrage</span></div>
+        <div class="plan-note">Keine öffentlichen Preise. Per-Deal-Basis oder Subscription</div>
+        <ul class="plan-modules">
+          <li>Virtual Data Room</li>
+          <li>Bank-grade Security</li>
+          <li>Q&amp;A-Modul</li>
+          <li>Dynamic Watermarking</li>
+          <li>UNshare® (Lifetime Doc Control)</li>
+          <li>ISO 27701 zertifiziert</li>
+        </ul>
+        <div class="plan-source">Quelle: Kein Preisblock auf Website gefunden (Stand März 2026)</div>
+      </div>
+      <div class="pricing-plan highlight">
+        <div class="plan-badge">AI Platform</div>
+        <div class="plan-name">DealCentre AI™</div>
+        <div class="plan-price"><span class="amount">Auf Anfrage</span></div>
+        <div class="plan-note">"Tiered pricing plans" für alle Unternehmensgrößen — keine konkreten Zahlen auf Website</div>
+        <ul class="plan-modules">
+          <li>Alles aus VDRPro</li>
+          <li>AI-Engine "Link"</li>
+          <li>Ask Link (konversationell)</li>
+          <li>Deal Marketing Modul</li>
+          <li>Deal Management / Pipeline</li>
+          <li>Cross-Deal Analytics</li>
+          <li>AI-Redaktion</li>
+        </ul>
+        <div class="plan-source">Quelle: /products/dealcentre-ai (Pricing-Sektion)</div>
+      </div>
+      <div class="pricing-plan">
+        <div class="plan-name">Deal Services™</div>
+        <div class="plan-price"><span class="amount">Managed Service</span></div>
+        <div class="plan-note">Externe Dienstleistungen — kein Selbstbedienungsmodell</div>
+        <ul class="plan-modules">
+          <li>AI-Redaktion (Human + AI)</li>
+          <li>NDA-Management</li>
+          <li>Übersetzungen (50+ Sprachen)</li>
+          <li>Transaction Support</li>
+          <li>Advanced Reporting</li>
+        </ul>
+        <div class="plan-source">Quelle: /products/dealservices/*</div>
+      </div>
+    </div>
+    <div style="margin-top:14px; padding:12px 16px; background:#fef9c3; border-radius:10px; font-size:12px; color:#92400e;">
+      ⚠️ <strong>Keine öffentlichen Preise.</strong> Intralinks verfolgt ein "Talk to Sales"-Modell. Dies macht Preisvergleiche im Wettbewerb schwierig und deutet auf Enterprise-Pricing hin. Laut Website: "Pricing agility to accommodate a variety of deal types." <span style="color:#9ca3af;">(Quelle: /products/dealcentre-ai Vergleichstabelle)</span>
+    </div>
+  </div>
+
+  <!-- FEATURE MATRIX: Drooms vs. Intralinks -->
+  <div class="card">
+    <div class="card-title">📊 Feature Matrix — Drooms vs. SS&amp;C Intralinks</div>
+    <p style="font-size:12px; color:#6b7280; margin-bottom:16px;">⚠️ Intralinks-Features: Nur aus 60 gecrawlten Seiten. Drooms-Features: Aus internem Produktwissen. Stand März 2026.</p>
+    <div class="table-wrapper">
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>Feature / Bereich</th>
+            <th>Drooms</th>
+            <th>SS&amp;C Intralinks</th>
+            <th>Quelle (Intralinks)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Virtual Data Room</strong><br><span class="source-tag">Core-Produkt</span></td>
+            <td><span class="badge-drooms">✓ Drooms NXG</span></td>
+            <td><span class="badge-yes">✅ VDRPro™</span></td>
+            <td><span class="source-tag">/products</span></td>
+          </tr>
+          <tr>
+            <td><strong>AI-gestützte Dokumentenanalyse</strong><br><span class="source-tag">Zusammenfassung, PII, Keywords</span></td>
+            <td><span class="badge-drooms">⚠️ In Entwicklung</span></td>
+            <td><span class="badge-yes">✅ "Link" AI Engine</span></td>
+            <td><span class="source-tag">/products/dealcentre-ai</span></td>
+          </tr>
+          <tr>
+            <td><strong>Konversationeller AI-Assistent</strong><br><span class="source-tag">Q&amp;A über Dokumente</span></td>
+            <td><span class="badge-warn">⚠️ Nicht gefunden</span></td>
+            <td><span class="badge-yes">✅ "Ask Link" Chatbot</span></td>
+            <td><span class="source-tag">/products/dealcentre-ai</span></td>
+          </tr>
+          <tr>
+            <td><strong>AI-Redaktion (PII)</strong><br><span class="source-tag">Automatisches Schwärzen</span></td>
+            <td><span class="badge-warn">⚠️ Nicht auf Website gefunden</span></td>
+            <td><span class="badge-yes">✅ 80+ PII-Elemente · 50+ Sprachen</span></td>
+            <td><span class="source-tag">/products/dealservices/redaction</span></td>
+          </tr>
+          <tr>
+            <td><strong>Q&amp;A-Modul</strong><br><span class="source-tag">Buyer Questions &amp; Antworten</span></td>
+            <td><span class="badge-drooms">✓ Drooms Q&amp;A</span></td>
+            <td><span class="badge-yes">✅ Smart Q&amp;A mit AI (Duplikat-Erkennung)</span></td>
+            <td><span class="source-tag">/products/dealcentre/diligence</span></td>
+          </tr>
+          <tr>
+            <td><strong>Deal Marketing Modul</strong><br><span class="source-tag">Buyer Outreach, Teaser</span></td>
+            <td><span class="badge-warn">⚠️ Nicht gefunden</span></td>
+            <td><span class="badge-yes">✅ Buyer-Liste, Tracking, Bulk-Watermark</span></td>
+            <td><span class="source-tag">/products/dealcentre/marketing</span></td>
+          </tr>
+          <tr>
+            <td><strong>Deal Pipeline Management</strong><br><span class="source-tag">Multi-Deal Übersicht</span></td>
+            <td><span class="badge-warn">⚠️ Nicht auf Website gefunden</span></td>
+            <td><span class="badge-yes">✅ Dashboards, Cross-Deal Analytics</span></td>
+            <td><span class="source-tag">/products/dealcentre/management</span></td>
+          </tr>
+          <tr>
+            <td><strong>Fundraising Platform (GPs/LPs)</strong><br><span class="source-tag">Private Equity, Fonds</span></td>
+            <td><span class="badge-warn">⚠️ Nicht Kernfokus</span></td>
+            <td><span class="badge-yes">✅ FundCentre™ — $1 von $2 weltweit</span></td>
+            <td><span class="source-tag">/products/fundcentre</span></td>
+          </tr>
+          <tr>
+            <td><strong>Lifetime Document Control</strong><br><span class="source-tag">Zugriff nach Versand widerrufen</span></td>
+            <td><span class="badge-warn">⚠️ Nicht klar kommuniziert</span></td>
+            <td><span class="badge-yes">✅ UNshare® Technologie</span></td>
+            <td><span class="source-tag">Homepage</span></td>
+          </tr>
+          <tr>
+            <td><strong>ISO 27701 Datenschutz-Zertifizierung</strong></td>
+            <td><span class="badge-drooms">✓ ISO 27001</span></td>
+            <td><span class="badge-yes">✅ ISO 27701 (Erster VDR-Anbieter)</span></td>
+            <td><span class="source-tag">/products</span></td>
+          </tr>
+          <tr>
+            <td><strong>EU Data Residency</strong><br><span class="source-tag">Daten in Europa</span></td>
+            <td><span class="badge-drooms">✅ EU-only · Frankfurt</span></td>
+            <td><span class="badge-warn">⚠️ /eudata Seite vorhanden — unklar wie EU-only</span></td>
+            <td><span class="source-tag">/eudata</span></td>
+          </tr>
+          <tr>
+            <td><strong>DSGVO-Compliance</strong></td>
+            <td><span class="badge-drooms">✓ Explizit</span></td>
+            <td><span class="badge-yes">✅ GDPR-Seite vorhanden</span></td>
+            <td><span class="source-tag">/gdpr</span></td>
+          </tr>
+          <tr>
+            <td><strong>Managed Services / Deal Support</strong><br><span class="source-tag">Outsourced Redaktion etc.</span></td>
+            <td><span class="badge-warn">⚠️ Nicht auf Website gefunden</span></td>
+            <td><span class="badge-yes">✅ Deal Services™ Team</span></td>
+            <td><span class="source-tag">/products/dealservices/*</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mobile App</strong></td>
+            <td><span class="badge-warn">⚠️ Nicht auf Website gefunden</span></td>
+            <td><span class="badge-yes">✅ Erwähnt in DealCentre AI Feature-Liste</span></td>
+            <td><span class="source-tag">/products/dealcentre-ai</span></td>
+          </tr>
+          <tr>
+            <td><strong>Öffentliche Preise</strong></td>
+            <td><span class="badge-warn">⚠️ Nur auf Anfrage</span></td>
+            <td><span class="badge-no">❌ Kein Preisblatt gefunden (März 2026)</span></td>
+            <td><span class="source-tag">Kein /pricing auf Site</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- STRENGTHS & WEAKNESSES -->
+  <div class="card">
+    <div class="card-title">⚡ Stärken &amp; Schwächen (Intralinks)</div>
+    <div class="sw-grid">
+      <div class="sw-box strengths">
+        <h3>✅ Stärken</h3>
+        <ul class="sw-list">
+          <li>
+            <span class="icon">💪</span>
+            <div>Marktführer M&amp;A VDR — $35T+ Transaktionsvolumen, 10.000+ Deals/Jahr
+              <span class="src">Quelle: /about-intralinks</span>
+            </div>
+          </li>
+          <li>
+            <span class="icon">🤖</span>
+            <div>Tiefe AI-Integration: "Link" Engine mit konversationellem Ask Link, AI-Redaktion, Q&amp;A-Automation
+              <span class="src">Quelle: /products/dealcentre-ai + /products/dealcentre/link</span>
+            </div>
+          </li>
+          <li>
+            <span class="icon">🏛️</span>
+            <div>SS&amp;C-Backing: $6B+ Muttergesellschaft, $200M+ R&amp;D in 5 Jahren → Kapital für Produktentwicklung
+              <span class="src">Quelle: /products/dealcentre-ai</span>
+            </div>
+          </li>
+          <li>
+            <span class="icon">🌍</span>
+            <div>Globale Präsenz: 115 Offices in 35 Ländern, 6,6M+ User, 100K+ Organisationen
+              <span class="src">Quelle: /about-intralinks</span>
+            </div>
+          </li>
+          <li>
+            <span class="icon">🔒</span>
+            <div>ISO 27701 — Erster VDR-Anbieter mit höchster Datenschutz-Zertifizierung
+              <span class="src">Quelle: /products</span>
+            </div>
+          </li>
+          <li>
+            <span class="icon">📋</span>
+            <div>Breites Produktportfolio: VDR + Deal Marketing + Fundraising + Redaktion + Übersetzung + Archiv
+              <span class="src">Quelle: /products/*</span>
+            </div>
+          </li>
+          <li>
+            <span class="icon">🏆</span>
+            <div>IDC MarketScape Leader 2024 — Worldwide M&amp;A Software
+              <span class="src">Quelle: Homepage</span>
+            </div>
+          </li>
+          <li>
+            <span class="icon">⭐</span>
+            <div>91.9% User-Zufriedenheit · 6-Sekunden-Support-Reaktionszeit (Eigenangabe)
+              <span class="src">Quelle: /about-intralinks</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="sw-box weaknesses">
+        <h3>⚠️ Potenzielle Schwachstellen</h3>
+        <ul class="sw-list">
+          <li>
+            <span class="icon">💶</span>
+            <div>Keine öffentlichen Preise → intransparent, langer Sales-Cycle, Enterprise-Fokus
+              <span class="src">Nicht auf Website gefunden (März 2026)</span>
+            </div>
+          </li>
+          <li>
+            <span class="icon">🇺🇸</span>
+            <div>US-amerikanische Konzernstruktur (SS&amp;C Technologies) — mögliche Bedenken bei EU-Kunden bzgl. Datensouveränität
+              <span class="src">Quelle: /about-intralinks · /eudata vorhanden aber unklar</span>
+            </div>
+          </li>
+          <li>
+            <span class="icon">🧩</span>
+            <div>Sehr breites Portfolio kann unübersichtlich wirken — VDRPro vs. DealCentre AI vs. FundCentre AI: welches Produkt für wen?
+              <span class="src">Quelle: /products</span>
+            </div>
+          </li>
+          <li>
+            <span class="icon">📦</span>
+            <div>Keine KMU-/SMB-Preisgestaltung sichtbar — wirkt primär auf Enterprise ausgerichtet
+              <span class="src">Nicht auf Website gefunden (März 2026)</span>
+            </div>
+          </li>
+          <li>
+            <span class="icon">🔄</span>
+            <div>AI-Features primär in DealCentre AI — VDRPro-Kunden könnten weniger AI-Zugang haben (unklar)
+              <span class="src">Quelle: /products/dealcentre-ai vs. /products</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS aus Crawl -->
+  <div class="card">
+    <div class="card-title">💬 Testimonials (aus Crawl)</div>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <blockquote>"The biggest improvement is having AI-powered search functionality in DealCentre… you're talking about potentially hours a week in savings."</blockquote>
+        <div class="author">Dustin Dawson</div>
+        <div class="role">VP, Mazzone &amp; Associates</div>
+        <span class="source-tag">Quelle: /products/dealcentre-ai</span>
+      </div>
+      <div class="testimonial">
+        <blockquote>"AI Redaction has been transformative… I don't need to have someone on my team spending hundreds of hours selecting pages or page-sizing documents."</blockquote>
+        <div class="author">Colin Brown</div>
+        <div class="role">CMD Global Partners</div>
+        <span class="source-tag">Quelle: Homepage (200+ Stunden gespart)</span>
+      </div>
+      <div class="testimonial">
+        <blockquote>"Our use of Intralinks has grown tremendously since we standardized on it. It opened up the possibility to integrate it with our other applications and to automate some of our other procedures."</blockquote>
+        <div class="author">Ares Management</div>
+        <div class="role">$419B committed capital · 244% YoY User-Wachstum</div>
+        <span class="source-tag">Quelle: Homepage</span>
+      </div>
+      <div class="testimonial">
+        <blockquote>"SS&C Intralinks enabled efficiency and performance improvement during the M&A process — Overall, we saw 20 percent in time savings."</blockquote>
+        <div class="author">Raymond James</div>
+        <div class="role">Investment Bank · 659 Q&amp;A-Fragen über VDRPro</div>
+        <span class="source-tag">Quelle: Homepage</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALES TALKING POINTS (für Drooms-Vertrieb) -->
+  <div class="card">
+    <div class="card-title">🎯 Sales Talking Points — Drooms vs. Intralinks</div>
+    <ul class="talking-points">
+      <li>
+        <span class="tp-title">🇪🇺 EU-Datensouveränität als Differenziator</span>
+        Intralinks ist eine US-Firma (SS&amp;C Technologies, Boston). Auch wenn eine /eudata-Seite existiert, bleibt die Konzernstruktur US-amerikanisch. Für europäische Kunden mit DSGVO-Anforderungen und Datensouveränitäts-Policy ist Drooms als europäisch-geführte Plattform ein klares Argument — besonders in regulierten Branchen und bei öffentlichen Auftraggebern.
+      </li>
+      <li>
+        <span class="tp-title">💶 Transparente Preise vs. "Talk to Sales"-Blackbox</span>
+        Intralinks zeigt keine Preise auf der Website. Das verlängert Evaluierungsprozesse, schafft Intransparenz und signalisiert komplexe Enterprise-Deals. Drooms mit klaren, verhandelbaren Preismodellen bietet schnellere Entscheidungswege — besonders für Mid-Market-Kunden die keine 8-wöchige Sales-Evaluation wollen.
+      </li>
+      <li>
+        <span class="tp-title">🎯 Fokus schlägt Breite</span>
+        Intralinks versucht VDR + Fundraising (FundCentre) + Deal Services + Übersetzung + Redaktion unter einem Dach zu vereinen. Drooms fokussiert auf M&amp;A VDR. Für Kunden die einen spezialisierten Partner suchen: "Wir tun eine Sache — und die besser als alle anderen."
+      </li>
+      <li>
+        <span class="tp-title">🤝 Service-Modell: Partner vs. Plattform</span>
+        Intralinks Deal Services sind ein Managed-Service-Modell — kein Self-Service. Drooms bietet direkten Kundenkontakt ohne externe Service-Schicht. Für Kunden die schnell und direkt arbeiten wollen: weniger Reibungspunkte.
+      </li>
+      <li>
+        <span class="tp-title">⚠️ Konzern-Risiko: SS&amp;C als Blackbox</span>
+        Intralinks ist Teil eines $6B+ Konzerns mit 115 Offices. Das bedeutet: Entscheidungen über Produktrichtung, Pricing, Support-Level werden nicht von einem spezialisierten VDR-Team getroffen. Drooms als fokussiertes Unternehmen ist näher am Kunden.
+      </li>
+    </ul>
+  </div>
+
+  <!-- DEAL EXAMPLES aus Crawl -->
+  <div class="card">
+    <div class="card-title">📈 Referenz-Deals (aus Crawl)</div>
+    <div class="snapshot-grid">
+      <div class="snapshot-item">
+        <div class="label">Raytheon / United Technologies</div>
+        <div class="value">$89.8B Acquisition</div>
+        <div class="source">Quelle: Homepage</div>
+      </div>
+      <div class="snapshot-item">
+        <div class="label">Dow Holdings Spin-off</div>
+        <div class="value">$57.3B</div>
+        <div class="source">Quelle: Homepage</div>
+      </div>
+      <div class="snapshot-item">
+        <div class="label">Whole Foods / Amazon</div>
+        <div class="value">$13.6B Acquisition</div>
+        <div class="source">Quelle: Homepage</div>
+      </div>
+      <div class="snapshot-item">
+        <div class="label">Anaplan / Thoma Bravo</div>
+        <div class="value">$10.3B Acquisition</div>
+        <div class="source">Quelle: Homepage</div>
+      </div>
+      <div class="snapshot-item">
+        <div class="label">Hayfin Direct Lending Fund IV</div>
+        <div class="value">$6.61B Fundraise</div>
+        <div class="source">Quelle: Homepage</div>
+      </div>
+      <div class="snapshot-item">
+        <div class="label">Fortress / SoftBank</div>
+        <div class="value">$3.3B Acquisition</div>
+        <div class="source">Quelle: Homepage</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> Diese Battlecard basiert ausschließlich auf öffentlich zugänglichen Informationen der Website intralinks.com — 60 Seiten gecrawlt am 30. März 2026 via SiteCrawler/1.0. Alle Fakten sind mit Seitenquellen belegt. Keine Behauptung ohne Crawl-Nachweis. Drooms-Informationen basieren auf internem Produktwissen — vor externer Verwendung bitte auf Aktualität prüfen. Diese Battlecard ist für den internen Drooms-Vertriebseinsatz bestimmt und nicht für Dritte gedacht. <strong>Stand: März 2026.</strong>
+  </div>
+
+</div>
+</body>
+</html>
