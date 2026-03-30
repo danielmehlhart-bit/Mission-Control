@@ -2,6 +2,11 @@
  * Matches a briefing filename against a project name using keyword extraction.
  * Returns true if the briefing likely belongs to the project.
  */
+// Additional keyword aliases: project name → extra slugs to match against filenames
+const PROJECT_ALIASES: Record<string, string[]> = {
+  "luma": ["modulai", "modul-ai", "luma"],
+};
+
 export function briefingMatchesProject(filename: string, projectName: string): boolean {
   const slug = filename.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   // Extract meaningful keywords (>3 chars) from project name
@@ -10,5 +15,9 @@ export function briefingMatchesProject(filename: string, projectName: string): b
     .replace(/[^a-z0-9\s]/g, " ")
     .split(/\s+/)
     .filter(w => w.length > 3);
-  return keywords.some(kw => slug.includes(kw));
+
+  // Check aliases
+  const aliases = PROJECT_ALIASES[projectName.toLowerCase()] ?? [];
+
+  return [...keywords, ...aliases].some(kw => slug.includes(kw));
 }

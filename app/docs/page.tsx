@@ -82,6 +82,9 @@ function DocsPageInner() {
   const [titleInput, setTitleInput] = useState("");
   const [mobileEditing, setMobileEditing] = useState(false);
 
+  // Search state
+  const [searchQuery, setSearchQuery] = useState("");
+
   // Layout state
   const [isMobile, setIsMobile] = useState(false);
   const [listWidth, setListWidth] = useState(280);
@@ -257,9 +260,16 @@ function DocsPageInner() {
 
   // Briefing filtering
   const byCategory = activeTab === "all" ? files : files.filter(f => detectCategory(f.name) === activeTab);
-  const filtered = activeProject === "all"
+  const byProject = activeProject === "all"
     ? byCategory
     : byCategory.filter(f => briefingMatchesProject(f.name, activeProject));
+  const filtered = searchQuery.trim()
+    ? byProject.filter(f => {
+        const q = searchQuery.toLowerCase();
+        const { title } = formatFilename(f.name);
+        return title.toLowerCase().includes(q) || f.name.toLowerCase().includes(q);
+      })
+    : byProject;
 
   const counts = TABS.reduce((a, t) => {
     const base = t === "all" ? files : files.filter(f => detectCategory(f.name) === t);
@@ -445,6 +455,23 @@ function DocsPageInner() {
         {modeToggle}
         {mode === "briefings" ? (
           <>
+            <div style={{ position: "relative" }}>
+              <span style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", fontSize: 13, color: "#4a5068", pointerEvents: "none" }}>🔍</span>
+              <input
+                type="text"
+                placeholder="Suchen…"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                style={{
+                  width: "100%", paddingLeft: 32, paddingRight: searchQuery ? 28 : 12, paddingTop: 7, paddingBottom: 7,
+                  background: "#141720", border: "1px solid #1e2535", borderRadius: 999,
+                  color: "#e2e8f0", fontSize: 13, outline: "none", boxSizing: "border-box" as const,
+                }}
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery("")} style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: "#4a5068", cursor: "pointer", fontSize: 14 }}>×</button>
+              )}
+            </div>
             <div style={s.filterRow}>
               <button style={s.chip(activeProject === "all")} onClick={() => setProject("all")}>
                 Alle Projekte
@@ -536,6 +563,38 @@ function DocsPageInner() {
             ))}
           </div>
         </>
+      )}
+
+      {/* Search pill (briefings mode only) */}
+      {mode === "briefings" && (
+        <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+          <div style={{ position: "relative", flex: 1, maxWidth: 320 }}>
+            <span style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", fontSize: 13, color: "#4a5068", pointerEvents: "none" }}>🔍</span>
+            <input
+              type="text"
+              placeholder="Briefings durchsuchen…"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              style={{
+                width: "100%", paddingLeft: 32, paddingRight: searchQuery ? 28 : 12, paddingTop: 6, paddingBottom: 6,
+                background: "#141720", border: "1px solid #1e2535", borderRadius: 999,
+                color: "#e2e8f0", fontSize: 13, outline: "none",
+                boxSizing: "border-box" as const,
+              }}
+              onFocus={e => e.currentTarget.style.borderColor = "#6366f1"}
+              onBlur={e => e.currentTarget.style.borderColor = "#1e2535"}
+            />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery("")} style={{
+                position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)",
+                background: "none", border: "none", color: "#4a5068", cursor: "pointer", fontSize: 14, lineHeight: 1,
+              }}>×</button>
+            )}
+          </div>
+          {searchQuery && (
+            <span style={{ fontSize: 12, color: "#4a5068" }}>{filtered.length} Treffer</span>
+          )}
+        </div>
       )}
 
       {/* Split Pane */}
