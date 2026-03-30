@@ -1,371 +1,275 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weekly Security Audit - 23.03.2026</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 40px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 300;
-        }
-        
-        .header .date {
-            font-size: 1.2em;
-            opacity: 0.8;
-            margin-bottom: 20px;
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 10px 30px;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            background: #27ae60;
-            color: white;
-        }
-        
-        .content {
-            padding: 40px;
-        }
-        
-        .section {
-            margin-bottom: 40px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            overflow: hidden;
-            border-left: 4px solid #3498db;
-        }
-        
-        .section-header {
-            background: #3498db;
-            color: white;
-            padding: 15px 25px;
-            font-size: 1.3em;
-            font-weight: 600;
-        }
-        
-        .section-content {
-            padding: 25px;
-        }
-        
-        .metric-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .metric-card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #27ae60;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        
-        .metric-card.warning {
-            border-left-color: #f39c12;
-        }
-        
-        .metric-card.danger {
-            border-left-color: #e74c3c;
-        }
-        
-        .metric-title {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-        
-        .metric-value {
-            font-size: 2em;
-            font-weight: 700;
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-        
-        .metric-desc {
-            font-size: 0.9em;
-            color: #7f8c8d;
-        }
-        
-        .code-block {
-            background: #2c3e50;
-            color: #ecf0f1;
-            padding: 20px;
-            border-radius: 8px;
-            font-family: 'Monaco', 'Consolas', monospace;
-            font-size: 0.9em;
-            overflow-x: auto;
-            margin: 15px 0;
-        }
-        
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-        
-        .table th {
-            background: #3498db;
-            color: white;
-            padding: 12px 15px;
-            text-align: left;
-            font-weight: 600;
-        }
-        
-        .table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #ecf0f1;
-        }
-        
-        .table tbody tr:hover {
-            background: #f8f9fa;
-        }
-        
-        .status-good { color: #27ae60; font-weight: 600; }
-        .status-warning { color: #f39c12; font-weight: 600; }
-        .status-danger { color: #e74c3c; font-weight: 600; }
-        
-        .summary {
-            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 8px;
-            margin-top: 40px;
-            text-align: center;
-        }
-        
-        .summary h2 {
-            font-size: 1.8em;
-            margin-bottom: 15px;
-        }
-        
-        .summary p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Audit — 30. März 2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Circular', 'Helvetica Neue', sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      padding: 32px 16px;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+
+    /* Header */
+    .header {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-left h1 { font-size: 24px; font-weight: 700; }
+    .header-left .sub { color: #717171; font-size: 14px; margin-top: 4px; }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .badge-green { background: #d4edda; color: #155724; }
+    .badge-yellow { background: #fff3cd; color: #856404; }
+    .badge-red { background: #f8d7da; color: #721c24; }
+
+    /* Summary */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .summary-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    .summary-card .icon { font-size: 28px; margin-bottom: 8px; }
+    .summary-card .label { font-size: 12px; color: #717171; text-transform: uppercase; letter-spacing: 0.5px; }
+    .summary-card .value { font-size: 22px; font-weight: 700; margin-top: 4px; }
+    .val-ok { color: #28a745; }
+    .val-warn { color: #f59e0b; }
+    .val-bad { color: #dc3545; }
+
+    /* Sections */
+    .section {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .section h2 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section h2 .dot {
+      width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+    }
+    .dot-green { background: #28a745; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-red { background: #dc3545; }
+
+    pre, code {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 12.5px;
+      background: #f4f4f4;
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.6;
+    }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { text-align: left; padding: 8px 12px; background: #f7f7f7; font-weight: 600; color: #555; border-bottom: 2px solid #eee; }
+    td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; }
+    tr:last-child td { border-bottom: none; }
+    .tag {
+      display: inline-block; padding: 2px 8px; border-radius: 100px;
+      font-size: 11px; font-weight: 600;
+    }
+    .tag-ok { background: #d4edda; color: #155724; }
+    .tag-warn { background: #fff3cd; color: #856404; }
+
+    .footer { text-align: center; color: #aaa; font-size: 12px; margin-top: 32px; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🔒 Weekly Security Audit</h1>
-            <div class="date">Montag, 23. März 2026 - 10:00 CET</div>
-            <div class="status-badge">✅ GRÜN - System Sicher</div>
-        </div>
+<div class="container">
 
-        <div class="content">
-            <div class="metric-grid">
-                <div class="metric-card">
-                    <div class="metric-title">Offene Ports</div>
-                    <div class="metric-value">6</div>
-                    <div class="metric-desc">Alle auf localhost oder LAN beschränkt</div>
-                </div>
-                
-                <div class="metric-card">
-                    <div class="metric-title">Firewall Status</div>
-                    <div class="metric-value">✅</div>
-                    <div class="metric-desc">Aktiv, restriktive Regeln</div>
-                </div>
-                
-                <div class="metric-card warning">
-                    <div class="metric-title">Verfügbare Updates</div>
-                    <div class="metric-value">19</div>
-                    <div class="metric-desc">Browser & System Updates</div>
-                </div>
-                
-                <div class="metric-card">
-                    <div class="metric-title">Disk Usage</div>
-                    <div class="metric-value">21%</div>
-                    <div class="metric-desc">73GB von 96GB frei</div>
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="section-header">1. Offene Ports & Services</div>
-                <div class="section-content">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Port</th>
-                                <th>Bind Address</th>
-                                <th>Prozess</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>51679</td>
-                                <td>100.73.197.68 (Tailscale)</td>
-                                <td>Unbekannt</td>
-                                <td><span class="status-good">OK</span></td>
-                            </tr>
-                            <tr>
-                                <td>18789</td>
-                                <td>0.0.0.0</td>
-                                <td>openclaw-gateway</td>
-                                <td><span class="status-good">OK - Firewall geschützt</span></td>
-                            </tr>
-                            <tr>
-                                <td>8080</td>
-                                <td>0.0.0.0</td>
-                                <td>node</td>
-                                <td><span class="status-good">OK - Firewall geschützt</span></td>
-                            </tr>
-                            <tr>
-                                <td>18791</td>
-                                <td>127.0.0.1</td>
-                                <td>openclaw-gateway</td>
-                                <td><span class="status-good">OK - Localhost only</span></td>
-                            </tr>
-                            <tr>
-                                <td>18792</td>
-                                <td>127.0.0.1</td>
-                                <td>openclaw-gateway</td>
-                                <td><span class="status-good">OK - Localhost only</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="section-header">2. Firewall Konfiguration</div>
-                <div class="section-content">
-                    <p><strong>Status:</strong> <span class="status-good">Aktiv & konfiguriert</span></p>
-                    <div class="code-block">Status: active
-Logging: on (low)
-Default: deny (incoming), allow (outgoing), disabled (routed)
-
-Erlaubte Verbindungen:
-8080/tcp    ← 192.168.0.0/16 (LAN only)
-18789/tcp   ← 192.168.0.0/16 (LAN only)</div>
-                    <p><strong>Bewertung:</strong> Gute Konfiguration. Nur lokale Netzwerke haben Zugriff auf kritische Services.</p>
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="section-header">3. SSH Security</div>
-                <div class="section-content">
-                    <p><strong>Fehlgeschlagene Logins (letzte 7 Tage):</strong> <span class="status-good">Keine</span></p>
-                    <p>Keine verdächtigen SSH-Aktivitäten erkannt. System ist gut geschützt.</p>
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="section-header">4. Laufende Services</div>
-                <div class="section-content">
-                    <p><strong>Anzahl aktiver Services:</strong> 25</p>
-                    <p><strong>Kritische Services:</strong></p>
-                    <ul style="margin: 15px 0 15px 25px;">
-                        <li>✅ fail2ban.service - Schutz vor Brute-Force</li>
-                        <li>✅ tailscaled.service - VPN Verbindung</li>
-                        <li>✅ unattended-upgrades.service - Auto-Updates</li>
-                        <li>✅ code-server@hartner.service - Remote IDE</li>
-                        <li>✅ mc-watcher.service - Mission Control</li>
-                    </ul>
-                    <p>Alle kritischen Services laufen normal.</p>
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="section-header">5. Speicherplatz</div>
-                <div class="section-content">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Filesystem</th>
-                                <th>Größe</th>
-                                <th>Belegt</th>
-                                <th>Verfügbar</th>
-                                <th>Nutzung</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>/dev/mmcblk0p2 (Root)</td>
-                                <td>96G</td>
-                                <td>20G</td>
-                                <td>73G</td>
-                                <td><span class="status-good">21%</span></td>
-                            </tr>
-                            <tr>
-                                <td>/tmp</td>
-                                <td>4.0G</td>
-                                <td>659M</td>
-                                <td>3.3G</td>
-                                <td><span class="status-good">17%</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p>Speicherplatz ist reichlich vorhanden. Keine Aktionen erforderlich.</p>
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="section-header">6. Letzte Logins</div>
-                <div class="section-content">
-                    <p><strong>Letzter lokaler Login:</strong> 19.03.2026 03:29 - hartner</p>
-                    <p>Normales Loginverhalten erkannt.</p>
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="section-header">7. Verfügbare Updates</div>
-                <div class="section-content">
-                    <p><strong>Anzahl Updates:</strong> <span class="status-warning">19 verfügbar</span></p>
-                    <p><strong>Kritische Updates:</strong></p>
-                    <ul style="margin: 15px 0 15px 25px;">
-                        <li>Chromium: 145.x → 146.0.7680.80 (Sicherheitsupdate)</li>
-                        <li>Firefox: 148.0 → 148.0.2 (Sicherheitsupdate)</li>
-                        <li>CUPS: Mehrere Sicherheitsupdates</li>
-                        <li>Firmware: Atheros/Broadcom Updates</li>
-                    </ul>
-                    <p><strong>Empfehlung:</strong> Browser-Updates zeitnah installieren.</p>
-                </div>
-            </div>
-
-            <div class="summary">
-                <h2>🔒 Gesamtbewertung: GRÜN</h2>
-                <p>System ist gut gesichert. Firewall aktiv, keine Angriffe erkannt, kritische Services laufen normal. 
-                Browser-Updates sollten installiert werden, aber keine akuten Sicherheitsprobleme.</p>
-            </div>
-        </div>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <h1>🔒 Weekly Security Audit</h1>
+      <div class="sub">Raspberry Pi · hartner · Montag, 30. März 2026 · 10:00 Uhr</div>
     </div>
+    <div class="status-badge badge-yellow">
+      ⚠️ GELB
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="icon">🌐</div>
+      <div class="label">Offene Ports</div>
+      <div class="value val-ok">4</div>
+    </div>
+    <div class="summary-card">
+      <div class="icon">🛡️</div>
+      <div class="label">Firewall</div>
+      <div class="value val-ok">Aktiv</div>
+    </div>
+    <div class="summary-card">
+      <div class="icon">🚨</div>
+      <div class="label">Failed Logins</div>
+      <div class="value val-ok">0</div>
+    </div>
+    <div class="summary-card">
+      <div class="icon">⚙️</div>
+      <div class="label">Services</div>
+      <div class="value val-ok">25</div>
+    </div>
+    <div class="summary-card">
+      <div class="icon">💾</div>
+      <div class="label">Disk (root)</div>
+      <div class="value val-ok">22%</div>
+    </div>
+    <div class="summary-card">
+      <div class="icon">📦</div>
+      <div class="label">Updates</div>
+      <div class="value val-warn">130</div>
+    </div>
+  </div>
+
+  <!-- 1. Ports -->
+  <div class="section">
+    <h2><span class="dot dot-green"></span> 1. Offene Ports</h2>
+    <table>
+      <tr><th>Port</th><th>Interface</th><th>Prozess</th><th>Status</th></tr>
+      <tr><td>8080/tcp</td><td>0.0.0.0</td><td>node (openclaw / Mission Control)</td><td><span class="tag tag-ok">OK — LAN only</span></td></tr>
+      <tr><td>18789/tcp</td><td>0.0.0.0</td><td>openclaw-gateway</td><td><span class="tag tag-ok">OK — LAN only</span></td></tr>
+      <tr><td>51679/tcp</td><td>100.73.197.68 (Tailscale)</td><td>—</td><td><span class="tag tag-ok">Tailscale intern</span></td></tr>
+      <tr><td>40699/tcp</td><td>[::] Tailscale IPv6</td><td>—</td><td><span class="tag tag-ok">Tailscale intern</span></td></tr>
+    </table>
+    <p style="margin-top:12px; color:#717171; font-size:13px;">✅ Keine Ports offen auf öffentlicher IP. UFW schränkt 8080 + 18789 auf 192.168.0.0/16 ein.</p>
+  </div>
+
+  <!-- 2. Firewall -->
+  <div class="section">
+    <h2><span class="dot dot-green"></span> 2. Firewall (UFW)</h2>
+    <pre>Status: active
+Default: deny (incoming), allow (outgoing)
+8080/tcp    → ALLOW from 192.168.0.0/16
+18789/tcp   → ALLOW from 192.168.0.0/16</pre>
+    <p style="margin-top:12px; color:#717171; font-size:13px;">✅ Default-deny aktiv. Nur lokale Netz-IPs erlaubt. Logging aktiv.</p>
+  </div>
+
+  <!-- 3. SSH Logins -->
+  <div class="section">
+    <h2><span class="dot dot-green"></span> 3. Fehlgeschlagene SSH-Logins (7 Tage)</h2>
+    <pre>Keine fehlgeschlagenen Login-Versuche im Zeitraum gefunden.</pre>
+    <p style="margin-top:12px; color:#717171; font-size:13px;">✅ Sauber. Fail2Ban läuft aktiv als zusätzliche Schutzschicht.</p>
+  </div>
+
+  <!-- 4. Services -->
+  <div class="section">
+    <h2><span class="dot dot-green"></span> 4. Laufende Services (25)</h2>
+    <table>
+      <tr><th>Service</th><th>Bewertung</th></tr>
+      <tr><td>fail2ban.service</td><td><span class="tag tag-ok">✅ Gut</span></td></tr>
+      <tr><td>tailscaled.service</td><td><span class="tag tag-ok">✅ Gut</span></td></tr>
+      <tr><td>unattended-upgrades.service</td><td><span class="tag tag-ok">✅ Gut</span></td></tr>
+      <tr><td>systemd-timesyncd.service</td><td><span class="tag tag-ok">✅ Gut</span></td></tr>
+      <tr><td>code-server@hartner.service</td><td><span class="tag tag-ok">OK — LAN</span></td></tr>
+      <tr><td>mc-watcher.service</td><td><span class="tag tag-ok">OK — Mission Control</span></td></tr>
+      <tr><td>avahi-daemon.service</td><td><span class="tag tag-warn">⚠️ mDNS — ggf. deaktivieren</span></td></tr>
+      <tr><td>bluetooth.service</td><td><span class="tag tag-warn">⚠️ Nicht benötigt?</span></td></tr>
+      <tr><td>lightdm.service</td><td><span class="tag tag-warn">⚠️ GUI auf Server nötig?</span></td></tr>
+      <tr><td>cups* (Druckdienst)</td><td><span class="tag tag-warn">⚠️ Falls kein Drucker: abschalten</span></td></tr>
+    </table>
+  </div>
+
+  <!-- 5. Disk Usage -->
+  <div class="section">
+    <h2><span class="dot dot-green"></span> 5. Disk Usage</h2>
+    <table>
+      <tr><th>Filesystem</th><th>Größe</th><th>Genutzt</th><th>Frei</th><th>%</th></tr>
+      <tr><td>/dev/mmcblk0p2 (root)</td><td>96G</td><td>20G</td><td>72G</td><td><span class="tag tag-ok">22%</span></td></tr>
+      <tr><td>/dev/mmcblk0p1 (boot)</td><td>510M</td><td>79M</td><td>432M</td><td><span class="tag tag-ok">16%</span></td></tr>
+      <tr><td>tmpfs /tmp</td><td>4.0G</td><td>185M</td><td>3.8G</td><td><span class="tag tag-ok">5%</span></td></tr>
+    </table>
+    <p style="margin-top:12px; color:#717171; font-size:13px;">✅ Viel Luft. Root bei 22% — unkritisch.</p>
+  </div>
+
+  <!-- 6. Letzte Logins -->
+  <div class="section">
+    <h2><span class="dot dot-green"></span> 6. Aktive Sessions / Letzte Logins</h2>
+    <table>
+      <tr><th>User</th><th>TTY</th><th>Login</th><th>Seit</th></tr>
+      <tr><td>hartner</td><td>seat0 (lightdm)</td><td>19.03.2026</td><td>vor 11 Tagen</td></tr>
+      <tr><td>hartner</td><td>tty1 (bash)</td><td>19.03.2026</td><td>vor 11 Tagen (idle)</td></tr>
+    </table>
+    <p style="margin-top:12px; color:#717171; font-size:13px;">✅ Nur hartner, nur lokal. Keine Remote-Logins. <code>last</code> nicht verfügbar (wtmp-Daten fehlen — normal auf Pi mit eingeschränktem Setup).</p>
+  </div>
+
+  <!-- 7. Updates -->
+  <div class="section">
+    <h2><span class="dot dot-yellow"></span> 7. Verfügbare Updates</h2>
+    <table>
+      <tr><th>Paket</th><th>Neue Version</th></tr>
+      <tr><td>chromium / chromium-common / chromium-sandbox</td><td>1:146.0.7680.164 (war 145.x)</td></tr>
+      <tr><td>firefox</td><td>149.0 (war 148.0)</td></tr>
+      <tr><td>cups + cups-filters</td><td>2.4.10-3+rpt2+deb13u1</td></tr>
+      <tr><td>firmware-atheros / firmware-brcm80211 / firmware-libertas</td><td>1:20250410-2+rpt1</td></tr>
+      <tr><td colspan="2" style="color:#717171">… und insgesamt ~130 Pakete</td></tr>
+    </table>
+    <p style="margin-top:12px; color:#f59e0b; font-size:13px; font-weight:600;">⚠️ 130 Pakete ausstehend — darunter Browser (Chromium, Firefox) und Firmware. Update empfohlen: <code>sudo apt upgrade -y</code></p>
+  </div>
+
+  <!-- Bewertung / Empfehlungen -->
+  <div class="section">
+    <h2>📋 Gesamtbewertung &amp; Empfehlungen</h2>
+    <table>
+      <tr><th>Bereich</th><th>Status</th><th>Aktion</th></tr>
+      <tr><td>Firewall</td><td><span class="tag tag-ok">✅ Grün</span></td><td>Keine</td></tr>
+      <tr><td>SSH / Logins</td><td><span class="tag tag-ok">✅ Grün</span></td><td>Keine</td></tr>
+      <tr><td>Offene Ports</td><td><span class="tag tag-ok">✅ Grün</span></td><td>Keine</td></tr>
+      <tr><td>Disk Space</td><td><span class="tag tag-ok">✅ Grün</span></td><td>Keine</td></tr>
+      <tr><td>Services (Bluetooth, CUPS, Avahi)</td><td><span class="tag tag-warn">⚠️ Gelb</span></td><td>Unnötige Services prüfen + ggf. deaktivieren</td></tr>
+      <tr><td>Pending Updates (~130 Pakete)</td><td><span class="tag tag-warn">⚠️ Gelb</span></td><td><code>sudo apt upgrade -y</code> ausführen</td></tr>
+    </table>
+
+    <div style="margin-top:20px; padding:16px; background:#fff8e1; border-radius:10px; border-left:4px solid #f59e0b;">
+      <strong>Gesamtstatus: 🟡 GELB</strong><br><br>
+      Kein akuter Sicherheitsvorfall. Die Grundabsicherung sitzt (Firewall, Fail2Ban, Tailscale, kein externer Zugriff). Das einzige nennenswerte Risiko ist der Rückstand bei ~130 Paketen — darunter Browser und Firmware-Updates, die Sicherheitsfixes enthalten können.<br><br>
+      <strong>Top-3 Maßnahmen:</strong><br>
+      1. <code>sudo apt upgrade -y</code> — Updates einspielen<br>
+      2. Prüfen ob CUPS/Bluetooth/Avahi/LightDM wirklich gebraucht werden<br>
+      3. Falls nein: <code>sudo systemctl disable --now bluetooth cups avahi-daemon</code>
+    </div>
+  </div>
+
+  <div class="footer">
+    Generiert von Hatti 🏔️ · Weekly Security Audit · 30.03.2026
+  </div>
+
+</div>
 </body>
 </html>
