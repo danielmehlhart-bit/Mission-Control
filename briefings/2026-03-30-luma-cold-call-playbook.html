@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUMA Cold Call Playbook + AI-SDR Briefing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f4f4f6; color: #1a1a2e; line-height: 1.6; }
+
+    .hero {
+      background: linear-gradient(135deg, #7C3AED 0%, #9F67FF 60%, #C084FC 100%);
+      color: white; padding: 56px 24px 64px; text-align: center;
+    }
+    .logo { font-family: 'Fredoka', sans-serif; font-size: 2rem; color: white; text-decoration: none; display: inline-block; margin-bottom: 24px; }
+    .logo .dot { color: #E9D5FF; }
+    .hero h1 { font-size: clamp(1.4rem, 3vw, 2.1rem); font-weight: 700; margin-bottom: 12px; max-width: 800px; margin-left: auto; margin-right: auto; }
+    .hero p { opacity: 0.9; font-size: 1rem; max-width: 580px; margin: 0 auto 20px; }
+    .hero-badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .badge { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.35); border-radius: 100px; padding: 5px 14px; font-size: 0.82rem; font-weight: 600; }
+
+    .container { max-width: 980px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    .section-title { font-size: 1.3rem; font-weight: 700; color: #1a1a2e; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #EDE9FE; }
+
+    /* CARDS */
+    .card { background: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 28px; margin-bottom: 24px; }
+
+    /* OPENER SCRIPTS */
+    .script-card {
+      background: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      overflow: hidden; margin-bottom: 20px;
+    }
+    .script-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 24px; background: #F9FAFB; border-bottom: 1px solid #F3F4F6;
+    }
+    .script-num {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: #7C3AED; color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; font-weight: 700; flex-shrink: 0;
+    }
+    .script-header h3 { font-size: 1rem; font-weight: 700; flex: 1; }
+    .script-tag {
+      background: #EDE9FE; color: #6D28D9;
+      border-radius: 100px; padding: 3px 12px; font-size: 0.75rem; font-weight: 700;
+    }
+    .script-tag.best { background: #D1FAE5; color: #065F46; }
+    .script-tag.warn { background: #FEF3C7; color: #92400E; }
+    .script-body { padding: 20px 24px; }
+    .script-text {
+      background: #F5F3FF; border-left: 4px solid #7C3AED;
+      border-radius: 0 10px 10px 0; padding: 16px 20px;
+      font-size: 0.9rem; line-height: 1.8; color: #1a1a2e;
+      margin-bottom: 14px; white-space: pre-wrap;
+    }
+    .script-note { font-size: 0.83rem; color: #6B7280; }
+
+    /* OBJECTION */
+    .obj-block { margin-bottom: 16px; border-radius: 12px; overflow: hidden; }
+    .obj-q { background: #FFF0F0; padding: 12px 18px; font-weight: 700; font-size: 0.9rem; color: #991B1B; border-left: 4px solid #EF4444; }
+    .obj-a { background: white; border: 1px solid #F3F4F6; border-top: none; padding: 14px 18px; font-size: 0.88rem; color: #374151; line-height: 1.7; }
+    .obj-a strong { color: #1a1a2e; display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; opacity: 0.5; }
+
+    /* PAIN PILLARS */
+    .pain-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-bottom: 0; }
+    .pain-card { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 18px; border-top: 4px solid #7C3AED; }
+    .pain-icon { font-size: 1.6rem; margin-bottom: 8px; }
+    .pain-card h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { font-size: 0.82rem; color: #6B7280; }
+    .pain-quote { font-style: italic; font-size: 0.8rem; color: #9CA3AF; margin-top: 8px; border-left: 2px solid #EDE9FE; padding-left: 8px; }
+
+    /* FLOW */
+    .call-flow { display: flex; flex-direction: column; gap: 0; }
+    .flow-step-row {
+      display: flex; align-items: stretch; gap: 0;
+    }
+    .flow-step-num {
+      display: flex; flex-direction: column; align-items: center; width: 48px; flex-shrink: 0;
+    }
+    .flow-circle {
+      width: 36px; height: 36px; border-radius: 50%; background: #7C3AED; color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 700; flex-shrink: 0;
+    }
+    .flow-line { width: 2px; background: #EDE9FE; flex: 1; margin: 4px 0; }
+    .flow-content { flex: 1; padding: 0 0 28px 16px; }
+    .flow-content h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-content .timing { font-size: 0.75rem; color: #7C3AED; font-weight: 600; margin-bottom: 8px; }
+    .flow-content p { font-size: 0.87rem; color: #6B7280; }
+    .flow-step-row:last-child .flow-line { display: none; }
+
+    /* AI SDR TOOLS */
+    .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin-bottom: 32px; }
+    .tool-card { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 22px; }
+    .tool-card .tool-name { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .tool-card .tool-sub { font-size: 0.78rem; color: #9CA3AF; margin-bottom: 14px; }
+    .tool-card ul { list-style: none; }
+    .tool-card ul li { font-size: 0.84rem; color: #374151; padding: 3px 0; display: flex; gap: 8px; }
+    .tool-card ul li::before { content: '→'; color: #7C3AED; font-weight: 700; flex-shrink: 0; }
+    .tool-verdict { margin-top: 14px; padding-top: 12px; border-top: 1px solid #F3F4F6; font-size: 0.82rem; color: #6B7280; font-style: italic; }
+    .rec-badge { display: inline-block; background: #D1FAE5; color: #065F46; border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; font-weight: 700; margin-left: 6px; }
+    .warn-badge { display: inline-block; background: #FEF3C7; color: #92400E; border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; font-weight: 700; margin-left: 6px; }
+    .no-badge-tag { display: inline-block; background: #FEE2E2; color: #991B1B; border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; font-weight: 700; margin-left: 6px; }
+
+    /* RECOMMENDATION BOX */
+    .rec-box {
+      background: #F5F3FF; border: 2px solid #DDD6FE; border-radius: 16px; padding: 28px; margin-bottom: 40px;
+    }
+    .rec-box h3 { font-size: 1.1rem; font-weight: 700; color: #4C1D95; margin-bottom: 16px; }
+    .rec-row { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 14px; }
+    .rec-row .rec-num { width: 26px; height: 26px; border-radius: 50%; background: #7C3AED; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+    .rec-row .rec-text { font-size: 0.9rem; color: #374151; }
+    .rec-row .rec-text strong { color: #1a1a2e; }
+
+    /* DO/DONT */
+    .dd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
+    @media(max-width:640px){ .dd-grid { grid-template-columns: 1fr; } }
+    .dd-card { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 20px; }
+    .dd-card h4 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
+    .dd-card.green h4 { color: #15803D; }
+    .dd-card.red h4 { color: #991B1B; }
+    .dd-card ul { list-style: none; }
+    .dd-card ul li { font-size: 0.86rem; color: #374151; padding: 4px 0; display: flex; gap: 8px; }
+    .dd-card.green ul li::before { content: '✓'; color: #22C55E; font-weight: 700; flex-shrink: 0; }
+    .dd-card.red ul li::before { content: '✗'; color: #EF4444; font-weight: 700; flex-shrink: 0; }
+
+    /* CTA */
+    .cta { background: linear-gradient(135deg, #7C3AED 0%, #9F67FF 100%); border-radius: 20px; padding: 40px 28px; text-align: center; color: white; }
+    .cta h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+    .cta p { opacity: 0.9; margin-bottom: 24px; }
+
+    footer { text-align: center; font-size: 0.8rem; color: #9CA3AF; padding: 24px 0; }
+
+    @media(max-width:640px){ .container { padding: 32px 16px 64px; } }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <a href="https://luma-app.io" class="logo">luma<span class="dot">·</span></a>
+  <h1>Cold Call Playbook + AI-SDR Briefing</h1>
+  <p>Für Architekturbüros 5–15 MA. Ziel: Demos buchen. Kein Verkäufer-Sprech — nur echte Gespräche über echte Probleme.</p>
+  <div class="hero-badges">
+    <span class="badge">📞 Cold Calling</span>
+    <span class="badge">🤖 AI-SDR</span>
+    <span class="badge">🎯 Termin-Fixer</span>
+    <span class="badge">🏗️ Architekturbüros</span>
+    <span class="badge">📅 März 2026</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- WARUM COLD CALLING -->
+  <section class="card" style="margin-bottom: 40px;">
+    <h2 class="section-title">📞 Warum Cold Calling — und warum jetzt?</h2>
+    <p style="font-size: 0.95rem; color: #374151; margin-bottom: 16px;">
+      Cold Email und LinkedIn öffnen Türen. Aber ein Anruf schlägt alles — weil du in 60 Sekunden weißt ob jemand qualifiziert ist, ob der Schmerz real ist, und ob ein Demo-Termin Sinn macht. Kein Warten auf Antwort, kein Rätselraten.
+    </p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 8px;">
+      <div style="text-align: center; background: #F5F3FF; border-radius: 12px; padding: 16px;">
+        <div style="font-size: 1.8rem; font-weight: 700; color: #7C3AED;">3–5%</div>
+        <div style="font-size: 0.82rem; color: #6B7280; margin-top: 4px;">Demo-Rate Cold Email</div>
+      </div>
+      <div style="text-align: center; background: #F5F3FF; border-radius: 12px; padding: 16px;">
+        <div style="font-size: 1.8rem; font-weight: 700; color: #7C3AED;">20–30%</div>
+        <div style="font-size: 0.82rem; color: #6B7280; margin-top: 4px;">Demo-Rate Cold Call (gut gemacht)</div>
+      </div>
+      <div style="text-align: center; background: #F5F3FF; border-radius: 12px; padding: 16px;">
+        <div style="font-size: 1.8rem; font-weight: 700; color: #7C3AED;">Di–Do</div>
+        <div style="font-size: 0.82rem; color: #6B7280; margin-top: 4px;">Beste Tage für Architekten-Calls</div>
+      </div>
+      <div style="text-align: center; background: #F5F3FF; border-radius: 12px; padding: 16px;">
+        <div style="font-size: 1.8rem; font-weight: 700; color: #7C3AED;">10–12 Uhr</div>
+        <div style="font-size: 0.82rem; color: #6B7280; margin-top: 4px;">Optimale Anrufzeit</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAIN PILLARS -->
+  <section style="margin-bottom: 40px;">
+    <h2 class="section-title">🎯 Die 4 Schmerzen — validiert aus echten Discovery Calls</h2>
+    <p style="font-size: 0.87rem; color: #6B7280; margin-bottom: 20px;">Direkte Zitate aus den Calls mit Alex Hamm (HAM Architekten) und Eduard Raab. Diese Formulierungen funktionieren, weil sie echte Worte echter Architekten sind.</p>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">📬</div>
+        <h4>E-Mail-Chaos</h4>
+        <p>250–300 E-Mails/Tag. 2 Tage weg → ganzer Tag Nacharbeiten. Jede Mail ist entweder Info oder Aufgabe — aber beides landet in Outlook-Silos.</p>
+        <div class="pain-quote">„Wenn einmal vergessen wurde, jemanden CC zu setzen — ich weiß es aber nicht." — Alex Hamm</div>
+      </div>
+      <div class="pain-card" style="border-top-color: #22C55E;">
+        <div class="pain-icon">🗓️</div>
+        <h4>Koordinations-Overhead</h4>
+        <p>5–6 Stunden/Woche nur für Nachfragen und Status-Updates. Wer macht was? Welcher Plan ist aktuell? Wer hat die Freigabe?</p>
+        <div class="pain-quote">„Das einzige, was bei uns passieren muss: Wir setzen einen Fleck. Den Rest macht das System." — Eduard Raab</div>
+      </div>
+      <div class="pain-card" style="border-top-color: #F59E0B;">
+        <div class="pain-icon">🔄</div>
+        <h4>Kein Überblick über laufende Projekte</h4>
+        <p>Projektinfos stecken in Köpfen, E-Mails und Dropbox-Ordnern. Neuer Mitarbeiter? Stundenlang briefen. Urlaub? Chaos.</p>
+        <div class="pain-quote">„Wenn man's vor drei Monaten gemacht hat, hat man's schon wieder vergessen." — Alex Hamm</div>
+      </div>
+      <div class="pain-card" style="border-top-color: #EF4444;">
+        <div class="pain-icon">📋</div>
+        <h4>Bautagebuch &amp; Dokumentation als Pflicht</h4>
+        <p>Bautagebuch ist rechtlich Pflicht (HAI). Wird aber oft nachgezogen, weil auf der Baustelle kein gutes Tool da ist. Voice + Foto löst das.</p>
+        <div class="pain-quote">„Der Elektriker hat die falschen Pläne — weil sie in Dropbox lagen und keiner gepusht hat." — Alex Hamm</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALL FLOW -->
+  <section style="margin-bottom: 40px;">
+    <h2 class="section-title">📞 Der Call-Ablauf — 5 Minuten bis zum Termin</h2>
+    <div class="card">
+      <div class="call-flow">
+        <div class="flow-step-row">
+          <div class="flow-step-num">
+            <div class="flow-circle">1</div>
+            <div class="flow-line"></div>
+          </div>
+          <div class="flow-content">
+            <h4>Einstieg — 20 Sekunden</h4>
+            <div class="timing">0:00 – 0:20</div>
+            <p>Name, kurze Relevanz, Permission to talk. Nicht pitchen. Frage stellen.</p>
+          </div>
+        </div>
+        <div class="flow-step-row">
+          <div class="flow-step-num">
+            <div class="flow-circle">2</div>
+            <div class="flow-line"></div>
+          </div>
+          <div class="flow-content">
+            <h4>Pain-Check — 60 Sekunden</h4>
+            <div class="timing">0:20 – 1:20</div>
+            <p>Einen konkreten Schmerzpunkt benennen. Kurze offene Frage: Ist das bei euch ein Thema? Zuhören. Nicht reden.</p>
+          </div>
+        </div>
+        <div class="flow-step-row">
+          <div class="flow-step-num">
+            <div class="flow-circle">3</div>
+            <div class="flow-line"></div>
+          </div>
+          <div class="flow-content">
+            <h4>Qualifizierung — 60 Sekunden</h4>
+            <div class="timing">1:20 – 2:20</div>
+            <p>Wie viele Leute im Büro? Wie ist das gerade organisiert? Nicht auswendig fragen — natürlich einbauen.</p>
+          </div>
+        </div>
+        <div class="flow-step-row">
+          <div class="flow-step-num">
+            <div class="flow-circle">4</div>
+            <div class="flow-line"></div>
+          </div>
+          <div class="flow-content">
+            <h4>Bridge — 20 Sekunden</h4>
+            <div class="timing">2:20 – 2:40</div>
+            <p>Genau für das Problem wurde LUMA gebaut. Ein Satz, kein Feature-Pitch.</p>
+          </div>
+        </div>
+        <div class="flow-step-row">
+          <div class="flow-step-num">
+            <div class="flow-circle">5</div>
+          </div>
+          <div class="flow-content">
+            <h4>Termin-Ask — 20 Sekunden</h4>
+            <div class="timing">2:40 – 3:00</div>
+            <p>Konkrete Terminalternative. Nicht „Haben Sie mal Zeit?" sondern „Passt Dienstag 10 oder Donnerstag 14 Uhr?"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKRIPTE -->
+  <section style="margin-bottom: 40px;">
+    <h2 class="section-title">🎙️ Die Opener-Skripte</h2>
+
+    <div class="script-card">
+      <div class="script-header">
+        <div class="script-num">A</div>
+        <h3>Opener: E-Mail-Schmerz</h3>
+        <span class="script-tag best">Empfohlen für Inhaber</span>
+      </div>
+      <div class="script-body">
+        <div class="script-text">Guten Morgen, mein Name ist Daniel Mehlhart, ich rufe kurz an weil ich mit mehreren kleinen Architekturbüros hier in der Region gesprochen habe — und ein Thema taucht immer wieder auf: E-Mails, die als Aufgaben im Postfach verschwinden und nie wirklich ankommen.
+
+Ist das bei Ihnen auch so ein Punkt, oder haben Sie das schon gelöst?</div>
+        <div class="script-note">✓ Konkret. Kein "Ich habe eine App". Offene Frage. Schweigen aushalten — wer zuerst redet verliert.</div>
+      </div>
+    </div>
+
+    <div class="script-card">
+      <div class="script-header">
+        <div class="script-num">B</div>
+        <h3>Opener: Koordinations-Schmerz</h3>
+        <span class="script-tag">Für Projektleiter</span>
+      </div>
+      <div class="script-body">
+        <div class="script-text">Guten Tag, Daniel Mehlhart hier — kurzer Anruf: Ich spreche gerade mit Architekturbüros über ein Thema das mich interessiert. Viele sagen mir, dass ein Großteil der Woche nicht mit Architektur draufgeht, sondern mit Koordinieren, Nachfragen und Suchen wo was steht.
+
+Ist das bei Ihnen eher ein Randproblem oder würden Sie sagen das ist wirklich ein relevanter Zeitfresser?</div>
+        <div class="script-note">✓ Niedrigschwellig — Ja/Nein-Frage. Wer antwortet "eigentlich schon" ist qualifiziert. Wer sagt "nein" war es nie.</div>
+      </div>
+    </div>
+
+    <div class="script-card">
+      <div class="script-header">
+        <div class="script-num">C</div>
+        <h3>Opener: Bautagebuch-Hook</h3>
+        <span class="script-tag">Für Bauleiter / LP8</span>
+      </div>
+      <div class="script-body">
+        <div class="script-text">Guten Tag, mein Name ist Daniel Mehlhart. Kurze Frage, verspricht vielleicht 3 Minuten: Wie läuft das Bautagebuch bei Ihnen gerade ab? Per Hand, App, oder wird das abends nachgeschrieben?</div>
+        <div class="script-note">✓ Extrem direkte Einstiegsfrage. Wer antwortet, hat das Thema. Dann: "Genau dafür haben wir etwas gebaut."</div>
+      </div>
+    </div>
+
+    <div class="script-card">
+      <div class="script-header">
+        <div class="script-num">D</div>
+        <h3>Gatekeeper-Skript (Sekretärin/Assistent)</h3>
+        <span class="script-tag warn">Wenn nicht direkt durchgestellt</span>
+      </div>
+      <div class="script-body">
+        <div class="script-text">Guten Tag, Daniel Mehlhart hier — ich spreche mit Architekturbüros zu einem konkreten Thema, zu dem ich kurz mit dem Inhaber reden wollte. Ist Herr / Frau [Name] gerade zu sprechen, oder gibt es eine bessere Zeit?</div>
+        <div class="script-note">✓ Nicht lügen. Nicht sagen "ich bin ein Partner". Einfach klar und direkt. Meistens reicht das.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OBJECTION HANDLING -->
+  <section style="margin-bottom: 40px;">
+    <h2 class="section-title">🛡️ Objection Handling</h2>
+
+    <div class="obj-block">
+      <div class="obj-q">„Kein Interesse."</div>
+      <div class="obj-a"><strong>Antwort</strong>Das ist völlig okay — kurze Frage noch: Haben Sie das Thema Projektorganisation schon gelöst, oder ist das gerade kein Fokus? (Wenn kein Fokus: Wann wäre es ein Thema? — dann Termin in 4 Wochen vereinbaren)</div>
+    </div>
+
+    <div class="obj-block">
+      <div class="obj-q">„Wir haben schon ein Tool." (PlanRadar, phase0, Excel)</div>
+      <div class="obj-a"><strong>Antwort</strong>Interessant — was nutzen Sie? Und was deckt das Tool nicht ab, was Sie noch in Excel oder E-Mail machen? (Die Lücke ist immer da. LUMA ist nicht "noch ein Tool" — es ersetzt den Excel-Rest.)</div>
+    </div>
+
+    <div class="obj-block">
+      <div class="obj-q">„Keine Zeit gerade."</div>
+      <div class="obj-a"><strong>Antwort</strong>Verstehe völlig — ich frage gar nicht nach viel Zeit. Ich würde gerne 20 Minuten mit Ihnen investieren, nicht mehr. Wann wäre die ruhigste Zeit in Ihrer Woche — Dienstag früh oder Donnerstag Nachmittag?</div>
+    </div>
+
+    <div class="obj-block">
+      <div class="obj-q">„Schicken Sie mal Infos rüber."</div>
+      <div class="obj-a"><strong>Antwort</strong>Gerne — aber eine kurze Frage noch vorher damit ich weiß was relevant ist: Was ist bei Ihnen gerade der größte Zeitfresser in der Projektarbeit? (Dann Infos personalisiert schicken + Follow-up call in 2 Tagen einbuchen)</div>
+    </div>
+
+    <div class="obj-block">
+      <div class="obj-q">„Wir sind zu klein dafür." / „Das kostet doch viel."</div>
+      <div class="obj-a"><strong>Antwort</strong>LUMA ist genau für Büros mit 5–15 Leuten gebaut — nicht für Konzerne. Die Frage ist eigentlich: Was kostet Sie gerade die fehlende Struktur pro Woche an Zeit? Bei den Büros die ich spreche sind das schnell 5–10 Stunden. Das ist teurere als das Tool.</div>
+    </div>
+
+    <div class="obj-block">
+      <div class="obj-q">„Ich bin nicht der Entscheider."</div>
+      <div class="obj-a"><strong>Antwort</strong>Wer wäre das — der Inhaber direkt? Können Sie kurz sagen ob das Thema bei Ihnen intern schon mal angesprochen wurde? (Dann: Name des Inhabers notieren, direkt anrufen mit Referenz "Ihr Kollege hat mich auf Sie hingewiesen.")</div>
+    </div>
+  </section>
+
+  <!-- DO DONT -->
+  <div class="dd-grid">
+    <div class="dd-card green">
+      <h4>✓ Tun</h4>
+      <ul>
+        <li>Kurz anrufen, Schmerz benennen, Frage stellen</li>
+        <li>Schweigen aushalten nach der Einstiegsfrage</li>
+        <li>Termin mit zwei konkreten Zeitoptionen anbieten</li>
+        <li>Gatekeeper respektieren — nie lügen</li>
+        <li>CRM-Notiz direkt nach dem Call (Ergebnis + Nächster Schritt)</li>
+        <li>Vor dem Anruf: Name + 1 Info über das Büro googeln</li>
+        <li>Nachmittags Calls clustern: 3–4 am Stück, dann Pause</li>
+        <li>"Nein" als Info werten, nicht als Niederlage</li>
+      </ul>
+    </div>
+    <div class="dd-card red">
+      <h4>✗ Nicht tun</h4>
+      <ul>
+        <li>"Ich habe eine KI-gestützte Plattform gebaut…"</li>
+        <li>Feature-Liste aufsagen (niemanden interessiert das)</li>
+        <li>Länger als 3 Minuten reden ohne Gegenfrage</li>
+        <li>Entschuldigen für den Anruf ("Hoffe ich störe nicht…")</li>
+        <li>Sofort Preise nennen am Telefon</li>
+        <li>Ohne CRM-Eintrag auflegen</li>
+        <li>Mehr als 2× nachfassen ohne neuen Aufhänger</li>
+        <li>Freitag Nachmittag anrufen</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- AI SDR BRIEFING -->
+  <section style="margin-bottom: 40px;">
+    <h2 class="section-title">🤖 AI-SDR Briefing — Termin-Fixer per KI</h2>
+    <p style="font-size: 0.9rem; color: #6B7280; margin-bottom: 24px;">Du willst einen Termin-Fixer — jemanden (oder etwas), das qualifizierte Leads anruft, einen Schmerz abklopft, und wenn die Chemie stimmt, einen Demo-Termin in deinen Kalender legt. Das gibt es — aber du musst wissen was du bekommst.</p>
+
+    <div class="tool-grid">
+
+      <div class="tool-card" style="border-top: 4px solid #22C55E;">
+        <div class="tool-name">Synthflow <span class="rec-badge">Empfehlung</span></div>
+        <div class="tool-sub">AI Voice Agent — ausgehende & eingehende Calls</div>
+        <ul>
+          <li>Natürliche Stimme, Deutsch verfügbar</li>
+          <li>Calls vollständig automatisiert + Kalender-Integration</li>
+          <li>CRM-Sync (HubSpot, Calendly, eigene Webhooks)</li>
+          <li>Voicemail Detection + automatischer Callback</li>
+          <li>Custom Skript + Objection Handling konfigurierbar</li>
+        </ul>
+        <div class="tool-verdict">Stärkste Option für ausgehende Cold Calls + Demo-Buchung. Teurer (~$150–500/Mo je nach Volumen), aber der einzige der wirklich deutsch flüssig spricht.</div>
+      </div>
+
+      <div class="tool-card" style="border-top: 4px solid #7C3AED;">
+        <div class="tool-name">Bland.ai <span class="rec-badge">Starke Alternative</span></div>
+        <div class="tool-sub">AI Phone Agents, API-first</div>
+        <ul>
+          <li>Sehr gute Sprachqualität (ElevenLabs-ähnlich)</li>
+          <li>Günstigster per-Minute-Preis (~$0.09/Min)</li>
+          <li>Deutsch verfügbar, aber weniger poliert als EN</li>
+          <li>API-first: volle Kontrolle über Skripte + Flows</li>
+          <li>Calendly-Integration vorhanden</li>
+        </ul>
+        <div class="tool-verdict">Gut wenn du selbst konfigurieren willst und technisch bist. Günstiger als Synthflow. Für LUMA-Anforderungen solide.</div>
+      </div>
+
+      <div class="tool-card" style="border-top: 4px solid #F59E0B;">
+        <div class="tool-name">AirCall + Toky AI <span class="warn-badge">Hybrid</span></div>
+        <div class="tool-sub">Human SDR + AI-Assist</div>
+        <ul>
+          <li>Human-Operator + KI-Gesprächsführung in Echtzeit</li>
+          <li>AI schlägt nächste Antwort vor (Earpiece-Model)</li>
+          <li>Gut für erste Phase wenn du selbst noch anrufst</li>
+          <li>Teurer im Betrieb, dafür höhere Qualität</li>
+        </ul>
+        <div class="tool-verdict">Interessant wenn du selbst die ersten 50 Calls machen und dabei lernen willst — dann auf AI-SDR wechselst.</div>
+      </div>
+
+      <div class="tool-card" style="border-top: 4px solid #94A3B8;">
+        <div class="tool-name">Instantly Voice <span class="warn-badge">Beta</span></div>
+        <div class="tool-sub">Du kennst Instantly schon (Cold Email)</div>
+        <ul>
+          <li>Voice-Feature in Instantly rollout 2025/2026</li>
+          <li>Würde nahtlos mit deiner E-Mail-Sequenz kombinieren</li>
+          <li>Noch in Beta — Qualität noch nicht verifiziert</li>
+          <li>Vorteil: Ein Tool für Email + Voice</li>
+        </ul>
+        <div class="tool-verdict">Watch list — wenn es reif ist, perfekte Kombination mit deiner bestehenden Instantly-Sequenz. Noch nicht produktionsreif.</div>
+      </div>
+
+      <div class="tool-card" style="border-top: 4px solid #EF4444;">
+        <div class="tool-name">Retell AI <span class="no-badge-tag">Englisch-first</span></div>
+        <div class="tool-sub">Enterprise AI Voice</div>
+        <ul>
+          <li>Sehr gute Qualität im Enterprise-Bereich</li>
+          <li>Deutsch weniger gut als Synthflow</li>
+          <li>Overkill für LUMA-Stage</li>
+          <li>Teuer und komplex zu konfigurieren</li>
+        </ul>
+        <div class="tool-verdict">Für jetzt zu groß. Wenn LUMA in 12 Monaten skaliert und outbound für D-A-CH braucht — dann nochmal anschauen.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EMPFEHLUNG -->
+  <section style="margin-bottom: 40px;">
+    <div class="rec-box">
+      <h3>🎯 Meine Empfehlung für LUMA jetzt</h3>
+
+      <div class="rec-row">
+        <div class="rec-num">1</div>
+        <div class="rec-text"><strong>Erst selbst 20–30 Calls machen.</strong> Nicht wegen Effizienz — wegen Lernen. Du musst hören welche Opener funktionieren, welche Einwände kommen, was Architekten wirklich sagen. Das ist Gold für den AI-SDR-Prompt.</div>
+      </div>
+      <div class="rec-row">
+        <div class="rec-num">2</div>
+        <div class="rec-text"><strong>Synthflow testen</strong> (14 Tage kostenlos). Deutschen Sprachagenten mit diesem Skript konfigurieren. Ziel: Qualifier-Call, der endet mit "Demo Termin in luma-app.io/demo gebucht". Nicht mehr.</div>
+      </div>
+      <div class="rec-row">
+        <div class="rec-num">3</div>
+        <div class="rec-text"><strong>AI-SDR + E-Mail-Sequenz verknüpfen.</strong> Instantly läuft weiter. Wenn jemand die E-Mail nicht beantwortet nach Touch 2 → AI-SDR ruft an. Das ist der Multi-Channel-Punch der wirklich konvertiert.</div>
+      </div>
+      <div class="rec-row">
+        <div class="rec-num">4</div>
+        <div class="rec-text"><strong>Lead-Liste priorisieren.</strong> Die 183 Hessen-Leads aus dem Scraping — oben ansetzen mit Büros 5–15 MA. Keine Ein-Mann-Büros (kein Budget), keine Enterprise (falsches Produkt). Dann DACH-weit.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRACKING -->
+  <section class="card" style="margin-bottom: 40px;">
+    <h2 class="section-title">📊 Was du tracken solltest</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 8px;">
+      <div style="text-align: center; padding: 16px;">
+        <div style="font-size: 1.4rem; font-weight: 700; color: #7C3AED;">Calls / Tag</div>
+        <div style="font-size: 0.82rem; color: #6B7280;">Ziel: 10–20 Versuche, 5–8 Gespräche</div>
+      </div>
+      <div style="text-align: center; padding: 16px;">
+        <div style="font-size: 1.4rem; font-weight: 700; color: #7C3AED;">Reached Rate</div>
+        <div style="font-size: 0.82rem; color: #6B7280;">% der Anrufe mit echtem Gespräch. Ziel: &gt;30%</div>
+      </div>
+      <div style="text-align: center; padding: 16px;">
+        <div style="font-size: 1.4rem; font-weight: 700; color: #7C3AED;">Qualified Rate</div>
+        <div style="font-size: 0.82rem; color: #6B7280;">% der Gespräche mit Pain bestätigt. Ziel: &gt;40%</div>
+      </div>
+      <div style="text-align: center; padding: 16px;">
+        <div style="font-size: 1.4rem; font-weight: 700; color: #7C3AED;">Demo-Booking Rate</div>
+        <div style="font-size: 0.82rem; color: #6B7280;">% der Qualified Leads die Demo buchen. Ziel: &gt;50%</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>Jetzt starten — 20 Calls diese Woche</h2>
+    <p>Nimm Opener A, ruf 20 Büros aus der Hessen-Lead-Liste an. Du brauchst nur 2 Demos davon um das System zu validieren.</p>
+  </div>
+
+</div>
+
+<footer>LUMA · Cold Call Playbook + AI-SDR Briefing · 30. März 2026 · 🏔️ Hatti · Nur für internen Gebrauch</footer>
+
+</body>
+</html>
