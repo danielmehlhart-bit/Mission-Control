@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Battlecard: luma vs. Phase0</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f0f0f; color: #e5e5e5; }
+
+    .hero { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 48px 40px 40px; border-bottom: 1px solid #1e2128; }
+    .hero-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #f59e0b; margin-bottom: 12px; }
+    .hero h1 { font-size: 32px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .hero-sub { font-size: 14px; color: #8b90a0; margin-bottom: 20px; }
+    .vs-bar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .vs-pill { padding: 8px 20px; border-radius: 8px; font-size: 14px; font-weight: 700; }
+    .vs-pill.luma { background: rgba(124,58,237,0.2); border: 1.5px solid #7C3AED; color: #c4b5fd; }
+    .vs-pill.comp { background: rgba(239,68,68,0.15); border: 1.5px solid #ef4444; color: #fca5a5; }
+    .vs-sep { font-size: 18px; color: #4a5068; font-weight: 700; }
+    .verdict-badge { margin-left: auto; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); color: #f59e0b; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+    .section { margin-bottom: 48px; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #f59e0b; margin-bottom: 16px; }
+
+    .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
+    @media(max-width:700px) { .summary-grid { grid-template-columns: 1fr; } }
+    .summary-card { border-radius: 14px; padding: 24px; }
+    .summary-card.luma { background: rgba(124,58,237,0.08); border: 1.5px solid rgba(124,58,237,0.25); }
+    .summary-card.comp { background: rgba(239,68,68,0.06); border: 1.5px solid rgba(239,68,68,0.2); }
+    .summary-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .dot.luma { background: #7C3AED; }
+    .dot.comp { background: #ef4444; }
+    .summary-card-name { font-size: 16px; font-weight: 700; color: #fff; }
+    .summary-card-tag { font-size: 11px; color: #8b90a0; margin-left: auto; }
+    .summary-card p { font-size: 13px; color: #aaa; line-height: 1.7; }
+
+    /* ⚠️ DANGER ZONE */
+    .danger-box { background: rgba(239,68,68,0.08); border: 1.5px solid rgba(239,68,68,0.3); border-radius: 14px; padding: 24px; margin-bottom: 32px; }
+    .danger-box h3 { font-size: 15px; font-weight: 700; color: #ef4444; margin-bottom: 12px; }
+    .danger-box p { font-size: 13.5px; color: #ccc; line-height: 1.7; }
+    .danger-box strong { color: #fca5a5; }
+
+    .comp-table { width: 100%; border-collapse: collapse; background: #141720; border-radius: 14px; overflow: hidden; border: 1px solid #1e2128; }
+    .comp-table th { padding: 12px 16px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #4a5068; border-bottom: 1px solid #1e2128; text-align: left; }
+    .comp-table th:first-child { width: 26%; }
+    .comp-table th:nth-child(2) { color: #a78bfa; }
+    .comp-table th:nth-child(3) { color: #fca5a5; }
+    .comp-table td { padding: 13px 16px; font-size: 13px; color: #ccc; border-bottom: 1px solid #111318; vertical-align: top; }
+    .comp-table td:first-child { color: #8b90a0; font-weight: 500; font-size: 12px; }
+    .comp-table tr:last-child td { border-bottom: none; }
+    .win { color: #10B981; font-weight: 600; }
+    .lose { color: #ef4444; }
+    .neutral { color: #f59e0b; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; margin-left: 6px; vertical-align: middle; }
+    .tag.green { background: rgba(16,185,129,0.15); color: #10B981; }
+    .tag.red { background: rgba(239,68,68,0.15); color: #ef4444; }
+    .tag.yellow { background: rgba(245,158,11,0.15); color: #f59e0b; }
+    .tag.purple { background: rgba(124,58,237,0.2); color: #c4b5fd; }
+
+    .wl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media(max-width:700px) { .wl-grid { grid-template-columns: 1fr; } }
+    .wl-card { border-radius: 12px; padding: 20px; }
+    .wl-card.win { background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); }
+    .wl-card.lose { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); }
+    .wl-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 14px; }
+    .wl-card.win h3 { color: #10B981; }
+    .wl-card.lose h3 { color: #ef4444; }
+    .wl-card ul { list-style: none; }
+    .wl-card ul li { font-size: 13px; color: #ccc; padding: 5px 0; padding-left: 18px; position: relative; line-height: 1.6; }
+    .wl-card.win li::before { content: "✓"; position: absolute; left: 0; color: #10B981; font-weight: 700; }
+    .wl-card.lose li::before { content: "✗"; position: absolute; left: 0; color: #ef4444; }
+
+    .obj-list { display: flex; flex-direction: column; gap: 12px; }
+    .obj-card { background: #141720; border: 1px solid #1e2128; border-radius: 10px; padding: 16px 18px; }
+    .obj-q { font-size: 13px; font-weight: 600; color: #f0f2f5; margin-bottom: 8px; }
+    .obj-a { font-size: 13px; color: #aaa; line-height: 1.7; }
+    .obj-a strong { color: #c4b5fd; }
+
+    .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media(max-width:700px) { .pricing-grid { grid-template-columns: 1fr; } }
+    .price-card { background: #141720; border: 1px solid #1e2128; border-radius: 12px; padding: 20px; }
+    .price-card.luma { border-color: rgba(124,58,237,0.3); }
+    .price-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .price-card.luma .price-label { color: #a78bfa; }
+    .price-card.comp .price-label { color: #fca5a5; }
+    .price-main { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .price-sub { font-size: 12px; color: #8b90a0; margin-bottom: 14px; line-height: 1.6; }
+    .price-card ul { list-style: none; }
+    .price-card ul li { font-size: 12.5px; color: #aaa; padding: 5px 0; border-bottom: 1px solid #1a1a1a; }
+    .price-card ul li:last-child { border-bottom: none; }
+
+    .highlight-box { background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(79,70,229,0.08)); border: 1px solid rgba(124,58,237,0.25); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
+    .highlight-box p { font-size: 14px; color: #e5e5e5; line-height: 1.7; }
+    .highlight-box strong { color: #c4b5fd; }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }
+    .kpi-card { background: #141720; border: 1px solid #1e2128; border-radius: 10px; padding: 16px; text-align: center; }
+    .kpi-num { font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .kpi-label { font-size: 11px; color: #8b90a0; line-height: 1.5; }
+
+    .divider { border: none; border-top: 1px solid #1e1e1e; margin: 44px 0; }
+    .footer { text-align: center; padding: 24px 0; font-size: 11px; color: #333; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">⚔️ Battlecard · Competitive Intelligence</div>
+  <h1>luma vs. Phase0 (ehem. Compa)</h1>
+  <p class="hero-sub">Stand: März 2026 · Quelle: phase0.com (vollständig gecrawlt, 40 Seiten)</p>
+  <div class="vs-bar">
+    <div class="vs-pill luma">luma — "besser bauen!"</div>
+    <div class="vs-sep">vs.</div>
+    <div class="vs-pill comp">Phase0 — "KI-Plattform für Planungsbüros"</div>
+    <div class="verdict-badge">⚠️ Direkter Konkurrent im Bautagebuch</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ⚠️ DANGER ZONE -->
+  <div class="danger-box">
+    <h3>⚠️ ACHTUNG: Phase0 ist der gefährlichste Konkurrent für luma</h3>
+    <p>Phase0 (ehemals Compa) hat <strong>dasselbe KI-Bautagebuch-Feature wie luma</strong> — ebenfalls mit Spracherfassung, Fotos, automatischen Berichten. Sie sind bereits live mit 1.500+ Nutzern. Zusätzlich haben sie HOAI, AVA, Zeiterfassung und Controlling, was luma nicht hat. Das ist kein untermStrich-Vergleich. Das ist ein echter Kopf-an-Kopf-Gegner im Kernmarkt.</p>
+  </div>
+
+  <!-- KPIs -->
+  <div class="section">
+    <div class="section-label">Phase0 in Zahlen</div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-num">1.500+</div><div class="kpi-label">PlanerInnen aktiv</div></div>
+      <div class="kpi-card"><div class="kpi-num">800+</div><div class="kpi-label">Büros empfehlen Phase0</div></div>
+      <div class="kpi-card"><div class="kpi-num">4.7/5</div><div class="kpi-label">Trustpilot Rating</div></div>
+      <div class="kpi-card"><div class="kpi-num">2020</div><div class="kpi-label">Gegründet in Berlin</div></div>
+      <div class="kpi-card"><div class="kpi-num">€79–99</div><div class="kpi-label">/Monat Einstieg</div></div>
+    </div>
+  </div>
+
+  <!-- Kurzprofil -->
+  <div class="section">
+    <div class="section-label">Kurzprofil</div>
+    <div class="summary-grid">
+      <div class="summary-card luma">
+        <div class="summary-card-header">
+          <div class="dot luma"></div>
+          <span class="summary-card-name">luma</span>
+          <span class="summary-card-tag">🇩🇪 Beta · ~13 Nutzer</span>
+        </div>
+        <p>Modernes Projektmanagement für kleine Architekturbüros (3–20 MA). Fokus: operativer Alltag, Baustellendoku, Aufgaben, Projektklarheit. KI-Spracheingabe für Bautagebuch. Mobile-first. Kostenlose Beta.</p>
+      </div>
+      <div class="summary-card comp">
+        <div class="summary-card-header">
+          <div class="dot comp"></div>
+          <span class="summary-card-name">Phase0 (ehem. Compa)</span>
+          <span class="summary-card-tag">🇩🇪 Berlin · 2020 · 1.500+ Nutzer</span>
+        </div>
+        <p>Cloud-Plattform für Architektur- und Ingenieurbüros. Ehemals Compa, 2025 umbenannt. Kombination aus AVA (Ausschreibung/Vergabe/Abrechnung), HOAI-Software, Zeiterfassung, Kostenverfolgung + neu: KI-Bautagebuch via WhatsApp. Positionierung: "OS für Planungsbüros".</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Direkter Vergleich -->
+  <div class="section">
+    <div class="section-label">Direkter Vergleich</div>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Kriterium</th>
+          <th>🟣 luma</th>
+          <th>🔴 Phase0</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Positionierung</td>
+          <td>Operativer Projektalltag, Baustellendoku, Teamklarheit</td>
+          <td>Vollständige KI-Plattform: AVA + HOAI + Bauleitung + Controlling</td>
+        </tr>
+        <tr>
+          <td>KI-Bautagebuch</td>
+          <td class="neutral">✅ Voice-Input, Fotos, App-basiert <span class="tag yellow">Ähnlich</span></td>
+          <td class="neutral">✅ WhatsApp-Integration, Fotos, Sprache → KI-Bericht <span class="tag yellow">Ähnlich</span></td>
+        </tr>
+        <tr>
+          <td>Kanal Bautagebuch</td>
+          <td class="win">App / Voice-first <span class="tag green">Differentiator</span></td>
+          <td>WhatsApp (kein neues Tool nötig) <span class="tag yellow">Stärke</span></td>
+        </tr>
+        <tr>
+          <td>HOAI-Abrechnung</td>
+          <td class="lose">❌ Nicht vorhanden</td>
+          <td class="win">✅ Vollständig, Kernfeature, inkl. E-Rechnung</td>
+        </tr>
+        <tr>
+          <td>AVA (Ausschreibung)</td>
+          <td class="lose">❌ Nicht vorhanden</td>
+          <td class="win">✅ LVs, GAEB Export, Preisspiegel, Datenbank</td>
+        </tr>
+        <tr>
+          <td>Zeiterfassung</td>
+          <td class="neutral">⚠️ Unklar</td>
+          <td class="win">✅ Vollständig, alle Geräte, verknüpft mit Honorar</td>
+        </tr>
+        <tr>
+          <td>Kostenverfolgung</td>
+          <td class="lose">❌</td>
+          <td class="win">✅ LP 1–9, DIN 276, Soll/Ist-Vergleich</td>
+        </tr>
+        <tr>
+          <td>Mängelmanagement</td>
+          <td class="neutral">✅ Aufgaben vorhanden</td>
+          <td class="win">✅ Vollständig: Tickets, Fotos, Verortung, Fristen, WhatsApp-Versand</td>
+        </tr>
+        <tr>
+          <td>Aufgabenmanagement</td>
+          <td class="win">✅ Kernfeature</td>
+          <td class="neutral">✅ Vorhanden, aber nicht Hauptfokus</td>
+        </tr>
+        <tr>
+          <td>Funktionstiefe</td>
+          <td class="win">Fokussiert, einfach, kein Overhead <span class="tag green">Vorteil kleine Büros</span></td>
+          <td class="lose">Breiter Funktionsumfang → mehr Einarbeitungszeit</td>
+        </tr>
+        <tr>
+          <td>Onboarding</td>
+          <td class="win">✅ 30 Min. Live-Session, Loom-Video</td>
+          <td class="neutral">30 Min. Onboarding, browserbasiert, keine Installation</td>
+        </tr>
+        <tr>
+          <td>Mobile / UX</td>
+          <td class="win">✅ Mobile-first</td>
+          <td class="neutral">Browserbasiert, WhatsApp für Baustelle</td>
+        </tr>
+        <tr>
+          <td>Preis</td>
+          <td class="win">✅ Kostenlos (Beta)</td>
+          <td class="lose">€79–99/Monat (AVA) + €80–100/User/Monat (Bautagebuch)</td>
+        </tr>
+        <tr>
+          <td>Zielgruppe</td>
+          <td>Kleine Architekturbüros 3–20 MA, Baustelle</td>
+          <td>Architekten, Ingenieure, Planer — breiter</td>
+        </tr>
+        <tr>
+          <td>Marktposition</td>
+          <td class="neutral">Beta, 2 Büros, ~13 Nutzer</td>
+          <td class="lose">1.500+ Nutzer, 4.7/5 Trustpilot, SEO-Dominanz</td>
+        </tr>
+        <tr>
+          <td>KI-Roadmap</td>
+          <td class="neutral">KI-Bautagebuch (live), weitere Features geplant</td>
+          <td class="lose">KI-Bautagebuch (live), KI-LVs (Beta), Projekt-Inbox (geplant) — weiter voraus</td>
+        </tr>
+        <tr>
+          <td>Herkunft</td>
+          <td>🇩🇪 Deutschland</td>
+          <td>🇩🇪 Berlin, Deutschland</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Win/Lose -->
+  <div class="section">
+    <div class="section-label">Wann gewinnen, wann verlieren</div>
+    <div class="wl-grid">
+      <div class="wl-card win">
+        <h3>✅ luma gewinnt wenn…</h3>
+        <ul>
+          <li>Büro will <strong>kein AVA/HOAI-Tool</strong> — nur operativen Alltag</li>
+          <li>Budget: €0 schlägt €79–179/Monat klar</li>
+          <li>Fokus auf Teamkollaboration und Aufgaben (nicht Abrechnung)</li>
+          <li>Büro ist genervt von überladenen Tools — will Einfachheit</li>
+          <li>Interessant für Büros die Phase0 schon haben aber Bautagebuch separat teuer finden</li>
+          <li>Voice-first Bautagebuch als UX-Vorteil über WhatsApp-Flow</li>
+        </ul>
+      </div>
+      <div class="wl-card lose">
+        <h3>✗ Phase0 gewinnt wenn…</h3>
+        <ul>
+          <li>HOAI-Abrechnung oder AVA gebraucht wird</li>
+          <li>Büro will eine Software für alles (One-Stop)</li>
+          <li>WhatsApp-Integration als "kein neues Tool" entscheidend</li>
+          <li>Büro will etablierten Anbieter mit Track Record</li>
+          <li>Kostenverfolgung LP 1–9 und DIN 276 wichtig</li>
+          <li>Mängelmanagement vollständig benötigt</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Pricing -->
+  <div class="section">
+    <div class="section-label">Pricing im Detail</div>
+    <div class="pricing-grid">
+      <div class="price-card luma">
+        <div class="price-label">luma</div>
+        <div class="price-main">€0</div>
+        <div class="price-sub">Kostenlose Beta<br>Pricing noch nicht kommuniziert</div>
+        <ul>
+          <li>Alle Features inklusive</li>
+          <li>Kein Setup-Aufwand</li>
+          <li>✅ Massiver Vorteil im Erstgespräch</li>
+        </ul>
+      </div>
+      <div class="price-card comp">
+        <div class="price-label">Phase0</div>
+        <div class="price-main">€79–99</div>
+        <div class="price-sub">/Monat für AVA-Kern-Paket<br>Bautagebuch extra: €80–100/User/Monat</div>
+        <ul>
+          <li>AVA: €79/Monat (jährlich) / €99/Monat (monatlich)</li>
+          <li>Bautagebuch Beta: €80/User/Monat (jährlich)</li>
+          <li>Bauleitungssoftware: ~€59/Monat/Nutzer</li>
+          <li>❌ Für kleines Büro: €160–200+/Monat realistisch</li>
+          <li>14 Tage kostenlos testen</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Einwände -->
+  <div class="section">
+    <div class="section-label">Einwände & Antworten</div>
+    <div class="obj-list">
+
+      <div class="obj-card">
+        <div class="obj-q">💬 "Phase0 hat das Bautagebuch auch — sogar via WhatsApp."</div>
+        <div class="obj-a"><strong>Antwort:</strong> Stimmt — Phase0 hat ein KI-Bautagebuch. Der Unterschied: Phase0 kostet extra (€80–100/User/Monat nur für das Bautagebuch, Beta-Preis). Und: WhatsApp als Kanal hat Grenzen — Fotos landen in der Chat-Galerie, der Kontext geht verloren, WhatsApp ist kein Projekttool. luma bündelt alles in einem Kontext: Bautagebuch, Aufgaben, Projektüberblick — nicht verteilt über WhatsApp-Chats und Browser-Tabs. Und: luma kostet gerade nichts.</div>
+      </div>
+
+      <div class="obj-card">
+        <div class="obj-q">💬 "Phase0 kann viel mehr als luma (HOAI, AVA, Controlling)."</div>
+        <div class="obj-a"><strong>Antwort:</strong> Genau das ist der Punkt. Phase0 ist für Büros gebaut, die alles in einem Tool wollen — Abrechnung, Ausschreibung, Kosten. Das ist ein anderes Bedürfnis. luma ist für Büros, die ihren operativen Projektalltag strukturieren wollen: Wer macht was, was steht auf der Baustelle, wie ist der Projektstand. Wenn ihr Phase0 für HOAI nutzt — super. luma ist die Ergänzung, die den Rest regelt.</div>
+      </div>
+
+      <div class="obj-card">
+        <div class="obj-q">💬 "Phase0 hat 1.500 Nutzer und 4.7 Sterne — luma ist unbekannt."</div>
+        <div class="obj-a"><strong>Antwort:</strong> Phase0 hat fünf Jahre Vorsprung — respektabel. Genau deshalb ist jetzt der richtige Zeitpunkt, als eines der ersten Büros bei luma dabei zu sein, bevor alle anderen draufsitzen. Ich baue das direkt mit Büros wie eurem zusammen — ihr bekommt direkten Einfluss auf Features, kostenlosen Zugang, und eine Linie zu mir als Founder.</div>
+      </div>
+
+      <div class="obj-card">
+        <div class="obj-q">💬 "Wir nutzen bereits Phase0."</div>
+        <div class="obj-a"><strong>Antwort:</strong> Dann habt ihr schon ein starkes Tool für Abrechnung und Kosten. Die Frage ist: Deckt Phase0 auch euren Projektalltag ab — Aufgaben im Team, Projektüberblick, Baustellenkommunikation? Oder habt ihr dafür noch WhatsApp-Gruppen und Excel? Genau da setzt luma an. Und es kostet euch gerade nichts, das auszuprobieren.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Strategische Einschätzung -->
+  <div class="section">
+    <div class="section-label">Strategische Einschätzung</div>
+
+    <div class="highlight-box">
+      <p><strong>Phase0 ist der direkteste Konkurrent von luma — nicht untermStrich.</strong> Gleiche Zielgruppe (kleine Architekturbüros), gleiches Kernfeature (KI-Bautagebuch), gleiche Positionierung (einfach, browserbasiert, kein Excel). Phase0 hat 5 Jahre Vorsprung, 1.500 Nutzer und eine deutlich breitere Funktionstiefe. Das ist ernst zu nehmen.</p>
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>lumas einziger echter Vorteil heute: Kostenlos + Fokus.</strong> Phase0 kostet €79+/Monat (plus Bautagebuch extra). luma ist gratis. Das ist im Erstgespräch entscheidend. Dazu: luma ist fokussierter — kein HOAI-Overhead, keine Ausschreibungskomplexität. Für Büros, die "nur" ihren Projektalltag strukturieren wollen, ist luma schneller und einfacher.</p>
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>Langfristig muss luma differenzieren.</strong> Phase0 baut aktiv KI-Features aus (KI-LVs, Projekt-Inbox). luma braucht eine klare Antwort auf die Frage: Was macht luma in 12 Monaten besser als Phase0? Mögliche Differenzierung: stärkere Teamkollaboration, tiefere Integration von Baustellendoku in Projektkommunikation, oder gezielt die Lücke "Phase0 für Abrechnung + luma für Alltag" als komplementäres Angebot positionieren.</p>
+    </div>
+  </div>
+
+  <div class="footer">luma Competitive Intelligence · Phase0 Battlecard · Stand März 2026 · Quelle: phase0.com (40 Seiten gecrawlt)</div>
+</div>
+</body>
+</html>
