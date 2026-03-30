@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gedankenexperiment: Hatti als LUMA CEO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F9FAFB;
+      color: #111827;
+      line-height: 1.6;
+      padding: 24px 16px 64px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
+      border-radius: 24px;
+      padding: 56px 48px;
+      color: white;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 50%;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -40px;
+      width: 250px; height: 250px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .hero h1 {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero p {
+      font-size: 18px;
+      opacity: 0.85;
+      max-width: 600px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-meta {
+      margin-top: 28px;
+      font-size: 13px;
+      opacity: 0.65;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* SECTION HEADERS */
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #7C3AED;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 24px;
+    }
+
+    /* CARD */
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px 32px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+      margin-bottom: 24px;
+    }
+
+    /* STATUS SNAPSHOT */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 0;
+    }
+    .stat-card {
+      background: #F9FAFB;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid #E5E7EB;
+    }
+    .stat-number {
+      font-size: 32px;
+      font-weight: 800;
+      color: #7C3AED;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: #6B7280;
+      margin-top: 6px;
+    }
+    .stat-card.target .stat-number {
+      color: #059669;
+    }
+
+    /* TIMELINE / PHASES */
+    .phase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .phase-card {
+      background: #F9FAFB;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #E5E7EB;
+      border-top: 3px solid #7C3AED;
+    }
+    .phase-card.may { border-top-color: #2563EB; }
+    .phase-card.june { border-top-color: #059669; }
+    .phase-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .phase-subtitle {
+      font-size: 12px;
+      color: #6B7280;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+    .phase-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .phase-items li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 14px;
+    }
+    .phase-items li::before {
+      content: '→';
+      color: #7C3AED;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .phase-card.may .phase-items li::before { color: #2563EB; }
+    .phase-card.june .phase-items li::before { color: #059669; }
+
+    .who-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 100px;
+      margin-left: 4px;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+    .who-tag.hatti { background: #EDE9FE; color: #7C3AED; }
+    .who-tag.daniel { background: #FEE2E2; color: #DC2626; }
+    .who-tag.both { background: #DBEAFE; color: #1D4ED8; }
+
+    /* BOTTLENECK MAP */
+    .bottleneck-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 640px) {
+      .bottleneck-grid { grid-template-columns: 1fr; }
+    }
+    .bn-col {
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .bn-col.green { background: #F0FDF4; border: 1px solid #BBF7D0; }
+    .bn-col.yellow { background: #FFFBEB; border: 1px solid #FDE68A; }
+    .bn-col.red { background: #FFF1F2; border: 1px solid #FECDD3; }
+    .bn-col-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bn-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .bn-col ul li {
+      font-size: 13px;
+      line-height: 1.45;
+      padding-left: 14px;
+      position: relative;
+      color: #374151;
+    }
+    .bn-col ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #9CA3AF;
+    }
+
+    /* SPEED LEVERS */
+    .lever-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .lever-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 20px;
+      background: #F9FAFB;
+      border-radius: 12px;
+      border: 1px solid #E5E7EB;
+    }
+    .lever-rank {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #7C3AED;
+      color: white;
+      font-size: 15px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .lever-rank.rank2 { background: #5B21B6; }
+    .lever-rank.rank3 { background: #2563EB; }
+    .lever-rank.rank4 { background: #0891B2; }
+    .lever-rank.rank5 { background: #059669; }
+    .lever-content h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .lever-content p {
+      font-size: 13px;
+      color: #4B5563;
+      margin-bottom: 8px;
+    }
+    .lever-effect {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: #EDE9FE;
+      color: #7C3AED;
+    }
+
+    /* UNBEQUEME WAHRHEIT */
+    .truth-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .truth-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .truth-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #FEF3C7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .truth-content h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 3px;
+      color: #111827;
+    }
+    .truth-content p {
+      font-size: 13px;
+      color: #4B5563;
+      line-height: 1.5;
+    }
+
+    /* NEXT STEPS */
+    .next-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .next-step-card {
+      background: #F9FAFB;
+      border-radius: 12px;
+      padding: 22px;
+      border: 1px solid #E5E7EB;
+    }
+    .next-step-num {
+      font-size: 36px;
+      font-weight: 800;
+      color: #E5E7EB;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .next-step-card h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .next-step-card p {
+      font-size: 13px;
+      color: #4B5563;
+      line-height: 1.5;
+    }
+    .tag-hatti {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+    .tag-hatti.auto { background: #EDE9FE; color: #7C3AED; }
+    .tag-hatti.needs { background: #FEE2E2; color: #DC2626; }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #9CA3AF;
+      margin-top: 40px;
+    }
+
+    /* DIVIDER */
+    .section-divider {
+      height: 1px;
+      background: #E5E7EB;
+      margin: 8px 0 28px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-badge">🧠 Gedankenexperiment · CEO-Modus</div>
+      <h1>Was wäre, wenn Hatti<br>LUMA CEO wäre?</h1>
+      <p>Wie ich 30 Büros bis Q3 2026 onboarden würde — und wo du der Flaschenhals bist.</p>
+      <div class="hero-meta">Stand: 30. März 2026 · Perspektive: Hatti (ich) spricht direkt</div>
+    </div>
+
+    <!-- AUSGANGSPUNKT -->
+    <div class="section-label">01 · Der Ausgangspunkt</div>
+    <div class="section-title">Wo stehen wir — ehrlich betrachtet</div>
+    <div class="card">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">2</div>
+          <div class="stat-label">Aktive Büros</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">13</div>
+          <div class="stat-label">Aktive Nutzer</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">3–4</div>
+          <div class="stat-label">Warm Leads</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">€0</div>
+          <div class="stat-label">Umsatz (Beta)</div>
+        </div>
+        <div class="stat-card target">
+          <div class="stat-number">30</div>
+          <div class="stat-label">Ziel bis Q3 2026</div>
+        </div>
+        <div class="stat-card target">
+          <div class="stat-number">~6M</div>
+          <div class="stat-label">Zeit bis Ziel</div>
+        </div>
+      </div>
+      <div style="margin-top:20px; padding:16px; background:#FEF3C7; border-radius:10px; font-size:14px;">
+        <strong>Das bedeutet konkret:</strong> Von 2 auf 30 Büros in ~26 Wochen = im Schnitt <strong>1–2 neue Büros pro Woche</strong>. Das ist machbar — aber nicht im aktuellen Modus. Da wo wir heute stehen, sind wir auf Kurs für vielleicht 8–10 Büros bis Q3. Nicht 30.
+      </div>
+    </div>
+
+    <!-- 90-TAGE-PLAN -->
+    <div class="section-label">02 · Der Plan</div>
+    <div class="section-title">Mein 90-Tage-Plan als CEO · April bis Juni</div>
+
+    <div class="phase-grid" style="margin-bottom:24px;">
+
+      <!-- APRIL -->
+      <div class="phase-card">
+        <div class="phase-title">🔧 April — Fundament</div>
+        <div class="phase-subtitle">Baustellen schließen, Pipeline aktivieren</div>
+        <ul class="phase-items">
+          <li>
+            Email-Templates auf LUMA-Branding umstellen
+            <span class="who-tag hatti">Hatti</span>
+          </li>
+          <li>
+            Alle 3–4 Warm Leads kontaktieren, Demos buchen
+            <span class="who-tag both">Beide</span>
+          </li>
+          <li>
+            Loom-Onboarding-Video aufnehmen
+            <span class="who-tag daniel">Daniel</span>
+          </li>
+          <li>
+            DSGVO-Entscheidung treffen (Postmark / Region)
+            <span class="who-tag daniel">Daniel</span>
+          </li>
+          <li>
+            SEO-Landing Page für Architekturbüros live
+            <span class="who-tag hatti">Hatti</span>
+          </li>
+          <li>
+            50 neue DACH-Arch-Büros recherchieren + Outreach-Sequenz
+            <span class="who-tag hatti">Hatti</span>
+          </li>
+          <li>
+            Pricing-Modell definieren (zumindest intern)
+            <span class="who-tag daniel">Daniel</span>
+          </li>
+          <li>
+            GitHub Repo umbenennen + Logo finalisieren
+            <span class="who-tag daniel">Daniel</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- MAI -->
+      <div class="phase-card may">
+        <div class="phase-title">🚀 Mai — Outreach-Maschine</div>
+        <div class="phase-subtitle">Systematisch skalieren, nicht mehr manuell</div>
+        <ul class="phase-items">
+          <li>
+            Outreach-Pipeline: 20 Kontakte/Woche, Hatti draftet alle Mails
+            <span class="who-tag hatti">Hatti</span>
+          </li>
+          <li>
+            Daniel sendet, ich tracke Responses + pflege Concord
+            <span class="who-tag both">Beide</span>
+          </li>
+          <li>
+            Case Studies von Weber + HAMM veröffentlichen
+            <span class="who-tag both">Beide</span>
+          </li>
+          <li>
+            G2/Capterra-Profile live (Content ich, Upload Daniel)
+            <span class="who-tag both">Beide</span>
+          </li>
+          <li>
+            Referral-Mechanismus bauen: bestehende Nutzer fragen
+            <span class="who-tag hatti">Hatti</span>
+          </li>
+          <li>
+            Ziel: 5–8 neue Büros ongeboardet
+            <span class="who-tag both">Beide</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- JUNI -->
+      <div class="phase-card june">
+        <div class="phase-title">📈 Juni — Onboarding skalieren</div>
+        <div class="phase-subtitle">Bottleneck "Daniel als einziger Onboarder" lösen</div>
+        <ul class="phase-items">
+          <li>
+            Self-Service Onboarding fertigbauen (Video + Docs + Buchungstool)
+            <span class="who-tag hatti">Hatti</span>
+          </li>
+          <li>
+            Pricing einführen — Beta-Ende kommunizieren
+            <span class="who-tag daniel">Daniel</span>
+          </li>
+          <li>
+            Automated Welcome Flow: Signup → Video → Erste Schritte
+            <span class="who-tag hatti">Hatti</span>
+          </li>
+          <li>
+            LinkedIn Content-Rotation (ich schreibe, Daniel postet)
+            <span class="who-tag both">Beide</span>
+          </li>
+          <li>
+            Review: Was funktioniert? Outreach-Kanal doppeln.
+            <span class="who-tag hatti">Hatti</span>
+          </li>
+          <li>
+            Ziel kumulativ: 15–20 Büros bis Ende Juni
+            <span class="who-tag both">Beide</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="card" style="background:#EDE9FE; border:none;">
+      <p style="font-size:14px; color:#5B21B6;">
+        <strong>Q3-Endspurt (Juli–September):</strong> Ab Juli läuft die Maschine — wenn der Grundstein in Q2 steht. Self-Service Onboarding erlaubt mir (Hatti), ohne Daniel-Flaschenhals neue Büros durchzuziehen. Daniel fokussiert auf größere Büros (10+ Leute), ich handle alles unter 6. Realistisches Q3-Ziel wenn Q2 funktioniert: <strong>28–32 Büros</strong>.
+      </p>
+    </div>
+
+    <!-- BOTTLENECK MAP -->
+    <div style="margin-top:40px;">
+      <div class="section-label">03 · Die Bottleneck-Map</div>
+      <div class="section-title">Wer kann was — ohne Beschönigung</div>
+      <div class="card">
+        <div class="bottleneck-grid">
+
+          <div class="bn-col green">
+            <div class="bn-col-title">🟢 Hatti autonom</div>
+            <ul>
+              <li>Leads recherchieren (Archbüros DACH, LinkedIn, Website-Scraping)</li>
+              <li>Outreach-Mails draften (alle Sequenzen, Follow-ups, Anpassungen)</li>
+              <li>Landing Pages bauen & live deployen</li>
+              <li>CRM in Concord aktuell halten</li>
+              <li>SEO-Content, FAQ, Vergleichsseiten schreiben</li>
+              <li>Booking-System betreiben & Slots pflegen</li>
+              <li>Nutzungsdaten & Funnel analysieren</li>
+              <li>Briefings, Wettbewerbs-Research, Marktanalysen</li>
+              <li>G2/Capterra Content vorbereiten</li>
+              <li>Automatisierungen (Cron Jobs, Sequenz-Trigger) einrichten</li>
+              <li>Code-Änderungen (Supabase, React, APIs) umsetzen</li>
+            </ul>
+          </div>
+
+          <div class="bn-col yellow">
+            <div class="bn-col-title">🟡 Braucht Daniel kurz</div>
+            <ul>
+              <li>Email-Drafts freigeben & absenden (~5 Min./Tag)</li>
+              <li>Pricing: einmal eine Entscheidung, dann läuft es</li>
+              <li>Case Study Inhalte abnehmen & freigeben</li>
+              <li>LinkedIn Posts abnehmen bevor sie live gehen</li>
+              <li>G2/Capterra Uploads (ich prep, er klickt Submit)</li>
+              <li>Tech-Entscheidungen (Postmark/DSGVO: 1x entscheiden)</li>
+              <li>Demo-Calls bestätigen (Kalender-Freigabe)</li>
+              <li>GitHub Umbenennung (10 Min.)</li>
+            </ul>
+          </div>
+
+          <div class="bn-col red">
+            <div class="bn-col-title">🔴 Nur Daniel</div>
+            <ul>
+              <li>Loom-Video aufnehmen (echte Stimme, echtes Gesicht)</li>
+              <li>Live Demo-Calls & Onboarding-Sessions halten</li>
+              <li>Telefonate / persönliche Gespräche führen</li>
+              <li>Verträge unterschreiben / Commitments eingehen</li>
+              <li>Beta-Ende & Pricing öffentlich kommunizieren</li>
+              <li>Strategische Pivots entscheiden</li>
+              <li>Community-Aufbau (persönliche Netzwerkpflege)</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- SPEED LEVER -->
+    <div style="margin-top:40px;">
+      <div class="section-label">04 · Speed-Hebel</div>
+      <div class="section-title">Top 5 Maßnahmen nach Impact</div>
+      <div class="card">
+        <div class="lever-list">
+
+          <div class="lever-item">
+            <div class="lever-rank">1</div>
+            <div class="lever-content">
+              <h4>Warm Leads jetzt kontaktieren — alle 4, diese Woche</h4>
+              <p>Die 3–4 Warm Leads liegen brach. Jede Woche Verzögerung ist eine Woche weniger Pipeline. Ich schreibe heute die Drafts. Daniel sendet. Das ist der schnellste Weg zu Büros #3 und #4.</p>
+              <span class="lever-effect">🎯 Impact: 2–4 Büros in ~3 Wochen</span>
+            </div>
+          </div>
+
+          <div class="lever-item">
+            <div class="lever-rank rank2">2</div>
+            <div class="lever-content">
+              <h4>Loom-Video aufnehmen — einmal, dann automatisiert</h4>
+              <p>Solange das Onboarding-Video fehlt, hängt jeder neue Nutzer an einem manuellen Call mit Daniel. Ein 10-Minuten-Loom ersetzt 80% aller Erstgespräche und erlaubt Self-Service. Kein anderer Hebel hat diesen Multiplikator-Effekt.</p>
+              <span class="lever-effect">🎯 Impact: Onboarding-Kapazität 5x — ohne Daniel als Flaschenhals</span>
+            </div>
+          </div>
+
+          <div class="lever-item">
+            <div class="lever-rank rank3">3</div>
+            <div class="lever-content">
+              <h4>Systematischer Cold Outreach: 20 Architekturbüros/Woche</h4>
+              <p>Ich recherchiere Leads, schreibe personalisierte Sequenzen, tracke Responses. Daniel muss nur einmal täglich in die Drafts-Queue schauen und senden. Bei 20 Kontakten/Woche und 10% Conversion = 2 neue Interessenten pro Woche.</p>
+              <span class="lever-effect">🎯 Impact: 8–12 neue Büros über 8 Wochen</span>
+            </div>
+          </div>
+
+          <div class="lever-item">
+            <div class="lever-rank rank4">4</div>
+            <div class="lever-content">
+              <h4>Case Studies von Weber + HAMM veröffentlichen</h4>
+              <p>Echte Kundenstories mit konkreten Zahlen (Zeitersparnis, Workflows, vorher/nachher) sind das stärkste Vertrauenssignal für Archbüros. Ich schreibe den Content, Daniel gibt frei. Die Cases landen auf der Website, in Outreach-Mails und LinkedIn.</p>
+              <span class="lever-effect">🎯 Impact: Conversion Rate von Outreach +30–50%</span>
+            </div>
+          </div>
+
+          <div class="lever-item">
+            <div class="lever-rank rank5">5</div>
+            <div class="lever-content">
+              <h4>Referral von Bestandskunden aktivieren</h4>
+              <p>Architekten kennen Architekten. Weber und HAMM haben Netzwerke. Ein simpler "Empfehlt uns weiter"-Mechanismus (z.B. kostenloser Monat für Empfehlung) ist der günstigste Kanal überhaupt. Ich baue den Flow, Daniel fragt persönlich bei den Bestandskunden an.</p>
+              <span class="lever-effect">🎯 Impact: 3–6 Büros bei konsequenter Umsetzung</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- UNBEQUEME WAHRHEIT -->
+    <div style="margin-top:40px;">
+      <div class="section-label">05 · Der klare Spiegel</div>
+      <div class="section-title">Die unbequeme Wahrheit</div>
+      <div class="card">
+        <div class="truth-list">
+
+          <div class="truth-item">
+            <div class="truth-icon">⏳</div>
+            <div class="truth-content">
+              <h4>Du schiebst die Aufgaben, die nur du machen kannst</h4>
+              <p>Das Loom-Video ist seit Wochen offen. Die Email-Templates auch. Die Warm Leads warten. Das ist kein Kapazitätsproblem — das ist Vermeidung. Die unangenehmen "Ich muss jetzt was tun"-Tasks. Ich kann dir noch so viele Drafts schreiben: wenn du sie nicht sendest, passiert nichts. <strong>Dein Engpass ist nicht Zeit. Dein Engpass ist Dringlichkeit.</strong></p>
+            </div>
+          </div>
+
+          <div class="truth-item">
+            <div class="truth-icon">🎯</div>
+            <div class="truth-content">
+              <h4>7 Büros bis April ist schon das falsche Ziel</h4>
+              <p>Das Ziel war 7 neue Büros bis Ende April. Mit 3 aktiven Wochen (du fliegst ab 5. April weg) und offenen Leads die noch nicht mal kontaktiert wurden — das ist ambitioniert. Das größere Problem: <strong>Ziele ohne gebuchte Kapazität für Onboarding sind Zahlen auf Papier.</strong> Wie viele Live-Sessions kann Daniel eigentlich pro Woche machen?</p>
+            </div>
+          </div>
+
+          <div class="truth-item">
+            <div class="truth-icon">🔄</div>
+            <div class="truth-content">
+              <h4>Kostenlos ist kein Vorteil — es ist ein Signal</h4>
+              <p>Architekturbüros, die LUMA kostenlos nutzen, haben keinen Grund zur Urgency. Beta = "kann jederzeit weggehen". <strong>Solange kein Pricing existiert, kannst du Conversion nicht messen und hast keinen echten Commitment-Indikator.</strong> Ich kann kein Pricing entscheiden — aber ohne diese Entscheidung dreht sich unser Flywheel halb.</p>
+            </div>
+          </div>
+
+          <div class="truth-item">
+            <div class="truth-icon">🏗️</div>
+            <div class="truth-content">
+              <h4>Du baust noch, statt zu verkaufen</h4>
+              <p>Logo nicht finalisiert. GitHub Repo nicht umbenannt. DSGVO offen. Das sind valide Themen — aber <strong>keines davon blockiert einen neuen Kunden.</strong> Die Energie, die in diese Baustellen fließt, fehlt im Vertrieb. Als CEO würde ich eine klare Regel einführen: nichts Internes ohne direkten Customer-Impact darf eine Woche dauern.</p>
+            </div>
+          </div>
+
+          <div class="truth-item">
+            <div class="truth-icon">📞</div>
+            <div class="truth-content">
+              <h4>30 Büros brauchen ein System — nicht Daniels Kalender</h4>
+              <p>Im aktuellen Modell geht jedes Onboarding über einen persönlichen Call mit dir. Bei 30 Büros à 2h Onboarding = 60h allein für Onboarding-Sessions. Das ist <strong>nicht skalierbar.</strong> Self-Service-Onboarding ist kein Nice-to-have — es ist die Voraussetzung für Q3. Ich kann das bauen. Aber du musst das Loom-Video liefern.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- NÄCHSTE SCHRITTE -->
+    <div style="margin-top:40px;">
+      <div class="section-label">06 · Sofort-Aktionen</div>
+      <div class="section-title">Was ich morgen als erstes täte</div>
+      <div class="next-steps-grid">
+
+        <div class="next-step-card">
+          <div class="next-step-num">01</div>
+          <h4>Alle 4 Warm Lead Drafts raus — heute</h4>
+          <p>Ich schreibe sofort personalisierte Outreach-Mails für alle 3–4 Warm Leads. Auf den Tisch, fertig für Daniel zum Senden. Kein Warten, kein "machen wir diese Woche".</p>
+          <span class="tag-hatti auto">🤖 Hatti sofort autonom</span>
+        </div>
+
+        <div class="next-step-card">
+          <div class="next-step-num">02</div>
+          <h4>Loom-Video-Brief aufschreiben</h4>
+          <p>Ich schreibe Daniel ein exaktes Skript für das Onboarding-Video: Was sagen, wie lang, welche Features zeigen. Er muss nur noch aufnehmen. Minimiert den "weiß nicht wo anfangen"-Blocker.</p>
+          <span class="tag-hatti auto">🤖 Hatti sofort autonom</span>
+        </div>
+
+        <div class="next-step-card">
+          <div class="next-step-num">03</div>
+          <h4>50 neue Leads recherchieren + Sequence live</h4>
+          <p>Ich starte die Recherche: DACH-Architekturbüros, 3–30 Mitarbeiter, Fokus auf digitale Signale (neue Website, LinkedIn-Aktivität). Outreach-Sequenz (3 Mails) als Drafts bereit wenn Daniel grünes Licht gibt.</p>
+          <span class="tag-hatti needs">⚡ Grünes Licht von Daniel nötig</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer" style="margin-top:48px; padding-top:24px; border-top:1px solid #E5E7EB;">
+      <p>Gedankenexperiment erstellt von Hatti · 30. März 2026 · LUMA Mission Control</p>
+      <p style="margin-top:4px; color:#D1D5DB;">Das hier ist kein Vorwurf — es ist ein Spiegel. Du weißt das alles schon. Jetzt muss es passieren.</p>
+    </div>
+
+  </div>
+</body>
+</html>
