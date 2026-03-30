@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>luma Competitor Matrix 2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f0f0f; color: #e5e5e5; min-height: 100vh; }
+
+    .hero { background: linear-gradient(135deg, #7C3AED 0%, #4f46e5 100%); padding: 48px 40px 40px; }
+    .hero-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-bottom: 12px; }
+    .hero h1 { font-size: 34px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .hero-sub { font-size: 15px; color: rgba(255,255,255,0.75); max-width: 620px; line-height: 1.6; }
+    .hero-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+    .meta-pill { background: rgba(255,255,255,0.15); border-radius: 20px; padding: 5px 14px; font-size: 12px; color: rgba(255,255,255,0.85); }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px 80px; }
+
+    /* Competitor profiles strip */
+    .profiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 48px; }
+    .profile-card { background: #141720; border: 1px solid #1e2128; border-radius: 12px; padding: 16px; }
+    .profile-card.luma { border-color: rgba(124,58,237,0.4); background: rgba(124,58,237,0.06); }
+    .profile-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .profile-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .profile-tag { font-size: 10px; color: #8b90a0; margin-bottom: 8px; }
+    .profile-desc { font-size: 11.5px; color: #aaa; line-height: 1.6; }
+    .profile-stat { margin-top: 10px; padding-top: 10px; border-top: 1px solid #1e2128; font-size: 11px; color: #4a5068; }
+    .profile-stat strong { color: #8b90a0; }
+
+    /* Matrix table */
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7C3AED; margin-bottom: 16px; }
+
+    .matrix-wrap { overflow-x: auto; margin-bottom: 48px; }
+    .matrix { width: 100%; border-collapse: collapse; background: #141720; border-radius: 14px; overflow: hidden; border: 1px solid #1e2128; min-width: 780px; }
+    .matrix th { padding: 12px 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; border-bottom: 1px solid #1e2128; text-align: center; white-space: nowrap; }
+    .matrix th:first-child { text-align: left; color: #4a5068; width: 22%; }
+    .matrix th.luma-col { color: #a78bfa; background: rgba(124,58,237,0.06); }
+    .matrix th.comp { color: #8b90a0; }
+    .matrix td { padding: 11px 14px; font-size: 12.5px; border-bottom: 1px solid #111318; text-align: center; vertical-align: middle; }
+    .matrix td:first-child { text-align: left; color: #8b90a0; font-weight: 500; font-size: 12px; }
+    .matrix td.luma-col { background: rgba(124,58,237,0.04); }
+    .matrix tr:last-child td { border-bottom: none; }
+    .matrix tr:hover td { background: rgba(255,255,255,0.02); }
+    .matrix tr:hover td.luma-col { background: rgba(124,58,237,0.07); }
+
+    .yes { color: #10B981; font-weight: 700; font-size: 15px; }
+    .no { color: #ef4444; font-size: 15px; }
+    .partial { color: #f59e0b; font-size: 13px; font-weight: 600; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; }
+    .badge.green { background: rgba(16,185,129,0.15); color: #10B981; }
+    .badge.yellow { background: rgba(245,158,11,0.15); color: #f59e0b; }
+    .badge.red { background: rgba(239,68,68,0.15); color: #ef4444; }
+    .badge.purple { background: rgba(124,58,237,0.2); color: #c4b5fd; }
+
+    /* Threat assessment */
+    .threat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 48px; }
+    .threat-card { background: #141720; border: 1px solid #1e2128; border-radius: 12px; padding: 18px; }
+    .threat-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .threat-level { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .threat-bar { flex: 1; height: 6px; background: #1e2128; border-radius: 3px; overflow: hidden; }
+    .threat-fill { height: 100%; border-radius: 3px; }
+    .threat-fill.critical { background: #ef4444; width: 95%; }
+    .threat-fill.high { background: #f59e0b; width: 75%; }
+    .threat-fill.medium { background: #3B82F6; width: 50%; }
+    .threat-fill.low { background: #10B981; width: 25%; }
+    .threat-label { font-size: 10px; font-weight: 700; }
+    .threat-label.critical { color: #ef4444; }
+    .threat-label.high { color: #f59e0b; }
+    .threat-label.medium { color: #3B82F6; }
+    .threat-label.low { color: #10B981; }
+    .threat-why { font-size: 11.5px; color: #8b90a0; line-height: 1.6; }
+
+    /* luma AI highlight */
+    .ai-highlight { background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(79,70,229,0.08)); border: 1px solid rgba(124,58,237,0.3); border-radius: 14px; padding: 28px; margin-bottom: 48px; }
+    .ai-highlight h2 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 20px; }
+    .ai-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .ai-item { background: rgba(0,0,0,0.25); border-radius: 10px; padding: 16px; }
+    .ai-icon { font-size: 20px; margin-bottom: 8px; }
+    .ai-title { font-size: 13px; font-weight: 700; color: #c4b5fd; margin-bottom: 6px; }
+    .ai-desc { font-size: 12px; color: #aaa; line-height: 1.6; }
+
+    /* Beta CTA */
+    .beta-box { background: rgba(16,185,129,0.06); border: 1.5px solid rgba(16,185,129,0.25); border-radius: 14px; padding: 28px; text-align: center; }
+    .beta-box h3 { font-size: 20px; font-weight: 700; color: #10B981; margin-bottom: 10px; }
+    .beta-box p { font-size: 14px; color: #aaa; line-height: 1.7; max-width: 560px; margin: 0 auto 20px; }
+    .beta-cta { display: inline-block; padding: 12px 28px; border-radius: 10px; background: #10B981; color: #fff; font-size: 14px; font-weight: 700; text-decoration: none; }
+
+    .divider { border: none; border-top: 1px solid #1e1e1e; margin: 44px 0; }
+    .footer { text-align: center; padding: 24px 0; font-size: 11px; color: #333; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">⚔️ Competitive Intelligence · luma</div>
+  <h1>luma vs. 5 Konkurrenten</h1>
+  <p class="hero-sub">Vollständige Wettbewerbsanalyse basierend auf gecrawlten Websites. Fokus: KI-Features, Zielgruppe, Positionierung.</p>
+  <div class="hero-meta">
+    <span class="meta-pill">📊 5 Konkurrenten analysiert</span>
+    <span class="meta-pill">🤖 KI-Feature-Fokus</span>
+    <span class="meta-pill">🚀 luma: kostenlose Beta</span>
+    <span class="meta-pill">Stand: März 2026</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Competitor Profiles -->
+  <div class="section-label">Wettbewerbs-Profile</div>
+  <div class="profiles">
+    <div class="profile-card luma">
+      <div class="profile-name"><div class="profile-dot" style="background:#7C3AED"></div>luma</div>
+      <div class="profile-tag">🇩🇪 Beta · Architekturbüros 3–20 MA</div>
+      <div class="profile-desc">Operativer Projektalltag, KI-Bautagebuch, E-Mail-Agent, Admin-Copilot mit Tenant-Zugriff.</div>
+      <div class="profile-stat"><strong>Status:</strong> Kostenlose Beta · Design Partner gesucht</div>
+    </div>
+    <div class="profile-card">
+      <div class="profile-name"><div class="profile-dot" style="background:#ef4444"></div>Phase0</div>
+      <div class="profile-tag">🇩🇪 Berlin · ehem. Compa</div>
+      <div class="profile-desc">AVA + HOAI + KI-Bautagebuch via WhatsApp. Vollständige Bürosteuerung für Planer.</div>
+      <div class="profile-stat"><strong>Nutzer:</strong> 1.500+ · 4.7/5 Trustpilot</div>
+    </div>
+    <div class="profile-card">
+      <div class="profile-name"><div class="profile-dot" style="background:#3B82F6"></div>PlanRadar</div>
+      <div class="profile-tag">🇦🇹 Wien · International</div>
+      <div class="profile-desc">Führende Plattform für Bau & FM. Mängelmanagement, Aufgaben, Berichte. Große Bauprojekte.</div>
+      <div class="profile-stat"><strong>Fokus:</strong> Baumanagement, GC, Facility</div>
+    </div>
+    <div class="profile-card">
+      <div class="profile-name"><div class="profile-dot" style="background:#10B981"></div>PlanSync</div>
+      <div class="profile-tag">🇩🇪 Deutschland</div>
+      <div class="profile-desc">HOAI-Abrechnung, Zeiterfassung, Honorare. Rein kaufmännisch. Kein KI-Feature erkennbar.</div>
+      <div class="profile-stat"><strong>Fokus:</strong> Rechnungsstellung, Controlling</div>
+    </div>
+    <div class="profile-card">
+      <div class="profile-name"><div class="profile-dot" style="background:#f59e0b"></div>Capmo</div>
+      <div class="profile-tag">🇩🇪 München · D-A-CH</div>
+      <div class="profile-desc">Nr. 1 Bauprojektmanagement D-A-CH. KI-Diktiergerät für Mängel. Für alle Baubeteiligten.</div>
+      <div class="profile-stat"><strong>Projekte:</strong> 60.000+ in D-A-CH</div>
+    </div>
+    <div class="profile-card">
+      <div class="profile-name"><div class="profile-dot" style="background:#8b90a0"></div>Asana</div>
+      <div class="profile-tag">🇺🇸 San Francisco · Global</div>
+      <div class="profile-desc">Generisches PM-Tool mit AI Teammates, AI Studio. Nicht auf Architektur ausgerichtet.</div>
+      <div class="profile-stat"><strong>Kunden:</strong> 85% der Fortune 100</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- luma AI Stack -->
+  <div class="ai-highlight">
+    <h2>🤖 luma KI-Stack — Alleinstellungsmerkmale</h2>
+    <div class="ai-grid">
+      <div class="ai-item">
+        <div class="ai-icon">🎤</div>
+        <div class="ai-title">KI-Bautagebuch</div>
+        <div class="ai-desc">Voice-Input direkt in der App. Fotos + Sprache → fertiger Tagesbericht. Kein WhatsApp-Umweg.</div>
+      </div>
+      <div class="ai-item">
+        <div class="ai-icon">🧠</div>
+        <div class="ai-title">Admin-Copilot (Tenant-weit)</div>
+        <div class="ai-desc">Zugriff auf alle Projekte, Aufgaben, Bautagebücher, E-Mails im Tenant. „Was ist letzte Woche bei Projekt X passiert?" — sofortige strukturierte Summary.</div>
+      </div>
+      <div class="ai-item">
+        <div class="ai-icon">📧</div>
+        <div class="ai-title">E-Mail-Agent</div>
+        <div class="ai-desc">Eingehende E-Mails automatisch sichten, priorisieren, zusammenfassen. Task-Vorschläge mit Projektbezug. Routing-Regeln: Absender X → immer Projekt Y.</div>
+      </div>
+      <div class="ai-item">
+        <div class="ai-icon">💬</div>
+        <div class="ai-title">Projekt-Copilot</div>
+        <div class="ai-desc">KI-Chat mit vollem Projektkontext. Überfällige Aufgaben, Statusfragen, Briefings — im Kontext der letzten 1–4 Wochen.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature Matrix -->
+  <div class="section-label">Feature Matrix — KI-Fokus</div>
+  <div class="matrix-wrap">
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th class="luma-col">🟣 luma</th>
+          <th class="comp">Phase0</th>
+          <th class="comp">PlanRadar</th>
+          <th class="comp">PlanSync</th>
+          <th class="comp">Capmo</th>
+          <th class="comp">Asana</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>KI-Bautagebuch (Voice/Foto)</td>
+          <td class="luma-col"><span class="yes">✓</span> <span class="badge green">App-nativ</span></td>
+          <td><span class="yes">✓</span> <span class="badge yellow">WhatsApp</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="partial">~ </span><span class="badge yellow">Diktiergerät</span></td>
+          <td><span class="no">✗</span></td>
+        </tr>
+        <tr>
+          <td>Admin-Copilot (Tenant-weit)</td>
+          <td class="luma-col"><span class="yes">✓</span> <span class="badge purple">Unique</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="partial">~</span> <span class="badge yellow">Generisch</span></td>
+        </tr>
+        <tr>
+          <td>KI E-Mail-Agent + Routing</td>
+          <td class="luma-col"><span class="yes">✓</span> <span class="badge purple">Unique</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+        </tr>
+        <tr>
+          <td>Sprachsteuerung (Aufgaben)</td>
+          <td class="luma-col"><span class="yes">✓</span></td>
+          <td><span class="partial">~</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+        </tr>
+        <tr>
+          <td>Auf Architektur spezialisiert</td>
+          <td class="luma-col"><span class="yes">✓</span></td>
+          <td><span class="yes">✓</span></td>
+          <td><span class="partial">~</span></td>
+          <td><span class="yes">✓</span></td>
+          <td><span class="partial">~</span></td>
+          <td><span class="no">✗</span></td>
+        </tr>
+        <tr>
+          <td>Mobile-first / App</td>
+          <td class="luma-col"><span class="yes">✓</span></td>
+          <td><span class="partial">~</span> Browser</td>
+          <td><span class="yes">✓</span></td>
+          <td><span class="partial">~</span></td>
+          <td><span class="yes">✓</span></td>
+          <td><span class="yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>Aufgaben-Kanban (Team)</td>
+          <td class="luma-col"><span class="yes">✓</span></td>
+          <td><span class="partial">~</span></td>
+          <td><span class="yes">✓</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="yes">✓</span></td>
+          <td><span class="yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>HOAI-Abrechnung</td>
+          <td class="luma-col"><span class="no">✗</span> <span class="badge yellow">Roadmap</span></td>
+          <td><span class="yes">✓</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="yes">✓</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+        </tr>
+        <tr>
+          <td>Kleine Büros (3–20 MA)</td>
+          <td class="luma-col"><span class="yes">✓</span> <span class="badge green">Kernfokus</span></td>
+          <td><span class="yes">✓</span></td>
+          <td><span class="partial">~</span></td>
+          <td><span class="yes">✓</span></td>
+          <td><span class="partial">~</span></td>
+          <td><span class="partial">~</span></td>
+        </tr>
+        <tr>
+          <td>Kostenlos / Beta</td>
+          <td class="luma-col"><span class="yes">✓</span> <span class="badge green">Beta</span></td>
+          <td>14 Tage Trial</td>
+          <td>Freemium</td>
+          <td>14 Tage Trial</td>
+          <td>Trial</td>
+          <td>Free Tier</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Threat Assessment -->
+  <div class="section-label">Bedrohungsanalyse für luma</div>
+  <div class="threat-grid">
+    <div class="threat-card">
+      <div class="threat-name">Phase0</div>
+      <div class="threat-level">
+        <div class="threat-bar"><div class="threat-fill critical"></div></div>
+        <span class="threat-label critical">KRITISCH</span>
+      </div>
+      <div class="threat-why">Direkter Überschnitt: gleiche Zielgruppe, KI-Bautagebuch, gleiche Einfachheits-Positionierung. 5 Jahre Vorsprung, 1.500 Nutzer.</div>
+    </div>
+    <div class="threat-card">
+      <div class="threat-name">Capmo</div>
+      <div class="threat-level">
+        <div class="threat-bar"><div class="threat-fill high"></div></div>
+        <span class="threat-label high">HOCH</span>
+      </div>
+      <div class="threat-why">KI-Mängeldokumentation, 60.000 Projekte, D-A-CH Nr. 1. Aber: Fokus auf größere Projekte / Generalunternehmer, nicht auf kleine Büros.</div>
+    </div>
+    <div class="threat-card">
+      <div class="threat-name">PlanRadar</div>
+      <div class="threat-level">
+        <div class="threat-bar"><div class="threat-fill medium"></div></div>
+        <span class="threat-label medium">MITTEL</span>
+      </div>
+      <div class="threat-why">Dominant im Baumanagement, aber anderes Segment (große Projekte, GC, FM). Zu komplex und teuer für kleine Architekturbüros.</div>
+    </div>
+    <div class="threat-card">
+      <div class="threat-name">PlanSync</div>
+      <div class="threat-level">
+        <div class="threat-bar"><div class="threat-fill low"></div></div>
+        <span class="threat-label low">NIEDRIG</span>
+      </div>
+      <div class="threat-why">Rein kaufmännisch (HOAI/Abrechnung), keine KI, kein operativer Alltag. Komplementär, nicht konkurrierend.</div>
+    </div>
+    <div class="threat-card">
+      <div class="threat-name">Asana</div>
+      <div class="threat-level">
+        <div class="threat-bar"><div class="threat-fill low"></div></div>
+        <span class="threat-label low">NIEDRIG</span>
+      </div>
+      <div class="threat-why">Generisches Tool ohne Bau-Kontext. Keine HOAI, kein Bautagebuch, kein E-Mail-Agent. Für Architekten nicht spezialisiert genug.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Beta CTA -->
+  <div class="beta-box">
+    <h3>🚀 luma sucht Design Partner</h3>
+    <p>luma ist in der Beta-Phase und sucht Architekturbüros, die das Produkt aktiv mitgestalten wollen. Kostenloser Zugang, direkte Linie zum Founder, Einfluss auf Features.</p>
+    <a href="https://luma-app.io/demo" class="beta-cta">Demo buchen → luma-app.io/demo</a>
+  </div>
+
+  <div class="footer">luma Competitive Intelligence · Vollständige Matrix · Stand März 2026 · Quellen: phase0.com, planradar.com, plansync.de, capmo.com, asana.com (je 40 Seiten gecrawlt)</div>
+</div>
+</body>
+</html>
