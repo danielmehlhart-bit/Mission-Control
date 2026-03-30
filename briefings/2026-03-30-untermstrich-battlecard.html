@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚔️ untermStrich — Competitive Battlecard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f4f4f6;
+      color: #1a1a2e;
+      line-height: 1.6;
+      padding: 24px 16px 64px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    .hero {
+      background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
+      border-radius: 20px;
+      padding: 40px 40px 36px;
+      color: white;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '⚔️';
+      position: absolute;
+      right: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 80px;
+      opacity: 0.15;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .hero p {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 20px;
+      font-size: 13px;
+      opacity: 0.85;
+    }
+    .hero-meta span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #7C3AED;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: #f0ebfe;
+      border-radius: 2px;
+    }
+
+    /* ── Snapshot Grid ── */
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    .snapshot-item {
+      background: #f9f7ff;
+      border-radius: 12px;
+      padding: 16px;
+      border-left: 3px solid #7C3AED;
+    }
+    .snapshot-item .label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #7C3AED;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .snapshot-item .value {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1a1a2e;
+    }
+    .snapshot-item .source {
+      font-size: 10px;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
+    /* ── Stats Row ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      padding: 24px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 32px;
+      font-weight: 800;
+      color: #7C3AED;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+    .stat-source {
+      font-size: 10px;
+      color: #d1d5db;
+      margin-top: 4px;
+    }
+
+    /* ── Pricing Table ── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .pricing-plan {
+      border: 2px solid #f3f4f6;
+      border-radius: 14px;
+      padding: 20px;
+      position: relative;
+    }
+    .pricing-plan.highlight {
+      border-color: #7C3AED;
+    }
+    .pricing-plan .plan-badge {
+      display: inline-block;
+      background: #7C3AED;
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 2px 8px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    .pricing-plan .plan-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 12px;
+    }
+    .pricing-plan .plan-price {
+      margin-bottom: 4px;
+    }
+    .pricing-plan .plan-price .amount {
+      font-size: 24px;
+      font-weight: 800;
+      color: #7C3AED;
+    }
+    .pricing-plan .plan-price .unit {
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .pricing-plan .plan-base {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 12px;
+    }
+    .pricing-plan .plan-total {
+      background: #f9f7ff;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #7C3AED;
+      margin-bottom: 14px;
+    }
+    .pricing-plan .plan-modules {
+      font-size: 12px;
+      color: #4b5563;
+      line-height: 1.7;
+    }
+    .pricing-plan .plan-modules li {
+      list-style: none;
+      padding-left: 14px;
+      position: relative;
+    }
+    .pricing-plan .plan-modules li::before {
+      content: '·';
+      position: absolute;
+      left: 4px;
+      color: #7C3AED;
+    }
+    .plan-source {
+      font-size: 10px;
+      color: #d1d5db;
+      margin-top: 8px;
+    }
+
+    /* ── Feature Matrix ── */
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .matrix-table thead th {
+      background: #7C3AED;
+      color: white;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .matrix-table thead th:first-child { border-radius: 10px 0 0 0; }
+    .matrix-table thead th:last-child { border-radius: 0 10px 0 0; }
+    .matrix-table tbody tr:nth-child(even) { background: #f9f7ff; }
+    .matrix-table tbody tr:hover { background: #f0ebfe; }
+    .matrix-table td {
+      padding: 11px 16px;
+      border-bottom: 1px solid #f3f4f6;
+      vertical-align: middle;
+    }
+    .matrix-table td:first-child { font-weight: 500; color: #374151; }
+    .matrix-table td .source-tag {
+      font-size: 10px;
+      color: #9ca3af;
+      display: block;
+      margin-top: 2px;
+    }
+    .badge-yes {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #dcfce7;
+      color: #15803d;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+    }
+    .badge-no {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #fee2e2;
+      color: #dc2626;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+    }
+    .badge-warn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #fef9c3;
+      color: #b45309;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+    }
+    .badge-luma {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #ede9fe;
+      color: #7C3AED;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    /* ── Strengths / Weaknesses ── */
+    .sw-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .sw-box {
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .sw-box.strengths { background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .sw-box.weaknesses { background: #fef2f2; border: 1px solid #fecaca; }
+    .sw-box h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .sw-box.strengths h3 { color: #15803d; }
+    .sw-box.weaknesses h3 { color: #dc2626; }
+    .sw-list { list-style: none; }
+    .sw-list li {
+      font-size: 13px;
+      color: #374151;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      display: flex;
+      gap: 8px;
+      line-height: 1.4;
+    }
+    .sw-list li:last-child { border-bottom: none; }
+    .sw-list li .icon { flex-shrink: 0; margin-top: 1px; }
+    .sw-list li .src {
+      display: block;
+      font-size: 10px;
+      color: #9ca3af;
+      margin-top: 2px;
+    }
+
+    /* ── Sales Talking Points ── */
+    .talking-points { list-style: none; }
+    .talking-points li {
+      background: #f9f7ff;
+      border-left: 4px solid #7C3AED;
+      border-radius: 0 12px 12px 0;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #1a1a2e;
+      line-height: 1.5;
+    }
+    .talking-points li .tp-title {
+      font-weight: 700;
+      color: #7C3AED;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* ── Testimonials ── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .testimonial {
+      background: #f9f7ff;
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .testimonial blockquote {
+      font-size: 13px;
+      color: #374151;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+    .testimonial .author {
+      font-size: 11px;
+      font-weight: 600;
+      color: #7C3AED;
+    }
+    .testimonial .source-tag {
+      font-size: 10px;
+      color: #9ca3af;
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* ── Reviews ── */
+    .reviews-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .review-item {
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .review-item.zero { background: #fef2f2; border: 1px solid #fecaca; }
+    .review-item.few { background: #fef9c3; border: 1px solid #fde68a; }
+    .review-platform {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .review-count {
+      font-size: 24px;
+      font-weight: 800;
+      color: #7C3AED;
+      line-height: 1;
+    }
+    .review-note {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+    .review-source {
+      font-size: 10px;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
+    /* ── Features list ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 10px;
+    }
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      background: #f9f7ff;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+    .feature-item .feat-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .feature-item .feat-name {
+      font-weight: 600;
+      color: #1a1a2e;
+    }
+    .feature-item .feat-detail {
+      font-size: 11px;
+      color: #6b7280;
+    }
+    .feature-item .feat-source {
+      font-size: 10px;
+      color: #9ca3af;
+    }
+
+    /* ── KI Alert ── */
+    .ki-alert {
+      background: #fef2f2;
+      border: 2px solid #fca5a5;
+      border-radius: 14px;
+      padding: 20px 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .ki-alert .ki-icon { font-size: 32px; flex-shrink: 0; }
+    .ki-alert h3 { font-size: 16px; font-weight: 700; color: #dc2626; margin-bottom: 6px; }
+    .ki-alert p { font-size: 13px; color: #374151; line-height: 1.5; }
+    .ki-alert .ki-source { font-size: 11px; color: #9ca3af; margin-top: 6px; }
+
+    /* ── Disclaimer ── */
+    .disclaimer {
+      background: #f9f7ff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-size: 11px;
+      color: #9ca3af;
+      line-height: 1.6;
+      margin-top: 24px;
+    }
+    .disclaimer strong { color: #6b7280; }
+
+    /* ── Everii Group ── */
+    .everii-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .everii-chip {
+      background: #ede9fe;
+      color: #7C3AED;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .everii-chip.highlight-chip {
+      background: #7C3AED;
+      color: white;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .sw-grid { grid-template-columns: 1fr; }
+      .reviews-row { grid-template-columns: 1fr; }
+      .hero { padding: 28px 20px; }
+      .card { padding: 20px; }
+      .matrix-table { font-size: 12px; }
+      .matrix-table td, .matrix-table th { padding: 8px 10px; }
+    }
+
+    /* ── Scroll hint for table ── */
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div class="hero-badge">Competitive Intelligence · LUMA Internal</div>
+    <h1>⚔️ untermStrich — Competitive Battlecard</h1>
+    <p>Crawl-basierte Analyse · 30 Seiten gecrawlt · Stand März 2026</p>
+    <div class="hero-meta">
+      <span>🌐 untermstrich.com</span>
+      <span>🏢 untermStrich Software GmbH</span>
+      <span>🇦🇹 Österreich</span>
+      <span>📞 +43 3862 58106</span>
+    </div>
+  </div>
+
+  <!-- ── STATS ── -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">6.000+</div>
+      <div class="stat-label">Büros als Kunden</div>
+      <div class="stat-source">Quelle: Homepage + /preise</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">96.000+</div>
+      <div class="stat-label">Anwender</div>
+      <div class="stat-source">Quelle: Homepage + /preise</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">30+</div>
+      <div class="stat-label">Jahre Erfahrung · 90% Weiterempfehlung</div>
+      <div class="stat-source">Quelle: Homepage</div>
+    </div>
+  </div>
+
+  <!-- ── COMPANY SNAPSHOT ── -->
+  <div class="card">
+    <div class="card-title">🏢 Company Snapshot</div>
+    <div class="snapshot-grid">
+      <div class="snapshot-item">
+        <div class="label">Claim</div>
+        <div class="value">"Klar sehen. Besser steuern."</div>
+        <div class="source">Quelle: Homepage H1</div>
+      </div>
+      <div class="snapshot-item">
+        <div class="label">Tagline</div>
+        <div class="value">Moderne Bürosteuerung für Architektur- und Ingenieurbüros</div>
+        <div class="source">Quelle: Homepage Title</div>
+      </div>
+      <div class="snapshot-item">
+        <div class="label">Branchen</div>
+        <div class="value">Architektur, Generalplaner, TGA, Tragwerk, Energieberatung, Bauprojektmanagement</div>
+        <div class="source">Quelle: /branchen/</div>
+      </div>
+      <div class="snapshot-item">
+        <div class="label">Gruppe</div>
+        <div class="value">Teil der everii Group</div>
+        <div class="source">Quelle: Footer</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;">
+      <div style="font-size:12px; color:#6b7280; font-weight:600; margin-bottom:8px;">everii Group — Produktfamilie <span style="font-size:10px; color:#9ca3af;">(Quelle: Footer)</span></div>
+      <div class="everii-chips">
+        <span class="everii-chip highlight-chip">untermStrich</span>
+        <span class="everii-chip">MOCO</span>
+        <span class="everii-chip">TEAMBOX</span>
+        <span class="everii-chip">helloHQ</span>
+        <span class="everii-chip">KOBOLD</span>
+        <span class="everii-chip">deals&amp;projects</span>
+        <span class="everii-chip">PROAD</span>
+        <span class="everii-chip">Revolver</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── KI ALERT ── -->
+  <div class="ki-alert" style="margin-bottom:20px;">
+    <div class="ki-icon">🤖</div>
+    <div>
+      <h3>Keine KI/AI-Features gefunden</h3>
+      <p>Auf keiner der 30 gecrawlten Seiten wurde ein Mention von "KI", "AI", "künstliche Intelligenz", "Copilot", "Voice" oder "Spracheingabe" gefunden. untermStrich bietet Stand März 2026 keine KI-Funktionalität an.</p>
+      <div class="ki-source">Quelle: Vollständiger Crawl untermstrich.com, 30 Seiten, Stand März 2026</div>
+    </div>
+  </div>
+
+  <!-- ── PRICING ── -->
+  <div class="card">
+    <div class="card-title">💶 Pricing</div>
+    <div class="pricing-grid">
+      <div class="pricing-plan">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price"><span class="amount">€19</span> <span class="unit">/ Lizenz / Mo</span></div>
+        <div class="plan-base">+ €60 Grundgebühr/Mo</div>
+        <div class="plan-total">5 MA gesamt: <strong>€155/Mo</strong></div>
+        <ul class="plan-modules">
+          <li>Stunden &amp; Zeitprotokollierung</li>
+          <li>Urlaub</li>
+          <li>Adressen</li>
+          <li>Projekte (inkl. HOAI)</li>
+          <li>Team &amp; Konfiguration</li>
+          <li>Resultate &amp; Kosten</li>
+        </ul>
+        <div class="plan-source">Quelle: /preise</div>
+      </div>
+      <div class="pricing-plan">
+        <div class="plan-name">Plus</div>
+        <div class="plan-price"><span class="amount">€29</span> <span class="unit">/ Lizenz / Mo</span></div>
+        <div class="plan-base">+ €120 Grundgebühr/Mo</div>
+        <div class="plan-total">5 MA gesamt: <strong>€265/Mo</strong></div>
+        <ul class="plan-modules">
+          <li>Alles aus Starter</li>
+          <li>Abrechnung (inkl. HOAI)</li>
+          <li>Honorare / Fremdwährung</li>
+          <li>Aufgaben &amp; Termine</li>
+          <li>Ressourcenplanung</li>
+        </ul>
+        <div class="plan-source">Quelle: /preise</div>
+      </div>
+      <div class="pricing-plan highlight">
+        <div class="plan-badge">Vollpaket</div>
+        <div class="plan-name">Premium</div>
+        <div class="plan-price"><span class="amount">€39</span> <span class="unit">/ Lizenz / Mo</span></div>
+        <div class="plan-base">+ €160 Grundgebühr/Mo</div>
+        <div class="plan-total">5 MA: <strong>€355/Mo</strong> · 10 MA: <strong>€550/Mo</strong></div>
+        <ul class="plan-modules">
+          <li>Alles aus Plus</li>
+          <li>Dokumentenmanagement</li>
+          <li>Pläne &amp; Post-Modul</li>
+          <li>Was-ist-Wo</li>
+        </ul>
+        <div class="plan-source">Quelle: /preise</div>
+      </div>
+    </div>
+    <div style="margin-top:14px; padding:12px 16px; background:#fef9c3; border-radius:10px; font-size:12px; color:#92400e;">
+      ⚠️ <strong>Achtung:</strong> Grundgebühr wird zusätzlich zum Lizenzpreis berechnet. Schulungskosten (€440–470 pro Kurs) kommen bei Bedarf on top. <span style="color:#9ca3af">(Quelle: /preise, /akademie)</span>
+    </div>
+  </div>
+
+  <!-- ── KEY FEATURES ── -->
+  <div class="card">
+    <div class="card-title">⚙️ Key Features (aus Crawl)</div>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feat-icon">📁</div>
+        <div>
+          <div class="feat-name">Projekte</div>
+          <div class="feat-detail">Anlage, Leistungsphasen, Projektdokumentation</div>
+          <div class="feat-source">Quelle: /funktionen/projekte</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">⏱️</div>
+        <div>
+          <div class="feat-name">Stunden / Zeiterfassung</div>
+          <div class="feat-detail">Projektbezogen, Homeoffice, Reisekosten, Nebenkosten</div>
+          <div class="feat-source">Quelle: /funktionen/stunden</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">🏛️</div>
+        <div>
+          <div class="feat-name">Honorare</div>
+          <div class="feat-detail">HOAI-konforme Abrechnung, LP bis Rechnung, E-Rechnung</div>
+          <div class="feat-source">Quelle: /funktionen/honorare</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">📊</div>
+        <div>
+          <div class="feat-name">Kosten</div>
+          <div class="feat-detail">Kostenverfolgung LP1-9, DIN 276, Gewerke</div>
+          <div class="feat-source">Quelle: /funktionen/kosten</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">🧾</div>
+        <div>
+          <div class="feat-name">Abrechnung</div>
+          <div class="feat-detail">Honorarnote bis Rechnung, XRechnung + ZUGFeRD</div>
+          <div class="feat-source">Quelle: /funktionen/abrechnung</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">✅</div>
+        <div>
+          <div class="feat-name">Aufgaben</div>
+          <div class="feat-detail">Zuweisen, Status, Prioritäten</div>
+          <div class="feat-source">Quelle: /funktionen/aufgaben</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">📅</div>
+        <div>
+          <div class="feat-name">Termine</div>
+          <div class="feat-detail">Projektbezogen, Kalender-Sync</div>
+          <div class="feat-source">Quelle: /funktionen/termine</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">🌴</div>
+        <div>
+          <div class="feat-name">Urlaube</div>
+          <div class="feat-detail">Urlaubsanträge, Genehmigungen</div>
+          <div class="feat-source">Quelle: /funktionen/urlaube</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">👥</div>
+        <div>
+          <div class="feat-name">Team</div>
+          <div class="feat-detail">Mitarbeiterverwaltung, Rollen</div>
+          <div class="feat-source">Quelle: /funktionen/team</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">📄</div>
+        <div>
+          <div class="feat-name">Dokumente</div>
+          <div class="feat-detail">Dokumentenmanagement, Pläne, Post-Modul</div>
+          <div class="feat-source">Quelle: /funktionen/dokumente</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">🔗</div>
+        <div>
+          <div class="feat-name">Integrationen</div>
+          <div class="feat-detail">Microsoft 365, CalDAV/CardDAV, REST-API</div>
+          <div class="feat-source">Quelle: FAQ Homepage</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feat-icon">🔒</div>
+        <div>
+          <div class="feat-name">Datensicherheit</div>
+          <div class="feat-detail">ISO-27001 RZ in Deutschland, DSGVO-konform, mandantenfähig</div>
+          <div class="feat-source">Quelle: /preise FAQ</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px; padding:12px 16px; background:#fef2f2; border-radius:10px; font-size:12px; color:#6b7280;">
+      🎓 <strong>Akademie:</strong> Kostenpflichtige Schulungen — Controlling Level 1: €440, Level 2: €470 <span style="color:#9ca3af">(Quelle: /akademie)</span> &nbsp;·&nbsp; 🤝 <strong>Partner:</strong> AIA AG, REALVIEW <span style="color:#9ca3af">(Quelle: /partner/)</span>
+    </div>
+  </div>
+
+  <!-- ── FEATURE MATRIX ── -->
+  <div class="card">
+    <div class="card-title">⚖️ Feature Matrix: LUMA vs. untermStrich</div>
+    <div class="table-wrapper">
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>LUMA</th>
+            <th>untermStrich</th>
+            <th>Quelle untermStrich</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Zielgruppe</td>
+            <td><span class="badge-luma">Kleine Architekturbüros</span></td>
+            <td><span style="font-size:12px; color:#374151;">Architektur- + Ingenieurbüros aller Größen</span></td>
+            <td><span class="source-tag">Homepage</span></td>
+          </tr>
+          <tr>
+            <td>HOAI-Leistungsphasen</td>
+            <td><span class="badge-yes">✅ LP1-LP9 nativ</span></td>
+            <td><span class="badge-yes">✅ Projekte inkl. HOAI</span></td>
+            <td><span class="source-tag">/funktionen/projekte</span></td>
+          </tr>
+          <tr>
+            <td>Bautagebuch <span class="badge-luma" style="margin-left:4px;">LUMA-Vorteil</span></td>
+            <td><span class="badge-yes">✅ Foto + Wetter</span></td>
+            <td><span class="badge-no">❌ Nicht gefunden (Stand März 2026)</span></td>
+            <td><span class="source-tag">Crawl aller 30 Seiten</span></td>
+          </tr>
+          <tr>
+            <td>KI-E-Mail-Agent <span class="badge-luma" style="margin-left:4px;">LUMA-Vorteil</span></td>
+            <td><span class="badge-yes">✅ Gmail + Auto-Kategorisierung</span></td>
+            <td><span class="badge-no">❌ Nicht gefunden (Stand März 2026)</span></td>
+            <td><span class="source-tag">Crawl aller 30 Seiten</span></td>
+          </tr>
+          <tr>
+            <td>KI-Copilot <span class="badge-luma" style="margin-left:4px;">LUMA-Vorteil</span></td>
+            <td><span class="badge-yes">✅ Projektkontext-Chat</span></td>
+            <td><span class="badge-no">❌ Nicht gefunden (Stand März 2026)</span></td>
+            <td><span class="source-tag">Crawl aller 30 Seiten</span></td>
+          </tr>
+          <tr>
+            <td>Voice-to-Task <span class="badge-luma" style="margin-left:4px;">LUMA-Vorteil</span></td>
+            <td><span class="badge-yes">✅ Kernfeature</span></td>
+            <td><span class="badge-no">❌ Nicht gefunden (Stand März 2026)</span></td>
+            <td><span class="source-tag">Crawl aller 30 Seiten</span></td>
+          </tr>
+          <tr>
+            <td>Umsatz-Forecast</td>
+            <td><span class="badge-yes">✅ HOAI-basiert</span></td>
+            <td><span class="badge-yes">✅ Resultate-Modul, Soll/Ist</span></td>
+            <td><span class="source-tag">/funktionen, FAQ</span></td>
+          </tr>
+          <tr>
+            <td>Kanban-Board <span class="badge-luma" style="margin-left:4px;">LUMA-Vorteil</span></td>
+            <td><span class="badge-yes">✅ Mit Review-Workflow</span></td>
+            <td><span class="badge-no">❌ Nicht gefunden (Stand März 2026)</span></td>
+            <td><span class="source-tag">Crawl aller 30 Seiten</span></td>
+          </tr>
+          <tr>
+            <td>Zeiterfassung</td>
+            <td><span class="badge-yes">✅</span></td>
+            <td><span class="badge-yes">✅ Kernfeature</span></td>
+            <td><span class="source-tag">/funktionen/stunden</span></td>
+          </tr>
+          <tr>
+            <td>Honorar-Abrechnung</td>
+            <td><span class="badge-yes">✅ HOAI-basiert</span></td>
+            <td><span class="badge-yes">✅ HOAI bis E-Rechnung</span></td>
+            <td><span class="source-tag">/funktionen/honorare</span></td>
+          </tr>
+          <tr>
+            <td>Kostenverfolgung</td>
+            <td><span class="badge-yes">✅</span></td>
+            <td><span class="badge-yes">✅ DIN 276, Gewerke, LP1-9</span></td>
+            <td><span class="source-tag">/funktionen/kosten</span></td>
+          </tr>
+          <tr>
+            <td>Aufgabenmanagement</td>
+            <td><span class="badge-yes">✅</span></td>
+            <td><span class="badge-yes">✅ Zuweisen, Status, Prio</span></td>
+            <td><span class="source-tag">/funktionen/aufgaben</span></td>
+          </tr>
+          <tr>
+            <td>Dokumentenmanagement</td>
+            <td><span class="badge-yes">✅</span></td>
+            <td><span class="badge-yes">✅ Dokumente, Pläne, Post</span></td>
+            <td><span class="source-tag">/funktionen/dokumente</span></td>
+          </tr>
+          <tr>
+            <td>Kundenportal <span class="badge-luma" style="margin-left:4px;">LUMA-Vorteil</span></td>
+            <td><span class="badge-yes">✅ Read-Only</span></td>
+            <td><span class="badge-no">❌ Nicht gefunden (Stand März 2026)</span></td>
+            <td><span class="source-tag">Crawl aller 30 Seiten</span></td>
+          </tr>
+          <tr>
+            <td>E-Rechnung</td>
+            <td><span class="badge-no">❌ Nicht verfügbar (Stand März 2026)</span></td>
+            <td><span class="badge-yes">✅ XRechnung + ZUGFeRD</span></td>
+            <td><span class="source-tag">/funktionen/abrechnung</span></td>
+          </tr>
+          <tr>
+            <td>Ressourcenplanung</td>
+            <td><span class="badge-no">❌ Nicht verfügbar (Stand März 2026)</span></td>
+            <td><span class="badge-yes">✅ Plus/Premium</span></td>
+            <td><span class="source-tag">/preise</span></td>
+          </tr>
+          <tr>
+            <td>Urlaubsverwaltung</td>
+            <td><span class="badge-no">❌ Nicht verfügbar (Stand März 2026)</span></td>
+            <td><span class="badge-yes">✅</span></td>
+            <td><span class="source-tag">/funktionen/urlaube</span></td>
+          </tr>
+          <tr>
+            <td>Microsoft 365 Integration</td>
+            <td><span class="badge-no">❌ Nicht verfügbar (Stand März 2026)</span></td>
+            <td><span class="badge-yes">✅</span></td>
+            <td><span class="source-tag">FAQ Homepage</span></td>
+          </tr>
+          <tr>
+            <td>REST-API</td>
+            <td><span class="badge-no">❌ Nicht verfügbar (Stand März 2026)</span></td>
+            <td><span class="badge-yes">✅</span></td>
+            <td><span class="source-tag">FAQ Homepage</span></td>
+          </tr>
+          <tr>
+            <td>Mobile App</td>
+            <td><span class="badge-warn">⚠️ Responsive Web</span></td>
+            <td><span class="badge-no">❌ Nicht gefunden (Stand März 2026)</span></td>
+            <td><span class="source-tag">Crawl aller 30 Seiten</span></td>
+          </tr>
+          <tr>
+            <td>Datensicherheit</td>
+            <td><span class="badge-warn">⚠️ Wird geprüft</span></td>
+            <td><span class="badge-yes">✅ ISO-27001, DE Server, mandantenfähig</span></td>
+            <td><span class="source-tag">/preise FAQ</span></td>
+          </tr>
+          <tr>
+            <td>Setup-Zeit <span class="badge-luma" style="margin-left:4px;">LUMA-Vorteil</span></td>
+            <td><span class="badge-yes">✅ Ab Tag 1</span></td>
+            <td><span class="badge-warn">⚠️ Akademie-Kurse deuten auf Einarbeitungszeit (Stand März 2026)</span></td>
+            <td><span class="source-tag">/akademie</span></td>
+          </tr>
+          <tr>
+            <td>Schulungen</td>
+            <td><span class="badge-yes">✅ Nicht nötig (intuitive UX)</span></td>
+            <td><span class="badge-no">❌ Kostenpflichtig €440–470 / Kurs</span></td>
+            <td><span class="source-tag">/akademie</span></td>
+          </tr>
+          <tr>
+            <td>Preis 5 MA (Vollpaket)</td>
+            <td><span class="badge-luma">SMB-freundlich</span></td>
+            <td><span class="badge-warn">⚠️ €355/Mo (Premium)</span></td>
+            <td><span class="source-tag">/preise</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── STRENGTHS & WEAKNESSES ── -->
+  <div class="card">
+    <div class="card-title">📋 Stärken &amp; Schwächen untermStrich</div>
+    <div class="sw-grid">
+      <div class="sw-box strengths">
+        <h3>✅ Stärken (aus Crawl abgeleitet)</h3>
+        <ul class="sw-list">
+          <li>
+            <span class="icon">💪</span>
+            <div>6.000+ Büros, 96.000 Anwender — massive Marktpräsenz<span class="src">Quelle: Homepage</span></div>
+          </li>
+          <li>
+            <span class="icon">🏛️</span>
+            <div>30+ Jahre Branchenerfahrung — etablierter Player<span class="src">Quelle: Homepage</span></div>
+          </li>
+          <li>
+            <span class="icon">⚙️</span>
+            <div>Sehr umfangreiches Funktionsset: Stunden, Honorare, Kosten, Abrechnung, E-Rechnung, Ressourcen, Urlaube, Dokumente<span class="src">Quelle: /funktionen</span></div>
+          </li>
+          <li>
+            <span class="icon">🧾</span>
+            <div>HOAI-Abrechnung bis E-Rechnung durchgängig (XRechnung + ZUGFeRD)<span class="src">Quelle: /funktionen/honorare, /funktionen/abrechnung</span></div>
+          </li>
+          <li>
+            <span class="icon">🔒</span>
+            <div>ISO-27001 Hosting in Deutschland, DSGVO-konform<span class="src">Quelle: /preise FAQ</span></div>
+          </li>
+          <li>
+            <span class="icon">🌐</span>
+            <div>Teil der everii Group — großes Produktökosystem<span class="src">Quelle: Footer</span></div>
+          </li>
+          <li>
+            <span class="icon">💶</span>
+            <div>Transparente Preise öffentlich auf Website<span class="src">Quelle: /preise</span></div>
+          </li>
+        </ul>
+      </div>
+      <div class="sw-box weaknesses">
+        <h3>❌ Schwächen (verifizierte Abwesenheiten)</h3>
+        <ul class="sw-list">
+          <li>
+            <span class="icon">🤖</span>
+            <div>Keine KI/AI-Features — kein Copilot, kein Voice, keine Automatisierung<span class="src">Nicht gefunden auf 30 gecrawlten Seiten</span></div>
+          </li>
+          <li>
+            <span class="icon">📋</span>
+            <div>Kein Bautagebuch<span class="src">Nicht gefunden auf 30 gecrawlten Seiten</span></div>
+          </li>
+          <li>
+            <span class="icon">📊</span>
+            <div>Kein Kanban-Board<span class="src">Nicht gefunden auf 30 gecrawlten Seiten</span></div>
+          </li>
+          <li>
+            <span class="icon">🚪</span>
+            <div>Kein Kundenportal<span class="src">Nicht gefunden auf 30 gecrawlten Seiten</span></div>
+          </li>
+          <li>
+            <span class="icon">🎓</span>
+            <div>Kostenpflichtige Schulungen (€440–470) deuten auf Komplexität<span class="src">Quelle: /akademie</span></div>
+          </li>
+          <li>
+            <span class="icon">💶</span>
+            <div>Grundgebühr zusätzlich zum Lizenzpreis — 5 MA Premium = €355/Mo<span class="src">Quelle: /preise</span></div>
+          </li>
+          <li>
+            <span class="icon">💬</span>
+            <div>Capterra: "Lacks intuitiveness; some functions are hard to find"<span class="src">Quelle: capterra.com</span></div>
+          </li>
+          <li>
+            <span class="icon">⭐</span>
+            <div>Fast keine öffentlichen Reviews (G2: 0, OMR: 0, Capterra: wenige)<span class="src">Quelle: Cross-Reference G2/OMR/Capterra</span></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SALES TALKING POINTS ── -->
+  <div class="card">
+    <div class="card-title">🎯 Sales Talking Points — LUMA gewinnt hier</div>
+    <ul class="talking-points">
+      <li>
+        <span class="tp-title">🤖 KI ist LUMAs Alleinstellung</span>
+        untermStrich hat Stand März 2026 null KI auf seiner Website — kein Voice-to-Task, kein E-Mail-Agent, kein Copilot. Das ist der größte Differentiator im Marktgespräch.
+      </li>
+      <li>
+        <span class="tp-title">📋 Bautagebuch</span>
+        untermStrich hat kein Bautagebuch (nicht gefunden auf 30 gecrawlten Seiten). LUMA bietet es als Kernfeature mit Foto + Wetter.
+      </li>
+      <li>
+        <span class="tp-title">⚡ Sofort nutzbar</span>
+        untermStrich bietet kostenpflichtige Schulungen ab €440 an (Quelle: /akademie) — ein Indikator für Einarbeitungsaufwand. LUMA ist ab Tag 1 produktiv.
+      </li>
+      <li>
+        <span class="tp-title">📊 Kanban + Review-Workflow</span>
+        untermStrich hat kein visuelles Task-Board (nicht gefunden auf 30 gecrawlten Seiten). LUMA bietet Kanban mit integrierten Review-Workflows.
+      </li>
+      <li>
+        <span class="tp-title">🚪 Kundenportal</span>
+        Bauherren können in LUMA den Projektfortschritt im Read-Only-Portal einsehen. untermStrich bietet das nicht an (nicht gefunden auf 30 gecrawlten Seiten).
+      </li>
+      <li>
+        <span class="tp-title">💶 Pricing</span>
+        untermStrich Premium für 5 MA: €355/Mo + ggf. Schulungskosten (€440–470/Kurs, Quelle: /akademie). LUMA ist auf SMB-Büros ausgerichtet.
+      </li>
+    </ul>
+  </div>
+
+  <!-- ── TESTIMONIALS ── -->
+  <div class="card">
+    <div class="card-title">💬 Kundenstimmen untermStrich</div>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <blockquote>"untermStrich überzeugt besonders durch seine Transparenz und die Möglichkeit, Projektinformationen übersichtlich aufzubereiten und auszuwerten."</blockquote>
+        <div class="author">Matthias Fleischhauer · TB MARKERT</div>
+        <span class="source-tag">Quelle: Homepage + /preise</span>
+      </div>
+      <div class="testimonial">
+        <blockquote>"Entscheidend ist das Projektteam. Man muss sein Handwerk beherrschen. Und braucht das richtige Tool."</blockquote>
+        <div class="author">Christian Story · Riegler Riewe Architekten</div>
+        <span class="source-tag">Quelle: Homepage + /preise</span>
+      </div>
+      <div class="testimonial">
+        <blockquote>"Ohne Tools wie untermStrich würde es heutzutage nicht mehr funktionieren. Die Tage von Excel-Listen sind längst gezählt."</blockquote>
+        <div class="author">Dipl.-Ing. Wolfgang Eichenseher · Eichenseher Ingenieure</div>
+        <span class="source-tag">Quelle: Homepage + /preise</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── REVIEWS ── -->
+  <div class="card">
+    <div class="card-title">⭐ Reviews — Cross-Reference (Stand März 2026)</div>
+    <div class="reviews-row">
+      <div class="review-item zero">
+        <div class="review-platform">G2</div>
+        <div class="review-count">0</div>
+        <div class="review-note">Keine Reviews gefunden</div>
+        <div class="review-source">Quelle: g2.com, Stand März 2026</div>
+      </div>
+      <div class="review-item few">
+        <div class="review-platform">Capterra</div>
+        <div class="review-count">⚠️</div>
+        <div class="review-note">Wenige Reviews<br>+ Web-basierte Zeiterfassung<br>− "Lacks intuitiveness; some functions are hard to find"</div>
+        <div class="review-source">Quelle: capterra.com</div>
+      </div>
+      <div class="review-item zero">
+        <div class="review-platform">OMR Reviews</div>
+        <div class="review-count">0</div>
+        <div class="review-note">Keine Reviews gefunden</div>
+        <div class="review-source">Quelle: omr.com, Stand März 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DISCLAIMER ── -->
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> Basiert auf öffentlich zugänglichen Informationen (Website untermstrich.com, 30 Seiten gecrawlt am 30. März 2026). Preise und Funktionen können sich jederzeit ändern. Reviews von capterra.com und omr.com. Dieser Vergleich wurde von LUMA erstellt und erhebt keinen Anspruch auf Vollständigkeit. Alle Angaben zu nicht vorhandenen Features basieren auf dem Crawl-Ergebnis (Stand März 2026) — es kann Features geben, die auf der Website nicht öffentlich kommuniziert werden.
+  </div>
+
+</div>
+</body>
+</html>
