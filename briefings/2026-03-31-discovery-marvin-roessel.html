@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discovery Review — Marvin Rössel | SSR Architekten</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f0f0f; color: #e5e5e5; }
+
+    .hero { background: linear-gradient(135deg, #1e3a5f 0%, #1a2744 100%); padding: 48px 40px 40px; border-bottom: 1px solid #1e2128; }
+    .hero-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #60a5fa; margin-bottom: 12px; }
+    .hero h1 { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .hero-meta { font-size: 14px; color: #94a3b8; margin-bottom: 20px; }
+    .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pill { padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .pill.blue { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); color: #60a5fa; }
+    .pill.green { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25); color: #10B981; }
+    .pill.yellow { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25); color: #f59e0b; }
+    .pill.red { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.25); color: #ef4444; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; display: grid; grid-template-columns: 1fr 300px; gap: 28px; align-items: start; }
+    @media(max-width: 700px) { .container { grid-template-columns: 1fr; } }
+
+    .main { display: flex; flex-direction: column; gap: 24px; }
+
+    .card { background: #141720; border: 1px solid #1e2128; border-radius: 14px; overflow: hidden; }
+    .card-header { padding: 14px 20px; border-bottom: 1px solid #1e2128; display: flex; align-items: center; gap: 10px; }
+    .card-header h2 { font-size: 14px; font-weight: 700; color: #fff; }
+    .card-body { padding: 18px 20px; }
+
+    /* Prospect profile */
+    .profile-row { display: flex; gap: 16px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #1e2128; }
+    .profile-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #3B82F6, #1d4ed8); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .profile-name { font-size: 16px; font-weight: 700; color: #fff; }
+    .profile-sub { font-size: 13px; color: #8b90a0; margin-top: 2px; }
+    .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .meta-item { }
+    .meta-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #4a5068; margin-bottom: 3px; }
+    .meta-value { font-size: 13px; color: #c8ccd6; }
+
+    /* Pains */
+    .pain-list { display: flex; flex-direction: column; gap: 10px; }
+    .pain-item { background: #0d0f12; border-radius: 10px; padding: 14px 16px; border-left: 3px solid; }
+    .pain-item.critical { border-color: #ef4444; }
+    .pain-item.high { border-color: #f59e0b; }
+    .pain-item.medium { border-color: #3B82F6; }
+    .pain-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .pain-quote { font-size: 12px; color: #8b90a0; line-height: 1.6; font-style: italic; }
+    .pain-badge { display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; margin-top: 6px; }
+
+    /* Discovery bewertung */
+    .score-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .score-label { font-size: 12px; color: #8b90a0; width: 180px; flex-shrink: 0; }
+    .score-track { flex: 1; height: 6px; background: #1e2128; border-radius: 3px; overflow: hidden; }
+    .score-fill { height: 100%; border-radius: 3px; }
+    .score-num { font-size: 12px; color: #e5e5e5; font-weight: 600; width: 28px; text-align: right; flex-shrink: 0; }
+
+    /* Erkenntnisse */
+    .insight-list { display: flex; flex-direction: column; gap: 8px; }
+    .insight-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #111318; align-items: flex-start; }
+    .insight-item:last-child { border-bottom: none; }
+    .insight-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .insight-text { font-size: 13px; color: #ccc; line-height: 1.6; }
+    .insight-text strong { color: #fff; }
+
+    /* Next steps */
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step { display: flex; gap: 16px; position: relative; }
+    .step:not(:last-child)::after { content: ""; position: absolute; left: 15px; top: 40px; bottom: -12px; width: 2px; background: #1e2128; }
+    .step-num { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; z-index: 1; }
+    .step-num.urgent { background: #ef4444; color: #fff; }
+    .step-num.soon { background: #f59e0b; color: #fff; }
+    .step-num.later { background: #3B82F6; color: #fff; }
+    .step-body { padding-bottom: 20px; flex: 1; }
+    .step-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .step-desc { font-size: 12px; color: #8b90a0; line-height: 1.6; }
+    .step-when { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #4a5068; margin-top: 4px; }
+
+    /* Coaching */
+    .coaching-list { display: flex; flex-direction: column; gap: 12px; }
+    .coaching-item { border-radius: 10px; padding: 14px 16px; }
+    .coaching-item.positive { background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); }
+    .coaching-item.improve { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); }
+    .coaching-title { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+    .coaching-item.positive .coaching-title { color: #10B981; }
+    .coaching-item.improve .coaching-title { color: #f59e0b; }
+    .coaching-text { font-size: 12.5px; color: #aaa; line-height: 1.7; }
+
+    /* Sidebar */
+    .sidebar { display: flex; flex-direction: column; gap: 16px; }
+    .side-card { background: #141720; border: 1px solid #1e2128; border-radius: 12px; overflow: hidden; }
+    .side-header { padding: 11px 14px; border-bottom: 1px solid #1e2128; font-size: 12px; font-weight: 700; color: #8b90a0; letter-spacing: 0.06em; text-transform: uppercase; }
+    .side-body { padding: 14px; }
+    .side-row { display: flex; justify-content: space-between; align-items: baseline; padding: 5px 0; border-bottom: 1px solid #111318; }
+    .side-row:last-child { border-bottom: none; }
+    .side-key { font-size: 12px; color: #4a5068; }
+    .side-val { font-size: 12px; color: #c8ccd6; font-weight: 500; text-align: right; }
+
+    .follow-up { background: #0d0f12; border-radius: 10px; padding: 16px; font-size: 13px; color: #ccc; line-height: 1.85; white-space: pre-line; border-left: 3px solid #3B82F6; }
+
+    .footer { text-align: center; padding: 24px 0; font-size: 11px; color: #333; grid-column: 1 / -1; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">luma · Discovery Review</div>
+  <h1>Marvin Rössel — SSR Architekten</h1>
+  <p class="hero-meta">31. März 2026 · ~55 Minuten · Video Call</p>
+  <div class="hero-pills">
+    <span class="pill blue">17 Mitarbeitende</span>
+    <span class="pill blue">Großostheim / Aschaffenburg</span>
+    <span class="pill yellow">Prospect — Discovery</span>
+    <span class="pill green">✓ Zugang gewünscht</span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="main">
+
+    <!-- Prospect Profil -->
+    <div class="card">
+      <div class="card-header"><h2>🏢 Prospect-Profil</h2></div>
+      <div class="card-body">
+        <div class="profile-row">
+          <div class="profile-avatar">MR</div>
+          <div>
+            <div class="profile-name">Marvin Rössel</div>
+            <div class="profile-sub">Geschäftsführer · SSR Architekten GmbH · Mitglied BayAK #191439</div>
+          </div>
+        </div>
+        <div class="meta-grid">
+          <div class="meta-item">
+            <div class="meta-label">Bürogröße</div>
+            <div class="meta-value">17 Mitarbeitende</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Gesellschafter</div>
+            <div class="meta-value">Schuler, Schickling, Rössel</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Schwerpunkt</div>
+            <div class="meta-value">Öffentliche Bauten (Kitas, Schulen, Sanierungen)</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Interdisziplinär</div>
+            <div class="meta-value">Brandschutz, Energie, Freiraumplanung im Büro</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Aktuelles Tool</div>
+            <div class="meta-value">PlanRadar (frustriert), Server + OneDrive</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Referenz</div>
+            <div class="meta-value">Kim Weber (Weber Architekten)</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Bürophase</div>
+            <div class="meta-value">"Schmerzhafte Schwelle" — zu groß für Zuruf, zu klein für Projektleiterebene</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Ergebnis</div>
+            <div class="meta-value">✅ Will luma ausprobieren</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pains -->
+    <div class="card">
+      <div class="card-header"><h2>🔥 Identifizierte Pains</h2></div>
+      <div class="card-body">
+        <div class="pain-list">
+          <div class="pain-item critical">
+            <div class="pain-title">GF zerrieben zwischen Operativem und Strategischem</div>
+            <div class="pain-quote">"Wir sind voll im operativen Geschäft drin, versuchen dann eigentlich das ganze nicht operative halt irgendwie nebenbei noch zu managen — und das ist halt relativ anstrengend."</div>
+            <span class="pain-badge" style="background:rgba(239,68,68,0.15);color:#ef4444">Kritisch · Kernpain</span>
+          </div>
+          <div class="pain-item high">
+            <div class="pain-title">PlanRadar: teuer, unvollständig genutzt, Protokollführung ungelöst</div>
+            <div class="pain-quote">"Wir zahlen ~€120–150/Lizenz — für das bisschen Bautagebuch. Protokollführung hat nicht funktioniert. Seit einem halben Jahr vernachlässigt."</div>
+            <span class="pain-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b">Hoch · Konkurrenz-Schwäche</span>
+          </div>
+          <div class="pain-item high">
+            <div class="pain-title">Aufgabenzuweisung im Team läuft über Zuruf und E-Mail</div>
+            <div class="pain-quote">"Meist im Gespräch — und wenn das nicht reicht, dann über E-Mail."</div>
+            <span class="pain-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b">Hoch · luma-Fit</span>
+          </div>
+          <div class="pain-item medium">
+            <div class="pain-title">Generationenproblem: zwei Arbeitsweisen im Büro</div>
+            <div class="pain-quote">"Wir haben so zwei Generationen im Büro — kann ja auch nicht sagen, ihr macht jetzt alle wie ich will."</div>
+            <span class="pain-badge" style="background:rgba(59,130,246,0.15);color:#60a5fa">Mittel · Adoptions-Risiko</span>
+          </div>
+          <div class="pain-item medium">
+            <div class="pain-title">Onboarding neuer Mitarbeitender = persönliches Gespräch, kein System</div>
+            <div class="pain-quote">"Über persönliches Gespräch und persönlich zeigen, wo alles ist."</div>
+            <span class="pain-badge" style="background:rgba(59,130,246,0.15);color:#60a5fa">Mittel · Copilot-Fit</span>
+          </div>
+          <div class="pain-item medium">
+            <div class="pain-title">Wissensdokumentation fehlt — alles im Kopf</div>
+            <div class="pain-quote">"Kollege erzählt seit 25 Jahren dasselbe — wie mache ich einen Bauantrag?"</div>
+            <span class="pain-badge" style="background:rgba(59,130,246,0.15);color:#60a5fa">Mittel · Template-Fit</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Erkenntnisse für luma -->
+    <div class="card">
+      <div class="card-header"><h2>💡 Erkenntnisse für luma</h2></div>
+      <div class="card-body">
+        <div class="insight-list">
+          <div class="insight-item">
+            <div class="insight-icon">✅</div>
+            <div class="insight-text"><strong>Bautagebuch + Aufgaben sind der Core Use Case.</strong> Marvin sagt explizit: "Ich brauche eigentlich nur ein Bautagebuch, das richtig gut funktioniert, und was eine gute Aufgabe hat." Das ist lumas Kernprodukt — perfekter Fit.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-icon">✅</div>
+            <div class="insight-text"><strong>Modulares Pricing ist der richtige Weg.</strong> "Ich zahle jetzt 1000 Sachen, die ich gar nicht brauche." → Bautagebuch allein als buchbares Modul macht den Einstieg leichter.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-icon">✅</div>
+            <div class="insight-text"><strong>Protokollführung ist ein echter Whitespace.</strong> PlanRadar kann das nicht gut. Automatische Jour-Fix-Protokolle via KI wären ein Killer-Feature für öffentliche Auftraggeber.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-icon">✅</div>
+            <div class="insight-text"><strong>Workflow-Templates resonieren stark.</strong> "Wenn du das quasi vorgefertigtes Ding hast und das selbst anpassen kannst — starke Idee." → Templates für LP 5, 6, 8 gezielt bauen und pitchen.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-icon">⚠️</div>
+            <div class="insight-text"><strong>DSGVO ist ein echter Blocker für öffentliche Auftraggeber.</strong> Postmark auf EU-Server umstellen ist Pflicht vor dem Rollout. Marvin hat konkret danach gefragt — nicht nur höflich.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-icon">⚠️</div>
+            <div class="insight-text"><strong>17 MA ist größer als lumas bisherige Zielgruppe (3–20 MA).</strong> Das Büro ist schon an der Grenze. HOAI-Abrechnung und Zeiterfassung sind bei denen woanders gelöst — luma muss komplementär, nicht komplett sein.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-icon">⚠️</div>
+            <div class="insight-text"><strong>Kein iOS-App ist spürbar.</strong> "Wir sind mit iPads auf der Baustelle." — Marvin war entspannt damit, aber es ist ein realer Nachteil. Browser-responsive muss auf iPad/Safari fehlerfrei sein.</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-icon">🔵</div>
+            <div class="insight-text"><strong>"Hobby-Projekt"-Offenbarung schwächt Position.</strong> Marvin hat es akzeptiert, aber langfristig ist das ein Vertrauensthema — je mehr Nutzer und je mehr der Account wächst, desto weniger sollte das die Einleitung sein.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Discovery Coaching -->
+    <div class="card">
+      <div class="card-header"><h2>🎯 Discovery Review — Ehrliches Coaching</h2></div>
+      <div class="card-body">
+
+        <!-- Score -->
+        <div style="margin-bottom: 20px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#4a5068;margin-bottom:12px;">Bewertung</div>
+          <div class="score-bar">
+            <div class="score-label">Gesprächseinstieg</div>
+            <div class="score-track"><div class="score-fill" style="width:85%;background:#10B981;"></div></div>
+            <div class="score-num" style="color:#10B981">8/10</div>
+          </div>
+          <div class="score-bar">
+            <div class="score-label">Pain Discovery</div>
+            <div class="score-track"><div class="score-fill" style="width:60%;background:#f59e0b;"></div></div>
+            <div class="score-num" style="color:#f59e0b">6/10</div>
+          </div>
+          <div class="score-bar">
+            <div class="score-label">Demo-Relevanz</div>
+            <div class="score-track"><div class="score-fill" style="width:75%;background:#10B981;"></div></div>
+            <div class="score-num" style="color:#10B981">7/10</div>
+          </div>
+          <div class="score-bar">
+            <div class="score-label">Gesprächsbalance</div>
+            <div class="score-track"><div class="score-fill" style="width:50%;background:#f59e0b;"></div></div>
+            <div class="score-num" style="color:#f59e0b">5/10</div>
+          </div>
+          <div class="score-bar">
+            <div class="score-label">Abschluss / Next Step</div>
+            <div class="score-track"><div class="score-fill" style="width:75%;background:#10B981;"></div></div>
+            <div class="score-num" style="color:#10B981">7/10</div>
+          </div>
+        </div>
+
+        <div class="coaching-list">
+          <div class="coaching-item positive">
+            <div class="coaching-title">✅ Was gut war</div>
+            <div class="coaching-text">
+              <strong>Einstieg über Kim als Referenz</strong> — sofortige Vertrauensbasis, kein kalter Call-Charakter.<br><br>
+              <strong>Pains gespiegelt und bestätigt</strong> — "du wirst zerrieben" hat Marvin sofort resoniert.<br><br>
+              <strong>Urlaubs-Frage als Discovery-Trick</strong> — hat echte Antworten gebracht und seinen tatsächlichen Arbeitsstil enthüllt (nie wirklich offline).<br><br>
+              <strong>Demo war konkret und relevant</strong> — Bautagebuch, Forecast, Copilot direkt gezeigt, kein Feature-Bingo.<br><br>
+              <strong>Klarer Abschluss</strong> — "Ich richte dir den Zugang ein" ohne Druck. Marvin hat selbst gesagt "probieren wir es aus."
+            </div>
+          </div>
+          <div class="coaching-item improve">
+            <div class="coaching-title">⚠️ Was verbessert werden kann</div>
+            <div class="coaching-text">
+              <strong>1. Zu wenig gebohrt bei starken Aussagen.</strong> Als Marvin "Aufgabenzuweisung läuft über Zuruf und E-Mail" sagte — das war der Moment. Du hast quittiert und weitergemacht. Besser: "Was kostet dich das konkret? Wie oft geht dabei was verloren?"<br><br>
+              <strong>2. Demo-Monolog zu lang.</strong> Ca. 15 Minuten durchgeredet. Marvin hat mehrfach versucht einzuhaken. Mehr Pausen, mehr Fragen einbauen: "Würde das bei euch so funktionieren?" oder "Erkennst du euch da wieder?"<br><br>
+              <strong>3. Kein committes Next Step.</strong> Marvin sagte "kann nicht versprechen, dass wir das alle nutzen" — das ist akzeptabel, aber du hättest fragen können: "Welche eine Person bei euch wäre die Erste, die das auf einer Baustelle ausprobiert?" Konkret machen.<br><br>
+              <strong>4. Hobby-Offenbarung zu früh.</strong> "Nebentätigkeit gerade erst genehmigt" → erst commitment sichern, dann Transparenz. Das war mutig, aber riskant im falschen Moment.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nächste Schritte -->
+    <div class="card">
+      <div class="card-header"><h2>📋 Nächste Schritte</h2></div>
+      <div class="card-body">
+        <div class="steps">
+          <div class="step">
+            <div class="step-num urgent">1</div>
+            <div class="step-body">
+              <div class="step-title">Zugang einrichten + Follow-up E-Mail</div>
+              <div class="step-desc">Einladungsmail von luma-app.io schicken. E-Mail mit Kontext, DSGVO-Zusicherung, Hinweis auf Bautagebuch als ersten Use Case.</div>
+              <div class="step-when">Heute noch</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num urgent">2</div>
+            <div class="step-body">
+              <div class="step-title">Postmark auf EU-Server (NL) umstellen</div>
+              <div class="step-desc">Für Marvin und öffentliche Auftraggeber Pflicht. Marvin hat explizit danach gefragt. Bis Wochende erledigen.</div>
+              <div class="step-when">Diese Woche</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num soon">3</div>
+            <div class="step-body">
+              <div class="step-title">Browser auf iPad testen</div>
+              <div class="step-desc">SSR arbeitet mit iPads auf der Baustelle. Safari-Kompatibilität des Bautagebuchs vollständig prüfen, ggf. Bugs fixen.</div>
+              <div class="step-when">Diese Woche</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num soon">4</div>
+            <div class="step-body">
+              <div class="step-title">Mini-Onboarding nach Urlaub anbieten</div>
+              <div class="step-desc">Daniel ist ab Montag 1 Woche weg. Nach Urlaub (~10. April): kurzes Gruppen-Onboarding mit Marvin + Kollegen anbieten.</div>
+              <div class="step-when">Ab ~10. April</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num later">5</div>
+            <div class="step-body">
+              <div class="step-title">Protokoll-Feature evaluieren</div>
+              <div class="step-desc">Marvin hat explizit beschrieben, dass Jour-Fix-Protokolle ein ungelöstes Problem sind. KI-gestützte Protokollgenerierung wäre luma-Differentiator für öffentliche Auftraggeber — Roadmap-Kandidat.</div>
+              <div class="step-when">Produktentscheidung</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+
+    <div class="side-card">
+      <div class="side-header">Deal Status</div>
+      <div class="side-body">
+        <div class="side-row"><span class="side-key">Stage</span><span class="side-val" style="color:#3B82F6">Discovery</span></div>
+        <div class="side-row"><span class="side-key">Probability</span><span class="side-val">40%</span></div>
+        <div class="side-row"><span class="side-key">Letzter Kontakt</span><span class="side-val">31.03.2026</span></div>
+        <div class="side-row"><span class="side-key">Ergebnis</span><span class="side-val" style="color:#10B981">Zugang gewünscht</span></div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-header">luma Fit</div>
+      <div class="side-body">
+        <div class="side-row"><span class="side-key">Bautagebuch</span><span class="side-val" style="color:#10B981">⭐ Kernbedürfnis</span></div>
+        <div class="side-row"><span class="side-key">Aufgaben</span><span class="side-val" style="color:#10B981">⭐ Kernbedürfnis</span></div>
+        <div class="side-row"><span class="side-key">Copilot</span><span class="side-val" style="color:#f59e0b">Potenzial</span></div>
+        <div class="side-row"><span class="side-key">Templates</span><span class="side-val" style="color:#f59e0b">Resoniert</span></div>
+        <div class="side-row"><span class="side-key">HOAI</span><span class="side-val" style="color:#4a5068">Woanders gelöst</span></div>
+        <div class="side-row"><span class="side-key">Protokolle</span><span class="side-val" style="color:#f59e0b">Offenes Problem</span></div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-header">Bedenken / Risiken</div>
+      <div class="side-body">
+        <div class="side-row"><span class="side-key">DSGVO</span><span class="side-val" style="color:#ef4444">Blocker — EU-Server</span></div>
+        <div class="side-row"><span class="side-key">Kein iOS-App</span><span class="side-val" style="color:#f59e0b">iPad auf Baustelle</span></div>
+        <div class="side-row"><span class="side-key">2 Generationen</span><span class="side-val" style="color:#f59e0b">Adoption-Risiko</span></div>
+        <div class="side-row"><span class="side-key">Paralleles Tool</span><span class="side-val" style="color:#f59e0b">PlanRadar noch da</span></div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-header">Follow-up E-Mail (Entwurf)</div>
+      <div class="side-body" style="padding: 12px;">
+        <div class="follow-up">Hey Marvin,
+
+danke nochmal für die Zeit heute.
+
+Ich richte dir heute noch einen Zugang ein — du bekommst eine Mail von luma-app.io. Einfach klicken, Passwort setzen, fertig.
+
+Für euch sofort relevant: Bautagebuch per Sprache auf dem iPad (Browser, kein App-Download). Aufgaben anlegen und zuweisen ohne PlanRadar-Overhead.
+
+DSGVO: Alle Daten liegen auf EU-Servern (Frankfurt). Postmark stelle ich diese Woche auf einen NL-Anbieter um — dann ist auch der E-Mail-Import sauber für öffentliche Auftraggeber.
+
+Ich bin ab Montag 1 Woche weg. Falls du reinschaust: Feedback-Knöpfchen in der App oder WhatsApp — beides geht auch per Sprache 😄
+
+Nach dem Urlaub mache ich gerne einen kurzen Termin mit dir und wem ihr noch wollt.
+
+Grüße,
+Daniel</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">luma · Discovery Review · Marvin Rössel / SSR Architekten · 31. März 2026</div>
+</div>
+
+</body>
+</html>
