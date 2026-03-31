@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>luma — 3 Schritte zum ersten Bautagebuch-Eintrag</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f8f9fa;
+      color: #111;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #7C3AED 0%, #4f46e5 100%);
+      padding: 48px 40px 40px;
+      text-align: center;
+    }
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+    }
+    .logo span { color: #c4b5fd; }
+    .header-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 4px;
+    }
+    .header-claim {
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* Container */
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px 24px 64px;
+    }
+
+    /* Steps */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .step {
+      display: flex;
+      gap: 24px;
+      position: relative;
+    }
+
+    .step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      left: 23px;
+      top: 56px;
+      bottom: -24px;
+      width: 2px;
+      background: linear-gradient(to bottom, #7C3AED40, #7C3AED10);
+    }
+
+    .step-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      flex-shrink: 0;
+    }
+
+    .step-num {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #7C3AED;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(124,58,237,0.35);
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .step-body {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px 28px;
+      flex: 1;
+      margin-bottom: 28px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+      border: 1px solid #e9ecef;
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #7C3AED;
+      margin-bottom: 6px;
+    }
+
+    .step-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    /* Mockup boxes */
+    .mockup {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #dee2e6;
+      background: #fff;
+    }
+
+    .mockup-bar {
+      background: #f3f4f6;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .mockup-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .mockup-url {
+      flex: 1;
+      background: #fff;
+      border-radius: 5px;
+      padding: 4px 10px;
+      font-size: 11px;
+      color: #6b7280;
+      border: 1px solid #e5e7eb;
+      text-align: center;
+    }
+
+    /* Step 1 — Login */
+    .login-screen {
+      padding: 32px 24px;
+      text-align: center;
+      background: #f8f9fa;
+    }
+
+    .login-logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: #7C3AED;
+      margin-bottom: 4px;
+    }
+
+    .login-claim {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 24px;
+    }
+
+    .login-field {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-size: 13px;
+      color: #374151;
+      width: 100%;
+      margin-bottom: 10px;
+      text-align: left;
+    }
+
+    .login-field.focus {
+      border-color: #7C3AED;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+    }
+
+    .login-btn {
+      background: #7C3AED;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 0;
+      width: 100%;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    /* Step 2 — Dashboard */
+    .dashboard {
+      background: #0f1117;
+    }
+
+    .dash-top {
+      background: #141720;
+      border-bottom: 1px solid #1e2128;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dash-logo-sm {
+      font-size: 14px;
+      font-weight: 800;
+      color: #a78bfa;
+    }
+
+    .dash-nav {
+      display: flex;
+      gap: 6px;
+      margin-left: auto;
+    }
+
+    .dash-nav-item {
+      font-size: 11px;
+      color: #4a5068;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .dash-nav-item.active {
+      background: rgba(124,58,237,0.15);
+      color: #a78bfa;
+    }
+
+    .dash-body {
+      padding: 16px;
+    }
+
+    .dash-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #e5e5e5;
+      margin-bottom: 12px;
+    }
+
+    .dash-add-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #7C3AED;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 14px;
+    }
+
+    .project-card {
+      background: #1a1d27;
+      border: 1px solid #2a2d38;
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .project-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .project-info { flex: 1; }
+
+    .project-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #e5e5e5;
+    }
+
+    .project-meta {
+      font-size: 11px;
+      color: #4a5068;
+      margin-top: 2px;
+    }
+
+    .project-badge {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(16,185,129,0.12);
+      color: #10B981;
+      font-weight: 600;
+    }
+
+    .form-overlay {
+      background: rgba(0,0,0,0.6);
+      padding: 10px;
+      border-radius: 0 0 11px 11px;
+    }
+
+    .form-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .form-field {
+      background: #0d0f12;
+      border: 1px solid #2a2d38;
+      border-radius: 7px;
+      padding: 9px 12px;
+      font-size: 12px;
+      color: #c8ccd6;
+      width: 100%;
+      margin-bottom: 8px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .form-btn {
+      background: #10B981;
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      padding: 9px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      float: right;
+    }
+
+    /* Step 3 — Bautagebuch */
+    .bau-screen {
+      background: #0f1117;
+      position: relative;
+      min-height: 220px;
+    }
+
+    .bau-top {
+      background: #141720;
+      border-bottom: 1px solid #1e2128;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bau-back {
+      font-size: 11px;
+      color: #4a5068;
+    }
+
+    .bau-project {
+      font-size: 13px;
+      font-weight: 700;
+      color: #e5e5e5;
+    }
+
+    .bau-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid #1e2128;
+      background: #141720;
+    }
+
+    .bau-tab {
+      padding: 9px 14px;
+      font-size: 11px;
+      color: #4a5068;
+    }
+
+    .bau-tab.active {
+      color: #a78bfa;
+      border-bottom: 2px solid #7C3AED;
+    }
+
+    .bau-entry {
+      margin: 12px;
+      background: #141720;
+      border: 1px solid #1e2128;
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .bau-entry-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .bau-entry-date {
+      font-size: 11px;
+      color: #7C3AED;
+      font-weight: 600;
+    }
+
+    .bau-weather {
+      font-size: 11px;
+      color: #4a5068;
+      margin-left: auto;
+    }
+
+    .bau-text {
+      font-size: 12px;
+      color: #c8ccd6;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .bau-photos {
+      display: flex;
+      gap: 6px;
+    }
+
+    .bau-photo {
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      background: #1e2536;
+      border: 1px solid #2a3348;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    /* Floating Button */
+    .fab-container {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .fab-tooltip {
+      background: #7C3AED;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(124,58,237,0.4);
+    }
+
+    .fab {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #7C3AED;
+      color: #fff;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(124,58,237,0.5);
+      cursor: pointer;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(124,58,237,0.5); }
+      70% { box-shadow: 0 0 0 10px rgba(124,58,237,0); }
+      100% { box-shadow: 0 0 0 0 rgba(124,58,237,0); }
+    }
+
+    /* Recording overlay */
+    .recording-overlay {
+      background: rgba(0,0,0,0.85);
+      border-radius: 0 0 11px 11px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .recording-icon {
+      font-size: 36px;
+      margin-bottom: 8px;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .recording-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .recording-hint {
+      font-size: 11px;
+      color: #8b90a0;
+      margin-bottom: 12px;
+    }
+
+    .recording-wave {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      margin-bottom: 12px;
+    }
+
+    .wave-bar {
+      width: 3px;
+      background: #7C3AED;
+      border-radius: 2px;
+    }
+
+    .recording-text {
+      font-size: 12px;
+      color: #a78bfa;
+      font-style: italic;
+      background: rgba(124,58,237,0.1);
+      border-radius: 8px;
+      padding: 8px 12px;
+    }
+
+    /* Tip box */
+    .tip {
+      background: rgba(124,58,237,0.08);
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-top: 14px;
+      font-size: 13px;
+      color: #7C3AED;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 32px 0 16px;
+    }
+
+    .footer-logo {
+      font-size: 20px;
+      font-weight: 800;
+      color: #7C3AED;
+      margin-bottom: 4px;
+    }
+
+    .footer-sub {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .footer-link {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 24px;
+      background: #7C3AED;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">luma<span>.</span></div>
+  <p class="header-sub">In 3 Schritten zum ersten Bautagebuch-Eintrag</p>
+  <p class="header-claim">Kein Download · Läuft im Browser · Auch auf dem iPad</p>
+</div>
+
+<div class="container">
+  <div class="steps">
+
+    <!-- SCHRITT 1 -->
+    <div class="step">
+      <div class="step-left">
+        <div class="step-num">1</div>
+      </div>
+      <div class="step-body">
+        <div class="step-label">Schritt 1</div>
+        <div class="step-title">Einloggen</div>
+        <div class="step-desc">Du hast eine Einladungs-E-Mail erhalten. Einfach auf den Link klicken, Passwort setzen — und du bist drin. Kein Download nötig.</div>
+        <div class="mockup">
+          <div class="mockup-bar">
+            <div class="mockup-dot" style="background:#ff5f56"></div>
+            <div class="mockup-dot" style="background:#ffbd2e"></div>
+            <div class="mockup-dot" style="background:#27c93f"></div>
+            <div class="mockup-url">go.luma-app.io</div>
+          </div>
+          <div class="login-screen">
+            <div class="login-logo">luma.</div>
+            <div class="login-claim">Bring Klarheit in deine Projekte.</div>
+            <div class="login-field">📧 &nbsp;m.roessel@architekten-ssr.de</div>
+            <div class="login-field focus">🔒 &nbsp;••••••••••</div>
+            <button class="login-btn">Einloggen</button>
+          </div>
+        </div>
+        <div class="tip">💡 Du bleibst dauerhaft eingeloggt — einmal anmelden, immer dabei.</div>
+      </div>
+    </div>
+
+    <!-- SCHRITT 2 -->
+    <div class="step">
+      <div class="step-left">
+        <div class="step-num">2</div>
+      </div>
+      <div class="step-body">
+        <div class="step-label">Schritt 2</div>
+        <div class="step-title">Projekt anlegen</div>
+        <div class="step-desc">Klick auf "+ Neues Projekt", Namen eingeben (z.B. "Kita Leidersbach"), Auftraggeber, ggf. Bautyp. Fertig in 30 Sekunden.</div>
+        <div class="mockup">
+          <div class="mockup-bar">
+            <div class="mockup-dot" style="background:#ff5f56"></div>
+            <div class="mockup-dot" style="background:#ffbd2e"></div>
+            <div class="mockup-dot" style="background:#27c93f"></div>
+            <div class="mockup-url">go.luma-app.io/projects</div>
+          </div>
+          <div class="dashboard">
+            <div class="dash-top">
+              <span class="dash-logo-sm">luma.</span>
+              <div class="dash-nav">
+                <span class="dash-nav-item active">Projekte</span>
+                <span class="dash-nav-item">Aufgaben</span>
+                <span class="dash-nav-item">Finanzen</span>
+              </div>
+            </div>
+            <div class="dash-body">
+              <div class="dash-title">Meine Projekte</div>
+              <button class="dash-add-btn">＋ Neues Projekt</button>
+              <div class="project-card">
+                <div class="project-dot" style="background:#7C3AED"></div>
+                <div class="project-info">
+                  <div class="project-name">Kita Leidersbach</div>
+                  <div class="project-meta">Gemeinde Leidersbach · LP 8</div>
+                </div>
+                <div class="project-badge">Aktiv</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tip">💡 Wenn du dein Honorarangebot hochlädst, legt luma die Leistungsphasen automatisch an.</div>
+      </div>
+    </div>
+
+    <!-- SCHRITT 3 -->
+    <div class="step">
+      <div class="step-left">
+        <div class="step-num">3</div>
+      </div>
+      <div class="step-body">
+        <div class="step-label">Schritt 3</div>
+        <div class="step-title">Bautagebuch per Sprache</div>
+        <div class="step-desc">Im Projekt auf den <strong>Mikrofon-Button unten rechts</strong> drücken und einfach reinsprechen. luma transkribiert, fügt Wetterdaten hinzu und speichert alles direkt im Projekt. Fotos kannst du danach dranhängen.</div>
+        <div class="mockup">
+          <div class="mockup-bar">
+            <div class="mockup-dot" style="background:#ff5f56"></div>
+            <div class="mockup-dot" style="background:#ffbd2e"></div>
+            <div class="mockup-dot" style="background:#27c93f"></div>
+            <div class="mockup-url">go.luma-app.io/projects/kita-leidersbach</div>
+          </div>
+          <div class="bau-screen">
+            <div class="bau-top">
+              <span class="bau-back">← Projekte</span>
+              <span class="bau-project">Kita Leidersbach</span>
+            </div>
+            <div class="bau-tabs">
+              <span class="bau-tab">Übersicht</span>
+              <span class="bau-tab">Aufgaben</span>
+              <span class="bau-tab active">Bautagebuch</span>
+              <span class="bau-tab">Dokumente</span>
+            </div>
+            <div class="bau-entry">
+              <div class="bau-entry-header">
+                <div class="bau-entry-date">Di, 31. März 2026</div>
+                <div class="bau-weather">☀️ 14°C · leichter Wind</div>
+              </div>
+              <div class="bau-text">Betonarbeiten Bodenplatte abgeschlossen. Schalung für Stützen LP 8 gesetzt. Gerüst Westseite bis Mitte April geplant. Rückfrage an Zimmermann wegen Firstbalken offen.</div>
+              <div class="bau-photos">
+                <div class="bau-photo">📸</div>
+                <div class="bau-photo">📸</div>
+                <div class="bau-photo" style="background:#2a2d38;color:#4a5068;font-size:14px">＋</div>
+              </div>
+            </div>
+            <div class="fab-container">
+              <div class="fab-tooltip">🎤 Bautagebuch-Eintrag</div>
+              <div class="fab">🎤</div>
+            </div>
+          </div>
+          <div class="recording-overlay">
+            <div class="recording-icon">🎤</div>
+            <div class="recording-title">Aufnahme läuft…</div>
+            <div class="recording-hint">Einfach sprechen — luma schreibt mit</div>
+            <div class="recording-wave">
+              <div class="wave-bar" style="height:8px"></div>
+              <div class="wave-bar" style="height:18px"></div>
+              <div class="wave-bar" style="height:12px"></div>
+              <div class="wave-bar" style="height:24px"></div>
+              <div class="wave-bar" style="height:16px"></div>
+              <div class="wave-bar" style="height:20px"></div>
+              <div class="wave-bar" style="height:10px"></div>
+              <div class="wave-bar" style="height:22px"></div>
+              <div class="wave-bar" style="height:14px"></div>
+            </div>
+            <div class="recording-text">"Bautagebuch Kita Leidersbach — Betonarbeiten heute abgeschlossen, Gerüst Westseite wird nächste Woche gestellt…"</div>
+          </div>
+        </div>
+        <div class="tip">💡 Auch auf dem iPad im Browser — kein App-Download nötig. Einfach go.luma-app.io öffnen.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-logo">luma.</div>
+    <p class="footer-sub">Fragen? Einfach antworten oder Feedback direkt im Tool hinterlassen.</p>
+    <a href="https://go.luma-app.io" class="footer-link">go.luma-app.io →</a>
+  </div>
+
+</div>
+
+</body>
+</html>
