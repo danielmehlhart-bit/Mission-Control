@@ -597,4 +597,15 @@ function initSchema(db: Database.Database): void {
     db.prepare("INSERT OR REPLACE INTO project_notes (project_id, content, updated_at) VALUES (?, ?, datetime('now'))")
       .run("7", postCallNotes);
   });
+
+  // Migration: Account Notes table (TipTap rich text)
+  runMigration("create_account_notes_table", () => {
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS account_notes (
+        account_id TEXT PRIMARY KEY,
+        content    TEXT NOT NULL DEFAULT '{}',
+        updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+      );
+    `);
+  });
 }

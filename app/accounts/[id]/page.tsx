@@ -62,7 +62,7 @@ const ACTIVITY_ICONS: Record<string, string> = {
 const IS = { width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #1e2128", background: "#0d0f12", color: "#f0f2f5", fontSize: 13, outline: "none", boxSizing: "border-box" as const };
 const LS = { fontSize: 11, color: "#8b90a0", marginBottom: 4, display: "block" as const };
 
-type Tab = "overview" | "contacts" | "deals" | "projects" | "activities" | "callprep";
+type Tab = "overview" | "notes" | "contacts" | "deals" | "projects" | "activities" | "callprep";
 
 export default function AccountDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -77,6 +77,9 @@ export default function AccountDetailPage() {
   const [calEvents, setCalEvents] = useState<CalEvent[]>([]);
   const [openNoteEventId, setOpenNoteEventId] = useState<string | null>(null);
   const [discoveryNotesCount, setDiscoveryNotesCount] = useState(0);
+  const [notesSaved, setNotesSaved] = useState(false);
+  const [notesSaving, setNotesSaving] = useState(false);
+  const notesAutoSaveRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Modals
   const [contactModal, setContactModal] = useState(false);
@@ -93,6 +96,46 @@ export default function AccountDetailPage() {
   const [editingDeal, setEditingDeal] = useState<Deal | null>(null);
   const [dealEditForm, setDealEditForm] = useState({ title: "", value: "", stage: "lead", probability: "50", expectedClose: "", notes: "" });
   const [dealDeleteConfirm, setDealDeleteConfirm] = useState(false);
+
+  // Notes editor (TipTap)
+  const notesEditor = useEditor({
+    extensions: [
+      StarterKit,
+      Underline,
+      Placeholder.configure({ placeholder: "Notizen zum Account…" }),
+    ],
+    content: "",
+    editorProps: {
+      attributes: { style: "outline:none; min-height:300px; padding:16px 20px; font-size:13px; line-height:1.75; color:#c8ccd8;" },
+    },
+    onUpdate: ({ editor }) => {
+      if (notesAutoSaveRef.current) clearTimeout(notesAutoSaveRef.current);
+      notesAutoSaveRef.current = setTimeout(async () => {
+        setNotesSaving(true);
+        await fetch("/api/account-notes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ accountId: id, content: JSON.stringify(editor.getJSON()) }),
+        });
+        setNotesSaving(false);
+        setNotesSaved(true);
+        setTimeout(() => setNotesSaved(false), 2000);
+      }, 1200);
+    },
+  });
+
+  // Load notes when switching to notes tab
+  useEffect(() => {
+    if (tab !== "notes" || !notesEditor) return;
+    fetch(`/api/account-notes?accountId=${id}`)
+      .then(r => r.json())
+      .then(d => {
+        if (d.content) {
+          try { notesEditor.commands.setContent(JSON.parse(d.content)); } catch { notesEditor.commands.setContent(""); }
+        }
+      });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tab, id]);
 
   const load = useCallback(async () => {
     const [accRes, contactRes, dealRes, projRes, actRes] = await Promise.all([
@@ -224,6 +267,7 @@ export default function AccountDetailPage() {
 
   const tabs: { key: Tab; label: string; count?: number }[] = [
     { key: "overview", label: "Overview" },
+    { key: "notes", label: "Notes" },
     { key: "contacts", label: "Contacts", count: contacts.length },
     { key: "deals", label: "Deals", count: deals.length },
     { key: "projects", label: "Projects", count: projects.length },
@@ -329,6 +373,58 @@ export default function AccountDetailPage() {
                 </Card>
               )}
             </>
+          )}
+
+          {/* ─── NOTES TAB ─── */}
+          {tab === "notes" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 0, borderRadius: 12, overflow: "hidden", border: "1px solid #1e2128" }}>
+              {/* Toolbar */}
+              <div style={{ display: "flex", gap: 2, padding: "8px 12px", background: "#111318", borderBottom: "1px solid #1e2128", flexWrap: "wrap", alignItems: "center" }}>
+                {[
+                  { label: <b>B</b>, action: () => notesEditor?.chain().focus().toggleBold().run(), active: notesEditor?.isActive("bold") },
+                  { label: <i>I</i>, action: () => notesEditor?.chain().focus().toggleItalic().run(), active: notesEditor?.isActive("italic") },
+                  { label: <u>U</u>, action: () => notesEditor?.chain().focus().toggleUnderline().run(), active: notesEditor?.isActive("underline") },
+                ].map((btn, i) => (
+                  <button key={i} onMouseDown={e => { e.preventDefault(); btn.action(); }}
+                    style={{ padding: "3px 8px", borderRadius: 4, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600,
+                      background: btn.active ? "#1e2128" : "transparent", color: btn.active ? "#f0f2f5" : "#8b90a0" }}>
+                    {btn.label}
+                  </button>
+                ))}
+                <span style={{ width: 1, background: "#1e2128", margin: "2px 4px", alignSelf: "stretch" }} />
+                {(["H1", "H2", "H3"] as const).map((h, i) => (
+                  <button key={h} onMouseDown={e => { e.preventDefault(); notesEditor?.chain().focus().toggleHeading({ level: (i + 1) as 1|2|3 }).run(); }}
+                    style={{ padding: "3px 8px", borderRadius: 4, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600,
+                      background: notesEditor?.isActive("heading", { level: i + 1 }) ? "#1e2128" : "transparent",
+                      color: notesEditor?.isActive("heading", { level: i + 1 }) ? "#f0f2f5" : "#8b90a0" }}>
+                    {h}
+                  </button>
+                ))}
+                <span style={{ width: 1, background: "#1e2128", margin: "2px 4px", alignSelf: "stretch" }} />
+                <button onMouseDown={e => { e.preventDefault(); notesEditor?.chain().focus().toggleBulletList().run(); }}
+                  style={{ padding: "3px 8px", borderRadius: 4, border: "none", cursor: "pointer", fontSize: 12,
+                    background: notesEditor?.isActive("bulletList") ? "#1e2128" : "transparent", color: notesEditor?.isActive("bulletList") ? "#f0f2f5" : "#8b90a0" }}>
+                  Liste
+                </button>
+                <button onMouseDown={e => { e.preventDefault(); notesEditor?.chain().focus().toggleOrderedList().run(); }}
+                  style={{ padding: "3px 8px", borderRadius: 4, border: "none", cursor: "pointer", fontSize: 12,
+                    background: notesEditor?.isActive("orderedList") ? "#1e2128" : "transparent", color: notesEditor?.isActive("orderedList") ? "#f0f2f5" : "#8b90a0" }}>
+                  1. Liste
+                </button>
+                <button onMouseDown={e => { e.preventDefault(); notesEditor?.chain().focus().toggleBlockquote().run(); }}
+                  style={{ padding: "3px 8px", borderRadius: 4, border: "none", cursor: "pointer", fontSize: 12,
+                    background: notesEditor?.isActive("blockquote") ? "#1e2128" : "transparent", color: notesEditor?.isActive("blockquote") ? "#f0f2f5" : "#8b90a0" }}>
+                  Zitat
+                </button>
+                <div style={{ marginLeft: "auto", fontSize: 11, color: notesSaved ? "#10B981" : "#4a5068" }}>
+                  {notesSaving ? "Speichern…" : notesSaved ? "✓ Gespeichert" : "Auto-Save"}
+                </div>
+              </div>
+              {/* Editor */}
+              <div style={{ background: "#0d0f12", minHeight: 400 }}>
+                <EditorContent editor={notesEditor} />
+              </div>
+            </div>
           )}
 
           {/* ─── CONTACTS TAB ─── */}
