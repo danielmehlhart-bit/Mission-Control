@@ -59,7 +59,7 @@ export async function POST(req: Request) {
   if (!name?.trim()) return NextResponse.json({ error: "Name required" }, { status: 400 });
   const db = getDb();
   const id = `acc_${Date.now()}`;
-  const validStatus = ["prospect", "active", "churned", "paused"].includes(status) ? status : "prospect";
+  const validStatus = ["prospect", "active", "churned", "paused", "Qualification", "qualification"].includes(status) ? status : "prospect";
   db.prepare(`
     INSERT INTO accounts (id, name, domain, industry, size, status, color, notes, created_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
@@ -81,7 +81,7 @@ export async function PATCH(req: Request) {
   if (domain !== undefined) db.prepare("UPDATE accounts SET domain = ? WHERE id = ?").run(domain, id);
   if (industry !== undefined) db.prepare("UPDATE accounts SET industry = ? WHERE id = ?").run(industry, id);
   if (size !== undefined) db.prepare("UPDATE accounts SET size = ? WHERE id = ?").run(size, id);
-  if (status !== undefined && ["prospect", "active", "churned", "paused"].includes(status))
+  if (status !== undefined && ["prospect", "active", "churned", "paused", "Qualification", "qualification"].includes(status))
     db.prepare("UPDATE accounts SET status = ? WHERE id = ?").run(status, id);
   if (color !== undefined) db.prepare("UPDATE accounts SET color = ? WHERE id = ?").run(color, id);
   if (notes !== undefined) db.prepare("UPDATE accounts SET notes = ? WHERE id = ?").run(notes, id);

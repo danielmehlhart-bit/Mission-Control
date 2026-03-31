@@ -10,8 +10,8 @@ type Account = {
   lastActivityAt?: string; pipelineValue?: number;
 };
 
-const STATUS_LABEL: Record<string, string> = { prospect: "Prospect", active: "Active", churned: "Churned", paused: "Paused" };
-const STATUS_COLOR: Record<string, string> = { prospect: "#6366f1", active: "#10B981", churned: "#ef4444", paused: "#F59E0B" };
+const STATUS_LABEL: Record<string, string> = { prospect: "Prospect", active: "Active", churned: "Churned", paused: "Paused", Qualification: "Qualification", qualification: "Qualification" };
+const STATUS_COLOR: Record<string, string> = { prospect: "#6366f1", active: "#10B981", churned: "#ef4444", paused: "#F59E0B", Qualification: "#3B82F6", qualification: "#3B82F6" };
 
 const IS = { width: "100%", padding: "8px 12px", borderRadius: 8, border: "1px solid #1e2128", background: "#0d0f12", color: "#f0f2f5", fontSize: 13, outline: "none", boxSizing: "border-box" as const };
 const LS = { fontSize: 11, color: "#8b90a0", marginBottom: 4, display: "block" as const };
@@ -82,7 +82,7 @@ export default function AccountsPage() {
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Account suchen…"
           style={{ flex: 1, minWidth: 200, padding: "8px 14px", borderRadius: 8, border: "1px solid #1e2128", background: "#141720", color: "#f0f2f5", fontSize: 13, outline: "none" }} />
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-          {["All", "prospect", "active", "paused", "churned"].map(s => (
+          {["All", "prospect", "Qualification", "active", "paused", "churned"].map(s => (
             <button key={s} onClick={() => setFilter(s)} style={{
               padding: "6px 14px", borderRadius: 999, fontSize: 12.5, fontWeight: 500,
               border: `1px solid ${filter === s ? "rgba(16,185,129,0.4)" : "#1e2128"}`,
@@ -187,6 +187,7 @@ export default function AccountsPage() {
                   <label style={LS}>Status</label>
                   <select style={{ ...IS, cursor: "pointer" }} value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}>
                     <option value="prospect">Prospect</option>
+                    <option value="Qualification">Qualification</option>
                     <option value="active">Active</option>
                     <option value="paused">Paused</option>
                   </select>
