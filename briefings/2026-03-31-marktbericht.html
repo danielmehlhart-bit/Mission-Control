@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marktbericht 31.03.2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f7f7f7; color: #222; padding: 24px 16px; }
+    .container { max-width: 760px; margin: 0 auto; }
+    header { margin-bottom: 28px; }
+    header h1 { font-size: 1.6rem; font-weight: 700; }
+    header p { color: #666; font-size: 0.9rem; margin-top: 4px; }
+    .note { background: #fff8e1; border-left: 4px solid #f9a825; padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; color: #555; margin-bottom: 24px; }
+    .indices { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+    .card h2 { font-size: 0.85rem; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+    .card .value { font-size: 1.7rem; font-weight: 700; }
+    .card .change { font-size: 1rem; font-weight: 600; margin-top: 4px; }
+    .red { color: #e53935; }
+    .green { color: #43a047; }
+    .section { background: #fff; border-radius: 14px; padding: 20px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); margin-bottom: 20px; }
+    .section h3 { font-size: 1rem; font-weight: 700; margin-bottom: 12px; }
+    .section p { font-size: 0.93rem; line-height: 1.65; color: #333; }
+    .movers { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+    .mover { padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+    .mover.up { background: #e8f5e9; color: #2e7d32; }
+    .mover.down { background: #ffebee; color: #c62828; }
+    footer { text-align: center; font-size: 0.8rem; color: #aaa; margin-top: 28px; }
+    a { color: #1565c0; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>📈 Marktbericht</h1>
+    <p>Freitag, 27. März 2026 · Quelle: <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-dow-jones-390.html" target="_blank">tagesschau.de</a></p>
+  </header>
+
+  <div class="note">⚠️ Neuester verfügbarer Bericht (Stand 31.03.2026, 08:00 Uhr) — vom Freitag 27.03. Kein Wochenbeginn-Bericht vorhanden.</div>
+
+  <div class="indices">
+    <div class="card">
+      <h2>DAX</h2>
+      <div class="value red">22.301</div>
+      <div class="change red">▼ −1,4 %</div>
+    </div>
+    <div class="card">
+      <h2>Dow Jones</h2>
+      <div class="value red">~</div>
+      <div class="change red">▼ &gt; −1,0 %</div>
+    </div>
+    <div class="card">
+      <h2>Brent Öl</h2>
+      <div class="value red">$111+</div>
+      <div class="change red">▲ weiter steigend</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>🔑 Haupttreiber</h3>
+    <p><strong>Iran-Konflikt &amp; Ölpreis:</strong> US-Ultimatum an Iran (Öffnung Straße von Hormus) erneut verlängert — statt Beruhigung weiterer Anstieg des Ölpreises auf über 111 $/Barrel. Lieferketten-Schäden könnten Monate bis Jahre zur Reparatur brauchen.</p>
+    <p style="margin-top:10px;"><strong>China vs. USA:</strong> Peking leitet Untersuchungen zu US-bedingten Lieferkettenstörungen ein — als Reaktion auf US-Handelsuntersuchungen gegen 60 Länder. Vergeltungszölle möglich.</p>
+    <p style="margin-top:10px;"><strong>Chip-Sektor:</strong> Google's neuer KI-Komprimierungsalgorithmus "TurboQuant" belastet Speicherhersteller. Samsung −4,5 %, Infineon DAX-Schlusslicht.</p>
+  </div>
+
+  <div class="section">
+    <h3>📊 Einzel-Werte</h3>
+    <div class="movers">
+      <span class="mover up">BASF ▲ (Morgan Stanley: Vorteil ggü. asiatischer Konkurrenz)</span>
+      <span class="mover down">Infineon ▼ (Chip-Druck)</span>
+      <span class="mover down">Samsung ▼ −4,5 %</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>🔭 Ausblick</h3>
+    <p>Iran-Entwicklung bleibt der dominierende Faktor. Investoren meiden Risiko, steuern sichere Häfen an. Lieferkettenstörungen könnten Inflation befeuern und Konjunktur belasten — insbesondere Europa. Beobachtenswert: Entwicklung US-China Handelsspannungen + Euro-Office Allianz (Ionos/Nextcloud).</p>
+  </div>
+
+  <footer>
+    Briefing erstellt 31.03.2026 · <a href="https://mc.mehlhart.de">mc.mehlhart.de</a> · <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-dow-jones-390.html" target="_blank">Originalartikel</a>
+  </footer>
+</div>
+</body>
+</html>
