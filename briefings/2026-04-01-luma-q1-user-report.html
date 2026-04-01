@@ -22,99 +22,103 @@
     .hero-meta { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
     .hero-meta span { font-size: 0.8rem; opacity: 0.7; }
 
-    .container { max-width: 1000px; margin: 0 auto; padding: 44px 24px 80px; }
+    .container { max-width: 1020px; margin: 0 auto; padding: 44px 24px 80px; }
     .section-title { font-size: 1.2rem; font-weight: 700; color: #1a1a2e; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid #EDE9FE; }
 
-    /* ALERT BOX */
-    .data-note {
-      background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 14px;
-      padding: 18px 22px; margin-bottom: 36px; display: flex; gap: 12px;
-    }
-    .data-note .icon { font-size: 1.4rem; flex-shrink: 0; }
-    .data-note p { font-size: 0.87rem; color: #92400E; line-height: 1.6; }
-    .data-note strong { color: #78350F; }
-
     /* KPI GRID */
-    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 40px; }
-    .kpi-card { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 20px; text-align: center; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 44px; }
+    .kpi-card { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 18px; text-align: center; }
     .kpi-value { font-size: 2rem; font-weight: 800; color: #7C3AED; line-height: 1; margin-bottom: 4px; }
-    .kpi-label { font-size: 0.78rem; color: #6B7280; font-weight: 500; }
-    .kpi-sub { font-size: 0.72rem; color: #9CA3AF; margin-top: 2px; }
+    .kpi-label { font-size: 0.77rem; color: #6B7280; font-weight: 500; }
+    .kpi-sub { font-size: 0.7rem; color: #9CA3AF; margin-top: 2px; }
 
-    /* USER CARD */
-    .user-section { margin-bottom: 44px; }
-    .user-card { background: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; margin-bottom: 20px; }
-    .user-header { display: flex; align-items: center; gap: 16px; padding: 20px 24px; background: #F5F3FF; border-bottom: 1px solid #EDE9FE; }
-    .user-avatar { width: 44px; height: 44px; border-radius: 50%; background: #7C3AED; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; flex-shrink: 0; }
-    .user-name { font-size: 1rem; font-weight: 700; }
-    .user-meta { font-size: 0.8rem; color: #6B7280; margin-top: 2px; }
-    .status-badge { margin-left: auto; padding: 4px 12px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; }
-    .status-active { background: #D1FAE5; color: #065F46; }
-    .status-warn { background: #FEF3C7; color: #92400E; }
-    .user-body { padding: 20px 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; }
-    .user-stat { }
-    .user-stat .val { font-size: 1.4rem; font-weight: 700; color: #1a1a2e; }
-    .user-stat .lbl { font-size: 0.75rem; color: #6B7280; margin-top: 2px; }
+    /* TENANT CARDS */
+    .tenant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 44px; }
+    .tenant-card { background: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; }
+    .tc-header { padding: 16px 20px 12px; border-bottom: 1px solid #F3F4F6; display: flex; align-items: center; gap: 12px; }
+    .tc-avatar { width: 38px; height: 38px; border-radius: 10px; background: #7C3AED; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; flex-shrink: 0; }
+    .tc-name { font-size: 0.95rem; font-weight: 700; }
+    .tc-meta { font-size: 0.75rem; color: #9CA3AF; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-left: auto; }
+    .dot-green { background: #22C55E; }
+    .dot-yellow { background: #F59E0B; }
+    .dot-gray { background: #D1D5DB; }
+    .tc-stats { padding: 14px 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .tc-stat .v { font-size: 1.2rem; font-weight: 700; color: #1a1a2e; }
+    .tc-stat .l { font-size: 0.7rem; color: #9CA3AF; }
 
-    /* FEATURE USAGE */
-    .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-bottom: 40px; }
-    .feature-card { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 20px; }
-    .feature-card .fc-icon { font-size: 1.6rem; margin-bottom: 10px; }
-    .feature-card h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; }
-    .feature-card p { font-size: 0.83rem; color: #6B7280; line-height: 1.6; }
-    .fc-badge { display: inline-block; margin-top: 10px; padding: 3px 10px; border-radius: 100px; font-size: 0.72rem; font-weight: 700; }
-    .fc-green { background: #D1FAE5; color: #065F46; }
-    .fc-yellow { background: #FEF3C7; color: #92400E; }
-    .fc-red { background: #FEE2E2; color: #991B1B; }
-    .fc-gray { background: #F3F4F6; color: #6B7280; }
-
-    /* PROJECTS TABLE */
-    .table-wrap { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; margin-bottom: 40px; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
-    thead th { background: #F9FAFB; padding: 12px 16px; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #6B7280; border-bottom: 1px solid #F3F4F6; }
-    tbody td { padding: 12px 16px; border-bottom: 1px solid #F9FAFB; color: #374151; }
+    /* USER TABLE */
+    .table-wrap { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; margin-bottom: 44px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 600px; }
+    thead th { background: #F9FAFB; padding: 11px 16px; text-align: left; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #6B7280; border-bottom: 1px solid #F3F4F6; white-space: nowrap; }
+    tbody td { padding: 11px 16px; border-bottom: 1px solid #F9FAFB; color: #374151; }
     tbody tr:last-child td { border-bottom: none; }
     tbody tr:hover td { background: #FAFAFA; }
-    .status-pill { display: inline-block; padding: 2px 10px; border-radius: 100px; font-size: 0.72rem; font-weight: 700; }
-    .pill-blue { background: #EFF6FF; color: #1D4ED8; }
+    .pill { display: inline-block; padding: 2px 9px; border-radius: 100px; font-size: 0.71rem; font-weight: 700; }
     .pill-green { background: #D1FAE5; color: #065F46; }
-    .pill-orange { background: #FEF3C7; color: #92400E; }
+    .pill-blue { background: #EFF6FF; color: #1D4ED8; }
+    .pill-yellow { background: #FEF3C7; color: #92400E; }
+    .pill-gray { background: #F3F4F6; color: #6B7280; }
+    .pill-red { background: #FEE2E2; color: #991B1B; }
 
-    /* ACTIVITY HEATMAP */
-    .activity-section { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 24px; margin-bottom: 40px; }
-    .week-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-    .week-label { font-size: 0.75rem; color: #6B7280; width: 70px; flex-shrink: 0; }
-    .week-fill { height: 18px; border-radius: 4px; background: #7C3AED; min-width: 4px; display: flex; align-items: center; padding: 0 8px; }
-    .week-count { font-size: 0.72rem; color: white; font-weight: 700; }
-    .week-zero { height: 18px; background: #F3F4F6; border-radius: 4px; flex: 1; display: flex; align-items: center; padding: 0 8px; }
-    .week-zero span { font-size: 0.72rem; color: #9CA3AF; }
+    /* FEATURE BARS */
+    .feature-section { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 24px; margin-bottom: 44px; }
+    .feature-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .feature-name { font-size: 0.83rem; font-weight: 500; color: #374151; width: 220px; flex-shrink: 0; }
+    .feature-bar-wrap { flex: 1; background: #F3F4F6; border-radius: 4px; height: 16px; overflow: hidden; }
+    .feature-bar { height: 100%; border-radius: 4px; background: #7C3AED; }
+    .feature-bar.green { background: #22C55E; }
+    .feature-bar.blue { background: #3B82F6; }
+    .feature-cnt { font-size: 0.8rem; font-weight: 700; color: #374151; width: 45px; text-align: right; }
+
+    /* ACTIVITY CHART */
+    .week-section { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 24px; margin-bottom: 44px; }
+    .week-bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .week-lbl { font-size: 0.78rem; color: #6B7280; width: 100px; flex-shrink: 0; }
+    .week-bar-outer { flex: 1; background: #F3F4F6; border-radius: 6px; height: 24px; overflow: hidden; }
+    .week-bar-inner { height: 100%; border-radius: 6px; background: linear-gradient(90deg, #7C3AED, #9F67FF); display: flex; align-items: center; padding-left: 8px; min-width: 30px; }
+    .week-bar-inner span { font-size: 0.72rem; font-weight: 700; color: white; }
+    .week-cnt { font-size: 0.8rem; font-weight: 700; color: #374151; width: 50px; text-align: right; }
+
+    /* FEEDBACK */
+    .feedback-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 44px; }
+    @media(max-width: 700px) { .feedback-grid { grid-template-columns: 1fr; } }
+    .feedback-col h3 { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
+    .feedback-col.bugs h3 { color: #991B1B; }
+    .feedback-col.wishes h3 { color: #065F46; }
+    .feedback-col.ideas h3 { color: #1D4ED8; }
+    .fb-item { background: white; border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; font-size: 0.83rem; color: #374151; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+    .fb-item .fb-who { font-size: 0.72rem; color: #9CA3AF; margin-bottom: 4px; }
+    .fb-item.bug { border-left: 3px solid #EF4444; }
+    .fb-item.wish { border-left: 3px solid #22C55E; }
+    .fb-item.idea { border-left: 3px solid #3B82F6; }
 
     /* INSIGHTS */
-    .insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 40px; }
-    @media(max-width:640px){ .insights-grid { grid-template-columns: 1fr; } }
+    .insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 44px; }
+    @media(max-width: 640px){ .insights-grid { grid-template-columns: 1fr; } }
     .insight-card { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 20px; }
-    .insight-card h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-    .insight-card p, .insight-card ul { font-size: 0.84rem; color: #6B7280; line-height: 1.7; }
-    .insight-card ul { padding-left: 16px; }
+    .insight-card h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 10px; }
+    .insight-card ul { list-style: none; font-size: 0.84rem; color: #6B7280; }
+    .insight-card ul li { padding: 4px 0; display: flex; gap: 8px; line-height: 1.5; }
+    .insight-card ul li::before { flex-shrink: 0; }
     .insight-card.green { border-top: 3px solid #22C55E; }
-    .insight-card.yellow { border-top: 3px solid #F59E0B; }
+    .insight-card.green ul li::before { content: '✓'; color: #22C55E; font-weight: 700; }
     .insight-card.red { border-top: 3px solid #EF4444; }
+    .insight-card.red ul li::before { content: '✗'; color: #EF4444; font-weight: 700; }
+    .insight-card.yellow { border-top: 3px solid #F59E0B; }
+    .insight-card.yellow ul li::before { content: '→'; color: #F59E0B; font-weight: 700; }
     .insight-card.blue { border-top: 3px solid #7C3AED; }
-
-    /* GAPS */
-    .gap-list { list-style: none; }
-    .gap-list li { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #F3F4F6; font-size: 0.87rem; }
-    .gap-list li:last-child { border-bottom: none; }
-    .gap-list .gap-icon { font-size: 1rem; flex-shrink: 0; width: 22px; }
-    .gap-list .gap-text strong { display: block; font-weight: 600; color: #1a1a2e; }
-    .gap-list .gap-text span { color: #6B7280; }
+    .insight-card.blue ul li::before { content: '★'; color: #7C3AED; font-weight: 700; }
 
     /* NEXT STEPS */
-    .next-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 40px; }
+    .next-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 44px; }
     .next-card { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 18px; display: flex; gap: 12px; }
-    .next-num { width: 28px; height: 28px; border-radius: 50%; background: #7C3AED; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
-    .next-card h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; }
-    .next-card p { font-size: 0.8rem; color: #6B7280; }
+    .next-num { width: 28px; height: 28px; border-radius: 50%; background: #7C3AED; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+    .next-card h4 { font-size: 0.87rem; font-weight: 700; margin-bottom: 4px; }
+    .next-card p { font-size: 0.8rem; color: #6B7280; line-height: 1.5; }
+
+    .callout { background: #F5F3FF; border: 2px solid #DDD6FE; border-radius: 14px; padding: 20px 24px; margin-bottom: 44px; font-size: 0.9rem; color: #374151; line-height: 1.7; }
+    .callout strong { color: #7C3AED; }
 
     footer { text-align: center; font-size: 0.78rem; color: #9CA3AF; padding: 20px 0; }
   </style>
@@ -123,478 +127,662 @@
 
 <div class="hero">
   <a href="https://luma-app.io" class="logo">luma<span class="dot"></span></a>
-  <div class="hero-label">Internes Reporting</div>
-  <h1>Q1 2026 — User Behaviour Report</h1>
-  <p class="hero-sub">Nutzungsanalyse der LUMA Beta. Basis: alle aktiven Tenants exkl. Demo-Tenant und Daniel Mehlhart-Accounts.</p>
+  <div class="hero-label">Internes Reporting · Q1 2026</div>
+  <h1>User Behaviour Report</h1>
+  <p class="hero-sub">Vollständige Nutzungsanalyse der LUMA Beta — Jan bis März 2026. Exkl. Demo-Tenant und Daniel Mehlhart.</p>
   <div class="hero-meta">
     <span>📅 Zeitraum: Jan – März 2026</span>
-    <span>👤 Basis: 1 aktiver User (Max Weber)</span>
+    <span>👤 16 echte User · 4 Tenants</span>
     <span>🔒 Intern · Nicht für Weitergabe</span>
   </div>
 </div>
 
 <div class="container">
 
-  <!-- DATA NOTE -->
-  <div class="data-note">
-    <div class="icon">⚠️</div>
-    <p>
-      <strong>Datenbasis-Hinweis:</strong> Das Telemetry-System ist via RLS auf eigene User-IDs beschränkt — cross-user Event-Counts sind daher nicht zugänglich. Dieser Report basiert auf direkt abfragbaren Tabellen (Tasks, Bautagebuch, Projekte, Inbox). Für vollständiges Feature-Tracking sollte die Telemetry-RLS-Policy für Admin-Zugriff erweitert werden. <strong>Aktive echte User: 1 (Max Weber, Weber Architekten).</strong> Weitere Onboardings (HAMM Architekten) scheinen noch keine eigenständigen Accounts angelegt zu haben.
-    </p>
-  </div>
-
   <!-- KPI ROW -->
-  <div class="kpi-grid" style="margin-bottom: 44px;">
+  <div class="kpi-grid">
     <div class="kpi-card">
-      <div class="kpi-value">1</div>
-      <div class="kpi-label">Aktiver User</div>
-      <div class="kpi-sub">Max Weber, Weber Architekten</div>
+      <div class="kpi-value">16</div>
+      <div class="kpi-label">Aktive User</div>
+      <div class="kpi-sub">in 4 Tenants</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-value">9</div>
-      <div class="kpi-label">Projekte im System</div>
-      <div class="kpi-sub">6× Ausführung, 2× Entwurf, 1× Genehmigung</div>
+      <div class="kpi-value">4</div>
+      <div class="kpi-label">Onboarded Tenants</div>
+      <div class="kpi-sub">Weber, Hamm, Raab, SSR</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-value">70</div>
+      <div class="kpi-value">2.430</div>
+      <div class="kpi-label">Telemetry Events</div>
+      <div class="kpi-sub">echte User, exkl. Demo</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">870</div>
+      <div class="kpi-label">Feature-Nutzungen</div>
+      <div class="kpi-sub">in Produktions-Tenant</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">207</div>
       <div class="kpi-label">Tasks erstellt</div>
-      <div class="kpi-sub">von Max Weber (exkl. Daniel)</div>
+      <div class="kpi-sub">52% bereits erledigt</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-value">20%</div>
-      <div class="kpi-label">Task Completion Rate</div>
-      <div class="kpi-sub">14 von 70 Tasks erledigt</div>
+      <div class="kpi-value">73</div>
+      <div class="kpi-label">Bautagebuch-Einträge</div>
+      <div class="kpi-sub">51% mit Wetterdaten</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-value">1</div>
-      <div class="kpi-label">Bautagebuch-Eintrag</div>
-      <div class="kpi-sub">1× mit Wetterdaten, Projekt Villa Teutonia</div>
+      <div class="kpi-value">163</div>
+      <div class="kpi-label">Voice-Aufnahmen</div>
+      <div class="kpi-sub">#1 Feature nach Events</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-value">49%</div>
-      <div class="kpi-label">Überfällige Tasks</div>
-      <div class="kpi-sub">34 von 70 ohne Erledigung + Deadline past</div>
+      <div class="kpi-value">26</div>
+      <div class="kpi-label">Feedback-Einträge</div>
+      <div class="kpi-sub">Bugs, Wünsche, Ideen</div>
     </div>
   </div>
 
-  <!-- USER PROFILE -->
-  <section class="user-section">
-    <h2 class="section-title">👤 Aktive User im Überblick</h2>
+  <!-- TENANT OVERVIEW -->
+  <section style="margin-bottom: 44px;">
+    <h2 class="section-title">🏢 Tenants im Überblick</h2>
+    <div class="tenant-grid">
 
-    <div class="user-card">
-      <div class="user-header">
-        <div class="user-avatar">MW</div>
-        <div>
-          <div class="user-name">Max Weber</div>
-          <div class="user-meta">Weber Architekten · max@weber-architekten.de · Onboarding: 16. März 2026</div>
+      <div class="tenant-card">
+        <div class="tc-header">
+          <div class="tc-avatar">HA</div>
+          <div>
+            <div class="tc-name">Hamm Architekten</div>
+            <div class="tc-meta">Onboarding: März 2026 · 9 aktive User</div>
+          </div>
+          <div class="status-dot dot-green"></div>
         </div>
-        <span class="status-badge status-active">Aktiv</span>
-      </div>
-      <div class="user-body">
-        <div class="user-stat">
-          <div class="val">70</div>
-          <div class="lbl">Tasks erstellt</div>
-        </div>
-        <div class="user-stat">
-          <div class="val">14</div>
-          <div class="lbl">Tasks erledigt</div>
-        </div>
-        <div class="user-stat">
-          <div class="val">8</div>
-          <div class="lbl">Aktive Projekte</div>
-        </div>
-        <div class="user-stat">
-          <div class="val">1</div>
-          <div class="lbl">Bautagebuch-Eintrag</div>
-        </div>
-        <div class="user-stat">
-          <div class="val">1 Woche</div>
-          <div class="lbl">Aktiv (KW12)</div>
-        </div>
-        <div class="user-stat">
-          <div class="val">0</div>
-          <div class="lbl">Subtasks erstellt</div>
+        <div class="tc-stats">
+          <div class="tc-stat"><div class="v">807</div><div class="l">Events (Alex Hamm)</div></div>
+          <div class="tc-stat"><div class="v">11</div><div class="l">Projekte</div></div>
+          <div class="tc-stat"><div class="v">79</div><div class="l">Tasks</div></div>
         </div>
       </div>
-    </div>
 
-    <div class="user-card">
-      <div class="user-header">
-        <div class="user-avatar" style="background: #94A3B8;">AH</div>
-        <div>
-          <div class="user-name">HAMM Architekten</div>
-          <div class="user-meta">Alex Hamm · Pilot-Kunde · Onboarded laut CRM</div>
+      <div class="tenant-card">
+        <div class="tc-header">
+          <div class="tc-avatar" style="background:#059669;">WA</div>
+          <div>
+            <div class="tc-name">Weber Architekten & Partner</div>
+            <div class="tc-meta">Onboarding: März 2026 · 4 aktive User</div>
+          </div>
+          <div class="status-dot dot-green"></div>
         </div>
-        <span class="status-badge status-warn">Kein Account</span>
-      </div>
-      <div class="user-body">
-        <div class="user-stat" style="color: #9CA3AF;">
-          <div class="val" style="color:#9CA3AF;">—</div>
-          <div class="lbl">Kein Supabase-Profil angelegt</div>
-        </div>
-        <div class="user-stat" style="color: #9CA3AF;">
-          <div class="val" style="color:#9CA3AF;">—</div>
-          <div class="lbl">Keine Aktivitätsdaten verfügbar</div>
+        <div class="tc-stats">
+          <div class="tc-stat"><div class="v">452</div><div class="l">Events (Kim Weber)</div></div>
+          <div class="tc-stat"><div class="v">10</div><div class="l">Projekte</div></div>
+          <div class="tc-stat"><div class="v">128</div><div class="l">Tasks</div></div>
         </div>
       </div>
+
+      <div class="tenant-card">
+        <div class="tc-header">
+          <div class="tc-avatar" style="background:#D97706;">RI</div>
+          <div>
+            <div class="tc-name">Raab Immobilien</div>
+            <div class="tc-meta">Onboarding: März 2026 · 2 User</div>
+          </div>
+          <div class="status-dot dot-yellow"></div>
+        </div>
+        <div class="tc-stats">
+          <div class="tc-stat"><div class="v">63</div><div class="l">Events gesamt</div></div>
+          <div class="tc-stat"><div class="v">10</div><div class="l">Projekte</div></div>
+          <div class="tc-stat"><div class="v">0</div><div class="l">Tasks</div></div>
+        </div>
+      </div>
+
+      <div class="tenant-card">
+        <div class="tc-header">
+          <div class="tc-avatar" style="background:#94A3B8;">SR</div>
+          <div>
+            <div class="tc-name">SSR Architekten</div>
+            <div class="tc-meta">Onboarding: März 2026 · 1 User</div>
+          </div>
+          <div class="status-dot dot-gray"></div>
+        </div>
+        <div class="tc-stats">
+          <div class="tc-stat"><div class="v">0</div><div class="l">Events</div></div>
+          <div class="tc-stat"><div class="v">0</div><div class="l">Projekte</div></div>
+          <div class="tc-stat"><div class="v">0</div><div class="l">Tasks</div></div>
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <!-- ACTIVITY TIMELINE -->
+  <!-- USER ENGAGEMENT TABLE -->
   <section style="margin-bottom: 44px;">
-    <h2 class="section-title">📅 Aktivitäts-Timeline (Max Weber)</h2>
-    <div class="activity-section">
-      <p style="font-size: 0.85rem; color: #6B7280; margin-bottom: 16px;">Alle 70 Tasks wurden in einer einzigen Session-Woche angelegt. Das deutet auf ein intensives Onboarding-Bulk-Import-Verhalten hin, nicht auf wiederkehrende tägliche Nutzung.</p>
-      <div class="week-bar">
-        <div class="week-label">KW 11 (März)</div>
-        <div class="week-zero"><span>0 Tasks</span></div>
-      </div>
-      <div class="week-bar">
-        <div class="week-label">KW 12 (März)</div>
-        <div class="week-fill" style="width: min(100%, calc(70 * 8px))"><div class="week-count">70 Tasks</div></div>
-      </div>
-      <div class="week-bar">
-        <div class="week-label">KW 13 (März)</div>
-        <div class="week-zero"><span>0 Tasks</span></div>
-      </div>
-      <div class="week-bar">
-        <div class="week-label">KW 14 (März)</div>
-        <div class="week-zero"><span>0 Tasks</span></div>
-      </div>
-      <div style="background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 10px; padding: 12px 16px; margin-top: 14px; font-size: 0.84rem; color: #92400E;">
-        ⚠️ <strong>Retention-Signal:</strong> Nach der Onboarding-Woche (KW12) keine weiteren Task-Erstellungen messbar. Letzter Bautagebuch-Eintrag: 24. März 2026. Offen: Kommt Max noch rein? Nutzt er andere Features die nicht über Tasks messbar sind?
-      </div>
-    </div>
-  </section>
-
-  <!-- PROJEKT-NUTZUNG -->
-  <section style="margin-bottom: 44px;">
-    <h2 class="section-title">🏗️ Projekt-Nutzung</h2>
+    <h2 class="section-title">👤 User Engagement — Vollständig</h2>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>Projekt</th>
-            <th>Phase</th>
-            <th>Tasks gesamt</th>
-            <th>Erledigt</th>
-            <th>In Bearbeitung</th>
-            <th>Offen</th>
+            <th>User</th>
+            <th>Tenant</th>
+            <th>Events</th>
+            <th>Letzter Login</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Laube</strong></td>
-            <td><span class="status-pill pill-blue">Ausführung</span></td>
-            <td>12</td><td>2</td><td>2</td><td>8</td>
+            <td><strong>Alexander Hamm</strong></td>
+            <td>Hamm Architekten</td>
+            <td><strong>807</strong></td>
+            <td>31. März 2026</td>
+            <td><span class="pill pill-green">Sehr aktiv</span></td>
           </tr>
           <tr>
-            <td><strong>Ziegelmeier</strong></td>
-            <td><span class="status-pill pill-blue">Ausführung</span></td>
-            <td>11</td><td>2</td><td>3</td><td>6</td>
+            <td><strong>Kim Weber</strong></td>
+            <td>Weber Architekten</td>
+            <td><strong>452</strong></td>
+            <td>31. März 2026</td>
+            <td><span class="pill pill-green">Sehr aktiv</span></td>
           </tr>
           <tr>
-            <td><strong>EFH Müller</strong></td>
-            <td><span class="status-pill pill-orange">Entwurf</span></td>
-            <td>8</td><td>3</td><td>1</td><td>4</td>
+            <td><strong>Dinah Clauß</strong></td>
+            <td>Weber Architekten</td>
+            <td><strong>313</strong></td>
+            <td>01. April 2026</td>
+            <td><span class="pill pill-green">Sehr aktiv</span></td>
           </tr>
           <tr>
-            <td><strong>Villa Teutonia</strong></td>
-            <td><span class="status-pill pill-blue">Ausführung</span></td>
-            <td>8</td><td>2</td><td>2</td><td>4</td>
+            <td><strong>Suhandhan Ravee</strong></td>
+            <td>Hamm Architekten</td>
+            <td><strong>258</strong></td>
+            <td>24. März 2026</td>
+            <td><span class="pill pill-green">Aktiv</span></td>
           </tr>
           <tr>
-            <td><strong>Value 4</strong></td>
-            <td><span class="status-pill pill-blue">Ausführung</span></td>
-            <td>8</td><td>1</td><td>2</td><td>5</td>
+            <td><strong>Alex Ziegenhagel</strong></td>
+            <td>Hamm Architekten</td>
+            <td><strong>170</strong></td>
+            <td>01. April 2026</td>
+            <td><span class="pill pill-green">Aktiv</span></td>
           </tr>
           <tr>
-            <td><strong>Schmidt</strong></td>
-            <td><span class="status-pill pill-blue">Ausführung</span></td>
-            <td>8</td><td>1</td><td>2</td><td>5</td>
+            <td><strong>Tobias Schmidt</strong></td>
+            <td>Hamm Architekten</td>
+            <td><strong>121</strong></td>
+            <td>31. März 2026</td>
+            <td><span class="pill pill-green">Aktiv</span></td>
           </tr>
           <tr>
-            <td><strong>Traut</strong></td>
-            <td><span class="status-pill pill-orange">Genehmigung</span></td>
-            <td>8</td><td>2</td><td>1</td><td>4</td>
+            <td><strong>Natalie Saloch</strong></td>
+            <td>Weber Architekten</td>
+            <td><strong>83</strong></td>
+            <td>31. März 2026</td>
+            <td><span class="pill pill-green">Aktiv</span></td>
           </tr>
           <tr>
-            <td><strong>Wallstraße</strong></td>
-            <td><span class="status-pill pill-blue">Ausführung</span></td>
-            <td>7</td><td>1</td><td>2</td><td>4</td>
+            <td><strong>Paul Teichler</strong></td>
+            <td>Weber Architekten</td>
+            <td><strong>80</strong></td>
+            <td>31. März 2026</td>
+            <td><span class="pill pill-green">Aktiv</span></td>
+          </tr>
+          <tr>
+            <td><strong>Waldemar Specht</strong></td>
+            <td>Raab Immobilien</td>
+            <td><strong>40</strong></td>
+            <td>22. März 2026</td>
+            <td><span class="pill pill-yellow">Wenig aktiv</span></td>
+          </tr>
+          <tr>
+            <td><strong>Alexandros Gavalas</strong></td>
+            <td>Hamm Architekten</td>
+            <td><strong>36</strong></td>
+            <td>29. März 2026</td>
+            <td><span class="pill pill-yellow">Wenig aktiv</span></td>
+          </tr>
+          <tr>
+            <td><strong>Dhyani Paramita</strong></td>
+            <td>Hamm Architekten</td>
+            <td><strong>29</strong></td>
+            <td>01. April 2026</td>
+            <td><span class="pill pill-yellow">Wenig aktiv</span></td>
+          </tr>
+          <tr>
+            <td><strong>Eduard Raab</strong></td>
+            <td>Raab Immobilien</td>
+            <td><strong>23</strong></td>
+            <td>16. März 2026</td>
+            <td><span class="pill pill-yellow">Wenig aktiv</span></td>
+          </tr>
+          <tr>
+            <td><strong>Imran Hashimi</strong></td>
+            <td>Hamm Architekten</td>
+            <td><strong>12</strong></td>
+            <td>01. April 2026</td>
+            <td><span class="pill pill-yellow">Wenig aktiv</span></td>
+          </tr>
+          <tr>
+            <td><strong>Claudia Drago</strong></td>
+            <td>Hamm Architekten</td>
+            <td><strong>3</strong></td>
+            <td>12. März 2026</td>
+            <td><span class="pill pill-red">Inaktiv</span></td>
+          </tr>
+          <tr>
+            <td><strong>Edison Rruga</strong></td>
+            <td>Hamm Architekten</td>
+            <td><strong>3</strong></td>
+            <td>13. März 2026</td>
+            <td><span class="pill pill-red">Inaktiv (Login-Bug)</span></td>
+          </tr>
+          <tr>
+            <td><strong>Marvin Rössel</strong></td>
+            <td>SSR Architekten</td>
+            <td><strong>0</strong></td>
+            <td>—</td>
+            <td><span class="pill pill-gray">Kein Login</span></td>
           </tr>
         </tbody>
       </table>
     </div>
   </section>
 
+  <!-- WEEKLY ACTIVITY -->
+  <section style="margin-bottom: 44px;">
+    <h2 class="section-title">📅 Wöchentliche Aktivität (alle echten User)</h2>
+    <div class="week-section">
+      <p style="font-size: 0.85rem; color: #6B7280; margin-bottom: 20px;">Konsistentes Wachstum von KW11 bis KW13, leichter Rückgang in KW14 — typisch für Onboarding-Phase. Gute Basis für Q2.</p>
+
+      <div class="week-bar-row">
+        <div class="week-lbl">KW11 · März</div>
+        <div class="week-bar-outer">
+          <div class="week-bar-inner" style="width: 49%"><span>460</span></div>
+        </div>
+        <div class="week-cnt">460</div>
+      </div>
+      <div class="week-bar-row">
+        <div class="week-lbl">KW12 · März</div>
+        <div class="week-bar-outer">
+          <div class="week-bar-inner" style="width: 100%"><span>932</span></div>
+        </div>
+        <div class="week-cnt">932</div>
+      </div>
+      <div class="week-bar-row">
+        <div class="week-lbl">KW13 · März</div>
+        <div class="week-bar-outer">
+          <div class="week-bar-inner" style="width: 85%"><span>793</span></div>
+        </div>
+        <div class="week-cnt">793</div>
+      </div>
+      <div class="week-bar-row">
+        <div class="week-lbl">KW14 · Apr</div>
+        <div class="week-bar-outer">
+          <div class="week-bar-inner" style="width: 26%"><span>245</span></div>
+        </div>
+        <div class="week-cnt">245 *</div>
+      </div>
+      <p style="font-size: 0.75rem; color: #9CA3AF; margin-top: 10px;">* KW14 läuft noch (Datenstand: 01. April 2026)</p>
+    </div>
+  </section>
+
+  <!-- FEATURE USAGE -->
+  <section style="margin-bottom: 44px;">
+    <h2 class="section-title">🔧 Feature-Nutzung — Ranked</h2>
+    <div class="feature-section">
+      <p style="font-size: 0.85rem; color: #6B7280; margin-bottom: 20px;">Alle 870 Feature-Events der echten User. <strong style="color:#7C3AED;">Voice ist #1</strong> — das validiert den Core-Pitch.</p>
+
+      <div class="feature-row">
+        <div class="feature-name">🎙️ Voice-Aufnahmen gestartet</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:100%"></div></div>
+        <div class="feature-cnt">163</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">✅ Task erstellt</div>
+        <div class="feature-bar-wrap"><div class="feature-bar blue" style="width:91%"></div></div>
+        <div class="feature-cnt">148</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">🎙️ Voice-Aktion ausgeführt</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:89%"></div></div>
+        <div class="feature-cnt">145</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">👤 Task zugewiesen</div>
+        <div class="feature-bar-wrap"><div class="feature-bar blue" style="width:74%"></div></div>
+        <div class="feature-cnt">121</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">🏁 Task abgeschlossen</div>
+        <div class="feature-bar-wrap"><div class="feature-bar green" style="width:54%"></div></div>
+        <div class="feature-cnt">88</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">📋 Bautagebuch-Eintrag</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:37%; background:#059669;"></div></div>
+        <div class="feature-cnt">60</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">📧 Inbox geöffnet</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:7%; background:#6B7280;"></div></div>
+        <div class="feature-cnt">11</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">🔗 Subtask erstellt</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:12%; background:#6B7280;"></div></div>
+        <div class="feature-cnt">10+10</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">💬 Kommentar gepostet</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:7%; background:#6B7280;"></div></div>
+        <div class="feature-cnt">10</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">🤖 Copilot-Message</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:6%; background:#7C3AED; opacity:0.6;"></div></div>
+        <div class="feature-cnt">9</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">📄 Honorar-PDF hochgeladen</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:5%; background:#D97706;"></div></div>
+        <div class="feature-cnt">8</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">🔄 Review angefragt</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:4%; background:#6B7280;"></div></div>
+        <div class="feature-cnt">6</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">🏗️ HOAI-Phasen aus Honorar</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:4%; background:#D97706;"></div></div>
+        <div class="feature-cnt">6</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEISTBESUCHTE SEITEN -->
+  <section style="margin-bottom: 44px;">
+    <h2 class="section-title">📊 Meistbesuchte Seiten</h2>
+    <div class="feature-section">
+      <p style="font-size: 0.85rem; color: #6B7280; margin-bottom: 20px;">1.171 Page Views. Dashboard und Aufgaben dominieren — die App wird als Arbeits-Hub genutzt, nicht nur zum Ausprobieren.</p>
+      <div class="feature-row">
+        <div class="feature-name">🏠 /dashboard</div>
+        <div class="feature-bar-wrap"><div class="feature-bar blue" style="width:100%"></div></div>
+        <div class="feature-cnt">424</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">✅ /aufgaben</div>
+        <div class="feature-bar-wrap"><div class="feature-bar blue" style="width:47%"></div></div>
+        <div class="feature-cnt">198</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">⚙️ /einstellungen</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:13%; background:#6B7280;"></div></div>
+        <div class="feature-cnt">54</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">💬 /feedback</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:13%; background:#059669;"></div></div>
+        <div class="feature-cnt">54</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">🗒️ /gedanken</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:9%; background:#6B7280;"></div></div>
+        <div class="feature-cnt">37</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">📅 /zeitplan</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:7%; background:#6B7280;"></div></div>
+        <div class="feature-cnt">28</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">💰 /finance</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:5%; background:#D97706;"></div></div>
+        <div class="feature-cnt">22</div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-name">🤖 /copilot</div>
+        <div class="feature-bar-wrap"><div class="feature-bar" style="width:5%; background:#7C3AED; opacity:0.7;"></div></div>
+        <div class="feature-cnt">22</div>
+      </div>
+    </div>
+  </section>
+
   <!-- TASK ANALYSE -->
   <section style="margin-bottom: 44px;">
-    <h2 class="section-title">✅ Task-Verhalten im Detail</h2>
+    <h2 class="section-title">✅ Task-Analyse</h2>
     <div class="insights-grid">
       <div class="insight-card green">
-        <h4>🟢 Was gut funktioniert</h4>
+        <h4>✅ Starke Signale</h4>
         <ul>
-          <li>Tasks werden konsequent mit Prioritäten versehen (100% haben Priorität gesetzt)</li>
-          <li>71 von 95 Tasks haben einen Assignee — gute Team-Nutzung</li>
-          <li>Review-Workflow wird genutzt (1 Task im Review-Status)</li>
-          <li>Projekte gleichmäßig bespielt (7–12 Tasks pro Projekt)</li>
+          <li>52% Completion Rate (107 von 207 Tasks erledigt) — sehr gesund</li>
+          <li>73 Bautagebuch-Einträge, 37 mit automatischen Wetterdaten</li>
+          <li>129/207 Tasks haben Assignee — Team-Feature wird genutzt</li>
+          <li>Review-Workflow aktiv: 4 Tasks im Review, 6× explizit angefragt</li>
+          <li>8 Subtasks — Feature wird ansatzweise entdeckt</li>
         </ul>
       </div>
       <div class="insight-card yellow">
-        <h4>🟡 Optimierungspotenzial</h4>
+        <h4>⚠️ Aufmerksamkeit</h4>
         <ul>
-          <li>Completion Rate 20% — viele Tasks offen, könnte normal sein für laufende Projekte</li>
-          <li>49% der Tasks sind "überfällig" (Deadline vergangen, Status ≠ erledigt)</li>
-          <li>Keine Subtasks angelegt — Feature-Gap oder Feature unbekannt?</li>
-          <li>Kein Zeiterfassung genutzt (0 Einträge)</li>
-        </ul>
-      </div>
-      <div class="insight-card red">
-        <h4>🔴 Kritische Signale</h4>
-        <ul>
-          <li>Nach Onboarding-Woche keine weitere Task-Erstellung messbar → Retention-Risiko</li>
-          <li>HAMM Architekten hat keinen Account — Onboarding nicht abgeschlossen?</li>
-          <li>Keine Telemetry-Daten verfügbar (technisches Problem, nicht mangelnde Nutzung)</li>
-        </ul>
-      </div>
-      <div class="insight-card blue">
-        <h4>🔵 Feature-Nutzung Priorität</h4>
-        <ul>
-          <li><strong>Stark genutzt:</strong> Aufgaben/Kanban, Projekte</li>
-          <li><strong>Selten:</strong> Bautagebuch (1× aktiv), Inbox (1×)</li>
-          <li><strong>Nicht genutzt:</strong> Zeiterfassung, Subtasks, Dokumente, Voice-to-Task (nicht messbar)</li>
-          <li><strong>Copilot:</strong> Keine Telemetry → offen</li>
+          <li>Raab Immobilien: 10 Projekte, 0 Tasks — Onboarding nicht fertig</li>
+          <li>SSR Architekten: Kein einziger Event — möglicherweise kein Login</li>
+          <li>Edison Rruga: Login-Bug gemeldet, nur 3 Events</li>
+          <li>Copilot nur 9× genutzt — Feature-Awareness niedrig</li>
+          <li>Inbox nur 11× geöffnet — Email-Agent kaum bekannt</li>
         </ul>
       </div>
     </div>
   </section>
 
-  <!-- FEATURE CARDS -->
+  <!-- FEEDBACK AUSWERTUNG -->
   <section style="margin-bottom: 44px;">
-    <h2 class="section-title">🔧 Feature-Adoption im Detail</h2>
-    <div class="feature-grid">
+    <h2 class="section-title">💬 Feedback der echten User (26 Einträge)</h2>
+    <div class="callout">
+      <strong>Wichtig:</strong> 26 echte Feedback-Einträge — das ist für eine Beta außerordentlich viel. Die User sind engaged. Klare Kategorien: Voice-Button-Position (mehrfach erwähnt!), Bugs bei Zuweisungen/Uploads, und starke Feature-Wünsche um Zusammenarbeit.
+    </div>
 
-      <div class="feature-card">
-        <div class="fc-icon">✅</div>
-        <h4>Aufgaben & Kanban</h4>
-        <p>Das meistgenutzte Feature. 70 Tasks in 8 Projekten, mit Prioritäten und Assignees. Der Review-Workflow wurde mindestens einmal genutzt.</p>
-        <span class="fc-badge fc-green">Stark genutzt</span>
+    <div class="feedback-grid">
+      <div class="feedback-col bugs">
+        <h3>🐛 Bugs (aktiv)</h3>
+
+        <div class="fb-item bug">
+          <div class="fb-who">Kim Weber · Weber Architekten</div>
+          Zuweisung an Bearbeiter funktioniert nicht mehr über die Spracheingabe.
+        </div>
+        <div class="fb-item bug">
+          <div class="fb-who">Kim Weber · Weber Architekten</div>
+          Erledigte Aufgaben verschwinden nicht mehr aus der Aufgabenleiste in der Mobilversion.
+        </div>
+        <div class="fb-item bug">
+          <div class="fb-who">Dinah Clauß · Weber Architekten</div>
+          Texterkennung bei Bautagebuch-Einträgen kürzt eingesprochene Texte zu stark.
+        </div>
+        <div class="fb-item bug">
+          <div class="fb-who">Dinah Clauß · Weber Architekten</div>
+          Aufgaben lassen sich nach Status "Erledigt" nicht mehr auf einen anderen Status zurücksetzen.
+        </div>
+        <div class="fb-item bug">
+          <div class="fb-who">Natalie Saloch · Weber Architekten</div>
+          PDF-Upload im Review schlägt mit Fehlermeldung fehl (mehrfach gemeldet).
+        </div>
+        <div class="fb-item bug">
+          <div class="fb-who">Suhandhan Ravee · Hamm Architekten</div>
+          Popup beim Erstellen von Tasks / Bautagebuch-Einträgen friert ein.
+        </div>
+        <div class="fb-item bug">
+          <div class="fb-who">Suhandhan Ravee · Hamm Architekten</div>
+          Bilder können nicht aus bereits hochgeladenen Tasks/Bautagebuch gelöscht werden.
+        </div>
+        <div class="fb-item bug">
+          <div class="fb-who">Suhandhan Ravee · Hamm Architekten</div>
+          Subtasks nicht editierbar, Deadlines können nicht gesetzt werden.
+        </div>
+        <div class="fb-item bug">
+          <div class="fb-who">Alexander Hamm · Hamm Architekten</div>
+          Tasks können nicht gelöscht werden, auch wenn falsch angelegt.
+        </div>
+        <div class="fb-item bug">
+          <div class="fb-who">Alexander Hamm · Hamm Architekten</div>
+          Gesamtsumme in Projektübersicht wird falsch dargestellt.
+        </div>
+        <div class="fb-item bug">
+          <div class="fb-who">Alexander Hamm · Hamm Architekten</div>
+          Edison Rruga kann sich nicht einloggen.
+        </div>
       </div>
 
-      <div class="feature-card">
-        <div class="fc-icon">🏗️</div>
-        <h4>Projektverwaltung</h4>
-        <p>9 Projekte angelegt, verschiedene Status-Phasen (Ausführung, Entwurf, Genehmigung). HOAI-Struktur wird ansatzweise genutzt.</p>
-        <span class="fc-badge fc-green">Genutzt</span>
-      </div>
+      <div>
+        <div class="feedback-col wishes" style="margin-bottom: 20px;">
+          <h3>💚 Wünsche & Feature-Requests</h3>
 
-      <div class="feature-card">
-        <div class="fc-icon">📋</div>
-        <h4>Bautagebuch</h4>
-        <p>1 Eintrag von Max Weber (Villa Teutonia, 24. März). 3 weitere von Daniel-Accounts (Testdaten). Wetterdaten wurden einmal automatisch geladen (8.8°C, Wallstraße).</p>
-        <span class="fc-badge fc-yellow">Selten genutzt</span>
-      </div>
+          <div class="fb-item wish">
+            <div class="fb-who">Kim Weber · Weber Architekten (2×!)</div>
+            Der Sprach-Button soll wieder an die alte Position — aktuell in Hauptmenüleiste, früher deutlich besser positioniert.
+          </div>
+          <div class="fb-item wish">
+            <div class="fb-who">Kim Weber · Weber Architekten</div>
+            Bautagebuch als PDF exportieren — gibt es diese Möglichkeit schon?
+          </div>
+          <div class="fb-item wish">
+            <div class="fb-who">Alexander Hamm · Hamm Architekten</div>
+            Meeting-Notizen importieren können, damit die KI daraus Tasks erstellt.
+          </div>
+          <div class="fb-item wish">
+            <div class="fb-who">Alexander Hamm · Hamm Architekten</div>
+            E-Mails besser dem Projekt zuordnen statt nur dem Absender.
+          </div>
+          <div class="fb-item wish">
+            <div class="fb-who">Alexander Hamm · Hamm Architekten</div>
+            Projektübersicht kompakter — mehr Projekte auf einmal sichtbar.
+          </div>
+          <div class="fb-item wish">
+            <div class="fb-who">Suhandhan Ravee · Hamm Architekten</div>
+            Automatische Standorterkennung beim Öffnen der App (für Bautagebuch).
+          </div>
+        </div>
 
-      <div class="feature-card">
-        <div class="fc-icon">📧</div>
-        <h4>Inbox / E-Mail-Agent</h4>
-        <p>1 aktive Email-Connection (daniel@googlemail.com). 1 E-Mail verarbeitet, 1 KI-Task-Vorschlag erstellt und akzeptiert ("Rückruf Daniel Mehlhart"). Max Weber hat keine eigene Connection.</p>
-        <span class="fc-badge fc-yellow">Nur Daniel</span>
+        <div class="feedback-col ideas">
+          <h3>💡 Ideen (längerfristig)</h3>
+          <div class="fb-item idea">
+            <div class="fb-who">Dinah Clauß · Weber Architekten</div>
+            Notizfunktion für Bauvorhaben — Telefonnotiz ordnet sich automatisch dem richtigen Projekt zu.
+          </div>
+          <div class="fb-item idea">
+            <div class="fb-who">Dinah Clauß · Weber Architekten</div>
+            Tasks an mehrere Personen zuweisen für gemeinsam bearbeitete Aufgaben.
+          </div>
+          <div class="fb-item idea">
+            <div class="fb-who">Suhandhan Ravee · Hamm Architekten</div>
+            Offline-Modus / lokale Datenpufferung auf dem Smartphone.
+          </div>
+        </div>
       </div>
-
-      <div class="feature-card">
-        <div class="fc-icon">🎙️</div>
-        <h4>Voice-to-Task</h4>
-        <p>Telemetry nicht zugänglich. Keine messbare Nutzung über Datenbankabfragen erkennbar. Muss direkt bei Max erfragt werden — könnte genutzter sein als die Daten zeigen.</p>
-        <span class="fc-badge fc-gray">Nicht messbar</span>
-      </div>
-
-      <div class="feature-card">
-        <div class="fc-icon">🤖</div>
-        <h4>Copilot</h4>
-        <p>Telemetry nicht zugänglich. Keine indirekten Signale (keine Copilot-erstellten Tasks sichtbar). Ob und wie oft Max den Copilot nutzt: unklar.</p>
-        <span class="fc-badge fc-gray">Nicht messbar</span>
-      </div>
-
-      <div class="feature-card">
-        <div class="fc-icon">⏱️</div>
-        <h4>Zeiterfassung</h4>
-        <p>0 Einträge. Feature scheint nicht genutzt zu werden. Möglicherweise nicht bekannt, nicht relevant, oder noch nicht integriert in den Workflow.</p>
-        <span class="fc-badge fc-red">Nicht genutzt</span>
-      </div>
-
-      <div class="feature-card">
-        <div class="fc-icon">📁</div>
-        <h4>Dokumente</h4>
-        <p>0 Dokumente hochgeladen. Entweder kein Bedarf, nicht bekannt, oder der Workflow läuft noch über Dropbox/Drive.</p>
-        <span class="fc-badge fc-red">Nicht genutzt</span>
-      </div>
-
-      <div class="feature-card">
-        <div class="fc-icon">🔗</div>
-        <h4>Subtasks</h4>
-        <p>0 Subtasks von Max angelegt. Feature möglicherweise nicht bekannt oder Workflow passt noch nicht dazu. Daniel hat 22 Subtasks (Demo/Test).</p>
-        <span class="fc-badge fc-red">Nicht genutzt</span>
-      </div>
-
     </div>
   </section>
 
-  <!-- DATEN-LÜCKEN -->
+  <!-- INSIGHTS & MARKETING SIGNALS -->
   <section style="margin-bottom: 44px;">
-    <h2 class="section-title">🔍 Daten-Lücken — Was wir nicht wissen</h2>
-    <div style="background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 20px 24px;">
-      <ul class="gap-list">
-        <li>
-          <div class="gap-icon">🚫</div>
-          <div class="gap-text">
-            <strong>Telemetry-Daten (RLS-blockiert)</strong>
-            <span>Wie oft öffnet Max die App? Welche Seiten besucht er? Wie viele Copilot-Messages? Wie viele Voice-Aufnahmen? Das sind die wichtigsten Engagement-Metriken — aktuell nicht zugänglich. Fix: Telemetry-RLS für Sudo-Accounts erweitern.</span>
-          </div>
-        </li>
-        <li>
-          <div class="gap-icon">❓</div>
-          <div class="gap-text">
-            <strong>HAMM Architekten (kein Account)</strong>
-            <span>Alex Hamm ist laut CRM ongeboardet, hat aber keinen Supabase-User. Entweder läuft er über Max' Account, hat sich noch nicht registriert, oder nutzt die App noch nicht aktiv.</span>
-          </div>
-        </li>
-        <li>
-          <div class="gap-icon">📱</div>
-          <div class="gap-text">
-            <strong>Device-Mix unbekannt</strong>
-            <span>Nutzt Max mobile oder Desktop? Das würde erklären warum Bautagebuch wenig genutzt wird (Desktop → kein spontaner Baustelleneinsatz).</span>
-          </div>
-        </li>
-        <li>
-          <div class="gap-icon">🔄</div>
-          <div class="gap-text">
-            <strong>Retention nach Onboarding</strong>
-            <span>70 Tasks in KW12, danach keine neue Aktivität messbar. Nutzt Max die App nur "lesend" (Kanban checken, Status sehen) ohne neue Tasks zu erstellen? Das wäre positives Verhalten, sieht in den Daten aber wie Inaktivität aus.</span>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- GESPRÄCHSFÜHRUNG -->
-  <section style="margin-bottom: 44px;">
-    <h2 class="section-title">💬 Fragen für die User-Gespräche</h2>
+    <h2 class="section-title">📣 Key Insights & Marketing-Signale</h2>
     <div class="insights-grid">
       <div class="insight-card blue">
-        <h4>📞 Max Weber — Was fragen?</h4>
+        <h4>★ Voice ist euer stärkstes Feature — und wird wirklich genutzt</h4>
         <ul>
-          <li>Wie oft öffnest du die App täglich/wöchentlich?</li>
-          <li>Hast du Voice-to-Task schon ausprobiert?</li>
-          <li>Warum wurde das Bautagebuch nur 1× genutzt?</li>
-          <li>Wie läuft der Workflow mit deinem Team — nutzen alle den gleichen Account?</li>
-          <li>Was fehlt dir täglich noch?</li>
-          <li>Wo verlässt du dich noch auf WhatsApp / Excel?</li>
+          <li>163 Aufnahmen gestartet · 145 Aktionen ausgeführt — hohe Completion Rate</li>
+          <li>Voice-to-Task ist kein Demo-Feature, es ist Alltag</li>
+          <li>Aber: Kim Weber meldet 2× dass der Button-Ort sich verschlechtert hat</li>
+          <li>→ Höchste Priorität: Voice-UX stabilisieren und rückgängig machen</li>
         </ul>
       </div>
-      <div class="insight-card blue">
-        <h4>📞 Alex Hamm — Was klären?</h4>
+      <div class="insight-card green">
+        <h4>★ Bautagebuch wird produktiv genutzt</h4>
         <ul>
-          <li>Hat er sich überhaupt registriert?</li>
-          <li>Wenn nicht — warum nicht? Barrier beim Onboarding?</li>
-          <li>Wenn ja unter anderer E-Mail — welcher Account ist es?</li>
-          <li>Was hat er bei seinen ersten Versuchen erlebt?</li>
+          <li>73 Einträge, 37 mit automatischen Wetterdaten</li>
+          <li>Echter Alltags-Workflow bei Weber & Hamm</li>
+          <li>Kritisch: Texterkennung kürzt zu stark (Dinah Clauß)</li>
+          <li>Wunsch: PDF-Export (Kim Weber) — sofort umsetzbar</li>
         </ul>
       </div>
-    </div>
-  </section>
-
-  <!-- MARKETING SIGNALS -->
-  <section style="margin-bottom: 44px;">
-    <h2 class="section-title">📣 Marketing-Signale aus den Daten</h2>
-    <div class="feature-grid">
-      <div class="feature-card" style="border-top: 3px solid #22C55E;">
-        <div class="fc-icon">💪</div>
-        <h4>Stärke: Aufgaben-Tiefe</h4>
-        <p>70 Tasks in 8 Projekten mit Prioritäten, Assignees und Review-Workflow — das zeigt echter produktiver Einsatz. Das ist kein "ausprobiert und vergessen", das ist echter Workload.</p>
-        <span class="fc-badge fc-green">Proof-Point für Demos</span>
+      <div class="insight-card yellow">
+        <h4>→ Copilot & Inbox kaum entdeckt</h4>
+        <ul>
+          <li>Copilot: 9 Messages · 22 Page Views — Feature-Awareness fehlt</li>
+          <li>Inbox: 11× geöffnet — Email-Agent noch nicht im Workflow</li>
+          <li>Niemand hat die Inbox selbst eingerichtet (nur Daniel)</li>
+          <li>→ In jedem User-Gespräch aktiv zeigen und einrichten</li>
+        </ul>
       </div>
-      <div class="feature-card" style="border-top: 3px solid #22C55E;">
-        <div class="fc-icon">🤝</div>
-        <h4>Stärke: Projekt-Struktur</h4>
-        <p>9 Projekte mit realen Namen (Laube, Villa Teutonia, EFH Müller) — das ist echter Büro-Content. Kein Demo-Projekt, echte Arbeit. Verwertbar als anonymisiertes Case Study Material.</p>
-        <span class="fc-badge fc-green">Case Study Material</span>
-      </div>
-      <div class="feature-card" style="border-top: 3px solid #F59E0B;">
-        <div class="fc-icon">⚠️</div>
-        <h4>Lücke: Bautagebuch</h4>
-        <p>1× genutzt trotz Voice-Pitch. Das ist ein Signal: entweder der Einstieg ist zu komplex, der Nutzen noch nicht klar, oder die App wird hauptsächlich am Desktop genutzt (kein Baustelleneinsatz).</p>
-        <span class="fc-badge fc-yellow">Onboarding-Schwäche</span>
-      </div>
-      <div class="feature-card" style="border-top: 3px solid #F59E0B;">
-        <div class="fc-icon">📊</div>
-        <h4>Opportunity: Inbox</h4>
-        <p>Max Weber hat keine Email-Connection. Das ist euer stärkstes KI-Feature — wenn er es ausprobiert, wird er es lieben. Konkrete Hilfestellung beim nächsten Call könnte den Unterschied machen.</p>
-        <span class="fc-badge fc-yellow">Quick Win verfügbar</span>
+      <div class="insight-card yellow">
+        <h4>→ Retention-Risiko: Raab + SSR</h4>
+        <ul>
+          <li>Raab: 10 Projekte angelegt, 0 Tasks — Onboarding steckt fest</li>
+          <li>SSR: 0 Events — Marvin Rössel hat sich möglicherweise nie eingeloggt</li>
+          <li>Eduard Raab: letzter Login 16. März (>2 Wochen her)</li>
+          <li>→ Jetzt anrufen, bevor sie churnen</li>
+        </ul>
       </div>
     </div>
   </section>
 
   <!-- NEXT STEPS -->
   <section style="margin-bottom: 44px;">
-    <h2 class="section-title">🚀 Empfohlene nächste Schritte</h2>
+    <h2 class="section-title">🚀 Empfohlene Aktionen für Q2</h2>
     <div class="next-grid">
       <div class="next-card">
         <div class="next-num">1</div>
         <div>
-          <h4>Max Weber anrufen</h4>
-          <p>30-Min-Call. Retention prüfen, Voice + Bautagebuch zeigen, Inbox einrichten. Ziel: aktives wöchentliches Nutzungsmuster.</p>
+          <h4>Voice-Button zurück</h4>
+          <p>Kim Weber hat das 2× gemeldet. FAB-Position wiederherstellen — höchste Priorität, da Voice #1 Feature ist.</p>
         </div>
       </div>
       <div class="next-card">
         <div class="next-num">2</div>
         <div>
-          <h4>HAMM Architekten klären</h4>
-          <p>Alex Hamm hat keinen Account. Registrierung aktiv begleiten oder herausfinden warum er noch nicht rein ist.</p>
+          <h4>Raab Immobilien anrufen</h4>
+          <p>0 Tasks trotz 10 Projekte → Onboarding-Blocker finden. Eduard Raab seit 16. März nicht mehr gesehen.</p>
         </div>
       </div>
       <div class="next-card">
         <div class="next-num">3</div>
         <div>
-          <h4>Telemetry-Fix</h4>
-          <p>RLS-Policy für sudo-Rolle erweitern damit Admin-Accounts Telemetry aller Tenants sehen können. Ohne das bleibt Reporting blind.</p>
+          <h4>SSR Architekten aktivieren</h4>
+          <p>Marvin Rössel: 0 Events. Registriert aber nie eingeloggt? Barrier identifizieren und beheben.</p>
         </div>
       </div>
       <div class="next-card">
         <div class="next-num">4</div>
         <div>
-          <h4>Inbox-Onboarding pushen</h4>
-          <p>Beim nächsten Call mit Max direkt die Email-Weiterleitung einrichten. Das ist euer stärkstes WOW-Feature und noch nicht genutzt.</p>
+          <h4>PDF-Export Bautagebuch</h4>
+          <p>Kim Weber fragt explizit danach. Starkes Marketing-Feature: "Rechtssicheres Bautagebuch als PDF in einem Klick."</p>
         </div>
       </div>
       <div class="next-card">
         <div class="next-num">5</div>
         <div>
-          <h4>Voice-to-Task Demo live</h4>
-          <p>Bautagebuch per Voice vorführen — nicht erklären, vorführen. 30 Sekunden Baustellen-Situation nachspielen. Das macht das Feature greifbar.</p>
+          <h4>Edison Rruga Login-Bug fixen</h4>
+          <p>Explizit von Alex Hamm gemeldet. 1 inaktiver Nutzer schadet dem Team-Gefühl.</p>
         </div>
       </div>
       <div class="next-card">
         <div class="next-num">6</div>
         <div>
-          <h4>Neue Leads onboarden</h4>
-          <p>Mit nur 1 aktivem User ist der Q1-Report noch dünn. 3–5 weitere aktive Nutzer aus den 7 April-Ziel-Büros würden das Bild fundamental verändern.</p>
+          <h4>Inbox live einrichten</h4>
+          <p>Bei jedem nächsten User-Gespräch: Inbox direkt gemeinsam einrichten. 11× geöffnet aber 0 echte Connections bei Usern.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <div style="background: #F5F3FF; border: 2px solid #DDD6FE; border-radius: 16px; padding: 24px; margin-bottom: 32px;">
-    <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #7C3AED; margin-bottom: 10px;">Fazit Q1 2026</div>
-    <p style="font-size: 0.92rem; color: #374151; line-height: 1.7;">
-      LUMA hat in Q1 einen echten, produktiven Nutzer gewonnen — Max Weber nutzt Aufgaben und Projektverwaltung aktiv für echten Büro-Workflow. Das ist der Proof-of-Concept. Was fehlt: Breite (mehr User), Tiefe (Voice, Inbox, Bautagebuch) und Messbarkeit (Telemetry-Fix). Q2-Ziel: 7 neue Büros onboarden und Retention-Metriken aufbauen.
+  <div style="background: #F5F3FF; border: 2px solid #DDD6FE; border-radius: 14px; padding: 22px 26px; margin-bottom: 32px;">
+    <div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #7C3AED; margin-bottom: 10px;">Fazit Q1 2026</div>
+    <p style="font-size: 0.92rem; color: #374151; line-height: 1.75;">
+      LUMA ist in Q1 bei <strong>16 echten Usern</strong> in <strong>4 Büros</strong> produktiv im Einsatz. <strong>Voice-to-Task ist mit 163 Aufnahmen das meistgenutzte Feature</strong> — der Core-Pitch ist validiert. Bautagebuch läuft mit 73 Einträgen. Die 52% Task-Completion Rate zeigt echten Workflow, nicht Spielerei. <br><br>
+      Die kritischsten Punkte für Q2: Voice-Button-Position reparieren (2× eskaliert), Raab + SSR vor dem Churn retten, und Copilot + Inbox aktiv in User-Gespräche einführen. Das Feedback ist reichhaltig und konstruktiv — diese User wollen das Produkt verbessern.
     </p>
   </div>
 
 </div>
 
-<footer>LUMA · Q1 User Behaviour Report · April 2026 · 🏔️ Hatti · Nur für internen Gebrauch · Datenstand: 01.04.2026</footer>
+<footer>LUMA · Q1 User Behaviour Report · Datenstand: 01.04.2026 · 2.430 Events · 16 User · 🏔️ Hatti · Nur für internen Gebrauch</footer>
 
 </body>
 </html>
