@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laborbefund-Briefing — Daniel Mehlhart, 27.03.2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white;
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .header .label {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #a0b4c8;
+      margin-bottom: 12px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .header .subtitle {
+      color: #a0b4c8;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .header .meta {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: #c8d8e8;
+    }
+
+    .header .meta span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 16px 60px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 0 1px rgba(0,0,0,0.06);
+      padding: 28px 32px;
+      margin-bottom: 24px;
+    }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .badge-green { background: #d1fae5; color: #065f46; }
+    .badge-yellow { background: #fef3c7; color: #92400e; }
+    .badge-red { background: #fee2e2; color: #991b1b; }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+
+    /* Summary */
+    .summary-fazit {
+      background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+      border-left: 4px solid #10b981;
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #065f46;
+      font-style: italic;
+    }
+
+    .ampel-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .ampel-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 14px 20px;
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .ampel-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-green { background: #10b981; box-shadow: 0 0 0 4px #d1fae5; }
+    .dot-yellow { background: #f59e0b; box-shadow: 0 0 0 4px #fef3c7; }
+    .dot-red { background: #ef4444; box-shadow: 0 0 0 4px #fee2e2; }
+
+    .ampel-label { font-size: 14px; font-weight: 600; color: #333; }
+
+    /* Table */
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 20px 0 10px;
+      padding: 6px 12px;
+      background: #f5f5f5;
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      margin-bottom: 8px;
+    }
+
+    th {
+      background: #f9f9f9;
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #888;
+      border-bottom: 2px solid #eee;
+    }
+
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: middle;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+
+    td.param { font-weight: 600; color: #333; }
+    td.result { font-weight: 700; color: #111; font-size: 14px; }
+    td.ref { color: #888; font-size: 12.5px; }
+    td.einordnung { color: #555; font-size: 12.5px; }
+
+    /* Sportler section */
+    .highlight-box {
+      background: linear-gradient(135deg, #eff6ff, #dbeafe);
+      border-left: 4px solid #3b82f6;
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin: 16px 0;
+    }
+
+    .highlight-box h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e40af;
+      margin-bottom: 12px;
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+
+    .kpi-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px 18px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .kpi-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: #10b981;
+      margin-bottom: 2px;
+    }
+
+    .kpi-label {
+      font-size: 12px;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .kpi-note {
+      font-size: 11px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    .warning-box {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 16px 0;
+    }
+
+    .warning-box h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #92400e;
+      margin-bottom: 8px;
+    }
+
+    .warning-box p {
+      font-size: 13.5px;
+      color: #78350f;
+    }
+
+    /* Two-column layout */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    .col-card {
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .col-card h3 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #eee;
+    }
+
+    .col-card.arzt h3 { color: #065f46; border-color: #d1fae5; }
+    .col-card.ergaenzung h3 { color: #92400e; border-color: #fde68a; }
+
+    .col-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .col-card ul li {
+      font-size: 13.5px;
+      padding: 5px 0;
+      padding-left: 18px;
+      position: relative;
+      color: #444;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+
+    .col-card ul li:last-child { border-bottom: none; }
+
+    .col-card.arzt ul li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #10b981;
+      font-weight: 700;
+    }
+
+    .col-card.ergaenzung ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+    }
+
+    /* Next Actions */
+    .action-group {
+      margin-bottom: 20px;
+    }
+
+    .action-group-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .action-group-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .action-group-label {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .action-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .action-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #f9f9f9;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .action-list li::before {
+      content: '→';
+      color: #888;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Rating section */
+    .rating-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 16px 0;
+    }
+
+    @media (max-width: 640px) {
+      .rating-grid { grid-template-columns: 1fr; }
+    }
+
+    .rating-card {
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .rating-card.good {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+    }
+
+    .rating-card.bad {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+    }
+
+    .rating-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .rating-card.good h3 { color: #065f46; }
+    .rating-card.bad h3 { color: #92400e; }
+
+    .rating-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .rating-card ul li {
+      font-size: 13.5px;
+      padding: 4px 0;
+      color: #444;
+    }
+
+    .stars {
+      display: inline-flex;
+      gap: 2px;
+      margin-left: 8px;
+    }
+
+    .star { font-size: 14px; }
+    .star-filled { color: #f59e0b; }
+    .star-empty { color: #ddd; }
+
+    .verdict-box {
+      background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+      border-left: 4px solid #3b82f6;
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-top: 16px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1e40af;
+    }
+
+    /* Zink section */
+    .source-list {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0;
+    }
+
+    .source-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 14px;
+      background: #f9f9f9;
+      border-radius: 9px;
+      margin-bottom: 7px;
+      font-size: 13.5px;
+    }
+
+    .source-list li .source-name { color: #333; font-weight: 500; }
+    .source-list li .source-mg { color: #ef4444; font-weight: 700; font-size: 13px; }
+
+    .steps-list {
+      counter-reset: steps;
+      list-style: none;
+      padding: 0;
+      margin: 12px 0;
+    }
+
+    .steps-list li {
+      counter-increment: steps;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 10px 14px;
+      background: #f9f9f9;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: 13.5px;
+      color: #333;
+    }
+
+    .steps-list li::before {
+      content: counter(steps);
+      background: #3b82f6;
+      color: white;
+      font-size: 11px;
+      font-weight: 800;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .risk-box {
+      background: #fff1f2;
+      border-left: 4px solid #ef4444;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      font-size: 13.5px;
+      color: #7f1d1d;
+    }
+
+    .risk-box strong { display: block; margin-bottom: 4px; color: #991b1b; }
+
+    /* Vitamin D */
+    .vit-d-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+
+    .vit-d-item {
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .vit-d-item .vit-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .vit-d-item .vit-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: #222;
+    }
+
+    .vit-d-item .vit-sub {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    /* Print */
+    @media print {
+      body { background: white; }
+      .card { box-shadow: none; border: 1px solid #eee; break-inside: avoid; }
+      .header { background: #1a1a2e !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    @media (max-width: 600px) {
+      .card { padding: 20px 16px; }
+      .header { padding: 32px 16px 28px; }
+      .header h1 { font-size: 22px; }
+      table { font-size: 12px; }
+      th, td { padding: 8px 8px; }
+      .kpi-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="label">Medizinisches Briefing</div>
+    <h1>Laborbefund — Daniel Mehlhart</h1>
+    <div class="subtitle">Laborarztpraxis Rhein-Main, Frankfurt</div>
+    <div class="meta">
+      <span>📅 27. März 2026</span>
+      <span>🧪 Vollblut-Panel</span>
+      <span>🚴 Athlet / Sportler</span>
+      <span>📄 Erstellt 01.04.2026</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 1. ÜBERSICHT -->
+  <div class="card">
+    <div class="card-title">Sektion 1</div>
+    <h2>Übersicht / Executive Summary</h2>
+
+    <div class="summary-fazit">
+      „Blutbild eines gesunden, aktiven Sportlers — ein Beobachtungspunkt, kein Handlungsbedarf."
+    </div>
+
+    <div class="ampel-row">
+      <div class="ampel-badge">
+        <div class="ampel-dot dot-green"></div>
+        <div>
+          <div class="ampel-label">Herz / Kreislauf</div>
+          <div style="font-size:12px;color:#888;margin-top:2px;">Alle Werte optimal</div>
+        </div>
+        <span class="badge badge-green" style="margin-left:auto;">OK</span>
+      </div>
+      <div class="ampel-badge">
+        <div class="ampel-dot dot-green"></div>
+        <div>
+          <div class="ampel-label">Stoffwechsel</div>
+          <div style="font-size:12px;color:#888;margin-top:2px;">LDL leicht erhöht, Kontext beachten</div>
+        </div>
+        <span class="badge badge-green" style="margin-left:auto;">OK</span>
+      </div>
+      <div class="ampel-badge">
+        <div class="ampel-dot dot-yellow"></div>
+        <div>
+          <div class="ampel-label">Mikronährstoffe</div>
+          <div style="font-size:12px;color:#888;margin-top:2px;">Zink erhöht, Vit. D fehlt</div>
+        </div>
+        <span class="badge badge-yellow" style="margin-left:auto;">Beachten</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 2. LABORWERTE TABELLE -->
+  <div class="card">
+    <div class="card-title">Sektion 2</div>
+    <h2>Alle Laborwerte — Übersicht</h2>
+
+    <!-- Blutbild -->
+    <div class="section-title">🩸 Blutbild</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th>Ergebnis</th>
+          <th>Referenz</th>
+          <th>Status</th>
+          <th>Einordnung</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="param">Leukozyten</td>
+          <td class="result">6,1 Tsnd/μL</td>
+          <td class="ref">3,8 – 10,8</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Unauffällig</td>
+        </tr>
+        <tr>
+          <td class="param">Erythrozyten</td>
+          <td class="result">4,93 Mio/μL</td>
+          <td class="ref">4,4 – 5,6</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Guter Mittelwert</td>
+        </tr>
+        <tr>
+          <td class="param">Hämoglobin</td>
+          <td class="result">14,9 g/dL</td>
+          <td class="ref">13,5 – 16,9</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Gute O₂-Kapazität</td>
+        </tr>
+        <tr>
+          <td class="param">Hämatokrit</td>
+          <td class="result">43,0 %</td>
+          <td class="ref">40 – 50</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Unauffällig</td>
+        </tr>
+        <tr>
+          <td class="param">MCV</td>
+          <td class="result">87,2 fL</td>
+          <td class="ref">82 – 96</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Normozytäre Erythrozyten</td>
+        </tr>
+        <tr>
+          <td class="param">MCH</td>
+          <td class="result">30,2 pg</td>
+          <td class="ref">28 – 33</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Normochrom</td>
+        </tr>
+        <tr>
+          <td class="param">MCHC</td>
+          <td class="result">34,7 g/dL</td>
+          <td class="ref">32 – 35</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Oberes Normbereich</td>
+        </tr>
+        <tr>
+          <td class="param">RDW</td>
+          <td class="result">12,9 %</td>
+          <td class="ref">&lt; 15</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Gleichmäßige Zellgrößen</td>
+        </tr>
+        <tr>
+          <td class="param">Thrombozyten</td>
+          <td class="result">191 Tsnd/μL</td>
+          <td class="ref">130 – 390</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Unauffällig</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Stoffwechsel -->
+    <div class="section-title">⚗️ Stoffwechsel</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th>Ergebnis</th>
+          <th>Referenz</th>
+          <th>Status</th>
+          <th>Einordnung</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="param">Glucose nüchtern</td>
+          <td class="result">88 mg/dL</td>
+          <td class="ref">74 – 100</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Optimal</td>
+        </tr>
+        <tr>
+          <td class="param">GOT / ASAT</td>
+          <td class="result">25 U/L</td>
+          <td class="ref">&lt; 50</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Leberwert OK</td>
+        </tr>
+        <tr>
+          <td class="param">GPT / ALAT</td>
+          <td class="result">28 U/L</td>
+          <td class="ref">&lt; 50</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Leberwert OK</td>
+        </tr>
+        <tr>
+          <td class="param">GGT</td>
+          <td class="result">16 U/L</td>
+          <td class="ref">&lt; 60</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Unauffällig</td>
+        </tr>
+        <tr>
+          <td class="param">Cholesterin gesamt</td>
+          <td class="result">188 mg/dL</td>
+          <td class="ref">&lt; 200</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Knapp unter Ziel</td>
+        </tr>
+        <tr>
+          <td class="param">HDL</td>
+          <td class="result">57 mg/dL</td>
+          <td class="ref">&gt; 40</td>
+          <td><span class="badge badge-green">Gut</span></td>
+          <td class="einordnung">Sehr gut, protektiv</td>
+        </tr>
+        <tr>
+          <td class="param">LDL</td>
+          <td class="result">127 mg/dL</td>
+          <td class="ref">&lt; 116</td>
+          <td><span class="badge badge-yellow">Leicht ↑</span></td>
+          <td class="einordnung">⚠️ Kontext: Friedewald-Formel überschätzt bei TG 46</td>
+        </tr>
+        <tr>
+          <td class="param">Triglyzeride</td>
+          <td class="result">46 mg/dL</td>
+          <td class="ref">&lt; 150</td>
+          <td><span class="badge badge-green">Ausgezeichnet</span></td>
+          <td class="einordnung">⭐ Athleten-Level — Z2-Training wirkt!</td>
+        </tr>
+        <tr>
+          <td class="param">LPa (Lipoprotein a)</td>
+          <td class="result">14 nmol/L</td>
+          <td class="ref">&lt; 75</td>
+          <td><span class="badge badge-green">Sehr gut</span></td>
+          <td class="einordnung">Niedriges Verkalkungsrisiko</td>
+        </tr>
+        <tr>
+          <td class="param">Kreatinin</td>
+          <td class="result">1,02 mg/dL</td>
+          <td class="ref">&lt; 1,20</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Nierenfunktion OK</td>
+        </tr>
+        <tr>
+          <td class="param">GFR (MDRD)</td>
+          <td class="result">86 ml/min/1,73m²</td>
+          <td class="ref">&gt; 59</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Niere gut</td>
+        </tr>
+        <tr>
+          <td class="param">Harnsäure</td>
+          <td class="result">5,3 mg/dL</td>
+          <td class="ref">3,4 – 7,0</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Kein Gichtrisiko</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Mineralien -->
+    <div class="section-title">🧂 Mineralien & Spurenelemente</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th>Ergebnis</th>
+          <th>Referenz</th>
+          <th>Status</th>
+          <th>Einordnung</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="param">Kalium</td>
+          <td class="result">4,2 mmol/L</td>
+          <td class="ref">3,5 – 5,1</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Elektrolyt-Balance OK</td>
+        </tr>
+        <tr>
+          <td class="param">Natrium</td>
+          <td class="result">140 mmol/L</td>
+          <td class="ref">136 – 147</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Optimal</td>
+        </tr>
+        <tr>
+          <td class="param">Calcium</td>
+          <td class="result">2,43 mmol/L</td>
+          <td class="ref">2,05 – 2,55</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Knochenstoffwechsel OK</td>
+        </tr>
+        <tr>
+          <td class="param">Magnesium</td>
+          <td class="result">0,85 mmol/L</td>
+          <td class="ref">0,66 – 1,07</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Gut für Muskelkrampf-Prävention</td>
+        </tr>
+        <tr>
+          <td class="param">Ferritin</td>
+          <td class="result">319 ng/mL</td>
+          <td class="ref">30 – 400</td>
+          <td><span class="badge badge-green">Sehr gut</span></td>
+          <td class="einordnung">⭐ Volle Eisenspeicher vor Rennen</td>
+        </tr>
+        <tr>
+          <td class="param">Selen</td>
+          <td class="result">104 μg/L</td>
+          <td class="ref">50 – 120</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Oberer Normbereich</td>
+        </tr>
+        <tr>
+          <td class="param">Zink</td>
+          <td class="result">22,7 μmol/L</td>
+          <td class="ref">9 – 18</td>
+          <td><span class="badge badge-yellow">Erhöht ↑</span></td>
+          <td class="einordnung">⚠️ 26% über Obergrenze — beobachten</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Hormone -->
+    <div class="section-title">⚡ Hormone</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th>Ergebnis</th>
+          <th>Referenz</th>
+          <th>Status</th>
+          <th>Einordnung</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="param">TSH</td>
+          <td class="result">2,48 mU/L</td>
+          <td class="ref">0,27 – 4,20</td>
+          <td><span class="badge badge-green">Normal</span></td>
+          <td class="einordnung">Nur Screening (kein T3/T4)</td>
+        </tr>
+        <tr>
+          <td class="param">Testosteron</td>
+          <td class="result">7,27 ng/mL</td>
+          <td class="ref">2,49 – 8,36</td>
+          <td><span class="badge badge-green">Sehr gut</span></td>
+          <td class="einordnung">⭐ Oberes Drittel — optimale Trainingsadaption</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- 3. SPORTLER-EINORDNUNG -->
+  <div class="card">
+    <div class="card-title">Sektion 3</div>
+    <h2>Sportler-Einordnung 🚴</h2>
+
+    <div style="background:#f9f9f9;border-radius:12px;padding:16px 20px;margin-bottom:20px;font-size:13.5px;color:#555;">
+      <strong style="color:#333;">Kontext:</strong> Daniel, 39 Jahre, 76 kg, FTP ~225W — trainiert auf <strong style="color:#3b82f6;">Eschborn-Frankfurt 1. Mai 2026 (~90 km)</strong>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-value">0,81</div>
+        <div class="kpi-label">TG/HDL-Quotient</div>
+        <div class="kpi-note">Ziel &lt;2,0 · ⭐ Exzellent</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">319</div>
+        <div class="kpi-label">Ferritin (ng/mL)</div>
+        <div class="kpi-note">Volle Eisenspeicher ✅</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">7,27</div>
+        <div class="kpi-label">Testosteron (ng/mL)</div>
+        <div class="kpi-note">Oberes Drittel 💪</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">46</div>
+        <div class="kpi-label">Triglyzeride (mg/dL)</div>
+        <div class="kpi-note">Athleten-Level 🔥</div>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h3>🏆 Herausragende Werte aus Athleten-Sicht</h3>
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:6px 0;border-bottom:1px solid rgba(59,130,246,0.1);font-size:13.5px;color:#1e3a5f;">
+          <strong>TG/HDL-Quotient 0,81</strong> → Exzellenter kardiovaskulärer Indikator. Weit unter dem Zielwert &lt;2,0. Zeigt insulin-sensitiven Stoffwechsel.
+        </li>
+        <li style="padding:6px 0;border-bottom:1px solid rgba(59,130,246,0.1);font-size:13.5px;color:#1e3a5f;">
+          <strong>Ferritin 319 ng/mL</strong> → Volle Eisenspeicher = optimale O₂-Transportkapazität. Perfektes Timing vor dem Rennen.
+        </li>
+        <li style="padding:6px 0;border-bottom:1px solid rgba(59,130,246,0.1);font-size:13.5px;color:#1e3a5f;">
+          <strong>Testosteron oberes Drittel</strong> → Gute Trainingsadaption & Regenerationsfähigkeit. Anaboler Hormonstatus passt zur Trainingsbelastung.
+        </li>
+        <li style="padding:6px 0;font-size:13.5px;color:#1e3a5f;">
+          <strong>Triglyzeride 46 mg/dL</strong> → Zeichen eines sehr effizienten Fettstoffwechsels. Das Z2-Training zahlt sich aus!
+        </li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <h3>📊 LDL-Relativierung für Sportler</h3>
+      <p>
+        Die <strong>Friedewald-Formel</strong> überschätzt LDL systematisch bei sehr niedrigen Triglyzeriden (hier: 46 mg/dL).
+        Das echte Risikoprofil: <strong>LPa niedrig (14) + TG top (46) + HDL gut (57) + sportlich aktiv</strong>
+        = LDL 127 ist kein echter kardiovaskulärer Risikofaktor im aktuellen Lebensstil.
+        Eine direkte LDL-Messung (Friedewald-unabhängig) würde wahrscheinlich einen niedrigeren Wert zeigen.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- 4. ARZT vs. ERGÄNZUNG -->
+  <div class="card">
+    <div class="card-title">Sektion 4</div>
+    <h2>Was der Arzt gesagt hat vs. Was ich ergänze</h2>
+
+    <div class="two-col">
+      <div class="col-card arzt">
+        <h3>🩺 Arzt-Aussagen (Transkript)</h3>
+        <ul>
+          <li>Blutbild völlig in Ordnung</li>
+          <li>Leberwerte OK</li>
+          <li>LDL leicht erhöht, aber genetisch bedingt — aktuell kein Handlungsbedarf</li>
+          <li>Sport & gesunde Ernährung sind der richtige Weg</li>
+          <li>LPa niedrig → niedriges Gefäßverkalkungsrisiko</li>
+          <li>Zink überdosiert — vermutlich ernährungsbedingt (Nüsse, Fleisch)</li>
+          <li>Testosteron im oberen Normbereich</li>
+          <li>Empfehlung: gemüselastig, vollkornlastig, Leinöl</li>
+          <li><strong>Gesamtfazit: „Weitermachen wie bisher"</strong></li>
+        </ul>
+      </div>
+
+      <div class="col-card ergaenzung">
+        <h3>💡 Ergänzungen / Was fehlt</h3>
+        <ul>
+          <li>⚠️ <strong>Vitamin D3 fehlt komplett</strong> — 2000 IU/Tag seit 2 Wochen, kein Messwert. Nächster Test: 25-OH-D3 anfordern (Ziel: 40–60 ng/mL)</li>
+          <li>⚠️ <strong>TSH ohne T3/T4</strong> ist nur Screening — keine vollständige Schilddrüsendiagnostik</li>
+          <li>ℹ️ <strong>Kein CRP/hsCRP</strong> — wichtiger Entzündungsmarker für Ausdauersportler (Übertraining-Frühindikator)</li>
+          <li>ℹ️ <strong>Kein freies Testosteron</strong> — Gesamttest gut, aber freie Fraktion sagt mehr über tatsächliche Wirkung aus</li>
+          <li>ℹ️ <strong>TG/HDL-Quotient nicht erwähnt</strong> — dabei der relevantere kardiovaskuläre Marker</li>
+          <li>ℹ️ <strong>Kein Sportmediziner-Kontext</strong> — kein Wort zu VO2max, Laktat, Leistungsdiagnostik</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 5. ZINK -->
+  <div class="card">
+    <div class="card-title">Sektion 5</div>
+    <h2>Zink — Ursachenanalyse & Lösung ⚠️</h2>
+
+    <p style="color:#555;margin-bottom:16px;font-size:14px;">
+      Warum ist Zink erhöht (22,7 μmol/L, +26% über Obergrenze), obwohl keine bewusste Supplementierung?
+    </p>
+
+    <div style="font-size:13px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">
+      Mögliche Quellen (summiert ~15–22 mg/Tag)
+    </div>
+
+    <ul class="source-list">
+      <li>
+        <span class="source-name">🥛 Proteinpulver (nach Sport)</span>
+        <span class="source-mg">3–8 mg/Portion</span>
+      </li>
+      <li>
+        <span class="source-name">🥩 Fleisch (regelmäßig)</span>
+        <span class="source-mg">3–5 mg/Tag</span>
+      </li>
+      <li>
+        <span class="source-name">🥜 Nüsse (viele)</span>
+        <span class="source-mg">2–4 mg/Tag</span>
+      </li>
+      <li>
+        <span class="source-name">📊 Empfehlung D-A-CH für Männer</span>
+        <span class="source-mg" style="color:#10b981;">10 mg/Tag</span>
+      </li>
+    </ul>
+
+    <div style="font-size:13px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;">
+      Konkrete Maßnahmen
+    </div>
+
+    <ol class="steps-list">
+      <li>Nährwerte des Proteinpulvers prüfen → Zink drauf? Ggf. Marke wechseln (ohne Zinkanreicherung)</li>
+      <li>Nüsse <em>nicht</em> reduzieren (wertvoll für Gesundheit!) — aber Bewusstsein schärfen</li>
+      <li>Beim nächsten Bluttest Zink erneut kontrollieren</li>
+    </ol>
+
+    <div class="risk-box">
+      <strong>⚠️ Risiko bei dauerhaft erhöhtem Zink</strong>
+      Zink verdrängt Kupfer → kann langfristig zu <strong>Kupfermangel + Blutbildveränderungen</strong> führen.
+      Jetzt kein akuter Alarm — aber im Blick behalten. Beim nächsten Test auch Kupfer messen lassen.
+    </div>
+  </div>
+
+
+  <!-- 6. VITAMIN D -->
+  <div class="card">
+    <div class="card-title">Sektion 6</div>
+    <h2>Vitamin D — Status & Empfehlung ☀️</h2>
+
+    <div class="vit-d-grid">
+      <div class="vit-d-item">
+        <div class="vit-label">Aktuell</div>
+        <div class="vit-value">2.000 IU / Tag</div>
+        <div class="vit-sub">Vigantolvit seit ~2 Wochen</div>
+      </div>
+      <div class="vit-d-item">
+        <div class="vit-label">Messwert</div>
+        <div class="vit-value" style="color:#f59e0b;">Nicht gemessen</div>
+        <div class="vit-sub">25-OH-D3 fehlt im Panel</div>
+      </div>
+      <div class="vit-d-item">
+        <div class="vit-label">Zielbereich</div>
+        <div class="vit-value" style="color:#10b981;">40–60 ng/mL</div>
+        <div class="vit-sub">100–150 nmol/L</div>
+      </div>
+      <div class="vit-d-item">
+        <div class="vit-label">Nächster Test</div>
+        <div class="vit-value">Ende April</div>
+        <div class="vit-sub">25-OH-D3 explizit anfordern</div>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top:16px;">
+      <h3 style="color:#1e40af;">Relevanz für Sportler</h3>
+      <p style="font-size:13.5px;color:#1e3a5f;line-height:1.7;">
+        Vitamin D ist nicht nur für Knochen relevant — bei Ausdauersportlern beeinflusst es
+        <strong>Muskelfunktion</strong>, <strong>Knochenbelastbarkeit unter Belastung</strong>,
+        <strong>Immunsystem</strong> (Infektanfälligkeit nach langen Einheiten) und möglicherweise
+        auch die Testosteron-Synthese. Besonders im März/April nach dem Winter oft im Keller.
+        Weiterhin supplementieren, dann messen.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- 7. NEXT ACTIONS -->
+  <div class="card">
+    <div class="card-title">Sektion 7</div>
+    <h2>Empfehlungen / Next Actions ✅</h2>
+
+    <div class="action-group">
+      <div class="action-group-header">
+        <div class="action-group-dot" style="background:#10b981;box-shadow:0 0 0 4px #d1fae5;"></div>
+        <div class="action-group-label" style="color:#065f46;">Sofort / Jetzt</div>
+        <span class="badge badge-green">Priorität 1</span>
+      </div>
+      <ul class="action-list">
+        <li>Proteinpulver-Etikett prüfen — Zink-Gehalt heraussuchen. Bei &gt;3 mg/Portion → Marke wechseln.</li>
+        <li>Vigantolvit 2000 IU täglich weiter nehmen bis Ende April — dann Bluttest.</li>
+      </ul>
+    </div>
+
+    <div class="action-group">
+      <div class="action-group-header">
+        <div class="action-group-dot" style="background:#f59e0b;box-shadow:0 0 0 4px #fef3c7;"></div>
+        <div class="action-group-label" style="color:#92400e;">Nächster Arzttermin / in ~3 Monaten</div>
+        <span class="badge badge-yellow">Priorität 2</span>
+      </div>
+      <ul class="action-list">
+        <li>25-OH-Vitamin D3 explizit messen lassen (Ziel: 40–60 ng/mL)</li>
+        <li>Zink erneut kontrollieren — auch Kupfer messen lassen</li>
+        <li>CRP / hsCRP anfragen (Entzündungsmarker, Übertraining-Indikator)</li>
+        <li>Freies Testosteron anfragen (zusätzlich zu Gesamt-Testosteron)</li>
+      </ul>
+    </div>
+
+    <div class="action-group">
+      <div class="action-group-header">
+        <div class="action-group-dot" style="background:#3b82f6;box-shadow:0 0 0 4px #dbeafe;"></div>
+        <div class="action-group-label" style="color:#1e40af;">Mittelfristig / Optional</div>
+        <span class="badge badge-blue">Nice to have</span>
+      </div>
+      <ul class="action-list">
+        <li>Einmal jährlich Sportmediziner: VO2max-Test, Laktatdiagnostik, Performance-orientiertes Blutbild</li>
+        <li>T3 / T4 messen lassen (vollständige Schilddrüsendiagnostik, ergänzend zu TSH)</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- 8. BEWERTUNG ARZTGESPRÄCH -->
+  <div class="card">
+    <div class="card-title">Sektion 8</div>
+    <h2>Bewertung des Arztgesprächs 📋</h2>
+
+    <div class="rating-grid">
+      <div class="rating-card good">
+        <h3>
+          Was gut war
+          <span class="stars">
+            <span class="star star-filled">★</span>
+            <span class="star star-filled">★</span>
+            <span class="star star-filled">★</span>
+          </span>
+        </h3>
+        <ul>
+          <li>✅ Verständliche, klare Kommunikation</li>
+          <li>✅ LPa korrekt eingeordnet und gewürdigt</li>
+          <li>✅ Zink-Problem eigenständig erkannt</li>
+          <li>✅ Gesamtempfehlung sachlich korrekt</li>
+          <li>✅ Keine unnötige Medikalisierung</li>
+          <li>✅ Gute Gesprächsatmosphäre</li>
+        </ul>
+      </div>
+
+      <div class="rating-card bad">
+        <h3>
+          Was besser sein könnte
+          <span class="stars">
+            <span class="star star-filled">★</span>
+            <span class="star star-empty">★</span>
+            <span class="star star-empty">★</span>
+          </span>
+        </h3>
+        <ul>
+          <li>⚠️ Kein Sportler-Kontext: kein Wort zu Training, Wettkampf, Leistung</li>
+          <li>⚠️ Vitamin D komplett übergangen</li>
+          <li>⚠️ TSH ≠ vollständige Schilddrüsendiagnostik</li>
+          <li>⚠️ LDL „kaum ernährungsabhängig" etwas zu absolut formuliert</li>
+          <li>⚠️ TG/HDL-Quotient (0,81!) nicht einmal erwähnt</li>
+          <li>⚠️ Kein Hinweis auf sportmedizinische Diagnostik</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="verdict-box">
+      <strong style="display:block;margin-bottom:6px;">🏁 Gesamturteil</strong>
+      Solider Hausarzt mit guter Kommunikation — die Basics stimmen. Für eine wirklich sportler-spezifische Einordnung (VO2max, Laktat, Performance-Panel, Übertrainingsprävention) sollte ein <strong>Sportmediziner</strong> hinzugezogen werden. Einmal jährlich empfohlen.
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;padding:24px 0 8px;color:#bbb;font-size:12px;">
+    Erstellt: 01.04.2026 · Labor: Laborarztpraxis Rhein-Main, Frankfurt · Befund: 27.03.2026
+    <br>
+    <span style="color:#ddd;">⚠️ Dieses Dokument ersetzt keine ärztliche Beratung.</span>
+  </div>
+
+</div>
+</body>
+</html>
