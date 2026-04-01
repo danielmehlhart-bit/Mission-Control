@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alles auf Aktien — 1. April 2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      line-height: 1.6;
+    }
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+      color: white;
+      padding: 40px 24px 32px;
+      text-align: center;
+    }
+    .hero .date { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; margin-bottom: 8px; }
+    .hero h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .hero .subtitle { font-size: 15px; opacity: 0.75; margin-bottom: 20px; }
+    .hero a {
+      display: inline-block;
+      background: #e94560;
+      color: white;
+      text-decoration: none;
+      padding: 10px 22px;
+      border-radius: 24px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .hero a:hover { background: #c73652; }
+    .container { max-width: 720px; margin: 0 auto; padding: 24px 16px 60px; }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .card h2 { font-size: 17px; font-weight: 700; margin-bottom: 16px; color: #111; display: flex; align-items: center; gap: 8px; }
+    .card h2 .icon { font-size: 20px; }
+    .tldr { background: #1a1a2e; color: white; border-radius: 16px; padding: 24px; margin-bottom: 20px; }
+    .tldr h2 { color: #e94560; margin-bottom: 12px; font-size: 16px; letter-spacing: 1px; text-transform: uppercase; }
+    .tldr p { font-size: 15px; line-height: 1.7; opacity: 0.9; }
+    .market-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .market-item { background: #f9f9f9; border-radius: 10px; padding: 14px; }
+    .market-item .name { font-size: 12px; color: #666; margin-bottom: 4px; }
+    .market-item .val { font-size: 18px; font-weight: 700; }
+    .market-item .change { font-size: 13px; font-weight: 600; margin-top: 2px; }
+    .up { color: #00a651; }
+    .down { color: #e94560; }
+    .neutral { color: #888; }
+    .stock-list { list-style: none; }
+    .stock-list li { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+    .stock-list li:last-child { border-bottom: none; }
+    .stock-list .sname { font-weight: 600; font-size: 15px; }
+    .stock-list .sdesc { font-size: 12px; color: #888; margin-top: 2px; }
+    .stock-list .badge { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+    .badge.up { background: #e6f9ef; color: #00a651; }
+    .badge.down { background: #fef0f0; color: #e94560; }
+    .badge.neutral { background: #f0f0f0; color: #666; }
+    .topics { list-style: none; }
+    .topics li { padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 15px; }
+    .topics li:last-child { border-bottom: none; }
+    .topics li::before { content: "→ "; color: #e94560; font-weight: 700; }
+    .section-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #e94560; margin-bottom: 6px; }
+    p.body { font-size: 15px; color: #444; line-height: 1.7; }
+    .aaa-picks { }
+    .pick-item { padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+    .pick-item:last-child { border-bottom: none; }
+    .pick-item .pick-name { font-weight: 700; font-size: 15px; }
+    .pick-item .pick-meta { font-size: 13px; color: #666; margin-top: 3px; }
+    footer { text-align: center; color: #aaa; font-size: 12px; padding-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="date">Mittwoch, 1. April 2026</div>
+  <h1>🎤 Alles auf Aktien</h1>
+  <div class="subtitle">11 Aktien für die Waffenruhe &amp; Nvidia-Schub für Marvell</div>
+  <a href="https://www.youtube.com/watch?v=JTqhFxpsJq8" target="_blank">▶ Episode auf YouTube</a>
+</div>
+
+<div class="container">
+
+  <!-- TL;DR -->
+  <div class="tldr">
+    <h2>TL;DR</h2>
+    <p>Bester Börsentag seit Monaten: Iran-Präsident signalisiert Waffenstillstandsbereitschaft → Nasdaq +3%, S&P 500 +2,9%. Magnificent 7 gewinnen 750 Mrd. $. Nvidia investiert 2 Mrd. in Marvell (Silizium-Photonik), Gold bei 4.679$/Unze. Morgan Stanley nennt 11 Qualitätsaktien für Deeskalations-Szenario. Münchner Laserfirma Mynaric geht an Rocketlab.</p>
+  </div>
+
+  <!-- Märkte -->
+  <div class="card">
+    <h2><span class="icon">📊</span> Märkte gestern</h2>
+    <div class="market-grid">
+      <div class="market-item">
+        <div class="name">DAX (regulär)</div>
+        <div class="val">22.680</div>
+        <div class="change up">+0,5%</div>
+      </div>
+      <div class="market-item">
+        <div class="name">S&P 500</div>
+        <div class="val neutral">—</div>
+        <div class="change up">+2,9%</div>
+      </div>
+      <div class="market-item">
+        <div class="name">Nasdaq 100</div>
+        <div class="val neutral">—</div>
+        <div class="change up">+3,0%</div>
+      </div>
+      <div class="market-item">
+        <div class="name">Gold</div>
+        <div class="val">4.679 $</div>
+        <div class="change up">+3,0% (Tag)</div>
+      </div>
+      <div class="market-item">
+        <div class="name">Silber</div>
+        <div class="val">75,44 $</div>
+        <div class="change up">+6,9%</div>
+      </div>
+      <div class="market-item">
+        <div class="name">Bitcoin</div>
+        <div class="val">~68.000 $</div>
+        <div class="change up">+2%</div>
+      </div>
+    </div>
+    <p style="margin-top:14px; font-size:13px; color:#888;">Monatsminus DAX: −10,3% (größtes seit Juni 2022). Internat. Indizes: ∅ −5% seit Irankonflikt-Beginn.</p>
+  </div>
+
+  <!-- Einzelwerte -->
+  <div class="card">
+    <h2><span class="icon">📈</span> Einzelwerte im Fokus</h2>
+    <ul class="stock-list">
+      <li>
+        <div>
+          <div class="sname">Nvidia</div>
+          <div class="sdesc">2 Mrd. $ Investment in Marvell Technology (Silizium-Photonik)</div>
+        </div>
+        <span class="badge up">+5%</span>
+      </li>
+      <li>
+        <div>
+          <div class="sname">Marvell Technology</div>
+          <div class="sdesc">Größter prozentualer Gewinner an der Nasdaq</div>
+        </div>
+        <span class="badge up">+13%</span>
+      </li>
+      <li>
+        <div>
+          <div class="sname">ARM Holdings</div>
+          <div class="sdesc">KI-Chip-Fantasie zurück</div>
+        </div>
+        <span class="badge up">+10%</span>
+      </li>
+      <li>
+        <div>
+          <div class="sname">Oracle</div>
+          <div class="sdesc">Tausende Stellen gestrichen, Fokus auf KI-Infrastruktur</div>
+        </div>
+        <span class="badge up">+5%</span>
+      </li>
+      <li>
+        <div>
+          <div class="sname">Rocketlab</div>
+          <div class="sdesc">Mynaric-Deal genehmigt + Risikofreude</div>
+        </div>
+        <span class="badge up">+12%</span>
+      </li>
+      <li>
+        <div>
+          <div class="sname">Redcare Pharmacy</div>
+          <div class="sdesc">Short-Squeeze + Gesundheitsreformen</div>
+        </div>
+        <span class="badge up">+12%</span>
+      </li>
+      <li>
+        <div>
+          <div class="sname">Südzucker</div>
+          <div class="sdesc">Steigende Zuckerpreise + Doppelhochstufung Sparkasse</div>
+        </div>
+        <span class="badge up">+7%</span>
+      </li>
+      <li>
+        <div>
+          <div class="sname">Energiekontor</div>
+          <div class="sdesc">Solide Zahlen + zuversichtlicher Ausblick</div>
+        </div>
+        <span class="badge up">+8%</span>
+      </li>
+      <li>
+        <div>
+          <div class="sname">Mercedes-Benz</div>
+          <div class="sdesc">7 Mrd. $ Investment USA, GLC-Produktion in Alabama</div>
+        </div>
+        <span class="badge up">+1,5%</span>
+      </li>
+      <li>
+        <div>
+          <div class="sname">Nike (nachbörslich)</div>
+          <div class="sdesc">Q-Ergebnis leicht über Erw., Ausblick enttäuschend, China −20%</div>
+        </div>
+        <span class="badge down">−9%</span>
+      </li>
+      <li>
+        <div>
+          <div class="sname">Unilever</div>
+          <div class="sdesc">Lebensmittelfusion mit McCormick (65 Mrd. $-Deal)</div>
+        </div>
+        <span class="badge down">−7%</span>
+      </li>
+      <li>
+        <div>
+          <div class="sname">McCormick</div>
+          <div class="sdesc">Fusion mit Unilever-Lebensmittel, Skepsis</div>
+        </div>
+        <span class="badge down">−4%</span>
+      </li>
+      <li>
+        <div>
+          <div class="sname">Lufthansa</div>
+          <div class="sdesc">Krisenprogramm: bis zu 40 Jets am Boden, +1,5 Mrd. € Mehrkosten</div>
+        </div>
+        <span class="badge neutral">Watch</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Thema des Tages -->
+  <div class="card">
+    <h2><span class="icon">🚀</span> Thema des Tages: Mynaric → Rocketlab</h2>
+    <div class="section-tag">Deal abgeschlossen</div>
+    <p class="body">
+      Die Münchner Laserkommunikationsfirma <strong>Mynaric</strong> wird von <strong>Rocketlab</strong> übernommen — Closing noch im April 2026. Deal-Wert: 75 Mio. + 75 Mio. $ (erfolgsabhängig). Das Bundeswirtschaftsministerium hat genehmigt, aber mit Auflagen: Geistiges Eigentum, F&E und Produktion bleiben in Deutschland/Europa.
+    </p>
+    <br>
+    <p class="body">
+      <strong>Rocketlab</strong> (Börsenwert: 37 Mrd. $) gilt als wichtigster SpaceX-Konkurrent. Laser-Terminals von Mynaric stecken schon heute in Starlink-Satelliten und werden zunehmend Standard im Orbit. Rocketlab hat einen laufenden 1,3 Mrd. $-Pentagon-Auftrag für 36 Satelliten.
+    </p>
+  </div>
+
+  <!-- Triple-A: Morgan Stanley Picks -->
+  <div class="card">
+    <h2><span class="icon">🎯</span> Triple-A: 11 Aktien für die Waffenruhe</h2>
+    <div class="section-tag">Morgan Stanley — Deeskalations-Szenario Straße von Hormus</div>
+    <p class="body" style="margin-bottom:16px;">Wenn die Straße von Hormus wieder fließt (Basisszenario: <em>anhaltende Einschränkung, aber nicht Stillstand</em>), profitieren laut Morgan Stanley diese Sektoren zuerst:</p>
+
+    <div class="aaa-picks">
+      <p style="font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:8px;">🛍 Zyklischer Konsum</p>
+      <div class="pick-item">
+        <div class="pick-name">Booking Holdings</div>
+        <div class="pick-meta">Online-Reisen, 129 Mrd. $ Börsenwert — Reisen boomen zuerst bei Entspannung</div>
+      </div>
+      <div class="pick-item">
+        <div class="pick-name">Chewy</div>
+        <div class="pick-meta">Online-Tierbedarf — profitiert von steigender Konsumlaune</div>
+      </div>
+      <div class="pick-item">
+        <div class="pick-name">Hasbro</div>
+        <div class="pick-meta">Spielwaren — klassisch verschiebbarer Konsum, kommt schnell zurück</div>
+      </div>
+      <div class="pick-item">
+        <div class="pick-name">Wayfair</div>
+        <div class="pick-meta">Online-Möbel — stark konjunkturabhängig, überproportionaler Rebound</div>
+      </div>
+
+      <p style="font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:1px; color:#888; margin: 14px 0 8px;">🏦 Finanzwerte</p>
+      <div class="pick-item">
+        <div class="pick-name">Citigroup</div>
+        <div class="pick-meta">Direkter Nutznießer stabiler Wirtschaft & anziehender Aktivität</div>
+      </div>
+      <div class="pick-item">
+        <div class="pick-name">Mastercard</div>
+        <div class="pick-meta">Zahlungsdienstleister — profitiert von mehr Transaktionen weltweit</div>
+      </div>
+      <div class="pick-item">
+        <div class="pick-name">State Street</div>
+        <div class="pick-meta">Vermögensverwalter</div>
+      </div>
+      <div class="pick-item">
+        <div class="pick-name">Science Bank Corporation</div>
+        <div class="pick-meta">Regional ausgerichtete Bank</div>
+      </div>
+
+      <p style="font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:1px; color:#888; margin: 14px 0 8px;">🏭 Industrie</p>
+      <div class="pick-item">
+        <div class="pick-name">Johnson Controls</div>
+        <div class="pick-meta">Reagiert schnell auf Investitionszyklen</div>
+      </div>
+      <div class="pick-item">
+        <div class="pick-name">Trane Technologies</div>
+        <div class="pick-meta">Energiepreissensitiv, zieht bei Entspannung schnell an</div>
+      </div>
+      <div class="pick-item">
+        <div class="pick-name">Rockwell Automation</div>
+        <div class="pick-meta">Industrieautomation, Kurzreaktionszeit</div>
+      </div>
+    </div>
+
+    <p style="margin-top:14px; font-size:13px; color:#888;">ETF-Alternativen: SPDR MSCI World Consumer Discretionary · iShares MSCI World Financials · iShares MSCI World Industrials</p>
+  </div>
+
+  <!-- Sonstiges -->
+  <div class="card">
+    <h2><span class="icon">📰</span> Weitere Meldungen</h2>
+    <ul class="topics">
+      <li><strong>Warren Buffett</strong> — bleibt gelassen, sieht Kurse noch nicht günstig genug, hält hohe Cash-Bestände</li>
+      <li><strong>Tankstellen-Regel</strong> ab heute: Preiserhöhungen nur noch 1x täglich (Senkungen jederzeit möglich)</li>
+      <li><strong>IPO: Elektroag</strong> — Niederbayerischer Teekonzern (Spezialist für hermetische Verpackungen) plant Börsengang Frankfurt, 30 Mio. € Zielvolumen</li>
+      <li><strong>Deutsche Telekom HV</strong> — Dividende 3 Arbeitstage nach HV ohne Steuerabzug</li>
+      <li><strong>Jahressteuerbescheinigungen</strong> — Anleger mit REITs oft bis Ende März wartend (systembedingt)</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>Alles auf Aktien · Welt · 1. April 2026 · Kein Anlageempfehlung</footer>
+
+</body>
+</html>
