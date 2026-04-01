@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discovery Cheat Sheet</title>
+  <style>
+    @media print {
+      body { margin: 0; }
+      .no-print { display: none; }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #111;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px 28px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 3px solid #7C3AED;
+    }
+    .header-left h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #111;
+      letter-spacing: -0.5px;
+    }
+    .header-left p {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 2px;
+    }
+    .header-right {
+      font-size: 11px;
+      color: #9ca3af;
+      text-align: right;
+    }
+    .header-right strong { color: #7C3AED; display: block; font-size: 13px; }
+
+    /* Grid layout */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .block {
+      background: #f9fafb;
+      border-radius: 10px;
+      padding: 14px 16px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .block.full { grid-column: 1 / -1; }
+    .block.purple { background: #faf5ff; border-color: #ddd6fe; }
+    .block.red { background: #fff5f5; border-color: #fecaca; }
+    .block.green { background: #f0fdf4; border-color: #bbf7d0; }
+    .block.yellow { background: #fffbeb; border-color: #fde68a; }
+
+    .block-title {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .block.purple .block-title { color: #7C3AED; }
+    .block.red .block-title { color: #dc2626; }
+    .block.green .block-title { color: #16a34a; }
+    .block.yellow .block-title { color: #d97706; }
+    .block:not(.purple):not(.red):not(.green):not(.yellow) .block-title { color: #374151; }
+
+    .items { display: flex; flex-direction: column; gap: 6px; }
+
+    .item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12.5px;
+      color: #374151;
+      line-height: 1.5;
+    }
+
+    .item-icon {
+      font-size: 13px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .item strong { color: #111; font-weight: 700; }
+    .item em { color: #6b7280; font-style: normal; font-size: 11.5px; }
+
+    /* Questions bank */
+    .qbank { display: flex; flex-direction: column; gap: 5px; }
+    .q {
+      background: #fff;
+      border-radius: 6px;
+      padding: 7px 10px;
+      font-size: 12px;
+      color: #374151;
+      border: 1px solid #e5e7eb;
+      position: relative;
+      padding-left: 24px;
+    }
+    .q::before {
+      content: "?";
+      position: absolute;
+      left: 8px;
+      top: 7px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #7C3AED;
+    }
+
+    /* Red flags */
+    .flags { display: flex; flex-direction: column; gap: 5px; }
+    .flag {
+      display: flex; align-items: flex-start; gap: 6px;
+      font-size: 12px; color: #374151;
+    }
+    .flag-icon { color: #ef4444; flex-shrink: 0; font-size: 11px; font-weight: 800; margin-top: 2px; }
+
+    /* Divider */
+    .divider {
+      grid-column: 1 / -1;
+      border: none;
+      border-top: 1px dashed #e5e7eb;
+      margin: 2px 0;
+    }
+
+    /* Big reminder */
+    .mantra {
+      grid-column: 1 / -1;
+      background: #7C3AED;
+      color: #fff;
+      border-radius: 10px;
+      padding: 14px 20px;
+      text-align: center;
+    }
+    .mantra-text {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+    .mantra-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 3px;
+    }
+
+    .footer-note {
+      grid-column: 1 / -1;
+      font-size: 10px;
+      color: #d1d5db;
+      text-align: center;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-left">
+      <h1>Discovery Cheat Sheet</h1>
+      <p>Für luma Sales-Gespräche &mdash; kein Script, nur Haltung</p>
+    </div>
+    <div class="header-right">
+      <strong>luma.</strong>
+      Vor dem Call lesen &rarr; weglegen &rarr; authentisch sein
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- Mindset -->
+    <div class="block purple full">
+      <div class="block-title">&#127775; Grundhaltung vor dem Call</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        <div class="item"><span class="item-icon">&#127919;</span><div><strong>Mein Ziel heute:</strong> Verstehen ob der Schmerz real ist &mdash; nicht verkaufen.</div></div>
+        <div class="item"><span class="item-icon">&#128483;</span><div><strong>Ich rede max. 30%.</strong> Der Prospect redet 70%. Immer.</div></div>
+        <div class="item"><span class="item-icon">&#129351;</span><div><strong>Pausen sind okay.</strong> Nicht reinreden. Schweigen lassen &mdash; da kommen die echten Antworten.</div></div>
+      </div>
+    </div>
+
+    <!-- Flow -->
+    <div class="block">
+      <div class="block-title">&#9654; Gepr&#228;chsfl&#252;ss</div>
+      <div class="items">
+        <div class="item"><span class="item-icon">1&#65039;&#8419;</span><div><strong>Kurz abholen</strong> &mdash; Kontext, Referenz, warum das Gespr&#228;ch. <em>Max. 2 Min.</em></div></div>
+        <div class="item"><span class="item-icon">2&#65039;&#8419;</span><div><strong>Fragen, zuh&#246;ren, graben</strong> &mdash; Bis der echte Schmerz auf dem Tisch liegt.</div></div>
+        <div class="item"><span class="item-icon">3&#65039;&#8419;</span><div><strong>Kurze Demo</strong> &mdash; Nur wenn Pain klar ist. Nie vorher.</div></div>
+        <div class="item"><span class="item-icon">4&#65039;&#8419;</span><div><strong>Konkreter n&#228;chster Schritt</strong> &mdash; Wer macht was bis wann. Kein &ldquo;ich schick dir was.&rdquo;</div></div>
+      </div>
+    </div>
+
+    <!-- Nachfragen -->
+    <div class="block green">
+      <div class="block-title">&#128269; Immer nachhaken bei</div>
+      <div class="items">
+        <div class="item"><span class="item-icon">&#10003;</span><div>Starke Aussage &rarr; <strong>&ldquo;Was kostet dich das konkret?&rdquo;</strong></div></div>
+        <div class="item"><span class="item-icon">&#10003;</span><div>Vages Problem &rarr; <strong>&ldquo;Kannst du mir ein konkretes Beispiel geben?&rdquo;</strong></div></div>
+        <div class="item"><span class="item-icon">&#10003;</span><div>Tool-Nennung &rarr; <strong>&ldquo;Wie gut funktioniert das wirklich?&rdquo;</strong></div></div>
+        <div class="item"><span class="item-icon">&#10003;</span><div>Workaround erw&#228;hnt &rarr; <strong>&ldquo;Und wie viel Zeit geht da drauf?&rdquo;</strong></div></div>
+        <div class="item"><span class="item-icon">&#10003;</span><div>Schmerz best&#228;tigt &rarr; <strong>&ldquo;Wie lange ist das schon so?&rdquo;</strong></div></div>
+      </div>
+    </div>
+
+    <!-- Fragen-Bank -->
+    <div class="block full">
+      <div class="block-title">&#128172; Fragen-Bank &mdash; Einfach einstreuen wenn passend</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div class="q">Wie l&#228;uft das bei euch heute konkret ab?</div>
+        <div class="q">Was passiert, wenn das schiefgeht oder vergessen wird?</div>
+        <div class="q">Wer leidet am meisten darunter &mdash; du oder dein Team?</div>
+        <div class="q">Habt ihr das schon mal versucht zu l&#246;sen? Was war das Ergebnis?</div>
+        <div class="q">Welche eine Person w&#228;re die erste, die das ausprobiert?</div>
+        <div class="q">Was m&#252;sste ein Tool k&#246;nnen, damit ihr es wirklich nutzt?</div>
+        <div class="q">Was w&#228;re der Wert, wenn das weg w&#228;re? (Zeit, Nerven, Geld)</div>
+        <div class="q">Wann w&#228;re f&#252;r euch der richtige Zeitpunkt, das anzugehen?</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Red flags / Don'ts -->
+    <div class="block red">
+      <div class="block-title">&#128683; Stoppschilder &mdash; Sofort aufh&#246;ren wenn</div>
+      <div class="flags">
+        <div class="flag"><span class="flag-icon">&#10007;</span><div>Ich erkl&#228;re Features bevor der Schmerz klar ist</div></div>
+        <div class="flag"><span class="flag-icon">&#10007;</span><div>Ich rede l&#228;nger als 3 Min am St&#252;ck ohne Frage</div></div>
+        <div class="flag"><span class="flag-icon">&#10007;</span><div>Ich sage &ldquo;ja, das kann luma auch&rdquo; bevor ich verstanden habe was genau gemeint ist</div></div>
+        <div class="flag"><span class="flag-icon">&#10007;</span><div>Ich gehe zur Demo ohne mindestens 2 echte Pains on the table</div></div>
+        <div class="flag"><span class="flag-icon">&#10007;</span><div>Ich ende das Gespr&#228;ch ohne konkreten n&#228;chsten Schritt + Namen</div></div>
+      </div>
+    </div>
+
+    <!-- Objection shortcuts -->
+    <div class="block yellow">
+      <div class="block-title">&#128737; Wenn Einw&#228;nde kommen</div>
+      <div class="items">
+        <div class="item"><span class="item-icon">&#128309;</span><div><em>&ldquo;Wir haben ja schon X&rdquo;</em> &rarr; <strong>&ldquo;Wie gut l&#246;st X das Problem wirklich?&rdquo;</strong></div></div>
+        <div class="item"><span class="item-icon">&#128309;</span><div><em>&ldquo;Kann nicht versprechen, dass alle mitmachen&rdquo;</em> &rarr; <strong>&ldquo;Wer w&#228;re die erste Person, die das testet?&rdquo;</strong></div></div>
+        <div class="item"><span class="item-icon">&#128309;</span><div><em>&ldquo;Datenschutz&rdquo;</em> &rarr; <strong>&ldquo;Ich schick dir eine kurze DSGVO-Zusicherung. Reicht das?&rdquo;</strong></div></div>
+        <div class="item"><span class="item-icon">&#128309;</span><div><em>&ldquo;Ist das dein Hobby?&rdquo;</em> &rarr; <strong>&ldquo;Ich baue das als Founder &mdash; ihr habt direkten Draht zu mir, kein Ticketsystem.&rdquo;</strong></div></div>
+        <div class="item"><span class="item-icon">&#128309;</span><div><em>Jeder Einwand:</em> erst verstehen, dann antworten. <strong>Nie verteidigen.</strong></div></div>
+      </div>
+    </div>
+
+    <!-- Abschluss -->
+    <div class="block full">
+      <div class="block-title">&#127937; Gespr&#228;chsabschluss &mdash; Pflicht</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        <div class="item"><span class="item-icon">&#128101;</span><div><strong>Eine Person benennen lassen:</strong> &ldquo;Wer w&#228;re konkret der erste, der das ausprobiert?&rdquo;</div></div>
+        <div class="item"><span class="item-icon">&#128197;</span><div><strong>Datum/Aktion festlegen:</strong> &ldquo;Was macht ihr in den n&#228;chsten 7 Tagen damit?&rdquo;</div></div>
+        <div class="item"><span class="item-icon">&#128172;</span><div><strong>Zusammenfassen:</strong> &ldquo;Was ich heute geh&#246;rt habe: [Schmerz]. Passt das?&rdquo;</div></div>
+      </div>
+    </div>
+
+    <!-- Mantra -->
+    <div class="mantra">
+      <div class="mantra-text">Erst verstehen. Dann zeigen. Nie umgekehrt.</div>
+      <div class="mantra-sub">Der Prospect redet. Du h&#246;rst zu. Du fragst nach. Die Demo kommt am Ende.</div>
+    </div>
+
+    <div class="footer-note">luma Discovery Cheat Sheet &mdash; Stand April 2026 &mdash; Vor dem Meeting lesen, danach weglegen</div>
+
+  </div>
+
+</body>
+</html>
