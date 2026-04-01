@@ -47,7 +47,7 @@
       gap: 20px;
     }
 
-    /* ===== HEADER ===== */
+    /* ===== HERO ===== */
     .hero {
       background: var(--dark-bg);
       border-radius: 18px;
@@ -65,362 +65,207 @@
       pointer-events: none;
     }
     .hero-eyebrow {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--primary);
-      margin-bottom: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--primary); margin-bottom: 8px;
     }
     .hero-title {
-      font-size: 30px;
-      font-weight: 800;
-      color: white;
-      line-height: 1.15;
-      margin-bottom: 10px;
+      font-size: 30px; font-weight: 800; color: white; line-height: 1.15; margin-bottom: 10px;
     }
     .hero-title span { color: var(--primary); }
     .hero-sub {
-      font-size: 14px;
-      color: rgba(255,255,255,0.6);
-      max-width: 560px;
-      line-height: 1.6;
+      font-size: 14px; color: rgba(255,255,255,0.6); max-width: 560px; line-height: 1.6;
     }
     .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 8px;
-      padding: 5px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.75);
-      margin-top: 14px;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px; padding: 5px 12px; font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,0.75); margin-top: 14px;
     }
 
     /* ===== BIG TRUTH ===== */
     .big-truth {
-      background: var(--primary-50);
-      border: 2px solid var(--primary-100);
-      border-radius: 14px;
-      padding: 20px 24px;
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
+      background: var(--primary-50); border: 2px solid var(--primary-100);
+      border-radius: 14px; padding: 20px 24px;
+      display: flex; align-items: flex-start; gap: 14px;
     }
-    .big-truth-icon {
-      font-size: 28px;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .big-truth-title {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--primary-700);
-      margin-bottom: 6px;
-    }
-    .big-truth-text {
-      font-size: 13.5px;
-      color: var(--fg);
-      line-height: 1.6;
-    }
+    .big-truth-icon { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+    .big-truth-title { font-size: 18px; font-weight: 800; color: var(--primary-700); margin-bottom: 6px; }
+    .big-truth-text { font-size: 13.5px; color: var(--fg); line-height: 1.6; }
 
     /* ===== SECTION HEADER ===== */
-    .section-head {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
+    .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .section-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      flex-shrink: 0;
+      width: 34px; height: 34px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
     }
     .si-purple { background: var(--primary-100); }
     .si-blue   { background: var(--blue-light); }
     .si-green  { background: var(--success-light); }
     .si-amber  { background: var(--warning-light); }
     .si-dark   { background: var(--card-bg); }
-
     .section-title { font-size: 17px; font-weight: 700; color: var(--fg); }
     .section-sub   { font-size: 12px; color: var(--muted); margin-top: 1px; }
 
     /* ===== TOOLS ===== */
-    .tools-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
+    .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .tool-card {
-      background: white;
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      padding: 16px 18px;
-      position: relative;
+      background: white; border: 1.5px solid var(--border); border-radius: 14px; padding: 16px 18px;
     }
     .tool-card.highlight-card {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px hsla(262,100%,64%,0.1);
+      border-color: var(--primary); box-shadow: 0 0 0 3px hsla(262,100%,64%,0.1);
     }
     .tool-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      border-radius: 5px;
-      padding: 2px 8px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
+      display: inline-flex; align-items: center; gap: 5px; border-radius: 5px;
+      padding: 2px 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+      text-transform: uppercase; margin-bottom: 8px;
     }
     .tp-think { background: var(--blue-light); color: var(--blue-dark); }
     .tp-build { background: var(--primary-100); color: var(--primary-700); }
-
-    .tool-name {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--fg);
-      margin-bottom: 4px;
-    }
-    .tool-role {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-    .tool-desc {
-      font-size: 12.5px;
-      color: var(--fg);
-      line-height: 1.55;
-    }
+    .tool-name { font-size: 16px; font-weight: 800; color: var(--fg); margin-bottom: 4px; }
+    .tool-role { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+    .tool-desc { font-size: 12.5px; color: var(--fg); line-height: 1.55; }
 
     /* ===== STEPS ===== */
-    .steps {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    .steps { display: flex; flex-direction: column; gap: 10px; }
     .step-card {
-      background: white;
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      padding: 16px 18px;
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
+      background: white; border: 1.5px solid var(--border); border-radius: 14px;
+      padding: 16px 18px; display: flex; align-items: flex-start; gap: 14px;
     }
     .step-num {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 17px;
-      font-weight: 800;
-      flex-shrink: 0;
-      color: white;
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; font-weight: 800; flex-shrink: 0; color: white;
     }
     .sn-1 { background: var(--blue-dark); }
     .sn-2 { background: var(--primary); }
     .sn-3 { background: var(--primary-700); }
     .sn-4 { background: var(--dark-bg); }
-
     .step-content { flex: 1; }
-    .step-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--fg);
-      margin-bottom: 4px;
-    }
+    .step-title { font-size: 15px; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
     .step-tool {
-      display: inline-block;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 5px;
-      padding: 2px 8px;
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 6px;
+      display: inline-block; background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 5px; padding: 2px 8px; font-size: 10px; font-weight: 700;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;
     }
-    .step-desc {
-      font-size: 12.5px;
-      color: var(--fg);
-      line-height: 1.55;
-    }
+    .step-desc { font-size: 12.5px; color: var(--fg); line-height: 1.55; }
 
-    /* ===== PROMPT BOX ===== */
+    /* ===== EXAMPLE PROMPTS ===== */
     .prompt-section {
-      background: var(--dark-bg);
-      border-radius: 14px;
-      padding: 20px 22px;
-    }
-    .prompt-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
+      background: var(--dark-bg); border-radius: 14px; padding: 20px 22px;
     }
     .prompt-title { font-size: 16px; font-weight: 800; color: white; }
-    .prompt-sub   { font-size: 11.5px; color: rgba(255,255,255,0.5); margin-top: 2px; }
-    .prompt-chips {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 14px;
-    }
-    .prompt-chip {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 6px;
-      padding: 3px 10px;
-      font-size: 11px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.65);
-      cursor: pointer;
-    }
-    .prompt-chip.active {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: white;
-    }
+    .prompt-sub   { font-size: 11.5px; color: rgba(255,255,255,0.5); margin-top: 2px; margin-bottom: 14px; }
     .prompt-box {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
     }
     .prompt-label {
-      font-size: 9.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--primary);
-      margin-bottom: 8px;
+      font-size: 9.5px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--primary); margin-bottom: 8px;
     }
     .prompt-text {
-      font-size: 12.5px;
-      color: rgba(255,255,255,0.85);
-      line-height: 1.65;
-      font-style: italic;
+      font-size: 12.5px; color: rgba(255,255,255,0.85); line-height: 1.65; font-style: italic;
     }
-    .prompt-tip {
-      font-size: 11px;
-      color: rgba(255,255,255,0.4);
-      margin-top: 10px;
+    .prompt-tip { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 10px; }
+
+    /* ===== PRO TIPS ===== */
+    .pro-tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pro-tip-card {
+      background: white; border: 1.5px solid var(--border); border-radius: 14px; padding: 16px 18px;
+    }
+    .pro-tip-card.featured {
+      border-color: var(--primary); background: var(--primary-50);
+    }
+    .pt-eyebrow {
+      display: flex; align-items: center; gap: 6px; margin-bottom: 6px;
+    }
+    .pt-icon {
+      width: 28px; height: 28px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;
+    }
+    .pt-icon.purple { background: var(--primary-100); }
+    .pt-icon.blue   { background: var(--blue-light); }
+    .pt-icon.amber  { background: var(--warning-light); }
+    .pt-icon.green  { background: var(--success-light); }
+    .pt-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.07em; color: var(--muted);
+    }
+    .pt-title { font-size: 14px; font-weight: 700; color: var(--fg); margin-bottom: 6px; }
+    .pt-desc { font-size: 12px; color: var(--fg); line-height: 1.55; }
+    .pt-example {
+      margin-top: 10px; background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px 12px; font-size: 11.5px;
+      color: var(--fg); font-style: italic; line-height: 1.5;
+    }
+    .pt-example-label {
+      font-size: 9px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.07em; color: var(--muted); margin-bottom: 3px;
+    }
+
+    /* ===== DEBUGGING ===== */
+    .debug-steps { display: flex; flex-direction: column; gap: 8px; }
+    .debug-step {
+      background: white; border: 1.5px solid var(--border); border-radius: 12px;
+      padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px;
+    }
+    .debug-num {
+      width: 28px; height: 28px; background: var(--primary); border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; color: white; flex-shrink: 0;
+    }
+    .debug-title { font-size: 13px; font-weight: 700; color: var(--fg); margin-bottom: 2px; }
+    .debug-desc  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .debug-rule {
+      background: var(--warning-light); border: 1px solid hsla(38,92%,50%,0.25);
+      border-radius: 10px; padding: 10px 14px; font-size: 12px;
+      color: hsl(26,90%,30%); line-height: 1.55; margin-top: 10px;
     }
 
     /* ===== DOS & DON'TS ===== */
-    .dos-donts {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .dd-card {
-      border-radius: 14px;
-      padding: 16px 18px;
-    }
-    .dd-card.dos { background: var(--success-light); border: 1.5px solid hsl(142,71%,45%,0.25); }
-    .dd-card.donts { background: var(--danger-light); border: 1.5px solid hsl(0,84%,60%,0.2); }
-    .dd-title {
-      font-size: 14px;
-      font-weight: 800;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .dd-card.dos .dd-title  { color: hsl(142, 72%, 29%); }
-    .dd-card.donts .dd-title { color: hsl(0, 72%, 42%); }
+    .dos-donts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .dd-card { border-radius: 14px; padding: 16px 18px; }
+    .dd-card.dos   { background: var(--success-light); border: 1.5px solid hsla(142,71%,45%,0.25); }
+    .dd-card.donts { background: var(--danger-light);  border: 1.5px solid hsla(0,84%,60%,0.2); }
+    .dd-title { font-size: 14px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .dd-card.dos .dd-title  { color: hsl(142,72%,29%); }
+    .dd-card.donts .dd-title { color: hsl(0,72%,42%); }
     .dd-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
-    .dd-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-size: 12.5px;
-      line-height: 1.5;
-    }
-    .dd-card.dos .dd-item  { color: hsl(142, 60%, 22%); }
-    .dd-card.donts .dd-item { color: hsl(0, 55%, 30%); }
+    .dd-item { display: flex; align-items: flex-start; gap: 8px; font-size: 12.5px; line-height: 1.5; }
+    .dd-card.dos .dd-item  { color: hsl(142,60%,22%); }
+    .dd-card.donts .dd-item { color: hsl(0,55%,30%); }
     .dd-bullet {
-      width: 18px;
-      height: 18px;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: 800;
-      flex-shrink: 0;
-      margin-top: 1px;
+      width: 18px; height: 18px; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 800; flex-shrink: 0; margin-top: 1px;
     }
     .dd-card.dos .dd-bullet  { background: var(--success); color: white; }
     .dd-card.donts .dd-bullet { background: var(--danger); color: white; }
 
     /* ===== STUCK BOX ===== */
     .stuck-card {
-      background: white;
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      padding: 16px 20px;
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
+      background: white; border: 1.5px solid var(--border); border-radius: 14px;
+      padding: 16px 20px; display: flex; align-items: flex-start; gap: 16px;
     }
     .stuck-icon { font-size: 30px; flex-shrink: 0; margin-top: 2px; }
     .stuck-title { font-size: 15px; font-weight: 700; color: var(--fg); margin-bottom: 8px; }
     .stuck-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
-    .stuck-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 7px;
-      font-size: 12.5px;
-      color: var(--fg);
-      line-height: 1.5;
-    }
-    .stuck-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--primary);
-      flex-shrink: 0;
-      margin-top: 6px;
-    }
+    .stuck-item { display: flex; align-items: flex-start; gap: 7px; font-size: 12.5px; color: var(--fg); line-height: 1.5; }
+    .stuck-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); flex-shrink: 0; margin-top: 6px; }
 
     /* ===== MINDSET ===== */
-    .mindset-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
+    .mindset-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
     .mindset-card {
-      background: white;
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 16px;
-      text-align: center;
+      background: white; border: 1.5px solid var(--border); border-radius: 12px;
+      padding: 14px 16px; text-align: center;
     }
     .mindset-emoji { font-size: 24px; margin-bottom: 6px; }
     .mindset-title { font-size: 13px; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
     .mindset-desc  { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
 
     /* ===== FOOTER ===== */
-    .footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 4px;
-    }
+    .footer { display: flex; align-items: center; justify-content: space-between; padding-top: 4px; }
     .footer-text { font-size: 10.5px; color: var(--muted); }
     .footer-brand { font-size: 10px; font-weight: 700; color: var(--primary); letter-spacing: 0.06em; }
   </style>
@@ -441,7 +286,7 @@
     <div class="big-truth-icon">💡</div>
     <div>
       <div class="big-truth-title">The one thing you need to know</div>
-      <div class="big-truth-text">You do not need to know how to code. You need to know how to <strong>describe</strong>. Think of Lovable like a very fast junior developer — it needs clear instructions, not technical expertise. Your job is to explain what you want. The tool's job is to build it. If it builds the wrong thing, you describe it better. That's it.</div>
+      <div class="big-truth-text">You do not need to know how to code. You need to know how to <strong>describe</strong>. Think of Lovable like a very fast junior developer — it needs clear instructions, not technical expertise. Your job is to explain what you want. The tool's job is to build it. If it builds the wrong thing, you describe it better. That's the whole process.</div>
     </div>
   </div>
 
@@ -459,7 +304,7 @@
         <div class="tool-pill tp-think">Step 1 · Think</div>
         <div class="tool-name">ChatGPT or Claude</div>
         <div class="tool-role">Your thinking partner</div>
-        <div class="tool-desc">Use this <strong>before</strong> you open Lovable. Describe your topic in plain language, let it ask you questions, and use that back-and-forth to get clarity on what you actually want to build. When you're done, you'll have a clear brief — ready to paste into Lovable.</div>
+        <div class="tool-desc">Use this <strong>before</strong> you open Lovable. Describe your topic in plain language, let it ask you questions, and use that back-and-forth to get clarity on what you want to build. When you're done, you'll have a clear brief — ready to paste into Lovable.</div>
       </div>
       <div class="tool-card highlight-card">
         <div class="tool-pill tp-build">Step 2 · Build</div>
@@ -470,7 +315,7 @@
     </div>
   </div>
 
-  <!-- STEPS -->
+  <!-- 4 STEPS -->
   <div>
     <div class="section-head">
       <div class="section-icon si-purple">🚀</div>
@@ -486,7 +331,7 @@
         <div class="step-content">
           <div class="step-title">Define what you want to build</div>
           <div class="step-tool">ChatGPT or Claude · 15 min</div>
-          <div class="step-desc">Open ChatGPT or Claude and type: <em>"I work at Drooms, a B2B SaaS company for secure data rooms. I want to build [your topic]. Help me define what the simplest first version should look like. Ask me questions."</em> Let it ask. Answer honestly. By the end, copy the summary and use it as your Lovable prompt.</div>
+          <div class="step-desc">Open ChatGPT or Claude and type: <em>"I work at Drooms, a B2B SaaS company for secure data rooms. I want to build [your topic]. Help me define what the simplest first version should look like. Ask me questions."</em> Let it ask. Answer honestly. By the end, copy the summary — that's your Lovable prompt.</div>
         </div>
       </div>
 
@@ -495,7 +340,7 @@
         <div class="step-content">
           <div class="step-title">Open Lovable and paste your prompt</div>
           <div class="step-tool">Lovable · 5 min</div>
-          <div class="step-desc">Go to <strong>lovable.dev</strong>, sign in, and start a new project. Paste the description you got from Step 1 directly into the chat — or use one of the example prompts below. Hit enter. Lovable will start building. Don't panic if it doesn't look perfect immediately — that's normal.</div>
+          <div class="step-desc">Go to <strong>lovable.dev</strong>, sign in, and start a new project. Paste the description from Step 1 — or use one of the example prompts below. Hit enter. Lovable starts building. Don't panic if it doesn't look perfect immediately — that's completely normal.</div>
         </div>
       </div>
 
@@ -504,7 +349,7 @@
         <div class="step-content">
           <div class="step-title">Give feedback, iterate</div>
           <div class="step-tool">Lovable · 20–40 min</div>
-          <div class="step-desc">Look at what it built. Then describe what's missing or wrong in plain English — like you're talking to a person: <em>"The button should be on the right side"</em>, <em>"Add a column for status"</em>, <em>"Remove the sidebar"</em>. Do 3–5 rounds of this. Your first real output will emerge.</div>
+          <div class="step-desc">Look at what it built. Describe what's missing or wrong in plain English — like talking to a person: <em>"The button should be on the right side"</em>, <em>"Add a column for status"</em>, <em>"Remove the sidebar."</em> Do 3–5 rounds. Your first real output will emerge. See the Pro Tips section below for how to do this even more precisely.</div>
         </div>
       </div>
 
@@ -513,7 +358,7 @@
         <div class="step-content">
           <div class="step-title">Share the link</div>
           <div class="step-tool">Lovable · 2 min</div>
-          <div class="step-desc">Lovable gives every project a shareable URL — no installation needed. Copy it and send it to Daniel or your team with one line: <em>"Here's my first version — feedback welcome."</em> That's your first build. Done.</div>
+          <div class="step-desc">Lovable gives every project a shareable URL — no installation needed. Copy it and send it to Daniel or your team with one line: <em>"Here's my first version — feedback welcome."</em> Done. That's your first build.</div>
         </div>
       </div>
 
@@ -522,17 +367,8 @@
 
   <!-- EXAMPLE PROMPTS -->
   <div class="prompt-section">
-    <div class="prompt-header">
-      <div>
-        <div class="prompt-title">✦ Ready-to-use starter prompts</div>
-        <div class="prompt-sub">Copy, paste into Lovable, and hit enter — adapt the details to fit your specific project</div>
-      </div>
-    </div>
-    <div class="prompt-chips">
-      <div class="prompt-chip active">Learning Hub</div>
-      <div class="prompt-chip">Sales Enablement</div>
-      <div class="prompt-chip">AI Training Tool</div>
-    </div>
+    <div class="prompt-title">✦ Ready-to-use starter prompts</div>
+    <div class="prompt-sub">Copy one, paste into Lovable, and hit enter — adapt the details to fit your specific project</div>
 
     <div class="prompt-box">
       <div class="prompt-label">Learning Hub · Starter Prompt</div>
@@ -541,15 +377,165 @@
 
     <div class="prompt-box">
       <div class="prompt-label">Sales Enablement Tracker · Starter Prompt</div>
-      <div class="prompt-text">"Build a simple one-page tracker for a sales team to log AI tools they've tried and what they found useful. Each entry should have: tool name, use case, a rating (1–5), and a free text field for notes. Include a simple filter to show entries by use case. Keep it minimal and easy to update."</div>
+      <div class="prompt-text">"Build a simple one-page tracker for a sales team to log AI tools they've tried and what they found useful. Each entry should have: tool name, use case, a rating (1–5), and a notes field. Include a simple filter to show entries by use case. Keep it minimal and easy to update."</div>
     </div>
 
     <div class="prompt-box">
       <div class="prompt-label">AI Training Dashboard · Starter Prompt</div>
-      <div class="prompt-text">"Build a simple internal training dashboard for a team learning to use AI tools. It should show a list of training modules with title, status (not started / in progress / done), and a short description. Include a progress bar at the top showing overall team completion. No login needed — assume it's internal only."</div>
+      <div class="prompt-text">"Build a simple internal training dashboard for a team learning to use AI tools. Show a list of training modules with title, status (not started / in progress / done), and a short description. Include a progress bar at the top showing overall team completion. No login needed — internal use only."</div>
     </div>
 
-    <div class="prompt-tip">💡 Tip: The more specific your prompt, the better the first output. Add details like colors, layout preferences, number of columns, or specific features you need.</div>
+    <div class="prompt-tip">💡 The more specific your prompt, the better the first output. Mention layout preferences, number of columns, color scheme, or specific features you need.</div>
+  </div>
+
+  <!-- PRO TIPS -->
+  <div>
+    <div class="section-head">
+      <div class="section-icon si-purple">⚡</div>
+      <div>
+        <div class="section-title">Pro Tips — how to get better results, faster</div>
+        <div class="section-sub">These make the difference between a frustrating session and a great one</div>
+      </div>
+    </div>
+    <div class="pro-tips-grid">
+
+      <div class="pro-tip-card featured">
+        <div class="pt-eyebrow">
+          <div class="pt-icon purple">🖼️</div>
+          <div class="pt-label">Biggest lever</div>
+        </div>
+        <div class="pt-title">Paste a screenshot — show, don't tell</div>
+        <div class="pt-desc">Found an app or website that looks the way you want yours to look? Take a screenshot and paste it directly into Lovable's chat alongside your prompt. The AI interprets visuals far better than written descriptions. This is the single fastest way to get the right design on the first try.</div>
+        <div class="pt-example">
+          <div class="pt-example-label">How to say it</div>
+          "Build something that looks similar to this screenshot — same clean card layout, dark header, same spacing feel. Here's what I need it to do: [your description]."
+        </div>
+      </div>
+
+      <div class="pro-tip-card">
+        <div class="pt-eyebrow">
+          <div class="pt-icon blue">@</div>
+          <div class="pt-label">Precision editing</div>
+        </div>
+        <div class="pt-title">Use @mention to point at components</div>
+        <div class="pt-desc">When you want to change something specific — a button, a card, a header — don't describe it vaguely. In Lovable's chat, type <strong>@</strong> and it shows you a list of components in your project. Click the right one, then describe your change. This tells Lovable exactly where to look instead of guessing.</div>
+        <div class="pt-example">
+          <div class="pt-example-label">How to say it</div>
+          "@HeroSection — change the background to dark navy and make the title font larger. Keep everything else the same."
+        </div>
+      </div>
+
+      <div class="pro-tip-card">
+        <div class="pt-eyebrow">
+          <div class="pt-icon amber">🎯</div>
+          <div class="pt-label">Better prompts</div>
+        </div>
+        <div class="pt-title">Be hyper-specific about one thing at a time</div>
+        <div class="pt-desc">Asking for five changes at once leads to messy results. Pick the most important thing, describe it precisely, then review what changed before the next instruction. Think of it as a conversation — one clear ask per turn. Precision beats length.</div>
+        <div class="pt-example">
+          <div class="pt-example-label">Weak vs. strong</div>
+          ❌ "Make it look better and add more stuff."<br>
+          ✅ "Add a status column to the table with three values: Active, Pending, Done. Show them as colored badges."
+        </div>
+      </div>
+
+      <div class="pro-tip-card">
+        <div class="pt-eyebrow">
+          <div class="pt-icon green">📋</div>
+          <div class="pt-label">Better context</div>
+        </div>
+        <div class="pt-title">Give context upfront, not after things go wrong</div>
+        <div class="pt-desc">The more Lovable knows about your goal from the start, the fewer corrections you'll need. Mention who uses the tool, what problem it solves, and what "done" looks like. A 3-sentence context paragraph at the start saves 10 correction rounds later.</div>
+        <div class="pt-example">
+          <div class="pt-example-label">How to say it</div>
+          "This is for our internal sales team at Drooms (B2B SaaS, ~30 reps). They need to quickly find training resources. The goal is fast access, not fancy features. Keep it simple."
+        </div>
+      </div>
+
+      <div class="pro-tip-card">
+        <div class="pt-eyebrow">
+          <div class="pt-icon purple">🔎</div>
+          <div class="pt-label">Design inspiration</div>
+        </div>
+        <div class="pt-title">Find references before you start</div>
+        <div class="pt-desc">Spend 5 minutes on <strong>dribbble.com</strong> or <strong>mobbin.com</strong> searching for UI that looks like what you want. Screenshot it. Paste it into your first prompt. You don't need to design anything yourself — just show the AI what good looks like. Your taste is the input; the AI does the execution.</div>
+        <div class="pt-example">
+          <div class="pt-example-label">How to find good references</div>
+          Search Dribbble for: "dashboard clean minimal" or "SaaS internal tool" — pick something that feels right.
+        </div>
+      </div>
+
+      <div class="pro-tip-card">
+        <div class="pt-eyebrow">
+          <div class="pt-icon amber">📐</div>
+          <div class="pt-label">Planning saves time</div>
+        </div>
+        <div class="pt-title">80% planning, 20% building</div>
+        <div class="pt-desc">The biggest mistake is opening Lovable before knowing what you want. Spend more time clarifying the idea than you think is necessary — in Claude, on paper, wherever. If you can't describe your tool in 3 sentences, the plan isn't ready yet. Build time is fast once the thinking is clear.</div>
+        <div class="pt-example">
+          <div class="pt-example-label">The 3-sentence test</div>
+          "This tool is for [who]. It solves [what problem]. The first version only needs to do [one thing]."
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DEBUGGING -->
+  <div>
+    <div class="section-head">
+      <div class="section-icon si-amber">🔧</div>
+      <div>
+        <div class="section-title">When something goes wrong — what to do</div>
+        <div class="section-sub">In order. Try each step once before moving to the next.</div>
+      </div>
+    </div>
+    <div class="debug-steps">
+
+      <div class="debug-step">
+        <div class="debug-num">1</div>
+        <div>
+          <div class="debug-title">Let Lovable fix it itself</div>
+          <div class="debug-desc">Click the "Try to fix" button if it appears. The AI often catches its own errors. Try this once — if it doesn't work, move on.</div>
+        </div>
+      </div>
+
+      <div class="debug-step">
+        <div class="debug-num">2</div>
+        <div>
+          <div class="debug-title">Describe exactly what's wrong</div>
+          <div class="debug-desc">Tell Lovable specifically what you see vs. what you expected: <em>"The table is showing blank rows. It should show the 3 items I added."</em> Specific beats vague, every time.</div>
+        </div>
+      </div>
+
+      <div class="debug-step">
+        <div class="debug-num">3</div>
+        <div>
+          <div class="debug-title">Use @mention to isolate the problem</div>
+          <div class="debug-desc">Type @ in Lovable's chat, select the component that's broken, and describe just that component. Narrowing the scope helps the AI focus and avoids breaking other things.</div>
+        </div>
+      </div>
+
+      <div class="debug-step">
+        <div class="debug-num">4</div>
+        <div>
+          <div class="debug-title">Revert and re-prompt</div>
+          <div class="debug-desc">Lovable has a version history. Go back 2–3 steps to a version that worked, then re-describe what you want — more clearly this time. Sometimes starting clean is faster than trying to fix.</div>
+        </div>
+      </div>
+
+      <div class="debug-step">
+        <div class="debug-num">5</div>
+        <div>
+          <div class="debug-title">Ask Daniel</div>
+          <div class="debug-desc">If you've been stuck for more than 20 minutes, reach out. That's not a failure — it's how this works in a team. Share the Lovable link and describe what you were trying to do.</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="debug-rule">
+      ⚠️ <strong>After any stuck moment, ask Lovable:</strong> "How could I have described this better?" Use the answer to improve your next prompt. You're learning a new language — every session you get better at it.
+    </div>
   </div>
 
   <!-- DOS & DON'TS -->
@@ -566,78 +552,35 @@
       <div class="dd-card dos">
         <div class="dd-title">✅ Do this</div>
         <ul class="dd-list">
-          <li class="dd-item">
-            <div class="dd-bullet">✓</div>
-            <span><strong>Start small.</strong> One screen, one use case. You can always add more.</span>
-          </li>
-          <li class="dd-item">
-            <div class="dd-bullet">✓</div>
-            <span><strong>Describe what you see, not what's wrong technically.</strong> "The button is in the wrong place" is better than "the CSS layout is broken."</span>
-          </li>
-          <li class="dd-item">
-            <div class="dd-bullet">✓</div>
-            <span><strong>Iterate fast.</strong> 5 small feedback rounds beat one long, detailed brief.</span>
-          </li>
-          <li class="dd-item">
-            <div class="dd-bullet">✓</div>
-            <span><strong>Share early.</strong> An imperfect working link beats a perfect description of what you plan to build.</span>
-          </li>
-          <li class="dd-item">
-            <div class="dd-bullet">✓</div>
-            <span><strong>Use Claude/GPT to pre-think.</strong> If you're unsure what to build, spend 15 minutes with it before opening Lovable.</span>
-          </li>
+          <li class="dd-item"><div class="dd-bullet">✓</div><span><strong>Paste screenshots.</strong> Show Lovable what you want — visuals beat words every time.</span></li>
+          <li class="dd-item"><div class="dd-bullet">✓</div><span><strong>Start small.</strong> One screen, one use case. You can always add more later.</span></li>
+          <li class="dd-item"><div class="dd-bullet">✓</div><span><strong>Use @mention</strong> when targeting a specific component. Precision beats guessing.</span></li>
+          <li class="dd-item"><div class="dd-bullet">✓</div><span><strong>Iterate fast.</strong> 5 small feedback rounds beat one long, detailed brief.</span></li>
+          <li class="dd-item"><div class="dd-bullet">✓</div><span><strong>Share early.</strong> An imperfect link beats a perfect idea you haven't shipped yet.</span></li>
+          <li class="dd-item"><div class="dd-bullet">✓</div><span><strong>Pre-think in Claude/GPT.</strong> 15 minutes there saves 45 minutes of Lovable confusion.</span></li>
         </ul>
       </div>
 
       <div class="dd-card donts">
         <div class="dd-title">🚫 Avoid this</div>
         <ul class="dd-list">
-          <li class="dd-item">
-            <div class="dd-bullet">✗</div>
-            <span><strong>Don't wait for perfect clarity.</strong> The prompt doesn't have to be perfect. Start, see what comes out, adjust.</span>
-          </li>
-          <li class="dd-item">
-            <div class="dd-bullet">✗</div>
-            <span><strong>Don't try to build everything at once.</strong> "Build me a full CRM with reporting and integrations" will produce a mess. Scope it down.</span>
-          </li>
-          <li class="dd-item">
-            <div class="dd-bullet">✗</div>
-            <span><strong>Don't give up after one bad output.</strong> One unclear instruction = one bad result. Rephrase and try again. It's not broken.</span>
-          </li>
-          <li class="dd-item">
-            <div class="dd-bullet">✗</div>
-            <span><strong>Don't put real customer data into prototypes.</strong> These tools are for internal use only — use dummy data or anonymized examples.</span>
-          </li>
-          <li class="dd-item">
-            <div class="dd-bullet">✗</div>
-            <span><strong>Don't skip the thinking step.</strong> Opening Lovable without knowing what you want leads to frustration. 10 minutes with Claude first saves 45 minutes of confusion.</span>
-          </li>
+          <li class="dd-item"><div class="dd-bullet">✗</div><span><strong>Don't wait for perfect clarity.</strong> Start, see what comes out, adjust from there.</span></li>
+          <li class="dd-item"><div class="dd-bullet">✗</div><span><strong>Don't ask for 5 changes at once.</strong> One clear ask per message gets cleaner results.</span></li>
+          <li class="dd-item"><div class="dd-bullet">✗</div><span><strong>Don't give up after one bad output.</strong> One unclear prompt = one bad result. Rephrase and try again.</span></li>
+          <li class="dd-item"><div class="dd-bullet">✗</div><span><strong>Don't use real customer data in prototypes.</strong> Always use dummy or anonymized data.</span></li>
+          <li class="dd-item"><div class="dd-bullet">✗</div><span><strong>Don't skip the thinking step.</strong> Opening Lovable without a clear goal leads to frustration.</span></li>
         </ul>
       </div>
 
     </div>
   </div>
 
-  <!-- STUCK -->
-  <div class="stuck-card">
-    <div class="stuck-icon">🧱</div>
-    <div>
-      <div class="stuck-title">When you're stuck — here's what to do</div>
-      <ul class="stuck-list">
-        <li class="stuck-item"><span class="stuck-dot"></span><strong>It built something completely wrong:</strong> Don't start over. Describe specifically what's wrong: "Remove the sidebar. Make the header dark. Show only three columns, not five."</li>
-        <li class="stuck-item"><span class="stuck-dot"></span><strong>You don't know what to build:</strong> Open ChatGPT/Claude and say: "I have to deliver [your Q2 deliverable] by [date]. What's the simplest tool or prototype I could build with Lovable that would help?" Follow the conversation.</li>
-        <li class="stuck-item"><span class="stuck-dot"></span><strong>It keeps making the same mistake:</strong> Try adding "Important:" before your instruction. Or start a fresh message and re-describe the full context from scratch.</li>
-        <li class="stuck-item"><span class="stuck-dot"></span><strong>You feel like it's too complicated:</strong> That means you're trying to build too much. Take one feature and describe only that. One table. One form. One page. Ship that, then add.</li>
-      </ul>
-    </div>
-  </div>
-
   <!-- MINDSET -->
   <div>
     <div class="section-head">
-      <div class="section-icon si-amber">🧠</div>
+      <div class="section-icon si-dark">🧠</div>
       <div>
-        <div class="section-title">The right mindset for building with AI</div>
+        <div class="section-title">The right mindset</div>
         <div class="section-sub">This is different from using ChatGPT for questions</div>
       </div>
     </div>
@@ -645,17 +588,17 @@
       <div class="mindset-card">
         <div class="mindset-emoji">🗣️</div>
         <div class="mindset-title">You're the director</div>
-        <div class="mindset-desc">The AI builds. You decide what to build, give feedback, and steer. Your judgment is the most important ingredient.</div>
+        <div class="mindset-desc">The AI builds. You decide what, give feedback, and steer. Your judgment and taste are the most important ingredients.</div>
       </div>
       <div class="mindset-card">
         <div class="mindset-emoji">🔄</div>
         <div class="mindset-title">Iteration is the method</div>
-        <div class="mindset-desc">Don't expect perfection on the first try. Three rounds of feedback beat one perfect brief. Move fast, react, improve.</div>
+        <div class="mindset-desc">Don't expect perfection on the first try. Three rounds of clear feedback beat one perfect brief. Move fast, react, improve.</div>
       </div>
       <div class="mindset-card">
         <div class="mindset-emoji">🚢</div>
         <div class="mindset-title">Ship beats perfect</div>
-        <div class="mindset-desc">A working prototype you can share today is more valuable than a polished idea you're still refining in two weeks.</div>
+        <div class="mindset-desc">A working prototype you can share today is more valuable than a polished idea still being refined next week.</div>
       </div>
     </div>
   </div>
