@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>luma — E-Mail-Weiterleitung einrichten</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f8f9fa; color: #111; min-height: 100vh;
+    }
+    .header {
+      background: linear-gradient(135deg, #7C3AED 0%, #4f46e5 100%);
+      padding: 40px 40px 36px; text-align: center;
+    }
+    .logo { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 8px; }
+    .logo-dot { color: #c4b5fd; }
+    .header-sub { font-size: 15px; color: rgba(255,255,255,0.8); }
+    .container { max-width: 620px; margin: 0 auto; padding: 36px 24px 64px; }
+
+    .intro {
+      background: #fff; border-radius: 14px; padding: 22px 24px;
+      border: 1px solid #e9ecef; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      margin-bottom: 24px;
+    }
+    .intro p { font-size: 14px; color: #555; line-height: 1.7; }
+    .intro strong { color: #111; }
+
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step { display: flex; gap: 20px; position: relative; }
+    .step:not(:last-child)::after {
+      content: ""; position: absolute; left: 19px; top: 48px; bottom: -16px;
+      width: 2px; background: linear-gradient(to bottom, #ddd6fe, #e9ecef);
+    }
+    .step-left { flex-shrink: 0; }
+    .step-num {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: #7C3AED; color: #fff; font-size: 16px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 3px 10px rgba(124,58,237,0.3); z-index: 1;
+    }
+    .step-body {
+      background: #fff; border-radius: 12px; padding: 18px 22px;
+      flex: 1; margin-bottom: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06); border: 1px solid #e9ecef;
+    }
+    .step-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7C3AED; margin-bottom: 5px; }
+    .step-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 8px; }
+    .step-desc { font-size: 13.5px; color: #555; line-height: 1.75; }
+    .step-desc strong { color: #111; font-weight: 600; }
+
+    .code-block {
+      background: #1e1e2e; border-radius: 8px; padding: 12px 16px;
+      margin-top: 12px; font-family: 'Courier New', monospace;
+      font-size: 13px; color: #c4b5fd; word-break: break-all;
+    }
+
+    .tip {
+      background: rgba(124,58,237,0.06); border: 1px solid rgba(124,58,237,0.18);
+      border-radius: 9px; padding: 11px 15px; margin-top: 12px;
+      font-size: 13px; color: #5b21b6; line-height: 1.6;
+    }
+
+    .outlook-box {
+      background: #f0f4ff; border: 1px solid #c7d7fa; border-radius: 9px;
+      padding: 14px 16px; margin-top: 14px;
+    }
+    .outlook-box .outlook-title { font-size: 12px; font-weight: 700; color: #3b5bdb; margin-bottom: 8px; letter-spacing: 0.05em; text-transform: uppercase; }
+    .outlook-box ol { padding-left: 16px; }
+    .outlook-box ol li { font-size: 13px; color: #374151; line-height: 1.8; }
+
+    .result-box {
+      background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2);
+      border-radius: 12px; padding: 20px 22px; margin-top: 24px; text-align: center;
+    }
+    .result-icon { font-size: 32px; margin-bottom: 8px; }
+    .result-title { font-size: 16px; font-weight: 700; color: #059669; margin-bottom: 6px; }
+    .result-desc { font-size: 13px; color: #555; line-height: 1.7; }
+
+    .footer { text-align: center; padding: 28px 0 12px; }
+    .footer-logo { font-size: 18px; font-weight: 800; color: #7C3AED; margin-bottom: 4px; letter-spacing: -0.5px; }
+    .footer-sub { font-size: 12px; color: #9ca3af; }
+    .footer-link {
+      display: inline-block; margin-top: 12px; padding: 9px 22px;
+      background: #7C3AED; color: #fff; border-radius: 8px;
+      text-decoration: none; font-size: 13px; font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">luma<span class="logo-dot">.</span></div>
+  <p class="header-sub">E-Mail-Weiterleitung in 3 Schritten einrichten</p>
+</div>
+
+<div class="container">
+
+  <div class="intro">
+    <p>Mit der E-Mail-Weiterleitung landen eingehende Mails automatisch in luma — <strong>zusammengefasst, priorisiert, mit Aufgaben-Vorschlag.</strong> Einmal einrichten, dauerhaft Zeit sparen.</p>
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-left"><div class="step-num">1</div></div>
+      <div class="step-body">
+        <div class="step-label">Schritt 1</div>
+        <div class="step-title">Deine persönliche luma-Adresse kopieren</div>
+        <div class="step-desc">
+          Nach dem Login findest du deine persönliche Weiterleitungsadresse unter:<br><br>
+          <strong>Einstellungen &rarr; Inbox &rarr; Weiterleitungsadresse</strong><br><br>
+          Sie sieht in etwa so aus:
+          <div class="code-block">inbox-xxxxxxxx@luma-app.io</div>
+        </div>
+        <div class="tip">&#128161; Diese Adresse ist nur für dich — jedes Teammitglied hat eine eigene.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="step-num">2</div></div>
+      <div class="step-body">
+        <div class="step-label">Schritt 2</div>
+        <div class="step-title">Weiterleitung in deinem E-Mail-Programm einrichten</div>
+        <div class="step-desc">
+          Du kannst entweder <strong>einzelne E-Mails manuell weiterleiten</strong> (einfach an deine luma-Adresse weiterleiten wenn etwas relevant ist) — oder eine <strong>automatische Regel</strong> einrichten.
+        </div>
+
+        <div class="outlook-box">
+          <div class="outlook-title">&#128231; Outlook (Regel einrichten)</div>
+          <ol>
+            <li>Einstellungen &rarr; <strong>Regeln</strong> &rarr; Neue Regel erstellen</li>
+            <li>Bedingung: <em>Von bestimmten Absendern</em> (z.B. Auftraggeber, Behörden)</li>
+            <li>Aktion: <strong>Weiterleiten an</strong> &rarr; deine luma-Adresse eintragen</li>
+            <li>Regel speichern &mdash; fertig</li>
+          </ol>
+        </div>
+
+        <div class="outlook-box" style="background:#f0fdf4;border-color:#bbf7d0;margin-top:10px;">
+          <div class="outlook-title" style="color:#15803d;">&#127863; Gmail (Filter einrichten)</div>
+          <ol>
+            <li>Einstellungen &rarr; <strong>Filter und blockierte Adressen</strong> &rarr; Neuen Filter erstellen</li>
+            <li>Absender oder Betreff-Stichwort eingeben</li>
+            <li>Aktion: <strong>Weiterleiten an</strong> &rarr; luma-Adresse eintragen</li>
+            <li>Filter erstellen &mdash; fertig</li>
+          </ol>
+        </div>
+
+        <div class="tip">&#128161; Tipp für den Einstieg: Fang einfach damit an, relevante Mails <strong>manuell weiterzuleiten</strong>. Das funktioniert sofort ohne Regelkonfiguration.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="step-num">3</div></div>
+      <div class="step-body">
+        <div class="step-label">Schritt 3</div>
+        <div class="step-title">E-Mail in luma aufrufen &amp; Aufgabe anlegen</div>
+        <div class="step-desc">
+          Weitergeleitete E-Mails erscheinen in luma unter <strong>Inbox</strong>. Dort siehst du:<br><br>
+          &bull; Zusammenfassung der E-Mail per KI<br>
+          &bull; Vorgeschlagene Aufgabe mit Projektbezug<br>
+          &bull; Ein Klick &rarr; Aufgabe ist angelegt und kann jemandem aus dem Team zugewiesen werden<br><br>
+          <strong>So arbeitet dein Team damit:</strong> Die Aufgabe landet im Kanban-Board des Projekts. Dein Mitarbeiter sieht sie, schnappt sie sich, erledigt sie — und du siehst den Status ohne nachfragen zu müssen.
+        </div>
+        <div class="tip">&#128161; Je mehr E-Mails ihr reinleitet, desto besser wird luma im Projektbezug. Nach ein paar Tagen erkennt es automatisch welcher Absender zu welchem Projekt gehört.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="result-box">
+    <div class="result-icon">&#9989;</div>
+    <div class="result-title">Das war’s schon</div>
+    <div class="result-desc">Erste E-Mail weiterleiten, Aufgabe anlegen, einem Kollegen zuweisen — und du siehst sofort wie es funktioniert.<br><br>Fragen? Einfach antworten oder den Feedback-Button im Tool nutzen.</div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-logo">luma<span style="color:#c4b5fd">.</span></div>
+    <p class="footer-sub">Fragen? Direkt antworten — ich helfe gerne.</p>
+    <a href="https://go.luma-app.io" class="footer-link">go.luma-app.io &rarr;</a>
+  </div>
+
+</div>
+</body>
+</html>
