@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>luma — Erste Schritte</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f8f9fa; color: #111; min-height: 100vh;
+    }
+    .header {
+      background: linear-gradient(135deg, #7C3AED 0%, #4f46e5 100%);
+      padding: 40px 40px 36px; text-align: center;
+    }
+    .logo { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 8px; }
+    .logo-dot { color: #c4b5fd; }
+    .header-sub { font-size: 15px; color: rgba(255,255,255,0.8); margin-bottom: 4px; }
+    .header-claim { font-size: 13px; color: rgba(255,255,255,0.55); }
+
+    .container { max-width: 640px; margin: 0 auto; padding: 36px 24px 64px; }
+
+    .intro {
+      background: #fff; border-radius: 14px; padding: 20px 24px;
+      border: 1px solid #e9ecef; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      margin-bottom: 28px; font-size: 14px; color: #555; line-height: 1.7;
+    }
+    .intro strong { color: #111; }
+
+    /* Phase labels */
+    .phase-label {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #9ca3af; margin: 28px 0 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .phase-label::after { content: ""; flex: 1; height: 1px; background: #e9ecef; }
+
+    /* Steps */
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step { display: flex; gap: 18px; position: relative; }
+    .step:not(:last-child)::after {
+      content: ""; position: absolute; left: 18px; top: 44px; bottom: -12px;
+      width: 2px; background: linear-gradient(to bottom, #ddd6fe, #e9ecef);
+    }
+    .step-left { flex-shrink: 0; padding-top: 2px; }
+    .step-num {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: #7C3AED; color: #fff; font-size: 15px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 3px 10px rgba(124,58,237,0.25); z-index: 1;
+    }
+    .step-num.gray { background: #e9ecef; color: #9ca3af; box-shadow: none; }
+    .step-body {
+      background: #fff; border-radius: 12px; padding: 16px 20px;
+      flex: 1; margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e9ecef;
+    }
+    .step-title { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 6px; }
+    .step-desc { font-size: 13px; color: #555; line-height: 1.7; }
+    .step-desc strong { color: #111; font-weight: 600; }
+
+    .nav-hint {
+      display: inline-block; background: #7C3AED; color: #fff;
+      font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 5px;
+      margin: 6px 0 2px; letter-spacing: 0.03em;
+    }
+
+    .code-block {
+      background: #1e1e2e; border-radius: 7px; padding: 10px 14px;
+      margin-top: 10px; font-family: 'Courier New', monospace;
+      font-size: 12.5px; color: #c4b5fd; word-break: break-all;
+    }
+
+    .tip {
+      background: rgba(124,58,237,0.05); border: 1px solid rgba(124,58,237,0.15);
+      border-radius: 8px; padding: 10px 14px; margin-top: 10px;
+      font-size: 12.5px; color: #5b21b6; line-height: 1.6;
+    }
+
+    .ol-steps { margin-top: 10px; padding-left: 16px; }
+    .ol-steps li { font-size: 13px; color: #374151; line-height: 1.85; }
+
+    /* Result */
+    .result-box {
+      background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2);
+      border-radius: 12px; padding: 20px 22px; margin-top: 28px; text-align: center;
+    }
+    .result-icon { font-size: 30px; margin-bottom: 8px; }
+    .result-title { font-size: 15px; font-weight: 700; color: #059669; margin-bottom: 6px; }
+    .result-desc { font-size: 13px; color: #555; line-height: 1.7; }
+
+    .footer { text-align: center; padding: 28px 0 12px; }
+    .footer-logo { font-size: 18px; font-weight: 800; color: #7C3AED; margin-bottom: 4px; letter-spacing: -0.5px; }
+    .footer-sub { font-size: 12px; color: #9ca3af; }
+    .footer-link {
+      display: inline-block; margin-top: 12px; padding: 9px 22px;
+      background: #7C3AED; color: #fff; border-radius: 8px;
+      text-decoration: none; font-size: 13px; font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">luma<span class="logo-dot">.</span></div>
+  <p class="header-sub">Onboarding — Erste Schritte</p>
+  <p class="header-claim">Ca. 15 Minuten &middot; Danach l&auml;uft es von selbst</p>
+</div>
+
+<div class="container">
+
+  <div class="intro">
+    <p>Hallo Eduard, hier ist eine kurze Anleitung f&uuml;r den Einstieg. Das Ziel: <strong>Echte Projekte, echte E-Mails, echte Aufgaben</strong> &mdash; damit du sofort siehst wie luma im Alltag funktioniert.</p>
+  </div>
+
+  <div class="phase-label">Schritt 1 &ndash; 2 &middot; Projekt einrichten</div>
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-left"><div class="step-num">1</div></div>
+      <div class="step-body">
+        <div class="step-title">Demo-Projekte l&ouml;schen</div>
+        <div class="step-desc">
+          Du siehst beim ersten Login einige Demo-Projekte. Die kannst du einfach l&ouml;schen &mdash; klick auf ein Projekt, dann auf die drei Punkte oben rechts &rarr; <strong>Projekt l&ouml;schen</strong>.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="step-num">2</div></div>
+      <div class="step-body">
+        <div class="step-title">Erstes echtes Projekt anlegen</div>
+        <div class="step-desc">
+          Klick auf <strong>&ldquo;+ Neues Projekt&rdquo;</strong> und leg ein echtes Projekt an &mdash; z.B. ein laufendes Objekt. Name, Auftraggeber, fertig. Mehr brauchst du f&uuml;r den Start nicht.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="phase-label">Schritt 3 &ndash; 6 &middot; Inbox &amp; E-Mail-Weiterleitung</div>
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-left"><div class="step-num">3</div></div>
+      <div class="step-body">
+        <div class="step-title">Inbox in der Navigation &ouml;ffnen</div>
+        <div class="step-desc">
+          Klick in der linken Navigation auf <span class="nav-hint">Inbox</span> &mdash; dort findest du deine pers&ouml;nliche Weiterleitungsadresse.
+        </div>
+        <div class="tip">&#128161; Die Inbox ist direkt in der Navigation &mdash; nicht unter Einstellungen.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="step-num">4</div></div>
+      <div class="step-body">
+        <div class="step-title">Weiterleitungsadresse erstellen</div>
+        <div class="step-desc">
+          In der Inbox-Ansicht auf <strong>&ldquo;Weiterleitungsadresse erstellen&rdquo;</strong> klicken. Du bekommst eine pers&ouml;nliche Adresse:
+          <div class="code-block">inbox-xxxxxxxx@luma-app.io</div>
+          Diese Adresse kopieren &mdash; sie wird im n&auml;chsten Schritt gebraucht.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="step-num">5</div></div>
+      <div class="step-body">
+        <div class="step-title">Weiterleitung in Outlook einrichten</div>
+        <div class="step-desc">
+          So richtest du eine automatische Weiterleitung ein:
+          <ol class="ol-steps">
+            <li>Outlook &rarr; Einstellungen &rarr; <strong>Regeln</strong> &rarr; Neue Regel erstellen</li>
+            <li>Bedingung w&auml;hlen: z.B. <em>Von bestimmten Absendern</em> (Auftraggeber, Beh&ouml;rden)</li>
+            <li>Aktion: <strong>Weiterleiten an</strong> &rarr; deine luma-Adresse einf&uuml;gen</li>
+            <li>Regel speichern</li>
+          </ol>
+        </div>
+        <div class="tip">&#128161; Einfachster Start: Leite erstmal eine einzelne Mail manuell weiter &mdash; einfach an deine luma-Adresse weiterleiten wie eine normale Mail.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="step-num">6</div></div>
+      <div class="step-body">
+        <div class="step-title">Inbox regelm&auml;&szlig;ig in luma synchronisieren</div>
+        <div class="step-desc">
+          Klick in der Inbox-Ansicht auf <strong>&ldquo;Synchronisieren&rdquo;</strong> um neue weitergeleitete Mails zu laden. Du kannst das jederzeit manuell machen &mdash; oder luma l&auml;dt automatisch im Hintergrund.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="phase-label">Schritt 7 &ndash; 8 &middot; Team einbinden</div>
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-left"><div class="step-num">7</div></div>
+      <div class="step-body">
+        <div class="step-title">Teammitglieder einladen</div>
+        <div class="step-desc">
+          Geh zu <strong>Einstellungen &rarr; Team</strong> und trag die E-Mail-Adressen deiner Kolleginnen und Kollegen ein. Sie erhalten eine Einladung und k&ouml;nnen sofort loslegen. Jedes Mitglied bekommt eine eigene Inbox-Weiterleitungsadresse.
+        </div>
+        <div class="tip">&#128161; Erst mit dem Team macht luma richtig Sinn &mdash; dann sieht jeder was er zu tun hat, ohne nachfragen zu m&uuml;ssen.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left"><div class="step-num">8</div></div>
+      <div class="step-body">
+        <div class="step-title">Aufgaben aus E-Mails erstellen &amp; zuweisen</div>
+        <div class="step-desc">
+          Eine Mail landet in deiner Inbox &rarr; luma fasst sie per KI zusammen &rarr; du klickst auf <strong>&ldquo;Aufgabe erstellen&rdquo;</strong> &rarr; Projekt ausw&auml;hlen &rarr; Teammitglied zuweisen &rarr; fertig.<br><br>
+          Dein Kollege sieht die Aufgabe sofort in seinem Board. Du siehst den Status &mdash; ohne nachzufragen.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="result-box">
+    <div class="result-icon">&#9989;</div>
+    <div class="result-title">Los geht&rsquo;s</div>
+    <div class="result-desc">Das war der komplette Setup. Wenn du Fragen hast oder etwas nicht klappt &mdash; einfach auf diese Mail antworten oder den Feedback-Button in luma nutzen.<br><br>Ich melde mich nach ein paar Tagen f&uuml;r einen kurzen Check-in.</div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-logo">luma<span style="color:#c4b5fd">.</span></div>
+    <p class="footer-sub">Fragen? Direkt antworten &mdash; ich helfe gerne.</p>
+    <a href="https://go.luma-app.io" class="footer-link">go.luma-app.io &rarr;</a>
+  </div>
+
+</div>
+</body>
+</html>
