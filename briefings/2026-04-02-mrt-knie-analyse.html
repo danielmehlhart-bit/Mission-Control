@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRT-Analyse: Linkes Kniegelenk — Katharina Mehlhart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #F9FAFB;
+            color: #111827;
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 24px 16px 64px; }
+
+        /* Disclaimer Banner */
+        .disclaimer-banner {
+            background: linear-gradient(135deg, #DC2626, #B91C1C);
+            color: #fff;
+            padding: 20px 24px;
+            border-radius: 16px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 17px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3);
+            letter-spacing: 0.01em;
+        }
+        .disclaimer-banner .icon { font-size: 24px; display: block; margin-bottom: 6px; }
+
+        /* Header */
+        .header {
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        .header .subtitle {
+            color: #6B7280;
+            font-size: 15px;
+        }
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 16px;
+        }
+        .meta-pill {
+            background: #EFF6FF;
+            color: #2563EB;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Cards */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+        .card h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .emoji { font-size: 22px; }
+        .card h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin: 20px 0 10px;
+            color: #111827;
+        }
+        .card p { margin-bottom: 12px; color: #374151; }
+        .card ul { padding-left: 20px; margin-bottom: 12px; }
+        .card li { margin-bottom: 8px; color: #374151; }
+        .card li strong { color: #111827; }
+
+        /* Accent highlight */
+        .accent { color: #2563EB; font-weight: 600; }
+
+        /* Symptom list */
+        .symptom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 16px 0;
+        }
+        @media (max-width: 600px) { .symptom-grid { grid-template-columns: 1fr; } }
+        .symptom-item {
+            background: #F9FAFB;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .symptom-item .dot {
+            width: 8px; height: 8px;
+            background: #2563EB;
+            border-radius: 50%;
+            margin-top: 7px;
+            flex-shrink: 0;
+        }
+
+        /* Diagnosis cards */
+        .diagnosis-card {
+            border-left: 4px solid #2563EB;
+            background: #F0F7FF;
+            border-radius: 0 12px 12px 0;
+            padding: 16px 20px;
+            margin-bottom: 14px;
+        }
+        .diagnosis-card.secondary {
+            border-left-color: #D1D5DB;
+            background: #F9FAFB;
+        }
+        .diagnosis-card h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #111827;
+        }
+        .diagnosis-card p {
+            font-size: 14px;
+            color: #4B5563;
+            margin-bottom: 0;
+        }
+        .likelihood-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 3px 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+        .likelihood-high { background: #DBEAFE; color: #1D4ED8; }
+        .likelihood-low { background: #F3F4F6; color: #6B7280; }
+
+        /* Protocol table */
+        .protocol-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 14px;
+            margin: 16px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #E5E7EB;
+        }
+        .protocol-table thead { background: #2563EB; color: #fff; }
+        .protocol-table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .protocol-table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        .protocol-table tr:last-child td { border-bottom: none; }
+        .protocol-table tbody tr:nth-child(even) { background: #F9FAFB; }
+
+        /* Checklist */
+        .check-list { list-style: none; padding: 0; }
+        .check-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #F3F4F6;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 15px;
+        }
+        .check-list li:last-child { border-bottom: none; }
+        .check-icon { color: #2563EB; font-weight: 700; flex-shrink: 0; }
+
+        /* Steps */
+        .step {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            align-items: flex-start;
+        }
+        .step-number {
+            width: 36px; height: 36px;
+            background: #2563EB;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+        .step-content { flex: 1; }
+        .step-content strong { display: block; margin-bottom: 2px; }
+        .step-content p { font-size: 14px; color: #4B5563; margin: 0; }
+
+        /* KI-Analyse Box */
+        .ki-box {
+            background: #FFFBEB;
+            border: 1px solid #FDE68A;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+        .ki-box .label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #92400E;
+            margin-bottom: 8px;
+        }
+
+        /* Footer disclaimer */
+        .footer-disclaimer {
+            background: #FEF2F2;
+            border: 2px solid #FECACA;
+            border-radius: 16px;
+            padding: 24px 28px;
+            text-align: center;
+            margin-top: 8px;
+        }
+        .footer-disclaimer h3 { color: #991B1B; font-size: 18px; margin-bottom: 10px; }
+        .footer-disclaimer p { color: #7F1D1D; font-size: 14px; line-height: 1.6; }
+
+        /* Footer meta */
+        .footer-meta {
+            text-align: center;
+            color: #9CA3AF;
+            font-size: 12px;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #E5E7EB;
+        }
+
+        /* Info callout */
+        .info-callout {
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 14px;
+            color: #1E40AF;
+            margin: 14px 0;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .info-callout .ico { font-size: 18px; flex-shrink: 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Disclaimer Banner -->
+        <div class="disclaimer-banner">
+            <span class="icon">⚠️</span>
+            KEINE ÄRZTLICHE DIAGNOSE<br>
+            <span style="font-weight:500; font-size:14px; opacity:0.9;">Rein informative KI-Analyse — ersetzt keinen ärztlichen Befund</span>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>🦴 MRT-Analyse: Linkes Kniegelenk</h1>
+            <p class="subtitle">Katharina Mehlhart</p>
+            <div class="meta-row">
+                <span class="meta-pill">📅 02.04.2026</span>
+                <span class="meta-pill">👤 68 Jahre (geb. 08.03.1957)</span>
+                <span class="meta-pill">🏥 Siemens Skyra MRT</span>
+                <span class="meta-pill">📍 Linkes Knie</span>
+            </div>
+        </div>
+
+        <!-- 1. Symptom-Zusammenfassung -->
+        <div class="card">
+            <h2><span class="emoji">🩺</span> Symptome der Patientin</h2>
+            <p>Die folgenden Beschwerden wurden von der Patientin selbst geschildert:</p>
+            <div class="symptom-grid">
+                <div class="symptom-item">
+                    <span class="dot"></span>
+                    <span><strong>Plötzliches Blockieren</strong> — das Knie „sperrt" sich unvermittelt</span>
+                </div>
+                <div class="symptom-item">
+                    <span class="dot"></span>
+                    <span><strong>Beugung unmöglich</strong> — Knie lässt sich nicht mehr beugen</span>
+                </div>
+                <div class="symptom-item">
+                    <span class="dot"></span>
+                    <span><strong>Starke Schmerzen</strong> — während der Blockade-Episode</span>
+                </div>
+                <div class="symptom-item">
+                    <span class="dot"></span>
+                    <span><strong>Treppensteigen</strong> — manchmal kaum möglich</span>
+                </div>
+                <div class="symptom-item">
+                    <span class="dot"></span>
+                    <span><strong>Intermittierend</strong> — kommt und geht, nicht dauerhaft</span>
+                </div>
+                <div class="symptom-item">
+                    <span class="dot"></span>
+                    <span><strong>Röntgen unauffällig</strong> — Arthrose wurde ausgeschlossen</span>
+                </div>
+            </div>
+            <div class="info-callout">
+                <span class="ico">💡</span>
+                <span>Das Muster „plötzliche Blockade + kann nicht beugen + löst sich wieder" ist ein klassisches <strong>mechanisches Blockierungssyndrom</strong>. Das bedeutet: Etwas im Gelenk klemmt zeitweise die Bewegung ein — und das MRT soll zeigen, was genau.</span>
+            </div>
+        </div>
+
+        <!-- 2. Was wurde untersucht? -->
+        <div class="card">
+            <h2><span class="emoji">🔬</span> Was wurde untersucht?</h2>
+            <p>Das MRT (Magnetresonanztomographie) erstellt Schnittbilder des Knies <em>ohne Strahlung</em>, nur mit Magnetfeldern. Es zeigt Weichteile wie Menisken, Bänder und Knorpel — Strukturen, die im Röntgen unsichtbar bleiben.</p>
+
+            <h3>Durchgeführte MRT-Serien</h3>
+            <table class="protocol-table">
+                <thead>
+                    <tr>
+                        <th>Serie</th>
+                        <th>Bilder</th>
+                        <th>Was zeigt sie?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Localizer</strong></td>
+                        <td>14</td>
+                        <td>Übersichtsaufnahmen zur Planung der weiteren Schnitte</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PD sagittal + Fettunterdr.</strong></td>
+                        <td>30</td>
+                        <td>Seitenansicht — ideal für Menisken und Kreuzbänder. Fettunterdrückung hebt Flüssigkeit (Entzündung, Erguss) hell hervor</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PD sagittal</strong></td>
+                        <td>30</td>
+                        <td>Gleiche Richtung, aber ohne Fettunterdrückung — zeigt Gewebekontraste und Strukturgrenzen besser</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PD koronal + Fettunterdr.</strong></td>
+                        <td>30</td>
+                        <td>Ansicht von vorne — zeigt Seitenbänder, Meniskusränder und Knochenoberfläche</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PD transversal + Fettunterdr.</strong></td>
+                        <td>30</td>
+                        <td>Querschnitt — zeigt Kniescheibe, Knorpel und Gelenkkapsel von oben</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-callout">
+                <span class="ico">📋</span>
+                <span><strong>PD = Protonendichte</strong> — eine spezielle MRT-Technik, die besonders gut für Gelenkstrukturen geeignet ist. Die Kombination aus drei Blickrichtungen (sagittal, koronal, transversal) ermöglicht dem Radiologen eine vollständige 3D-Beurteilung des Knies.</span>
+            </div>
+        </div>
+
+        <!-- 3. Vorläufige KI-Analyse -->
+        <div class="card">
+            <h2><span class="emoji">🤖</span> Vorläufige Bildanalyse (KI-gestützt)</h2>
+            <div class="ki-box">
+                <div class="label">⚠️ Hinweis zur KI-Analyse</div>
+                <p style="font-size:14px; color:#78350F; margin:0;">Die MRT-Bilder wurden aus einem Web-Viewer extrahiert und von einem KI-Vision-Modell analysiert. Die Bildqualität war dabei <strong>eingeschränkt</strong> — diese Ergebnisse sind daher nur als grobe Orientierung zu verstehen, nicht als Befund.</p>
+            </div>
+            <ul>
+                <li><strong class="accent">Gelenkerguss:</strong> Eine hyperintense (hell leuchtende) rundliche Struktur ist sichtbar, die auf freie Flüssigkeit oder einen lokalisierten Erguss hindeutet. Das passt zu den geschilderten Beschwerden — ein Erguss ist eine typische Reaktion des Gelenks auf Reizung.</li>
+                <li><strong class="accent">Menisken:</strong> Aufgrund der Bildqualität nicht zuverlässig beurteilbar. Bei dem beschriebenen Blockierungsmuster steht ein <strong>Korbhenkelriss</strong> allerdings ganz oben auf der Verdachtsliste (siehe nächster Abschnitt).</li>
+                <li><strong class="accent">Kreuzbänder:</strong> In den extrahierten Bildern nicht abschließend beurteilbar.</li>
+                <li><strong class="accent">Knorpel:</strong> Obwohl das Röntgen keine Arthrose zeigte, kann im MRT trotzdem ein Knorpelschaden sichtbar sein. Röntgen zeigt nur fortgeschrittene Arthrose (wenn der Gelenkspalt schon schmaler wird), das MRT erkennt auch frühe Veränderungen (sog. <em>Chondromalazie</em> — Erweichung des Knorpels).</li>
+            </ul>
+        </div>
+
+        <!-- 4. Mögliche Diagnosen -->
+        <div class="card">
+            <h2><span class="emoji">🔍</span> Mögliche Diagnosen</h2>
+            <p>Bei einer 68-jährigen Patientin mit dem Muster „plötzliche Blockierung + kann nicht beugen + Schmerzen + kommt und geht + Röntgen unauffällig" kommen folgende Ursachen in Frage:</p>
+
+            <h3 style="margin-top:24px;">
+                <span class="likelihood-badge likelihood-high">Wahrscheinlichste Ursachen</span>
+            </h3>
+
+            <div class="diagnosis-card">
+                <h4>🥇 Meniskusriss (Korbhenkelriss)</h4>
+                <p>Der <strong>häufigste Grund für mechanische Blockaden</strong> im Knie. Der Meniskus ist eine halbmondförmige Knorpelscheibe, die als „Stoßdämpfer" im Knie wirkt. Bei einem Korbhenkelriss reißt ein längliches Stück ab, bleibt aber am Rand hängen — wie ein Henkel an einem Korb. Dieses Fragment kann ins Gelenk klappen und die Bewegung blockieren. Typisch: plötzliches Einklemmen, manchmal ein hörbares „Schnappen" wenn es sich löst, anschließend Schwellung. Im Alter kann so ein Riss auch <em>ohne</em> Unfall entstehen (degenerativ).</p>
+            </div>
+
+            <div class="diagnosis-card">
+                <h4>🥈 Freie Gelenkkörper</h4>
+                <p>Kleine Stücke aus Knorpel oder Knochen, die sich abgelöst haben und frei im Gelenk „schwimmen". Sie können sich zwischen die Gelenkflächen klemmen und plötzlich blockieren — und wenn sie weiterrutschen, ist die Bewegung wieder frei. Das erklärt das Muster „kommt und geht" sehr gut.</p>
+            </div>
+
+            <div class="diagnosis-card">
+                <h4>🥉 Degenerativer Meniskusriss</h4>
+                <p>Ab dem 50. Lebensjahr werden die Menisken spröder und können auch bei alltäglichen Bewegungen einreißen (z.B. beim Aufstehen aus der Hocke). Ein degenerativer Riss ist weniger dramatisch als ein Korbhenkelriss, kann aber ebenfalls Einklemmungen verursachen, wenn ein Rissflügel ins Gelenk rutscht.</p>
+            </div>
+
+            <div class="diagnosis-card">
+                <h4>4. Plica-Syndrom</h4>
+                <p>Im Kniegelenk gibt es natürliche Schleimhautfalten (Plicae). Wenn eine davon verdickt oder entzündet ist, kann sie zwischen Kniescheibe und Oberschenkelknochen einklemmen. Das verursacht plötzlichen Schmerz und ein Gefühl der Blockade — ist aber im MRT oft schwer zu erkennen.</p>
+            </div>
+
+            <h3>
+                <span class="likelihood-badge likelihood-low">Weniger wahrscheinlich</span>
+            </h3>
+
+            <div class="diagnosis-card secondary">
+                <h4>Kreuzbandinstabilität</h4>
+                <p>Ein geschädigtes Kreuzband kann dazu führen, dass das Knie „wegknickt" (Giving-Way), aber echte Blockaden sind untypisch. Ohne Unfall-Vorgeschichte weniger wahrscheinlich.</p>
+            </div>
+
+            <div class="diagnosis-card secondary">
+                <h4>Patella-Problematik</h4>
+                <p>Probleme mit der Kniescheibe (z.B. Subluxation oder Knorpelschaden darunter) verursachen eher Schmerzen beim Treppensteigen und Sitzen, aber seltener echte mechanische Blockaden.</p>
+            </div>
+        </div>
+
+        <!-- 5. Was der Radiologe sucht -->
+        <div class="card">
+            <h2><span class="emoji">👨‍⚕️</span> Was der Radiologe im MRT beurteilen wird</h2>
+            <p>Der Radiologe wird den offiziellen Befund erstellen. Dabei wird er systematisch folgende Strukturen prüfen:</p>
+            <ul class="check-list">
+                <li>
+                    <span class="check-icon">→</span>
+                    <span><strong>Meniskus-Signalveränderungen</strong> — Eingeteilt in Grade I–III nach Stoller: Grad I/II sind innere Veränderungen (oft symptomlos), Grad III bedeutet ein Riss, der die Oberfläche erreicht</span>
+                </li>
+                <li>
+                    <span class="check-icon">→</span>
+                    <span><strong>Kreuzband-Integrität</strong> — Ist das vordere und hintere Kreuzband intakt, teilgerissen oder gerissen?</span>
+                </li>
+                <li>
+                    <span class="check-icon">→</span>
+                    <span><strong>Knorpelstatus</strong> — Wie dick ist der Gelenkknorpel? Gibt es Defekte oder Erweichung (Chondromalazie)?</span>
+                </li>
+                <li>
+                    <span class="check-icon">→</span>
+                    <span><strong>Freie Gelenkkörper</strong> — Schwimmen lose Fragmente im Gelenk?</span>
+                </li>
+                <li>
+                    <span class="check-icon">→</span>
+                    <span><strong>Baker-Zyste</strong> — Eine flüssigkeitsgefüllte Ausstülpung der Gelenkkapsel in der Kniekehle, häufig bei Meniskusschäden oder Erguss</span>
+                </li>
+                <li>
+                    <span class="check-icon">→</span>
+                    <span><strong>Erguss-Quantifizierung</strong> — Wie viel Flüssigkeit ist im Gelenk? Wo genau?</span>
+                </li>
+                <li>
+                    <span class="check-icon">→</span>
+                    <span><strong>Knochenödem</strong> — Wassereinlagerung im Knochen, Hinweis auf Überlastung oder Mikrofraktur</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 6. Nächste Schritte -->
+        <div class="card">
+            <h2><span class="emoji">📋</span> Empfohlene nächste Schritte</h2>
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <strong>Radiologischen Befund abwarten</strong>
+                    <p>Der offizielle MRT-Befund vom Radiologen ist entscheidend. Er hat Zugriff auf alle Schnittbilder in Originalqualität und die nötige Expertise für eine zuverlässige Beurteilung.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <strong>Befund mit Orthopäden besprechen</strong>
+                    <p>Je nach Ergebnis wird der Orthopäde die weitere Behandlung planen. Bei einem bestätigten Meniskusriss mit Blockade gibt es konservative (Physiotherapie, Schmerzmittel) und operative Optionen (Arthroskopie — Gelenkspiegelung).</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <strong>Bei erneuter Blockade: zeitnah zum Orthopäden</strong>
+                    <p>Wenn das Knie wieder blockiert und sich nicht löst oder starke Schwellung auftritt, sollte zeitnah ein Orthopäde aufgesucht werden. Ein eingeklemmter Meniskusriss kann bei Verzögerung den Knorpel weiter schädigen.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <strong>Symptom-Tagebuch führen</strong>
+                    <p>Es hilft dem Arzt, wenn dokumentiert wird: Wann tritt die Blockade auf? Bei welcher Bewegung? Wie lange dauert sie? Wie löst sie sich? Das erleichtert die Zuordnung erheblich.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Disclaimer Footer -->
+        <div class="footer-disclaimer">
+            <h3>⚠️ Wichtiger Hinweis</h3>
+            <p>
+                Dieses Briefing ist <strong>keine ärztliche Diagnose</strong> und ersetzt keinen medizinischen Befund.<br>
+                Es handelt sich um eine <strong>informative KI-Analyse</strong>, die ausschließlich der Orientierung dient.<br>
+                Die vorläufige Bildanalyse basiert auf Bildern eingeschränkter Qualität (Web-Viewer-Extraktion).<br><br>
+                Bitte besprechen Sie alle Ergebnisse mit dem behandelnden Arzt.<br>
+                Nur ein Radiologe kann die MRT-Bilder verbindlich befunden.
+            </p>
+        </div>
+
+        <!-- Footer Meta -->
+        <div class="footer-meta">
+            Erstellt am 02.04.2026 von <strong>Hatti</strong> (OpenClaw KI-Assistent) · Rein informativ · Kein medizinisches Dokument
+        </div>
+
+    </div>
+</body>
+</html>
