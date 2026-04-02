@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discovery Review — Georg Stenzel | PE Stab</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f0f0f; color: #e5e5e5; }
+
+    .hero { background: linear-gradient(135deg, #1e3a5f 0%, #1a2744 100%); padding: 48px 40px 40px; border-bottom: 1px solid #1e2128; }
+    .hero-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #60a5fa; margin-bottom: 12px; }
+    .hero h1 { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .hero-meta { font-size: 14px; color: #94a3b8; margin-bottom: 20px; }
+    .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pill { padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .pill.blue { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); color: #60a5fa; }
+    .pill.green { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25); color: #10B981; }
+    .pill.yellow { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25); color: #f59e0b; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; display: grid; grid-template-columns: 1fr 300px; gap: 28px; align-items: start; }
+    @media(max-width: 700px) { .container { grid-template-columns: 1fr; } }
+
+    .main { display: flex; flex-direction: column; gap: 24px; }
+
+    .card { background: #141720; border: 1px solid #1e2128; border-radius: 14px; overflow: hidden; }
+    .card-header { padding: 14px 20px; border-bottom: 1px solid #1e2128; display: flex; align-items: center; gap: 10px; }
+    .card-header h2 { font-size: 14px; font-weight: 700; color: #fff; }
+    .card-body { padding: 18px 20px; }
+
+    .profile-row { display: flex; gap: 16px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #1e2128; }
+    .profile-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #3B82F6, #1d4ed8); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .profile-name { font-size: 16px; font-weight: 700; color: #fff; }
+    .profile-sub { font-size: 13px; color: #8b90a0; margin-top: 2px; }
+    .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .meta-item { }
+    .meta-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #4a5068; margin-bottom: 3px; }
+    .meta-value { font-size: 13px; color: #c8ccd6; }
+
+    .pain-list { display: flex; flex-direction: column; gap: 10px; }
+    .pain-item { background: #0d0f12; border-radius: 10px; padding: 14px 16px; border-left: 3px solid; }
+    .pain-item.critical { border-color: #ef4444; }
+    .pain-item.high { border-color: #f59e0b; }
+    .pain-item.medium { border-color: #3B82F6; }
+    .pain-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .pain-quote { font-size: 12px; color: #8b90a0; line-height: 1.6; font-style: italic; }
+    .pain-badge { display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; margin-top: 6px; }
+
+    .insight-list { display: flex; flex-direction: column; gap: 8px; }
+    .insight-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #111318; align-items: flex-start; }
+    .insight-item:last-child { border-bottom: none; }
+    .insight-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .insight-text { font-size: 13px; color: #ccc; line-height: 1.6; }
+    .insight-text strong { color: #fff; }
+
+    .score-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .score-label { font-size: 12px; color: #8b90a0; width: 180px; flex-shrink: 0; }
+    .score-track { flex: 1; height: 6px; background: #1e2128; border-radius: 3px; overflow: hidden; }
+    .score-fill { height: 100%; border-radius: 3px; }
+    .score-num { font-size: 12px; color: #e5e5e5; font-weight: 600; width: 28px; text-align: right; flex-shrink: 0; }
+
+    .coaching-list { display: flex; flex-direction: column; gap: 12px; }
+    .coaching-item { border-radius: 10px; padding: 14px 16px; }
+    .coaching-item.positive { background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); }
+    .coaching-item.improve { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); }
+    .coaching-title { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+    .coaching-item.positive .coaching-title { color: #10B981; }
+    .coaching-item.improve .coaching-title { color: #f59e0b; }
+    .coaching-text { font-size: 12.5px; color: #aaa; line-height: 1.7; }
+
+    /* Objection handling */
+    .obj-list { display: flex; flex-direction: column; gap: 12px; }
+    .obj-box { background: #0d0f12; border-radius: 10px; overflow: hidden; border: 1px solid #1e2128; }
+    .obj-q-row { padding: 12px 16px; border-bottom: 1px solid #1e2128; display: flex; align-items: center; gap: 10px; }
+    .obj-q-text { font-size: 13px; font-weight: 700; color: #fff; }
+    .obj-type { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-left: auto; flex-shrink: 0; }
+    .obj-grid { display: grid; grid-template-columns: 1fr 1fr; }
+    .obj-col { padding: 12px 16px; }
+    .obj-col:first-child { border-right: 1px solid #1e2128; }
+    .obj-col-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #4a5068; margin-bottom: 6px; }
+    .obj-col.ideal .obj-col-label { color: #10B981; }
+    .obj-col-text { font-size: 12.5px; color: #aaa; line-height: 1.6; }
+
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step { display: flex; gap: 16px; position: relative; }
+    .step:not(:last-child)::after { content: ""; position: absolute; left: 15px; top: 40px; bottom: -12px; width: 2px; background: #1e2128; }
+    .step-num { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; z-index: 1; }
+    .step-num.urgent { background: #ef4444; color: #fff; }
+    .step-num.soon { background: #f59e0b; color: #fff; }
+    .step-num.later { background: #3B82F6; color: #fff; }
+    .step-body { padding-bottom: 20px; flex: 1; }
+    .step-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .step-desc { font-size: 12px; color: #8b90a0; line-height: 1.6; }
+    .step-when { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #4a5068; margin-top: 4px; }
+
+    .sidebar { display: flex; flex-direction: column; gap: 16px; }
+    .side-card { background: #141720; border: 1px solid #1e2128; border-radius: 12px; overflow: hidden; }
+    .side-header { padding: 11px 14px; border-bottom: 1px solid #1e2128; font-size: 12px; font-weight: 700; color: #8b90a0; letter-spacing: 0.06em; text-transform: uppercase; }
+    .side-body { padding: 14px; }
+    .side-row { display: flex; justify-content: space-between; align-items: baseline; padding: 5px 0; border-bottom: 1px solid #111318; }
+    .side-row:last-child { border-bottom: none; }
+    .side-key { font-size: 12px; color: #4a5068; }
+    .side-val { font-size: 12px; color: #c8ccd6; font-weight: 500; text-align: right; }
+
+    .follow-up { background: #0d0f12; border-radius: 10px; padding: 16px; font-size: 13px; color: #ccc; line-height: 1.85; white-space: pre-line; border-left: 3px solid #3B82F6; }
+
+    .footer { text-align: center; padding: 24px 0; font-size: 11px; color: #333; grid-column: 1 / -1; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">luma · Discovery Review</div>
+  <h1>Georg Stenzel — PE Stab</h1>
+  <p class="hero-meta">~60 Min · Video Call · Referenz: Henning</p>
+  <div class="hero-pills">
+    <span class="pill blue">6 MA + 4 Handwerker (eigene Firma)</span>
+    <span class="pill blue">Neu-Isenburg / Rheingau</span>
+    <span class="pill yellow">Prospect — Qualifiziert</span>
+    <span class="pill green">✓ Demo-Termin vereinbart</span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="main">
+
+    <!-- Prospect Profil -->
+    <div class="card">
+      <div class="card-header"><h2>🏢 Prospect-Profil</h2></div>
+      <div class="card-body">
+        <div class="profile-row">
+          <div class="profile-avatar">GS</div>
+          <div>
+            <div class="profile-name">Georg Stenzel</div>
+            <div class="profile-sub">Gründer & GF · PE Stab · Architektur, Energieberatung, GÜ · Neu-Isenburg</div>
+          </div>
+        </div>
+        <div class="meta-grid">
+          <div class="meta-item"><div class="meta-label">Bürogröße</div><div class="meta-value">6 im Büro + 4 Handwerker (eigene Personalfirma)</div></div>
+          <div class="meta-item"><div class="meta-label">Gründung</div><div class="meta-value">vor 3 Jahren</div></div>
+          <div class="meta-item"><div class="meta-label">Leistungen</div><div class="meta-value">Architektur, Energieberatung, GÜ, Bauausführung</div></div>
+          <div class="meta-item"><div class="meta-label">Umsatz (Ziel 2026)</div><div class="meta-value">~1 Mio. €</div></div>
+          <div class="meta-item"><div class="meta-label">Tools aktuell</div><div class="meta-value">OneNote, Teams, WhatsApp, DATEV, Orca-Alternativen</div></div>
+          <div class="meta-item"><div class="meta-label">Referenz</div><div class="meta-value">Henning (gemeinsamer Bekannter)</div></div>
+          <div class="meta-item"><div class="meta-label">Partner</div><div class="meta-value">Ali Bulgan — oldschool, kein iPad, nur Handy, Voice</div></div>
+          <div class="meta-item"><div class="meta-label">Ergebnis</div><div class="meta-value">✅ Demo-Termin nächste Woche Dienstag mit Architektin</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pains -->
+    <div class="card">
+      <div class="card-header"><h2>🔥 Identifizierte Pains</h2></div>
+      <div class="card-body">
+        <div class="pain-list">
+          <div class="pain-item critical">
+            <div class="pain-title">E-Mail-Chaos — 400 Projekte in Outlook, Suche kaputt</div>
+            <div class="pain-quote">"Weißt du nicht, wie groß unser E-Mail-Fach mittlerweile ist. In der Suchleiste kann man nicht einzeln suchen, sondern muss immer in den Ordner reingehen. 400 Projekte stehen da."</div>
+            <span class="pain-badge" style="background:rgba(239,68,68,0.15);color:#ef4444">Kritisch · luma Inbox direkt relevant</span>
+          </div>
+          <div class="pain-item critical">
+            <div class="pain-title">Partner Ali — komplett analog, will nicht mitziehen</div>
+            <div class="pain-quote">"Mein Partner, der ist nämlich ganz oldschool. Da haben wir leider noch handschriftlich Papier. Wenn der es nicht macht, läuft gar nichts."</div>
+            <span class="pain-badge" style="background:rgba(239,68,68,0.15);color:#ef4444">Kritisch · Größter Blocker für Adoption</span>
+          </div>
+          <div class="pain-item high">
+            <div class="pain-title">Fragmentierte Tool-Landschaft — nichts passt zusammen</div>
+            <div class="pain-quote">"Wir haben drei Millionen Programme und die passen nicht zusammen. Dann kannst du nicht von einmal stecken zum anderen."</div>
+            <span class="pain-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b">Hoch · luma-Fit</span>
+          </div>
+          <div class="pain-item high">
+            <div class="pain-title">Onboarding neuer Mitarbeiter dauert ein halbes Jahr</div>
+            <div class="pain-quote">"Stell dir mal den Onboarding-Prozess vor. Da brauche ich ein halbes Jahr, bis das jemand verstanden hat, wie das funktioniert."</div>
+            <span class="pain-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b">Hoch · Copilot/Briefing-Feature</span>
+          </div>
+          <div class="pain-item high">
+            <div class="pain-title">Vergessene Rechnungen & Aufträge — kein Überblick</div>
+            <div class="pain-quote">"Bei uns geht auch mega oft so: 'Ah ja, stimmt, wir hatten ja da noch eine Rechnung, die wir schreiben müssen.' Weißt du, so vollner."</div>
+            <span class="pain-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b">Hoch · Aufgaben + Inbox</span>
+          </div>
+          <div class="pain-item medium">
+            <div class="pain-title">Handwerker-Koordination funktioniert nur über direkte Ansage</div>
+            <div class="pain-quote">"Handwerker sind schwierig, ganz schwierig. Von denen zu erwarten, QR-Code abzuscannen oder eine App zu haben — schwierig."</div>
+            <span class="pain-badge" style="background:rgba(59,130,246,0.15);color:#60a5fa">Mittel · Voice als Einstieg</span>
+          </div>
+          <div class="pain-item medium">
+            <div class="pain-title">Bestelllisten auf der Baustelle — kein digitaler Prozess</div>
+            <div class="pain-quote">"Bestelllisten kannst du direkt an den Baustoffhändler schicken. Du bist auf Baustelle, machst eine Bestellliste, boom, schickst weg."</div>
+            <span class="pain-badge" style="background:rgba(59,130,246,0.15);color:#60a5fa">Mittel · Feature-Wunsch, noch nicht in luma</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Erkenntnisse -->
+    <div class="card">
+      <div class="card-header"><h2>💡 Erkenntnisse für luma</h2></div>
+      <div class="card-body">
+        <div class="insight-list">
+          <div class="insight-item"><div class="insight-icon">✅</div><div class="insight-text"><strong>Voice ist der Schlüssel zu Ali.</strong> Georg sagt: "Wenn das alles über Voice geht, weil der will nicht tippen, da kriege ich den vielleicht schon dazu." Das ist der einzige Hebel für den Partner. Voice-Feature muss bei der Demo im Mittelpunkt stehen.</div></div>
+          <div class="insight-item"><div class="insight-icon">✅</div><div class="insight-text"><strong>Bestelllisten-Feature ist ein echter Differentiator.</strong> Zweimal explizit angesprochen. Noch nicht in luma — aber Georg hat sich aktiv als Co-Builder angeboten. Roadmap-Kandidat, im Gespräch erwähnen.</div></div>
+          <div class="insight-item"><div class="insight-icon">✅</div><div class="insight-text"><strong>Scope weiter als "normales" Architekturbüro.</strong> GÜ + Handwerker + Energieberatung. luma muss sich nicht auf Architektur reduzieren — "Büro" mit gemischten Rollen und Baustellen ist der richtige Frame.</div></div>
+          <div class="insight-item"><div class="insight-icon">✅</div><div class="insight-text"><strong>Architektin im Büro ist der eigentliche Champion.</strong> Georg sagt: "Die legen natürlich viel an, ich tue nur viel beifügen." Sie wird luma täglich nutzen. Demo direkt mit ihr machen — nicht nur Georg.</div></div>
+          <div class="insight-item"><div class="insight-icon">⚠️</div><div class="insight-text"><strong>Größter Blocker: Partner Ali.</strong> Kein iPad, kein tippen, handschriftlich. Ohne ihn läuft laut Georg gar nichts. Demo-Strategie: Bautagebuch per Voice zeigen und konkret fragen, wann Ali dabei sein kann.</div></div>
+          <div class="insight-item"><div class="insight-icon">⚠️</div><div class="insight-text"><strong>Handwerker sind nicht digitalisierbar.</strong> Das ist eine klare Grenze — Handwerker werden luma nicht nutzen. Scope für Georg: Büro + Bauleitung. Externe Handwerker nur über SMS/WhatsApp-Output.</div></div>
+          <div class="insight-item"><div class="insight-icon">🔵</div><div class="insight-text"><strong>Georg ist enthusiastisch und ideenreich.</strong> Hat in 60 Minuten mindestens 3 neue Feature-Ideen eingebracht (Bestelllisten, SMS-Dispatch, Onboarding-Briefing). Guter Co-Builder, aber braucht strukturierte Feedback-Kanäle.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Discovery Coaching -->
+    <div class="card">
+      <div class="card-header"><h2>🎯 Discovery Review</h2></div>
+      <div class="card-body">
+        <div style="margin-bottom: 20px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#4a5068;margin-bottom:12px;">Bewertung</div>
+          <div class="score-bar"><div class="score-label">Gesprächseinstieg</div><div class="score-track"><div class="score-fill" style="width:90%;background:#10B981;"></div></div><div class="score-num" style="color:#10B981">9/10</div></div>
+          <div class="score-bar"><div class="score-label">Pain Discovery</div><div class="score-track"><div class="score-fill" style="width:80%;background:#10B981;"></div></div><div class="score-num" style="color:#10B981">8/10</div></div>
+          <div class="score-bar"><div class="score-label">Demo-Relevanz</div><div class="score-track"><div class="score-fill" style="width:75%;background:#10B981;"></div></div><div class="score-num" style="color:#10B981">7/10</div></div>
+          <div class="score-bar"><div class="score-label">Gesprächsbalance</div><div class="score-track"><div class="score-fill" style="width:65%;background:#f59e0b;"></div></div><div class="score-num" style="color:#f59e0b">6/10</div></div>
+          <div class="score-bar"><div class="score-label">Abschluss / Next Step</div><div class="score-track"><div class="score-fill" style="width:85%;background:#10B981;"></div></div><div class="score-num" style="color:#10B981">8/10</div></div>
+        </div>
+        <div class="coaching-list">
+          <div class="coaching-item positive">
+            <div class="coaching-title">✅ Was gut war</div>
+            <div class="coaching-text">
+              <strong>Einstieg über Henning & persönlichen Small Talk</strong> — sofort Vertrauen aufgebaut, kein kalter Pitch-Charakter. Georg hat sich geöffnet.<br><br>
+              <strong>Pain Discovery war stark</strong> — E-Mail-Chaos, fragmentierte Tools, Onboarding-Problem, vergessene Rechnungen — alles gut aufgedeckt.<br><br>
+              <strong>Demo war kontextbezogen</strong> — Bautagebuch, Copilot, E-Mail-Agent direkt mit seinen Pains verknüpft.<br><br>
+              <strong>Abschluss mit konkretem Next Step</strong> — Termin nächste Woche Dienstag vereinbart, Architektin dabei. Sauber.
+            </div>
+          </div>
+          <div class="coaching-item improve">
+            <div class="coaching-title">⚠️ Was verbessert werden kann</div>
+            <div class="coaching-text">
+              <strong>1. Demo kam zu früh.</strong> Georg hat noch nicht zu Ende erzählt — du bist direkt in die Demo. Der Ali-Blocker kam erst am Ende. Wäre früher besser: "Wer muss das bei euch noch mitziehen, damit es funktioniert?"<br><br>
+              <strong>2. Monolog in der Demo zu lang.</strong> Ähnlich wie bei Marvin — mehrere Minuten ohne Frage. Georg wollte mehrfach was sagen (Pläne, Bestelllisten), du hast weitergemacht.<br><br>
+              <strong>3. Ali nicht adressiert.</strong> Du hast den Blocker erkannt ("ist eine schöne Challenge, kriegen wir hin") aber keinen Plan gemacht. Besser: "Wann können wir den Ali einmal kurz dazuholen — auch nur 10 Minuten? Ich zeige ihm nur das Voice-Feature."<br><br>
+              <strong>4. Bestelllisten-Versprechen zu unverbindlich.</strong> Du hast gesagt "ich baue das in ein paar Tagen als Prototyp" — das ist eine starke Aussage. Gut gemeint, aber jetzt musst du liefern oder relativieren.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Objection Handling -->
+    <div class="card">
+      <div class="card-header"><h2>🛡️ Objections — Was kam, wie reagiert, was wäre ideal</h2></div>
+      <div class="card-body">
+        <div class="obj-list">
+
+          <div class="obj-box">
+            <div class="obj-q-row"><span style="font-size:14px;">💬</span><span class="obj-q-text">„Pläne einlesen — PDF hochladen und auf der Baustelle Mängel markieren?"</span><span class="obj-type" style="background:rgba(245,158,11,0.12);color:#f59e0b">Feature-Gap</span></div>
+            <div class="obj-grid"><div class="obj-col"><div class="obj-col-label">Wie reagiert</div><div class="obj-col-text">Ehrlich gesagt, luma kann das noch nicht. Auf PlanRadar verwiesen, offen kommuniziert.</div></div><div class="obj-col ideal"><div class="obj-col-label">Ideal wäre</div><div class="obj-col-text">Gut so — ehrlichkeit ist richtig. Ergänzung: "Das steht auf der Roadmap. Was wäre wichtiger: die Plan-Markierung oder das Bautagebuch via Voice?" → Priorisierung erfragen.</div></div></div>
+          </div>
+
+          <div class="obj-box">
+            <div class="obj-q-row"><span style="font-size:14px;">💬</span><span class="obj-q-text">„Mein Partner ist oldschool — ohne ihn läuft gar nichts."</span><span class="obj-type" style="background:rgba(239,68,68,0.12);color:#ef4444">Adoption-Blocker</span></div>
+            <div class="obj-grid"><div class="obj-col"><div class="obj-col-label">Wie reagiert</div><div class="obj-col-text">"Ist eine schöne Challenge, kriegen wir hin" — und danach weitergemacht. Nicht tief gebohrt.</div></div><div class="obj-col ideal"><div class="obj-col-label">Ideal wäre</div><div class="obj-col-text">"Was würde Ali überzeugen? Du hast gesagt Voice und Bestelllisten. Können wir Ali für 10 Minuten in die Demo holen? Ich zeige ihm nur das." → Konkret machen, nicht offen lassen.</div></div></div>
+          </div>
+
+          <div class="obj-box">
+            <div class="obj-q-row"><span style="font-size:14px;">💬</span><span class="obj-q-text">„Handwerker nutzen keine Apps — keine Chance."</span><span class="obj-type" style="background:rgba(59,130,246,0.12);color:#60a5fa">Scope-Klärung</span></div>
+            <div class="obj-grid"><div class="obj-col"><div class="obj-col-label">Wie reagiert</div><div class="obj-col-text">Thema aufgegriffen, Scalierbarkeits-Argument gebracht. In Ordnung.</div></div><div class="obj-col ideal"><div class="obj-col-label">Ideal wäre</div><div class="obj-col-text">Scope direkt klären: "luma ist für euch im Büro + Bauleitung — nicht für die Handwerker direkt. Die kriegen Outputs (Tasks, SMS), müssen aber nicht selbst in luma." Das nimmt Druck raus.</div></div></div>
+          </div>
+
+          <div class="obj-box">
+            <div class="obj-q-row"><span style="font-size:14px;">💬</span><span class="obj-q-text">„Kann man den Nutzern begrenzen, damit die Finanzen nicht sehen?"</span><span class="obj-type" style="background:rgba(16,185,129,0.12);color:#10B981">Gut beantwortet</span></div>
+            <div class="obj-grid"><div class="obj-col"><div class="obj-col-label">Wie reagiert</div><div class="obj-col-text">Zwei Rollen erklärt: Admin (Finanzen sichtbar) vs. Architekten-Rolle (nur Aufgaben). Klar und direkt.</div></div><div class="obj-col ideal"><div class="obj-col-label">Ideal wäre</div><div class="obj-col-text">Genau so — war gut. Hätte noch ergänzt werden können: "Du entscheidest auch pro Projekt, wer Zugriff hat."</div></div></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Nächste Schritte -->
+    <div class="card">
+      <div class="card-header"><h2>📋 Nächste Schritte</h2></div>
+      <div class="card-body">
+        <div class="steps">
+          <div class="step"><div class="step-num urgent">1</div><div class="step-body"><div class="step-title">Einladung schicken + kurzes Onboarding-Video</div><div class="step-desc">Georg einladen, kurzes Loom-Video mitschicken. Fokus: Bautagebuch + Voice-Feature + E-Mail-Weiterleitung.</div><div class="step-when">Heute</div></div></div>
+          <div class="step"><div class="step-num urgent">2</div><div class="step-body"><div class="step-title">Demo Dienstag nächste Woche — mit Architektin + idealerweise Ali</div><div class="step-desc">Architektin ist der eigentliche Daily User. Ali wenn möglich kurz dazuholen — nur Voice-Feature zeigen, 10 Minuten.</div><div class="step-when">Di, nächste Woche</div></div></div>
+          <div class="step"><div class="step-num soon">3</div><div class="step-body"><div class="step-title">Bestelllisten-Feature evaluieren</div><div class="step-desc">Georg hat zweimal explizit danach gefragt. Prototyp-Versprechen wurde gemacht — entweder liefern oder im nächsten Gespräch relativieren und als Roadmap-Item einordnen.</div><div class="step-when">Diese Woche entscheiden</div></div></div>
+          <div class="step"><div class="step-num later">4</div><div class="step-body"><div class="step-title">Ali-Strategie entwickeln</div><div class="step-desc">Ohne Ali läuft laut Georg nichts. Plan: Voice + Bestelllisten als Trojanisches Pferd. Im Demo-Call konkret: "Wann können wir Ali kurz zeigen wie das Voice-Feature funktioniert?"</div><div class="step-when">Demo-Call</div></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+
+    <div class="side-card">
+      <div class="side-header">Deal Status</div>
+      <div class="side-body">
+        <div class="side-row"><span class="side-key">Stage</span><span class="side-val" style="color:#3B82F6">Discovery</span></div>
+        <div class="side-row"><span class="side-key">Probability</span><span class="side-val">50%</span></div>
+        <div class="side-row"><span class="side-key">Letzter Kontakt</span><span class="side-val">02.04.2026</span></div>
+        <div class="side-row"><span class="side-key">Next Step</span><span class="side-val" style="color:#10B981">Demo Di nächste Wo</span></div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-header">luma Fit</div>
+      <div class="side-body">
+        <div class="side-row"><span class="side-key">E-Mail-Inbox</span><span class="side-val" style="color:#10B981">⭐ Kritischster Pain</span></div>
+        <div class="side-row"><span class="side-key">Bautagebuch Voice</span><span class="side-val" style="color:#10B981">⭐ Ali-Hebel</span></div>
+        <div class="side-row"><span class="side-key">Aufgaben</span><span class="side-val" style="color:#10B981">Stark</span></div>
+        <div class="side-row"><span class="side-key">Copilot/Briefing</span><span class="side-val" style="color:#f59e0b">Potenzial</span></div>
+        <div class="side-row"><span class="side-key">Bestelllisten</span><span class="side-val" style="color:#f59e0b">Feature-Wunsch</span></div>
+        <div class="side-row"><span class="side-key">Plan-Markierung</span><span class="side-val" style="color:#4a5068">Noch nicht</span></div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-header">Risiken</div>
+      <div class="side-body">
+        <div class="side-row"><span class="side-key">Partner Ali</span><span class="side-val" style="color:#ef4444">Kritischer Blocker</span></div>
+        <div class="side-row"><span class="side-key">Bestelllisten-Erwartung</span><span class="side-val" style="color:#f59e0b">Versprochen</span></div>
+        <div class="side-row"><span class="side-key">Plan-Markierung</span><span class="side-val" style="color:#f59e0b">PlanRadar bleibt</span></div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="side-header">Follow-up E-Mail (Entwurf)</div>
+      <div class="side-body" style="padding:12px;">
+        <div class="follow-up">Hey Georg,
+
+danke nochmal für das tolle Gespräch heute — hat mich gefreut, wieder in Kontakt zu sein.
+
+Ich habe dir einen Zugang eingerichtet — du bekommst eine Mail von luma-app.io. Einfach klicken, Passwort setzen, fertig.
+
+Am besten fängst du mit dem Bautagebuch an: Mikrofon-Button unten rechts, einfach reinsprechen. Das ist auch das Feature, das deinen Partner Ali am ehesten überzeugen könnte — alles per Voice, kein Tippen.
+
+Ich freue mich auf den Termin mit dir und deiner Architektin nächste Woche. Wenn Ali auch kurz dabei sein kann — perfekt. 10 Minuten Voice-Demo und er versteht sofort worum es geht.
+
+Bis dahin!
+Daniel</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">luma · Discovery Review · Georg Stenzel / PE Stab · 2. April 2026</div>
+</div>
+
+</body>
+</html>
