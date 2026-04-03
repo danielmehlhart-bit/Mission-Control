@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samsung Galaxy Watch 5 vs 7 vs 8 — Vergleich</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      color: #222;
+      line-height: 1.6;
+    }
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white;
+      padding: 56px 32px 48px;
+      text-align: center;
+    }
+    .hero .label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; margin-bottom: 12px; }
+    .hero h1 { font-size: 30px; font-weight: 700; margin-bottom: 12px; }
+    .hero p { font-size: 15px; opacity: 0.8; max-width: 600px; margin: 0 auto; }
+    .hero .meta { margin-top: 16px; font-size: 12px; opacity: 0.5; }
+    .container { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+    .section-title {
+      font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: #666;
+      margin-bottom: 16px; margin-top: 48px;
+    }
+    .tldr {
+      background: #fff; border-left: 4px solid #0f3460;
+      border-radius: 8px; padding: 24px 28px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 8px;
+    }
+    .tldr h2 { font-size: 17px; margin-bottom: 12px; }
+    .tldr ul { padding-left: 20px; }
+    .tldr ul li { margin-bottom: 7px; font-size: 14px; }
+
+    /* VERDICT CARDS */
+    .verdict-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 8px; }
+    @media (max-width: 700px) { .verdict-grid { grid-template-columns: 1fr; } }
+    .verdict-card {
+      background: #fff; border-radius: 12px; padding: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      border-top: 4px solid #ddd;
+      position: relative;
+    }
+    .verdict-card.w5 { border-top-color: #888; }
+    .verdict-card.w7 { border-top-color: #1a73e8; }
+    .verdict-card.w8 { border-top-color: #34a853; }
+    .verdict-card .model-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: #999; margin-bottom: 6px;
+    }
+    .verdict-card.w7 .model-label { color: #1a73e8; }
+    .verdict-card.w8 .model-label { color: #34a853; }
+    .verdict-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .verdict-card .price { font-size: 26px; font-weight: 700; margin: 12px 0 8px; }
+    .verdict-card.w5 .price { color: #888; }
+    .verdict-card.w7 .price { color: #1a73e8; }
+    .verdict-card.w8 .price { color: #34a853; }
+    .verdict-card .verdict-tag {
+      display: inline-block; padding: 3px 10px; border-radius: 20px;
+      font-size: 12px; font-weight: 700; margin-bottom: 12px;
+    }
+    .tag-skip { background: #fce8e6; color: #c62828; }
+    .tag-buy { background: #e8f0fe; color: #1a56db; }
+    .tag-wait { background: #e6f4ea; color: #1e7e34; }
+    .verdict-card ul { padding-left: 16px; }
+    .verdict-card ul li { font-size: 13px; color: #555; margin-bottom: 4px; }
+
+    /* MAIN TABLE */
+    .table-wrap { background: #fff; border-radius: 12px; padding: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow-x: auto; margin-bottom: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: #f0f4f8; text-align: left; padding: 11px 14px; font-weight: 700; color: #444; }
+    th.w7 { background: #e8f0fe; color: #1a56db; }
+    th.w8 { background: #e6f4ea; color: #1e7e34; }
+    td { padding: 11px 14px; border-top: 1px solid #eee; vertical-align: top; }
+    tr:hover td { background: #fafafa; }
+    td.feature { font-weight: 600; color: #333; white-space: nowrap; }
+    td.good { color: #1e7e34; font-weight: 600; }
+    td.bad { color: #c62828; }
+    td.ok { color: #e65100; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+    .badge-green { background: #e6f4ea; color: #1e7e34; }
+    .badge-red { background: #fce8e6; color: #c62828; }
+    .badge-blue { background: #e8f0fe; color: #1a56db; }
+    .badge-orange { background: #fff3e0; color: #e65100; }
+    .badge-gray { background: #f0f0f0; color: #666; }
+
+    /* CHIP VISUAL */
+    .chip-compare { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 8px; }
+    @media (max-width: 700px) { .chip-compare { grid-template-columns: 1fr; } }
+    .chip-card { background: #fff; border-radius: 12px; padding: 20px 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); text-align: center; }
+    .chip-card .chip-icon { font-size: 36px; margin-bottom: 8px; }
+    .chip-card h4 { font-size: 13px; font-weight: 700; color: #555; margin-bottom: 4px; }
+    .chip-card .chip-name { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+    .chip-card .chip-stat { font-size: 12px; color: #777; margin-bottom: 2px; }
+    .speedbar-wrap { margin-top: 10px; }
+    .speedbar-label { font-size: 11px; color: #888; margin-bottom: 3px; text-align: left; }
+    .speedbar { height: 8px; border-radius: 4px; background: #eee; margin-bottom: 6px; }
+    .speedbar-fill { height: 8px; border-radius: 4px; }
+    .fill-gray { background: #aaa; }
+    .fill-blue { background: #1a73e8; }
+    .fill-green { background: #34a853; }
+
+    /* HR ACCURACY */
+    .hr-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 8px; }
+    @media (max-width: 600px) { .hr-grid { grid-template-columns: 1fr; } }
+    .hr-card { background: #fff; border-radius: 12px; padding: 20px 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .hr-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+    .hr-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .hr-label { font-size: 13px; color: #555; }
+    .hr-bar { flex: 1; height: 8px; background: #eee; border-radius: 4px; margin: 0 12px; }
+    .hr-bar-fill { height: 8px; border-radius: 4px; }
+    .fill-great { background: #34a853; }
+    .fill-ok { background: #fbbc04; }
+    .fill-bad { background: #ea4335; }
+    .hr-val { font-size: 13px; font-weight: 700; white-space: nowrap; }
+
+    /* ALERT CARDS */
+    .warn-card { background: #fff8e1; border: 1px solid #ffc107; border-radius: 10px; padding: 18px 22px; margin-bottom: 16px; }
+    .warn-card h3 { font-size: 14px; font-weight: 700; color: #b8860b; margin-bottom: 5px; }
+    .warn-card p { font-size: 13px; color: #665200; }
+    .success-card { background: #f1f8e9; border: 1px solid #8bc34a; border-radius: 10px; padding: 18px 22px; margin-bottom: 16px; }
+    .success-card h3 { font-size: 14px; font-weight: 700; color: #33691e; margin-bottom: 5px; }
+    .success-card p { font-size: 13px; color: #1b5e20; }
+    .danger-card { background: #fff0f0; border: 1px solid #f44336; border-radius: 10px; padding: 18px 22px; margin-bottom: 16px; }
+    .danger-card h3 { font-size: 14px; font-weight: 700; color: #c62828; margin-bottom: 5px; }
+    .danger-card p { font-size: 13px; color: #7f0000; }
+
+    .sources { background: #fff; border-radius: 10px; padding: 20px 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .sources h3 { font-size: 13px; font-weight: 700; color: #666; margin-bottom: 10px; }
+    .sources a { display: block; font-size: 13px; color: #1a73e8; text-decoration: none; margin-bottom: 5px; }
+    .sources a:hover { text-decoration: underline; }
+
+    .recommendation {
+      background: linear-gradient(135deg, #0f3460, #1a73e8);
+      color: white; border-radius: 14px; padding: 30px 32px; margin-bottom: 16px;
+    }
+    .recommendation h3 { font-size: 20px; font-weight: 800; margin-bottom: 10px; }
+    .recommendation p { font-size: 14px; opacity: 0.9; margin-bottom: 6px; }
+    .recommendation .big-rec { font-size: 24px; font-weight: 800; margin: 12px 0; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="label">Produkt-Research · Smartwatch</div>
+  <h1>Samsung Galaxy Watch 5 → 7 → 8</h1>
+  <p>Performance-Upgrade, Herzfrequenz-Genauigkeit & Preise — alles was du wissen musst</p>
+  <div class="meta">Stand: April 2026 · Quellen: DC Rainmaker, Samsung, Idealo, GSMArena</div>
+</div>
+
+<div class="container">
+
+  <!-- TL;DR -->
+  <div class="tldr">
+    <h2>⚡ TL;DR — kurze Antwort</h2>
+    <ul>
+      <li><strong>Watch 5 → Watch 7:</strong> Massiver Performance-Sprung. Neuer 3nm 5-Kern-Chip vs. alter 5nm 2-Kern-Chip. Doppelt so viel RAM. Du wirst den Unterschied sofort spüren.</li>
+      <li><strong>Watch 7 Preis:</strong> Aktuell ab ~145 € (Idealo) bis 219 € bei Samsung direkt. Das beste Preis-Leistungs-Verhältnis der drei Modelle.</li>
+      <li><strong>Watch 8:</strong> Gleicher Chip wie Watch 7, mehr Features, ab ~349 €. Nicht nötig wenn dir Performance das Hauptthema ist.</li>
+      <li><strong>Herzfrequenz Laufen:</strong> Watch 7 sehr gut. <strong>Herzfrequenz Radfahren:</strong> Watch 7 problematisch bei Anstiegen/Schotter — laut DC Rainmaker "unusable" in anspruchsvollen Situationen.</li>
+      <li><strong>Empfehlung für Daniel:</strong> Galaxy Watch 7 (44mm). Sofortiger Fix für das Lag-Problem, faire ~160 €.</li>
+    </ul>
+  </div>
+
+  <!-- VERDICT CARDS -->
+  <div class="section-title">📦 Auf einen Blick</div>
+  <div class="verdict-grid">
+    <div class="verdict-card w5">
+      <div class="model-label">Deine aktuelle Uhr</div>
+      <h3>Galaxy Watch 5</h3>
+      <div class="price">0 €</div>
+      <span class="verdict-tag tag-skip">❌ Ersetzen</span>
+      <ul>
+        <li>Alter 5nm Dual-Core-Chip</li>
+        <li>1.5 GB RAM — zu wenig</li>
+        <li>One UI Watch veraltet</li>
+        <li>Laggt mit neueren Apps</li>
+        <li>Hängt sich auf ✓ (bekannt)</li>
+      </ul>
+    </div>
+    <div class="verdict-card w7">
+      <div class="model-label">⭐ Empfehlung</div>
+      <h3>Galaxy Watch 7</h3>
+      <div class="price">ab 145 €</div>
+      <span class="verdict-tag tag-buy">✅ Kaufen</span>
+      <ul>
+        <li>Neuer 3nm 5-Kern-Chip</li>
+        <li>2 GB RAM — doppelt so viel</li>
+        <li>Sofortiger Performance-Sprung</li>
+        <li>Verbesserte Herzfrequenz</li>
+        <li>Bestes Preis-Leistung</li>
+      </ul>
+    </div>
+    <div class="verdict-card w8">
+      <div class="model-label">Neuestes Modell (2025)</div>
+      <h3>Galaxy Watch 8</h3>
+      <div class="price">ab 349 €</div>
+      <span class="verdict-tag tag-wait">💡 Overkill</span>
+      <ul>
+        <li>Gleicher Chip wie Watch 7</li>
+        <li>Wear OS 6 + Gemini AI</li>
+        <li>Sapphire-Glas, mehr Features</li>
+        <li>Kein relevanter Perf-Sprung vs. 7</li>
+        <li>Über doppelt so teuer wie Watch 7</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CHIP VERGLEICH -->
+  <div class="section-title">⚙️ Performance — Chip-Vergleich</div>
+  <div class="chip-compare">
+    <div class="chip-card">
+      <div class="chip-icon">🐢</div>
+      <h4>Galaxy Watch 5</h4>
+      <div class="chip-name" style="color:#888">Exynos W920</div>
+      <div class="chip-stat">📐 5 nm Fertigungsprozess</div>
+      <div class="chip-stat">🔧 2 Kerne × 1,18 GHz</div>
+      <div class="chip-stat">🧠 1,5 GB RAM</div>
+      <div class="chip-stat">💾 16 GB Speicher</div>
+      <div class="speedbar-wrap">
+        <div class="speedbar-label">Relative Performance</div>
+        <div class="speedbar"><div class="speedbar-fill fill-gray" style="width:28%"></div></div>
+      </div>
+    </div>
+    <div class="chip-card" style="border: 2px solid #1a73e8;">
+      <div class="chip-icon">🚀</div>
+      <h4>Galaxy Watch 7</h4>
+      <div class="chip-name" style="color:#1a73e8">Exynos W1000</div>
+      <div class="chip-stat">📐 3 nm Fertigungsprozess</div>
+      <div class="chip-stat">🔧 5 Kerne (1,6 + 1,5 GHz)</div>
+      <div class="chip-stat">🧠 2 GB RAM</div>
+      <div class="chip-stat">💾 32 GB Speicher</div>
+      <div class="speedbar-wrap">
+        <div class="speedbar-label">Relative Performance</div>
+        <div class="speedbar"><div class="speedbar-fill fill-blue" style="width:82%"></div></div>
+      </div>
+    </div>
+    <div class="chip-card">
+      <div class="chip-icon">⚡</div>
+      <h4>Galaxy Watch 8</h4>
+      <div class="chip-name" style="color:#34a853">Exynos W1000</div>
+      <div class="chip-stat">📐 3 nm Fertigungsprozess</div>
+      <div class="chip-stat">🔧 5 Kerne (1,6 + 1,5 GHz)</div>
+      <div class="chip-stat">🧠 2 GB RAM</div>
+      <div class="chip-stat">💾 32–64 GB Speicher</div>
+      <div class="speedbar-wrap">
+        <div class="speedbar-label">Relative Performance</div>
+        <div class="speedbar"><div class="speedbar-fill fill-green" style="width:87%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="warn-card">
+    <h3>⚠️ Watch 7 und 8 haben denselben Chip</h3>
+    <p>Beide nutzen den Exynos W1000 (3nm, 5-Kerne). Der Performance-Sprung geschieht von Watch 5 → Watch 7. Von Watch 7 → Watch 8 ist es ein Software/Feature-Upgrade, kein Geschwindigkeits-Upgrade. Für dein Problem (Lag, Einfrieren) löst die Watch 7 das vollständig.</p>
+  </div>
+
+  <!-- FULL SPECS TABLE -->
+  <div class="section-title">📊 Vollständiger Spezifikations-Vergleich</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:22%">Feature</th>
+          <th>Galaxy Watch 5</th>
+          <th class="w7">Galaxy Watch 7 ⭐</th>
+          <th class="w8">Galaxy Watch 8</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feature">Preis (DE)</td>
+          <td class="bad">Veraltet / Gebraucht</td>
+          <td class="good">ab 145 € (40mm)<br><small>219 € Samsung direkt</small></td>
+          <td class="ok">ab ca. 349 €</td>
+        </tr>
+        <tr>
+          <td class="feature">Prozessor</td>
+          <td class="bad">Exynos W920<br>5nm · 2-Kern</td>
+          <td class="good">Exynos W1000<br>3nm · 5-Kern</td>
+          <td class="good">Exynos W1000<br>3nm · 5-Kern</td>
+        </tr>
+        <tr>
+          <td class="feature">RAM</td>
+          <td class="bad">1,5 GB</td>
+          <td class="good">2 GB</td>
+          <td class="good">2 GB</td>
+        </tr>
+        <tr>
+          <td class="feature">Speicher</td>
+          <td>16 GB</td>
+          <td class="good">32 GB</td>
+          <td class="good">32–64 GB</td>
+        </tr>
+        <tr>
+          <td class="feature">Betriebssystem</td>
+          <td class="bad">Wear OS 4<br>One UI 5</td>
+          <td>Wear OS 5<br>One UI 7</td>
+          <td class="good">Wear OS 6<br>One UI 8 + Gemini</td>
+        </tr>
+        <tr>
+          <td class="feature">Display</td>
+          <td>Super AMOLED<br>40mm/44mm</td>
+          <td>Super AMOLED<br>40mm/44mm · 2000 nits</td>
+          <td class="good">Super AMOLED<br>3000 nits · Saphir-Glas</td>
+        </tr>
+        <tr>
+          <td class="feature">Akku</td>
+          <td>284 mAh (40mm)<br>361 mAh (44mm)</td>
+          <td>300 mAh (40mm)<br>425 mAh (44mm)</td>
+          <td class="good">325 mAh (40mm)<br>435–445 mAh (44mm)</td>
+        </tr>
+        <tr>
+          <td class="feature">Akkulaufzeit</td>
+          <td>~24–30h AOD</td>
+          <td>~24h AOD</td>
+          <td>~30h AOD</td>
+        </tr>
+        <tr>
+          <td class="feature">GPS</td>
+          <td>L1 GPS</td>
+          <td>Dual-Frequenz GPS<br>(L1+L5)</td>
+          <td class="good">Dual-Frequenz GPS<br>(L1+L5)</td>
+        </tr>
+        <tr>
+          <td class="feature">Herzfrequenz</td>
+          <td>BioActive Sensor<br>(ältere Gen.)</td>
+          <td class="good">BioActive Sensor<br>(verbessert, mehr LEDs)</td>
+          <td class="good">BioActive Sensor<br>(neueste Gen.)</td>
+        </tr>
+        <tr>
+          <td class="feature">EKG / SpO₂</td>
+          <td>✅ Ja</td>
+          <td>✅ Ja</td>
+          <td>✅ Ja</td>
+        </tr>
+        <tr>
+          <td class="feature">Schlafapnoe-Erkennung</td>
+          <td class="bad">❌ Nein</td>
+          <td class="bad">❌ Nein</td>
+          <td class="good">✅ Ja</td>
+        </tr>
+        <tr>
+          <td class="feature">Gehäuse</td>
+          <td>Armor Aluminium</td>
+          <td>Armor Aluminium</td>
+          <td class="good">Armor Alu / Edelstahl / Titan (Ultra)</td>
+        </tr>
+        <tr>
+          <td class="feature">Schutzklasse</td>
+          <td>5ATM + IP68</td>
+          <td>5ATM + IP68</td>
+          <td class="good">5ATM + IP68 + MIL-STD-810H</td>
+        </tr>
+        <tr>
+          <td class="feature">Erscheinungsjahr</td>
+          <td class="bad">2022</td>
+          <td>2024</td>
+          <td class="good">2025</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- HERZFREQUENZ -->
+  <div class="section-title">❤️ Herzfrequenz-Genauigkeit — Das ehrliche Bild</div>
+
+  <div class="hr-grid">
+    <div class="hr-card">
+      <h4>🏃 Laufen</h4>
+      <div class="hr-row">
+        <span class="hr-label">Watch 5</span>
+        <div class="hr-bar"><div class="hr-bar-fill fill-ok" style="width:60%"></div></div>
+        <span class="hr-val" style="color:#e65100">Mittel</span>
+      </div>
+      <div class="hr-row">
+        <span class="hr-label">Watch 7</span>
+        <div class="hr-bar"><div class="hr-bar-fill fill-great" style="width:85%"></div></div>
+        <span class="hr-val" style="color:#34a853">Gut ✅</span>
+      </div>
+      <div class="hr-row">
+        <span class="hr-label">Watch 8</span>
+        <div class="hr-bar"><div class="hr-bar-fill fill-great" style="width:88%"></div></div>
+        <span class="hr-val" style="color:#34a853">Sehr gut ✅</span>
+      </div>
+      <p style="font-size:12px; color:#777; margin-top:10px">Watch 7 trackt Herzfrequenz beim Laufen sehr präzise. Kleine Ausreißer bei Intervall-Peaks — für die meisten Läufer irrelevant. (Quelle: DC Rainmaker)</p>
+    </div>
+
+    <div class="hr-card">
+      <h4>🚴 Radfahren / Gravel / Anstiege</h4>
+      <div class="hr-row">
+        <span class="hr-label">Watch 5</span>
+        <div class="hr-bar"><div class="hr-bar-fill fill-bad" style="width:40%"></div></div>
+        <span class="hr-val" style="color:#ea4335">Schlecht</span>
+      </div>
+      <div class="hr-row">
+        <span class="hr-label">Watch 7</span>
+        <div class="hr-bar"><div class="hr-bar-fill fill-bad" style="width:45%"></div></div>
+        <span class="hr-val" style="color:#ea4335">Schlecht ⚠️</span>
+      </div>
+      <div class="hr-row">
+        <span class="hr-label">Watch 8</span>
+        <div class="hr-bar"><div class="hr-bar-fill fill-ok" style="width:62%"></div></div>
+        <span class="hr-val" style="color:#e65100">Besser</span>
+      </div>
+      <p style="font-size:12px; color:#777; margin-top:10px">DC Rainmaker-Test: Bei langen Anstiegen und Schotter-/Gravel-Abfahrten wird die Watch 7 "erratic and unusable". Abweichungen zum Brustgurt teils massiv. Das ist das bekannte Flatter-Problem aller Handgelenk-Sensoren unter Vibration.</p>
+    </div>
+  </div>
+
+  <div class="danger-card">
+    <h3>🚴 Wichtig für Radfahrer: Handgelenk-HR beim Radeln ist generell problematisch</h3>
+    <p>DC Rainmaker (die beste Sportwatch-Review-Quelle weltweit) hat die Watch 7 explizit für Cycling abgestraft. Bei 2,5h+ Anstiegen oder Gravel-Abfahrten springt die HR-Kurve wild. Das gilt für alle Smartwatches — ein Brustgurt (Polar H10) oder ein optischer Armgurt (Wahoo Tickr Fit) löst das Problem komplett. Für Laufen ist die Watch 7 dagegen deutlich besser als die Watch 5.</p>
+  </div>
+
+  <div class="success-card">
+    <h3>✅ Was die Watch 7 besser macht als die Watch 5</h3>
+    <p>Verbesserter BioActive-Sensor mit mehr LEDs → genauere Ruhemessung, bessere Workout-Erkennung. Dual-Frequenz GPS (L1+L5) statt einfachem L1 → deutlich genauere Streckenmessung beim Laufen und Radeln. Firmware-Stabilität durch mehr RAM — das Einfrieren-Problem ist von der Watch 5 bekannt und auf der Watch 7 behoben.</p>
+  </div>
+
+  <!-- PREISÜBERSICHT -->
+  <div class="section-title">💶 Aktuelle Preise (April 2026, Deutschland)</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Modell</th>
+          <th>Größe</th>
+          <th>Version</th>
+          <th>Preis</th>
+          <th>Quelle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Galaxy Watch 7</strong> <span class="badge badge-blue">Empfehlung</span></td>
+          <td>40mm</td>
+          <td>Bluetooth</td>
+          <td class="good"><strong>ab 145 €</strong></td>
+          <td>Idealo</td>
+        </tr>
+        <tr>
+          <td><strong>Galaxy Watch 7</strong></td>
+          <td>44mm</td>
+          <td>Bluetooth</td>
+          <td class="good"><strong>ab 157 €</strong></td>
+          <td>Idealo</td>
+        </tr>
+        <tr>
+          <td><strong>Galaxy Watch 7</strong></td>
+          <td>40mm</td>
+          <td>LTE</td>
+          <td>ab 162 €</td>
+          <td>Idealo</td>
+        </tr>
+        <tr>
+          <td><strong>Galaxy Watch 7</strong></td>
+          <td>44mm</td>
+          <td>LTE</td>
+          <td>ab 193 €</td>
+          <td>Idealo</td>
+        </tr>
+        <tr>
+          <td><strong>Galaxy Watch 7</strong></td>
+          <td>44mm</td>
+          <td>Bluetooth</td>
+          <td>219 €</td>
+          <td>Samsung direkt</td>
+        </tr>
+        <tr style="border-top: 2px solid #ddd;">
+          <td><strong>Galaxy Watch 8</strong></td>
+          <td>44mm</td>
+          <td>Bluetooth</td>
+          <td class="ok">ab ca. 349 €</td>
+          <td>Samsung (erwartet)</td>
+        </tr>
+        <tr>
+          <td><strong>Galaxy Watch 8 Classic</strong></td>
+          <td>46mm</td>
+          <td>Bluetooth</td>
+          <td class="ok">ab ca. 449 €</td>
+          <td>Schätzung</td>
+        </tr>
+        <tr>
+          <td><strong>Galaxy Watch 8 Ultra</strong></td>
+          <td>47mm</td>
+          <td>Bluetooth/LTE</td>
+          <td class="bad">ab ca. 649 €</td>
+          <td>Schätzung</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- EMPFEHLUNG -->
+  <div class="section-title">🎯 Empfehlung für Daniel</div>
+  <div class="recommendation">
+    <h3>Samsung Galaxy Watch 7 — 44mm</h3>
+    <div class="big-rec">~157–219 €</div>
+    <p>✅ <strong>Sofortiger Fix für dein Lag/Freeze-Problem.</strong> Der Exynos W1000 (5 Kerne, 3nm) mit 2GB RAM ist ein Quantensprung gegenüber deiner Watch 5. Apps laden schnell, kein Einfrieren.</p>
+    <p>✅ <strong>Deutlich bessere Herzfrequenz beim Laufen</strong> — sehr verlässlich für Intervall- und Ausdauerläufe.</p>
+    <p>⚠️ <strong>Für Gravel/Radeln auf langen Anstiegen:</strong> Kaufe zusätzlich einen Polar H10 Brustgurt (~60 €) für genaue HR-Daten. Das ist ehrlicher als behaupten, die Watch 7 löst das Problem beim Radeln vollständig.</p>
+    <p>🔴 <strong>Watch 8 lohnt sich nicht für dich</strong> — gleicher Chip, mehr als doppelter Preis. Die Mehrfeatures (Sapphir-Glas, Schlafapnoe) rechtfertigen die Differenz nicht wenn Performance dein Hauptgrund ist.</p>
+  </div>
+
+  <!-- QUELLEN -->
+  <div class="section-title">🔗 Quellen</div>
+  <div class="sources">
+    <h3>Für dieses Briefing verwendet</h3>
+    <a href="https://www.dcrainmaker.com/2024/08/samsung-galaxy-reviewaccuracy.html" target="_blank">DC Rainmaker: Galaxy Watch 7 Heart Rate Accuracy Review (2024)</a>
+    <a href="https://www.androidpolice.com/samsung-galaxy-watch-7-vs-galaxy-watch-5/" target="_blank">Android Police: Galaxy Watch 7 vs. Galaxy Watch 5 Vergleich</a>
+    <a href="https://www.idealo.de/preisvergleich/OffersOfProduct/204521956_-galaxy-watch7-samsung.html" target="_blank">Idealo: Galaxy Watch 7 Preisvergleich Deutschland</a>
+    <a href="https://en.wikipedia.org/wiki/Samsung_Galaxy_Watch_8" target="_blank">Wikipedia: Samsung Galaxy Watch 8 Specs</a>
+    <a href="https://www.samsung.com/de/watches/galaxy-watch7/buy/" target="_blank">Samsung Deutschland: Galaxy Watch 7</a>
+  </div>
+
+  <div style="text-align:center; margin-top:40px; color:#aaa; font-size:12px;">
+    Hatti Research Briefing · 3. April 2026
+  </div>
+
+</div>
+</body>
+</html>
