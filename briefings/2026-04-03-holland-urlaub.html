@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🇳🇱 Familienurlaub Appelscha — Briefing</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --card-hover: #334155;
+    --accent: #f59e0b;
+    --accent2: #10b981;
+    --accent3: #3b82f6;
+    --accent4: #a78bfa;
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border: #334155;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .hero {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1a3320 100%);
+    border-radius: 16px;
+    padding: 40px 30px;
+    margin-bottom: 24px;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+  .hero h1 { font-size: 2em; margin-bottom: 8px; }
+  .hero .subtitle { color: var(--text-muted); font-size: 1.1em; }
+  .hero .dates {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 16px;
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 20px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .section { margin-bottom: 28px; }
+  .section-title {
+    font-size: 1.3em;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1em;
+  }
+
+  .weather-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 10px;
+  }
+  .weather-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+  .weather-card .day { font-weight: 700; font-size: 0.85em; color: var(--accent3); }
+  .weather-card .icon-big { font-size: 1.8em; margin: 6px 0; }
+  .weather-card .temp { font-weight: 700; font-size: 1.1em; }
+  .weather-card .temp-low { color: var(--text-muted); font-size: 0.85em; }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--accent); }
+  .card h3 { font-size: 1.05em; margin-bottom: 6px; }
+  .card .tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .tag-kids { background: rgba(16, 185, 129, 0.15); color: var(--accent2); }
+  .tag-nature { background: rgba(59, 130, 246, 0.15); color: var(--accent3); }
+  .tag-adventure { background: rgba(245, 158, 11, 0.15); color: var(--accent); }
+  .tag-culture { background: rgba(167, 139, 250, 0.15); color: var(--accent4); }
+  .card p { color: var(--text-muted); font-size: 0.9em; }
+  .card .meta { margin-top: 10px; font-size: 0.8em; color: var(--text-muted); }
+
+  .route-list { display: flex; flex-direction: column; gap: 12px; }
+  .route {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .route:hover { border-color: var(--accent2); }
+  .route .distance {
+    min-width: 60px;
+    text-align: center;
+    font-weight: 800;
+    font-size: 1.2em;
+    color: var(--accent2);
+  }
+  .route .distance small { display: block; font-size: 0.6em; color: var(--text-muted); font-weight: 400; }
+  .route .info h3 { font-size: 1em; margin-bottom: 4px; }
+  .route .info p { color: var(--text-muted); font-size: 0.85em; }
+  .route .difficulty {
+    margin-left: auto;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .diff-easy { background: rgba(16, 185, 129, 0.15); color: var(--accent2); }
+  .diff-medium { background: rgba(245, 158, 11, 0.15); color: var(--accent); }
+
+  .tips {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border);
+  }
+  .tips ul { list-style: none; padding: 0; }
+  .tips li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9em;
+  }
+  .tips li:last-child { border-bottom: none; }
+  .tips li::before { content: "→ "; color: var(--accent); font-weight: 700; }
+
+  .footer {
+    text-align: center;
+    margin-top: 32px;
+    padding: 16px;
+    color: var(--text-muted);
+    font-size: 0.8em;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    .hero { padding: 24px 16px; }
+    .hero h1 { font-size: 1.4em; }
+    .weather-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+    .card-grid { grid-template-columns: 1fr; }
+    .route { flex-wrap: wrap; }
+    .route .difficulty { margin-left: 0; margin-top: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🇳🇱 Familienurlaub Appelscha</h1>
+  <p class="subtitle">Friesland · Drents-Friese Wold · mit Theo & Freddie</p>
+  <div class="dates">📅 4. — 11. April 2026</div>
+</div>
+
+<!-- WETTER -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon" style="background: rgba(59, 130, 246, 0.15);">🌦️</div>
+    Wetter-Prognose
+  </div>
+  <div class="weather-grid">
+    <div class="weather-card">
+      <div class="day">Sa 4.</div>
+      <div class="icon-big">⛅</div>
+      <div class="temp">12°C</div>
+      <div class="temp-low">↓ 4°C</div>
+    </div>
+    <div class="weather-card">
+      <div class="day">So 5.</div>
+      <div class="icon-big">🌧️</div>
+      <div class="temp">14°C</div>
+      <div class="temp-low">↓ 5°C</div>
+    </div>
+    <div class="weather-card">
+      <div class="day">Mo 6.</div>
+      <div class="icon-big">🌧️</div>
+      <div class="temp">16°C</div>
+      <div class="temp-low">↓ 7°C</div>
+    </div>
+    <div class="weather-card">
+      <div class="day">Di 7.</div>
+      <div class="icon-big">⛅</div>
+      <div class="temp">14°C</div>
+      <div class="temp-low">↓ 7°C</div>
+    </div>
+    <div class="weather-card">
+      <div class="day">Mi 8.</div>
+      <div class="icon-big">⛅</div>
+      <div class="temp">15°C</div>
+      <div class="temp-low">↓ 7°C</div>
+    </div>
+    <div class="weather-card">
+      <div class="day">Do 9.</div>
+      <div class="icon-big">🌤️</div>
+      <div class="temp">15°C</div>
+      <div class="temp-low">↓ 7°C</div>
+    </div>
+    <div class="weather-card">
+      <div class="day">Fr 10.</div>
+      <div class="icon-big">🌥️</div>
+      <div class="temp">8°C</div>
+      <div class="temp-low">↓ 2°C</div>
+    </div>
+  </div>
+  <p style="color: var(--text-muted); font-size: 0.8em; margin-top: 8px;">⚠️ Sonntag + Montag Regen/Schneeregen möglich — guter Tag für Indoor-Aktivitäten. Ab Dienstag wird's besser.</p>
+</div>
+
+<!-- AUSFLÜGE KIDS -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon" style="background: rgba(16, 185, 129, 0.15);">🎢</div>
+    Ausflüge & Aktivitäten mit Kids
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <span class="tag tag-adventure">🏔️ Abenteuer</span>
+      <h3>Duinen Zathe Freizeitpark</h3>
+      <p>Vergnügungspark direkt in Appelscha mit Fahrgeschäften, Spielplätzen und Attraktionen für alle Altersgruppen.</p>
+      <div class="meta">📍 Appelscha · Sa + So 10–17 Uhr · 💰 günstig</div>
+    </div>
+    <div class="card">
+      <span class="tag tag-adventure">🧩 Outdoor-Puzzle</span>
+      <h3>De Jongens van Outdoor</h3>
+      <p>Outdoor-Abenteuer mit Rätseln und körperlichen Challenges. Mix aus Escape Room und Parcours — Kinder lieben's.</p>
+      <div class="meta">📍 Appelscha · Täglich 10–19 Uhr</div>
+    </div>
+    <div class="card">
+      <span class="tag tag-nature">🌿 Natur</span>
+      <h3>Aekingerzand — „Kahle Dünen"</h3>
+      <p>Beeindruckendes Flugsandgebiet mitten im Wald. Kinder können über Sanddünen rennen und klettern. Aussichtsturm mit Panoramablick.</p>
+      <div class="meta">📍 10 Min mit Auto · Kostenlos · Highland-Rinder!</div>
+    </div>
+    <div class="card">
+      <span class="tag tag-nature">🌲 Natur</span>
+      <h3>Buitencentrum Drents-Friese Wold</h3>
+      <p>Besucherzentrum des Nationalparks. Ausstellung „Grenzeloos Wold", Kinderaktivitäten, Picknick-Spots. Guter Startpunkt für Wanderungen.</p>
+      <div class="meta">📍 Appelscha · Kostenlos · Parkplatz vorhanden</div>
+    </div>
+    <div class="card">
+      <span class="tag tag-culture">🧙‍♀️ Museum</span>
+      <h3>Museum de Heksehoeve</h3>
+      <p>Hexen-Museum! Interaktiv und spannend für Kinder. Perfekt für einen Regentag.</p>
+      <div class="meta">📍 Appelscha · ⭐ 4.0/5</div>
+    </div>
+    <div class="card">
+      <span class="tag tag-kids">👨‍👩‍👧‍👦 Familie</span>
+      <h3>Bosbergtoren — Aussichtsturm</h3>
+      <p>Höchster Punkt des friesischen Festlands! Klettern + Panoramablick über Wälder und Heide. Kurze Wanderung zum Turm.</p>
+      <div class="meta">📍 Appelscha · Kostenlos</div>
+    </div>
+    <div class="card">
+      <span class="tag tag-kids">🐄 Tiere</span>
+      <h3>Bauernmarkt Appelscha</h3>
+      <p>Regionaler Markt mit Käse, Brot, handgemachten Sachen. Entspannt bummeln, Kids können probieren.</p>
+      <div class="meta">📍 Appelscha · Check Termine vor Ort</div>
+    </div>
+    <div class="card">
+      <span class="tag tag-nature">🦋 Natur</span>
+      <h3>Doldersummerveld</h3>
+      <p>Schmetterlingsreservat! Heide- und Moorlandschaft. Ruhiger Spaziergang, besonders cool wenn die Sonne rauskommt.</p>
+      <div class="meta">📍 Im Nationalpark · Kostenlos</div>
+    </div>
+  </div>
+</div>
+
+<!-- FAHRRADROUTEN -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon" style="background: rgba(16, 185, 129, 0.15);">🚴</div>
+    Fahrradrouten für die Familie
+  </div>
+  <div class="route-list">
+    <div class="route">
+      <div class="distance">20<small>km</small></div>
+      <div class="info">
+        <h3>🏆 „Jong geleerd is oud gedaan"</h3>
+        <p>DIE Kinder-Route! Start bei RCN de Roggeberg → Buitencentrum → Aussichtsturm Aekingerzand. Educativ + Spaß, perfekt für Theo & Freddie.</p>
+      </div>
+      <div class="difficulty diff-easy">Leicht</div>
+    </div>
+    <div class="route">
+      <div class="distance">~15<small>km</small></div>
+      <div class="info">
+        <h3>Turfroute (kurze Variante)</h3>
+        <p>Durch Bos- und Moorlandschaften, vorbei an Ausichtstürmen. Flach, windgeschützt durch Wald. Kann auf 25 km verlängert werden.</p>
+      </div>
+      <div class="difficulty diff-easy">Leicht</div>
+    </div>
+    <div class="route">
+      <div class="distance">~25<small>km</small></div>
+      <div class="info">
+        <h3>Friese Meertjes Route</h3>
+        <p>Entlang stiller Seen und durch unberührte Natur. Sehr ruhig, kaum Verkehr. Gute Pausenplätze unterwegs.</p>
+      </div>
+      <div class="difficulty diff-easy">Leicht</div>
+    </div>
+    <div class="route">
+      <div class="distance">42,5<small>km</small></div>
+      <div class="info">
+        <h3>Hein Mader Kunstroute</h3>
+        <p>Kunstwerke entlang der Strecke durch Wald und Heide. Eher was für Daniel alleine oder mit größerem Kind. Start: Boerestreek 23.</p>
+      </div>
+      <div class="difficulty diff-medium">Mittel</div>
+    </div>
+    <div class="route">
+      <div class="distance">57<small>km</small></div>
+      <div class="info">
+        <h3>Streekproductenroute</h3>
+        <p>Vorbei an Bauernhöfen mit Käse- und Obstverkostung. Solo-Tour für Daniel — schöne Abwechslung, flach.</p>
+      </div>
+      <div class="difficulty diff-medium">Mittel</div>
+    </div>
+  </div>
+</div>
+
+<!-- REGEN-PLAN -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon" style="background: rgba(167, 139, 250, 0.15);">☔</div>
+    Regentag-Plan (So + Mo)
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <span class="tag tag-culture">🧙‍♀️ Indoor</span>
+      <h3>Museum de Heksehoeve</h3>
+      <p>Perfekt für einen verregneten Vormittag. Interaktiv genug für Kids.</p>
+    </div>
+    <div class="card">
+      <span class="tag tag-adventure">🧩 Indoor/Outdoor</span>
+      <h3>De Jongens van Outdoor</h3>
+      <p>Auch bei leichtem Regen machbar — Regenjacken an und los. Teils überdacht.</p>
+    </div>
+    <div class="card">
+      <span class="tag tag-kids">🏊 Schwimmbad</span>
+      <h3>Schwimmbad vor Ort checken</h3>
+      <p>Viele Ferienparks in der Region haben Hallenbäder. Vor Ort nach öffentlichem Zugang fragen.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TIPPS -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon" style="background: rgba(245, 158, 11, 0.15);">💡</div>
+    Praktische Tipps
+  </div>
+  <div class="tips">
+    <ul>
+      <li><strong>Fahrräder:</strong> Vor Ort leihen bei Fietsverhuur Appelscha (auch Kinderräder + Anhänger). Kinderarrangement mit Burger inkl. bei Het Fytshûs.</li>
+      <li><strong>Nationalpark:</strong> Kostenlos, Parkplätze vorhanden, viele Wege kinderwagen-tauglich.</li>
+      <li><strong>Wetter:</strong> Regenjacken + Gummistiefel einpacken! April in Friesland ist launisch.</li>
+      <li><strong>Supermarkt:</strong> Albert Heijn und Jumbo in der Umgebung. Gouda und Stroopwafels mitnehmen!</li>
+      <li><strong>Hunde-Info:</strong> Falls relevant — viele Wege sind hundefreundlich mit Freilaufzonen.</li>
+      <li><strong>Navigation:</strong> Fietsroutes nutzen das niederländische Knotenpunkt-System (knooppuntennetwerk) — super easy, einfach von Nummer zu Nummer fahren.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TAGESPLAN-VORSCHLAG -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon" style="background: rgba(59, 130, 246, 0.15);">📋</div>
+    Tagesplan-Vorschlag
+  </div>
+  <div class="tips">
+    <ul>
+      <li><strong>Sa 4.:</strong> Ankommen, einrichten, Umgebung erkunden. Kurzer Spaziergang zum Bosbergtoren.</li>
+      <li><strong>So 5.:</strong> ☔ Regentag → Museum de Heksehoeve + gemütlich Bummeln</li>
+      <li><strong>Mo 6.:</strong> ☔ De Jongens van Outdoor (auch bei Regen!) + Nachmittags Indoor</li>
+      <li><strong>Di 7.:</strong> 🚴 Familien-Radtour „Jong geleerd" (20 km) + Aekingerzand Dünen</li>
+      <li><strong>Mi 8.:</strong> 🎢 Duinen Zathe Freizeitpark (Check: evtl. nur Wochenende!)</li>
+      <li><strong>Do 9.:</strong> 🚴 Daniel Solo-Tour (42 km Kunstroute) — Kids: Buitencentrum + Spielplatz</li>
+      <li><strong>Fr 10.:</strong> Packen, letzte Runde, Abfahrt</li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">
+  🏔️ Hatti · Urlaubsbriefing · April 2026<br>
+  Schönen Urlaub, Mehlharts! 🇳🇱
+</div>
+
+</body>
+</html>
