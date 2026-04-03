@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eintracht Briefing - 3. April 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #222222;
+            line-height: 1.6;
+            padding: 20px 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #222222;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            color: #717171;
+            font-size: 16px;
+        }
+        
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+        }
+        
+        .article-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        }
+        
+        .article-content {
+            padding: 24px;
+        }
+        
+        .article-title {
+            margin-bottom: 16px;
+        }
+        
+        .article-title a {
+            text-decoration: none;
+            color: #222222;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.4;
+            display: block;
+        }
+        
+        .article-title a:hover {
+            color: #FF5A5F;
+        }
+        
+        .article-summary {
+            color: #717171;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .eintracht-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #000000, #FF0000);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        
+        .stats {
+            text-align: center;
+            margin-top: 48px;
+            padding: 24px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+            color: #717171;
+        }
+        
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 0 16px;
+            }
+            
+            .header {
+                padding: 24px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="eintracht-badge">⚽ Eintracht Frankfurt</div>
+            <h1>Tägliches Briefing</h1>
+            <p>Donnerstag, 3. April 2026 — Artikel vom 2. April</p>
+        </div>
+        
+        <div class="articles-grid">
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/ex-eintracht-cheftrainer-vor-ueberraschender-bundesliga-rueckkehr-94247840.html" target="_blank">
+                            Ex-Eintracht-Cheftrainer Glasner vor überraschender Bundesliga-Rückkehr?
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        Bayer Leverkusen plant möglicherweise einen Trainerwechsel im Sommer. Ex-Eintracht-Coach Oliver Glasner und Fabian Hürzeler gelten als Hauptkandidaten, obwohl Geschäftsführer Rolfes einen Wechsel öffentlich ausschließt. Bei einer verpassten Champions League-Qualifikation könnte sich die Situation aber ändern.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/eintracht-frankfurt-verpflichtet-18-jaehriges-offensiv-juwel-zr-94247781.html" target="_blank">
+                            Eintracht Frankfurt verpflichtet 18-jähriges Offensiv-Juwel
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        Die Eintracht holt Tobias Weigel ablösefrei vom 1. FC Heidenheim. Der 18-jährige Rechtsaußen kommt zur neuen Saison und soll zunächst in der U21 Erfahrungen sammeln. In 15 U19-Partien erzielte er elf Tore und bereitete fünf weitere vor.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/mario-goetze-vom-deutschen-wm-helden-zur-vereinsikone-bei-der-eintracht-zr-94247670.html" target="_blank">
+                            Vom deutschen WM-Helden zur Vereinsikone bei der Eintracht?
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        Ein Bilderbogen über Mario Götzes Karriere — von seinen frühen Erfolgen bei Dortmund über das WM-Tor 2014 bis zur Vertragsverlängerung bei der Eintracht. Götze könnte seine Laufbahn in Frankfurt beenden und sich als Vereinslegende etablieren.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/eintracht-frankfurt-hat-deutsches-abwehr-juwel-im-visier-zr-94247052.html" target="_blank">
+                            Eintracht Frankfurt hat deutsches Abwehr-Juwel im Visier
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        Die SGE zeigt Interesse an Joshua Quarshie vom FC Southampton. Der 21-jährige Innenverteidiger wechselte erst im Sommer für 3,5 Millionen von Hoffenheim nach England, ist aber noch nicht Stammspieler. Quarshie ist beidfüßig und spielt regelmäßig in der deutschen U21.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/kroesche-satz-ueber-eintracht-star-brown-laesst-aufhorchen-zr-94246787.html" target="_blank">
+                            Krösche-Satz über Eintracht-Star Brown lässt aufhorchen
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        Markus Krösche schwärmt von Nathaniel Brown nach dessen Startelf-Debüt im DFB-Team. Der SGE-Boss bezeichnet ihn bereits jetzt als einen der "besten Außenverteidiger Europas" und sieht ihn fest in der WM-Planung. Browns Marktwert ist seit seinem Wechsel um das Zehnfache gestiegen.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-content">
+                    <div class="article-title">
+                        <a href="https://www.fr.de/eintracht-frankfurt/mario-goetze-auf-dem-weg-zur-legende-von-eintracht-frankfurt-zr-94246460.html" target="_blank">
+                            Mario Götze auf dem Weg zur Legende von Eintracht Frankfurt
+                        </a>
+                    </div>
+                    <div class="article-summary">
+                        Christopher Michel analysiert Götzes Vertragsverlängerung bis 2028 und seine Entwicklung zur Identifikationsfigur. Der Weltmeister von 2014 verzichtet auf Millionen, um bei der Eintracht zu bleiben und könnte sich als einer der besonderen Spieler der Vereinsgeschichte etablieren.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats">
+            Erstellt am 3. April 2026 um 06:35 Uhr — 6 Artikel vom 2. April
+        </div>
+    </div>
+</body>
+</html>
