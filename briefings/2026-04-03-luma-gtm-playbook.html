@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMA GTM PLAYBOOK</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-color: #1e293b;
+            --text-color: #cbd5e1;
+            --heading-color: #f1f5f9;
+            --accent-color: #7C3AED;
+            --warning-bg: #450a0a;
+            --warning-border: #ef4444;
+            --border-color: #334155;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            background-color: var(--card-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--heading-color);
+            margin: 0;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            margin-top: 0.5rem;
+        }
+
+        .card {
+            background-color: var(--card-color);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 15px -3px var(--shadow-color), 0 4px 6px -2px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .warning-card {
+            background-color: var(--warning-bg);
+            border-left: 5px solid var(--warning-border);
+            color: #fca5a5;
+        }
+
+        .warning-card h2 {
+             color: #f87171;
+        }
+        
+        .highlight-card {
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.2);
+        }
+
+        h2, h3, h4 {
+            color: var(--heading-color);
+            margin-top: 0;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--accent-color);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 0.75rem;
+        }
+        
+        strong {
+            color: var(--heading-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--heading-color);
+            background-color: #334155;
+        }
+        
+        tr:nth-child(even) {
+             background-color: #283447;
+        }
+
+        pre {
+            background-color: #020617;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 1rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--accent-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 2.5rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 11px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            border: 3px solid var(--bg-color);
+        }
+
+        .timeline-title {
+            font-weight: bold;
+            color: var(--heading-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .timeline-date {
+            color: var(--text-color);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 1rem;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 0.5rem;
+            }
+            .container {
+                padding: 0;
+            }
+            .card {
+                padding: 1rem 1.2rem;
+            }
+             h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="hero">
+            <h1>LUMA GTM PLAYBOOK</h1>
+            <p>Von Pre-GTM zu Go-to-Market in 90 Tagen</p>
+        </header>
+
+        <main>
+            <section class="card">
+                <h2>1. Situationsanalyse — Wo stehst du wirklich?</h2>
+                <h3>Was du richtig gemacht hast</h3>
+                <ul>
+                    <li>Produkt gebaut, das echte Menschen täglich nutzen (13 aktive Nutzer).</li>
+                    <li>Starke Discovery-Fähigkeiten mit substanziellen Calls.</li>
+                    <li>Referral-Flywheel durch Kim Weber bereits angelegt (100% Conversion).</li>
+                    <li>Infrastruktur steht (Landing Page, Booking, Instantly, etc.).</li>
+                    <li>Echte Differenzierung im Markt (HOAI-nativ, KI, Voice, E-Mail-Agent).</li>
+                </ul>
+                <h3>Was du falsch machst</h3>
+                <ol>
+                    <li><strong>Du nimmst kein Geld:</strong> Das entwertet dein Produkt und trainiert den Markt auf "kostenlos".</li>
+                    <li><strong>Du baust statt zu verkaufen:</strong> Dein Produkt ist feature-reicher als manch Series-A-Company. Das Problem ist nicht "was fehlt?", sondern "wer zahlt?".</li>
+                    <li><strong>Kein committed Next Step in Calls:</strong> Ein Call ohne konkreten nächsten Schritt mit Datum ist Zeitverschwendung.</li>
+                    <li><strong>Cold Outreach noch nicht gestartet:</strong> Die Kampagne steht, läuft aber nicht. Das ist Prokrastination.</li>
+                    <li><strong>Zu viele parallele Projekte:</strong> Du hast selbst „Finish > Start“ als Schwachstelle erkannt. Handle danach.</li>
+                </ol>
+            </section>
+
+            <section class="card">
+                <h2>2. ICP-Schärfung</h2>
+                <p>Dein ICP ist gut, aber nicht scharf genug. Du musst entscheiden, wo du zuerst gewinnst.</p>
+                <h3>Primäres ICP (Fokus Q2 2026)</h3>
+                <p>Fokus auf Büros, die deine jetzigen Kunden repräsentieren.</p>
+                <h3>Sekundäres ICP (Öffentliche Auftraggeber)</h3>
+                <p>Attraktives Segment wegen zusätzlicher Pains (Protokollpflicht, DSGVO), aber mit höheren Anforderungen. Erst angehen, wenn die Story dazu sitzt.</p>
+                <h3>Trigger-Events zum Tracken</h3>
+                <ul>
+                    <li><strong>PlanRadar-Preiserhöhung:</strong> Google Alerts setzen.</li>
+                    <li><strong>Teamwachstum:</strong> LinkedIn Job-Posts tracken.</li>
+                    <li><strong>Rechtsstreit/Baumangel:</strong> Lokale Presse beobachten.</li>
+                    <li><strong>Neugründung/Ausgründung:</strong> Handelsregister-Einträge.</li>
+                    <li><strong>HOAI-Novelle/Gesetzesänderung:</strong> Regulatorische Änderungen.</li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h2>3. Pricing-Strategie</h2>
+                <p>Du brauchst EINEN Preis, den du morgen kommunizieren kannst.</p>
+                <h3>Empfohlenes Modell: Per-Büro + User-Staffel</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tier</th>
+                            <th>Preis/Monat</th>
+                            <th>Nutzer inkl.</th>
+                            <th>Features</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Starter</td>
+                            <td>249€</td>
+                            <td>Bis 5</td>
+                            <td>Core Features</td>
+                        </tr>
+                        <tr>
+                            <td>Professional</td>
+                            <td>449€</td>
+                            <td>Bis 10</td>
+                            <td>+ KI Copilot, Voice</td>
+                        </tr>
+                         <tr>
+                            <td>Enterprise</td>
+                            <td>Auf Anfrage</td>
+                            <td>10+</td>
+                            <td>+ Custom Integration</td>
+                        </tr>
+                    </tbody>
+                </table>
+                 <h3>Übergang kostenlos → bezahlt</h3>
+                <ul>
+                    <li><strong>Sofort.</strong> Nicht nächsten Monat, nicht wenn Feature X fertig ist. Jetzt.</li>
+                    <li><strong>Bestandskunden (Weber, HAMM):</strong> Lebenslang kostenlos aus Respekt.</li>
+                    <li><strong>SSR (frisch onboarded):</strong> 30 Tage Test, dann Professional.</li>
+                    <li><strong>Neue Kunden:</strong> 14-Tage-Trial, dann Bezahlung.</li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h2>4. Outreach-Playbook</h2>
+                <p>Bei 20h/Woche müssen die Kanäle klar priorisiert werden.</p>
+                 <h3>Optimierte Cold Email Sequenz (3 Mails)</h3>
+                <pre><code>**Mail 1 — Tag 1: Der Schmerzpunkt**
+
+Betreff: Kurze Frage zu {{Büroname}}
+
+Hallo {{Vorname}},
+
+ich spreche gerade mit mehreren Architekturbüros in Hessen — und höre immer dasselbe: Die Hälfte der Arbeitszeit geht für Verwaltung drauf, nicht für Architektur.
+
+Ist das bei Ihnen auch so?
+
+Gruß
+Daniel</code></pre>
+                <pre><code>**Mail 2 — Tag 4: Social Proof**
+
+Betreff: RE: Kurze Frage zu {{Büroname}}
+
+{{Vorname}}, kurzes Update: Ein 9-Personen-Büro in Frankfurt hat letzte Woche angefangen, Bautagebücher per Spracheingabe auf der Baustelle zu führen — statt abends im Büro nachzudokumentieren.
+
+Dauert 30 Sekunden pro Eintrag. HOAI-konform.
+
+Klingt das relevant für Sie? Dann zeige ich Ihnen das gerne in 20 Minuten.
+
+Daniel</code></pre>
+                <pre><code>**Mail 3 — Tag 9: Break-up**
+
+Betreff: Soll ich aufhören zu schreiben?
+
+{{Vorname}}, ich möchte nicht nerven. Wenn das Thema gerade nicht passt — kein Problem.
+
+Falls doch: luma-app.io/demo — 20 Minuten, echtes Projekt.
+
+Alles Gute fürs nächste Projekt.
+
+Daniel</code></pre>
+                 <h3>A/B-Test-Strategie</h3>
+                <p>Teile deine 118 Emails in 2 Gruppen und teste die "Problem-first" Sequenz gegen die "Baustellendoku-Angle" Sequenz. Messe Positive Reply Rate.</p>
+            </section>
+            
+            <section class="card">
+                <h2>6. 90-Tage-Aktionsplan</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4 class="timeline-title">Phase 1: Revenue Signal</h4>
+                            <div class="timeline-date">KW 15–17 (12.–27. April)</div>
+                            <p><strong>Ziel:</strong> Erster zahlender Kunde.</p>
+                            <ul>
+                                <li>Pricing auf Website & in App kommunizieren.</li>
+                                <li>Cold-Email-Kampagne starten (A/B-Test).</li>
+                                <li>Gespräche mit Bestandskunden über Pricing führen.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4 class="timeline-title">Phase 2: Pipeline bauen</h4>
+                            <div class="timeline-date">KW 18–21 (28. April–25. Mai)</div>
+                            <p><strong>Ziel:</strong> 5+ Discovery Calls, 2 neue Onboardings.</p>
+                             <ul>
+                                <li>Erfolgreiche E-Mail-Sequenz skalieren.</li>
+                                <li>Referral-System mit Kim Weber formalisieren.</li>
+                                <li>Discovery-Prozess schärfen (Committed Next Step).</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4 class="timeline-title">Phase 3: Skalierung vorbereiten</h4>
+                            <div class="timeline-date">KW 22–27 (26. Mai–5. Juli)</div>
+                             <p><strong>Ziel:</strong> 7–10 aktive Büros, davon 5+ zahlend.</p>
+                             <ul>
+                                <li>Onboarding-Prozess teil-automatisieren.</li>
+                                <li>Erste Case Study erstellen.</li>
+                                <li>Hatti/OpenClaw für GTM-Aufgaben ausbauen.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+             <section class="card highlight-card">
+                <h2>Top 5 Highest-Impact Aufgaben</h2>
+                <ol>
+                    <li><strong>Pricing kommunizieren:</strong> JETZT. Auf der Website, in der App, in Gesprächen.</li>
+                    <li><strong>Cold Outreach starten:</strong> Drück den "Senden"-Knopf auf die vorbereitete Kampagne.</li>
+                    <li><strong>Committed Next Steps:</strong> Beende keinen Call ohne konkreten Folgetermin.</li>
+                    <li><strong>Kim Weber anrufen:</strong> Formalisiere das Referral-Programm mit deinem größten Champion.</li>
+                    <li><strong>Aufhören, neue Features zu bauen:</strong> Für die nächsten 90 Tage bist du Verkäufer, nicht Entwickler.</li>
+                </ol>
+            </section>
+            
+             <section class="card warning-card">
+                <h2>8. Was du NICHT tun solltest</h2>
+                 <ul>
+                    <li>Weitere Features bauen.</li>
+                    <li>Über die "perfekte" Landing-Page-Headline nachdenken.</li>
+                    <li>Noch ein Side-Project starten.</li>
+                    <li>Die Cold-Email-Sequenz ein 10. Mal überarbeiten.</li>
+                    <li>Kostenlose Accounts ohne klares Ablaufdatum vergeben.</li>
+                </ul>
+                <p>Dein größtes Risiko ist nicht zu wenig tun — es ist zu viel vom Falschen zu tun.</p>
+            </section>
+            
+        </main>
+        
+        <footer>
+            Erstellt mit Claude · Aufbereitet von Hatti 🏔️ · April 2026
+        </footer>
+    </div>
+</body>
+</html>
