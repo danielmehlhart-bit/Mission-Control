@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bitcoin Research Briefing — April 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --card2: #253047;
+      --border: #334155;
+      --orange: #F7931A;
+      --orange-dim: rgba(247,147,26,0.12);
+      --orange-glow: rgba(247,147,26,0.25);
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #eab308;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --dimmer: #64748b;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1a2540 50%, #0f172a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 64px 24px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '₿';
+      position: absolute;
+      font-size: 320px;
+      color: rgba(247,147,26,0.04);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      font-weight: 900;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--orange-dim);
+      border: 1px solid var(--orange);
+      color: var(--orange);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 900;
+      color: var(--text);
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+    .hero h1 span { color: var(--orange); }
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 22px);
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+    .hero-meta {
+      font-size: 13px;
+      color: var(--dimmer);
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    .section { margin-bottom: 40px; }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .card + .card { margin-top: 16px; }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+    }
+
+    /* ── STATUS BAR ── */
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .stat-card.orange { border-color: rgba(247,147,26,0.4); }
+    .stat-card.red { border-color: rgba(239,68,68,0.4); }
+    .stat-card.yellow { border-color: rgba(234,179,8,0.4); }
+    .stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-value.orange { color: var(--orange); }
+    .stat-value.red { color: var(--red); }
+    .stat-value.yellow { color: var(--yellow); }
+    .stat-note {
+      font-size: 12px;
+      color: var(--dimmer);
+    }
+
+    /* ── DISCREPANCY NOTE ── */
+    .discrepancy {
+      background: rgba(234,179,8,0.08);
+      border: 1px solid rgba(234,179,8,0.3);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: var(--yellow);
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .discrepancy .icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── TWO COL ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 700px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    /* ── BULL/BEAR ── */
+    .bull-card {
+      background: var(--card);
+      border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .bear-card {
+      background: var(--card);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .bull-header {
+      color: var(--green);
+      font-weight: 800;
+      font-size: 16px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .bear-header {
+      color: var(--red);
+      font-weight: 800;
+      font-size: 16px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .prob-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+    .prob-badge.green { background: rgba(34,197,94,0.12); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+    .prob-badge.red { background: rgba(239,68,68,0.12); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+
+    .point-list { list-style: none; }
+    .point-list li {
+      font-size: 13.5px;
+      color: var(--text);
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .point-list li:last-child { border-bottom: none; }
+    .point-list .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+    .dot.green { background: var(--green); }
+    .dot.red { background: var(--red); }
+
+    .targets {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .targets-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .target-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .target-pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid;
+    }
+    .target-pill.green { color: var(--green); border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.08); }
+    .target-pill.red { color: var(--red); border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.08); }
+
+    /* ── SENTIMENT BARS ── */
+    .sentiment-block { margin-bottom: 20px; }
+    .sentiment-block:last-child { margin-bottom: 0; }
+    .sentiment-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .bar-container {
+      display: flex;
+      height: 28px;
+      border-radius: 8px;
+      overflow: hidden;
+      gap: 2px;
+    }
+    .bar-seg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+      transition: all 0.3s;
+    }
+    .bar-seg.bearish { background: var(--red); }
+    .bar-seg.neutral { background: var(--dimmer); }
+    .bar-seg.bullish { background: var(--green); }
+    .bar-legend {
+      display: flex;
+      gap: 14px;
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .bar-legend span { display: flex; align-items: center; gap: 5px; }
+    .leg-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* ── ON-CHAIN ── */
+    .onchain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .onchain-item {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .onchain-icon { font-size: 22px; margin-bottom: 8px; }
+    .onchain-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    .onchain-val {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .onchain-val.green { color: var(--green); }
+    .onchain-val.yellow { color: var(--yellow); }
+
+    /* ── LEVELS TABLE ── */
+    .levels-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .levels-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .levels-table td {
+      padding: 12px 14px;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .levels-table tr:last-child td { border-bottom: none; }
+    .level-price { font-weight: 800; font-family: 'Inter', monospace; }
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .tag.resist { background: rgba(239,68,68,0.12); color: var(--red); border: 1px solid rgba(239,68,68,0.25); }
+    .tag.accum { background: rgba(34,197,94,0.12); color: var(--green); border: 1px solid rgba(34,197,94,0.25); }
+    .tag.support { background: rgba(234,179,8,0.12); color: var(--yellow); border: 1px solid rgba(234,179,8,0.25); }
+    .tag.pivot { background: rgba(147,51,234,0.12); color: #a78bfa; border: 1px solid rgba(147,51,234,0.25); }
+    .tag.danger { background: rgba(239,68,68,0.08); color: #fca5a5; border: 1px solid rgba(239,68,68,0.2); }
+    .tag.extreme { background: rgba(239,68,68,0.05); color: #fecaca; border: 1px solid rgba(239,68,68,0.15); }
+
+    .current-marker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--orange);
+      background: var(--orange-dim);
+      border: 1px solid var(--orange);
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-left: 8px;
+    }
+
+    /* ── DCA ── */
+    .dca-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .dca-stat {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+    .dca-stat-val {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--green);
+      letter-spacing: -0.02em;
+    }
+    .dca-stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .dca-rules {
+      background: rgba(247,147,26,0.06);
+      border: 1px solid rgba(247,147,26,0.2);
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .dca-rules-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--orange);
+      margin-bottom: 12px;
+    }
+    .dca-rule {
+      font-size: 13px;
+      color: var(--text);
+      padding: 6px 0;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .dca-rule-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--orange);
+      color: white;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .tools-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .tool-badge {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: var(--card2);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .steuer-note {
+      background: rgba(34,197,94,0.06);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--green);
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    /* ── TIMELINE ── */
+    .timeline-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .timeline-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 20px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .timeline-row:last-child { border-bottom: none; }
+    .timeline-horizon {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .timeline-horizon.bearish { color: var(--red); }
+    .timeline-horizon.neutral { color: var(--yellow); }
+    .timeline-horizon.bullish { color: var(--green); }
+    .timeline-text {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .timeline-detail { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* ── FAZIT ── */
+    .fazit {
+      background: linear-gradient(135deg, rgba(247,147,26,0.1) 0%, rgba(247,147,26,0.05) 100%);
+      border: 2px solid var(--orange);
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .fazit::before {
+      content: '"';
+      position: absolute;
+      font-size: 200px;
+      color: rgba(247,147,26,0.05);
+      top: -40px;
+      left: 20px;
+      font-family: Georgia, serif;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .fazit-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+    .fazit-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--orange);
+      margin-bottom: 16px;
+    }
+    .fazit-text {
+      font-size: clamp(15px, 2vw, 18px);
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.65;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .fazit-pills {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .fazit-pill {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--orange);
+      color: var(--orange);
+      background: var(--orange-dim);
+    }
+
+    /* ── TWITTER/X BLOCK ── */
+    .tweet-style {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      font-size: 13.5px;
+      color: var(--text);
+      display: flex;
+      gap: 12px;
+    }
+    .tweet-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .tweet-handle { font-weight: 700; color: var(--orange); font-size: 13px; }
+    .tweet-content { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+
+    /* ── REDDIT ── */
+    .reddit-post {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .reddit-meta {
+      font-size: 11px;
+      color: var(--dimmer);
+      margin-bottom: 6px;
+    }
+    .reddit-title { font-weight: 600; color: var(--text); font-size: 14px; }
+    .upvotes {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--dimmer);
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+
+    /* ── RISK BANNER ── */
+    .risk-banner {
+      background: rgba(239,68,68,0.06);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 12px;
+      color: #fca5a5;
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .timeline-row { grid-template-columns: 1fr; gap: 4px; }
+      .levels-table th, .levels-table td { padding: 8px 10px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-badge">₿ Research Briefing · April 2026</div>
+  <h1>Bitcoin: <span>Kryptowinter</span> oder<br>Kaufgelegenheit?</h1>
+  <div class="hero-sub">"Die Frage, die gerade jeden beschäftigt."</div>
+  <div class="hero-meta">Stand: 4. April 2026 · Quellen: Twitter/X, Reddit, Perplexity, On-Chain-Daten</div>
+</div>
+
+<div class="container">
+
+  <!-- ── LAGE AKTUELL ── -->
+  <div class="section">
+    <div class="section-title">Lage Aktuell</div>
+    <div class="status-grid">
+      <div class="stat-card orange">
+        <div class="stat-label">BTC Kurs (Bandbreite)</div>
+        <div class="stat-value orange">~$66K–68K</div>
+        <div class="stat-note">Einige Quellen: $42.5K–45K ⚠️</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-label">ATH (Okt/Nov 2025)</div>
+        <div class="stat-value red">~$120K–126K</div>
+        <div class="stat-note">Drawdown: 30–50% vom ATH</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-label">Fear &amp; Greed Index</div>
+        <div class="stat-value red">11</div>
+        <div class="stat-note">Extreme Fear · 47 Tage unter Neutral</div>
+      </div>
+      <div class="stat-card yellow">
+        <div class="stat-label">Q1 2026</div>
+        <div class="stat-value yellow">Worst</div>
+        <div class="stat-note">Schlechtestes Q1 seit 2018</div>
+      </div>
+    </div>
+
+    <div class="discrepancy">
+      <span class="icon">⚠️</span>
+      <div>
+        <strong>Datenquellen-Diskrepanz:</strong> Verschiedene Quellen zeigen unterschiedliche Preisniveaus — von $42.500–45.000 bis $66.000–68.000. Ursache könnte Datenstände zu unterschiedlichen Zeitpunkten oder verschiedene Exchanges sein. Dieses Briefing nutzt die gesamte Bandbreite und trifft keine Einzelpunkt-Annahme.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BULL vs BEAR ── -->
+  <div class="section">
+    <div class="section-title">Bull Case vs. Bear Case</div>
+    <div class="two-col">
+
+      <div class="bull-card">
+        <div class="bull-header">🟢 Die Optimisten</div>
+        <div class="prob-badge green">Community-Wahrscheinlichkeit: ~40–50%</div>
+        <ul class="point-list">
+          <li><span class="dot green"></span><span><strong>Post-Halving-Extension:</strong> 12–18 Monate nach dem Halving (April 2024) kommt historisch der echte Bull Run</span></li>
+          <li><span class="dot green"></span><span><strong>ETF-Zuflüsse:</strong> BlackRock &amp; Fidelity — $4–6 Mrd./Quartal für 2026 erwartet</span></li>
+          <li><span class="dot green"></span><span><strong>Whale Akkumulation:</strong> 270.000 BTC in 30 Tagen, direkt in Cold Storage</span></li>
+          <li><span class="dot green"></span><span><strong>MVRV Z-Score 1.8:</strong> Deutlich unterbewertet (Peaks lagen bei 7–9)</span></li>
+          <li><span class="dot green"></span><span><strong>Makro-Rückenwind:</strong> Fed-Zinssenkungen erwartet, pro-crypto Regulierung im Kommen</span></li>
+          <li><span class="dot green"></span><span><strong>Stablecoin Supply</strong> steigt — klassisches bullishes On-Chain-Signal</span></li>
+        </ul>
+        <div class="targets">
+          <div class="targets-label">🎯 Preis-Targets (Analysten)</div>
+          <div class="target-pills">
+            <span class="target-pill green">Standard Chartered $150K</span>
+            <span class="target-pill green">JPMorgan $170K</span>
+            <span class="target-pill green">Tom Lee $200K</span>
+            <span class="target-pill green">British HODL $340K</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bear-card">
+        <div class="bear-header">🔴 Die Schwarzmaler</div>
+        <div class="prob-badge red">Community-Wahrscheinlichkeit: ~50–60%</div>
+        <ul class="point-list">
+          <li><span class="dot red"></span><span><strong>Zyklus-Top war Okt 2025.</strong> Klassischer 1-Jahres-Bärenmarkt läuft bereits</span></li>
+          <li><span class="dot red"></span><span><strong>Technischer Breakdown:</strong> Unter 50-Wochen-MA seit November 2025</span></li>
+          <li><span class="dot red"></span><span><strong>Makro-Gegenwind:</strong> Quantitative Tightening, Kriege (Iran), hohe Zinsen, Rezessionsrisiko</span></li>
+          <li><span class="dot red"></span><span><strong>ETF-Abflüsse:</strong> BlackRock 5 Wochen in Folge mit Outflows</span></li>
+          <li><span class="dot red"></span><span><strong>Prediction Markets:</strong> 71% Chance, dass BTC unter $55K bis Ende 2026</span></li>
+          <li><span class="dot red"></span><span>Kapitulationsrisiko bei Long-Term Holdern nicht ausgeschlossen</span></li>
+        </ul>
+        <div class="targets">
+          <div class="targets-label">🎯 Preis-Targets (Bears)</div>
+          <div class="target-pills">
+            <span class="target-pill red">CryptoQuant $56K–70K (H2 2026)</span>
+            <span class="target-pill red">Extremes Szenario $40K–48K</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── REDDIT STIMMUNG ── -->
+  <div class="section">
+    <div class="section-title">Reddit Stimmung</div>
+    <div class="card">
+      <div class="sentiment-block">
+        <div class="sentiment-label">r/bitcoin</div>
+        <div class="bar-container">
+          <div class="bar-seg bearish" style="width:68%">68%</div>
+          <div class="bar-seg neutral" style="width:22%">22%</div>
+          <div class="bar-seg bullish" style="width:10%">10%</div>
+        </div>
+        <div class="bar-legend">
+          <span><span class="leg-dot" style="background:var(--red)"></span>Bearish 68%</span>
+          <span><span class="leg-dot" style="background:var(--dimmer)"></span>Neutral 22%</span>
+          <span><span class="leg-dot" style="background:var(--green)"></span>Bullish 10%</span>
+        </div>
+      </div>
+      <div class="sentiment-block">
+        <div class="sentiment-label">r/cryptocurrency</div>
+        <div class="bar-container">
+          <div class="bar-seg bearish" style="width:72%">72%</div>
+          <div class="bar-seg neutral" style="width:18%">18%</div>
+          <div class="bar-seg bullish" style="width:10%">10%</div>
+        </div>
+        <div class="bar-legend">
+          <span><span class="leg-dot" style="background:var(--red)"></span>Bearish 72%</span>
+          <span><span class="leg-dot" style="background:var(--dimmer)"></span>Neutral 18%</span>
+          <span><span class="leg-dot" style="background:var(--green)"></span>Bullish 10%</span>
+        </div>
+      </div>
+
+      <div style="margin-top:20px">
+        <div class="reddit-post">
+          <div class="reddit-meta">r/bitcoin · Top-Post der Woche</div>
+          <div class="reddit-title">🔴 "Bear Market Confirmed: BTC Under 200WMA"</div>
+          <div class="upvotes">▲ 15.000 Upvotes</div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div class="onchain-item">
+          <div class="onchain-title">HODL-Fatigue</div>
+          <div class="onchain-val yellow">40% haben teilweise verkauft</div>
+        </div>
+        <div class="onchain-item">
+          <div class="onchain-title">Diamond Hands</div>
+          <div class="onchain-val green">60% halten weiterhin</div>
+        </div>
+      </div>
+
+      <div style="margin-top:14px; padding:14px 16px; background:rgba(255,255,255,0.03); border-radius:8px; font-size:13px; color:var(--muted);">
+        📊 Bullish-Posts werden systematisch runtergevoted. Stimmung: Historischer Vergleich zum 2022-Bären — aber <strong style="color:var(--text)">"weniger suizidal"</strong> dank institutionellem HODL (MicroStrategy: 252.000 BTC). Kein Exchange-Blowup wie FTX 2022 — positiver Unterschied.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TWITTER/X ── -->
+  <div class="section">
+    <div class="section-title">Twitter / X Stimmung</div>
+    <div class="card">
+      <div class="tweet-style">
+        <div class="tweet-avatar">🐦</div>
+        <div>
+          <div class="tweet-handle">@PlanB</div>
+          <div class="tweet-content">"Shallow bear. Struktureller Bull intakt. Festes Supply, steigende Adoption — das ändert sich nicht." · Kurzfristig vorsichtig, langfristig überzeugt.</div>
+        </div>
+      </div>
+      <div class="tweet-style">
+        <div class="tweet-avatar">📊</div>
+        <div>
+          <div class="tweet-handle">@CryptoQuant</div>
+          <div class="tweet-content">"On-Chain-Daten warnen vor möglichem Rückgang auf $56K in H2 2026. Makro-Gegenwind dominiert kurzfristig."</div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div class="onchain-item">
+          <div class="onchain-title">Kurzfristiger Tilt</div>
+          <div class="onchain-val red">60% Chance $50–60K in H2 2026</div>
+        </div>
+        <div class="onchain-item">
+          <div class="onchain-title">Struktureller View</div>
+          <div class="onchain-val green">Langfristiger Bull intakt</div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px; padding:12px 16px; background:rgba(34,197,94,0.06); border:1px solid rgba(34,197,94,0.2); border-radius:8px; font-size:13px; color:var(--green);">
+        ✅ Wichtiger Unterschied zu 2022: Kein Exchange-Blowup à la FTX. Institutionelle Holdings stabil. Das reduziert systemisches Risiko erheblich.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ON-CHAIN ── -->
+  <div class="section">
+    <div class="section-title">On-Chain Daten</div>
+    <div class="onchain-grid">
+      <div class="onchain-item">
+        <div class="onchain-icon">🐳</div>
+        <div class="onchain-title">Whale Akkumulation</div>
+        <div class="onchain-val green">270.000 BTC in 30 Tagen</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">Direkt in Cold Storage — kein Verkaufsdruck</div>
+      </div>
+      <div class="onchain-item">
+        <div class="onchain-icon">📐</div>
+        <div class="onchain-title">MVRV Z-Score</div>
+        <div class="onchain-val yellow">1.8 → Akkumulationszone</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">Peaks historisch bei 7–9</div>
+      </div>
+      <div class="onchain-item">
+        <div class="onchain-icon">⛏️</div>
+        <div class="onchain-title">Miner Verhalten</div>
+        <div class="onchain-val green">Weniger Verkäufe</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">Hash Rate stabil — kein Capitulation-Signal</div>
+      </div>
+      <div class="onchain-item">
+        <div class="onchain-icon">💎</div>
+        <div class="onchain-title">Long-Term Holders</div>
+        <div class="onchain-val yellow">Halten — mit Risiko</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">Kapitulationsrisiko besteht, aber gering</div>
+      </div>
+      <div class="onchain-item">
+        <div class="onchain-icon">💵</div>
+        <div class="onchain-title">Stablecoin Supply</div>
+        <div class="onchain-val green">Steigt ↑</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">Klassisches bullishes Signal: Dry Powder am Markt</div>
+      </div>
+      <div class="onchain-item">
+        <div class="onchain-icon">🏦</div>
+        <div class="onchain-title">ETF Holdings</div>
+        <div class="onchain-val green">&lt;5% verkauft</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">Trotz Drawdown halten institutionelle ETF-Holder</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WICHTIGE LEVELS ── -->
+  <div class="section">
+    <div class="section-title">Wichtige Preis-Levels</div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="levels-table">
+        <thead>
+          <tr>
+            <th>Preis-Level</th>
+            <th>Bedeutung</th>
+            <th>Typ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="level-price" style="color:var(--red)">$74.000</span></td>
+            <td style="color:var(--muted)">Widerstand / Short-Zone — bearishes Umfeld hier</td>
+            <td><span class="tag resist">Widerstand</span></td>
+          </tr>
+          <tr>
+            <td><span class="level-price" style="color:var(--green)">$69.000</span></td>
+            <td style="color:var(--muted)">Akkumulations-Bestätigung — Break-Out Trigger</td>
+            <td><span class="tag accum">Akkumulation</span></td>
+          </tr>
+          <tr>
+            <td><span class="level-price" style="color:var(--yellow)">$64.500–66.000</span><span class="current-marker">↔ Jetzt</span></td>
+            <td style="color:var(--muted)">Support / Breakdown-Trigger — kritische Zone</td>
+            <td><span class="tag support">Support</span></td>
+          </tr>
+          <tr>
+            <td><span class="level-price" style="color:#a78bfa">$60.000</span></td>
+            <td style="color:var(--muted)">Bull-Hold oder Bear-Extension — psycholog. Level</td>
+            <td><span class="tag pivot">Pivot</span></td>
+          </tr>
+          <tr>
+            <td><span class="level-price" style="color:#fca5a5">$50.000–58.000</span></td>
+            <td style="color:var(--muted)">Golden Pocket / Crash-Zone — starke Unterstützung</td>
+            <td><span class="tag danger">Crash-Zone</span></td>
+          </tr>
+          <tr>
+            <td><span class="level-price" style="color:#fecaca">$40.000–48.000</span></td>
+            <td style="color:var(--muted)">Zyklus-Boden — extremes Szenario</td>
+            <td><span class="tag extreme">Extremes Szenario</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── DCA STRATEGIE ── -->
+  <div class="section">
+    <div class="section-title">DCA / Sparplan Strategie</div>
+
+    <div class="dca-stats">
+      <div class="dca-stat">
+        <div class="dca-stat-val">+202%</div>
+        <div class="dca-stat-label">5 Jahre DCA Return</div>
+      </div>
+      <div class="dca-stat">
+        <div class="dca-stat-val">+1.145%</div>
+        <div class="dca-stat-label">DCA in "Extreme Fear"</div>
+      </div>
+      <div class="dca-stat">
+        <div class="dca-stat-val">+2.120%</div>
+        <div class="dca-stat-label">2019 DCA-Zone → Rally</div>
+      </div>
+      <div class="dca-stat">
+        <div class="dca-stat-val">+650%</div>
+        <div class="dca-stat-label">2022 DCA-Zone → Rally</div>
+      </div>
+    </div>
+
+    <div class="dca-rules">
+      <div class="dca-rules-title">⚡ Sunny Po Regel — Community-Konsens</div>
+      <div class="dca-rule">
+        <div class="dca-rule-num">1</div>
+        <span>DCA Baseline weiter besparen — Sparplan läuft, nicht pausieren</span>
+      </div>
+      <div class="dca-rule">
+        <div class="dca-rule-num">2</div>
+        <span>Bei 50% Drop: Doppelt kaufen — Angst-Phasen sind historisch beste Einstiegspunkte</span>
+      </div>
+      <div class="dca-rule">
+        <div class="dca-rule-num">3</div>
+        <span>Reset bei neuem ATH — dann wieder auf normale Sparrate zurück</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🇩🇪 Tools für Deutsche</div>
+      <div class="tools-row">
+        <span class="tool-badge">🟠 Relai</span>
+        <span class="tool-badge">🟣 Bison</span>
+        <span class="tool-badge">🔵 Bitpanda Sparplan</span>
+      </div>
+      <div class="steuer-note">
+        ✅ <strong>Steuer DE:</strong> Nach 1 Jahr Haltedauer steuerfrei! — Langfristiges Halten wird steuerlich belohnt.
+      </div>
+    </div>
+
+    <div class="risk-banner">
+      ⚠️ <strong>Risk Disclaimer:</strong> Nur investieren, was man vollständig verlieren kann. Kein Hebel. Kein YOLO.
+    </div>
+  </div>
+
+  <!-- ── WAHRHEIT IN DER MITTE ── -->
+  <div class="section">
+    <div class="section-title">Wahrheit in der Mitte — Zeithorizont-Analyse</div>
+    <div class="timeline-card">
+      <div class="timeline-row">
+        <div>
+          <div class="timeline-horizon bearish">⬇ Kurzfristig</div>
+          <div style="font-size:11px;color:var(--muted)">0–6 Monate</div>
+        </div>
+        <div>
+          <div class="timeline-text">Eher bearish. Makro, Zyklen und Sentiment drücken. Weitere Rückgänge bis $50–60K möglich.</div>
+          <div class="timeline-detail">QT läuft, Iran-Risiko, 50W-MA gebrochen, Prediction Markets 71% für unter $55K.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div>
+          <div class="timeline-horizon neutral">↔ Mittelfristig</div>
+          <div style="font-size:11px;color:var(--muted)">6–18 Monate</div>
+        </div>
+        <div>
+          <div class="timeline-text">Erholung auf $90K–120K wahrscheinlich — wenn sich das Makro-Umfeld dreht.</div>
+          <div class="timeline-detail">Post-Halving-Extension, Fed-Zinssenkungen, ETF-Zuflüsse könnten Katalysator sein.</div>
+        </div>
+      </div>
+      <div class="timeline-row">
+        <div>
+          <div class="timeline-horizon bullish">↑ Langfristig</div>
+          <div style="font-size:11px;color:var(--muted)">3–5 Jahre</div>
+        </div>
+        <div>
+          <div class="timeline-text">Strukturell bullish. Festes Supply, steigende Adoption, ETFs, Nation-State-Käufe verändern die fundamentale Nachfrageseite.</div>
+          <div class="timeline-detail">Für DCA-Sparer: Historisch gesehen genau die richtige Akkumulationsphase.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FAZIT ── -->
+  <div class="section">
+    <div class="section-title">Das Fazit</div>
+    <div class="fazit">
+      <div class="fazit-icon">₿</div>
+      <div class="fazit-title">Hattis Einschätzung · April 2026</div>
+      <div class="fazit-text">
+        Für jemanden mit einem langfristigen BTC-Sparplan ist die aktuelle Phase historisch gesehen eine der besten Akkumulationsphasen. Nicht weil der Preis steigen <em>muss</em>, sondern weil DCA in Angst-Phasen statistisch die höchsten Renditen bringt. Sparplan beibehalten. Nicht hebeln. Nicht paniken.
+      </div>
+      <div class="fazit-pills">
+        <span class="fazit-pill">📊 Sparplan beibehalten</span>
+        <span class="fazit-pill">🚫 Nicht hebeln</span>
+        <span class="fazit-pill">🧘 Nicht paniken</span>
+        <span class="fazit-pill">⏳ Langfrist-Denken</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  Research von Hatti 🏔️ · Quellen: Twitter/X, Reddit, Perplexity, On-Chain-Daten · April 2026 · <strong>Keine Anlageberatung</strong>
+</footer>
+
+</body>
+</html>
