@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marktbericht - 06. April 2026</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin: 0;
+        }
+        .header p {
+            font-size: 1.1em;
+            color: #6c757d;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        .indices {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+        .index {
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .index h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+        }
+        .index .value {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+        .index .change {
+            font-size: 1.2em;
+        }
+        .positive {
+            background-color: #e6f9f1;
+            color: #1a744a;
+        }
+        .negative {
+            background-color: #fdeeee;
+            color: #c0392b;
+        }
+        .section-title {
+            font-size: 1.5em;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .card ul {
+            padding-left: 20px;
+        }
+        .card li {
+            margin-bottom: 10px;
+        }
+        .disclaimer {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📈 Marktbericht</h1>
+            <p>Zusammenfassung für den 06. April 2026</p>
+        </div>
+        
+        <div class="card disclaimer">
+            <strong>Hinweis:</strong> Es konnte kein aktueller Marktbericht für heute (06.04.) oder gestern (05.04.) gefunden werden. Die folgenden Daten stammen vom <strong>01. April 2026</strong>.
+        </div>
+
+        <div class="card">
+            <div class="indices">
+                <div class="index positive">
+                    <h3>DAX</h3>
+                    <div class="value">23.298</div>
+                    <div class="change">+2.7%</div>
+                </div>
+                <div class="index positive">
+                    <h3>Dow Jones</h3>
+                    <div class="value">46.606</div>
+                    <div class="change">+0.6%</div>
+                </div>
+                <div class="index positive">
+                    <h3>Nasdaq</h3>
+                    <div class="value">21.808</div>
+                    <div class="change">+1.0%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">Die Schlagzeile</h2>
+            <p><strong>Trumps Aussagen zu Iran-Krieg lösen Börsenrally aus</strong></p>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">Wichtige Treiber</h2>
+            <ul>
+                <li><strong>Hoffnung auf Kriegsende:</strong> Äußerungen von US-Präsident Trump über einen möglichen schnellen Abzug aus dem Iran und eine erbetene Waffenruhe beflügelten die Märkte.</li>
+                <li><strong>Sinkende Ölpreise:</strong> Die Aussicht auf eine Deeskalation und eine mögliche Öffnung der Straße von Hormus ließ die Ölpreise nachgeben. Ein Fass WTI fiel um knapp 3%, Brent notierte zeitweise unter 100 US-Dollar.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">Ausblick & Kontext</h2>
+            <ul>
+                <li><strong>Skepsis bleibt:</strong> Analysten raten weiterhin, eher auf Taten als auf Worte zu setzen. Die Lage bleibt unsicher.</li>
+                <li><strong>Inflationssorgen:</strong> Ein Fed-Notenbanker warnte, dass der Energieschock die Inflation weiter anheizen könnte. Zinssenkungen in den USA werden für dieses Jahr nicht mehr erwartet.</li>
+                <li><strong>Gedämpfte Konjunkturerwartung:</strong> Führende deutsche Wirtschaftsinstitute haben ihre Wachstumsprognose für 2026 wegen der hohen Energiepreise von 1,3% auf 0,6% mehr als halbiert.</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+             <p>Quelle: <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-dow-jones-392.html" target="_blank">Tagesschau.de - 01.04.2026</a></p>
+        </div>
+    </div>
+</body>
+</html>
