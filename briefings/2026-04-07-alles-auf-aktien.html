@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alles auf Aktien - 7. April 2026</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #1a202c, #2d3748);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .episode-info {
+            background: linear-gradient(45deg, #f7fafc, #edf2f7);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .episode-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 10px;
+        }
+        
+        .episode-meta {
+            color: #718096;
+            font-size: 0.95em;
+        }
+        
+        .topics {
+            margin: 30px 0;
+        }
+        
+        .topics h2 {
+            font-size: 1.5em;
+            color: #1a202c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .topic-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .topic-list li {
+            background: #f8fafc;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s ease;
+        }
+        
+        .topic-list li:hover {
+            transform: translateX(5px);
+            background: #edf2f7;
+        }
+        
+        .topic-icon {
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+        
+        .topic-title {
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 5px;
+        }
+        
+        .topic-desc {
+            color: #4a5568;
+            font-size: 0.95em;
+        }
+        
+        .market-trends {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .trend-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .trend-positive { border-left: 4px solid #48bb78; }
+        .trend-negative { border-left: 4px solid #f56565; }
+        .trend-neutral { border-left: 4px solid #ed8936; }
+        
+        .trend-value {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .positive { color: #48bb78; }
+        .negative { color: #f56565; }
+        .neutral { color: #ed8936; }
+        
+        .footer {
+            background: #f7fafc;
+            padding: 30px 40px;
+            text-align: center;
+            color: #718096;
+        }
+        
+        .youtube-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            margin: 20px 0;
+            transition: transform 0.2s ease;
+        }
+        
+        .youtube-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .header, .content { padding: 20px; }
+            .header h1 { font-size: 2em; }
+            .market-trends { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 Alles auf Aktien</h1>
+            <div class="subtitle">Der ultimative Taco-Dienstag und 8 Ideen für die Achterbahn-Börse</div>
+            <div style="margin-top: 15px; font-size: 0.9em; opacity: 0.8;">
+                Montag, 7. April 2026 • 22:51 Min.
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="episode-info">
+                <div class="episode-title">📺 Episode vom 07.04.2026</div>
+                <div class="episode-meta">
+                    Mit Philip Vetter und Holger Shepitz aus der Weltwirtschaftsredaktion<br>
+                    <strong>Disclaimer:</strong> Keine spezifischen Kauf- oder Anlageempfehlungen
+                </div>
+            </div>
+            
+            <div class="topics">
+                <h2>🎯 Hauptthemen</h2>
+                <ul class="topic-list">
+                    <li>
+                        <div class="topic-title">
+                            <span class="topic-icon">📉</span>
+                            Schwächster Handelstag des Jahres
+                        </div>
+                        <div class="topic-desc">Märkte unter Druck — Analyse der aktuellen Schwäche</div>
+                    </li>
+                    <li>
+                        <div class="topic-title">
+                            <span class="topic-icon">🚀</span>
+                            Space Fantasie bei Virgin Galactic
+                        </div>
+                        <div class="topic-desc">Weltraum-Tourismus im Fokus der Investoren</div>
+                    </li>
+                    <li>
+                        <div class="topic-title">
+                            <span class="topic-icon">🏥</span>
+                            Unverhofftes Geschenk für US-Gesundheitsdienstleister
+                        </div>
+                        <div class="topic-desc">Positive Entwicklungen im Healthcare-Sektor</div>
+                    </li>
+                    <li>
+                        <div class="topic-title">
+                            <span class="topic-icon">🌮</span>
+                            Der ultimative Taco Tuesday
+                        </div>
+                        <div class="topic-desc">Thema des Tages — Spezialanalyse</div>
+                    </li>
+                    <li>
+                        <div class="topic-title">
+                            <span class="topic-icon">💰</span>
+                            Triple Aide: Aus Angst wird Rendite
+                        </div>
+                        <div class="topic-desc">Strategische Investments in unsicheren Zeiten</div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="market-trends">
+                <div class="trend-card trend-negative">
+                    <div class="trend-value negative">📉 Schwächster Tag</div>
+                    <div>Handelstag 2026</div>
+                </div>
+                <div class="trend-card trend-positive">
+                    <div class="trend-value positive">🚀 Space Boom</div>
+                    <div>Virgin Galactic</div>
+                </div>
+                <div class="trend-card trend-positive">
+                    <div class="trend-value positive">🏥 Healthcare+</div>
+                    <div>US-Dienstleister</div>
+                </div>
+                <div class="trend-card trend-neutral">
+                    <div class="trend-value neutral">💡 Strategie</div>
+                    <div>Angst → Rendite</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin: 40px 0;">
+                <a href="https://www.youtube.com/watch?v=ZQ7VHOJDshk" class="youtube-link" target="_blank">
+                    ▶️ Vollständige Episode auf YouTube ansehen
+                </a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Quelle:</strong> WELT Netzreporter • Alles auf Aktien</p>
+            <p style="margin-top: 10px; font-size: 0.85em;">
+                Automatisch erstellt von Hatti 🏔️ • <a href="https://mc.mehlhart.de" style="color: #667eea;">Mission Control</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
