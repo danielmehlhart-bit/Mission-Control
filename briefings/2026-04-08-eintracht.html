@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eintracht Frankfurt Briefing - 8. April 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #222;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #d2001c;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .articles-grid {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
+        
+        .article-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .article-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+        
+        .article-title a {
+            color: #222;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .article-title a:hover {
+            color: #d2001c;
+        }
+        
+        .article-summary {
+            color: #555;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #888;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+        
+        .date-badge {
+            background: #d2001c;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .crisis-badge {
+            background: #ff6b6b;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .transfer-badge {
+            background: #4ecdc4;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .farewell-badge {
+            background: #95a5a6;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .ex-player-badge {
+            background: #f39c12;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .footer {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .article-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚽ Eintracht Frankfurt</h1>
+            <p>Briefing vom 8. April 2026 – Artikel von gestern</p>
+        </div>
+        
+        <div class="articles-grid">
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/rueckhalt-trainer-riera-verliert-bei-eintracht-frankfurt-immer-mehr-den-94251805.html" target="_blank">Bei Eintracht Frankfurt brodelt es</a>
+                </div>
+                <div class="article-summary">
+                    Die Eintracht schwächelt weiter gegen Abstiegskandidaten, während Trainer Riera mit fragwürdigen Personalentscheidungen seine Position schwächt. Nach dem 2:2 gegen Köln wächst intern die Kritik an seinen öffentlichen Äußerungen und taktischen Entscheidungen.
+                </div>
+                <div class="article-meta">
+                    <span class="crisis-badge">Trainer-Kritik</span>
+                    <span>07.04.2026, 16:05</span>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-star-vor-abgang-england-ist-fuer-larsson-sehr-reizvoll-zr-94251759.html" target="_blank">Eintracht-Star vor Abgang? „England ist für Larsson sehr reizvoll"</a>
+                </div>
+                <div class="article-summary">
+                    Hugo Larsson erlebt eine wechselhafte Saison, denkt aber über den nächsten Karriereschritt nach. Die Premier League gilt als besonders reizvoll für den 21-jährigen Schweden, der trotz schwankender Leistungen einen Marktwert von 32 Millionen Euro hat.
+                </div>
+                <div class="article-meta">
+                    <span class="transfer-badge">Transfer-Spekulation</span>
+                    <span>07.04.2026, 15:47</span>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/can-uzun-denkt-an-eintracht-abschied-erster-top-klub-beisst-an-zr-94251675.html" target="_blank">Can Uzun denkt wohl an Eintracht-Abschied – erster Top-Klub beißt an</a>
+                </div>
+                <div class="article-summary">
+                    Die öffentliche Kritik von Trainer Riera an Can Uzun kommt beim 20-Jährigen und seinem Umfeld gar nicht gut an. Der Spieler beschäftigt sich mit einem Abschied, AC Mailand zeigt bereits konkretes Interesse – der Marktwert ist von 80 auf 40-45 Millionen Euro gesunken.
+                </div>
+                <div class="article-meta">
+                    <span class="crisis-badge">Spieler-Unruhe</span>
+                    <span>07.04.2026, 15:19</span>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/zurueck-hugo-ekitike-kehrt-trotz-liverpool-krise-zu-paris-st-germain-94251532.html" target="_blank">Hugo Ekitiké kehrt mitten in der Krise des FC Liverpool zu Paris St. Germain zurück</a>
+                </div>
+                <div class="article-summary">
+                    Der Ex-Frankfurter ist derzeit Liverpools letzte Konstante in der Offensive und steht vor dem emotionalen Champions League-Viertelfinale gegen seinen Ex-Verein PSG. Trotz Liverpools Krise bleibt Ekitiké eine wichtige Stütze mit 11 Premier League-Toren.
+                </div>
+                <div class="article-meta">
+                    <span class="ex-player-badge">Ex-Spieler</span>
+                    <span>07.04.2026, 14:16</span>
+                </div>
+            </div>
+            
+            <div class="article-card">
+                <div class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-frankfurt-verkuendet-ersten-sommer-abgang-offiziell-zr-94251298.html" target="_blank">Eintracht Frankfurt verkündet Sommer-Abgang von Dahoud</a>
+                </div>
+                <div class="article-summary">
+                    Nach zwei gemeinsamen Jahren trennen sich die Wege von Eintracht Frankfurt und Mahmoud Dahoud in beiderseitigem Einvernehmen. Der 30-Jährige kam auf 35 Einsätze mit drei Toren und war nie mehr als Rotationsspieler.
+                </div>
+                <div class="article-meta">
+                    <span class="farewell-badge">Offizieller Abgang</span>
+                    <span>07.04.2026, 12:31</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Erstellt am 8. April 2026 um 06:35 Uhr • Quellen: Frankfurter Rundschau</p>
+        </div>
+    </div>
+</body>
+</html>
