@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marktbericht - 09. April 2026</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #484848;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        header {
+            padding: 30px;
+            border-bottom: 1px solid #ebeeef;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        header p {
+            margin: 5px 0 0;
+            color: #767676;
+            font-size: 16px;
+        }
+        .card-container {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid #ebeeef;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .card h2 {
+            margin-top: 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-bottom: 2px solid #ebeeef;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .index-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .index-change {
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .positive {
+            color: #008a05;
+        }
+        .negative {
+            color: #d90000;
+        }
+        .summary-section {
+            padding: 0 30px 30px;
+        }
+        .summary-section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 0;
+        }
+        .summary-section ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+        .summary-section li {
+            margin-bottom: 10px;
+        }
+        footer {
+            padding: 20px 30px;
+            background-color: #f7f7f7;
+            border-top: 1px solid #ebeeef;
+            text-align: center;
+            font-size: 14px;
+            color: #767676;
+        }
+        footer a {
+            color: #007a87;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📈 Marktbericht</h1>
+            <p>Donnerstag, 9. April 2026 (Daten vom 08.04.2026)</p>
+        </header>
+
+        <div class="card-container">
+            <div class="card">
+                <h2>DAX</h2>
+                <div class="index-value">20.080</div>
+                <div class="index-change positive">+5,06 %</div>
+            </div>
+            <div class="card">
+                <h2>Dow Jones</h2>
+                <div class="index-value">~</div>
+                <div class="index-change positive">ca. +3,00 %</div>
+            </div>
+            <div class="card">
+                <h2>Nasdaq</h2>
+                <div class="index-value">~</div>
+                <div class="index-change positive">Tech positiv</div>
+            </div>
+        </div>
+
+        <section class="summary-section">
+            <h2>Haupttreiber</h2>
+            <ul>
+                <li><strong>Waffenruhe am Persischen Golf:</strong> Große Erleichterung an den Märkten nach Verkündung einer Feuerpause.</li>
+                <li><strong>Ölpreise brechen ein:</strong> Brent-Öl fiel um ca. 13% auf 94,50 Dollar, nachdem die Straße von Hormus wieder geöffnet wurde.</li>
+                <li><strong>Neue Zinshoffnungen:</strong> Gefallene Energiepreise dämpfen Inflationssorgen und nähren die Hoffnung auf ausbleibende Zinsanhebungen oder sogar eine Senkung.</li>
+            </ul>
+        </section>
+
+        <section class="summary-section">
+            <h2>Ausblick</h2>
+            <ul>
+                <li><strong>Lage bleibt fragil:</strong> Trotz der positiven Entwicklung bleiben Unsicherheiten bezüglich der Verhandlungen, die am Freitag in Pakistan beginnen sollen.</li>
+                <li><strong>Normalisierung dauert:</strong> Experten schätzen, dass es Monate dauern könnte, bis der Ölmarkt wieder normal funktioniert.</li>
+                <li><strong>Technologieaktien im Fokus:</strong> Sektoren wie Tech, Banken und Luftfahrt gelten als Hauptprofiteure der aktuellen Entwicklung.</li>
+            </ul>
+        </section>
+
+        <footer>
+            Quelle: <a href="https://www.tagesschau.de/wirtschaft/finanzen/marktberichte/marktbericht-dax-dow-jones-boerse-waffenruhe-100.html" target="_blank">Tagesschau.de</a>
+        </footer>
+    </div>
+</body>
+</html>
