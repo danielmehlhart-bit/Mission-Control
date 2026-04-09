@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alles auf Aktien - 9. April 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .header .date {
+            font-size: 1.1em;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 35px;
+        }
+        
+        .section-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+        }
+        
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .market-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 4px solid transparent;
+        }
+        
+        .market-item.positive {
+            border-left-color: #27ae60;
+        }
+        
+        .market-item.negative {
+            border-left-color: #e74c3c;
+        }
+        
+        .market-name {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        
+        .market-value {
+            font-size: 1.4em;
+            font-weight: 700;
+        }
+        
+        .market-value.positive {
+            color: #27ae60;
+        }
+        
+        .market-value.negative {
+            color: #e74c3c;
+        }
+        
+        .stock-list {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .stock-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid transparent;
+        }
+        
+        .stock-item.winner {
+            border-left-color: #27ae60;
+        }
+        
+        .stock-item.loser {
+            border-left-color: #e74c3c;
+        }
+        
+        .stock-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .stock-change {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        
+        .stock-change.positive {
+            color: #27ae60;
+        }
+        
+        .stock-change.negative {
+            color: #e74c3c;
+        }
+        
+        .strategy-list {
+            list-style: none;
+            counter-reset: strategy-counter;
+        }
+        
+        .strategy-list li {
+            counter-increment: strategy-counter;
+            margin-bottom: 15px;
+            padding-left: 40px;
+            position: relative;
+        }
+        
+        .strategy-list li::before {
+            content: counter(strategy-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #667eea;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .tldr {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            padding: 20px;
+            border-radius: 15px;
+            color: #2d3436;
+        }
+        
+        .tldr h3 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .youtube-link {
+            background: #e74c3c;
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 20px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        
+        .youtube-link:hover {
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 600px) {
+            .market-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 Alles auf Aktien</h1>
+            <div class="date">Donnerstag, 9. April 2026</div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <div class="tldr">
+                    <h3>📈 TL;DR</h3>
+                    <p><strong>Erleichterungsrally</strong> durch Waffenruhe USA-Iran + Öffnung Straße von Hormus. DAX +5,1% (stärkster Tag seit März 2022). <strong>Space-Hype</strong> dank SpaceX-IPO-Vorfreude: AST SpaceMobile +320%, Applied Digital +400%. <strong>Airlines/Cyclicals</strong> profitieren von fallenden Ölpreisen. <strong>3 Strategien:</strong> Sektor-ETFs statt Einzelaktien, Qualitäts-Zykler (RWE, Enel), abgesicherte Momentum-Plays.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">📊 Märkte</h2>
+                <div class="market-grid">
+                    <div class="market-item positive">
+                        <div class="market-name">DAX</div>
+                        <div class="market-value positive">+5,1%</div>
+                    </div>
+                    <div class="market-item positive">
+                        <div class="market-name">Nasdaq 100</div>
+                        <div class="market-value positive">+3,0%</div>
+                    </div>
+                    <div class="market-item positive">
+                        <div class="market-name">S&P 500</div>
+                        <div class="market-value positive">+0,5%</div>
+                    </div>
+                    <div class="market-item positive">
+                        <div class="market-name">MSCI World Momentum</div>
+                        <div class="market-value positive">+8,0%</div>
+                    </div>
+                    <div class="market-item negative">
+                        <div class="market-name">EU-Gaspreis</div>
+                        <div class="market-value negative">-15%</div>
+                    </div>
+                    <div class="market-item negative">
+                        <div class="market-name">Ölpreise</div>
+                        <div class="market-value negative">-17%</div>
+                    </div>
+                </div>
+                <p><strong>Das war der stärkste DAX-Tag seit März 2022.</strong> Breite Marktrally durch geopolitische Entspannung - klassischer "Risk-on"-Moment.</p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">🚀 Top-Gewinner (Space-Hype)</h2>
+                <div class="stock-list">
+                    <div class="stock-item winner">
+                        <div class="stock-name">Applied Digital (KI/Rechenzentren)</div>
+                        <div class="stock-change positive">+400%</div>
+                    </div>
+                    <div class="stock-item winner">
+                        <div class="stock-name">AST SpaceMobile</div>
+                        <div class="stock-change positive">+320%</div>
+                    </div>
+                    <div class="stock-item winner">
+                        <div class="stock-name">Viasat (Space)</div>
+                        <div class="stock-change positive">+550%</div>
+                    </div>
+                    <div class="stock-item winner">
+                        <div class="stock-name">TUI</div>
+                        <div class="stock-change positive">+10%</div>
+                    </div>
+                    <div class="stock-item winner">
+                        <div class="stock-name">VW</div>
+                        <div class="stock-change positive">+5,5%</div>
+                    </div>
+                    <div class="stock-item winner">
+                        <div class="stock-name">Delta Airlines</div>
+                        <div class="stock-change positive">+4%</div>
+                    </div>
+                    <div class="stock-item winner">
+                        <div class="stock-name">Lufthansa (nachbörslich)</div>
+                        <div class="stock-change positive">+3%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">📉 Verlierer</h2>
+                <div class="stock-list">
+                    <div class="stock-item loser">
+                        <div class="stock-name">Brent Oil</div>
+                        <div class="stock-change negative">-17%</div>
+                    </div>
+                    <div class="stock-item loser">
+                        <div class="stock-name">Ölwerte allgemein</div>
+                        <div class="stock-change negative">Stark</div>
+                    </div>
+                    <div class="stock-item loser">
+                        <div class="stock-name">Heidelberg Materials</div>
+                        <div class="stock-change negative">-1,7%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">🏢 Quartalszahlen</h2>
+                <div class="stock-list">
+                    <div class="stock-item winner">
+                        <div>
+                            <div class="stock-name">Constellation Brands</div>
+                            <small>Umsatz: 1,92 Mrd. $ (über Erwartungen), Gewinn/Aktie: 2,90 $</small>
+                        </div>
+                        <div class="stock-change positive">+1%</div>
+                    </div>
+                    <div class="stock-item winner">
+                        <div>
+                            <div class="stock-name">Lufthansa</div>
+                            <small>Starke März-Zahlen, profitiert von fallenden Ölpreisen</small>
+                        </div>
+                        <div class="stock-change positive">Stark</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">🌍 Geopolitik</h2>
+                <p><strong>Waffenruhe USA-Iran</strong> für 2 Wochen + <strong>Öffnung Straße von Hormus</strong> sorgt für massive Entspannung. Trump-Rückzieher verhindert Eskalation. Fallende Öl-/Gaspreise entlasten Europa. <strong>Aber:</strong> Nur temporäre Waffenruhe, langfristige Lösung offen.</p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">🎯 Thema des Tages: Space-Hype</h2>
+                <p><strong>Raumfahrt-Euphorie</strong> wie seit Jahrzehnten nicht mehr. <strong>SpaceX-IPO</strong> befeuert Sektor, Starlink mit 9000 Satelliten dominiert. Space-ETFs empfohlen statt Einzelaktien wegen Short-Squeeze-Risiken. <strong>Blue Origin</strong> als Konkurrent, <strong>Artemis-Missionen</strong> treiben Phantasie. Langfristige Investitionsthese trotz Monsterbewertungen.</p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">🎯 3 Strategien für die Erleichterungsrally</h2>
+                <ol class="strategy-list">
+                    <li><strong>Sektor setzen statt Einzelaktien:</strong> Space-ETF, Airlines, Autos, Zykler - vermeidet Short-Squeeze-Fallen und Hype-Übertreibungen</li>
+                    <li><strong>Qualitäts-Zykler auswählen:</strong> RWE, Enel (Stromnetze/Elektrifizierung), Autos/Bau/Banken - profitieren von fallenden Energiepreisen</li>
+                    <li><strong>ETFs/Indizes mit Absicherung:</strong> MSCI World Momentum, abgesicherte Produkte; Pulver trocken halten für SpaceX-IPO</li>
+                </ol>
+            </div>
+
+            <a href="https://www.youtube.com/watch?v=hBCh--BhVkI" class="youtube-link" target="_blank">
+                📺 Episode auf YouTube ansehen
+            </a>
+        </div>
+    </div>
+</body>
+</html>
