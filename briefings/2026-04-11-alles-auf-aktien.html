@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alles auf Aktien | 11.04.2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #484848;
+            background: #f7f7f7;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #FF385C 0%, #FF6B6B 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        .header .date {
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .content {
+            padding: 2rem;
+        }
+        
+        .section {
+            margin-bottom: 2rem;
+            background: #fafafa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #FF385C;
+        }
+        
+        .section h2 {
+            color: #222;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .markets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .market-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .market-name {
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 0.5rem;
+        }
+        
+        .market-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        
+        .positive { color: #28a745; }
+        .negative { color: #dc3545; }
+        
+        .topics {
+            list-style: none;
+        }
+        
+        .topics li {
+            background: white;
+            margin-bottom: 0.8rem;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #4CAF50;
+        }
+        
+        .topics li strong {
+            color: #222;
+        }
+        
+        .youtube-section {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .youtube-btn {
+            background: #FF0000;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+            transition: background 0.2s;
+        }
+        
+        .youtube-btn:hover {
+            background: #cc0000;
+        }
+        
+        .note {
+            background: #e8f4fd;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 2rem;
+            font-style: italic;
+            color: #0c5460;
+        }
+        
+        .timestamp {
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+            padding: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .content {
+                padding: 1rem;
+            }
+            
+            .markets {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 Alles auf Aktien</h1>
+            <div class="subtitle">Die vergessene Börsenchance – eine Masterclass für Eure Rente</div>
+            <div class="date">📅 Samstag, 11. April 2026</div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2>🎯 Hauptthema: Betriebliche Altersvorsorge (BAV)</h2>
+                <p><strong>Sonderfolge mit Philip Liebeno</strong></p>
+                <p>Das Potenzial für die deutsche Aktienkultur: Die vergessene 3. Säule der Rente, die von vielen verschmäht wird, aber enormes Potenzial hat.</p>
+            </div>
+            
+            <div class="section">
+                <h2>📈 Märkte (Freitag)</h2>
+                <div class="markets">
+                    <div class="market-card">
+                        <div class="market-name">DAX</div>
+                        <div class="market-value positive">+2,74% 📈</div>
+                    </div>
+                    <div class="market-card">
+                        <div class="market-name">NASDAQ 100</div>
+                        <div class="market-value positive">+4,45% 🚀</div>
+                    </div>
+                    <div class="market-card">
+                        <div class="market-name">S&P 500</div>
+                        <div class="market-value positive">+3,56% 📈</div>
+                    </div>
+                </div>
+                <p><em>Starke Börsenwoche, aber ein Sektor als große Ausnahme am Freitag.</em></p>
+            </div>
+            
+            <div class="section">
+                <h2>🔑 Kernthemen BAV</h2>
+                <ul class="topics">
+                    <li><strong>Die vergessene 3. Säule:</strong> Potenzial für deutsche Aktienkultur</li>
+                    <li><strong>Krise & Lösungen:</strong> Warum BAV in Deutschland schwächelt</li>
+                    <li><strong>Steuervorteile:</strong> Konkrete Beratung für Arbeitnehmer</li>
+                    <li><strong>ETFs als Game-Changer:</strong> Neue Möglichkeiten in der BAV</li>
+                    <li><strong>Politik:</strong> Was sich ändern muss für besseres Chancen-Risiko-Verhältnis</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>💡 Praxis-Tipps</h2>
+                <ul class="topics">
+                    <li><strong>Forderungen beim Chef:</strong> Welche Argumente ihr nutzen könnt</li>
+                    <li><strong>Lohnt sich BAV?</strong> Für wen es wirklich Sinn macht</li>
+                    <li><strong>Steuerliche Vorteile:</strong> Konkrete Zahlen und Details</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2>🎁 Gast-Story</h2>
+                <p>Philip Liebeno erzählt von seiner 30-Jahre-Aktie, die er immer noch hält – eine persönliche Erfolgsgeschichte.</p>
+            </div>
+            
+            <div class="youtube-section">
+                <h3>🎥 Vollständige Episode ansehen</h3>
+                <p>Diese ausführliche Masterclass (1:28h) ist eine Sonderfolge zum Thema betriebliche Altersvorsorge.</p>
+                <a href="https://www.youtube.com/watch?v=BaJIwDzrty8" class="youtube-btn" target="_blank">
+                    ▶️ YouTube Episode öffnen
+                </a>
+            </div>
+            
+            <div class="note">
+                <p><strong>Hinweis:</strong> Dies ist eine ausführliche Masterclass (1:28h), nicht das übliche Tagesformat. Die besprochenen Aktien und Fonds stellen keine spezifischen Kauf- oder Anlageempfehlungen dar.</p>
+            </div>
+        </div>
+        
+        <div class="timestamp">
+            Erstellt am 11.04.2026 um 20:12 Uhr 🏔️
+        </div>
+    </div>
+</body>
+</html>
