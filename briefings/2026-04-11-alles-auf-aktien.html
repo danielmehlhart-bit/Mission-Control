@@ -3,174 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alles auf Aktien | 11.04.2026</title>
+    <title>Alles auf Aktien • 11.04.2026</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            line-height: 1.6; 
+            background: #f8fafc; 
+            color: #334155;
         }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: #484848;
-            background: #f7f7f7;
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            min-height: 100vh;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
         
         .header {
-            background: linear-gradient(135deg, #FF385C 0%, #FF6B6B 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: white;
-            padding: 2rem;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
             text-align: center;
         }
-        
-        .header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        
-        .header .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            margin-bottom: 1rem;
-        }
-        
-        .header .date {
-            background: rgba(255,255,255,0.2);
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 500;
-        }
-        
-        .content {
-            padding: 2rem;
-        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header .date { opacity: 0.8; font-size: 1.1em; }
         
         .section {
-            margin-bottom: 2rem;
-            background: #fafafa;
-            padding: 1.5rem;
+            background: white;
             border-radius: 12px;
-            border-left: 4px solid #FF385C;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 4px solid #3b82f6;
         }
         
         .section h2 {
-            color: #222;
-            margin-bottom: 1rem;
-            font-size: 1.4rem;
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 1.4em;
         }
         
-        .markets {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 1rem 0;
+        .highlight {
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
+            margin: 15px 0;
         }
         
-        .market-card {
-            background: white;
-            padding: 1rem;
+        .stocks { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .stock {
+            padding: 15px;
             border-radius: 8px;
             text-align: center;
-            border: 1px solid #e0e0e0;
-        }
-        
-        .market-name {
             font-weight: 600;
-            color: #222;
-            margin-bottom: 0.5rem;
         }
+        .stock.up { background: #dcfce7; color: #166534; }
+        .stock.down { background: #fef2f2; color: #dc2626; }
         
-        .market-value {
-            font-size: 1.3rem;
-            font-weight: 700;
-        }
-        
-        .positive { color: #28a745; }
-        .negative { color: #dc3545; }
-        
-        .topics {
-            list-style: none;
-        }
-        
-        .topics li {
-            background: white;
-            margin-bottom: 0.8rem;
-            padding: 1rem;
-            border-radius: 8px;
-            border-left: 3px solid #4CAF50;
-        }
-        
-        .topics li strong {
-            color: #222;
-        }
-        
-        .youtube-section {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            text-align: center;
-        }
-        
-        .youtube-btn {
-            background: #FF0000;
+        .youtube-link {
+            background: #ff0000;
             color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 6px;
-            font-size: 1.1rem;
+            padding: 15px 25px;
             text-decoration: none;
-            display: inline-block;
-            margin-top: 1rem;
-            transition: background 0.2s;
-        }
-        
-        .youtube-btn:hover {
-            background: #cc0000;
-        }
-        
-        .note {
-            background: #e8f4fd;
-            border: 1px solid #bee5eb;
             border-radius: 8px;
-            padding: 1rem;
-            margin-top: 2rem;
-            font-style: italic;
-            color: #0c5460;
+            display: inline-block;
+            margin: 20px 0;
+            font-weight: 600;
+            transition: background 0.3s;
         }
+        .youtube-link:hover { background: #cc0000; color: white; }
         
-        .timestamp {
+        .footer {
             text-align: center;
-            color: #888;
-            font-size: 0.9rem;
-            padding: 2rem;
+            margin-top: 30px;
+            color: #64748b;
+            font-size: 0.9em;
         }
         
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .content {
-                padding: 1rem;
-            }
-            
-            .markets {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 600px) {
+            .header h1 { font-size: 2em; }
+            .container { padding: 15px; }
+            .section { padding: 20px; }
         }
     </style>
 </head>
@@ -178,76 +89,52 @@
     <div class="container">
         <div class="header">
             <h1>🎤 Alles auf Aktien</h1>
-            <div class="subtitle">Die vergessene Börsenchance – eine Masterclass für Eure Rente</div>
-            <div class="date">📅 Samstag, 11. April 2026</div>
+            <div class="date">Freitag, 11. April 2026</div>
         </div>
-        
-        <div class="content">
-            <div class="section">
-                <h2>🎯 Hauptthema: Betriebliche Altersvorsorge (BAV)</h2>
-                <p><strong>Sonderfolge mit Philip Liebeno</strong></p>
-                <p>Das Potenzial für die deutsche Aktienkultur: Die vergessene 3. Säule der Rente, die von vielen verschmäht wird, aber enormes Potenzial hat.</p>
+
+        <div class="section">
+            <h2>📈 Heute im Fokus</h2>
+            <div class="highlight">
+                <strong>Hauptthema:</strong> Die vergessene Börsenchance – Masterclass für die Rente
             </div>
-            
-            <div class="section">
-                <h2>📈 Märkte (Freitag)</h2>
-                <div class="markets">
-                    <div class="market-card">
-                        <div class="market-name">DAX</div>
-                        <div class="market-value positive">+2,74% 📈</div>
-                    </div>
-                    <div class="market-card">
-                        <div class="market-name">NASDAQ 100</div>
-                        <div class="market-value positive">+4,45% 🚀</div>
-                    </div>
-                    <div class="market-card">
-                        <div class="market-name">S&P 500</div>
-                        <div class="market-value positive">+3,56% 📈</div>
-                    </div>
+            <p>Die betriebliche Altersvorsorge (BAV) als unterschätzte dritte Säule der Altersvorsorge. Diskussion über Potentiale, Probleme und wie sich das System verbessern könnte.</p>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Key Points</h2>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin: 10px 0; padding: 10px; background: #f1f5f9; border-radius: 6px;">💼 <strong>BAV-Krise:</strong> Betriebliche Altersvorsorge in Deutschland steckt in tiefer Krise</li>
+                <li style="margin: 10px 0; padding: 10px; background: #f1f5f9; border-radius: 6px;">💰 <strong>Steuervorteile:</strong> Konkrete Zahlen und Beispiele für Arbeitnehmer-Ersparnis</li>
+                <li style="margin: 10px 0; padding: 10px; background: #f1f5f9; border-radius: 6px;">📊 <strong>Matching-Zuschüsse:</strong> Wie Arbeitgeber-Beiträge das Investment attraktiver machen</li>
+                <li style="margin: 10px 0; padding: 10px; background: #f1f5f9; border-radius: 6px;">🔧 <strong>Systemreform:</strong> Was die Politik tun muss für bessere Chancen-Risiko-Verhältnisse</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>💡 Stock Picks & Erwähnungen</h2>
+            <div class="stocks">
+                <div class="stock up">
+                    <div>Intel</div>
+                    <small>Erwähnt im KI-Kontext</small>
                 </div>
-                <p><em>Starke Börsenwoche, aber ein Sektor als große Ausnahme am Freitag.</em></p>
-            </div>
-            
-            <div class="section">
-                <h2>🔑 Kernthemen BAV</h2>
-                <ul class="topics">
-                    <li><strong>Die vergessene 3. Säule:</strong> Potenzial für deutsche Aktienkultur</li>
-                    <li><strong>Krise & Lösungen:</strong> Warum BAV in Deutschland schwächelt</li>
-                    <li><strong>Steuervorteile:</strong> Konkrete Beratung für Arbeitnehmer</li>
-                    <li><strong>ETFs als Game-Changer:</strong> Neue Möglichkeiten in der BAV</li>
-                    <li><strong>Politik:</strong> Was sich ändern muss für besseres Chancen-Risiko-Verhältnis</li>
-                </ul>
-            </div>
-            
-            <div class="section">
-                <h2>💡 Praxis-Tipps</h2>
-                <ul class="topics">
-                    <li><strong>Forderungen beim Chef:</strong> Welche Argumente ihr nutzen könnt</li>
-                    <li><strong>Lohnt sich BAV?</strong> Für wen es wirklich Sinn macht</li>
-                    <li><strong>Steuerliche Vorteile:</strong> Konkrete Zahlen und Details</li>
-                </ul>
-            </div>
-            
-            <div class="section">
-                <h2>🎁 Gast-Story</h2>
-                <p>Philip Liebeno erzählt von seiner 30-Jahre-Aktie, die er immer noch hält – eine persönliche Erfolgsgeschichte.</p>
-            </div>
-            
-            <div class="youtube-section">
-                <h3>🎥 Vollständige Episode ansehen</h3>
-                <p>Diese ausführliche Masterclass (1:28h) ist eine Sonderfolge zum Thema betriebliche Altersvorsorge.</p>
-                <a href="https://www.youtube.com/watch?v=BaJIwDzrty8" class="youtube-btn" target="_blank">
-                    ▶️ YouTube Episode öffnen
-                </a>
-            </div>
-            
-            <div class="note">
-                <p><strong>Hinweis:</strong> Dies ist eine ausführliche Masterclass (1:28h), nicht das übliche Tagesformat. Die besprochenen Aktien und Fonds stellen keine spezifischen Kauf- oder Anlageempfehlungen dar.</p>
+                <div class="stock up">
+                    <div>S&P 500</div>
+                    <small>ETF-Diskussion</small>
+                </div>
             </div>
         </div>
-        
-        <div class="timestamp">
-            Erstellt am 11.04.2026 um 20:12 Uhr 🏔️
+
+        <div class="section">
+            <h2>🎯 TL;DR</h2>
+            <p><strong>Die betriebliche Altersvorsorge</strong> könnte der deutsche Aktienkultur neuen Schwung geben, wird aber oft verschmäht. Die Episode erklärt steuerliche Vorteile, zeigt konkrete Beispiele für Arbeitnehmer-Ersparnisse und diskutiert notwendige Systemreformen. Ein wichtiger Baustein für die Altersvorsorge, der mehr Aufmerksamkeit verdient.</p>
+        </div>
+
+        <a href="https://www.youtube.com/watch?v=BaJIwDzrty8" class="youtube-link" target="_blank">
+            ▶️ Zur YouTube-Episode
+        </a>
+
+        <div class="footer">
+            Erstellt am 11.04.2026 20:26 • <a href="https://mc.mehlhart.de" style="color: #3b82f6;">Mission Control</a>
         </div>
     </div>
 </body>
