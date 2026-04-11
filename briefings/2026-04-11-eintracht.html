@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eintracht Frankfurt Briefing - 11. April 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fafafa;
+            color: #222;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #e31e24;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .header .date {
+            color: #717171;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+        
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+        
+        .article-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+        
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+        
+        .article-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        
+        .article-title a {
+            color: #222;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .article-title a:hover {
+            color: #e31e24;
+        }
+        
+        .article-time {
+            color: #717171;
+            font-size: 0.9em;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+        
+        .article-summary {
+            color: #484848;
+            line-height: 1.6;
+            font-size: 1em;
+        }
+        
+        .meta {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+        
+        .meta h2 {
+            color: #e31e24;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+        
+        .meta p {
+            color: #717171;
+            font-size: 1.1em;
+        }
+        
+        .highlights {
+            background: linear-gradient(135deg, #e31e24 0%, #c41e3a 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(227, 30, 36, 0.2);
+        }
+        
+        .highlights h2 {
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+        
+        .highlights ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .highlights li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .highlights li:before {
+            content: "⚽";
+            position: absolute;
+            left: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>⚽ Eintracht Frankfurt</h1>
+            <div class="date">Morgen-Briefing vom 11. April 2026</div>
+        </header>
+        
+        <div class="meta">
+            <h2>7 Artikel vom 10. April 2026</h2>
+            <p>Alle Artikel von gestern aus dem FR.de Eintracht-Feed</p>
+        </div>
+        
+        <div class="highlights">
+            <h2>Die wichtigsten Themen</h2>
+            <ul>
+                <li>Trainer Albert Riera steht massiv in der Kritik</li>
+                <li>Auswärtsspiel gegen VfL Wolfsburg am Samstag</li>
+                <li>Personelle Ausfälle bei Doan und Bahoya</li>
+                <li>Hugo Larsson soll in neuer Rolle durchstarten</li>
+                <li>Erinnerungen an das 4:3-Spektakel vor 5 Jahren</li>
+            </ul>
+        </div>
+        
+        <div class="articles-grid">
+            <article class="article-card">
+                <h3 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-coach-riera-muss-gegen-wolfsburg-rotieren-zr-94257216.html" target="_blank">
+                        Wen zaubert der SGE-Coach gegen den VfL aus dem Hut?
+                    </a>
+                </h3>
+                <div class="article-time">21:03 Uhr</div>
+                <div class="article-summary">
+                    Aufgrund der Ausfälle von Ritsu Doan und Jean-Matteo Bahoya muss Eintracht-Coach Albert Riera gegen Wolfsburg seine Startaufstellung umbauen. Reporter Nicolas Richter ordnet die verfügbaren Optionen für den Trainer ein. Die Frage bleibt: Wem schenkt Riera sein Vertrauen?
+                </div>
+            </article>
+            
+            <article class="article-card">
+                <h3 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/riera-kontert-kritiker-mit-kuriosem-vergleich-im-video-zr-94257204.html" target="_blank">
+                        Zu harte Kritik? Riera kontert mit kuriosem Vergleich – im Video
+                    </a>
+                </h3>
+                <div class="article-time">20:48 Uhr</div>
+                <div class="article-summary">
+                    Albert Riera scheint die anhaltende Kritik an ihm und seiner Mannschaft kaltzulassen. Auf der Pressekonferenz gewährt er einen interessanten Einblick in seinen alternativen Blickwinkel auf die aktuelle Situation. Der polarisierende Trainer zeigt sich unbeeindruckt von den negativen Stimmen.
+                </div>
+            </article>
+            
+            <article class="article-card">
+                <h3 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/sge-coach-riera-laesst-kritik-auf-pressekonferenz-kalt-zr-94257199.html" target="_blank">
+                        „Mein Team muss mein Spiegel sein": SGE-Coach Riera lässt Kritik kalt
+                    </a>
+                </h3>
+                <div class="article-time">20:36 Uhr</div>
+                <div class="article-summary">
+                    Vor dem wichtigen Auswärtsspiel gegen Wolfsburg hofft Trainer Riera, dass die Leistung seiner Mannschaft endlich für ihn spricht. Er möchte sich nicht mehr andauernd rechtfertigen müssen. Die SGE ist am Samstagnachmittag zu Gast bei den abstiegsbedrohten Niedersachsen.
+                </div>
+            </article>
+            
+            <article class="article-card">
+                <h3 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/eintracht-frankfurt-muss-beim-vfl-wolfsburg-auf-stuetzen-verzichten-zr-94256986.html" target="_blank">
+                        Eintracht muss in Wolfsburg auf Offensivstützen verzichten
+                    </a>
+                </h3>
+                <div class="article-time">17:35 Uhr</div>
+                <div class="article-summary">
+                    Neben den Langzeitverletzten Collins, Kristensen und Santos fehlen auch Jean-Matteo Bahoya (nicht fit genug) und Ritsu Doan (erkältet). Für Doan könnten Chaibi, Götze oder Uzun in die erste Elf rücken. Wolfsburg steht als Tabellensiebzehnter mit dem Rücken zur Wand und wartet seit elf Spielen auf einen Sieg.
+                </div>
+            </article>
+            
+            <article class="article-card">
+                <h3 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/albert-riera-muss-sich-aendern-oder-die-eintracht-verlassen-94256490.html" target="_blank">
+                        Kann sich dieser Albert ändern?
+                    </a>
+                </h3>
+                <div class="article-time">15:05 Uhr</div>
+                <div class="article-summary">
+                    Der Eintracht-Trainer gilt als Fachmann, doch sein Auftreten sorgt für Unmut. Von Vereinsseite wird klar gefordert: Riera muss seine Kommunikation anpassen und weniger als "Ich-AG" auftreten. Die Verantwortlichen erwarten eine andere Form des Austauschs - intern wie extern. Ein Ende seiner beratungsresistenten Haltung wird gefordert.
+                </div>
+            </article>
+            
+            <article class="article-card">
+                <h3 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/schoepft-hugo-larsson-im-eintracht-endspurt-sein-potenzial-aus-zr-94256080.html" target="_blank">
+                        Schöpft Hugo Larsson im Eintracht-Endspurt sein Potenzial aus?
+                    </a>
+                </h3>
+                <div class="article-time">11:57 Uhr</div>
+                <div class="article-summary">
+                    Nach einem schwierigen Saisonverlauf soll Hugo Larsson in seiner Paraderolle als Box-to-Box-Spieler wieder zu alter Stärke finden. Riera hatte ein Gespräch mit dem Schweden über dessen optimale Positionierung. Larsson kündigte zudem an, lange in Frankfurt bleiben zu wollen und räumte alle Wechselgerüchte aus dem Weg.
+                </div>
+            </article>
+            
+            <article class="article-card">
+                <h3 class="article-title">
+                    <a href="https://www.fr.de/eintracht-frankfurt/spektakels-eintracht-frankfurt-zelebriert-jahrestag-eines-sieben-tore-94255950.html" target="_blank">
+                        Eintracht zelebriert Jahrestag eines denkwürdigen Sieben-Tore-Spektakels
+                    </a>
+                </h3>
+                <div class="article-time">10:58 Uhr</div>
+                <div class="article-summary">
+                    Vor exakt fünf Jahren siegte die Eintracht in einem turbulenten 4:3-Duell gegen Wolfsburg. Damals standen Größen wie Kevin Trapp, Filip Kostic und Luka Jovic auf dem Platz, während Oliver Glasner noch Wolfsburg trainierte. Die SGE erinnert via Instagram an dieses Spektakel, während Wolfsburg heute um den Klassenerhalt kämpft.
+                </div>
+            </article>
+        </div>
+    </div>
+</body>
+</html>
