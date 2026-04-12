@@ -18,6 +18,11 @@ export type Account = {
   projectCount?: number;
   lastActivityAt?: string;
   pipelineValue?: number;
+  // GTM fields
+  icpScore?: string;
+  source?: string;
+  linkedinUrl?: string;
+  employeeCount?: number;
 };
 
 function rowToAccount(row: Record<string, unknown>): Account {
@@ -36,6 +41,11 @@ function rowToAccount(row: Record<string, unknown>): Account {
     ...(row.project_count !== undefined ? { projectCount: row.project_count as number } : {}),
     ...(row.last_activity_at ? { lastActivityAt: row.last_activity_at as string } : {}),
     ...(row.pipeline_value !== undefined ? { pipelineValue: row.pipeline_value as number } : {}),
+    // GTM fields
+    ...(row.icp_score ? { icpScore: row.icp_score as string } : {}),
+    ...(row.source ? { source: row.source as string } : {}),
+    ...(row.linkedin_url ? { linkedinUrl: row.linkedin_url as string } : {}),
+    ...(row.employee_count != null ? { employeeCount: row.employee_count as number } : {}),
   };
 }
 
@@ -55,15 +65,16 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const { name, domain, industry, size, status, color, notes } = await req.json();
+  const { name, domain, industry, size, status, color, notes, icpScore, source, linkedinUrl, employeeCount } = await req.json();
   if (!name?.trim()) return NextResponse.json({ error: "Name required" }, { status: 400 });
   const db = getDb();
   const id = `acc_${Date.now()}`;
   const validStatus = ["prospect", "active", "churned", "paused", "Qualification", "qualification"].includes(status) ? status : "prospect";
+  const validIcpScore = ["A", "B", "C"].includes(icpScore) ? icpScore : null;
   db.prepare(`
-    INSERT INTO accounts (id, name, domain, industry, size, status, color, notes, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
-  `).run(id, name.trim(), domain ?? null, industry ?? null, size ?? null, validStatus, color ?? "#6366f1", notes ?? null);
+    INSERT INTO accounts (id, name, domain, industry, size, status, color, notes, icp_score, source, linkedin_url, employee_count, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+  `).run(id, name.trim(), domain ?? null, industry ?? null, size ?? null, validStatus, color ?? "#6366f1", notes ?? null, validIcpScore, source ?? null, linkedinUrl ?? null, employeeCount ?? null);
   const account = rowToAccount(db.prepare("SELECT * FROM accounts WHERE id = ?").get(id) as Record<string, unknown>);
   return NextResponse.json({ account });
 }
@@ -76,7 +87,7 @@ export async function PATCH(req: Request) {
   if (!db.prepare("SELECT id FROM accounts WHERE id = ?").get(id)) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
-  const { name, domain, industry, size, status, color, notes } = await req.json();
+  const { name, domain, industry, size, status, color, notes, icpScore, source, linkedinUrl, employeeCount } = await req.json();
   if (name !== undefined) db.prepare("UPDATE accounts SET name = ? WHERE id = ?").run(name.trim(), id);
   if (domain !== undefined) db.prepare("UPDATE accounts SET domain = ? WHERE id = ?").run(domain, id);
   if (industry !== undefined) db.prepare("UPDATE accounts SET industry = ? WHERE id = ?").run(industry, id);
@@ -85,6 +96,11 @@ export async function PATCH(req: Request) {
     db.prepare("UPDATE accounts SET status = ? WHERE id = ?").run(status, id);
   if (color !== undefined) db.prepare("UPDATE accounts SET color = ? WHERE id = ?").run(color, id);
   if (notes !== undefined) db.prepare("UPDATE accounts SET notes = ? WHERE id = ?").run(notes, id);
+  // GTM fields
+  if (icpScore !== undefined) db.prepare("UPDATE accounts SET icp_score = ? WHERE id = ?").run(["A","B","C"].includes(icpScore) ? icpScore : null, id);
+  if (source !== undefined) db.prepare("UPDATE accounts SET source = ? WHERE id = ?").run(source, id);
+  if (linkedinUrl !== undefined) db.prepare("UPDATE accounts SET linkedin_url = ? WHERE id = ?").run(linkedinUrl, id);
+  if (employeeCount !== undefined) db.prepare("UPDATE accounts SET employee_count = ? WHERE id = ?").run(employeeCount, id);
   const account = rowToAccount(db.prepare("SELECT * FROM accounts WHERE id = ?").get(id) as Record<string, unknown>);
   return NextResponse.json({ account });
 }

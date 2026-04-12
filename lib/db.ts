@@ -598,6 +598,15 @@ function initSchema(db: Database.Database): void {
       .run("7", postCallNotes);
   });
 
+  // Migration: GTM fields on accounts (icp_score, source, linkedin_url, employee_count)
+  runMigration("accounts_gtm_fields_20260412", () => {
+    const cols = (db.prepare("PRAGMA table_info(accounts)").all() as { name: string }[]).map(r => r.name);
+    if (!cols.includes("icp_score"))     db.exec("ALTER TABLE accounts ADD COLUMN icp_score TEXT");
+    if (!cols.includes("source"))        db.exec("ALTER TABLE accounts ADD COLUMN source TEXT");
+    if (!cols.includes("linkedin_url"))  db.exec("ALTER TABLE accounts ADD COLUMN linkedin_url TEXT");
+    if (!cols.includes("employee_count")) db.exec("ALTER TABLE accounts ADD COLUMN employee_count INTEGER");
+  });
+
   // Migration: Account Notes table (TipTap rich text)
   runMigration("create_account_notes_table", () => {
     db.exec(`
