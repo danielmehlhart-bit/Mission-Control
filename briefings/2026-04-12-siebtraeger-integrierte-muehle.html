@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Siebträger mit integrierter Mühle — Research Briefing</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      line-height: 1.6;
+    }
+    .hero {
+      background: linear-gradient(135deg, #3b1f0a 0%, #7c4a1e 100%);
+      color: white;
+      padding: 56px 32px 48px;
+      text-align: center;
+    }
+    .hero .label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.7; margin-bottom: 12px; }
+    .hero h1 { font-size: 32px; font-weight: 700; margin-bottom: 12px; }
+    .hero p { font-size: 16px; opacity: 0.85; max-width: 640px; margin: 0 auto; }
+    .hero .meta { margin-top: 20px; font-size: 13px; opacity: 0.6; }
+    .container { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+    .section-title {
+      font-size: 13px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: #555;
+      margin-bottom: 16px; margin-top: 48px;
+    }
+    .section-title:first-of-type { margin-top: 0; }
+
+    .tldr {
+      background: #fff; border-left: 4px solid #7c4a1e;
+      border-radius: 8px; padding: 24px 28px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 32px;
+    }
+    .tldr h2 { font-size: 18px; margin-bottom: 12px; }
+    .tldr ul { padding-left: 20px; }
+    .tldr ul li { margin-bottom: 8px; font-size: 15px; }
+
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 8px; }
+    .card { background: #fff; border-radius: 10px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .card .icon { font-size: 28px; margin-bottom: 12px; }
+    .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .card p { font-size: 14px; color: #555; }
+    .card ul { padding-left: 18px; margin-top: 8px; }
+    .card ul li { font-size: 14px; color: #555; margin-bottom: 4px; }
+
+    .warn-card { background: #fff8e1; border: 1px solid #ffc107; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; }
+    .warn-card h3 { font-size: 15px; font-weight: 700; color: #b8860b; margin-bottom: 6px; }
+    .warn-card p { font-size: 14px; color: #665200; }
+    .danger-card { background: #fff0f0; border: 1px solid #f44336; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; }
+    .danger-card h3 { font-size: 15px; font-weight: 700; color: #c62828; margin-bottom: 6px; }
+    .danger-card p { font-size: 14px; color: #7f0000; }
+    .success-card { background: #f1f8e9; border: 1px solid #8bc34a; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; }
+    .success-card h3 { font-size: 15px; font-weight: 700; color: #33691e; margin-bottom: 6px; }
+    .success-card p { font-size: 14px; color: #1b5e20; }
+
+    .table-wrap { background: #fff; border-radius: 10px; padding: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); overflow-x: auto; margin-bottom: 24px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { background: #f0f4f8; text-align: left; padding: 10px 14px; font-weight: 700; color: #444; white-space: nowrap; }
+    td { padding: 10px 14px; border-top: 1px solid #eee; vertical-align: top; }
+    tr:hover td { background: #fafafa; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 700; }
+    .badge-green { background: #e8f5e9; color: #2e7d32; }
+    .badge-yellow { background: #fff8e1; color: #f57f17; }
+    .badge-red { background: #ffebee; color: #c62828; }
+    .badge-blue { background: #e3f2fd; color: #1565c0; }
+    .badge-brown { background: #efebe9; color: #4e342e; }
+
+    .model-card {
+      background: #fff; border-radius: 12px; padding: 28px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.09); margin-bottom: 20px;
+      border-top: 4px solid #7c4a1e;
+    }
+    .model-card.top-pick { border-top-color: #2e7d32; }
+    .model-card .model-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .model-card h3 { font-size: 19px; font-weight: 700; }
+    .model-card .price { font-size: 22px; font-weight: 700; color: #3b1f0a; }
+    .model-card .subtitle { font-size: 13px; color: #888; margin-top: 2px; }
+    .model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+    @media (max-width: 600px) { .model-grid { grid-template-columns: 1fr; } }
+    .model-pros, .model-cons { font-size: 14px; }
+    .model-pros h4 { color: #2e7d32; margin-bottom: 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+    .model-cons h4 { color: #c62828; margin-bottom: 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+    .model-pros ul, .model-cons ul { padding-left: 16px; }
+    .model-pros li, .model-cons li { margin-bottom: 4px; }
+    .model-specs { margin-top: 14px; font-size: 13px; color: #555; display: flex; flex-wrap: wrap; gap: 10px; }
+    .spec-pill { background: #f0f4f8; padding: 4px 10px; border-radius: 20px; }
+
+    .sources { margin-top: 40px; padding-top: 24px; border-top: 1px solid #e0e0e0; }
+    .sources h4 { font-size: 13px; color: #999; margin-bottom: 8px; }
+    .sources a { color: #7c4a1e; font-size: 13px; display: block; margin-bottom: 4px; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+
+    footer { text-align: center; padding: 32px; color: #aaa; font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="label">Research Briefing · 12. April 2026</div>
+  <h1>☕ Siebträger mit integrierter Mühle</h1>
+  <p>Vergleich der besten Modelle bis 1.200 € — für Daniels Eltern beim Wechsel vom Vollautomaten zurück zum Siebträger</p>
+  <div class="meta">Für: Daniel Mehlhart · Kontext: Platzsparender Siebträger + Mühle in einem, Espresso-taugliche Mahlung</div>
+</div>
+
+<div class="container">
+
+  <div class="tldr">
+    <h2>⚡ TL;DR — Das Wichtigste vorab</h2>
+    <ul>
+      <li><strong>Echter Zweikreiser mit integrierter Mühle unter 1.200 € existiert nicht.</strong> In diesem Preissegment arbeiten alle Kombis mit Thermoblock — aber der ThermoJet von Sage heizt in 3 Sekunden auf und ist für Heimgebrauch vollkommen ausreichend.</li>
+      <li><strong>Integrierte Mühlen erreichen 80–90 % der Qualität einer separaten Mühle</strong> — ausreichend für guten Heimespresso, aber nicht auf Eureka-Niveau (deine Minion ist deutlich besser).</li>
+      <li><strong>30 Mahlstufen = Mindestanforderung.</strong> Modelle mit nur 8–10 Stufen sind für Espresso zu grob eingestellt. Kegelmahlwerk reicht, Scheibenmahlwerk ist besser.</li>
+      <li><strong>Klare Empfehlung:</strong> Sage Barista Touch Impress (~1.000 €) oder De'Longhi La Specialista Maestro (~800–950 €) je nach Budgetprio.</li>
+      <li><strong>Wichtig für deine Eltern:</strong> Lernkurve beachten — ein Siebträger erfordert mehr Engagement als ein Vollautomat. Die Sage-Modelle haben mehr Assistenz/Automation.</li>
+    </ul>
+  </div>
+
+  <!-- GRUNDLAGEN -->
+  <div class="section-title">Kurze Orientierung — Kesselsysteme erklärt</div>
+  <div class="cards">
+    <div class="card">
+      <div class="icon">🔴</div>
+      <h3>Einkreiser</h3>
+      <p>Ein Kessel für alles. Zwischen Brühen und Dampfen muss umgeschaltet werden — Wartezeit. Für Milchgetränke nervig.</p>
+      <ul>
+        <li>Günstigste Bauform</li>
+        <li>Rancilio Silvia (deine), alte Gaggia Classic</li>
+        <li>Für erfahrene Nutzer okay</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="icon">🟡</div>
+      <h3>Thermoblock / ThermoJet</h3>
+      <p>Kein echter Kessel — Wasser wird im Durchfluss erhitzt. Schnelles Aufheizen (3 Sek.), paralleles Brühen/Dampfen möglich. Nicht identisch mit Zweikreiser, aber praktisch gleichwertig im Heimbereich.</p>
+      <ul>
+        <li>Sage Barista Pro / Touch Impress</li>
+        <li>De'Longhi La Specialista Maestro</li>
+        <li>Standard in integrierten Kombis</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="icon">🟢</div>
+      <h3>Echter Zweikreiser / Dual Boiler</h3>
+      <p>Zwei unabhängige Boiler für Brühen und Dampf. Beste Temperaturstabilität, profinahes Ergebnis. <strong>Mit integrierter Mühle unter 1.200 € nicht erhältlich.</strong></p>
+      <ul>
+        <li>Rocket Appartamento, Profitec Pro 400</li>
+        <li>Breville Dual Boiler (ohne Mühle)</li>
+        <li>Ab ~1.500 € aufwärts</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="warn-card">
+    <h3>⚠️ Erwartungsmanagement: "Zweikreiser" + Mühle unter 1.200 €</h3>
+    <p>Dein Hinweis an die Eltern war richtig — aber in der Praxis bietet kein Hersteller unter 1.200 € eine echte Zweikreiser-Maschine mit integrierter Mühle an. Die guten Thermoblock-Maschinen (besonders Sage ThermoJet) sind für 99 % aller Heimanwender ausreichend: 3 Sekunden Aufheizzeit, paralleles Dampfen und Brühen. Der Unterschied zum echten HX-System ist im Alltag kaum spürbar.</p>
+  </div>
+
+  <!-- MODELL VERGLEICH -->
+  <div class="section-title">Die 4 besten Modelle im Vergleich</div>
+
+  <!-- Sage Barista Touch Impress -->
+  <div class="model-card top-pick">
+    <div class="model-header">
+      <div>
+        <h3>🥇 Sage Barista Touch Impress</h3>
+        <div class="subtitle">SES881 · Heizsystem: ThermoJet · Mahlwerk: Baratza Kegelmahlwerk 30 Stufen</div>
+      </div>
+      <div style="text-align:right">
+        <div class="price">~1.000–1.100 €</div>
+        <span class="badge badge-green">Top Pick</span>
+      </div>
+    </div>
+    <div class="model-specs">
+      <span class="spec-pill">⚙️ Baratza Kegelmahlwerk</span>
+      <span class="spec-pill">📊 30 Mahlstufen</span>
+      <span class="spec-pill">⏱ 3 Sek. Aufheizzeit</span>
+      <span class="spec-pill">📱 Touch Display</span>
+      <span class="spec-pill">🧲 Assistiertes Tampern</span>
+      <span class="spec-pill">🌡 PID-Steuerung</span>
+      <span class="spec-pill">💧 2L Tank</span>
+      <span class="spec-pill">🔊 78 dB</span>
+    </div>
+    <div class="model-grid">
+      <div class="model-pros">
+        <h4>✅ Vorteile</h4>
+        <ul>
+          <li>Bestes integriertes Mahlwerk in dieser Klasse (Baratza-Kegelmahlwerk)</li>
+          <li>30 Mahlstufen — ausreichend feine Einstellung für Espresso</li>
+          <li>Touch-Display mit 8 Rezepten und 6 Profilen</li>
+          <li>Automatisches Tampern — ideal für Einsteiger</li>
+          <li>ThermoJet: schnelles Aufheizen, nahezu simultanes Brühen+Dampfen</li>
+          <li>Sehr gute Verarbeitung, Edelstahlgehäuse</li>
+        </ul>
+      </div>
+      <div class="model-cons">
+        <h4>❌ Nachteile</h4>
+        <ul>
+          <li>Teuerste Option im Vergleich (~1.100 €)</li>
+          <li>Laut beim Mahlen (78,4 dB)</li>
+          <li>Kein echter Zweikreiser (Thermoblock)</li>
+          <li>Mahlwerk nicht auf separater Mühlen-Niveau</li>
+          <li>Groß: 41,7 × 35,8 × 34,3 cm</li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-size:13px; color:#555; margin-top:16px;">💡 <strong>Hattis Einschätzung:</strong> Beste Wahl wenn das Ziel ist, möglichst wenig falsch zu machen. Das Baratza-Mahlwerk ist das Beste was es bei integrierten Maschinen gibt. Touch-Interface nimmt viel Unsicherheit beim Einstieg raus. Wenn deine Eltern bereit sind die 1.100 € zu investieren — klar diese Maschine.</p>
+  </div>
+
+  <!-- De'Longhi La Specialista Maestro -->
+  <div class="model-card">
+    <div class="model-header">
+      <div>
+        <h3>🥈 De'Longhi La Specialista Maestro</h3>
+        <div class="subtitle">EC9665.M · Heizsystem: Dual Thermoblock · Mahlwerk: Scheibenmahlwerk 8 Stufen</div>
+      </div>
+      <div style="text-align:right">
+        <div class="price">~750–950 €</div>
+        <span class="badge badge-yellow">Gute Wahl</span>
+      </div>
+    </div>
+    <div class="model-specs">
+      <span class="spec-pill">⚙️ Scheibenmahlwerk</span>
+      <span class="spec-pill">📊 8 Mahlstufen</span>
+      <span class="spec-pill">🤖 Smart Tamping Station</span>
+      <span class="spec-pill">📺 Display mit Rezepten</span>
+      <span class="spec-pill">🌡 Active Temp Control</span>
+      <span class="spec-pill">💧 2,3L Tank</span>
+      <span class="spec-pill">🔊 ~74 dB</span>
+      <span class="spec-pill">⚖️ 16 kg</span>
+    </div>
+    <div class="model-grid">
+      <div class="model-pros">
+        <h4>✅ Vorteile</h4>
+        <ul>
+          <li>Scheibenmahlwerk — homogenere Mahlung als Kegelmahlwerk</li>
+          <li>Smart Tamping Station (automatisch, reproduzierbar)</li>
+          <li>Dual Thermoblock: Brühen und Dampfen nahezu gleichzeitig</li>
+          <li>Große Auswahl an Rezepten und Anpassungen</li>
+          <li>Manometer sichtbar — schöne Kontrolle</li>
+          <li>Gutes Preis-Leistungs-Verhältnis</li>
+        </ul>
+      </div>
+      <div class="model-cons">
+        <h4>❌ Nachteile</h4>
+        <ul>
+          <li><strong>Nur 8 Mahlstufen</strong> — zu wenig für präzise Feinabstimmung!</li>
+          <li>Teile aus Kunststoff (Tamper, Behälter)</li>
+          <li>Schwer (16 kg) — kaum zu verschieben</li>
+          <li>Tank nicht einsehbar</li>
+          <li>Bohnenwechsel umständlich</li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-size:13px; color:#555; margin-top:16px;">💡 <strong>Hattis Einschätzung:</strong> Das Scheibenmahlwerk mahlt an sich homogener als das Baratza-Kegelmahlwerk der Sage — aber <strong>8 Mahlstufen sind zu wenig</strong>. Das ist das Hauptproblem dieser Maschine. Wer viele verschiedene Bohnen probiert, wird schnell an die Grenzen stoßen. Gut für jemanden der eine Bohne nimmt und dabei bleibt.</p>
+  </div>
+
+  <!-- Solis Perfetta Grind & Infuse -->
+  <div class="model-card">
+    <div class="model-header">
+      <div>
+        <h3>🥉 Solis Perfetta Grind & Infuse</h3>
+        <div class="subtitle">Typ 1019 · Heizsystem: Thermoblock · Mahlwerk: integriert, Espresso-tauglich</div>
+      </div>
+      <div style="text-align:right">
+        <div class="price">~550–650 €</div>
+        <span class="badge badge-blue">Budget-Tipp</span>
+      </div>
+    </div>
+    <div class="model-specs">
+      <span class="spec-pill">⚙️ Integriertes Mahlwerk</span>
+      <span class="spec-pill">📊 Espresso-taugliche Feineinstellung</span>
+      <span class="spec-pill">🧑‍🍳 Profi-Dampfdüse</span>
+      <span class="spec-pill">💰 Günstiger Einstieg</span>
+    </div>
+    <div class="model-grid">
+      <div class="model-pros">
+        <h4>✅ Vorteile</h4>
+        <ul>
+          <li>Günstigstes Kombi-Modell mit echter Espresso-Mahlung</li>
+          <li>Professionelle manuelle Dampfdüse</li>
+          <li>Kompakteste Bauform der Vergleichsmodelle</li>
+          <li>Solide Verarbeitung für den Preis</li>
+        </ul>
+      </div>
+      <div class="model-cons">
+        <h4>❌ Nachteile</h4>
+        <ul>
+          <li>Mahlwerk laut</li>
+          <li>Weniger Bedienkomfort als Sage</li>
+          <li>Kein Display, keine Rezept-Assistenz</li>
+          <li>Für Einsteiger ohne Vorerfahrung steile Lernkurve</li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-size:13px; color:#555; margin-top:16px;">💡 <strong>Hattis Einschätzung:</strong> Gute Basis-Option wenn Budget das Hauptkriterium ist. Aber für Eltern die von einem Vollautomaten kommen und wenig Siebträger-Erfahrung haben, würde ich die Mehrkosten für Sage oder De'Longhi empfehlen — die Assistenz-Features sparen viel Frust.</p>
+  </div>
+
+  <!-- Quickmill Retro -->
+  <div class="model-card">
+    <div class="model-header">
+      <div>
+        <h3>🏅 Quickmill Retro 0835</h3>
+        <div class="subtitle">Thermoblock · Mahlwerk: stufenloses Scheibenmahlwerk</div>
+      </div>
+      <div style="text-align:right">
+        <div class="price">~650–700 €</div>
+        <span class="badge badge-brown">Insider-Tipp</span>
+      </div>
+    </div>
+    <div class="model-specs">
+      <span class="spec-pill">⚙️ Scheibenmahlwerk stufenlos</span>
+      <span class="spec-pill">🇮🇹 Made in Italy</span>
+      <span class="spec-pill">📐 Kompakt: 31×38×23cm</span>
+      <span class="spec-pill">⚖️ 13,5 kg</span>
+    </div>
+    <div class="model-grid">
+      <div class="model-pros">
+        <h4>✅ Vorteile</h4>
+        <ul>
+          <li><strong>Stufenloses Scheibenmahlwerk</strong> — maximale Flexibilität beim Mahlgrad</li>
+          <li>Kompakter als die Konkurrenz</li>
+          <li>Gute Verarbeitungsqualität (italian made)</li>
+          <li>Preislich attraktiv</li>
+        </ul>
+      </div>
+      <div class="model-cons">
+        <h4>❌ Nachteile</h4>
+        <ul>
+          <li>Kein Display, keine digitale Bedienführung</li>
+          <li>Kein auto-Tamper — manuell tampern nötig</li>
+          <li>Kunststoff-Tamper im Lieferumfang (ersetzen!)</li>
+          <li>Wenig Bekanntheit = weniger Community-Support</li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-size:13px; color:#555; margin-top:16px;">💡 <strong>Hattis Einschätzung:</strong> Das stufenlose Scheibenmahlwerk ist eigentlich das Beste was du in dieser Preisklasse integriert findest. Aber die Maschine verzeiht wenig — für erfahrenere Nutzer die etwas basteln wollen, super. Für Eltern die vom Vollautomaten kommen, eher nicht.</p>
+  </div>
+
+  <!-- VERGLEICHSTABELLE -->
+  <div class="section-title">Schnellvergleich auf einen Blick</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Modell</th>
+          <th>Preis</th>
+          <th>Heizsystem</th>
+          <th>Mahlwerk-Typ</th>
+          <th>Mahlstufen</th>
+          <th>Bedienkomfort</th>
+          <th>Empfehlung</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Sage Barista Touch Impress</strong></td>
+          <td>~1.000–1.100 €</td>
+          <td>ThermoJet</td>
+          <td>Baratza Kegelmahlwerk</td>
+          <td><strong>30</strong></td>
+          <td><span class="badge badge-green">Sehr hoch</span></td>
+          <td><span class="badge badge-green">Top Pick</span></td>
+        </tr>
+        <tr>
+          <td><strong>De'Longhi La Specialista Maestro</strong></td>
+          <td>~750–950 €</td>
+          <td>Dual Thermoblock</td>
+          <td>Scheibenmahlwerk</td>
+          <td><strong style="color:#c62828">8 ⚠️</strong></td>
+          <td><span class="badge badge-green">Hoch</span></td>
+          <td><span class="badge badge-yellow">Bedingt</span></td>
+        </tr>
+        <tr>
+          <td><strong>Solis Perfetta G&amp;I</strong></td>
+          <td>~550–650 €</td>
+          <td>Thermoblock</td>
+          <td>integriert</td>
+          <td>k.A.</td>
+          <td><span class="badge badge-yellow">Mittel</span></td>
+          <td><span class="badge badge-blue">Budget</span></td>
+        </tr>
+        <tr>
+          <td><strong>Quickmill Retro 0835</strong></td>
+          <td>~650–700 €</td>
+          <td>Thermoblock</td>
+          <td>Scheibe stufenlos</td>
+          <td><strong>∞ stufenlos</strong></td>
+          <td><span class="badge badge-yellow">Mittel</span></td>
+          <td><span class="badge badge-brown">Insider</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MAHLWERK-AUFKLÄRUNG -->
+  <div class="section-title">Das Mahlwerk-Thema — was dein Hinweis bedeutet</div>
+  <div class="cards">
+    <div class="card">
+      <div class="icon">⚙️</div>
+      <h3>Scheibenmahlwerk</h3>
+      <p>Zwei parallele Scheiben mahlen die Bohnen horizontal. Sehr homogenes Ergebnis — ideal für Espresso. Mehr Reibung = etwas mehr Wärme. In Premiumklasse Standard.</p>
+      <ul>
+        <li>Homogenste Mahlung für Espresso</li>
+        <li>Quickmill, De'Longhi Specialista</li>
+        <li>Eureka Mignon (standalone) = Scheibenmahlwerk</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="icon">🔩</div>
+      <h3>Kegelmahlwerk</h3>
+      <p>Rotierende Kegel mahlen vertikal. Langsamer, aromaschonender, etwas weniger homogen als Scheiben-Burrs. Trotzdem espresso-tauglich wenn Qualität der Burrs gut ist (z.B. Baratza).</p>
+      <ul>
+        <li>Aromaschonend durch niedrige Drehzahl</li>
+        <li>Sage Barista Touch Impress (Baratza)</li>
+        <li>Für Einsteiger voll ausreichend</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="icon">📊</div>
+      <h3>Mahlstufen: Warum Anzahl zählt</h3>
+      <p>Espresso reagiert extrem empfindlich auf minimale Mahlgradänderungen. <strong>8 Stufen sind knapp</strong> — 30 Stufen erlauben echte Feinabstimmung je nach Bohne, Röstung und Luftfeuchtigkeit.</p>
+      <ul>
+        <li>8 Stufen: gut für 1–2 Standardbohnen</li>
+        <li>30 Stufen: flexibel für verschiedene Bohnen</li>
+        <li>Stufenlos: profi-nahes Ergebnis</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- EMPFEHLUNG -->
+  <div class="section-title">Fazit &amp; Kaufempfehlung</div>
+
+  <div class="success-card">
+    <h3>✅ Empfehlung: Sage Barista Touch Impress (~1.000–1.100 €)</h3>
+    <p>Für Eltern die vom Vollautomaten auf Siebträger wechseln wollen und platzsparendes Kombi-Gerät suchen: Die Sage Touch Impress ist die rundeste Lösung. Das Baratza-Mahlwerk ist das beste integrierte Mahlwerk in dieser Preisklasse, das Touch-Interface und Auto-Tamping nehmen die größten Fehlerquellen raus. ThermoJet ist kein echter Zweikreiser, aber in der Praxis gleichwertig für Milchgetränke.</p>
+  </div>
+
+  <div class="warn-card">
+    <h3>⚠️ Alternative: De'Longhi Maestro (~800 €) — aber mit Vorbehalt</h3>
+    <p>Das Scheibenmahlwerk mahlt homogener — aber nur 8 Stufen sind für ernsthafte Espresso-Feinabstimmung zu wenig. Gut wenn man eine einzige Bohne nimmt und nicht viel variieren will. Spart ~200 €.</p>
+  </div>
+
+  <div class="danger-card">
+    <h3>🚫 Nicht empfohlen: Vollautomaten in gleicher Preisklasse</h3>
+    <p>Der Vergleich zum alten Saeco zeigt: Vollautomaten in dieser Preisklasse (~800 €) liefern bequemeren Betrieb, aber deutlich schlechtere Espressoqualität als ein Siebträger-Kombi. Der Wunsch zurück zum Siebträger ist richtig — und machbar ohne separate Mühle wenn der Platz fehlt.</p>
+  </div>
+
+  <!-- KAUFTIPPS -->
+  <div class="section-title">Bevor sie kaufen — Checkliste</div>
+  <ul class="steps" style="list-style:none; padding:0;">
+    <li style="background:#fff; border-radius:10px; padding:20px 24px; box-shadow:0 1px 4px rgba(0,0,0,0.07); margin-bottom:12px; display:flex; gap:16px; align-items:flex-start;">
+      <div style="background:#7c4a1e; color:white; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; flex-shrink:0;">1</div>
+      <div>
+        <h4 style="font-size:15px; font-weight:700; margin-bottom:4px;">Platzmessung vorher</h4>
+        <p style="font-size:14px; color:#555;">Sage Touch Impress ist 41,7 × 35,8 × 34,3 cm — kein kleines Gerät. Platz in der Küche vorher messen, Höhe unter Hängeschrank beachten.</p>
+      </div>
+    </li>
+    <li style="background:#fff; border-radius:10px; padding:20px 24px; box-shadow:0 1px 4px rgba(0,0,0,0.07); margin-bottom:12px; display:flex; gap:16px; align-items:flex-start;">
+      <div style="background:#7c4a1e; color:white; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; flex-shrink:0;">2</div>
+      <div>
+        <h4 style="font-size:15px; font-weight:700; margin-bottom:4px;">Probebrühen im Laden</h4>
+        <p style="font-size:14px; color:#555;">Saturn, MediaMarkt oder Kaffeespezialisten wie Crema.de / Roastmarket bieten manchmal Testmöglichkeiten. Lautstärke der Mühle ist ein echtes Ausschlusskriterium für viele.</p>
+      </div>
+    </li>
+    <li style="background:#fff; border-radius:10px; padding:20px 24px; box-shadow:0 1px 4px rgba(0,0,0,0.07); margin-bottom:12px; display:flex; gap:16px; align-items:flex-start;">
+      <div style="background:#7c4a1e; color:white; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; flex-shrink:0;">3</div>
+      <div>
+        <h4 style="font-size:15px; font-weight:700; margin-bottom:4px;">Preisvergleich: Idealo & Amazon</h4>
+        <p style="font-size:14px; color:#555;">Sage-Preise schwanken stark. Barista Touch Impress war schon für 969 € erhältlich (Cold Brew Variante). Über Idealo.de Preisalert setzen.</p>
+      </div>
+    </li>
+    <li style="background:#fff; border-radius:10px; padding:20px 24px; box-shadow:0 1px 4px rgba(0,0,0,0.07); margin-bottom:12px; display:flex; gap:16px; align-items:flex-start;">
+      <div style="background:#7c4a1e; color:white; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; flex-shrink:0;">4</div>
+      <div>
+        <h4 style="font-size:15px; font-weight:700; margin-bottom:4px;">Lernbereitschaft einschätzen</h4>
+        <p style="font-size:14px; color:#555;">Siebträger = 2–4 Wochen bis man reproduzierbar guten Espresso zieht. Wenn deine Eltern das nicht wollen: Lieber einen hochwertigen Vollautomaten (z.B. Jura S8 oder DeLonghi Magnifica Evo) statt schlechter Siebträger-Frustration.</p>
+      </div>
+    </li>
+  </ul>
+
+  <div class="sources">
+    <h4>Quellen</h4>
+    <a href="https://www.coffeeness.de/siebtraegermaschine-mit-mahlwerk-test/" target="_blank">1. Coffeeness — Siebträger mit Mahlwerk Test 2025</a>
+    <a href="https://www.roastmarket.de/magazin/siebtraegermaschinen-mit-mahlwerk-die-hybriden-alleskoenner/" target="_blank">2. Roastmarket — Hybrid-Siebträger mit Mahlwerk</a>
+    <a href="https://www.coffeeness.de/delonghi-la-specialista-maestro-ec9665m-test/" target="_blank">3. Coffeeness — De'Longhi La Specialista Maestro Test</a>
+    <a href="https://barista-global.com/de/sage-barista-touch-impress/" target="_blank">4. Barista Global — Sage Barista Touch Impress</a>
+    <a href="https://coffeechronicler.com/breville-barista-express-vs-dual-boiler/" target="_blank">5. Coffee Chronicler — Barista Express vs. Dual Boiler</a>
+    <a href="https://www.coffeeness.de/kegelmahlwerk-oder-scheibenmahlwerk/" target="_blank">6. Coffeeness — Kegelmahlwerk vs. Scheibenmahlwerk</a>
+    <a href="https://www.home-barista.com/advice/best-dual-boiler-pid-espresso-machines-max-1500-euros-budget-t82176.html" target="_blank">7. Home-Barista Forum — Beste Maschinen bis 1.500 €</a>
+    <a href="https://www.italianfoodlovers.de/p/quickmill-retro-0835-siebtraegermaschine-mit-integrierter-muehle" target="_blank">8. Italian Food Lovers — Quickmill Retro 0835</a>
+  </div>
+
+</div>
+
+<footer>
+  Briefing erstellt von Hatti 🏔️ · 12. April 2026 · Für internen Gebrauch
+</footer>
+
+</body>
+</html>
