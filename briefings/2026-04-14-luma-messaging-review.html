@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUMA Messaging Review — Website Schärfung</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f0f0f;color:#e5e5e5}
+    .hero{background:linear-gradient(135deg,#1e3a5f 0%,#1a2744 100%);padding:48px 40px 40px;border-bottom:1px solid #1e2128}
+    .hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#60a5fa;margin-bottom:12px}
+    .hero h1{font-size:30px;font-weight:800;color:#fff;margin-bottom:8px}
+    .hero-meta{font-size:14px;color:#94a3b8;margin-bottom:18px}
+    .hero-pills{display:flex;gap:10px;flex-wrap:wrap}.pill{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600}.blue{background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.3);color:#60a5fa}.green{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25);color:#10B981}.yellow{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:#f59e0b}
+    .container{max-width:1080px;margin:0 auto;padding:40px 24px 80px;display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:start}.main{display:flex;flex-direction:column;gap:24px}.sidebar{display:flex;flex-direction:column;gap:16px}
+    .card,.side-card{background:#141720;border:1px solid #1e2128;border-radius:14px;overflow:hidden}.card-header,.side-header{padding:14px 20px;border-bottom:1px solid #1e2128}.card-header h2{font-size:14px;font-weight:700;color:#fff}.card-body{padding:18px 20px}.side-header{font-size:12px;font-weight:700;color:#8b90a0;letter-spacing:.06em;text-transform:uppercase}.side-body{padding:14px}
+    .quote{background:#0d0f12;border-left:3px solid #3B82F6;border-radius:10px;padding:16px 18px;font-size:14px;color:#d6dae3;line-height:1.8}
+    .quote strong{color:#fff}.quote small{display:block;margin-top:8px;color:#8b90a0;font-size:12px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .box{background:#0d0f12;border-radius:10px;padding:16px;border:1px solid #1e2128}.box h3{font-size:13px;color:#fff;margin-bottom:10px}.box p,.box li{font-size:13px;color:#c8ccd6;line-height:1.7}.box ul{padding-left:18px}.bad{border-left:3px solid #ef4444}.good{border-left:3px solid #10B981}.warn{border-left:3px solid #f59e0b}
+    .score-bar{display:flex;align-items:center;gap:12px;margin-bottom:10px}.score-label{font-size:12px;color:#8b90a0;width:180px}.score-track{flex:1;height:6px;background:#1e2128;border-radius:3px;overflow:hidden}.score-fill{height:100%;border-radius:3px}.score-num{font-size:12px;color:#e5e5e5;font-weight:600;width:28px;text-align:right}
+    .steps{display:flex;flex-direction:column;gap:0}.step{display:flex;gap:16px;position:relative}.step:not(:last-child)::after{content:"";position:absolute;left:15px;top:40px;bottom:-12px;width:2px;background:#1e2128}.step-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;margin-top:2px;z-index:1;color:#fff}.urgent{background:#ef4444}.soon{background:#f59e0b}.later{background:#3B82F6}.step-body{padding-bottom:20px;flex:1}.step-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px}.step-desc{font-size:12px;color:#aaa;line-height:1.7}.step-when{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#4a5068;margin-top:4px}
+    .side-row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid #111318}.side-row:last-child{border-bottom:none}.side-key{font-size:12px;color:#4a5068}.side-val{font-size:12px;color:#c8ccd6;font-weight:500;text-align:right}
+    .footer{text-align:center;padding:24px 0;font-size:11px;color:#333;grid-column:1/-1}
+    @media(max-width:800px){.container{grid-template-columns:1fr}.grid2,.grid3{grid-template-columns:1fr}.hero{padding:32px 22px}}
+  </style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-eyebrow">LUMA · Messaging Review</div>
+  <h1>Website schärfen: mutiger, klarer, weniger austauschbar</h1>
+  <p class="hero-meta">Analyse auf Basis von luma-app.io, Feature-Übersicht und Discovery-Reviews (u.a. Judith Maruhn / Studio Pampa, Georg Stenzel / PE Stab)</p>
+  <div class="hero-pills">
+    <span class="pill blue">Ist-Claim: „Klarheit für jedes Projekt“</span>
+    <span class="pill green">Discovery-Signal: „Das ist schön klar“</span>
+    <span class="pill yellow">Empfehlung: Klarheit zwischen Baustelle und Büro</span>
+  </div>
+</div>
+<div class="container">
+  <div class="main">
+    <div class="card"><div class="card-header"><h2>🏔️ Executive Summary</h2></div><div class="card-body">
+      <div class="quote"><strong>LUMA sollte nicht noch ein Baustellen-Tool sein.</strong> Und auch nicht einfach „Projektmanagement für Architekturbüros“. Die stärkste Richtung ist: <strong>LUMA schafft Klarheit zwischen Baustelle und Büro</strong> und reduziert genau das Chaos, das nach Terminen, Fotos, offenen Punkten und E-Mails oft erst beginnt.<small>Warum das trägt: Judith sprach explizit von „schön klar“, Oxolo/Phase0 besetzen eher den engen Baustellen-Workflow, LUMA hat aber breiteren Stoff: Bautagebuch, Aufgaben, E-Mail-Agent, Tenant-Copilot, Forecast.</small></div>
+    </div></div>
+
+    <div class="card"><div class="card-header"><h2>🔍 Wo die Website heute zu weich ist</h2></div><div class="card-body"><div class="grid3">
+      <div class="box bad"><h3>1. Claim zu glatt</h3><p>„Klarheit für jedes Projekt“ ist sympathisch, aber noch zu generisch. Könnte auch PM-Tool #47 sein.</p></div>
+      <div class="box bad"><h3>2. Der eigentliche Schmerz ist nicht sichtbar</h3><p>Die Website sagt zu wenig darüber, was nach Baustellenterminen, E-Mails und Abstimmungen im Büro auseinanderfällt.</p></div>
+      <div class="box bad"><h3>3. Differenzierung wird nicht laut genug</h3><p>LUMA hat mit E-Mail-Agent, Voice, Bautagebuch und Tenant-Copilot deutlich mehr Stoff als die meisten Tools. Das ist auf der Startseite noch nicht scharf genug verdichtet.</p></div>
+    </div></div></div>
+
+    <div class="card"><div class="card-header"><h2>💡 Die stärkste Positionierung</h2></div><div class="card-body"><div class="grid2">
+      <div class="box good"><h3>Empfohlener Kern</h3><p><strong>LUMA bringt Klarheit zwischen Baustelle und Büro.</strong></p><p>Das ist spitz genug für GTM und breit genug für das echte Produkt.</p></div>
+      <div class="box warn"><h3>Nicht mehr in den Vordergrund</h3><p>Keine reine „Baustellendoku per Spracheingabe“-Positionierung. Das drückt LUMA in denselben roten Ozean wie Oxolo, Phase0 und ähnliche WhatsApp/Bautagebuch-Player.</p></div>
+    </div>
+    <div class="quote" style="margin-top:16px"><strong>Formulierung, die hängen bleibt:</strong><br>Nach Baustellenterminen, E-Mails und Abstimmungen fehlt kleinen Architekturbüros oft nicht Information, sondern Klarheit. LUMA sorgt dafür, dass Aufgaben, Entscheidungen, Bautagebuch und Projektkontext nicht zwischen Baustelle und Büro verloren gehen.</div>
+    </div></div>
+
+    <div class="card"><div class="card-header"><h2>🧠 Discovery-Signale, die du stärker auf der Website nutzen solltest</h2></div><div class="card-body"><div class="grid2">
+      <div class="box good"><h3>Judith / Studio Pampa</h3><ul><li>„Das ist schön klar“ = Klarheit wird real gespürt</li><li>Voice + Fotos + vor Ort erledigt</li><li>Planlisten/Indexstände als echter zweiter Pain</li><li>Preis-/Komplexitätssensitiv, also low-friction Messaging wichtig</li></ul></div>
+      <div class="box good"><h3>Georg / PE Stab</h3><ul><li>E-Mail-Chaos über hunderte Projekte</li><li>Tool-Zersplitterung statt echter Arbeitsoberfläche</li><li>Voice als Hebel für oldschool Partner</li><li>Onboarding / Übergabe / Überblick als reale Probleme</li></ul></div>
+    </div></div></div>
+
+    <div class="card"><div class="card-header"><h2>⚙️ Was du aus der Feature-Liste wirklich highlighten solltest</h2></div><div class="card-body"><div class="grid2">
+      <div class="box good"><h3>Hero-relevant</h3><ul><li><strong>Bautagebuch + Voice</strong></li><li><strong>Aufgaben + Review-Workflow</strong></li><li><strong>E-Mail-Agent mit Routing</strong></li><li><strong>Tenant-Copilot / Projekt-Briefings</strong></li></ul></div>
+      <div class="box warn"><h3>Weiter unten / nicht im Hero</h3><ul><li>Gantt</li><li>Fixkosten / Forecast-Detailtiefe</li><li>Dokumenten-Kategorien im Detail</li><li>Feature-Flags / Plattform-Admin</li></ul></div>
+    </div>
+    <div class="quote" style="margin-top:16px"><strong>Merksatz:</strong> Im Hero nicht alles zeigen, was LUMA kann. Zeige zuerst, <strong>warum kleine Architekturbüros abends weniger zusammensuchen und hinterherrennen müssen</strong>.</div>
+    </div></div>
+
+    <div class="card"><div class="card-header"><h2>🖥️ Konkrete Website-Empfehlung: neue Seitenlogik</h2></div><div class="card-body"><div class="steps">
+      <div class="step"><div class="step-num urgent">1</div><div class="step-body"><div class="step-title">Hero neu schreiben</div><div class="step-desc">Weg von generischer PM-Sprache. Rein in den Schmerz: Informationen sind da, aber nicht klar genug gebündelt.</div><div class="step-when">Sofort</div></div></div>
+      <div class="step"><div class="step-num urgent">2</div><div class="step-body"><div class="step-title">3 Entry Use Cases statt Feature-Wolke</div><div class="step-desc">(a) Baustelle → Büro, (b) E-Mail → Aufgabe, (c) Projektstatus ohne Zusammensuchen.</div><div class="step-when">Sofort</div></div></div>
+      <div class="step"><div class="step-num soon">3</div><div class="step-body"><div class="step-title">Case-Section mit Vorher/Nachher</div><div class="step-desc">Nicht „Kunden lieben LUMA“, sondern: Was war vorher chaotisch, was ist heute klarer?</div><div class="step-when">Als Nächstes</div></div></div>
+      <div class="step"><div class="step-num soon">4</div><div class="step-body"><div class="step-title">Mutigere Differenzierung</div><div class="step-desc">Sag klarer, dass LUMA nicht ERP-Overkill und nicht nur Bautagebuch ist, sondern die Arbeitsoberfläche dazwischen.</div><div class="step-when">Als Nächstes</div></div></div>
+      <div class="step"><div class="step-num later">5</div><div class="step-body"><div class="step-title">Voice als Hero-Demo asset bauen</div><div class="step-desc">90-Sekunden-Loom: Baustelleninfo rein, klarer Projektstand raus.</div><div class="step-when">Danach</div></div></div>
+    </div></div></div>
+
+    <div class="card"><div class="card-header"><h2>✍️ Vorschlag für ein schärferes Hero-Messaging</h2></div><div class="card-body">
+      <div class="grid2">
+        <div class="box bad"><h3>Heute</h3><p>„Klarheit für jedes Projekt“</p><p>Sauber, aber etwas zu glatt.</p></div>
+        <div class="box good"><h3>Vorschlag</h3><p><strong>Mehr Klarheit zwischen Baustelle und Büro.</strong></p><p>Oder als Subline: LUMA bündelt Bautagebuch, Aufgaben, E-Mails und Projektkontext, damit nach Terminen nicht wieder alles auseinanderfällt.</p></div>
+      </div>
+      <div class="quote" style="margin-top:16px"><strong>Alternative Hero-Variante:</strong><br><strong>Damit nach Baustellenterminen nicht erst das Chaos beginnt.</strong><br>LUMA bringt Bautagebuch, Aufgaben, E-Mails und Projektkontext an einen Ort, damit kleine Architekturbüros schneller wieder einen sauberen Stand haben.</div>
+    </div></div>
+
+    <div class="card"><div class="card-header"><h2>🎯 Was ich auf der Website konkret highlighten würde</h2></div><div class="card-body"><div class="grid3">
+      <div class="box good"><h3>Baustelle → Büro</h3><p>Fotos, Voice, offene Punkte, Aufgaben. Nicht als Einzel-Features, sondern als Übergang in einen klaren Projektstand.</p></div>
+      <div class="box good"><h3>E-Mail → Aufgabe</h3><p>Das ist verdammt stark und im Markt selten. Gerade bei Georg war das ein echter Haken im Alltag.</p></div>
+      <div class="box good"><h3>Klarer Projektstatus</h3><p>Nicht „mehr Kontrolle“ im Bullshit-Sinne, sondern: Wer macht was, was ist offen, was ist nach dem Termin jetzt Stand?</p></div>
+    </div></div></div>
+
+    <div class="card"><div class="card-header"><h2>📊 Messaging-Bewertung heute vs. Zielbild</h2></div><div class="card-body">
+      <div class="score-bar"><div class="score-label">Klarheit / Verständlichkeit</div><div class="score-track"><div class="score-fill" style="width:75%;background:#10B981"></div></div><div class="score-num">7.5</div></div>
+      <div class="score-bar"><div class="score-label">Differenzierung</div><div class="score-track"><div class="score-fill" style="width:55%;background:#f59e0b"></div></div><div class="score-num">5.5</div></div>
+      <div class="score-bar"><div class="score-label">Mut / Kante</div><div class="score-track"><div class="score-fill" style="width:50%;background:#ef4444"></div></div><div class="score-num">5.0</div></div>
+      <div class="score-bar"><div class="score-label">Produkt-Wahrheit</div><div class="score-track"><div class="score-fill" style="width:85%;background:#10B981"></div></div><div class="score-num">8.5</div></div>
+      <div class="mini-note" style="margin-top:10px;font-size:12px;color:#8b90a0;line-height:1.7">Die gute Nachricht: Die Substanz ist da. Das Problem ist nicht Produkt-Mangel, sondern dass die Website die schärfste Wahrheit noch nicht laut genug sagt.</div>
+    </div></div>
+  </div>
+
+  <div class="sidebar">
+    <div class="side-card"><div class="side-header">Kernthese</div><div class="side-body">
+      <div class="side-row"><div class="side-key">Nicht sein</div><div class="side-val">noch ein Baustellen-Tool</div></div>
+      <div class="side-row"><div class="side-key">Stattdessen</div><div class="side-val">Klarheit zwischen Baustelle und Büro</div></div>
+      <div class="side-row"><div class="side-key">Hero-Wedge</div><div class="side-val">Baustellentermin → sauberer Projektstand</div></div>
+      <div class="side-row"><div class="side-key">Proof</div><div class="side-val">Judith: „schön klar“</div></div>
+    </div></div>
+
+    <div class="side-card"><div class="side-header">Sofort umsetzen</div><div class="side-body">
+      <div class="side-row"><div class="side-key">1</div><div class="side-val">Hero neu texten</div></div>
+      <div class="side-row"><div class="side-key">2</div><div class="side-val">3 Use Cases definieren</div></div>
+      <div class="side-row"><div class="side-key">3</div><div class="side-val">E-Mail-Agent sichtbarer machen</div></div>
+      <div class="side-row"><div class="side-key">4</div><div class="side-val">Vorher/Nachher Case-Block</div></div>
+    </div></div>
+  </div>
+
+  <div class="footer">LUMA Messaging Review · 14.04.2026 · Basis: Website + Feature-Übersicht + Discovery Reviews</div>
+</div>
+</body>
+</html>
