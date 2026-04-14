@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schlaf-Routinen Briefing</title>
+  <style>
+    :root {
+      --bg: #f7f7f7;
+      --card: #ffffff;
+      --text: #222222;
+      --muted: #6b7280;
+      --accent: #ff5a5f;
+      --accent-soft: #fff1f1;
+      --border: #ececec;
+      --shadow: 0 10px 30px rgba(0,0,0,0.08);
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(180deg, #fbfbfb 0%, #f4f4f4 100%);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+    .hero, .card, .rulebox, .breathbox, .weekbox, .closing {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero {
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      line-height: 1.1;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin: 0;
+    }
+    .section {
+      margin-top: 18px;
+    }
+    .rulebox, .breathbox, .weekbox, .closing {
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+    .label {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+    .card {
+      padding: 22px;
+    }
+    h2 {
+      margin: 0 0 8px;
+      font-size: 1.3rem;
+    }
+    h3 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .pill {
+      background: #f6f6f6;
+      border: 1px solid #ededed;
+      color: #444;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+    }
+    ol, ul {
+      padding-left: 20px;
+      margin: 10px 0 0;
+    }
+    li { margin-bottom: 8px; }
+    .hint {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+    .golden {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .gold-item {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      font-weight: 600;
+    }
+    strong { color: #111; }
+    @media (max-width: 640px) {
+      .wrap { padding: 20px 14px 40px; }
+      .hero, .card, .rulebox, .breathbox, .weekbox, .closing { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="label">Schlaf-Briefing für Daniel</div>
+      <h1>Abendroutinen zum Runterfahren</h1>
+      <p class="subtitle">
+        Deine Daten zeigen grob drei Baustellen: zu wenig Gesamtschlaf, zu viel Varianz beim Zubettgehen und etwas zu wenig REM- und Tiefschlaf.
+        Diese kurzen Routinen sind dafür da, das Nervensystem abends Richtung Ruhe zu schieben, Spannung rauszunehmen und dir mehr Konsistenz zu geben, ohne dass du jeden Abend denselben Film fahren musst.
+      </p>
+    </section>
+
+    <section class="rulebox">
+      <div class="label">Kurze Regelbox</div>
+      <ul>
+        <li><strong>Nicht sportlich.</strong> Das ist kein Workout, sondern Runterfahren.</li>
+        <li><strong>Nicht bis Schmerz.</strong> Nur sanfter Zug, kein Ehrgeiz, kein Reißen.</li>
+        <li><strong>Fokus auf lange Ausatmung.</strong> Die Ausatmung ist hier der Haupthebel für Parasympathikus statt Leistungsmodus.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <div class="grid">
+        <article class="card">
+          <h2>A) Parasympathikus Standard</h2>
+          <div class="meta">
+            <span class="pill">Fokus: runterkommen, Gesamtentspannung</span>
+            <span class="pill">Dauer: 10 Min</span>
+          </div>
+          <ol>
+            <li>Kindshaltung, <strong>90 Sek</strong></li>
+            <li>Katze-Kuh, <strong>60 Sek</strong></li>
+            <li>Sitzende Vorbeuge, <strong>90 Sek</strong></li>
+            <li>Figure-4, <strong>60 Sek pro Seite</strong></li>
+            <li>Liegender Twist, <strong>60 Sek pro Seite</strong></li>
+            <li>Beine an die Wand, <strong>3 Min</strong></li>
+          </ol>
+          <p class="hint"><strong>Wann sinnvoll:</strong> Der sichere Standard für normale Abende, wenn du nicht groß nachdenken willst und einfach den Schalter langsam runterdrehen möchtest.</p>
+        </article>
+
+        <article class="card">
+          <h2>B) Nacken-Schulter runter</h2>
+          <div class="meta">
+            <span class="pill">Fokus: Oberkörper-Spannung lösen</span>
+            <span class="pill">Dauer: 10 Min</span>
+          </div>
+          <ol>
+            <li>Stehende Vorbeuge, <strong>90 Sek</strong></li>
+            <li>Schulterkreisen + Nackenmobilisation, <strong>90 Sek</strong></li>
+            <li>Türrahmen-Brustdehnung, <strong>60 Sek pro Seite</strong></li>
+            <li>Thread the Needle, <strong>60 Sek pro Seite</strong></li>
+            <li>Liegender Hamstring Stretch, <strong>60 Sek pro Seite</strong></li>
+            <li>Beine an die Wand, <strong>3 Min</strong></li>
+          </ol>
+          <p class="hint"><strong>Wann sinnvoll:</strong> Perfekt nach Bildschirmtagen, Meetings, Autofahrten oder wenn der Kopf eigentlich müde ist, der Schultergürtel aber noch auf Anschlag hängt.</p>
+        </article>
+
+        <article class="card">
+          <h2>C) Unterer Rücken &amp; Hüfte weich</h2>
+          <div class="meta">
+            <span class="pill">Fokus: Hüfte öffnen, Rücken entlasten</span>
+            <span class="pill">Dauer: 10 Min</span>
+          </div>
+          <ol>
+            <li>Kindshaltung, <strong>60 Sek</strong></li>
+            <li>Cat-Cow, <strong>60 Sek</strong></li>
+            <li>Tiefer Ausfallschritt / Hüftbeuger, <strong>60 Sek pro Seite</strong></li>
+            <li>Pigeon oder Figure-4, <strong>60 Sek pro Seite</strong></li>
+            <li>Happy Baby, <strong>90 Sek</strong></li>
+            <li>Beine erhöht + Atmung, <strong>3 Min</strong></li>
+          </ol>
+          <p class="hint"><strong>Wann sinnvoll:</strong> Gut an Tagen mit viel Sitzen, nach langem Arbeiten oder wenn sich der untere Rücken nach "bitte einmal entknoten" anfühlt.</p>
+        </article>
+
+        <article class="card">
+          <h2>D) Nach Training / schwere Beine</h2>
+          <div class="meta">
+            <span class="pill">Fokus: Beine entladen, Spannung senken</span>
+            <span class="pill">Dauer: 10 Min</span>
+          </div>
+          <ol>
+            <li>Wadenstretch an der Wand, <strong>60 Sek pro Seite</strong></li>
+            <li>Quad Stretch, <strong>45 Sek pro Seite</strong></li>
+            <li>Vorbeuge, <strong>60 Sek</strong></li>
+            <li>Figure-4, <strong>60 Sek pro Seite</strong></li>
+            <li>Liegender Twist, <strong>60 Sek pro Seite</strong></li>
+            <li>Beine an die Wand, <strong>3 Min</strong></li>
+          </ol>
+          <p class="hint"><strong>Wann sinnvoll:</strong> Nach Rad, Gym, langen Spaziergängen oder einfach dann, wenn die Beine noch im Tagesmodus sind und nicht im Schlafmodus.</p>
+        </article>
+
+        <article class="card">
+          <h2>E) Notfallroutine ultra müde</h2>
+          <div class="meta">
+            <span class="pill">Fokus: Minimalprogramm statt ausfallen lassen</span>
+            <span class="pill">Dauer: 5 Min</span>
+          </div>
+          <ol>
+            <li>Kindshaltung, <strong>60 Sek</strong></li>
+            <li>Vorbeuge, <strong>60 Sek</strong></li>
+            <li>Twist, <strong>45 Sek pro Seite</strong></li>
+            <li>Beine an die Wand, <strong>90 Sek</strong></li>
+          </ol>
+          <p class="hint"><strong>Wann sinnvoll:</strong> Wenn es spät ist, du platt bist und die Alternative sonst "gar nichts" wäre. Genau dann ist diese Routine Gold wert.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="breathbox">
+      <div class="label">Atemmuster</div>
+      <h3>4 Sekunden ein, 6 bis 8 Sekunden aus</h3>
+      <p>
+        Wenn du nur <strong>eine</strong> Sache sauber machst, dann die lange Ausatmung. Nicht pressen, nicht künstlich tief ziehen.
+        Ruhig einatmen, dann etwas länger und weicher ausatmen. Das signalisiert dem System: Gefahr vorbei, wir können runterfahren.
+      </p>
+    </section>
+
+    <section class="weekbox">
+      <div class="label">Einfache Wochenempfehlung</div>
+      <ul>
+        <li><strong>Mo/Mi:</strong> Parasympathikus Standard</li>
+        <li><strong>Di/Do:</strong> Nacken-Schulter runter</li>
+        <li><strong>Fr/Sa:</strong> Unterer Rücken &amp; Hüfte weich oder Nach Training / schwere Beine</li>
+        <li><strong>Wenn es sehr spät wird:</strong> Notfallroutine statt komplett ausfallen lassen</li>
+      </ul>
+      <p style="color: var(--muted); margin-top: 12px;">
+        Der Punkt ist nicht Perfektion. Der Punkt ist, dem Körper öfter dasselbe Signal zu geben: Jetzt ist Feierabend.
+      </p>
+    </section>
+
+    <section class="closing">
+      <div class="label">3 goldene Regeln</div>
+      <div class="golden">
+        <div class="gold-item">Kein Handy danach</div>
+        <div class="gold-item">Licht runter</div>
+        <div class="gold-item">Lieber 5 Minuten als gar nichts</div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
