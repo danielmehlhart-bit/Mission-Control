@@ -3,273 +3,343 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>⚔️ Oxolo GmbH — Competitive Battlecard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Battlecard: luma vs. Oxolo</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #f4f4f6; color: #1a1a2e; line-height: 1.6; padding: 24px 16px 64px; }
-    .container { max-width: 960px; margin: 0 auto; }
-    .hero { background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%); border-radius: 20px; padding: 40px 40px 36px; color: white; margin-bottom: 24px; position: relative; overflow: hidden; }
-    .hero::after { content: '⚔️'; position: absolute; right: 32px; top: 50%; transform: translateY(-50%); font-size: 80px; opacity: 0.15; }
-    .hero-badge { display: inline-block; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 12px; }
-    .hero h1 { font-size: clamp(22px, 4vw, 32px); font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
-    .hero p { font-size: 14px; opacity: 0.85; }
-    .hero-meta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 20px; font-size: 13px; opacity: 0.9; }
-    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
-    .stat-card, .card { background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
-    .stat-card { padding: 24px; text-align: center; }
-    .stat-number { font-size: 32px; font-weight: 800; color: #7C3AED; line-height: 1; margin-bottom: 6px; }
-    .stat-label { font-size: 13px; color: #6b7280; font-weight: 500; }
-    .stat-source, .source { font-size: 10px; color: #9ca3af; margin-top: 4px; }
-    .card { padding: 28px 32px; margin-bottom: 20px; }
-    .card-title { font-size: 16px; font-weight: 700; color: #7C3AED; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
-    .card-title::after { content: ''; flex: 1; height: 2px; background: #f0ebfe; border-radius: 2px; }
-    .snapshot-grid, .pricing-grid, .two-col, .features-grid { display: grid; gap: 16px; }
-    .snapshot-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-    .two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .features-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-    .snapshot-item, .feature-item, .list-box { background: #f9f7ff; border-radius: 12px; padding: 16px; border-left: 3px solid #7C3AED; }
-    .label { font-size: 11px; font-weight: 600; color: #7C3AED; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-    .value { font-size: 15px; font-weight: 600; color: #1a1a2e; }
-    .pricing-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-    .pricing-plan { border: 2px solid #f3f4f6; border-radius: 14px; padding: 20px; }
-    .pricing-plan.highlight { border-color: #7C3AED; }
-    .plan-badge { display: inline-block; background: #7C3AED; color: white; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 8px; margin-bottom: 8px; }
-    .plan-name { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; }
-    .amount { font-size: 24px; font-weight: 800; color: #7C3AED; }
-    .unit, .plan-base { font-size: 13px; color: #6b7280; }
-    .plan-total { background: #f9f7ff; border-radius: 8px; padding: 8px 12px; margin: 12px 0; font-size: 13px; }
-    ul { padding-left: 18px; }
-    li { margin-bottom: 8px; }
-    .alert { margin-bottom: 20px; padding: 16px 18px; border-radius: 14px; display: flex; gap: 14px; align-items: flex-start; }
-    .alert.warn { background: #fff7ed; color: #9a3412; }
-    .alert.good { background: #ecfdf5; color: #065f46; }
-    .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-    .chip { background: #ede9fe; color: #5b21b6; border-radius: 999px; padding: 6px 10px; font-size: 12px; font-weight: 600; }
-    .footer-note { font-size: 12px; color: #6b7280; }
-    @media (max-width: 800px) { .stats-row, .two-col { grid-template-columns: 1fr; } .hero { padding: 28px 20px; } .card { padding: 22px 20px; } }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f0f0f; color: #e5e5e5; }
+    .hero { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 48px 40px 40px; border-bottom: 1px solid #1e2128; }
+    .hero-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #f59e0b; margin-bottom: 12px; }
+    .hero h1 { font-size: 32px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .hero-sub { font-size: 14px; color: #8b90a0; margin-bottom: 20px; }
+    .vs-bar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .vs-pill { padding: 8px 20px; border-radius: 8px; font-size: 14px; font-weight: 700; }
+    .vs-pill.luma { background: rgba(124,58,237,0.2); border: 1.5px solid #7C3AED; color: #c4b5fd; }
+    .vs-pill.comp { background: rgba(239,68,68,0.15); border: 1.5px solid #ef4444; color: #fca5a5; }
+    .vs-sep { font-size: 18px; color: #4a5068; font-weight: 700; }
+    .verdict-badge { margin-left: auto; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); color: #f59e0b; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+    .section { margin-bottom: 48px; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #f59e0b; margin-bottom: 16px; }
+    .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
+    @media(max-width:700px) { .summary-grid,.wl-grid,.pricing-grid,.signal-grid,.learn-grid { grid-template-columns: 1fr; } }
+    .summary-card { border-radius: 14px; padding: 24px; }
+    .summary-card.luma { background: rgba(124,58,237,0.08); border: 1.5px solid rgba(124,58,237,0.25); }
+    .summary-card.comp { background: rgba(239,68,68,0.06); border: 1.5px solid rgba(239,68,68,0.2); }
+    .summary-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .summary-card-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .summary-card-dot.luma { background: #7C3AED; }
+    .summary-card-dot.comp { background: #ef4444; }
+    .summary-card-name { font-size: 16px; font-weight: 700; color: #fff; }
+    .summary-card-tag { font-size: 11px; color: #8b90a0; margin-left: auto; }
+    .summary-card p { font-size: 13px; color: #aaa; line-height: 1.7; }
+    .comp-table { width: 100%; border-collapse: collapse; background: #141720; border-radius: 14px; overflow: hidden; border: 1px solid #1e2128; }
+    .comp-table th { padding: 12px 16px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #4a5068; border-bottom: 1px solid #1e2128; text-align: left; }
+    .comp-table th:first-child { width: 28%; }
+    .comp-table th:nth-child(2) { color: #a78bfa; }
+    .comp-table th:nth-child(3) { color: #fca5a5; }
+    .comp-table td { padding: 13px 16px; font-size: 13px; color: #ccc; border-bottom: 1px solid #111318; vertical-align: top; }
+    .comp-table td:first-child { color: #8b90a0; font-weight: 500; font-size: 12px; }
+    .comp-table tr:last-child td { border-bottom: none; }
+    .win { color: #10B981; font-weight: 600; }
+    .lose { color: #ef4444; }
+    .neutral { color: #f59e0b; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; margin-left: 6px; vertical-align: middle; }
+    .tag.green { background: rgba(16,185,129,0.15); color: #10B981; }
+    .tag.red { background: rgba(239,68,68,0.15); color: #ef4444; }
+    .tag.yellow { background: rgba(245,158,11,0.15); color: #f59e0b; }
+    .wl-grid,.pricing-grid,.signal-grid,.learn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .wl-card,.price-card,.signal-card,.learn-card { border-radius: 12px; padding: 20px; }
+    .wl-card.win,.signal-card.good,.learn-card { background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); }
+    .wl-card.lose,.signal-card.risk { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); }
+    .wl-card h3,.signal-card h3,.learn-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 14px; }
+    .wl-card.win h3,.signal-card.good h3,.learn-card h3 { color: #10B981; }
+    .wl-card.lose h3,.signal-card.risk h3 { color: #ef4444; }
+    .wl-card ul,.price-card ul { list-style: none; }
+    .wl-card ul li,.price-card ul li,.signal-card li,.learn-card li { font-size: 13px; color: #ccc; padding: 5px 0; padding-left: 18px; position: relative; line-height: 1.6; }
+    .wl-card.win li::before,.signal-card.good li::before,.learn-card li::before { content: "✓"; position: absolute; left: 0; color: #10B981; font-weight: 700; }
+    .wl-card.lose li::before,.signal-card.risk li::before { content: "✗"; position: absolute; left: 0; color: #ef4444; }
+    .obj-list { display: flex; flex-direction: column; gap: 12px; }
+    .obj-card { background: #141720; border: 1px solid #1e2128; border-radius: 10px; padding: 16px 18px; }
+    .obj-q { font-size: 13px; font-weight: 600; color: #f0f2f5; margin-bottom: 8px; }
+    .obj-a { font-size: 13px; color: #aaa; line-height: 1.7; }
+    .obj-a strong { color: #c4b5fd; }
+    .price-card { background: #141720; border: 1px solid #1e2128; }
+    .price-card.luma { border-color: rgba(124,58,237,0.3); }
+    .price-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .price-card.luma .price-label { color: #a78bfa; }
+    .price-card.comp .price-label { color: #fca5a5; }
+    .price-main { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .price-sub { font-size: 12px; color: #8b90a0; margin-bottom: 14px; line-height: 1.6; }
+    .highlight-box { background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(79,70,229,0.08)); border: 1px solid rgba(124,58,237,0.25); border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
+    .highlight-box p { font-size: 14px; color: #e5e5e5; line-height: 1.7; }
+    .highlight-box strong { color: #c4b5fd; }
+    .mini-note { font-size: 12px; color: #8b90a0; margin-top: 10px; line-height: 1.7; }
+    .divider { border: none; border-top: 1px solid #1e1e1e; margin: 44px 0; }
+    .footer { text-align: center; padding: 24px 0; font-size: 11px; color: #333; }
   </style>
 </head>
 <body>
+<div class="hero">
+  <div class="hero-label">⚔️ Battlecard · Competitive Intelligence</div>
+  <h1>luma vs. Oxolo</h1>
+  <p class="hero-sub">Stand: April 2026 · Quelle: oxolo.com (30 Seiten gecrawlt) + öffentliche Web-Recherche</p>
+  <div class="vs-bar">
+    <div class="vs-pill luma">luma — "besser bauen!"</div>
+    <div class="vs-sep">vs.</div>
+    <div class="vs-pill comp">Oxolo — Voice-first Baustellen-Dokumentation</div>
+    <div class="verdict-badge">⚠️ ernstzunehmender Workflow-Konkurrent</div>
+  </div>
+</div>
+
 <div class="container">
-  <div class="hero">
-    <div class="hero-badge">Competitive Intelligence · LUMA Internal</div>
-    <h1>⚔️ Oxolo GmbH — Competitive Battlecard</h1>
-    <p>Crawl-basierte Analyse · 30 Seiten gecrawlt · Stand 14.04.2026</p>
-    <div class="hero-meta">
-      <span>🌐 oxolo.com</span>
-      <span>🏢 Oxolo GmbH</span>
-      <span>🇩🇪 Hamburg</span>
-      <span>🎯 Construction site documentation by voice</span>
+
+  <div class="section">
+    <div class="section-label">Kurzprofil</div>
+    <div class="summary-grid">
+      <div class="summary-card luma">
+        <div class="summary-card-header">
+          <div class="summary-card-dot luma"></div>
+          <span class="summary-card-name">luma</span>
+          <span class="summary-card-tag">🇩🇪 Deutschland · PM für kleine Architekturbüros</span>
+        </div>
+        <p>luma positioniert sich als moderne Arbeitsoberfläche für kleine Architekturbüros. Fokus: Projektklarheit, Aufgaben, Kommunikation, Baustellenbezug, später AI/Voice als integrierte Komponente. Die Stärke liegt nicht im Spezialworkflow, sondern im Gesamtprozess aus Büro + Projekt + Teamsteuerung.</p>
+      </div>
+      <div class="summary-card comp">
+        <div class="summary-card-header">
+          <div class="summary-card-dot comp"></div>
+          <span class="summary-card-name">Oxolo</span>
+          <span class="summary-card-tag">🇩🇪 Hamburg · spitzer Baustellen-Workflow</span>
+        </div>
+        <p>Oxolo besetzt extrem klar einen einzelnen Schmerz: Baustellen-Kommunikation und Dokumentation direkt per Spracheingabe. Sprache rein, strukturierter Report, Tasks, Fotos, Change Orders und Delay-Hinweise raus. Das ist kein vollwertiges PM-System, aber ein sehr griffiges Door-Opener-Produkt mit schnellem ROI.</p>
+      </div>
     </div>
   </div>
 
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-number">500+</div>
-      <div class="stat-label">Voice Recordings pro Woche</div>
-      <div class="stat-source">Quelle: Homepage Hero</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">50+</div>
-      <div class="stat-label">Construction Projects</div>
-      <div class="stat-source">Quelle: Homepage Hero</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">4.8★</div>
-      <div class="stat-label">Bewertung, laut Homepage</div>
-      <div class="stat-source">Quelle: Homepage Hero</div>
+  <hr class="divider">
+
+  <div class="section">
+    <div class="section-label">Direkter Vergleich</div>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Kriterium</th>
+          <th>🟣 luma</th>
+          <th>🔴 Oxolo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Positionierung</td>
+          <td class="win">Zentrale Projekt- und Teamsteuerung für kleine Architekturbüros <span class="tag green">System-Layer</span></td>
+          <td class="win">Baustellen-Dokumentation per Voice, sehr spitzer Workflow <span class="tag red">Wedge</span></td>
+        </tr>
+        <tr>
+          <td>Kernversprechen</td>
+          <td>Mehr Klarheit im Projektalltag und weniger Tool-Chaos</td>
+          <td class="win">Weniger Schreibarbeit, sofort verwertbare Baustellenprotokolle</td>
+        </tr>
+        <tr>
+          <td>Zielgruppe</td>
+          <td class="win">3–10 MA Architekturbüros, operativer Inhaber, Generalisten</td>
+          <td>Bauleiter, Site Manager, Controller, Gewerke, auch Architekten</td>
+        </tr>
+        <tr>
+          <td>Baustellen-Doku</td>
+          <td class="neutral">Starkes strategisches Feld, aber noch nicht so scharf gezeigt wie Oxolo</td>
+          <td class="win">Klasklarer Fokus: Voice, Fotos, Evidence, Report, Tasks</td>
+        </tr>
+        <tr>
+          <td>Voice / Sprache</td>
+          <td class="neutral">Relevanter Differenziator für luma, aber Marktclaim noch nicht so laut</td>
+          <td class="win">Voice-first ist ihr ganzer Entry Point</td>
+        </tr>
+        <tr>
+          <td>Projektsteuerung gesamt</td>
+          <td class="win">Bessere Story für tägliche zentrale Arbeitsoberfläche</td>
+          <td class="lose">Wirkt eher wie Spezialtool oder Add-on</td>
+        </tr>
+        <tr>
+          <td>HOAI / Büro-Operations</td>
+          <td class="win">Nähere Story am Architekturbüro-Kontext</td>
+          <td class="lose">Im Crawl keine HOAI-native Bürosteuerungsstory sichtbar</td>
+        </tr>
+        <tr>
+          <td>Onboarding</td>
+          <td class="win">Kann persönlich, founder-led, schnell sein</td>
+          <td class="win">Extrem einfacher Test-Case über Baustellen-Doku</td>
+        </tr>
+        <tr>
+          <td>Preis-Entry</td>
+          <td class="neutral">LUMA Pricing höher, aber breiterer Scope</td>
+          <td class="win">Basic ab €9.99 pro Device schafft niedrige Einstiegshürde</td>
+        </tr>
+        <tr>
+          <td>Expansion Potential</td>
+          <td class="win">Kann zum Betriebssystem fürs kleine Büro werden</td>
+          <td class="neutral">Kann tief im Baustellenmoment werden, aber evtl. nicht darüber hinaus</td>
+        </tr>
+        <tr>
+          <td>Beweisführung</td>
+          <td class="neutral">Noch frühe GTM-Phase</td>
+          <td class="win">Klare Homepage-Metriken: 500+ Recordings/Woche, 50+ Projekte, 4.8★</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="section-label">Wann gewinnen, wann verlieren</div>
+    <div class="wl-grid">
+      <div class="wl-card win">
+        <h3>✅ luma gewinnt wenn…</h3>
+        <ul>
+          <li>das Büro nicht noch ein Spezialtool, sondern ein <strong>zentrales System</strong> sucht</li>
+          <li>Projektsteuerung, Teamkoordination und Büroalltag wichtiger sind als nur Baustellenprotokolle</li>
+          <li>der Prospect ein <strong>kleines Architekturbüro</strong> mit operativem Inhaber ist</li>
+          <li>Tool-Wildwuchs heute der eigentliche Schmerz ist</li>
+          <li>man argumentiert: <strong>"Doku allein löst den Rest nicht"</strong></li>
+          <li>LUMA Voice / Baustellen-Doku live stark demonstriert wird</li>
+        </ul>
+      </div>
+      <div class="wl-card lose">
+        <h3>✗ Oxolo gewinnt wenn…</h3>
+        <ul>
+          <li>der Prospect primär unter <strong>Dokumentationsaufwand auf der Baustelle</strong> leidet</li>
+          <li>Voice-to-Report sofort emotional klickt</li>
+          <li>schneller Pilot ohne große Systemumstellung gesucht wird</li>
+          <li>Bauleiter / Baustellenrollen den Kauf triggern, nicht Büro-Operations</li>
+          <li>der Kunde den Scope bewusst klein halten will: "ein Problem, ein Tool"</li>
+        </ul>
+      </div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">🏢 Company Snapshot</div>
-    <div class="snapshot-grid">
-      <div class="snapshot-item"><div class="label">Claim</div><div class="value">Your Site. Your Voice. Your Report.</div><div class="source">Quelle: Homepage H1</div></div>
-      <div class="snapshot-item"><div class="label">Kernprodukt</div><div class="value">AI-gestützte Baustellen-Dokumentation per Voice, Fotos und Video</div><div class="source">Quelle: Homepage + Feature Pages</div></div>
-      <div class="snapshot-item"><div class="label">Primäre Nutzer</div><div class="value">Bauleiter, Site Manager, Controller, Gewerke, Bauherren-/Projektsteuerungs-nahe Rollen</div><div class="source">Quelle: Pricing + Case Studies</div></div>
-      <div class="snapshot-item"><div class="label">Output</div><div class="value">Protokolle, Tasks, Change Orders, Delay-Hinweise, PDF/Word-Reports</div><div class="source">Quelle: Homepage / AI Reports</div></div>
-    </div>
-    <div class="chip-row">
-      <span class="chip">Voice Recording</span>
-      <span class="chip">AI Reports</span>
-      <span class="chip">Task Management</span>
-      <span class="chip">Photos / Evidence</span>
-      <span class="chip">Languages & Translation</span>
-      <span class="chip">Team Collaboration</span>
-    </div>
-  </div>
+  <hr class="divider">
 
-  <div class="alert warn">
-    <div>⚠️</div>
-    <div><strong>Wichtige Einordnung:</strong> Oxolo ist kein direkter 1:1-LUMA-Ersatz, sondern ein spitzer Workflow-Player rund um Baustellen-Kommunikation, Protokolle und Nachverfolgung. Genau deshalb ist es gefährlich: ein enger Use Case, klarer ROI, niedrige Einstiegshürde.</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">💶 Pricing</div>
+  <div class="section">
+    <div class="section-label">Pricing im Detail</div>
     <div class="pricing-grid">
-      <div class="pricing-plan">
-        <div class="plan-name">Basic</div>
-        <div><span class="amount">€9.99</span> <span class="unit">/ Device / Mo</span></div>
-        <div class="plan-base">für einfache Worker & Tradesmen</div>
-        <div class="plan-total">Limit: <strong>120 Min/Monat</strong></div>
+      <div class="price-card luma">
+        <div class="price-label">luma</div>
+        <div class="price-main">€149–599</div>
+        <div class="price-sub">Starter €149 / Professional €349 / Business €599<br>Preis höher, aber auch deutlich breiterer Scope als reiner Baustellen-Workflow</div>
         <ul>
-          <li>Time logs</li>
-          <li>Protocols</li>
-          <li>Context-driven Task Manager</li>
-          <li>Kein AI Analysis</li>
-          <li>Keine Dokument-Generierung</li>
-          <li>Keine Follow-ups, kein AI Chat</li>
+          <li>Starter: bis 5 User</li>
+          <li>Professional: bis 10 User</li>
+          <li>Business: bis 20 User</li>
+          <li>14-Tage-Test für neue Kunden</li>
         </ul>
-        <div class="source">Quelle: Pricing-Crawl</div>
       </div>
-      <div class="pricing-plan highlight">
-        <div class="plan-badge">Kernangebot</div>
-        <div class="plan-name">Professional</div>
-        <div><span class="amount">€49.99</span> <span class="unit">/ Device / Mo</span></div>
-        <div class="plan-base">für Site Managers & Controllers</div>
-        <div class="plan-total">Usage: <strong>Unlimited</strong></div>
+      <div class="price-card comp">
+        <div class="price-label">Oxolo</div>
+        <div class="price-main">€9.99 / €49.99</div>
+        <div class="price-sub">Basic ab €9.99 pro Device/Monat, Professional €49.99 pro Device/Monat<br>Niedrige Eintrittshürde, aber bei mehreren Devices/aktiver Nutzung schnell ernsthaftes Budget</div>
         <ul>
-          <li>Alles aus Basic</li>
-          <li>Full AI summaries</li>
-          <li>Proposal generation</li>
-          <li>Follow-up emails</li>
-          <li>Software integrations</li>
-          <li>Consent management, AI chat</li>
+          <li>Basic: 120 Minuten/Monat, kein AI Analysis, kein AI Chat</li>
+          <li>Professional: unlimited, AI summaries, follow-up emails, integrations</li>
+          <li>Pricing ist leicht testbar und psychologisch stark</li>
         </ul>
-        <div class="source">Quelle: Pricing-Crawl</div>
       </div>
     </div>
-    <div style="margin-top:14px; padding:12px 16px; background:#fef9c3; border-radius:10px; font-size:12px; color:#92400e;">Preislich fühlt sich Oxolo wie ein taktischer Einstieg an: klein genug für schnellen Test, teuer genug im Professional-Plan, dass Budget-Fragen bei größerem Team schnell hochkommen.</div>
+    <div class="mini-note">Preislich ist Oxolo nicht "billig", sondern clever: günstig genug für Testkauf, klar genug fürs Verständnis, teuer genug, um im Professional-Plan echten Wert zu monetarisieren.</div>
   </div>
 
-  <div class="card">
-    <div class="card-title">⚙️ Key Features (aus Crawl)</div>
-    <div class="features-grid">
-      <div class="feature-item"><strong>Voice Recording</strong><br>Offline Recording, Transcription in mehreren Sprachen, EN/DE Output.<div class="source">Quelle: Voice / Languages</div></div>
-      <div class="feature-item"><strong>AI Reports</strong><br>Automatisch strukturierte Reports mit Summary, Decisions, Tasks.<div class="source">Quelle: AI Reports</div></div>
-      <div class="feature-item"><strong>Evidence Layer</strong><br>Fotos mit GPS, Timestamp und Labels; Kontext bleibt am Vorgang.<div class="source">Quelle: Evidence</div></div>
-      <div class="feature-item"><strong>Task Management</strong><br>Auto-detected Tasks mit Priorität, Deadline und Assignee.<div class="source">Quelle: Task Management</div></div>
-      <div class="feature-item"><strong>Change Orders & Delays</strong><br>AI markiert Nachträge, Verzögerungen und wichtige Erwähnungen.<div class="source">Quelle: Homepage How it works</div></div>
-      <div class="feature-item"><strong>Team Collaboration</strong><br>Projekte teilen, Rollen vergeben, Online-Meetings/Projektinfos an einem Ort.<div class="source">Quelle: Collaboration</div></div>
-    </div>
-  </div>
+  <hr class="divider">
 
-  <div class="card">
-    <div class="card-title">🧩 Case-Study Signale</div>
-    <div class="two-col">
-      <div class="list-box">
-        <div class="label">Architektur / Planung</div>
-        <div class="value">Hagedorn Architekten PartG mbB</div>
-        <ul style="margin-top:10px;">
-          <li>Use Case: Begehungen, Mängel, Ausführungskoordination</li>
-          <li>Versprechen: weniger Nacharbeit, bessere Nachvollziehbarkeit, Fotos/Videos im richtigen Kontext</li>
-        </ul>
-        <div class="source">Quelle: Case Study Hagedorn</div>
-      </div>
-      <div class="list-box">
-        <div class="label">Projektentwicklung / Bauherrenseite</div>
-        <div class="value">Elbquartier, Bergmann Immobilien</div>
-        <ul style="margin-top:10px;">
-          <li>Use Case: Transparenz, Status-Updates, Stakeholder-Kommunikation</li>
-          <li>Versprechen: bessere Übersicht, frühere Risiko-Erkennung, weniger Info-Verlust</li>
-        </ul>
-        <div class="source">Quelle: Case Studies Elbquartier / Bergmann</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">⚖️ Oxolo vs. LUMA</div>
-    <div class="two-col">
-      <div class="list-box">
-        <div class="label">Oxolo gewinnt bei</div>
+  <div class="section">
+    <div class="section-label">Case Study Signale aus dem Crawl</div>
+    <div class="signal-grid">
+      <div class="signal-card good">
+        <h3>✅ Wo Oxolo Resonanz findet</h3>
         <ul>
-          <li>Extrem klarer Baustellen-Workflow</li>
-          <li>Voice-first User Experience direkt vor Ort</li>
-          <li>Schneller, leicht verständlicher ROI</li>
-          <li>Niedrige Hürde für Testkauf im Basic-Plan</li>
-          <li>Fotos, Sprache und Protokoll in einem narrativen Flow</li>
+          <li><strong>Hagedorn Architekten:</strong> Site communication, defect documentation, execution coordination</li>
+          <li><strong>Elbquartier Projektentwicklung:</strong> decisions, status, stakeholder communication</li>
+          <li><strong>Bergmann Immobilien:</strong> owner transparency ohne operativen Overload</li>
+          <li><strong>NordBau Ausbau:</strong> instructions, services, progress documentation</li>
         </ul>
       </div>
-      <div class="list-box">
-        <div class="label">LUMA gewinnt bei</div>
+      <div class="signal-card risk">
+        <h3>✗ Was das für LUMA heißt</h3>
         <ul>
-          <li>Ganzheitlicher Büro- und Projektsteuerungsansatz statt Einzelflow</li>
-          <li>HOAI-native Positionierung für Architekturbüros</li>
-          <li>Breiterer PM-/Ops-Use-Case über die Baustelle hinaus</li>
-          <li>Potenzial für ein integriertes System statt Tool-Fragmentierung</li>
-          <li>Besseres Fit-Narrativ für 5-10 MA Architekturbüros als zentrale Arbeitsoberfläche</li>
+          <li>Oxolo hat bereits belastbare Narrative für Architektur, Projektentwicklung und Ausführung</li>
+          <li>Sie verkaufen nicht "AI", sondern <strong>weniger Nacharbeit</strong> und <strong>bessere Nachvollziehbarkeit</strong></li>
+          <li>Der Baustellen-Workflow ist konkret genug, um auch in Architekturbüros schnell zu landen</li>
+          <li>Wenn LUMA das Feld nicht besetzt, kann Oxolo dort zum Default werden</li>
         </ul>
       </div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">📉 Schwächen, Risiken, Angriffspunkte</div>
-    <div class="two-col">
-      <div class="list-box">
-        <div class="label">Produktseitig</div>
+  <hr class="divider">
+
+  <div class="section">
+    <div class="section-label">Einwände & Antworten</div>
+    <div class="obj-list">
+      <div class="obj-card">
+        <div class="obj-q">💬 "Wir schauen uns gerade Oxolo an."</div>
+        <div class="obj-a"><strong>Antwort:</strong> Verständlich, Oxolo löst einen sehr konkreten Schmerz auf der Baustelle. Die eigentliche Frage ist aber: Wollt ihr ein Tool für Dokumentation, oder ein System, das danach auch Projektstatus, Aufgaben und Teamarbeit zusammenhält? Wenn ihr nur die Doku verbessert, bleibt der Rest oft genauso fragmentiert wie vorher.</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-q">💬 "Voice-to-Report ist genau das, was wir brauchen."</div>
+        <div class="obj-a"><strong>Antwort:</strong> Ja, das ist ein echter Trigger. Aber Spracheingabe ist nur der erste Schritt. Entscheidend ist, ob die Informationen danach im Projektkontext weiterleben oder ob am Ende nur ein schönes Protokoll entsteht. LUMA zielt auf den Gesamtprozess, nicht nur auf den Report-Moment.</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-q">💬 "Oxolo ist doch günstiger."</div>
+        <div class="obj-a"><strong>Antwort:</strong> Für den spitzen Use Case ja. Für ein ganzes Büro-System nicht. Der Vergleich ist nur fair, wenn man fragt: Vergleicht ihr ein Doku-Tool mit einer zentralen Arbeitsoberfläche, oder wirklich zwei Produkte mit gleichem Scope? Sonst ist das Äpfel gegen Schraubenzieher.</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-q">💬 "Wir wollen erst mal nur ein kleines Problem lösen."</div>
+        <div class="obj-a"><strong>Antwort:</strong> Fair. Dann ist Oxolo ein plausibler Einstieg. Aber genau da liegt das Risiko: Das nächste Tool ist schnell eingeführt, aber der Alltag bleibt trotzdem zersplittert. Wenn ihr ohnehin an Struktur im Projektalltag ranmüsst, ist ein zentraler Ansatz oft nachhaltiger.</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-q">💬 "Oxolo versteht Baustelle besser als klassische PM-Tools."</div>
+        <div class="obj-a"><strong>Antwort:</strong> Das ist ihr stärkstes Narrativ, und das sollte man ernst nehmen. LUMAs Antwort darf deshalb nicht allgemein bleiben, sondern muss konkret zeigen: Baustellendoku, Aufgaben und Kontext laufen bei uns nicht als Nebenthema, sondern eingebettet in den Gesamtprozess des Büros.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="section-label">Produkt-Learnings für luma</div>
+    <div class="learn-grid">
+      <div class="learn-card">
+        <h3>✅ Was Oxolo gut macht</h3>
         <ul>
-          <li>Wirkt stark fokussiert auf Baustellen-Doku, weniger als zentrale Projektsteuerung</li>
-          <li>Professional-Mehrwert hängt stark an AI, Basic ist bewusst kastriert</li>
-          <li>Pro Device Pricing kann bei Teams schnell teuer und unübersichtlich werden</li>
-          <li>Gefahr eines zusätzlichen Tools statt Systemkonsolidierung</li>
+          <li>Ein Satz reicht, um das Produkt zu verstehen</li>
+          <li>Voice ist kein Add-on, sondern die Heldengeschichte</li>
+          <li>Cases zeigen Outcome statt Feature-Listen</li>
+          <li>Website und Pricing sind auf schnellen Test optimiert</li>
         </ul>
       </div>
-      <div class="list-box">
-        <div class="label">GTM-seitig</div>
+      <div class="learn-card">
+        <h3>✅ Was LUMA daraus lernen sollte</h3>
         <ul>
-          <li>Spricht auch Bauunternehmen/Gewerke an, nicht nur Architekturbüros</li>
-          <li>Damit potenziell breiter, aber weniger tief in Büro-spezifischen Architekten-Workflows</li>
-          <li>Kann als Add-on enden, nicht als tägliches Steuerungszentrum</li>
-          <li>Keine klare HOAI-/Büro-Operations-Story im Crawl sichtbar</li>
+          <li>Baustellen-Doku narrativ viel schärfer als Entry Point aufladen</li>
+          <li>Outcome-Case-Studies mit Vorher/Nachher formulieren</li>
+          <li>Voice + Fotos + strukturierter Output als Kernmoment zeigen</li>
+          <li>Den Unterschied zwischen Spezialtool und System offensiv erklären</li>
         </ul>
       </div>
     </div>
   </div>
 
-  <div class="alert good">
-    <div>🎯</div>
-    <div><strong>LUMA-Sales-Ansatz gegen Oxolo:</strong> Nicht frontal "wir können auch Voice" argumentieren. Besser: "Oxolo löst einen wichtigen Moment auf der Baustelle. LUMA löst den Gesamtprozess im Büro und Projekt. Wenn ihr nur Doku verbessert, bleibt der Rest trotzdem fragmentiert."</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">💬 Battle-tested Talking Points</div>
-    <div class="two-col">
-      <div class="list-box">
-        <div class="label">Wenn Prospect sagt: "Wir brauchen bessere Baustellen-Doku"</div>
-        <ul>
-          <li>"Ja. Die Frage ist nur: Wollt ihr ein Doku-Tool oder ein System, das danach auch mit den Infos weiterarbeitet?"</li>
-          <li>"Wenn Voice-Notizen sauber landen, aber Projektsteuerung, Planlisten und Teamkoordination weiter getrennt bleiben, entsteht nur das nächste Tool-Silo."</li>
-        </ul>
-      </div>
-      <div class="list-box">
-        <div class="label">Wenn Prospect Oxolo testet</div>
-        <ul>
-          <li>"Spannend für den Baustellenmoment. Aber wer hält danach den Gesamtüberblick über Aufgaben, Projektstatus und Büro-Operations?"</li>
-          <li>"Für ein 5-10 MA Architekturbüro ist oft weniger wichtig, noch ein Spezialtool zu haben, als endlich eine zentrale Arbeitsoberfläche zu bekommen."</li>
-        </ul>
-      </div>
+  <div class="section">
+    <div class="section-label">Strategische Einschätzung</div>
+    <div class="highlight-box">
+      <p><strong>Oxolo ist kein Vollsortimenter, aber genau das macht sie gefährlich.</strong> Sie greifen einen extrem schmerzhaften Moment im Baustellenalltag an und formulieren den Nutzen sofort verständlich: weniger tippen, weniger Nacharbeit, mehr Nachvollziehbarkeit. Das verkauft sich leicht.</p>
+    </div>
+    <div class="highlight-box">
+      <p><strong>LUMA sollte Oxolo nicht kleinreden, sondern rahmen.</strong> Die richtige Story ist nicht "wir haben auch Voice", sondern: <strong>"Oxolo löst einen Moment, LUMA löst den Gesamtprozess."</strong> Sobald der Kunde merkt, dass gute Doku allein nicht automatisch zu besserer Projektsteuerung führt, kippt das Gespräch zurück in Richtung System.</p>
+    </div>
+    <div class="highlight-box">
+      <p><strong>Produktseitig ist das ein klares Signal.</strong> Wenn Voice-to-Report bei kleinen und mittleren Bau-/Planungsrollen so gut resoniert, dann ist Baustellen-Doku kein Randfeature, sondern ein möglicher GTM-Wedge für LUMA selbst.</p>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">🛠️ Produkt-Learnings für LUMA</div>
-    <ul>
-      <li><strong>Voice-to-Report</strong> ist kein Nice-to-have, sondern ein harter Trigger mit sofort verständlichem ROI.</li>
-      <li><strong>Fotos + Sprache + strukturierter Output</strong> ist die eigentliche Magie, nicht nur Transkription.</li>
-      <li><strong>Case Studies</strong> sind bei Oxolo glasklar auf Outcomes geschrieben. Da kann LUMA sich noch schärfer positionieren.</li>
-      <li><strong>Niedrige Einstiegshürde</strong> über günstigen Basisplan ist GTM-seitig stark, auch wenn die ernsthafte Nutzung erst im Professional-Plan passiert.</li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <div class="card-title">📌 Fazit</div>
-    <p style="margin-bottom:12px;"><strong>Oxolo ist relevant.</strong> Nicht weil sie LUMA komplett ersetzen, sondern weil sie einen der schmerzhaftesten Baustellen-Workflows sehr klar besetzen: Sprache rein, sauberes Baustellen-Protokoll raus.</p>
-    <p style="margin-bottom:12px;">Für LUMA ist das doppelt wichtig: erstens als Wettbewerbsreiz im Feld, zweitens als Produkt-Signal. Wer Baustellen-Doku, Voice und strukturierte Nachverfolgung überzeugend löst, gewinnt schnell Aufmerksamkeit.</p>
-    <p class="footer-note">Quellenbasis: vollständiger Website-Crawl von oxolo.com (30 Seiten) plus ergänzende Web-Recherche. Öffentliche Preise auf der Website gefunden. Externe Web-Suchergebnisse zu älteren Oxolo-Positionierungen (AI Video) wurden nicht als Primärgrundlage genutzt, weil der aktuelle Crawl klar den Construction-Dokumentations-Fokus zeigt.</p>
-  </div>
+  <div class="footer">luma Competitive Intelligence · Oxolo Battlecard · Stand April 2026 · Quelle: oxolo.com + öffentliche Web-Recherche</div>
 </div>
 </body>
 </html>
