@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sleep Science Briefing</title>
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --green: #10b981;
+      --yellow: #f59e0b;
+      --red: #ef4444;
+      --blue: #3b82f6;
+      --shadow: 0 10px 30px rgba(0,0,0,0.08);
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .hero {
+      background: linear-gradient(135deg, #0f172a, #1d4ed8);
+      color: white;
+      padding: 32px;
+      border-radius: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+    h1, h2, h3 { margin-top: 0; }
+    .sub { color: rgba(255,255,255,0.85); max-width: 700px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+    }
+    .grid { display: grid; gap: 16px; }
+    @media (min-width: 760px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+      .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    .b-green { background: #d1fae5; color: #065f46; }
+    .b-yellow { background: #fef3c7; color: #92400e; }
+    .b-red { background: #fee2e2; color: #991b1b; }
+    .b-blue { background: #dbeafe; color: #1e40af; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 8px; }
+    .small { color: var(--muted); font-size: 14px; }
+    .source a { color: var(--blue); text-decoration: none; }
+    .protocol { border-left: 5px solid var(--blue); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Sleep Science Briefing</h1>
+      <p class="sub">Was wissenschaftlich wirklich hilft, um abends sauber in den Schlaf zu kommen. Fokus auf belastbare Evidenz, nicht Wellness-Marketing. Kontext: Daniel, spätes Arbeiten, zu kurze Nächte, hohe Bettgeh-Varianz, Ziel: schneller runterfahren und besser schlafen.</p>
+    </section>
+
+    <section class="card">
+      <h2>Executive Summary</h2>
+      <ul>
+        <li><strong>Der stärkste Hebel ist nicht Stretching, sondern Timing:</strong> konsistente Schlafenszeit und früheres Arbeitsende schlagen fast jeden Biohack.</li>
+        <li><strong>CBT-I-Elemente</strong> wie Stimulus Control, feste Aufstehzeit und weniger Zeit im Bett sind deutlich besser belegt als diffuse „Sleep Hygiene“ allein.</li>
+        <li><strong>Kurze Entspannungsübungen</strong> wie langsame Atmung, progressive Muskelentspannung und leichte abendliche Routinen können helfen, aber meist eher als Zusatz, nicht als Haupthebel.</li>
+        <li><strong>Spätes helles Licht, aktivierender Bildschirm-Content, Alkohol und spätes Koffein</strong> sind die klassischen Schlafkiller. Das ist deutlich besser belegt als die meisten Supplements.</li>
+        <li><strong>Huberman liegt bei Licht, Koffein, Alkohol, Temperatur und Regelmäßigkeit oft richtig.</strong> Bei Supplements ist die Evidenz deutlich dünner.</li>
+        <li><strong>Für deinen Fall</strong> ist die sinnvollste Reihenfolge: Arbeitsende vorziehen, Übergangsphase bauen, Licht runter, feste Licht-aus-Zeit, dann erst Tools wie Stretching oder Atemarbeit feinjustieren.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Was wissenschaftlich am besten wirkt</h2>
+      <div class="grid grid-2">
+        <div>
+          <span class="badge b-green">stark belegt</span>
+          <h3>1. Konsistente Schlaf- und Aufstehzeiten</h3>
+          <p>Hohe Bettgeh-Varianz zerschießt den circadianen Rhythmus. Für Menschen mit Einschlafproblemen und fragmentiertem Schlaf ist Konstanz einer der härtesten Hebel.</p>
+
+          <h3>2. CBT-I / Stimulus Control</h3>
+          <p>Das ist die am besten belegte nicht-medikamentöse Behandlung bei Ein- und Durchschlafproblemen. Nicht sexy, aber wirksam. Elemente: feste Aufstehzeit, Bett nur für Schlaf, nicht ewig wach im Bett liegen, Schlafdruck wieder aufbauen.</p>
+
+          <h3>3. Lichtmanagement</h3>
+          <p>Morgens Licht rein, abends Licht runter. Helles Licht und insbesondere spätes Screen-/LED-Licht verschieben den Rhythmus nach hinten und drücken Melatonin.</p>
+        </div>
+        <div>
+          <span class="badge b-yellow">solide, aber kleinerer Hebel</span>
+          <h3>4. Entspannungsverfahren</h3>
+          <p>Progressive Muskelentspannung, langsame Atmung und teils Achtsamkeitsverfahren verbessern Schlafqualität in Reviews, aber meist nicht so stark wie Timing + Verhalten.</p>
+
+          <h3>5. Temperatur und Alkohol/Koffein-Management</h3>
+          <p>Kühler Raum, kein Alkohol kurz vor dem Schlafen, Koffein-Cutoff früh genug. Das sind Basics, aber wissenschaftlich besser gestützt als die meisten „Schlafstacks“.</p>
+
+          <h3>6. Melatonin</h3>
+          <p>Kann die Einschlaflatenz im Mittel etwas senken, aber eher moderat. Kein Allheilmittel. Für circadiane Verschiebung oder Jetlag oft sinnvoller als für alle Alltagsprobleme.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Was abends wirklich hilft und was eher nice-to-have ist</h2>
+      <div class="grid grid-3">
+        <div>
+          <span class="badge b-green">hilft oft wirklich</span>
+          <ul>
+            <li>früheres Arbeitsende</li>
+            <li>30-60 Min Übergangsphase</li>
+            <li>gedimmtes Licht</li>
+            <li>lange Ausatmung / ruhige Atmung</li>
+            <li>gleiche Licht-aus-Zeit</li>
+          </ul>
+        </div>
+        <div>
+          <span class="badge b-yellow">nice-to-have</span>
+          <ul>
+            <li>leichtes Stretching</li>
+            <li>warmes Duschen</li>
+            <li>ruhiges Lesen</li>
+            <li>Magnesium, wenn du subjektiv davon profitierst</li>
+          </ul>
+        </div>
+        <div>
+          <span class="badge b-red">oft überverkauft</span>
+          <ul>
+            <li>teure Sleep Supplements</li>
+            <li>„Sleep Cocktails“ mit 5+ Stoffen</li>
+            <li>einzelne Wunder-Tools ohne Verhaltensänderung</li>
+            <li>Stretching als alleiniger Gamechanger</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Huberman / Podcast-Tipps eingeordnet</h2>
+      <ul>
+        <li><strong>Gut belegt:</strong> Morgenlicht, abends Licht reduzieren, Koffein nicht zu spät, Alkohol killt Schlafarchitektur, kühler Schlafraum, Regelmäßigkeit.</li>
+        <li><strong>Teilweise okay, aber nicht Zauberei:</strong> NSDR/Yoga Nidra, Atemtechniken, Magnesium. Kann helfen, aber löst kein strukturelles Schlafproblem allein.</li>
+        <li><strong>Dünnere Evidenz:</strong> Apigenin, Theanin, Schlaf-Supplement-Stacks. Kann individuell funktionieren, aber die Evidenz ist deutlich schwächer als oft verkauft.</li>
+        <li><strong>Wichtiger Punkt:</strong> Die besten Huberman-Tipps sind meistens die langweiligen Basics, nicht die Kapseln.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Konkrete Empfehlungen für deinen Fall</h2>
+      <p>Dein Hauptproblem ist sehr wahrscheinlich nicht „du kennst zu wenige Schlaftricks“, sondern: <strong>du kommst zu spät aus dem Arbeitsmodus raus</strong>.</p>
+      <ul>
+        <li><strong>Arbeitsende auf 21:00 bis 21:15 setzen.</strong> Nicht als Wunsch, sondern als Systemgrenze.</li>
+        <li><strong>Danach 45-60 Minuten Übergang.</strong> Nicht direkt vom Laptop in Schlafmission wechseln.</li>
+        <li><strong>Licht ab Arbeitsende runter.</strong> Warmes, schwaches Licht. Keine hellen Overhead-Lampen.</li>
+        <li><strong>22:15 bis 22:30 im Bett, Licht aus ungefähr 22:30 bis 22:45.</strong> Nicht erst 23:00, wenn 6:50 der Wecker ist.</li>
+        <li><strong>Stretching nur sanft.</strong> Wenn es dich eher aktiviert, raus damit oder kürzen.</li>
+        <li><strong>Abendroutinen als Werkzeug, nicht als Leistungsprojekt.</strong> Sonst erzeugst du Schlafdruck durch Optimierungsdruck.</li>
+      </ul>
+    </section>
+
+    <section class="card protocol">
+      <h2>3 praktikable Abendprotokolle</h2>
+      <h3>Protokoll A, realistisch 60 Minuten</h3>
+      <ul>
+        <li>21:15 Laptop zu</li>
+        <li>21:15-21:30 Küche, Dusche, Licht runter, nicht mehr arbeiten</li>
+        <li>21:30-21:40 ruhige Atmung oder leichtes Stretching</li>
+        <li>21:40-22:15 lesen</li>
+        <li>22:15-22:30 Beine an die Wand oder still liegen, dann Licht aus</li>
+      </ul>
+
+      <h3>Protokoll B, 30 Minuten kompakt</h3>
+      <ul>
+        <li>21:45 Arbeit zu</li>
+        <li>21:45-21:55 Licht runter, kurzes Entladen</li>
+        <li>21:55-22:05 langsame Atmung / PMR / leichtes Stretching</li>
+        <li>22:05-22:20 lesen</li>
+        <li>22:20-22:30 Licht aus</li>
+      </ul>
+
+      <h3>Protokoll C, Notfall 15 Minuten</h3>
+      <ul>
+        <li>Laptop zu</li>
+        <li>5 Minuten nur rumlaufen, Wasser, Licht dimmen</li>
+        <li>5 Minuten langsame Ausatmung oder Beine an die Wand</li>
+        <li>5 Minuten Bett, kein Handy, Licht aus</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Was ich dir nicht verkaufen würde</h2>
+      <ul>
+        <li>„Nur dieses eine Supplement und du pennst wie ein Stein“</li>
+        <li>10 verschiedene Abendrituale gleichzeitig einführen</li>
+        <li>Schlaftracking bis zur Neurose</li>
+        <li>die Idee, dass du um 22:00 sofort schlafen musst, wenn du bis 21:55 noch kognitiv Vollgas gibst</li>
+      </ul>
+    </section>
+
+    <section class="card source">
+      <h2>Quellen</h2>
+      <ul>
+        <li><a href="https://www.ncbi.nlm.nih.gov/books/NBK72838/">CBT-I und Insomnia, Überblick (NCBI)</a></li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8196727/">Systematic review, nonpharmacologic sleep interventions</a></li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4487927/">Review zu Mind-Body und Relaxation bei Schlaf</a></li>
+        <li><a href="https://www.frontiersin.org/journals/sleep/articles/10.3389/frsle.2025.1603713/full">Review zu Breathing Exercises und Schlaf</a></li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9424753/">Systematic review zu Blue Light und Schlaf</a></li>
+        <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3656905/">Meta-analysis zu Melatonin und Sleep Onset Latency</a></li>
+        <li><a href="https://www.hubermanlab.com/newsletter/toolkit-for-sleep">Huberman Sleep Toolkit</a></li>
+        <li><a href="https://developer.android.com/health-and-fitness/health-connect/experiences/sleep">irrelevant for sleep science? no, omit in reading; kept out of final reasoning</a></li>
+      </ul>
+      <p class="small">Hinweis: Einige Quellen sind Reviews oder Secondary Sources, weil genau dort die beste Einordnung über Evidenzstärke passiert. Wo Evidenz dünn oder gemischt ist, habe ich das oben explizit gesagt.</p>
+    </section>
+  </div>
+</body>
+</html>
