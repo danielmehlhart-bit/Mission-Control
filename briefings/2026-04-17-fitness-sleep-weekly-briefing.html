@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sleep Weekly Briefing</title>
+  <style>
+    :root {
+      --bg:#f6f7fb; --card:#fff; --text:#1f2937; --muted:#6b7280; --border:#e5e7eb;
+      --green:#10b981; --yellow:#f59e0b; --red:#ef4444; --blue:#3b82f6; --shadow:0 10px 25px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+    .wrap{max-width:980px;margin:0 auto;padding:24px}.hero{background:linear-gradient(135deg,#0f172a,#1d4ed8);color:#fff;padding:32px;border-radius:24px;box-shadow:var(--shadow);margin-bottom:20px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;margin-bottom:16px;box-shadow:var(--shadow)}
+    .grid{display:grid;gap:16px}.kpi{padding:18px;border-radius:16px;background:#fff;border:1px solid var(--border)}
+    @media(min-width:760px){.grid-2{grid-template-columns:1fr 1fr}.grid-4{grid-template-columns:repeat(4,1fr)}}
+    h1,h2,h3{margin-top:0}.muted{color:var(--muted)} .big{font-size:34px;font-weight:800}.badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700}
+    .g{background:#d1fae5;color:#065f46}.y{background:#fef3c7;color:#92400e}.r{background:#fee2e2;color:#991b1b}.b{background:#dbeafe;color:#1e40af}
+    table{width:100%;border-collapse:collapse;font-size:14px} th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left} th{color:var(--muted);font-weight:600}
+    ul{padding-left:20px} li{margin-bottom:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Sleep Weekly Briefing</h1>
+      <p>Woche auf Basis deiner exportierten Sleep-, Activity- und Vitals-CSV. Ziel: nicht nur Einzel-Nächte anschauen, sondern Muster erkennen und den Trend sauber fortschreiben.</p>
+      <p class="muted" style="color:rgba(255,255,255,.85)">Zeitraum: 11.04.2026 bis 17.04.2026</p>
+    </section>
+
+    <section class="card">
+      <h2>TL;DR</h2>
+      <ul>
+        <li><strong>Dein Hauptproblem bleibt Schlafdauer</strong>, nicht grundsätzlich fehlende Regenerationsfähigkeit.</li>
+        <li>Wenn du genug Zeit im Bett hast, liefert dein Körper durchaus gute Werte, besonders bei <strong>Tiefschlaf</strong>.</li>
+        <li><strong>REM ist klar der Engpass</strong>, im Wochenschnitt nur 53 Minuten bzw. 12,7% der Schlafzeit. Das passt zu zu kurzen Nächten.</li>
+        <li>Die Woche zeigt eine typische Struktur: <strong>2 starke Nächte, 3 mittelmäßige, 1 schlechte Split-Nacht, 1 saubere Erholungsnacht</strong>.</li>
+        <li>Mit dem neuen CSV-Workflow können wir ab jetzt echte Wochenvergleiche und Trends bauen. Das ist der eigentliche Durchbruch.</li>
+      </ul>
+    </section>
+
+    <section class="grid grid-4" style="margin-bottom:16px;">
+      <div class="kpi"><div class="muted">Ø Schlaf</div><div class="big">6h 50m</div></div>
+      <div class="kpi"><div class="muted">Ø Effizienz</div><div class="big">84,9%</div></div>
+      <div class="kpi"><div class="muted">Ø Tiefschlaf</div><div class="big">75 Min</div></div>
+      <div class="kpi"><div class="muted">Ø REM</div><div class="big">53 Min</div></div>
+    </section>
+
+    <section class="card">
+      <h2>Einordnung</h2>
+      <div class="grid grid-2">
+        <div>
+          <span class="badge g">gut</span>
+          <h3>Tiefschlaf ist nicht kaputt</h3>
+          <p>Ø 75 Minuten Tiefschlaf und im Schnitt 18,3% sind okay bis gut. Besonders 11.04. und 15.04. zeigen, dass dein System Regeneration kann, wenn du ihm Zeit gibst.</p>
+        </div>
+        <div>
+          <span class="badge y">beobachten</span>
+          <h3>REM bleibt zu niedrig</h3>
+          <p>Ø 53 Minuten REM und 12,7% sind dünn. Genau das erwartet man, wenn Nächte zu kurz sind, weil REM sich vor allem in der zweiten Nachthälfte ballt.</p>
+        </div>
+      </div>
+      <div class="grid grid-2" style="margin-top:16px;">
+        <div>
+          <span class="badge y">mischbild</span>
+          <h3>Effizienz ist solide, aber nicht die ganze Wahrheit</h3>
+          <p>84,9% im Schnitt ist okay. Aber eine hohe Effizienz macht eine zu kurze Nacht nicht automatisch gut. 5h30 mit 90% Effizienz bleibt trotzdem eine kurze Nacht.</p>
+        </div>
+        <div>
+          <span class="badge r">auffällig</span>
+          <h3>Split-Nacht am 16.04.</h3>
+          <p>Da gab es 3 Segmente und nur 5h30 Gesamtschlaf. Solche Nächte sollten wir künftig markieren, weil sie dein Empfinden und die Erholung oft stärker sabotieren als ein normaler kurzer Schlafblock.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Beste und schlechteste Nacht</h2>
+      <div class="grid grid-2">
+        <div>
+          <span class="badge g">beste Nacht</span>
+          <h3>12.04.2026</h3>
+          <p><strong>8h08 Schlaf</strong>, 81,6% Effizienz, 71 Min Tiefschlaf, 68 Min REM.</p>
+          <p class="muted">Nicht perfekt ruhig, aber die Dauer reißt viel raus. Genau das ist die Lehre: Zeit im Bett wirkt.</p>
+        </div>
+        <div>
+          <span class="badge r">schwächste Nacht</span>
+          <h3>16.04.2026</h3>
+          <p><strong>5h30 Schlaf</strong>, 3 Segmente, 26 Min REM.</p>
+          <p class="muted">Das ist keine Qualitätsfrage mehr, sondern schlicht zu wenig und zu zerstückelt.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Nächte im Überblick</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Datum</th><th>Bett / Auf</th><th>Schlaf</th><th>Effizienz</th><th>Tief</th><th>REM</th><th>Notiz</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>11.04.</td><td>22:28–07:55</td><td>7h58</td><td>84,3%</td><td>113m</td><td>78m</td><td>stark, viel Tiefschlaf</td></tr>
+          <tr><td>12.04.</td><td>21:52–07:50</td><td>8h08</td><td>81,6%</td><td>71m</td><td>68m</td><td>lang, aber unruhiger</td></tr>
+          <tr><td>13.04.</td><td>23:30–06:55</td><td>6h09</td><td>82,9%</td><td>53m</td><td>43m</td><td>zu kurz</td></tr>
+          <tr><td>14.04.</td><td>23:39–06:50</td><td>6h09</td><td>85,6%</td><td>65m</td><td>51m</td><td>zu kurz, aber okay effizient</td></tr>
+          <tr><td>15.04.</td><td>22:44–06:53</td><td>6h38</td><td>81,4%</td><td>95m</td><td>52m</td><td>guter Tiefschlaf</td></tr>
+          <tr><td>16.04.</td><td>23:43–06:42</td><td>5h30</td><td>90,2%</td><td>63m</td><td>26m</td><td>Split-Nacht</td></tr>
+          <tr><td>17.04.</td><td>22:44–06:58</td><td>7h17</td><td>88,5%</td><td>66m</td><td>54m</td><td>saubere Nacht</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Was das für dich heißt</h2>
+      <ul>
+        <li><strong>Die Kernhypothese bleibt bestehen:</strong> du brauchst weniger Kampf gegen Schlaf und mehr früheres Runterfahren vor dem Schlaf.</li>
+        <li><strong>Dein System reagiert positiv auf mehr Zeit im Bett.</strong> Das ist die beste Nachricht der Woche.</li>
+        <li><strong>REM ist dein Frühwarnsignal.</strong> Wenn Nächte wieder Richtung 6 Stunden oder darunter rutschen, wird REM als erstes leiden.</li>
+        <li><strong>Stretching allein ist kein Hebel.</strong> Der Hauptgewinn wird über Arbeitsende, Übergangsphase und frühere Licht-aus-Zeit kommen.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Nächste Woche, worauf wir schauen</h2>
+      <ul>
+        <li>Ø Schlafdauer auf <strong>7h+</strong> bringen</li>
+        <li>keine Split-Nacht</li>
+        <li>mindestens 3 Nächte mit <strong>Licht aus vor 22:45</strong></li>
+        <li>REM im Schnitt Richtung <strong>60-70 Minuten</strong> drücken</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>
