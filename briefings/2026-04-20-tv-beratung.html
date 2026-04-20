@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TV-Briefing 50 Zoll bis 800 Euro</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      line-height: 1.6;
+    }
+    .hero {
+      background: linear-gradient(135deg, #0f4c81 0%, #57c5b6 100%);
+      color: white;
+      padding: 56px 32px 48px;
+      text-align: center;
+    }
+    .hero .label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.75; margin-bottom: 12px; }
+    .hero h1 { font-size: 34px; font-weight: 750; margin-bottom: 12px; }
+    .hero p { font-size: 16px; opacity: 0.9; max-width: 720px; margin: 0 auto; }
+    .hero .meta { margin-top: 20px; font-size: 13px; opacity: 0.72; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 40px 24px; }
+    .section-title {
+      font-size: 13px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: #555;
+      margin-bottom: 16px; margin-top: 48px;
+    }
+    .section-title:first-of-type { margin-top: 0; }
+    .tldr {
+      background: #fff; border-left: 4px solid #0f4c81;
+      border-radius: 8px; padding: 24px 28px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 32px;
+    }
+    .tldr h2 { font-size: 18px; margin-bottom: 12px; }
+    .tldr ul { padding-left: 20px; }
+    .tldr ul li { margin-bottom: 8px; font-size: 15px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 20px; }
+    .card { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .card h3 { font-size: 20px; margin-bottom: 10px; }
+    .card .sub { color: #0f4c81; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    .card p, .card li { font-size: 14px; color: #555; }
+    .card ul { padding-left: 18px; margin-top: 10px; }
+    .card ul li { margin-bottom: 6px; }
+    .price { font-size: 26px; font-weight: 800; margin: 10px 0 14px; color: #1b5e20; }
+    .table-wrap { background: #fff; border-radius: 12px; padding: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { background: #f0f4f8; text-align: left; padding: 10px 14px; font-weight: 700; color: #444; white-space: nowrap; }
+    td { padding: 12px 14px; border-top: 1px solid #eee; vertical-align: top; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 700; }
+    .badge-green { background: #e8f5e9; color: #2e7d32; }
+    .badge-yellow { background: #fff8e1; color: #f57f17; }
+    .badge-blue { background: #e3f2fd; color: #1565c0; }
+    .badge-red { background: #ffebee; color: #c62828; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+    .steps { list-style: none; }
+    .steps li { background: #fff; border-radius: 10px; padding: 20px 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 12px; display: flex; gap: 16px; align-items: flex-start; }
+    .step-num { background: #0f4c81; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+    .step-body h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .step-body p { font-size: 14px; color: #555; }
+    .warn-card, .danger-card, .success-card {
+      border-radius: 12px; padding: 20px 24px; margin-top: 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .warn-card { background: #fff8e1; border: 1px solid #ffc107; }
+    .warn-card h3 { color: #9a6c00; margin-bottom: 6px; }
+    .success-card { background: #f1f8e9; border: 1px solid #8bc34a; }
+    .success-card h3 { color: #33691e; margin-bottom: 6px; }
+    .danger-card { background: #fff0f0; border: 1px solid #f44336; }
+    .danger-card h3 { color: #b71c1c; margin-bottom: 6px; }
+    .sources { margin-top: 40px; padding-top: 24px; border-top: 1px solid #e0e0e0; }
+    .sources h4 { font-size: 13px; color: #999; margin-bottom: 10px; }
+    .sources a { color: #0077b5; font-size: 13px; display: block; margin-bottom: 6px; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+    footer { text-align: center; padding: 32px; color: #aaa; font-size: 12px; }
+  </style>
+</head>
+<body>
+<div class="hero">
+  <div class="label">Tech Briefing · 20.04.2026</div>
+  <h1>Welcher 50-Zoll-TV bis 800 Euro passt für Fußball im hellen Wohnzimmer?</h1>
+  <p>Gesucht ist ein wandmontierter 50-Zöller mit gutem Preis-Leistungs-Verhältnis, hoher Helligkeit, sauberer Bewegungsdarstellung und verständlicher Einordnung von QLED vs. OLED. TCL ist mit drin, aber nicht automatisch gesetzt.</p>
+  <div class="meta">Für: Daniel Mehlhart · Fokus: Sport, Tageslicht, Wandmontage, Budget bis 800 Euro</div>
+</div>
+
+<div class="container">
+  <div class="tldr">
+    <h2>⚡ TL;DR</h2>
+    <ul>
+      <li>Für ein helles Wohnzimmer mit viel Fußball ist ein heller QLED oder Mini-LED-TV sinnvoller als OLED, weil er bei Tageslicht weniger schlappmacht und oft günstiger ist.</li>
+      <li>Der stärkste Fit im Rahmen dieses Budgets ist der Samsung QE50QN90F: sehr hohe Helligkeit, starke Entspiegelung und sehr gute Eignung für Sport.</li>
+      <li>Der beste Preis-Leistungs-Tipp ist der TCL 50C6K: Mini-LED, bis 144 Hz im Spielemodus, Antireflexbild und klar unter 500 Euro.</li>
+      <li>Der Philips 50PUS9000/12 ist der sympathische Allrounder, wenn Ambilight wichtig ist und du ein lebendiges, angenehmes Bild für Sport und Alltag willst.</li>
+      <li>OLED bleibt technisch stark bei Schwarz und Kino, ist in dieser Größen- und Preiszone aber für deinen Use Case nicht die clevere Priorität.</li>
+    </ul>
+  </div>
+
+  <div class="section-title">QLED vs. OLED, einfach erklärt</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="sub">QLED / Mini-LED</div>
+      <h3>Besser für hellen Raum und Fußball</h3>
+      <p>QLED ist vereinfacht gesagt ein sehr heller LCD-Fernseher mit besserer Farbdarstellung. Mini-LED ist die stärkere Ausbaustufe davon, mit viel präziserer Hintergrundbeleuchtung.</p>
+      <ul>
+        <li>Mehr Helligkeit, deshalb tagsüber oft klarer und kontrastreicher.</li>
+        <li>Grüne Rasenflächen, Trikots und Tageslicht-Szenen wirken kräftiger.</li>
+        <li>Für Sport praktisch, weil helle Bilder und Bewegung wichtiger sind als perfektes Schwarz.</li>
+        <li>In 50 Zoll oft deutlich günstiger als OLED.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="sub">OLED</div>
+      <h3>Stärker für Filmabend im dunklen Raum</h3>
+      <p>OLED leuchtet Pixel für Pixel selbst. Dadurch ist Schwarz wirklich schwarz und Kontrast fantastisch. Das ist top für Serien und Filme, aber nicht automatisch die beste Wahl für ein sonniges Wohnzimmer.</p>
+      <ul>
+        <li>Perfektes Schwarz, sehr schönes Kinobild.</li>
+        <li>Bewegung ist ebenfalls stark, also für Sport nicht schlecht.</li>
+        <li>Der Vorteil kommt aber eher abends oder bei gedimmtem Licht richtig raus.</li>
+        <li>In 48 bis 50 Zoll oft teurer, und bei viel Tageslicht ist der Mehrwert kleiner.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="warn-card">
+    <h3>⚖️ Was heißt das für diesen Kauf?</h3>
+    <p>Wenn der TV vor allem Fußball im hellen Wohnzimmer zeigen soll, würde ich QLED oder Mini-LED klar vorziehen. OLED ist nicht schlecht, nur für genau diesen Einsatzzweck schlechter priorisiert, vor allem wenn das Budget bei 800 Euro deckelt.</p>
+  </div>
+
+  <div class="section-title">Die 3 besten Kandidaten</div>
+  <div class="cards">
+    <div class="card">
+      <div class="sub">Beste Empfehlung</div>
+      <h3>Samsung QE50QN90F</h3>
+      <p>Der stärkste Gesamtfit für Tageslicht, Sport und Wandmontage. Samsung positioniert das Modell mit Neo QLED, Quantum Mini LEDs und Glare Free. tvfindr hebt besonders Helligkeit und Reflexionsunterdrückung hervor.</p>
+      <div class="price">ab ca. 670 €</div>
+      <ul>
+        <li>Sehr hohe SDR- und HDR-Helligkeit, stark für helle Räume.</li>
+        <li>Gute Entspiegelung, wichtig bei Fenstern und Tageslicht.</li>
+        <li>120/144 Hz-Klasse, sauber für schnelle Kameraschwenks beim Fußball.</li>
+        <li>Mini-LED verbessert Kontrast sichtbar gegenüber normalen LEDs.</li>
+        <li>Wandmontage-freundlich, aber VESA-Maß vor Kauf des Halters kurz prüfen.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sub">Preis-Leistung</div>
+      <h3>TCL 50C6K</h3>
+      <p>Der spannendste Budget-Tipp. TCL kombiniert QD-Mini-LED, Antireflexbild, Local Dimming und bis zu 144 Hz im Spielemodus zu einem Preis, bei dem andere gerade erst warm werden.</p>
+      <div class="price">ab ca. 467 €</div>
+      <ul>
+        <li>QD-Mini-LED statt einfachem Standard-QLED, also mehr Punch fürs Geld.</li>
+        <li>100/120 Hz, 144 Hz im Spielemodus laut Testberichte.</li>
+        <li>Antireflexbild hilft im helleren Wohnzimmer.</li>
+        <li>VESA 300 × 300, damit für Wandmontage unkompliziert.</li>
+        <li>Schwäche: Klang nur okay, Soundbar wäre später sinnvoll.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="sub">Allrounder mit Ambilight</div>
+      <h3>Philips 50PUS9000/12</h3>
+      <p>Wenn du Ambilight magst, ist das der wohnlichste Kandidat. QLED, P5 Picture Engine und 120 Hz machen ihn für Sport attraktiv, auch wenn er nicht ganz so kompromisslos auf Helligkeit trimmt wie Samsung.</p>
+      <div class="price">Preis je nach Händler, meist im Mittelfeld</div>
+      <ul>
+        <li>4K QLED mit 120 Hz, VRR bis 144 Hz laut Produktspezifikationen.</li>
+        <li>Ambilight wirkt an der Wand tatsächlich besser als auf dem Lowboard.</li>
+        <li>P5 Engine hilft bei Bewegung und Bildschärfe.</li>
+        <li>Gute Lifestyle-Wahl für Sport plus Streaming.</li>
+        <li>Bei brutal hellem Tageslicht etwas weniger überzeugend als der Samsung.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-title">Direkter Vergleich</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Modell</th>
+          <th>Warum es passt</th>
+          <th>Sport im hellen Raum</th>
+          <th>Preisniveau</th>
+          <th>Urteil</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Samsung QE50QN90F</strong><br>Neo QLED / Mini-LED</td>
+          <td>Starke Helligkeit, Glare Free, sehr guter Kontrast, schnelle Bildwiedergabe</td>
+          <td><span class="badge badge-green">Top</span></td>
+          <td>unter 800 € erreichbar</td>
+          <td><span class="badge badge-green">Beste Wahl</span></td>
+        </tr>
+        <tr>
+          <td><strong>TCL 50C6K</strong><br>QD-Mini-LED</td>
+          <td>Extrem gutes Preis-Leistungs-Verhältnis, Antireflexbild, 120/144 Hz-Klasse</td>
+          <td><span class="badge badge-green">Sehr stark</span></td>
+          <td>deutlich unter 500 €</td>
+          <td><span class="badge badge-blue">Bester Deal</span></td>
+        </tr>
+        <tr>
+          <td><strong>Philips 50PUS9000/12</strong><br>QLED</td>
+          <td>Ambilight, 120 Hz, lebendiges Bild, angenehm für Alltag und Sport</td>
+          <td><span class="badge badge-yellow">Gut</span></td>
+          <td>mittleres Segment</td>
+          <td><span class="badge badge-yellow">Lifestyle-Allrounder</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-title">Meine klare Empfehlung</div>
+  <div class="success-card">
+    <h3>✅ Kauf den Samsung QE50QN90F, wenn du das beste Gesamtpaket willst</h3>
+    <p>Der Samsung passt am saubersten auf den konkreten Use Case: viel Fußball, helles Wohnzimmer, Wandmontage, Budget bis 800 Euro. Der entscheidende Punkt ist nicht nur das gute Bild, sondern die Kombination aus hoher Helligkeit, Reflexionsunterdrückung und sauberer Bewegungsdarstellung. Genau da verlieren viele hübsche Fernseher im Alltag.</p>
+  </div>
+  <div class="warn-card">
+    <h3>💸 Wann TCL statt Samsung sinnvoller ist</h3>
+    <p>Wenn du rational auf Preis-Leistung gehst und keine Lust hast, fast das volle Budget auszureizen, ist der TCL 50C6K brutal vernünftig. Für gut 200 bis 300 Euro weniger bekommst du sehr viel TV. Ich würde TCL nehmen, wenn du parallel noch eine Soundbar oder eine saubere Wandhalterung einplanen willst.</p>
+  </div>
+  <div class="danger-card">
+    <h3>🚫 Was ich hier nicht priorisieren würde</h3>
+    <p>Einen OLED nur deshalb kaufen, weil OLED technisch sexy klingt. In deinem Szenario zahlst du eher für Stärken, die abends im dunklen Raum glänzen. Für Bundesliga am Samstagmittag bringt dir ein heller Mini-LED-TV meist mehr.</p>
+  </div>
+
+  <div class="section-title">Wandmontage, damit es nachher nicht nervt</div>
+  <ul class="steps">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>VESA-Maß checken</h4>
+        <p>Beim TCL 50C6K ist 300 × 300 explizit genannt. Bei Samsung und Philips das exakte Maß vor Bestellung der Halterung noch einmal auf dem Datenblatt gegenprüfen.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Leicht neigbare Halterung nehmen</h4>
+        <p>Für Sport im hellen Wohnzimmer hilft ein wenig Neigung oft mehr als jede Prospekt-Spezifikation, weil Spiegelungen von Fenstern besser weggehen.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Sound nicht überschätzen</h4>
+        <p>Fast alle flachen TVs klingen okay, aber nicht geil. Wenn Fußball-Kommentar und Stadionton wichtig sind, ist eine kleine Soundbar das ehrlichste Upgrade.</p>
+      </div>
+    </li>
+  </ul>
+
+  <div class="sources">
+    <h4>Quellen</h4>
+    <a href="https://www.tvfindr.com/de/besten-48-50-zoll-fernseher/" target="_blank">1. tvfindr, Bestenliste 48 bis 50 Zoll Fernseher</a>
+    <a href="https://www.techradar.com/best/best-50-inch-tvs" target="_blank">2. TechRadar, Best 48/49/50-inch TVs</a>
+    <a href="https://www.rtings.com/tv/reviews/best/by-size/48-50-inch" target="_blank">3. RTINGS, Best 48 to 50 Inch TVs</a>
+    <a href="https://www.samsung.com/de/tvs/qled-tv/qn90f-50-inch-neo-qled-4k-mini-led-smart-tv-gq50qn90fatxzg/" target="_blank">4. Samsung Produktseite QN90F 50 Zoll</a>
+    <a href="https://www.idealo.de/preisvergleich/Liste/123299814/samsung-qn90f-50-zoll-qled.html" target="_blank">5. Idealo Preisübersicht Samsung QN90F 50 Zoll</a>
+    <a href="https://www.tcl.com/de/de/tvs/50c6k" target="_blank">6. TCL Produktseite 50C6K</a>
+    <a href="https://www.testberichte.de/p/tcl-tests/50c6k-testbericht.html" target="_blank">7. Testberichte.de, TCL 50C6K</a>
+    <a href="https://www.idealo.de/preisvergleich/OffersOfProduct/208193553_-50c6k-tcl-electronics.html" target="_blank">8. Idealo Preisübersicht TCL 50C6K</a>
+    <a href="https://www.philips.de/c-p/50PUS9000_12/the-one-4k-ambilight-tv" target="_blank">9. Philips Produktseite The One 50PUS9000/12</a>
+    <a href="https://www.documents.philips.com/assets/20250113/cab50e4df327413aa518b264008a0794.pdf" target="_blank">10. Philips Datenblatt 50PUS9000/12</a>
+    <a href="https://www.hifiklubben.de/inspiration/tv/led-qled-oled/" target="_blank">11. HiFi Klubben, Erklärung LED/QLED/OLED</a>
+    <a href="https://hifi.de/ratgeber/die-besten-fernseher-fuer-sport-129205" target="_blank">12. HIFI.DE, Fernseher für Sport</a>
+  </div>
+</div>
+
+<footer>Briefing erstellt von Hatti 🏔️ · 20.04.2026 · Für internen Gebrauch</footer>
+</body>
+</html>
