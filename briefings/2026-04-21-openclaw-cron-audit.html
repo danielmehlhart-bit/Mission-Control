@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenClaw Migration – Cron Audit</title>
+  <style>
+    :root {
+      --bg: #141720;
+      --panel: #1b2030;
+      --panel-2: #22283a;
+      --text: #e8ecf3;
+      --muted: #9aa6bf;
+      --line: #30384d;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+      --info: #60a5fa;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+    h1, h2, h3 { margin: 0 0 12px; }
+    h1 { font-size: 34px; }
+    h2 { font-size: 22px; margin-top: 28px; }
+    h3 { font-size: 17px; margin-top: 20px; }
+    p, li { color: var(--text); }
+    .muted { color: var(--muted); }
+    .hero, .card {
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.18);
+    }
+    .hero { margin-bottom: 20px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin: 18px 0 8px;
+    }
+    .stat {
+      background: rgba(255,255,255,.02);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .stat .k { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+    .stat .v { font-size: 28px; font-weight: 700; margin-top: 6px; }
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+    .ok { background: rgba(34,197,94,.12); color: #7ee2a8; border: 1px solid rgba(34,197,94,.35); }
+    .warn { background: rgba(245,158,11,.12); color: #f7c66c; border: 1px solid rgba(245,158,11,.35); }
+    .bad { background: rgba(239,68,68,.12); color: #ff9a9a; border: 1px solid rgba(239,68,68,.35); }
+    .info { background: rgba(96,165,250,.12); color: #9fc5ff; border: 1px solid rgba(96,165,250,.35); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    th, td {
+      text-align: left;
+      padding: 11px 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th { color: var(--muted); font-weight: 700; }
+    code {
+      background: rgba(255,255,255,.06);
+      padding: 2px 6px;
+      border-radius: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+    }
+    ul { margin-top: 8px; }
+    .section { margin-top: 20px; }
+    .small { font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>OpenClaw-Migration – Cron Audit</h1>
+      <p class="muted">Erstellt am 2026-04-21 21:15:36 CEST. Fokus: Welche Cronjobs ich in der Migration/Altumgebung gefunden habe, was aktuell noch läuft und was davon wahrscheinlich kaputt oder nicht mehr relevant ist.</p>
+      <div class="grid">
+        <div class="stat"><div class="k">Aktuelle Hermes-Cronjobs</div><div class="v">1</div></div>
+        <div class="stat"><div class="k">Legacy OpenClaw-Crons laut SETUP.md</div><div class="v">20 aktiv</div></div>
+        <div class="stat"><div class="k">Legacy User-Crontab</div><div class="v">4 Jobs</div></div>
+        <div class="stat"><div class="k">Mission Control Zugriff</div><div class="v">Ja</div></div>
+      </div>
+      <div>
+        <span class="pill info">Repo vorhanden: <code>/home/hartner/mission-control</code></span>
+        <span class="pill info">Briefings-Ordner: <code>/home/hartner/mission-control/briefings</code></span>
+        <span class="pill warn">Große Lücke zwischen dokumentierten OpenClaw-Crons und aktuell registrierten Hermes-Crons</span>
+      </div>
+    </div>
+
+    <div class="card section">
+      <h2>Executive Summary</h2>
+      <ul>
+        <li><strong>Mission Control ist lokal zugreifbar.</strong> Das Repo unter <code>/home/hartner/mission-control</code> ist ein Git-Repo.</li>
+        <li><strong>Im aktuellen Hermes-Cron-System existiert nur 1 Job:</strong> <code>hermes-core-file-monitor</code> (stündlich, Status zuletzt <em>ok</em>).</li>
+        <li><strong>Im Legacy-OpenClaw-Setup sind deutlich mehr Jobs dokumentiert:</strong> <code>20 aktiv</code>, <code>7 pausiert</code>, <code>18 deaktiviert</code> in <code>~/.openclaw/workspace/SETUP.md</code>. Diese sind aber <strong>nicht</strong> im aktuellen Hermes-Cron-Register sichtbar.</li>
+        <li><strong>Es gibt zusätzlich 4 klassische Shell-Crons in Daniels User-Crontab.</strong> Die laufen unabhängig vom Hermes-Cron-System weiter.</li>
+        <li><strong>Mindestens 2 Legacy-Jobs wirken problematisch:</strong> Backup nach Google Drive wirft Fehler; LUMA-Availability-Push scheitert am fehlenden Git-Repo <code>/tmp/luma-web</code>.</li>
+        <li><strong>Mindestens 2 Jobs wirken migrationsbedingt fragwürdig/legacy:</strong> Memory-Sync auf alten Coolify-Pfad und LUMA Demo Watcher.</li>
+      </ul>
+    </div>
+
+    <div class="card section">
+      <h2>1) Aktueller Hermes-Cron-Stand</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Job</th>
+            <th>Schedule</th>
+            <th>Status</th>
+            <th>Bewertung</th>
+            <th>Hinweis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>hermes-core-file-monitor</strong><br><span class="small">Job-ID: <code>051a427c3f22</code></span></td>
+            <td><code>0 * * * *</code></td>
+            <td><span class="pill ok">scheduled</span><span class="pill ok">last_status: ok</span></td>
+            <td><span class="pill warn">funktioniert, aber alertet aktuell</span></td>
+            <td>Letzte Läufe zeigen Änderungen an <code>/home/hartner/.hermes/config.yaml</code>. Kein Totalausfall, aber aktuell nicht „ruhig grün“.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card section">
+      <h2>2) Legacy OpenClaw – dokumentiertes Cron-Inventar</h2>
+      <p>Quelle: <code>/home/hartner/.openclaw/workspace/SETUP.md</code> (Stand 2026-04-13).</p>
+      <div>
+        <span class="pill info">20 aktiv dokumentiert</span>
+        <span class="pill info">7 pausiert dokumentiert</span>
+        <span class="pill info">18 deaktiviert dokumentiert</span>
+        <span class="pill warn">nicht in Hermes-Cron-Registry vorhanden</span>
+      </div>
+      <p class="small">Wichtige Interpretation: Das Dokument ist eher ein Legacy-Inventar/Soll-Zustand. Es beweist nicht, dass diese Jobs heute noch im aktuellen Hermes-System existieren.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Beobachtung</th>
+            <th>Einschätzung</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Viele frühere OpenClaw-/Agent-Jobs sind im SETUP inventarisiert.</td>
+            <td>Nach der Migration offenbar nicht 1:1 in Hermes übernommen oder inzwischen entfernt.</td>
+          </tr>
+          <tr>
+            <td>Doppelte IDs in der Pausen-Sektion (z. B. <code>cbd8cd24</code>, <code>3f324667</code>, <code>b02d53ec</code> erscheinen doppelt in aktiver/pausierter Darstellung).</td>
+            <td>Das Legacy-Inventar ist selbst inkonsistent und sollte nicht als alleinige Truth Source dienen.</td>
+          </tr>
+          <tr>
+            <td>Job <code>🔄 OpenClaw Update Check</code> ist im Inventar als aktiv gelistet.</td>
+            <td>Wahrscheinlich nach Migration obsolet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card section">
+      <h2>3) Tatsächlich noch im User-Crontab laufende Legacy-Shell-Jobs</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Schedule</th>
+            <th>Command / Zweck</th>
+            <th>Statusbild</th>
+            <th>Meine Bewertung</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>0 3 * * *</code></td>
+            <td><strong>backup-gdrive.sh</strong><br>Backup von <code>~/.openclaw/</code> nach Google Drive</td>
+            <td><span class="pill warn">läuft</span><span class="pill bad">Fehler im Log</span></td>
+            <td>Relevant als Backup, aber <strong>instabil</strong>: letzter Log endet mit <code>source file is being updated (size changed ...)</code>. Kein kompletter Ausfall, aber aktuell fehleranfällig.</td>
+          </tr>
+          <tr>
+            <td><code>0 2 * * *</code></td>
+            <td><strong>Memory-Sync</strong><br><code>rsync</code> von OpenClaw-Memory nach altem Coolify-Pfad</td>
+            <td><span class="pill warn">unklar</span><span class="pill warn">legacy</span></td>
+            <td>Wirkung aktuell unklar. Pfad zeigt auf alten OpenClaw/Coolify-Speicherort. Sehr wahrscheinlich <strong>migrationsbedingter Legacy-Job</strong>, der überprüft oder entfernt werden sollte.</td>
+          </tr>
+          <tr>
+            <td><code>*/30 8-18 * * 1-5</code></td>
+            <td><strong>luma-availability.sh</strong><br>Erzeugt <code>availability.json</code> für Booking-Seite</td>
+            <td><span class="pill warn">teilweise läuft</span><span class="pill bad">Push-Stufe kaputt</span></td>
+            <td>Log zeigt <code>fatal: not a git repository</code>. Script erwartet <code>/tmp/luma-web</code> als Git-Repo, auf dem System ist dort aber <strong>kein</strong> Git-Repo vorhanden. Inhaltserzeugung funktioniert offenbar noch, Commit/Push aber nicht sauber.</td>
+          </tr>
+          <tr>
+            <td><code>*/30 8-18 * * 1-5</code></td>
+            <td><strong>luma-demo-watcher.sh</strong><br>prüft LUMA-Mailbox auf Demo-Buchungen, benachrichtigt Telegram</td>
+            <td><span class="pill warn">unklar</span><span class="pill warn">möglicherweise obsolet</span></td>
+            <td>Logdatei ist seit <code>2026-04-13</code> leer/unverändert. Script ist syntaktisch valide, aber wegen stiller Fehlerunterdrückung schwer zu bewerten. Nach Migration evtl. nicht mehr relevant oder nicht mehr beobachtbar genug.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card section">
+      <h2>4) Konkrete Findings</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Finding</th>
+            <th>Evidenz</th>
+            <th>Wahrscheinlichkeit</th>
+            <th>Empfehlung</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>LUMA Availability ist in der Deploy/Push-Stufe kaputt</td>
+            <td>Log: <code>fatal: not a git repository</code>; Systemcheck: <code>/tmp/luma-web</code> ist <strong>kein</strong> Git-Repo</td>
+            <td>Sehr hoch</td>
+            <td>Entweder Repo-Pfad korrigieren oder Push/Commit-Stufe entfernen und anders deployen.</td>
+          </tr>
+          <tr>
+            <td>Google-Drive-Backup ist nicht robust</td>
+            <td>Backup-Log endet mit <code>Copy failed: can't copy - source file is being updated</code></td>
+            <td>Hoch</td>
+            <td>Backup von Hot-Files entkoppeln oder Snapshot/Exclude-Strategie verwenden.</td>
+          </tr>
+          <tr>
+            <td>Memory-Sync könnte nach Migration überholt sein</td>
+            <td>Cron zeigt noch klar auf <code>~/.openclaw/workspace</code> und alten Remote-Pfad</td>
+            <td>Hoch</td>
+            <td>Prüfen, ob der Zielpfad noch produktiv genutzt wird. Wenn nein: abschalten.</td>
+          </tr>
+          <tr>
+            <td>Legacy Cron-Inventar in SETUP.md ist nicht mehr deckungsgleich mit Realität</td>
+            <td>SETUP nennt 20 aktive Jobs; Hermes-Registry listet nur 1</td>
+            <td>Sehr hoch</td>
+            <td>Einmal sauber konsolidieren: „was existiert wirklich?“ vs. „was war mal geplant?“</td>
+          </tr>
+          <tr>
+            <td>Hermes Core File Monitor ist gesund, aber gerade noisy</td>
+            <td>Job läuft; Security Alert meldet Änderung an <code>.hermes/config.yaml</code></td>
+            <td>Hoch</td>
+            <td>Wenn die Config-Änderung erwartet war: State aktualisieren oder Alert quittieren.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card section">
+      <h2>5) Meine kurze Priorisierung</h2>
+      <ol>
+        <li><strong>LUMA Availability</strong> – zuerst prüfen/fixen, weil hier ein realer Funktionspfad sichtbar fehlschlägt.</li>
+        <li><strong>Memory-Sync</strong> – entscheiden: noch nötig oder raus.</li>
+        <li><strong>Backup-GDrive</strong> – robuster machen, damit keine stillen Teilfehler bleiben.</li>
+        <li><strong>Legacy Inventar bereinigen</strong> – SETUP/Crons wieder auf einen Stand bringen.</li>
+        <li><strong>LUMA Demo Watcher</strong> – Nutzen und tatsächliche Funktion prüfen; sonst entfernen.</li>
+      </ol>
+    </div>
+
+    <div class="card section">
+      <h2>Quellen / Checks</h2>
+      <ul>
+        <li><code>cronjob list</code> (Hermes-intern)</li>
+        <li><code>crontab -l</code> (User-Crontab)</li>
+        <li><code>/home/hartner/.openclaw/workspace/SETUP.md</code></li>
+        <li><code>/home/hartner/.openclaw/workspace/scripts/*.sh</code></li>
+        <li>Logs: <code>~/.openclaw/logs/backup.log</code>, <code>/tmp/luma-availability.log</code>, <code>/tmp/luma-demo-watcher.log</code>, <code>~/.hermes/security/core-monitor.log</code></li>
+      </ul>
+      <p class="small">Wichtig: Ich habe hier bewusst nur geprüft und bewertet, nichts an Cronjobs verändert.</p>
+    </div>
+  </div>
+</body>
+</html>
