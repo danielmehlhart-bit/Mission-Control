@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenClaw → Hermes Migrationsmatrix</title>
+  <style>
+    :root {
+      --bg: #141720;
+      --panel: #1b2030;
+      --panel2: #232a3c;
+      --line: #323c52;
+      --text: #ebeff7;
+      --muted: #9aa6bf;
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --blue: #60a5fa;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .wrap { max-width: 1220px; margin: 0 auto; padding: 32px 20px 56px; }
+    .card {
+      background: linear-gradient(180deg, var(--panel), var(--panel2));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 28px rgba(0,0,0,.18);
+    }
+    h1,h2,h3 { margin: 0 0 12px; }
+    h1 { font-size: 34px; }
+    h2 { font-size: 22px; margin-top: 6px; }
+    p, li { margin-top: 0; }
+    .muted { color: var(--muted); }
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      border: 1px solid transparent;
+    }
+    .green { color: #89f0af; background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.3); }
+    .amber { color: #ffd07a; background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.3); }
+    .red { color: #ffabab; background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.3); }
+    .blue { color: #b9d4ff; background: rgba(96,165,250,.12); border-color: rgba(96,165,250,.3); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: rgba(255,255,255,.06);
+      padding: 2px 6px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 14px; margin-top: 16px; }
+    .stat { border: 1px solid var(--line); border-radius: 14px; padding: 16px; background: rgba(255,255,255,.02); }
+    .stat .k { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    .stat .v { font-size: 28px; font-weight: 700; margin-top: 6px; }
+    .small { font-size: 13px; color: var(--muted); }
+    ol, ul { padding-left: 22px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>OpenClaw → Hermes Migrationsmatrix</h1>
+      <p class="muted">Entscheidungsvorlage für Daniel. Zielbild: <strong>Hermes als einziges aktives System</strong>, OpenClaw nur noch als <strong>Legacy-/Archivschicht</strong>.</p>
+      <div class="grid">
+        <div class="stat"><div class="k">Empfehlung</div><div class="v">Hermes First</div></div>
+        <div class="stat"><div class="k">OpenClaw Rolle</div><div class="v">Archiv</div></div>
+        <div class="stat"><div class="k">Übergangsphase</div><div class="v">7–14 Tage</div></div>
+        <div class="stat"><div class="k">Ziel</div><div class="v">1 aktives Gehirn</div></div>
+      </div>
+      <div style="margin-top:16px">
+        <span class="pill green">Neue Sachen immer in Hermes</span>
+        <span class="pill amber">Legacy nur gezielt weiterlaufen lassen</span>
+        <span class="pill red">Keine dauerhafte Koexistenz als 2 aktive Systeme</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Entscheidungsregel in einem Satz</h2>
+      <p><strong>Alles, was heute produktiv Wert schafft oder Entscheidungen trifft, sollte nach Hermes.</strong> Alles, was nur historische Referenz ist oder noch nicht migriert wurde, darf kurzfristig in OpenClaw bleiben — aber nur mit Exit-Plan.</p>
+    </div>
+
+    <div class="card">
+      <h2>Migrationsmatrix</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Bereich / Jobtyp</th>
+            <th>Zielsystem</th>
+            <th>Entscheidung</th>
+            <th>Warum</th>
+            <th>Nächster Schritt</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Chat mit dir / tägliche Arbeit</strong></td>
+            <td>Hermes</td>
+            <td><span class="pill green">Sofort umstellen</span></td>
+            <td>Ein einziges Frontend/Gehirn. Sonst Doppelkontext und Verwirrung.</td>
+            <td>Ab jetzt Hermes als Default.</td>
+          </tr>
+          <tr>
+            <td><strong>Neue Cronjobs / neue Automationen</strong></td>
+            <td>Hermes</td>
+            <td><span class="pill green">Nur noch hier bauen</span></td>
+            <td>Sonst wächst die Legacy weiter.</td>
+            <td>OpenClaw bekommt keine neuen Jobs mehr.</td>
+          </tr>
+          <tr>
+            <td><strong>Mission Control / HTML-Briefings / operative Reports</strong></td>
+            <td>Hermes</td>
+            <td><span class="pill green">Migriert / Standardisieren</span></td>
+            <td>Das ist laufende operative Arbeit, nicht Archiv.</td>
+            <td>Alle neuen Reports via Hermes erzeugen.</td>
+          </tr>
+          <tr>
+            <td><strong>Security / Integritätsmonitoring</strong></td>
+            <td>Hermes</td>
+            <td><span class="pill green">Beibehalten + ausbauen</span></td>
+            <td>Hermes hat bereits Core-Monitoring aktiv.</td>
+            <td>Alte Security-Jobs gegen Hermes-Setup konsolidieren.</td>
+          </tr>
+          <tr>
+            <td><strong>LUMA operative Cronjobs mit echtem Business-Wert</strong><br><span class="small">z. B. Demo-/Lead-/Availability-Workflows</span></td>
+            <td>Hermes</td>
+            <td><span class="pill amber">Selektiv migrieren</span></td>
+            <td>Business-relevant, aber einige Jobs sind kaputt oder legacy gebaut.</td>
+            <td>Einzeln prüfen: behalten, neu bauen, oder löschen.</td>
+          </tr>
+          <tr>
+            <td><strong>OpenClaw-Memory / alte Regeln / alte Prompts</strong></td>
+            <td>OpenClaw als Quelle, Hermes als Ziel</td>
+            <td><span class="pill amber">Extrahieren statt parallel nutzen</span></td>
+            <td>Wert liegt in Inhalten, nicht im Parallelbetrieb.</td>
+            <td>Nützliche Regeln/Prompts gezielt portieren.</td>
+          </tr>
+          <tr>
+            <td><strong>Legacy Shell-Crons im User-Crontab</strong></td>
+            <td>Gemischt, aber mit Endzustand Hermes/Off</td>
+            <td><span class="pill amber">Einzeln entscheiden</span></td>
+            <td>Hier steckt das meiste Migrationsrisiko.</td>
+            <td>Job-für-Job Bewertung unten nutzen.</td>
+          </tr>
+          <tr>
+            <td><strong>Historie / Referenz / alte Workspace-Dateien</strong></td>
+            <td>OpenClaw</td>
+            <td><span class="pill blue">Archiv behalten</span></td>
+            <td>Hilfreich zum Nachschlagen, aber nicht aktiv betreiben.</td>
+            <td>Read-only mental model.</td>
+          </tr>
+          <tr>
+            <td><strong>OpenClaw Update Check</strong></td>
+            <td>Keins</td>
+            <td><span class="pill red">Deprecate</span></td>
+            <td>Wenn Hermes das aktive System ist, ist ein OpenClaw-Update-Check kein Core-Need mehr.</td>
+            <td>Abschalten, sofern kein Sondergrund besteht.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Konkrete Bewertung der aktuell sichtbaren Legacy-Jobs</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Job</th>
+            <th>Aktueller Eindruck</th>
+            <th>Empfehlung</th>
+            <th>Begründung</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>backup-gdrive.sh</strong></td>
+            <td><span class="pill amber">Relevant, aber instabil</span></td>
+            <td><span class="pill amber">Kurzfristig behalten, dann härten oder neu bauen</span></td>
+            <td>Backup bleibt wichtig. Aber der aktuelle Lauf zeigt Hot-File-Probleme während des Uploads.</td>
+          </tr>
+          <tr>
+            <td><strong>Memory-Sync auf alten Coolify-Pfad</strong></td>
+            <td><span class="pill red">Wahrscheinlich legacy</span></td>
+            <td><span class="pill red">Eher abschalten nach kurzer Verifikation</span></td>
+            <td>Pfad zeigt noch klar in die OpenClaw-/Altwelt. Hohe Chance, dass das keinen echten Wert mehr liefert.</td>
+          </tr>
+          <tr>
+            <td><strong>luma-availability.sh</strong></td>
+            <td><span class="pill amber">Business-relevant, aber kaputt</span></td>
+            <td><span class="pill green">Nach Hermes migrieren / sauber neu bauen</span></td>
+            <td>Der Use Case ist relevant, die Implementierung nicht. <code>/tmp/luma-web</code> ist kein Git-Repo.</td>
+          </tr>
+          <tr>
+            <td><strong>luma-demo-watcher.sh</strong></td>
+            <td><span class="pill amber">Unklarer Nutzen</span></td>
+            <td><span class="pill amber">Nutzen verifizieren, sonst abschalten</span></td>
+            <td>Script ist formal okay, aber Log/Beobachtbarkeit ist schwach. Kein klarer Nachweis, dass es dir heute hilft.</td>
+          </tr>
+          <tr>
+            <td><strong>hermes-core-file-monitor</strong></td>
+            <td><span class="pill green">Aktiv und sinnvoll</span></td>
+            <td><span class="pill green">Behalten</span></td>
+            <td>Passt ins Zielbild Hermes-first. Nur die aktuelle Alert-Lage sollte bereinigt werden.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Einfaches Operating Model für dich</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Wenn du …</th>
+            <th>Dann nutze …</th>
+            <th>Merksatz</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>eine neue Idee, Aufgabe oder Automation startest</td>
+            <td><strong>Hermes</strong></td>
+            <td>Neu = Hermes</td>
+          </tr>
+          <tr>
+            <td>einen alten OpenClaw-Job verstehst oder zerlegst</td>
+            <td><strong>OpenClaw als Referenz</strong>, Entscheidung aber in Hermes</td>
+            <td>Legacy lesen, nicht darin leben</td>
+          </tr>
+          <tr>
+            <td>etwas produktiv laufen lassen willst</td>
+            <td><strong>Hermes</strong></td>
+            <td>Produktion = Hermes</td>
+          </tr>
+          <tr>
+            <td>alte Historie, Regeln oder Entscheidungen nachschlagen willst</td>
+            <td><strong>OpenClaw Archiv</strong></td>
+            <td>Archiv = OpenClaw</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Mein klares Votum</h2>
+      <ol>
+        <li><strong>OpenClaw nicht mehr als aktives Zweitsystem betreiben.</strong></li>
+        <li><strong>Hermes wird dein einziges aktives System.</strong></li>
+        <li><strong>OpenClaw bleibt noch kurz als Archiv und Migrationsquelle.</strong></li>
+        <li><strong>Dann Schritt für Schritt alte Jobs rausziehen oder stilllegen.</strong></li>
+      </ol>
+      <p><strong>Also:</strong> nicht „koexistieren“, sondern <strong>kontrolliert ablösen</strong>.</p>
+    </div>
+
+    <div class="card">
+      <h2>Empfohlene Reihenfolge für die nächsten 5 Entscheidungen</h2>
+      <ol>
+        <li><strong>LUMA Availability:</strong> migrieren/neu bauen</li>
+        <li><strong>Memory-Sync:</strong> validieren, dann vermutlich abschalten</li>
+        <li><strong>Backup:</strong> robuster machen</li>
+        <li><strong>Demo Watcher:</strong> Nutzen belegen oder löschen</li>
+        <li><strong>Legacy Inventar:</strong> dokumentierte vs. echte Jobs bereinigen</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>
