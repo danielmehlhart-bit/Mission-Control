@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenClaw → Hermes Übergabeinventar</title>
+  <style>
+    :root {
+      --bg: #141720;
+      --panel: #1b2030;
+      --panel2: #232a3c;
+      --line: #323c52;
+      --text: #ebeff7;
+      --muted: #9aa6bf;
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --blue: #60a5fa;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.45; }
+    .wrap { max-width: 1240px; margin: 0 auto; padding: 32px 20px 56px; }
+    .card { background: linear-gradient(180deg, var(--panel), var(--panel2)); border: 1px solid var(--line); border-radius: 18px; padding: 20px; margin-bottom: 18px; box-shadow: 0 8px 28px rgba(0,0,0,.18); }
+    h1,h2,h3 { margin: 0 0 12px; }
+    h1 { font-size: 34px; }
+    h2 { font-size: 22px; }
+    .muted { color: var(--muted); }
+    .pill { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; margin-right: 8px; margin-bottom: 8px; border: 1px solid transparent; }
+    .green { color: #89f0af; background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.3); }
+    .amber { color: #ffd07a; background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.3); }
+    .red { color: #ffabab; background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.3); }
+    .blue { color: #b9d4ff; background: rgba(96,165,250,.12); border-color: rgba(96,165,250,.3); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 14px; margin-top: 16px; }
+    .stat { border: 1px solid var(--line); border-radius: 14px; padding: 16px; background: rgba(255,255,255,.02); }
+    .stat .k { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    .stat .v { font-size: 28px; font-weight: 700; margin-top: 6px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: rgba(255,255,255,.06); padding: 2px 6px; border-radius: 8px; font-size: 12px; }
+    ul, ol { padding-left: 22px; }
+    .small { font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>OpenClaw → Hermes Übergabeinventar</h1>
+      <p class="muted">Kein Bauchgefühl, sondern aus den OpenClaw-Core-Dateien gelesen: <code>SECURITY.md</code>, <code>SOUL.md</code>, <code>USER.md</code>, <code>SETUP.md</code>, <code>RULES.md</code>, <code>PROJECTS.md</code>, <code>MEMORY.md</code> sowie Tagesnotizen vom 20./21.04.</p>
+      <div class="grid">
+        <div class="stat"><div class="k">Zielbild</div><div class="v">Hermes aktiv</div></div>
+        <div class="stat"><div class="k">Legacy-Rolle</div><div class="v">OpenClaw Archiv</div></div>
+        <div class="stat"><div class="k">Übergabeblöcke</div><div class="v">4</div></div>
+        <div class="stat"><div class="k">Top-Risiko</div><div class="v">Legacy Crons</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Antwort auf die eigentliche Frage</h2>
+      <p><strong>Ja, größtenteils kann ich das selbst machen.</strong> Der relevante Kontext liegt in der OpenClaw-Workspace-Struktur schon vor. Ich muss ihn nicht von dir neu erfragen, sondern nur sauber lesen, konsolidieren und in Hermes überführen.</p>
+      <p>Wichtig ist nur die Grenze: <strong>Ich ziehe Pfade, Referenzen, Status und Zuständigkeiten rüber — aber keine Secrets im Klartext in Reports oder Chat.</strong></p>
+    </div>
+
+    <div class="card">
+      <h2>1) Crons / Automationen — Übergabestand</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Typ</th>
+            <th>Was da ist</th>
+            <th>Bewertung</th>
+            <th>Für Hermes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Hermes-Cronsystem</strong></td>
+            <td>Aktuell sichtbar: nur <code>hermes-core-file-monitor</code></td>
+            <td><span class="pill green">gültiger Startpunkt</span></td>
+            <td>Bleibt aktiv</td>
+          </tr>
+          <tr>
+            <td><strong>Legacy-Inventar in SETUP.md</strong></td>
+            <td>20 aktiv, 7 pausiert, 18 deaktiviert dokumentiert</td>
+            <td><span class="pill amber">nicht deckungsgleich mit Realität</span></td>
+            <td>Als Prüfliste nutzen, nicht als Truth Source</td>
+          </tr>
+          <tr>
+            <td><strong>User-Crontab</strong></td>
+            <td>4 Shell-Jobs: Backup, Memory-Sync, LUMA Availability, LUMA Demo Watcher</td>
+            <td><span class="pill red">höchstes Migrationsrisiko</span></td>
+            <td>Job für Job entscheiden: behalten / migrieren / abschalten</td>
+          </tr>
+          <tr>
+            <td><strong>Tagesnotizen 20./21.04.</strong></td>
+            <td>Mehrere Legacy-OpenClaw-Crons laufen auf Fehler, u. a. <code>OpenClaw Update Check</code>, <code>Daily Cron Health Check</code></td>
+            <td><span class="pill red">Legacy drift sichtbar</span></td>
+            <td>Nicht ungeprüft übernehmen</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="small">Kurz: Ja, den Cron-Kontext habe ich. Aber ich werde nicht blind alles migrieren, weil Teile davon schon sichtbar faul sind.</p>
+    </div>
+
+    <div class="card">
+      <h2>2) Secrets / Tokens / sensible Pfade — was wirklich relevant ist</h2>
+      <p><strong>Ich habe die Referenzen und Ablageorte, nicht nur grobe Vermutungen.</strong> Das reicht für eine saubere Übergabe.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Bereich</th>
+            <th>Referenz / Speicherort</th>
+            <th>Kommentar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Basis-Secrets</td>
+            <td><code>~/.openclaw/secrets.env</code> bzw. <code>~/.openclaw/secrets/secrets.env</code></td>
+            <td>Zentrale Alt-Ablage, enthält u. a. MC/LUMA/OpenAI-bezogene Referenzen</td>
+          </tr>
+          <tr>
+            <td>Strava</td>
+            <td><code>~/.openclaw/secrets/strava-token.json</code></td>
+            <td>Nur referenzieren, nicht exportieren</td>
+          </tr>
+          <tr>
+            <td>Concord</td>
+            <td><code>~/.openclaw/secrets/concord-proxy.json</code></td>
+            <td>Weiter relevant, weil Concord aktiv genutzt wird</td>
+          </tr>
+          <tr>
+            <td>Google Calendar</td>
+            <td><code>~/.openclaw/secrets/google-calendar-token.json</code> + <code>...credentials.json</code></td>
+            <td>Relevant für Kalender-Workflows</td>
+          </tr>
+          <tr>
+            <td>Google Workspace privat</td>
+            <td><code>~/.config/gws/credentials.json</code></td>
+            <td>Weiter relevant</td>
+          </tr>
+          <tr>
+            <td>Google Workspace LUMA</td>
+            <td><code>~/.config/gws-luma/credentials.enc</code></td>
+            <td>Relevant für LUMA-Mailbox</td>
+          </tr>
+          <tr>
+            <td>GitHub</td>
+            <td><code>~/.git-credentials</code> + separater LUMA-Web-Token in Secrets</td>
+            <td>Für Repo-Deploys/Pushes wichtig</td>
+          </tr>
+          <tr>
+            <td>Mission Control</td>
+            <td><code>MC_PASSWORD</code> in <code>~/.openclaw/secrets.env</code></td>
+            <td>MC ist live und bleibt relevant</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="small">Fazit: Ja, ich kann ein sauberes Secret-Inventory als Referenzstruktur aufbauen, ohne irgendwas im Klartext zu exfiltrieren.</p>
+    </div>
+
+    <div class="card">
+      <h2>3) Aktive Projekte / Status — was wirklich rüber muss</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Projekt</th>
+            <th>Status laut OpenClaw</th>
+            <th>Übergaberelevanz</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>LUMA</strong></td>
+            <td>Hauptprojekt, GTM Phase 1 / Revenue Signal; 2 Pilotkunden; SSR noch nicht aktiv; Pricing & Pipeline dokumentiert</td>
+            <td><span class="pill green">Pflichtmigration</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mission Control</strong></td>
+            <td>Live, aktiv genutzt; Repo, URL, offene TODOs dokumentiert</td>
+            <td><span class="pill green">Pflichtmigration</span></td>
+          </tr>
+          <tr>
+            <td><strong>BPP Core CRM</strong></td>
+            <td>Aktiv, Phase 1 in Entwicklung</td>
+            <td><span class="pill amber">mitnehmen</span></td>
+          </tr>
+          <tr>
+            <td><strong>Concord</strong></td>
+            <td>Aktiv, persönliches Leadership OS</td>
+            <td><span class="pill green">mitnehmen</span></td>
+          </tr>
+          <tr>
+            <td><strong>HAMM Architekten</strong></td>
+            <td>Aktiv onboarded, tägliche Nutzung von LUMA</td>
+            <td><span class="pill green">mitnehmen</span></td>
+          </tr>
+          <tr>
+            <td><strong>Pre-Sales / Leads</strong></td>
+            <td>u. a. Georg Stenzel, Judith / Studio Pampa, info@pe-stab aktiv relevant</td>
+            <td><span class="pill green">mitnehmen</span></td>
+          </tr>
+          <tr>
+            <td><strong>Hatti2Go</strong></td>
+            <td>Idee / Konzept</td>
+            <td><span class="pill blue">Archivieren reicht</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>4) Versteckter Kontext / Regeln / Prompts — das eigentliche Gold</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Bereich</th>
+            <th>Was drinsteckt</th>
+            <th>Für Hermes relevant?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>SOUL.md</strong></td>
+            <td>Ton, Kürze, Anti-Sycophancy, Telegram-Stil, Challenge-Haltung</td>
+            <td><span class="pill green">weitgehend schon portiert</span></td>
+          </tr>
+          <tr>
+            <td><strong>USER.md</strong></td>
+            <td>Daniel-Kontext, Kommunikationspräferenzen, CLI-Anfänger, Email-Absender-Regel</td>
+            <td><span class="pill green">weitgehend schon portiert</span></td>
+          </tr>
+          <tr>
+            <td><strong>RULES.md</strong></td>
+            <td>Email-Policy, Telegram-Format, Coding-Workflow, MC-vs-Concord-Routing, Briefing-Vorgaben</td>
+            <td><span class="pill amber">selektiv portieren</span></td>
+          </tr>
+          <tr>
+            <td><strong>MEMORY.md</strong></td>
+            <td>LUMA-Status, Family-/Personal-Context, GTM-Fakten, Workflow-Präferenzen</td>
+            <td><span class="pill green">größtenteils schon portiert</span></td>
+          </tr>
+          <tr>
+            <td><strong>Tagesnotizen</strong></td>
+            <td>frische Signals: fehlernde Crons, aktives Sales-Monitoring, was erledigt ist und was nicht</td>
+            <td><span class="pill amber">nur das Dauerhafte extrahieren</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="small">Kurz: Nicht alles ist neu. Ein großer Teil des menschlichen Kontextes ist in Hermes schon angekommen. Die offene Lücke ist vor allem die operative Legacy-Schicht.</p>
+    </div>
+
+    <div class="card">
+      <h2>Was ich dir abnehmen kann</h2>
+      <ol>
+        <li>Legacy-Crons vollständig inventarisieren und in <strong>behalten / migrieren / abschalten</strong> einsortieren</li>
+        <li>Secret-/Credential-Referenzen in ein <strong>sicheres Übergabeinventar</strong> überführen</li>
+        <li>Projektstatus und operative OpenClaw-Fakten in Hermes konsolidieren</li>
+        <li>Offene OpenClaw-spezifische Regeln markieren, die Hermes noch explizit braucht</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h2>Mein Urteil</h2>
+      <p><strong>Ja — ich kann das weitgehend selber machen.</strong> Nicht, weil „die Migration magisch alles schon perfekt kopiert hat“, sondern weil der relevante OpenClaw-Kontext sauber in Dateien strukturiert vorliegt und ich ihn bereits lese und konsolidiere.</p>
+      <p><strong>Was noch fehlt, ist keine Erinnerungslücke, sondern Aufräumarbeit.</strong></p>
+    </div>
+  </div>
+</body>
+</html>
