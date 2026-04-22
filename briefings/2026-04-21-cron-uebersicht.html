@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang='de'>
+<head>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>Cron-Übersicht</title>
+<style>
+:root { --bg:#f7f7f3; --card:#ffffff; --text:#0f172a; --muted:#64748b; --border:#e2e8f0; --shadow:0 12px 40px rgba(15,23,42,.08); }
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}
+.container{max-width:1360px;margin:0 auto;padding:32px 20px 64px}
+.hero{background:linear-gradient(135deg,#ffffff,#eef6ff);border:1px solid var(--border);border-radius:28px;padding:28px;box-shadow:var(--shadow);margin-bottom:24px}
+.hero h1{margin:0 0 8px;font-size:34px;line-height:1.05} .sub{color:var(--muted);font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:22px}
+.stat{background:#fff;border:1px solid var(--border);border-radius:20px;padding:18px;box-shadow:var(--shadow)}
+.stat .k{font-size:13px;color:var(--muted);margin-bottom:8px} .stat .v{font-size:32px;font-weight:700}
+.section{margin-top:28px} .section h2{margin:0 0 10px;font-size:24px} .section p{margin:0 0 14px;color:var(--muted)}
+.job-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.job-card{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
+.job-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start} .job-head h3{margin:0 0 6px;font-size:18px;line-height:1.25} .meta{color:var(--muted);font-size:13px}
+.badge{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid;font-size:12px;font-weight:700;white-space:nowrap}
+.job-card p{margin:14px 0 10px;line-height:1.5} .last{color:var(--muted);font-size:13px}
+.callout{background:#fff7ed;border:1px solid #fed7aa;border-radius:20px;padding:18px 20px;margin-top:18px}
+.callout ul{margin:10px 0 0 18px;padding:0} .callout li{margin:8px 0}
+.footer{margin-top:30px;color:var(--muted);font-size:13px}
+@media (max-width:1000px){.grid,.job-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:680px){.grid,.job-grid{grid-template-columns:1fr} .hero h1{font-size:28px}}
+</style>
+</head>
+<body>
+<div class='container'>
+  <section class='hero'>
+    <h1>OpenClaw Cron-Übersicht</h1>
+    <div class='sub'>Stand: 21.04.2026, live aus dem Cron-State gezogen. Fokus: welche Jobs existieren, was läuft aktiv, was ist pausiert und wo es gerade knirscht.</div>
+    <div class='grid'>
+      <div class='stat'><div class='k'>Gesamt</div><div class='v'>50</div></div>
+      <div class='stat'><div class='k'>Aktiv</div><div class='v'>25</div></div>
+      <div class='stat'><div class='k'>Pausiert</div><div class='v'>25</div></div>
+      <div class='stat'><div class='k'>Aktive Problemfälle</div><div class='v'>6</div></div>
+    </div>
+    <div class='callout'>
+      <strong>Auffällig gerade:</strong>
+      <ul>
+        <li><strong>Daily Cron Health Check</strong> hängt mit 7 Fehlern in Folge auf Timeouts.</li>
+        <li><strong>healthcheck:security-audit</strong> timed out zwei Mal in Folge.</li>
+        <li><strong>📰 Oberursel Wochenbrief</strong> referenziert noch das tote Haiku-Modell.</li>
+        <li><strong>🔄 OpenClaw Update Check</strong> hatte zuletzt zwei Timeouts hintereinander.</li>
+        <li><strong>Weekly Token Health Check</strong> und <strong>Commute-Wetter</strong> haben frische Einzelhänger, aber noch nicht dauerhaft rot.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class='section'>
+    <h2>Aktive Cronjobs (25)</h2>
+    <p>Enabled und aktuell im Spiel. Hier siehst du pro Job den knappen Zustand aus dem letzten bekannten State.</p>
+    <div class='job-grid'>
+      
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>LUMA Inbox Monitor 09:00</h3>
+          <div class='meta'>ID 1b3e47a9 · täglich 09:00</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv. Letzter Lauf ok, liefert in den Sales-Topic.</p>
+      <div class='last'>ok · 280s · delivered</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>🔒 Hourly Security Monitor</h3>
+          <div class='meta'>ID 5a005c32 · stündlich</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv und stabil. Letzter Lauf ok.</p>
+      <div class='last'>ok · 44s</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>📰 Oberursel Wochenbrief</h3>
+          <div class='meta'>ID 9272d257 · Mi 10:00</div>
+        </div>
+        <span class='badge' style='background:#b91c1c1A;color:#b91c1c;border-color:#b91c1c33'>Fehler</span>
+      </div>
+      <p>Kaputt. Letzter Fehler: altes Haiku-Modell 404 plus Gemini overloaded.</p>
+      <div class='last'>error · 96s</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>🔔 Reminder: Drooms Q1 Outcomes nachtragen</h3>
+          <div class='meta'>ID aea8a562 · täglich 10:00</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv. System-Reminder läuft sauber.</p>
+      <div class='last'>ok · 0s</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>🧭 Selbstständigkeit Leitplanken</h3>
+          <div class='meta'>ID d110b17f · täglich 12:00</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv. Letzter Lauf ok, Delivery zuletzt nicht zugestellt.</p>
+      <div class='last'>ok · 56s · not-delivered</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>🚴 Post-Ride Report Check</h3>
+          <div class='meta'>ID f71d846f · täglich 07/12/17/20</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv und ok.</p>
+      <div class='last'>ok · 18s</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>LUMA Inbox Monitor 13:00</h3>
+          <div class='meta'>ID c8da7830 · täglich 13:00</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv. Letzter Lauf ok, Delivery im Sales-Topic.</p>
+      <div class='last'>ok · 158s · delivered</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>LUMA Inbox Monitor 17:30</h3>
+          <div class='meta'>ID 5fe6398e · täglich 17:30</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv. Letzter Lauf ok, Delivery im Sales-Topic.</p>
+      <div class='last'>ok · 154s · delivered</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>📅 Kalender-Briefing morgen</h3>
+          <div class='meta'>ID 318313b0 · täglich 20:00</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv. Letzter Lauf ok, erzeugt Abend-Briefing.</p>
+      <div class='last'>ok · 76s</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>🔄 OpenClaw Update Check</h3>
+          <div class='meta'>ID b1cf361f · täglich 20:00</div>
+        </div>
+        <span class='badge' style='background:#b91c1c1A;color:#b91c1c;border-color:#b91c1c33'>Fehler</span>
+      </div>
+      <p>Wackelt. Letzte zwei Läufe Timeout.</p>
+      <div class='last'>error · 60s timeout</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Daily Cron Health Check</h3>
+          <div class='meta'>ID 3f324667 · täglich 21:00</div>
+        </div>
+        <span class='badge' style='background:#b91c1c1A;color:#b91c1c;border-color:#b91c1c33'>Fehler</span>
+      </div>
+      <p>Klar kaputt. 7 Fehler in Folge, zuletzt Timeout.</p>
+      <div class='last'>error · 120s timeout · consecutiveErrors=7</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>📝 Daily Log schreiben</h3>
+          <div class='meta'>ID b02d53ec · täglich 21:30</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv. Letzter Lauf ok.</p>
+      <div class='last'>ok · 84s</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Memory Dreaming Promotion</h3>
+          <div class='meta'>ID 617edc6f · täglich 03:00</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv. Läuft sauber durch.</p>
+      <div class='last'>ok · 75s</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Commute-Wetter Mo-Fr</h3>
+          <div class='meta'>ID 5c61438e · Mo–Fr 06:30</div>
+        </div>
+        <span class='badge' style='background:#b91c1c1A;color:#b91c1c;border-color:#b91c1c33'>Fehler</span>
+      </div>
+      <p>Frischer Einzelhänger. Letzter Lauf: agent couldn&#x27;t generate a response.</p>
+      <div class='last'>error · 39s</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>☀️ Dashboard Morning Update</h3>
+          <div class='meta'>ID 60a5d141 · Mo–Fr 08:05</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv und ok.</p>
+      <div class='last'>ok · 48s</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>LUMA Weekly Usage Report</h3>
+          <div class='meta'>ID e1e58836 · Fr 09:00</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv. Letzter Wochenlauf ok.</p>
+      <div class='last'>ok · 128s · delivered</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>📊 Weekly GTM Pulse</h3>
+          <div class='meta'>ID 74f33995 · Fr 18:00</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv. Letzter Wochenlauf ok.</p>
+      <div class='last'>ok · 61s</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Freitag 20:00 Schlaf-CSV Reminder</h3>
+          <div class='meta'>ID a86ae5ec · Fr 20:00</div>
+        </div>
+        <span class='badge' style='background:#b453091A;color:#b45309;border-color:#b4530933'>Wartend</span>
+      </div>
+      <p>Aktiv. Noch kein Lauf seit Anlage sichtbar.</p>
+      <div class='last'>noch nicht gelaufen</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>📚 Arion Nachhilfe-Reminder</h3>
+          <div class='meta'>ID 66322d34 · So 18:00</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv. Letzter Lauf ok.</p>
+      <div class='last'>ok · 153s</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>🚴 Wöchentlicher Trainingsreport</h3>
+          <div class='meta'>ID cbd8cd24 · So 20:00</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv. Letzter Lauf ok.</p>
+      <div class='last'>ok · 71s</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>💳 Krankenkassenkarte beim Arzt vorzeigen</h3>
+          <div class='meta'>ID 851ff42b · Mo 09:00</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv. Reminder lief sauber.</p>
+      <div class='last'>ok · 158s</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Weekly Token Health Check</h3>
+          <div class='meta'>ID 283ffcf6 · Mo 09:30</div>
+        </div>
+        <span class='badge' style='background:#b91c1c1A;color:#b91c1c;border-color:#b91c1c33'>Fehler</span>
+      </div>
+      <p>Wackelt. Letzter Lauf Timeout, aber erst 1 Fehler in Folge.</p>
+      <div class='last'>error · 120s timeout</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>healthcheck:security-audit</h3>
+          <div class='meta'>ID f25bbf12 · Mo 10:00</div>
+        </div>
+        <span class='badge' style='background:#b91c1c1A;color:#b91c1c;border-color:#b91c1c33'>Fehler</span>
+      </div>
+      <p>Kaputt. Zwei Timeouts in Folge, Audit läuft nicht sauber durch.</p>
+      <div class='last'>error · 180s timeout · consecutiveErrors=2</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>StaVV Protokoll Monitor — Oberursel</h3>
+          <div class='meta'>ID 4f7b75bd · Di 10:00</div>
+        </div>
+        <span class='badge' style='background:#15803d1A;color:#15803d;border-color:#15803d33'>OK</span>
+      </div>
+      <p>Aktiv. Letzter Lauf ok.</p>
+      <div class='last'>ok · 198s</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Quarterly Check: Company Prediction</h3>
+          <div class='meta'>ID 9d72c85a · quartalsweise</div>
+        </div>
+        <span class='badge' style='background:#b453091A;color:#b45309;border-color:#b4530933'>Wartend</span>
+      </div>
+      <p>Aktiv. Nächster Lauf erst am 01.05., noch kein aktueller State-Run.</p>
+      <div class='last'>wartet auf nächsten Termin</div>
+    </div>
+    
+    </div>
+  </section>
+
+  <section class='section'>
+    <h2>Pausierte Cronjobs (25)</h2>
+    <p>Disabled oder alte One-Shots. Die laufen aktuell nicht mehr, tauchen aber noch in der Config auf.</p>
+    <div class='job-grid'>
+      
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>X/Twitter AI Digest (Grok API)</h3>
+          <div class='meta'>ID 03807bb3 · täglich 12:00</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert. Letzter bekannter Lauf war ok.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>kim-meeting-briefing-now</h3>
+          <div class='meta'>ID 1376d625 · one-shot</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert/deaktiviert. Historischer One-shot mit Delivery-Fehler.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>🔍 ModulAI Health Monitor</h3>
+          <div class='meta'>ID 30a0f0d2 · alle 30 Min</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert. Letzter Lauf ok.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>architekt-kim-phasen</h3>
+          <div class='meta'>ID 36eb8976 · one-shot</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert/deaktiviert. Historischer Reminder.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Morning Briefing: Tagesschau</h3>
+          <div class='meta'>ID 4cf6199f · täglich 06:32</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert. Letzter Lauf ok.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>perplexity-api-reminder</h3>
+          <div class='meta'>ID 5d54959d · one-shot</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert/deaktiviert. Historischer Reminder.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>kim-follow-up-gmail</h3>
+          <div class='meta'>ID 5e3cde9a · one-shot</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert/deaktiviert. Historischer Reminder.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Support Dashboard Data Collection</h3>
+          <div class='meta'>ID 5feef779 · täglich 23:00</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert. Letzter Lauf ok.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Gmail Briefing - 18:00</h3>
+          <div class='meta'>ID 719d1b9d · täglich 18:00</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert. Historisch zuletzt ok.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>📈 Tagesschau Marktbericht</h3>
+          <div class='meta'>ID 7b12a558 · Mo–Fr 08:00</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert. Letzter Lauf ok.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Morning Briefing: Alles auf Aktien</h3>
+          <div class='meta'>ID 7fd8c3f8 · Mo–Fr 06:20</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert. Letzter Lauf ok.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>📋 Discovery Playbook Review</h3>
+          <div class='meta'>ID 82e52e30 · täglich 15:00</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert. Letzter Lauf ok.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Multi-Tenant Setup Reminder</h3>
+          <div class='meta'>ID 85cd4881 · täglich 18:00</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert. Letzter Lauf ok.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Reminder: Cora Koch (Julian)</h3>
+          <div class='meta'>ID 8d734b2c · one-shot</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert/deaktiviert. Historischer Reminder.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>kim-meeting-test-briefing</h3>
+          <div class='meta'>ID 8dd8de3d · one-shot</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert/deaktiviert. Historischer Reminder.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Reminder: Cora Koch (Julian) #2</h3>
+          <div class='meta'>ID a2a7880f · one-shot</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert/deaktiviert. Historischer Reminder.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Morning Briefing: Eintracht Frankfurt</h3>
+          <div class='meta'>ID a8c55095 · täglich 06:35</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert. Letzter Lauf ok.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>pruning-check-7-final</h3>
+          <div class='meta'>ID b586ae64 · one-shot</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert/deaktiviert. Historischer Test-Reminder.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>pruning-check-6</h3>
+          <div class='meta'>ID b8c4d61a · one-shot</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert/deaktiviert. Historischer Test-Reminder.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>pruning-check-5</h3>
+          <div class='meta'>ID c9dc25c9 · one-shot</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert/deaktiviert. Historischer Test-Reminder.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>🚨 Tagesschau Eilmeldungen</h3>
+          <div class='meta'>ID d329d840 · alle 30 Min 06–23</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert. Historisch letzter Lauf Timeout.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>📅 Kalender-Änderungen Check</h3>
+          <div class='meta'>ID dc5c0263 · 09/12/15/18</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert. Letzter Lauf ok.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Hessen Wahlergebnis Briefing</h3>
+          <div class='meta'>ID e0fed315 · one-shot</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert/deaktiviert. Historischer Briefing-Job.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Gmail Briefing - 12:00</h3>
+          <div class='meta'>ID e5fd4eba · täglich 12:02</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert. Historisch kaputt wegen altem Haiku-Modell 404.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    <div class='job-card'>
+      <div class='job-head'>
+        <div>
+          <h3>Gmail Briefing - 07:00</h3>
+          <div class='meta'>ID f474ddf0 · täglich 07:00</div>
+        </div>
+        <span class='badge' style='background:#4755691A;color:#475569;border-color:#47556933'>Pausiert</span>
+      </div>
+      <p>Pausiert. Historisch zuletzt ok.</p>
+      <div class='last'>paused</div>
+    </div>
+    
+    </div>
+  </section>
+
+  <div class='footer'>Datei erzeugt für Daniel · Quelle: aktueller <code>cron list --includeDisabled</code>-State aus OpenClaw.</div>
+</div>
+</body>
+</html>
