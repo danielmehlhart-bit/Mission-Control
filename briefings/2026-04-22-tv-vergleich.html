@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TV Vergleich — TCL C7K vs LG QNED70 vs Philips PUS9000</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #f7f8fa; color: #1a1b22; line-height: 1.6; padding: 32px 16px; }
+    .container { max-width: 960px; margin: 0 auto; }
+
+    /* Header */
+    .header { margin-bottom: 36px; }
+    .header h1 { font-size: 28px; font-weight: 700; color: #1a1b22; margin-bottom: 6px; }
+    .header p { color: #64748b; font-size: 14px; }
+    .badge { display: inline-block; background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; border-radius: 6px; padding: 2px 10px; font-size: 12px; font-weight: 600; margin-left: 8px; }
+    .badge-warn { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
+
+    /* Winner Banner */
+    .winner-banner { background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); color: white; border-radius: 12px; padding: 20px 24px; margin-bottom: 28px; display: flex; align-items: center; gap: 16px; }
+    .winner-banner .trophy { font-size: 36px; }
+    .winner-banner h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .winner-banner p { font-size: 14px; opacity: 0.9; }
+
+    /* Cards */
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 36px; }
+    .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04); overflow: hidden; }
+    .card-header { padding: 20px 20px 16px; border-bottom: 1px solid #f1f5f9; }
+    .card-header .brand { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 4px; }
+    .card-header h3 { font-size: 18px; font-weight: 700; color: #1a1b22; margin-bottom: 6px; }
+    .card-header .price { font-size: 26px; font-weight: 800; color: #7c3aed; }
+    .card-header .price span { font-size: 14px; font-weight: 400; color: #94a3b8; }
+    .card-header .tech-badge { display: inline-block; background: #ede9fe; color: #6d28d9; border-radius: 6px; padding: 2px 10px; font-size: 12px; font-weight: 600; margin-top: 8px; }
+    .card-header .tech-badge.green { background: #f0fdf4; color: #16a34a; }
+    .card-header .tech-badge.gray { background: #f1f5f9; color: #64748b; }
+
+    .card-body { padding: 16px 20px; }
+    .spec-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid #f8fafc; }
+    .spec-row:last-child { border-bottom: none; }
+    .spec-label { font-size: 13px; color: #64748b; font-weight: 500; }
+    .spec-value { font-size: 13px; font-weight: 600; color: #1a1b22; text-align: right; max-width: 55%; }
+    .spec-value.green { color: #16a34a; }
+    .spec-value.red { color: #dc2626; }
+    .spec-value.amber { color: #d97706; }
+
+    .card-footer { padding: 14px 20px; background: #fafbfc; border-top: 1px solid #f1f5f9; }
+    .verdict { font-size: 13px; color: #475569; line-height: 1.5; }
+    .verdict strong { color: #1a1b22; }
+
+    /* Big comparison table */
+    .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #1a1b22; }
+    .table-wrap { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); overflow: hidden; margin-bottom: 36px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 600px; }
+    thead th { padding: 14px 16px; text-align: left; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; background: #fafbfc; border-bottom: 2px solid #f1f5f9; }
+    thead th:first-child { width: 160px; }
+    tbody td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid #f8fafc; vertical-align: top; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: #fafbff; }
+    td.label { font-weight: 600; color: #64748b; font-size: 12px; }
+    td.winner-col { background: #faf5ff; }
+    .dot-green::before { content: '✅ '; }
+    .dot-red::before { content: '❌ '; }
+    .dot-amber::before { content: '⚠️ '; }
+
+    /* Context box */
+    .context-box { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 10px; padding: 16px 20px; margin-bottom: 28px; }
+    .context-box h4 { font-size: 14px; font-weight: 700; color: #c2410c; margin-bottom: 8px; }
+    .context-box ul { font-size: 13px; color: #9a3412; padding-left: 18px; }
+    .context-box ul li { margin-bottom: 4px; }
+
+    /* Recommendation */
+    .rec-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 20px 24px; margin-bottom: 28px; }
+    .rec-box h4 { font-size: 16px; font-weight: 700; color: #15803d; margin-bottom: 10px; }
+    .rec-box p { font-size: 14px; color: #166534; line-height: 1.6; }
+
+    .footer-note { font-size: 12px; color: #94a3b8; margin-top: 28px; text-align: center; }
+
+    @media (max-width: 600px) {
+      .winner-banner { flex-direction: column; text-align: center; }
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <h1>📺 TV Kaufberatung — 50 Zoll bis 700€</h1>
+      <p>Erstellt am 22. April 2026 · Helles Wohnzimmer · Sport / Fußball · Budget max. 700€</p>
+    </div>
+
+    <!-- Context -->
+    <div class="context-box">
+      <h4>🎯 Daniels Anforderungen</h4>
+      <ul>
+        <li>Helles Wohnzimmer → hohe Helligkeit entscheidend</li>
+        <li>Sport / Fußball → Motion Handling, schnelle Reaktionszeit</li>
+        <li>Gute Farben, lebendiges Bild</li>
+        <li>50 Zoll · Budget max. 700 €</li>
+      </ul>
+    </div>
+
+    <!-- Winner -->
+    <div class="winner-banner">
+      <div class="trophy">🏆</div>
+      <div>
+        <h2>Empfehlung: TCL 50C7K — 549 €</h2>
+        <p>Mini LED mit 2.200 nits HDR, 144Hz nativ, 3ms Input Lag — der einzige der drei, der wirklich für ein helles Wohnzimmer und Sport gebaut ist.</p>
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="cards">
+
+      <!-- TCL C7K -->
+      <div class="card">
+        <div class="card-header">
+          <div class="brand">TCL</div>
+          <h3>50C7K</h3>
+          <div class="price">549 € <span>ab idealo</span></div>
+          <div class="tech-badge">Mini LED QLED</div>
+        </div>
+        <div class="card-body">
+          <div class="spec-row">
+            <span class="spec-label">Panel</span>
+            <span class="spec-value">VA + Mini LED</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Helligkeit SDR</span>
+            <span class="spec-value green">438 nits</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Helligkeit HDR (Peak)</span>
+            <span class="spec-value green">2.200 nits 🔥</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Local Dimming</span>
+            <span class="spec-value green">✅ ~192 Zonen</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Bildwiederholrate</span>
+            <span class="spec-value green">144 Hz nativ</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Motion / Sport</span>
+            <span class="spec-value green">⚡ Sehr gut</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Input Lag</span>
+            <span class="spec-value green">3 ms @ 144Hz</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">HDR-Formate</span>
+            <span class="spec-value">HDR10 / HDR10+ / DV / HLG</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Smart TV</span>
+            <span class="spec-value">Google TV</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">HDMI</span>
+            <span class="spec-value">4× HDMI 2.1</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="verdict"><strong>Für Fußball im hellen WZ:</strong> Klare Nr. 1. Mini LED schlägt normale LED in jedem relevanten Punkt. Einziger Nachteil: Blickwinkel (typisch für VA) und leichtes Blooming bei sehr dunklen Szenen.</div>
+        </div>
+      </div>
+
+      <!-- LG QNED70 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="brand">LG</div>
+          <h3>50QNED70A6A</h3>
+          <div class="price">419 € <span>ab idealo</span></div>
+          <div class="tech-badge gray">QNED (VA)</div>
+        </div>
+        <div class="card-body">
+          <div class="spec-row">
+            <span class="spec-label">Panel</span>
+            <span class="spec-value">VA + QNED</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Helligkeit SDR</span>
+            <span class="spec-value amber">346–395 nits</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Helligkeit HDR (Peak)</span>
+            <span class="spec-value amber">551 nits</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Local Dimming</span>
+            <span class="spec-value red">❌ Keins</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Bildwiederholrate</span>
+            <span class="spec-value amber">60 Hz nativ (VRR 120Hz)</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Motion / Sport</span>
+            <span class="spec-value amber">⚠️ Mittel</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Input Lag</span>
+            <span class="spec-value amber">9,6 ms @ 120Hz</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">HDR-Formate</span>
+            <span class="spec-value">HDR10 / DV / HLG</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Smart TV</span>
+            <span class="spec-value">webOS 24</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">HDMI</span>
+            <span class="spec-value">HDMI 2.0 (kein 2.1)</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="verdict"><strong>Günstigster Einstieg.</strong> webOS ist das beste Smart-TV-OS. Aber: 551 nits HDR in einem hellen Wohnzimmer reichen kaum — HDR-Inhalte wirken flau. Kein local Dimming, nur 60 Hz nativ. Für Sport nur befriedigend.</div>
+        </div>
+      </div>
+
+      <!-- Philips PUS9000 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="brand">Philips</div>
+          <h3>50PUS9000</h3>
+          <div class="price">379–599 € <span>idealo / MM</span></div>
+          <div class="tech-badge gray">QLED VA · Ambilight</div>
+        </div>
+        <div class="card-body">
+          <div class="spec-row">
+            <span class="spec-label">Panel</span>
+            <span class="spec-value">VA (QLED-Backlight)</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Helligkeit SDR</span>
+            <span class="spec-value amber">393–429 nits</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Helligkeit HDR (Peak)</span>
+            <span class="spec-value amber">583 nits</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Local Dimming</span>
+            <span class="spec-value red">❌ Keins</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Bildwiederholrate</span>
+            <span class="spec-value amber">60 Hz nativ (VRR 120Hz)</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Motion / Sport</span>
+            <span class="spec-value amber">⚠️ Mäßig</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Input Lag</span>
+            <span class="spec-value red">14,7 ms @ 120Hz</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">HDR-Formate</span>
+            <span class="spec-value">HDR10 / DV / HLG</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Smart TV</span>
+            <span class="spec-value">Google TV (Titan OS) + <strong>Ambilight</strong></span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">HDMI</span>
+            <span class="spec-value">2× 2.0 + 1× 2.1 (eARC)</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="verdict"><strong>Ambilight ist das Alleinstellungsmerkmal.</strong> Für Film-Abende ein tolles Feature. Aber für Sport + helles WZ: höchster Input Lag der drei, nur 60 Hz nativ, kein Local Dimming. Im Media Markt für 599€ deutlich überteuert — online ab 379€ verfügbar.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Big table -->
+    <div class="section-title">📊 Direktvergleich</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Eigenschaft</th>
+            <th style="color:#7c3aed;">TCL 50C7K 🏆</th>
+            <th>LG 50QNED70A6A</th>
+            <th>Philips 50PUS9000</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">Preis (idealo)</td>
+            <td class="winner-col">ab 549 €</td>
+            <td>ab 419 €</td>
+            <td>ab 379 € (MM: 599 €)</td>
+          </tr>
+          <tr>
+            <td class="label">Panel-Typ</td>
+            <td class="winner-col"><strong>VA Mini LED QLED</strong></td>
+            <td>VA QNED</td>
+            <td>VA QLED-Backlight</td>
+          </tr>
+          <tr>
+            <td class="label">HDR-Helligkeit</td>
+            <td class="winner-col dot-green"><strong>2.200 nits</strong></td>
+            <td class="dot-amber">551 nits</td>
+            <td class="dot-amber">583 nits</td>
+          </tr>
+          <tr>
+            <td class="label">Local Dimming</td>
+            <td class="winner-col dot-green">Ja (~192 Zonen)</td>
+            <td class="dot-red">Nein</td>
+            <td class="dot-red">Nein</td>
+          </tr>
+          <tr>
+            <td class="label">Bildwiederholrate</td>
+            <td class="winner-col"><strong>144 Hz nativ</strong></td>
+            <td>60 Hz (VRR 120Hz)</td>
+            <td>60 Hz (VRR 120Hz)</td>
+          </tr>
+          <tr>
+            <td class="label">Motion / Sport</td>
+            <td class="winner-col dot-green"><strong>Sehr gut</strong></td>
+            <td class="dot-amber">Mittel</td>
+            <td class="dot-amber">Mäßig</td>
+          </tr>
+          <tr>
+            <td class="label">Input Lag</td>
+            <td class="winner-col"><strong>3 ms @ 144Hz</strong></td>
+            <td>9,6 ms @ 120Hz</td>
+            <td>14,7 ms @ 120Hz</td>
+          </tr>
+          <tr>
+            <td class="label">Farbdarstellung</td>
+            <td class="winner-col">Wide Gamut (QLED)</td>
+            <td>Wide Gamut (QNED)</td>
+            <td>Gut (QLED-Backlight)</td>
+          </tr>
+          <tr>
+            <td class="label">Smart TV OS</td>
+            <td class="winner-col">Google TV</td>
+            <td><strong>webOS 24</strong> (bestes OS)</td>
+            <td>Google TV + Ambilight</td>
+          </tr>
+          <tr>
+            <td class="label">HDMI</td>
+            <td class="winner-col"><strong>4× HDMI 2.1</strong></td>
+            <td>4× HDMI 2.0</td>
+            <td>2× 2.0 + 1× 2.1</td>
+          </tr>
+          <tr>
+            <td class="label">rtings.com Score</td>
+            <td class="winner-col"><strong>8.0 / 8.3 Motion</strong></td>
+            <td>6.6 / 6.0 Motion</td>
+            <td>6.7 / 6.2 Motion</td>
+          </tr>
+          <tr>
+            <td class="label">Helles WZ</td>
+            <td class="winner-col dot-green"><strong>Sehr geeignet</strong></td>
+            <td class="dot-red">Nicht ideal</td>
+            <td class="dot-amber">Bedingt geeignet</td>
+          </tr>
+          <tr>
+            <td class="label">Sport / Fußball</td>
+            <td class="winner-col dot-green"><strong>Sehr geeignet</strong></td>
+            <td class="dot-amber">Bedingt geeignet</td>
+            <td class="dot-amber">Bedingt geeignet</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Final Recommendation -->
+    <div class="rec-box">
+      <h4>✅ Empfehlung</h4>
+      <p>
+        <strong>Kauf den TCL 50C7K für ~549 €.</strong> Er ist der einzige der drei, der mit <strong>Mini LED, 2.200 nits HDR und 144Hz nativ</strong> wirklich für dein helles Wohnzimmer und für Fußball gebaut ist.
+        <br><br>
+        Der <strong>Preis-Unterschied zum LG (130 €) ist es absolut wert</strong> — du bekommst dafür eine völlig andere Bildqualitäts-Liga. Den Philips im Media Markt für 599€ zu kaufen wäre sogar teurer als der TCL und bietet deutlich weniger Leistung.
+        <br><br>
+        <strong>Einziger Vorbehalt:</strong> VA-Panel = eingeschränkte Blickwinkel. Wenn ihr zu mehreren schräg sitzt, kann das Bild an den Seiten auswaschen. Falls das kritisch ist, wäre ein Sony Bravia 7 (Mini LED, IPS-ähnlich) interessant — kostet aber mehr.
+      </p>
+    </div>
+
+    <div class="footer-note">Datenquellen: rtings.com (Reviews 2024/2025) · idealo.de / Geizhals.de (Preise April 2025) · Bildpreise können variieren.</div>
+
+  </div>
+</body>
+</html>
