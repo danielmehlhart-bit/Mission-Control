@@ -138,14 +138,20 @@
     }
 
     .brand-luma {
-      font-size: clamp(54px, 8vw, 120px);
-      font-weight: 900;
-      letter-spacing: -0.08em;
-      color: #141720;
-      line-height: .88;
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(139, 92, 246, 0.12);
+      border-radius: 24px;
+      padding: 12px 18px;
+      box-shadow: 0 12px 32px rgba(35, 31, 54, 0.08);
     }
 
-    .brand-luma span { color: var(--purple-4); }
+    .brand-luma img {
+      display: block;
+      width: clamp(180px, 28vw, 360px);
+      height: auto;
+    }
 
     .hero-side {
       display: grid;
