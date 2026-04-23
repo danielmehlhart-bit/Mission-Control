@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HAMM Architekten × LUMA · Review Draft</title>
+  <style>
+    :root {
+      --bg: #f6f4ef;
+      --bg-soft: #fbfaf7;
+      --surface: #ffffff;
+      --text: #17202b;
+      --muted: #6f8092;
+      --border: #eadffd;
+      --purple-1: #f0e9ff;
+      --purple-2: #ded0ff;
+      --purple-3: #c7adff;
+      --purple-4: #8b5cf6;
+      --purple-5: #5b21b6;
+      --red: #dc2626;
+      --amber: #d97706;
+      --green: #16a34a;
+      --blue: #2563eb;
+      --shadow: 0 16px 50px rgba(35, 31, 54, 0.08);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --content: 1200px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin:0; font-family: Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--text); background:var(--bg); line-height:1.4; }
+    a { color:inherit; text-decoration:none; }
+    .rail { position:fixed; right:22px; top:50%; transform:translateY(-50%); z-index:50; display:flex; flex-direction:column; gap:10px; }
+    .rail a { width:12px; height:12px; border-radius:999px; background:rgba(91,33,182,.16); border:1px solid rgba(91,33,182,.2); transition:all .2s ease; }
+    .rail a:hover { background:var(--purple-4); transform:scale(1.15); }
+    .section { min-height:100vh; display:flex; align-items:center; padding:64px 28px; }
+    .wrap { width:min(100%, var(--content)); margin:0 auto; }
+    .eyebrow { display:inline-flex; align-items:center; gap:10px; padding:10px 16px; border-radius:999px; background:rgba(139,92,246,.08); border:1px solid rgba(139,92,246,.14); color:var(--purple-5); font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    h1,h2,h3,p { margin:0; }
+    .hero { background:linear-gradient(180deg,#fcfbf8 0%,#f6f4ef 100%); }
+    .hero-grid { display:grid; grid-template-columns:1.15fr .85fr; gap:42px; align-items:end; }
+    .hero-copy h1 { margin-top:26px; font-size:clamp(42px,6vw,78px); line-height:.98; letter-spacing:-.04em; }
+    .hero-copy p { margin-top:20px; max-width:720px; font-size:clamp(18px,2.2vw,24px); color:var(--muted); line-height:1.45; }
+    .brand-lockup { margin-top:44px; display:flex; align-items:end; gap:32px; flex-wrap:wrap; }
+    .brand-client { font-size:clamp(24px,3.2vw,40px); line-height:1.08; font-weight:300; letter-spacing:.04em; text-transform:uppercase; color:#2d3640; }
+    .brand-divider { font-size:28px; color:var(--muted); margin-bottom:6px; }
+    .brand-luma { display:inline-flex; align-items:center; background:rgba(255,255,255,.92); border:1px solid rgba(139,92,246,.12); border-radius:24px; padding:12px 18px; box-shadow:0 12px 32px rgba(35,31,54,.08); }
+    .brand-luma img { display:block; width:clamp(180px,28vw,360px); height:auto; }
+    .hero-side { display:grid; gap:16px; }
+    .meta-card, .note-card { background:var(--surface); border:1px solid rgba(139,92,246,.12); border-radius:24px; padding:22px; box-shadow:var(--shadow); }
+    .meta-card h3, .note-card h3 { font-size:14px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:12px; }
+    .meta-list { display:grid; gap:10px; font-size:18px; }
+    .meta-row { display:grid; grid-template-columns:120px 1fr; gap:12px; }
+    .meta-label { color:var(--muted); }
+    .hero-note { color:var(--muted); font-size:16px; line-height:1.5; padding-left:18px; border-left:4px solid var(--border); }
+    .section-head { margin-bottom:34px; }
+    .section-head h2 { margin-top:12px; font-size:clamp(32px,4.5vw,62px); letter-spacing:-.04em; line-height:1.02; }
+    .section-head p { margin-top:14px; max-width:860px; color:var(--muted); font-size:clamp(17px,2vw,22px); line-height:1.5; }
+    .stats-shell, .feedback-shell { background:var(--surface); border-radius:32px; padding:28px; box-shadow:var(--shadow); border:1px solid rgba(139,92,246,.12); }
+    .stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:28px; }
+    .stat-card { padding:22px; border-radius:24px; background:linear-gradient(180deg,#faf7ff 0%,#ffffff 100%); border:1px solid #eee6fb; }
+    .stat-card .num { font-size:clamp(38px,5vw,58px); font-weight:800; letter-spacing:-.05em; color:var(--purple-5); }
+    .stat-card .label { margin-top:8px; font-weight:700; font-size:16px; }
+    .stat-card .desc { margin-top:6px; font-size:14px; color:var(--muted); line-height:1.45; }
+    .bars { display:grid; gap:14px; }
+    .bar-row { display:grid; grid-template-columns:minmax(200px,280px) 1fr 56px; gap:16px; align-items:center; }
+    .bar-label { font-size:16px; font-weight:700; }
+    .bar-track { position:relative; height:22px; background:#efeaf7; border-radius:999px; overflow:hidden; }
+    .bar-fill { position:absolute; inset:0 auto 0 0; border-radius:999px; background:linear-gradient(90deg,#5b21b6 0%,#7c3aed 45%,#a78bfa 100%); }
+    .bar-value { font-size:15px; font-weight:800; color:var(--purple-5); text-align:right; }
+    .insight { margin-top:24px; font-size:clamp(18px,2vw,24px); font-style:italic; color:var(--muted); }
+    .questions-list { display:grid; gap:18px; }
+    .question-card { display:grid; grid-template-columns:104px 1fr; align-items:stretch; background:rgba(255,255,255,.75); border-radius:28px; border:2px solid var(--border); overflow:hidden; box-shadow:0 10px 30px rgba(40,34,71,.04); min-height:126px; }
+    .question-index { display:flex; align-items:center; justify-content:center; font-size:36px; font-weight:800; color:#141720; }
+    .question-text { display:flex; align-items:center; padding:24px 28px; font-size:clamp(22px,2.8vw,34px); font-weight:700; line-height:1.2; }
+    .tone-1 { border-color:#ece3fd; } .tone-1 .question-index { background:var(--purple-1); }
+    .tone-2 { border-color:#dfd0fb; } .tone-2 .question-index { background:var(--purple-2); }
+    .tone-3 { border-color:#cdb7fa; } .tone-3 .question-index { background:var(--purple-3); }
+    .tone-4 { border-color:#9f72f1; } .tone-4 .question-index { background:var(--purple-4); color:white; }
+    .tone-5 { border-color:#e7e8ec; } .tone-5 .question-index { background:#eff1f4; }
+    .experiments-grid { display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-bottom:28px; }
+    .experiment-card { background:var(--surface); border:2px solid var(--border); border-radius:28px; padding:26px; min-height:186px; box-shadow:var(--shadow); }
+    .experiment-card .kicker { color:var(--muted); font-size:13px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    .experiment-card h3 { margin-top:10px; font-size:clamp(24px,3vw,38px); line-height:1.1; letter-spacing:-.03em; }
+    .experiment-card p { margin-top:12px; font-size:16px; color:var(--muted); line-height:1.55; }
+    .success-box { display:grid; grid-template-columns:6px 1fr; gap:18px; align-items:start; max-width:720px; }
+    .success-box .line { height:112px; border-radius:999px; background:var(--border); }
+    .success-box h3 { font-size:clamp(22px,2.5vw,32px); line-height:1.15; }
+    .success-box p { margin-top:10px; font-size:18px; color:var(--muted); }
+    .feedback-grid { display:grid; grid-template-columns:1.2fr .8fr; gap:22px; margin-top:22px; }
+    .feedback-col { display:grid; gap:12px; }
+    .feedback-col h3 { font-size:14px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:2px; }
+    .fb-item { background:#fff; border-radius:18px; padding:16px 18px; box-shadow:0 1px 4px rgba(0,0,0,.04); border-left:4px solid #ddd; }
+    .fb-item .fb-meta { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; }
+    .fb-item .fb-text { font-size:16px; line-height:1.5; }
+    .fb-item .fb-response { margin-top:8px; font-size:14px; color:var(--muted); }
+    .fb-item.email { border-left-color: var(--purple-4); background:linear-gradient(180deg,#faf7ff 0%,#fff 100%); }
+    .fb-item.open { border-left-color: var(--amber); }
+    .fb-item.fixed { border-left-color: var(--green); }
+    .fb-item.critical { border-left-color: var(--red); }
+    .mini-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:18px; }
+    .mini-stat { background:#fafafa; border-radius:18px; padding:16px; border:1px solid #f0f0f0; }
+    .mini-stat .v { font-size:30px; font-weight:800; color:var(--purple-5); letter-spacing:-.03em; }
+    .mini-stat .l { font-size:13px; color:var(--muted); margin-top:4px; }
+    .footer-note { margin-top:16px; color:var(--muted); font-size:15px; }
+    @media (max-width:980px) {
+      .rail { display:none; } .section { min-height:auto; padding:42px 18px; }
+      .hero-grid,.stats-grid,.experiments-grid,.feedback-grid,.mini-stats { grid-template-columns:1fr; }
+      .bar-row { grid-template-columns:1fr; gap:8px; } .bar-value { text-align:left; }
+      .question-card { grid-template-columns:82px 1fr; min-height:104px; } .question-index { font-size:28px; } .question-text { padding:20px; }
+      .meta-row { grid-template-columns:1fr; gap:4px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="rail" aria-label="Deck Navigation">
+    <a href="#cover"></a>
+    <a href="#proof"></a>
+    <a href="#questions"></a>
+    <a href="#experiments"></a>
+    <a href="#feedback"></a>
+  </nav>
+
+  <section class="section hero" id="cover">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow">LUMA · Review Draft für HAMM Architekten</div>
+        <h1>HAMM Architekten × LUMA<br />Email zuerst, dann Workflow</h1>
+        <p>
+          Für HAMM sitzt der größte Hebel gerade nicht in „noch einem Tool", sondern in einem ruhigeren
+          Email-Workflow mit sauberer Projektzuordnung, weniger persönlichem Inbox-Bottleneck und klareren Tasks.
+          Das Deck ist deshalb bewusst auf Inbox, Zuordnung und konkrete Alltagsentlastung fokussiert.
+        </p>
+        <div class="brand-lockup">
+          <div class="brand-client">HAMM<br />Architekten</div>
+          <div class="brand-divider">×</div>
+          <div class="brand-luma"><img src="data:image/jpeg;base64,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" alt="HAMM Architekten Logo" /></div>
+        </div>
+      </div>
+      <div class="hero-side">
+        <div class="meta-card">
+          <h3>Was wir heute anschauen</h3>
+          <div class="meta-list">
+            <div class="meta-row"><div class="meta-label">Fokus</div><div>Email-Workflow, Projektkontext, Task-Ableitung</div></div>
+            <div class="meta-row"><div class="meta-label">Basis</div><div>Tenant-Usage + Feedbacks aus März/April</div></div>
+            <div class="meta-row"><div class="meta-label">Ziel</div><div>2 konkrete Tests für die nächsten 2–4 Wochen</div></div>
+            <div class="meta-row"><div class="meta-label">Status</div><div>Draft zur Review — noch nicht final</div></div>
+          </div>
+        </div>
+        <div class="hero-note">
+          <strong>Leitgedanke:</strong> HAMM hat bereits echte Nutzung im System. Die nächste Stufe ist nicht „mehr Features",
+          sondern dass Email-bezogene Arbeit weniger in einzelnen Outlook-Boxen hängen bleibt und schneller im Projekt landet.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="proof">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Section 1 · Signalbild</div>
+        <h2>HAMM nutzt LUMA bereits sichtbar — aber Email ist noch der Engpass</h2>
+        <p>
+          Die Nutzungsdaten zeigen: HAMM ist kein „Test-Account ohne Alltag“. Das Team arbeitet bereits im System.
+          Der größte Engpass bleibt trotzdem das Email-Aufkommen und die Frage, wie Informationen sauber ins richtige Projekt und zu den richtigen Personen kommen.
+        </p>
+      </div>
+      <div class="stats-shell">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="num">9</div>
+            <div class="label">aktive User</div>
+            <div class="desc">Onboarding seit März 2026 — Breite im Team ist da, nicht nur bei einer Person.</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">11</div>
+            <div class="label">Projekte</div>
+            <div class="desc">Das System ist in echte Projektarbeit eingebunden, nicht nur als Demo-Umgebung.</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">79</div>
+            <div class="label">Tasks</div>
+            <div class="desc">Workflow-Nutzung ist vorhanden — die Frage ist jetzt Friktion reduzieren und Übergaben verbessern.</div>
+          </div>
+        </div>
+        <div class="bars">
+          <div class="bar-row"><div class="bar-label">Alexander Hamm</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-value">807</div></div>
+          <div class="bar-row"><div class="bar-label">Suhandhan Ravee</div><div class="bar-track"><div class="bar-fill" style="width:32%"></div></div><div class="bar-value">258</div></div>
+          <div class="bar-row"><div class="bar-label">Alex Ziegenhagel</div><div class="bar-track"><div class="bar-fill" style="width:21%"></div></div><div class="bar-value">170</div></div>
+          <div class="bar-row"><div class="bar-label">Tobias Schmidt</div><div class="bar-track"><div class="bar-fill" style="width:15%"></div></div><div class="bar-value">121</div></div>
+        </div>
+        <div class="insight">„HAMM hat Adoption. Der nächste große Hebel ist jetzt: Email raus aus isolierten Postfächern, rein in Projektkontext und Tasks.“</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="questions">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Section 2 · Gesprächsführung</div>
+        <h2>Die richtigen Fragen für HAMM liegen rund um Inbox, Ownership und Übergaben</h2>
+        <p>
+          Diese Fragen sind bewusst auf die Themen zugespitzt, die in Discovery und im laufenden Feedback immer wieder auftauchen:
+          Email-Zuordnung, Bottlenecks bei Alex, Team-Zusammenarbeit und was heute noch unnötig hängen bleibt.
+        </p>
+      </div>
+      <div class="questions-list">
+        <div class="question-card tone-1"><div class="question-index">1</div><div class="question-text">Wo kostet euch Email heute konkret am meisten Zeit — Lesen, Zuordnen, Nachhalten oder Antworten?</div></div>
+        <div class="question-card tone-2"><div class="question-index">2</div><div class="question-text">Welche Art von Email sollte immer direkt im Projekt landen, statt in einer persönlichen Inbox zu bleiben?</div></div>
+        <div class="question-card tone-3"><div class="question-index">3</div><div class="question-text">Wann wird Alex heute noch zum Bottleneck, obwohl die Information eigentlich im Team weiterlaufen müsste?</div></div>
+        <div class="question-card tone-4"><div class="question-index">4</div><div class="question-text">Welche 1–2 Email-bezogenen Automationen würden sofort im Alltag spürbar helfen?</div></div>
+        <div class="question-card tone-5"><div class="question-index">5</div><div class="question-text">Wenn wir in 4 Wochen sagen „das hat sich gelohnt“ — woran merkt ihr das konkret?</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="experiments">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Section 3 · Nächste 2–4 Wochen</div>
+        <h2>Zwei konkrete Tests statt großer Plattform-Diskussion</h2>
+        <p>
+          Für HAMM würde ich den nächsten Schritt klein, alltagsnah und messbar halten: einmal Email sauberer ins Projekt bringen,
+          einmal Task-Ownership vereinfachen. Beides zusammen reduziert Reibung sofort sichtbar.
+        </p>
+      </div>
+      <div class="experiments-grid">
+        <div class="experiment-card">
+          <div class="kicker">Experiment 1 · Inbox</div>
+          <h3>Email → Projekt → Task</h3>
+          <p>
+            Testen, dass eingehende Mails nicht nur dem Absender, sondern dem richtigen Projekt zugeordnet werden und aus der Mail mit weniger Klicks verwertbare Tasks entstehen.
+            Idealer erster Fokus: Absender merken, Projektzuordnung verbessern, Bounce-/Zustellprobleme sichtbar machen.
+          </p>
+        </div>
+        <div class="experiment-card">
+          <div class="kicker">Experiment 2 · Team-Workflow</div>
+          <h3>Task-Ownership ohne Reibung</h3>
+          <p>
+            Prüfen, wie Mitarbeitende Aufgaben selbst auf „erledigt“ schieben können, wie Team-Zuweisung funktioniert und wie Prioritäten sichtbarer in der Übersicht werden,
+            damit Übergaben im Alltag weniger an einzelnen Personen hängen bleiben.
+          </p>
+        </div>
+      </div>
+      <div class="success-box">
+        <div class="line"></div>
+        <div>
+          <h3>Erfolg sehen wir, wenn</h3>
+          <p>HAMM nach dem Test sagen kann: projektrelevante Mails landen zuverlässiger im richtigen Kontext, Aufgaben werden schneller aus Inbox-Arbeit abgeleitet und weniger Dinge bleiben an Alex hängen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="feedback">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Section 4 · Feedback ganz unten</div>
+        <h2>HAMM-Feedback — Email-Themen bewusst ganz oben priorisiert</h2>
+        <p>
+          Insgesamt liegen für HAMM aktuell 22 Feedbacks vor. Für dieses Gespräch priorisieren wir oben die Email-bezogenen Themen,
+          weil dort der größte Hebel für den nächsten Review liegt. Danach kommen offene Workflow-Punkte und gelöste Signale als Vertrauensbeweis.
+        </p>
+      </div>
+      <div class="feedback-shell">
+        <div class="mini-stats">
+          <div class="mini-stat"><div class="v">22</div><div class="l">Feedbacks gesamt</div></div>
+          <div class="mini-stat"><div class="v">10</div><div class="l">offen ohne Antwort</div></div>
+          <div class="mini-stat"><div class="v">55%</div><div class="l">bereits beantwortet</div></div>
+          <div class="mini-stat"><div class="v">3</div><div class="l">Email-Themen mit Priorität</div></div>
+        </div>
+        <div class="feedback-grid">
+          <div class="feedback-col">
+            <h3>Priorität 1 · Email zuerst</h3>
+            <div class="fb-item email">
+              <div class="fb-meta">17.04.2026 · Wunsch · Alexander Hamm</div>
+              <div class="fb-text">In der Inbox sollte beim Erstellen eines Tasks aus einer E-Mail standardmäßig vorgeschlagen werden, die Absender-Adresse zu merken — nicht nur „dieses Mal“.</div>
+              <div class="fb-response">Relevanz: Wiederkehrende Beteiligte kommen projektübergreifend vor. Genau hier wird Email-Kontext zu Systemwissen.</div>
+            </div>
+            <div class="fb-item email">
+              <div class="fb-meta">12.04.2026 · Bug · Alexander Hamm</div>
+              <div class="fb-text">Ständige Bounce-Mails an <code>alexander-hubwdh@inbox.mehlhart.de</code> — die Adresse ist nicht erreichbar.</div>
+              <div class="fb-response">Relevanz: Bevor Inbox-Workflows Vertrauen bekommen, muss die Zustellung technisch sauber und nachvollziehbar sein.</div>
+            </div>
+            <div class="fb-item email">
+              <div class="fb-meta">27.03.2026 · Idee · Alexander Hamm</div>
+              <div class="fb-text">Bei E-Mail → Task sollen Mails nicht nur dem Versender, sondern besser direkt dem Projekt zugeordnet werden.</div>
+              <div class="fb-response">Relevanz: Das ist der Kern des HAMM-Pains — raus aus persönlichen Outlook-Boxen, rein in Projektkontext.</div>
+            </div>
+            <div class="fb-item open">
+              <div class="fb-meta">27.03.2026 · Wunsch · Alexander Hamm</div>
+              <div class="fb-text">Vorhandene Meeting-Notizen/Protokolle hochladen können, damit das System daraus Tasks erstellt.</div>
+              <div class="fb-response">Anschlussfähig an Email-Thema: unstrukturierte Kommunikation → strukturierte Tasks.</div>
+            </div>
+          </div>
+          <div class="feedback-col">
+            <h3>Weitere offene & gelöste Signale</h3>
+            <div class="fb-item critical">
+              <div class="fb-meta">20.04.2026 · Wunsch · Alexander Hamm</div>
+              <div class="fb-text">Mitarbeitende sollen Aufgaben selbst in „erledigt“ schieben können.</div>
+            </div>
+            <div class="fb-item critical">
+              <div class="fb-meta">12.03.2026 · Bug · Alexander Hamm</div>
+              <div class="fb-text">Gesamtsumme in der Projektübersicht wird falsch dargestellt.</div>
+            </div>
+            <div class="fb-item critical">
+              <div class="fb-meta">13.03.2026 · Bug · Alexander Hamm</div>
+              <div class="fb-text">Login funktioniert nicht für Edison Rruga.</div>
+            </div>
+            <div class="fb-item fixed">
+              <div class="fb-meta">17.04.2026 · Wunsch · Alexander Hamm</div>
+              <div class="fb-text">Dokumente im Bautagebuch ablegen können.</div>
+              <div class="fb-response">✅ Bereits gelöst: alle Dateiformate können nun ins Bautagebuch angehängt werden.</div>
+            </div>
+            <div class="fb-item fixed">
+              <div class="fb-meta">03.04.2026 · Idee · Alexander Hamm</div>
+              <div class="fb-text">Datum bei Aufgabe via Sprachnotiz direkt setzen.</div>
+              <div class="fb-response">✅ Bereits gelöst: funktioniert jetzt per Sprache.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-note">Draft-Notiz: Diese Feedback-Sektion ist bewusst ans Deck-Ende gesetzt und priorisiert Email-Themen im oberen Block, wie gewünscht.</div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
