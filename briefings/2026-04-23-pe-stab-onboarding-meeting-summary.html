@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Onboarding Meeting Summary — Georg Stenzel / PE Stab</title>
+  <style>
+    :root {
+      --bg: #f6f4ef;
+      --surface: #ffffff;
+      --text: #17202b;
+      --muted: #6f8092;
+      --border: #eadffd;
+      --purple-1: #f0e9ff;
+      --purple-2: #ded0ff;
+      --purple-3: #c7adff;
+      --purple-4: #8b5cf6;
+      --purple-5: #5b21b6;
+      --green: #16a34a;
+      --amber: #d97706;
+      --red: #dc2626;
+      --blue: #2563eb;
+      --shadow: 0 16px 50px rgba(35,31,54,.08);
+      --content: 1180px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.45;
+    }
+    h1,h2,h3,p,ul { margin: 0; }
+    .rail {
+      position: fixed; right: 22px; top: 50%; transform: translateY(-50%);
+      z-index: 50; display: flex; flex-direction: column; gap: 10px;
+    }
+    .rail a { width: 12px; height: 12px; border-radius: 999px; background: rgba(91,33,182,.16); border: 1px solid rgba(91,33,182,.2); }
+    .section { min-height: 100vh; display: flex; align-items: center; padding: 64px 28px; }
+    .wrap { width: min(100%, var(--content)); margin: 0 auto; }
+    .hero {
+      background: linear-gradient(180deg,#fcfbf8 0%,#f6f4ef 100%);
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.1fr .9fr; gap: 36px; align-items: end;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px;
+      border-radius: 999px; background: rgba(139,92,246,.08);
+      border: 1px solid rgba(139,92,246,.14); color: var(--purple-5);
+      font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .hero h1 {
+      margin-top: 24px; font-size: clamp(40px,6vw,74px); line-height: .98; letter-spacing: -.04em;
+    }
+    .hero p {
+      margin-top: 18px; max-width: 760px; font-size: clamp(18px,2.2vw,24px);
+      color: var(--muted); line-height: 1.45;
+    }
+    .pill-row { display:flex; gap:12px; flex-wrap: wrap; margin-top: 28px; }
+    .pill {
+      padding: 8px 14px; border-radius: 999px; font-size: 12px; font-weight: 700;
+      border: 1px solid rgba(139,92,246,.14); background: rgba(139,92,246,.06); color: var(--purple-5);
+    }
+    .card, .stats-shell {
+      background: var(--surface); border-radius: 28px; padding: 24px;
+      box-shadow: var(--shadow); border: 1px solid rgba(139,92,246,.12);
+    }
+    .meta-grid { display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+    .meta-item { padding: 14px 16px; border-radius: 18px; background: #faf8ff; border: 1px solid #efe7ff; }
+    .meta-label { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 4px; font-weight: 700; }
+    .meta-value { font-size: 15px; color: var(--text); }
+    .section-head { margin-bottom: 30px; }
+    .section-head h2 {
+      margin-top: 12px; font-size: clamp(32px,4vw,58px); line-height: 1.02; letter-spacing: -.04em;
+    }
+    .section-head p {
+      margin-top: 12px; font-size: 18px; color: var(--muted); max-width: 880px;
+    }
+    .two-col, .three-col { display:grid; gap:20px; }
+    .two-col { grid-template-columns: 1fr 1fr; }
+    .three-col { grid-template-columns: repeat(3,1fr); }
+    .list { display:grid; gap:12px; }
+    .list-item {
+      background: #fff; border-radius: 18px; padding: 16px 18px; border-left: 4px solid var(--purple-4);
+      box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    }
+    .list-item.green { border-left-color: var(--green); }
+    .list-item.amber { border-left-color: var(--amber); }
+    .list-item.red { border-left-color: var(--red); }
+    .list-item.blue { border-left-color: var(--blue); }
+    .list-item h3 { font-size: 15px; margin-bottom: 6px; }
+    .list-item p { color: var(--muted); font-size: 15px; }
+    .mini-stats { display:grid; grid-template-columns: repeat(4,1fr); gap:14px; margin-bottom: 22px; }
+    .mini-stat { background:#fafafa; border-radius:18px; padding:16px; border:1px solid #f0f0f0; }
+    .mini-stat .v { font-size: 30px; font-weight: 800; color: var(--purple-5); letter-spacing: -.03em; }
+    .mini-stat .l { margin-top: 4px; font-size: 13px; color: var(--muted); }
+    .score-row { display:grid; grid-template-columns: 220px 1fr 56px; gap:14px; align-items:center; margin-bottom: 12px; }
+    .score-label { font-size: 14px; font-weight: 700; }
+    .score-track { height: 12px; background:#efeaf7; border-radius: 999px; overflow:hidden; }
+    .score-fill { height:100%; border-radius:999px; background: linear-gradient(90deg,#5b21b6 0%,#7c3aed 45%,#a78bfa 100%); }
+    .score-num { text-align:right; font-size: 14px; font-weight: 800; color: var(--purple-5); }
+    .spiced-grid { display:grid; grid-template-columns: 140px 1fr; gap: 12px; }
+    .spiced-grid .label { color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; font-size: 11px; }
+    .spiced-grid .value { font-size: 15px; }
+    .callout {
+      padding: 18px 20px; border-radius: 20px; background: linear-gradient(180deg,#faf7ff 0%,#fff 100%);
+      border: 1px solid #eee6fb; color: var(--text);
+    }
+    .callout strong { color: var(--purple-5); }
+    @media (max-width: 980px) {
+      .rail { display:none; }
+      .section { min-height:auto; padding: 42px 18px; }
+      .hero-grid, .two-col, .three-col, .mini-stats { grid-template-columns: 1fr; }
+      .meta-grid { grid-template-columns: 1fr; }
+      .score-row { grid-template-columns: 1fr; gap:8px; }
+      .score-num { text-align:left; }
+      .spiced-grid { grid-template-columns: 1fr; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="rail" aria-label="Navigation">
+    <a href="#cover"></a>
+    <a href="#summary"></a>
+    <a href="#spiced"></a>
+    <a href="#decisions"></a>
+    <a href="#coaching"></a>
+  </nav>
+
+  <section class="section hero" id="cover">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">LUMA · Onboarding Meeting Summary</div>
+        <h1>PE Stab × LUMA</h1>
+        <p>Georg Stenzel Onboarding / Demo Call. Interne Zusammenfassung für Daniel mit Erkenntnissen, SPICED-Signalen, Decisions, To-dos und Coaching für den nächsten Call.</p>
+        <div class="pill-row">
+          <div class="pill">23.04.2026</div>
+          <div class="pill">Meeting-Typ: Onboarding / Demo</div>
+          <div class="pill">Teilnehmer: Georg, Kollegin (Tuba), Daniel</div>
+          <div class="pill">Status: Pilotstart freigegeben</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="meta-grid">
+          <div class="meta-item"><div class="meta-label">Firma</div><div class="meta-value">PE Stab</div></div>
+          <div class="meta-item"><div class="meta-label">Kontakt</div><div class="meta-value">Georg Stenzel</div></div>
+          <div class="meta-item"><div class="meta-label">Zusätzliche Nutzerin</div><div class="meta-value">angehende Architektin / „rechte Hand“ (im Transkript als Tuba genannt)</div></div>
+          <div class="meta-item"><div class="meta-label">Call-Ziel</div><div class="meta-value">Onboarding, erster Produktfit, Pilot-Setup</div></div>
+          <div class="meta-item"><div class="meta-label">Stärkster aktueller Use Case</div><div class="meta-value">Projektbezogene E-Mails → Aufgaben → Projektkontext</div></div>
+          <div class="meta-item"><div class="meta-label">Nächster Schritt</div><div class="meta-value">4 Zugänge anlegen + geteilte Inbox prüfen + isolierte Projektmail-Regeln testen</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="summary">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Section 1 · Was ich verstanden habe</div>
+        <h2>Die operative Realität bei PE Stab ist nicht „zu wenig Struktur“, sondern zu viel manuelle Organisation</h2>
+        <p>Der Call bestätigt sehr klar: Das Kernproblem ist nicht fehlende Disziplin, sondern dass E-Mails, Fotos, Dokumentation, Aufgaben und Nachvollziehbarkeit heute über Outlook, WhatsApp, Papier, Serverordner und Einzelwissen zusammengehalten werden.</p>
+      </div>
+      <div class="two-col">
+        <div class="list">
+          <div class="list-item red"><h3>1. E-Mail ist der zentrale Einstiegspunkt</h3><p>Fast alles beginnt mit eingehenden E-Mails: Kundenunterlagen, Pläne, Änderungen, Rechnungen, Angebote. Von dort startet manuelle Ablage, Weiterleitung, Nachverfolgung und Aufgabenverteilung.</p></div>
+          <div class="list-item red"><h3>2. Outlook + Serverstruktur erzeugen Verwaltungsarbeit</h3><p>Die bestehende Ordnerlogik ist detailliert, aber pflegeintensiv. Der Nutzen ist Wiederfinden und Nachweisbarkeit — der Preis ist hoher manueller Aufwand und Fehleranfälligkeit.</p></div>
+          <div class="list-item amber"><h3>3. WhatsApp war ein Workaround, kein echtes System</h3><p>Projektgruppen sollten Fotos, Rückfragen und Status bündeln, sind aber in der Praxis chaotisch geworden: falsche Gruppen, schlechte Archivierung, keine saubere Suchbarkeit.</p></div>
+          <div class="list-item amber"><h3>4. Tuba ist ein zentraler Daily User</h3><p>Sie beschreibt sehr konkret, wo Unterlagen liegen bleiben, Fotos verspätet hochgeladen werden und Organisation im Alltag scheitert. Für den Pilot ist sie operativ extrem wichtig.</p></div>
+        </div>
+        <div class="list">
+          <div class="list-item blue"><h3>5. Bautagebuch + Voice resonieren</h3><p>Der Voice-Flow mit Bautagebuch + automatisch erkannten Aufgaben wurde als praktikabler Baustellenworkflow wahrgenommen.</p></div>
+          <div class="list-item blue"><h3>6. DATEV-/Angebots-Parsing hat stark gezündet</h3><p>Georg sieht darin einen echten Startpunkt: Baustellenbegehung → Angebot → direktes Projekt → daraus Aufgaben und Verlauf.</p></div>
+          <div class="list-item green"><h3>7. Pilotstart ist gewollt</h3><p>Georg will direkt mit einem neuen Projekt starten, vier interne Nutzer einladen und möglichst schnell projektbezogene E-Mails in LUMA testen.</p></div>
+          <div class="list-item red"><h3>8. Datenschutz ist ein realer Deal-Faktor</h3><p>Nicht nur formale Frage: Es gibt einzelne Projekte/Kunden, die aus Sicherheitsgründen explizit nicht in LUMA dürfen. Das ist ein echtes Scope-Thema, kein Nebensatz.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="spiced">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Section 2 · SPICED Snapshot</div>
+        <h2>Starke Discovery-Signale mitten im Onboarding</h2>
+        <p>Auch im Demo-Call kamen klare SPICED-Elemente hoch. Das ist wertvoll, weil es zeigt, wo der operative Wert wirklich sitzt und welche Entscheidungskriterien für die weitere Einführung zählen.</p>
+      </div>
+      <div class="card">
+        <div class="list" style="gap:16px;">
+          <div class="spiced-grid"><div class="label">Situation</div><div class="value">Kleines Team, gemeinsame zentrale E-Mail-Adresse, kurze Projektzyklen, hoher Doku- und Ablageaufwand. Mehrere Systeme parallel: Outlook, Serverordner, Papier, WhatsApp, DATEV.</div></div>
+          <div class="spiced-grid"><div class="label">Pain</div><div class="value">Unterlagen, Fotos und E-Mails gehen im Alltag verloren oder werden verspätet sauber abgelegt. Die bestehende Struktur ist dokumentationsstark, aber schwer zu pflegen. Das kostet Zeit, Nerven und Übersicht.</div></div>
+          <div class="spiced-grid"><div class="label">Impact</div><div class="value">Hoher manueller Verwaltungsaufwand, Risiko von vergessenen Informationen, schwieriges Onboarding neuer Leute, Reibungsverluste bei kleinen Teams und Gefahr, dass Verantwortlichkeiten unklar bleiben.</div></div>
+          <div class="spiced-grid"><div class="label">Critical Event</div><div class="value">Start mit einem neuen Projekt „ab heute“ / sofortiger Praxistest. Georg will das direkt mit mehreren Nutzern ausprobieren und isolierte Projektmails zuerst testen statt den gesamten Mailverkehr zu importieren.</div></div>
+          <div class="spiced-grid"><div class="label">Decision Criteria</div><div class="value">Einfachheit, Shared Visibility im Team, praktikable E-Mail-Integration, Voice auf der Baustelle, geringe Mehrarbeit, Datenschutz-Erklärbarkeit und Tauglichkeit für kleine Teams mit wechselnder Zuständigkeit.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="decisions">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Section 3 · Decisions, To-dos & offene Punkte</div>
+        <h2>Es gab bereits klare Entscheidungen — und ein sehr konkretes Pilot-Setup</h2>
+      </div>
+      <div class="mini-stats">
+        <div class="mini-stat"><div class="v">4</div><div class="l">interne Zugänge angefragt</div></div>
+        <div class="mini-stat"><div class="v">1</div><div class="l">primärer Pilot-Flow</div></div>
+        <div class="mini-stat"><div class="v">2</div><div class="l">explizite Produktwünsche</div></div>
+        <div class="mini-stat"><div class="v">2</div><div class="l">harte Datenschutz-Ausnahmen</div></div>
+      </div>
+      <div class="three-col">
+        <div class="card">
+          <div class="section-head" style="margin-bottom:18px;"><div class="eyebrow">Decisions</div><h2 style="font-size:30px;">Was entschieden wurde</h2></div>
+          <div class="list">
+            <div class="list-item green"><h3>Pilot startet projektweise, nicht global</h3><p>Keine Vollweiterleitung des gesamten Postfachs. Erst einzelne Projektmails per Outlook-Regel an LUMA weiterleiten.</p></div>
+            <div class="list-item green"><h3>Vier interne Nutzer sollen direkt loslegen</h3><p>Georg will das Tool nicht solo testen, sondern gleich im echten Teamkontext.</p></div>
+            <div class="list-item green"><h3>Bestimmte sensible Projekte bleiben draußen</h3><p>Mindestens zwei Kunden-/Projektkontexte sollen aus Datenschutz-/Vertragsgründen nicht in LUMA angelegt werden.</p></div>
+            <div class="list-item green"><h3>Shared Inbox ist für PE Stab wichtig</h3><p>Die aktuelle nutzerindividuelle Inbox reicht für dieses Setup nicht. Gemeinsame Sichtbarkeit ist für das Teammodell zentral.</p></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-head" style="margin-bottom:18px;"><div class="eyebrow">To-dos</div><h2 style="font-size:30px;">Was als Nächstes zu tun ist</h2></div>
+          <div class="list">
+            <div class="list-item blue"><h3>Daniel</h3><p>Vier Zugänge anlegen, Datenschutz-/Architekturtext schicken, Shared-Inbox-Variante prüfen bzw. umsetzen.</p></div>
+            <div class="list-item blue"><h3>Georg</h3><p>Namen/E-Mail-Adressen der vier Nutzer schicken und erste Projektmails isoliert per Outlook-Regel weiterleiten.</p></div>
+            <div class="list-item blue"><h3>Team</h3><p>Mit einem neuen Projekt live testen: E-Mail → Aufgabe → Projektkontext und ggf. Bautagebuch / Voice ergänzen.</p></div>
+            <div class="list-item blue"><h3>Produktseitig beobachten</h3><p>Wie stark ziehen DATEV-Angebot → Projektanlage, Shared Inbox und sprachliche Umformulierung für formellere Texte?</p></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-head" style="margin-bottom:18px;"><div class="eyebrow">Open Questions</div><h2 style="font-size:30px;">Was offen bleibt</h2></div>
+          <div class="list">
+            <div class="list-item amber"><h3>Shared Inbox Scope</h3><p>Wie genau sollen mehrere Teammitglieder dieselbe Mailbasis sehen und trotzdem sinnvoll damit arbeiten?</p></div>
+            <div class="list-item amber"><h3>Subunternehmer-Rollenmodell</h3><p>Projektzugriff ist möglich, aber Aufgaben lassen sich aktuell nicht fein genug abschotten.</p></div>
+            <div class="list-item amber"><h3>Formalisierung von Bautagebuch/Texten</h3><p>Georg wünscht sich explizit professionelleres Umformulieren je nach Zielpublikum.</p></div>
+            <div class="list-item amber"><h3>DATEV-Format-Fit</h3><p>Georg glaubt, dass Angebot → Projektanlage ein sehr starker Start sein kann. Muss in der Praxis bestätigt werden.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="coaching">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Section 4 · Coaching für Daniel</div>
+        <h2>Der Call war stark — noch stärker wird er, wenn du den Pilot-Workflow früher festnagelst und die Demo härter schneidest</h2>
+        <p>Die Coaching-Section ist intern für dich gedacht: Was hat funktioniert, was war verschenkt und wie würde der nächste Onboarding-Call noch präziser laufen?</p>
+      </div>
+      <div class="card" style="margin-bottom:20px;">
+        <div class="score-row"><div class="score-label">Rapport / Vertrauen</div><div class="score-track"><div class="score-fill" style="width:90%"></div></div><div class="score-num">9/10</div></div>
+        <div class="score-row"><div class="score-label">Zusammenfassung des Verständnisses</div><div class="score-track"><div class="score-fill" style="width:80%"></div></div><div class="score-num">8/10</div></div>
+        <div class="score-row"><div class="score-label">Pain Discovery</div><div class="score-track"><div class="score-fill" style="width:80%"></div></div><div class="score-num">8/10</div></div>
+        <div class="score-row"><div class="score-label">Gesprächsführung / Stringenz</div><div class="score-track"><div class="score-fill" style="width:60%"></div></div><div class="score-num">6/10</div></div>
+        <div class="score-row"><div class="score-label">Demo-Timing</div><div class="score-track"><div class="score-fill" style="width:60%"></div></div><div class="score-num">6/10</div></div>
+        <div class="score-row"><div class="score-label">Relevanz der Demo</div><div class="score-track"><div class="score-fill" style="width:80%"></div></div><div class="score-num">8/10</div></div>
+        <div class="score-row"><div class="score-label">Next-Step-Klarheit</div><div class="score-track"><div class="score-fill" style="width:70%"></div></div><div class="score-num">7/10</div></div>
+      </div>
+
+      <div class="two-col">
+        <div class="list">
+          <div class="list-item green"><h3>Was stark war</h3><p>Du bist sauber mit einem Recap gestartet und hast gezeigt, dass du den ersten Discovery-Call wirklich verstanden hast. Das hat sofort Vertrauen und Relevanz erzeugt.</p></div>
+          <div class="list-item green"><h3>Du hast die richtigen Pains gespiegelt</h3><p>E-Mail-Chaos, Tool-Brüche, WhatsApp als Notlösung, Onboarding und Dokumentationslast waren präzise adressiert — kein generischer Pitch.</p></div>
+          <div class="list-item green"><h3>Die Demo war nah am Alltag</h3><p>Inbox, Aufgabe aus E-Mail, Bautagebuch per Voice, Copilot und Projektanlage aus Angeboten waren nicht abstrakt, sondern direkt an ihrer Realität aufgehängt.</p></div>
+          <div class="list-item green"><h3>DATEV-/Angebots-Flow erkannt</h3><p>Du hast nicht nur gezeigt, was heute schon geht, sondern einen Flow berührt, der bei Georg sichtbar stark resoniert hat.</p></div>
+        </div>
+        <div class="list">
+          <div class="list-item red"><h3>Was noch stärker gewesen wäre</h3><p>Vor dem Reinspringen in die Demo noch klarer festzurren: <strong>Welcher eine Workflow soll zuerst sauber laufen?</strong> Dann hättest du die Demo noch schärfer darauf zuschneiden können.</p></div>
+          <div class="list-item red"><h3>Tuba noch stärker als Champion behandeln</h3><p>Sie hat operative Goldinformationen geliefert. Noch besser wäre gewesen, explizit zu fragen, womit <em>ihr</em> Alltag in Woche 1 wirklich leichter wird.</p></div>
+          <div class="list-item red"><h3>Zu viel Fläche auf einmal</h3><p>Inbox, Aufgaben, Bautagebuch, Copilot, Zeitplan, Finanzblick, Projektanlage, Rollen, Datenschutz, Subunternehmer — alles relevant, aber im Onboarding fast schon zu breit.</p></div>
+          <div class="list-item red"><h3>Success-Kriterien früher setzen</h3><p>Der Call war gut im Problem und gut in der Demo, aber noch nicht hart genug in: <strong>Woran merken wir in 14 Tagen, dass das funktioniert?</strong></p></div>
+        </div>
+      </div>
+
+      <div class="three-col" style="margin-top:20px;">
+        <div class="card">
+          <div class="section-head" style="margin-bottom:18px;"><div class="eyebrow">Missed Opportunities</div><h2 style="font-size:30px;">Was du fast hattest</h2></div>
+          <div class="list">
+            <div class="list-item amber"><h3>Der eigentliche Satz des Calls</h3><p>„Ihr braucht nicht eine perfektere Ordnerstruktur, sondern weniger manuelle Organisation.“ Das hättest du noch härter spiegeln können.</p></div>
+            <div class="list-item amber"><h3>WhatsApp als Anti-Signal</h3><p>Sie nutzen WhatsApp nicht, weil es gut ist, sondern weil alle anderen Prozesse im Alltag zu schwer sind. Das ist eine starke Positionierung für LUMA.</p></div>
+            <div class="list-item amber"><h3>Shared Inbox direkt als Pilotbedingung markieren</h3><p>Statt nur „nehme ich mit“ wäre noch stärker gewesen: Ohne Shared Inbox ist der Test für dieses Teammodell nur eingeschränkt aussagekräftig.</p></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-head" style="margin-bottom:18px;"><div class="eyebrow">Ideal Flow</div><h2 style="font-size:30px;">Nächster Onboarding-Call</h2></div>
+          <div class="list">
+            <div class="list-item blue"><h3>1. Verständnis spiegeln</h3><p>2 Minuten: Was ich verstanden habe, wo heute Fokus ist.</p></div>
+            <div class="list-item blue"><h3>2. Pilot schärfen</h3><p>5 Minuten: Wer nutzt was, welcher Workflow zuerst, was Erfolg bedeutet.</p></div>
+            <div class="list-item blue"><h3>3. Nur einen Hauptflow zeigen</h3><p>8–10 Minuten: z. B. E-Mail → Aufgabe → Projekt oder Voice → Bautagebuch → Aufgabe.</p></div>
+            <div class="list-item blue"><h3>4. Reaktion + Commit</h3><p>3–5 Minuten: Was fühlt sich realistisch an, was testen wir jetzt konkret?</p></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-head" style="margin-bottom:18px;"><div class="eyebrow">Bessere Fragen</div><h2 style="font-size:30px;">Für den nächsten Termin</h2></div>
+          <div class="list">
+            <div class="list-item"><h3>1.</h3><p>Wenn wir nur <strong>einen</strong> Workflow in den nächsten 14 Tagen sauber testen — welcher wäre das?</p></div>
+            <div class="list-item"><h3>2.</h3><p>Wer ist im Alltag Hauptnutzer: Georg, Tuba oder beide für unterschiedliche Dinge?</p></div>
+            <div class="list-item"><h3>3.</h3><p>Was darf auf keinen Fall komplizierter werden als heute?</p></div>
+            <div class="list-item"><h3>4.</h3><p>Woran merkt ihr nach 2 Wochen, dass LUMA euch wirklich Arbeit abnimmt?</p></div>
+            <div class="list-item"><h3>5.</h3><p>Welcher Teil eurer heutigen Organisation soll zuerst aus Outlook / WhatsApp / Papier raus?</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:20px;"><strong>Kurzfazit:</strong> Der Call war gut. Der nächste Hebel ist nicht „noch mehr zeigen“, sondern früher gemeinsam festnageln, <em>welcher eine Pilot-Workflow</em> jetzt wirklich laufen soll. Sobald das klar ist, wird die Demo noch schärfer und das Onboarding deutlich operativer.</div>
+    </div>
+  </section>
+</body>
+</html>
