@@ -185,6 +185,17 @@
       <div class="column now">
         <span class="pill">Now</span>
         <div class="card">
+          <h3>Projekte durch Architekten anlegbar machen (P0)</h3>
+          <div class="meta">
+            <span class="tag">P0</span>
+            <span class="tag">HAMM-Feedback</span>
+            <span class="tag">Rollen & Rechte</span>
+          </div>
+          <p><strong>Outcome:</strong> Rolle „Architekt“ kann Projekte selbst anlegen, ohne automatisch Finanzsicht zu bekommen.</p>
+          <p><strong>Nächster Schritt:</strong> Rechtebild schneiden: Projekt anlegen ja, Finanzsicht nein.</p>
+        </div>
+
+        <div class="card">
           <h3>Heute / Inbox neu denken</h3>
           <div class="meta">
             <span class="tag">Produkt</span>
@@ -215,6 +226,21 @@
       <div class="column next">
         <span class="pill">Next</span>
         <div class="card">
+          <h3>Bautagebuch flexibler machen</h3>
+          <div class="meta">
+            <span class="tag">HAMM-Feedback</span>
+            <span class="tag">Bautagebuch</span>
+          </div>
+          <p><strong>Outcome:</strong> Einträge lassen sich im Alltag einfacher verschieben, zusammenführen und über Tage hinweg bearbeiten.</p>
+          <ul>
+            <li>Drag & Drop in bestehende Einträge prüfen</li>
+            <li>Pro-Tag-Ansicht oder Swipe zwischen Tagen</li>
+            <li>Mehrere Einträge pro Tag zusammenführen</li>
+          </ul>
+          <p><strong>Nächster Schritt:</strong> User Story für den PDF-zu-Bautagebuch-Flow sauber ausformulieren.</p>
+        </div>
+
+        <div class="card">
           <h3>Markdown-Pläne</h3>
           <div class="meta">
             <span class="tag">Produkt</span>
@@ -237,6 +263,26 @@
 
       <div class="column later">
         <span class="pill">Later</span>
+        <div class="card">
+          <h3>Dropbox-Integration</h3>
+          <div class="meta">
+            <span class="tag">HAMM-Feedback</span>
+            <span class="tag">Integrationen</span>
+          </div>
+          <p><strong>Outcome:</strong> Dokumente und bestehende Arbeitsabläufe lassen sich besser an LUMA andocken.</p>
+          <p><strong>Nächster Schritt:</strong> klären, ob Upload, Import oder Sync der eigentliche Job-to-be-done ist.</p>
+        </div>
+
+        <div class="card">
+          <h3>Projektbasierte Finanzsicht</h3>
+          <div class="meta">
+            <span class="tag">Rollen & Rechte</span>
+            <span class="tag">Nicht P0</span>
+          </div>
+          <p><strong>Outcome:</strong> Finanzsektion kann pro Projekt an- oder abgeschaltet werden, statt starr nur über Rollen zu laufen.</p>
+          <p><strong>Nächster Schritt:</strong> Rechte-Logik von rollenbasiert zu rolle + projektspezifischer Freigabe weiterdenken.</p>
+        </div>
+
         <div class="card">
           <h3>User Communication Layer</h3>
           <div class="meta">
@@ -274,6 +320,14 @@
         </thead>
         <tbody>
           <tr>
+            <td data-label="Initiative"><strong>Projekte durch Architekten anlegen (P0)</strong></td>
+            <td data-label="Problem">Teams sind abhängig, wenn nur bestimmte Rollen Projekte anlegen dürfen.</td>
+            <td data-label="Outcome">Architekten können selbst Projekte anlegen, ohne Finanzdaten sehen zu müssen.</td>
+            <td data-label="Owner">Produkt / Rollenmodell</td>
+            <td data-label="Status"><span class="status focus">P0</span></td>
+            <td data-label="Nächster Schritt">Berechtigungen trennen: Projektanlage vs. Finanzsicht.</td>
+          </tr>
+          <tr>
             <td data-label="Initiative"><strong>Heute Dashboard refokussieren</strong></td>
             <td data-label="Problem">Wichtige neue To-dos gehen zwischen passiven Events unter.</td>
             <td data-label="Outcome">User sieht sofort, was er jetzt prüfen, entscheiden oder tun muss.</td>
@@ -304,6 +358,46 @@
             <td data-label="Owner">Produkt / Ops</td>
             <td data-label="Status"><span class="status prepare">Vorbereitung</span></td>
             <td data-label="Nächster Schritt">MVP als einfacher Reminder statt vollständigem Cron-Baukasten prüfen.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Bautagebuch: PDF in bestehenden Eintrag ziehen</strong></td>
+            <td data-label="Problem">Bauleiter schickt PDF, aber Alex kann es aktuell nicht sinnvoll in seinen bestehenden Bautagebuch-Eintrag ziehen.</td>
+            <td data-label="Outcome">Dokumente landen ohne Umweg im richtigen Tageskontext.</td>
+            <td data-label="Owner">Produkt</td>
+            <td data-label="Status"><span class="status define">User Story schärfen</span></td>
+            <td data-label="Nächster Schritt">Flow als konkrete User Story formulieren und UI-Optionen vergleichen.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Bautagebuch: Tagesnavigation / Swipe</strong></td>
+            <td data-label="Problem">Bearbeitung über mehrere Tage ist im aktuellen Flow zu starr.</td>
+            <td data-label="Outcome">Schneller Wechsel zwischen Tagen in der Bautagebuch-Arbeit.</td>
+            <td data-label="Owner">Produkt</td>
+            <td data-label="Status"><span class="status prepare">Idee parken</span></td>
+            <td data-label="Nächster Schritt">Prüfen, ob Tagesansicht, Swipe oder beides den größeren Hebel hat.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Bautagebuch: Einträge zusammenführen</strong></td>
+            <td data-label="Problem">Mehrere Einträge pro Tag erzeugen Reibung und Doppelstruktur.</td>
+            <td data-label="Outcome">Einträge können logisch zu einem Tagesbild zusammengeführt werden.</td>
+            <td data-label="Owner">Produkt</td>
+            <td data-label="Status"><span class="status prepare">Idee parken</span></td>
+            <td data-label="Nächster Schritt">Entscheiden, ob Merge ein eigener Befehl oder Nebenprodukt von Drag & Drop ist.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Dropbox-Integration</strong></td>
+            <td data-label="Problem">Dateien liegen oft schon in Dropbox und müssen extra bewegt werden.</td>
+            <td data-label="Outcome">Niedrigere Reibung beim Import bestehender Projektunterlagen.</td>
+            <td data-label="Owner">Produkt / Integrationen</td>
+            <td data-label="Status"><span class="status prepare">Später prüfen</span></td>
+            <td data-label="Nächster Schritt">Konkreten Use Case priorisieren: Import einzelner Dateien oder Ordner-Kontext.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Finanzsektion projektbasiert steuern</strong></td>
+            <td data-label="Problem">Rollenbasierte Sicht ist zu starr; kleine Projekte brauchen andere Transparenz als große.</td>
+            <td data-label="Outcome">Finanzsicht kann je Projekt für Architekten ein- oder ausgeschaltet werden.</td>
+            <td data-label="Owner">Produkt / Rollenmodell</td>
+            <td data-label="Status"><span class="status prepare">Nicht P0</span></td>
+            <td data-label="Nächster Schritt">Rechtemodell skizzieren: Rolle + Projekt-Override.</td>
           </tr>
           <tr>
             <td data-label="Initiative"><strong>User-Kommunikationsplan</strong></td>
@@ -341,6 +435,8 @@
         <li>Sollen Statuswechsel jemals im Heute auftauchen, wenn sie rein informativ sind?</li>
         <li>Ist Markdown zuerst ein internes Format oder direkt ein Nutzer-Feature?</li>
         <li>Ist Reminder zuerst 1x / datumsgesteuert oder direkt wiederkehrend?</li>
+        <li>Wie genau soll der PDF-zu-Bautagebuch-Flow funktionieren: anhängen, verschieben oder in Eintrag umwandeln?</li>
+        <li>Ist projektbasiertes Finanz-Visibility-Override technisch und konzeptionell sauber genug gegenüber dem aktuellen Rollenmodell?</li>
         <li>Welche Produktmails sollen echtes Opt-in brauchen?</li>
       </ul>
     </section>
