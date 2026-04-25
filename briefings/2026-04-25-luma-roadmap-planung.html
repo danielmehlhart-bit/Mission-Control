@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMA – Roadmap & Planung Draft</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --line: #334155;
+      --accent: #38bdf8;
+      --green: #34d399;
+      --amber: #fbbf24;
+      --red: #fb7185;
+      --violet: #a78bfa;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+    .hero {
+      background: rgba(15, 23, 42, 0.82);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    h1, h2, h3 { margin: 0 0 10px; }
+    h1 { font-size: 36px; line-height: 1.1; }
+    h2 { font-size: 22px; margin-bottom: 16px; }
+    h3 { font-size: 16px; }
+    p { margin: 0 0 12px; color: var(--text); }
+    .muted { color: var(--muted); }
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .chip {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(148,163,184,.08);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .column {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      min-height: 280px;
+    }
+    .column.now { box-shadow: inset 0 0 0 1px rgba(52,211,153,.15); }
+    .column.next { box-shadow: inset 0 0 0 1px rgba(251,191,36,.12); }
+    .column.later { box-shadow: inset 0 0 0 1px rgba(167,139,250,.12); }
+    .pill {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      padding: 5px 8px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .now .pill { background: rgba(52,211,153,.14); color: var(--green); }
+    .next .pill { background: rgba(251,191,36,.14); color: var(--amber); }
+    .later .pill { background: rgba(167,139,250,.14); color: var(--violet); }
+    .card {
+      background: var(--panel-2);
+      border: 1px solid rgba(148,163,184,.18);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 8px 0 10px;
+    }
+    .tag {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,.18);
+      color: var(--muted);
+      background: rgba(255,255,255,.03);
+    }
+    .section {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(148,163,184,.14);
+      vertical-align: top;
+    }
+    th { color: var(--muted); font-weight: 600; }
+    .status {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .status.focus { background: rgba(52,211,153,.14); color: var(--green); }
+    .status.define { background: rgba(251,191,36,.14); color: var(--amber); }
+    .status.prepare { background: rgba(167,139,250,.14); color: var(--violet); }
+    .status.blocked { background: rgba(251,113,133,.14); color: var(--red); }
+    ul { margin: 8px 0 0 18px; padding: 0; }
+    .footer-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 14px;
+    }
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: 1fr; }
+      h1 { font-size: 30px; }
+      table, thead, tbody, th, td, tr { display: block; }
+      thead { display: none; }
+      tr {
+        border: 1px solid rgba(148,163,184,.14);
+        border-radius: 12px;
+        margin-bottom: 12px;
+        overflow: hidden;
+      }
+      td {
+        border-bottom: 1px solid rgba(148,163,184,.08);
+      }
+      td::before {
+        content: attr(data-label);
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <p class="muted">LUMA · Produkt, GTM & Founder-Fokus · Arbeitsdraft</p>
+      <h1>Roadmap & Planung Draft</h1>
+      <p>
+        Ziel dieses Dokuments: aus Produktideen, Kundenfeedback und operativen Go-to-Market-Themen eine klare, anpassbare Roadmap machen.
+        Es soll bewusst nicht nur Feature-Delivery zeigen, sondern auch die Aktivitäten, die in den nächsten Wochen Sichtbarkeit, Pipeline und Lernkurve aufbauen.
+      </p>
+      <div class="chips">
+        <span class="chip">Stand: 25.04.2026</span>
+        <span class="chip">Horizont: nächste 4 Wochen + spätere Themen</span>
+        <span class="chip">Format: HTML Living Document</span>
+        <span class="chip">Fokus: Klarheit vor Vollständigkeit</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="column now">
+        <span class="pill">Now</span>
+        <div class="card">
+          <h3>Projekte durch Architekten anlegbar machen (P0)</h3>
+          <div class="meta">
+            <span class="tag">P0</span>
+            <span class="tag">HAMM-Feedback</span>
+            <span class="tag">Rollen & Rechte</span>
+          </div>
+          <p><strong>Outcome:</strong> Rolle „Architekt“ kann Projekte selbst anlegen, ohne automatisch Finanzsicht zu bekommen.</p>
+          <p><strong>Nächster Schritt:</strong> Rechtebild schneiden: Projekt anlegen ja, Finanzsicht nein.</p>
+        </div>
+
+        <div class="card">
+          <h3>Legal / Terms / Consent (P0 nächste Woche)</h3>
+          <div class="meta">
+            <span class="tag">P0</span>
+            <span class="tag">Legal</span>
+            <span class="tag">Website & Registrierung</span>
+          </div>
+          <p><strong>Outcome:</strong> AGB sind sichtbar auf der Website und User müssen sie bei Registrierung einmalig akzeptieren.</p>
+          <ul>
+            <li>AGB auf Website veröffentlichen</li>
+            <li>einmalige AGB-Akzeptanz im Registrierungsflow</li>
+            <li>saubere Nachvollziehbarkeit der Zustimmung</li>
+          </ul>
+          <p><strong>Nächster Schritt:</strong> nächste Woche als eigenes P0-Paket umsetzen.</p>
+        </div>
+
+        <div class="card">
+          <h3>Founder Content Engine starten</h3>
+          <div class="meta">
+            <span class="tag">GTM</span>
+            <span class="tag">LinkedIn</span>
+            <span class="tag">Instagram</span>
+            <span class="tag">4 Wochen Fokus</span>
+          </div>
+          <p><strong>Outcome:</strong> Daniel baut sichtbar Reichweite, Lernkurve und Vertrauen auf – mit einem klaren Publishing-Rhythmus statt sporadischer Posts.</p>
+          <ul>
+            <li>2 LinkedIn-Posts pro Woche als fixer Mindeststandard</li>
+            <li>Instagram parallel mitziehen, idealerweise aus denselben Content-Bausteinen</li>
+            <li>Content entlang echter Founder-, Produkt- und Kunden-Learnings</li>
+            <li>einfacher Wochenrhythmus statt Perfektionismus</li>
+          </ul>
+          <p><strong>Nächster Schritt:</strong> 3–4 Content-Säulen festziehen und die ersten 8 LinkedIn-Posts für die nächsten 4 Wochen grob vorplanen.</p>
+        </div>
+
+        <div class="card">
+          <h3>Heute / Inbox neu denken</h3>
+          <div class="meta">
+            <span class="tag">Produkt</span>
+            <span class="tag">Weber-Feedback</span>
+            <span class="tag">Aktiver Fokus</span>
+          </div>
+          <p><strong>Outcome:</strong> Das neue „Heute“ zeigt nur noch Dinge, die eine Reaktion oder Entscheidung vom User brauchen.</p>
+          <ul>
+            <li>Tasks sichtbar halten</li>
+            <li>Statuswechsel mit Handlungsbedarf zeigen</li>
+            <li>eigentliche Arbeit / offene Inputs bündeln</li>
+            <li>passive Events aus der Inbox rausnehmen</li>
+          </ul>
+          <p><strong>Nächster Schritt:</strong> Scope final einfrieren und als erste klare Produktverbesserung live bringen.</p>
+        </div>
+
+        <div class="card">
+          <h3>Activity Log sauber abgrenzen</h3>
+          <div class="meta">
+            <span class="tag">Produkt</span>
+            <span class="tag">Informationsarchitektur</span>
+          </div>
+          <p><strong>Outcome:</strong> Passive Events, Status Changes und Lifecycle bleiben nachvollziehbar, aber konkurrieren nicht mit „Was ist neu für mich zu tun?“</p>
+          <p><strong>Nächster Schritt:</strong> Liste definieren: Was gehört in Heute, was ins Activity Log, was in beide nie.</p>
+        </div>
+      </div>
+
+      <div class="column next">
+        <span class="pill">Next</span>
+        <div class="card">
+          <h3>Bautagebuch flexibler machen</h3>
+          <div class="meta">
+            <span class="tag">HAMM-Feedback</span>
+            <span class="tag">Bautagebuch</span>
+          </div>
+          <p><strong>Outcome:</strong> Einträge lassen sich im Alltag einfacher verschieben, zusammenführen und über Tage hinweg bearbeiten.</p>
+          <ul>
+            <li>Drag & Drop in bestehende Einträge prüfen</li>
+            <li>Pro-Tag-Ansicht oder Swipe zwischen Tagen</li>
+            <li>Mehrere Einträge pro Tag zusammenführen</li>
+          </ul>
+          <p><strong>Nächster Schritt:</strong> User Story für den PDF-zu-Bautagebuch-Flow sauber ausformulieren.</p>
+        </div>
+
+        <div class="card">
+          <h3>Markdown-Pläne</h3>
+          <div class="meta">
+            <span class="tag">Produkt</span>
+            <span class="tag">Arbeitsmodus</span>
+          </div>
+          <p><strong>Outcome:</strong> Nutzer können Pläne strukturiert festhalten, weiterentwickeln und später wiederverwenden.</p>
+          <p><strong>Nächster Schritt:</strong> Entscheiden, ob zuerst einfache Markdown-Ansicht oder direkt planbasierter Workflow.</p>
+        </div>
+
+        <div class="card">
+          <h3>Reminder / Cron-Logik</h3>
+          <div class="meta">
+            <span class="tag">Produkt</span>
+            <span class="tag">Proaktivität</span>
+          </div>
+          <p><strong>Outcome:</strong> Wiederkehrende Erinnerungen für Nutzerbedarfe ohne manuelles Nachhalten.</p>
+          <p><strong>Nächster Schritt:</strong> MVP-Scope festlegen: manuelle Reminder zuerst, Recurrence erst danach.</p>
+        </div>
+      </div>
+
+      <div class="column later">
+        <span class="pill">Later</span>
+        <div class="card">
+          <h3>Dropbox-Integration</h3>
+          <div class="meta">
+            <span class="tag">HAMM-Feedback</span>
+            <span class="tag">Integrationen</span>
+          </div>
+          <p><strong>Outcome:</strong> Dokumente und bestehende Arbeitsabläufe lassen sich besser an LUMA andocken.</p>
+          <p><strong>Nächster Schritt:</strong> klären, ob Upload, Import oder Sync der eigentliche Job-to-be-done ist.</p>
+        </div>
+
+        <div class="card">
+          <h3>Projektbasierte Finanzsicht</h3>
+          <div class="meta">
+            <span class="tag">Rollen & Rechte</span>
+            <span class="tag">Nicht P0</span>
+          </div>
+          <p><strong>Outcome:</strong> Finanzsektion kann pro Projekt an- oder abgeschaltet werden, statt starr nur über Rollen zu laufen.</p>
+          <p><strong>Nächster Schritt:</strong> Rechte-Logik von rollenbasiert zu rolle + projektspezifischer Freigabe weiterdenken.</p>
+        </div>
+
+        <div class="card">
+          <h3>User Communication Layer</h3>
+          <div class="meta">
+            <span class="tag">Go-to-Market</span>
+            <span class="tag">Adoption</span>
+          </div>
+          <p><strong>Outcome:</strong> Nutzer verstehen Produktänderungen, neue Features und den Wert dahinter besser.</p>
+          <p><strong>Nächster Schritt:</strong> standardisierte Update-Kommunikation als eigener Prozess.</p>
+        </div>
+
+
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Roadmap-Board</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Initiative</th>
+            <th>Problem</th>
+            <th>Outcome</th>
+            <th>Owner</th>
+            <th>Status</th>
+            <th>Nächster Schritt</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Initiative"><strong>AGB auf Website veröffentlichen (P0)</strong></td>
+            <td data-label="Problem">Rechtliche Basis ist noch nicht sichtbar und abrufbar für LUMA-Nutzer.</td>
+            <td data-label="Outcome">AGB sind kommende Woche live auf der Website erreichbar.</td>
+            <td data-label="Owner">Daniel / Legal / Web</td>
+            <td data-label="Status"><span class="status focus">P0 nächste Woche</span></td>
+            <td data-label="Nächster Schritt">AGB finalisieren, Website-Platzierung festlegen und veröffentlichen.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Einmalige AGB-Akzeptanz bei Registrierung (P0)</strong></td>
+            <td data-label="Problem">Bei Registrierung fehlt aktuell die verbindliche Zustimmung zu den AGB.</td>
+            <td data-label="Outcome">Jeder neue User akzeptiert die AGB einmalig im Signup-Flow.</td>
+            <td data-label="Owner">Produkt / Legal / Auth</td>
+            <td data-label="Status"><span class="status focus">P0 nächste Woche</span></td>
+            <td data-label="Nächster Schritt">UX + Datenmodell für Consent definieren und im Registrierungsflow verankern.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Projekte durch Architekten anlegen (P0)</strong></td>
+            <td data-label="Problem">Teams sind abhängig, wenn nur bestimmte Rollen Projekte anlegen dürfen.</td>
+            <td data-label="Outcome">Architekten können selbst Projekte anlegen, ohne Finanzdaten sehen zu müssen.</td>
+            <td data-label="Owner">Produkt / Rollenmodell</td>
+            <td data-label="Status"><span class="status focus">P0</span></td>
+            <td data-label="Nächster Schritt">Berechtigungen trennen: Projektanlage vs. Finanzsicht.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Founder Content Engine: LinkedIn + Instagram</strong></td>
+            <td data-label="Problem">Sichtbarkeit, Vertrauen und dokumentiertes Bauen passieren aktuell zu unregelmäßig.</td>
+            <td data-label="Outcome">In den nächsten 4 Wochen erscheinen zuverlässig 2 LinkedIn-Posts pro Woche plus begleitende Instagram-Aktivität.</td>
+            <td data-label="Owner">Daniel / GTM</td>
+            <td data-label="Status"><span class="status focus">Jetzt starten</span></td>
+            <td data-label="Nächster Schritt">Content-Säulen definieren, 4-Wochen-Plan aufsetzen und wöchentlichen Publishing-Slot blocken.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Heute Dashboard refokussieren</strong></td>
+            <td data-label="Problem">Wichtige neue To-dos gehen zwischen passiven Events unter.</td>
+            <td data-label="Outcome">User sieht sofort, was er jetzt prüfen, entscheiden oder tun muss.</td>
+            <td data-label="Owner">Daniel / Produkt</td>
+            <td data-label="Status"><span class="status focus">In Arbeit</span></td>
+            <td data-label="Nächster Schritt">Klare Regeln für Inbox vs. Activity Log festziehen.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Activity Log definieren</strong></td>
+            <td data-label="Problem">Transparenz und Fokus vermischen sich aktuell.</td>
+            <td data-label="Outcome">Volle Nachvollziehbarkeit ohne Reizüberflutung.</td>
+            <td data-label="Owner">Produkt</td>
+            <td data-label="Status"><span class="status define">Zu definieren</span></td>
+            <td data-label="Nächster Schritt">Event-Typen in 3 Klassen schneiden: action, awareness, archive.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Markdown-Pläne</strong></td>
+            <td data-label="Problem">Pläne sind wertvoll, aber noch nicht als stabiles Nutzerobjekt greifbar.</td>
+            <td data-label="Outcome">Besseres Planen, Denken und Wiederverwenden direkt im Produkt.</td>
+            <td data-label="Owner">Produkt</td>
+            <td data-label="Status"><span class="status prepare">Vorbereitung</span></td>
+            <td data-label="Nächster Schritt">Entscheiden, ob das ein eigenständiges Feature oder Teil des Today-Flows wird.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Reminder-Funktion</strong></td>
+            <td data-label="Problem">Wichtige Follow-ups hängen zu stark an manuellem Gedächtnis.</td>
+            <td data-label="Outcome">System erinnert zuverlässig an relevante nächste Schritte.</td>
+            <td data-label="Owner">Produkt / Ops</td>
+            <td data-label="Status"><span class="status prepare">Vorbereitung</span></td>
+            <td data-label="Nächster Schritt">MVP als einfacher Reminder statt vollständigem Cron-Baukasten prüfen.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Bautagebuch: PDF in bestehenden Eintrag ziehen</strong></td>
+            <td data-label="Problem">Bauleiter schickt PDF, aber Alex kann es aktuell nicht sinnvoll in seinen bestehenden Bautagebuch-Eintrag ziehen.</td>
+            <td data-label="Outcome">Dokumente landen ohne Umweg im richtigen Tageskontext.</td>
+            <td data-label="Owner">Produkt</td>
+            <td data-label="Status"><span class="status define">User Story schärfen</span></td>
+            <td data-label="Nächster Schritt">Flow als konkrete User Story formulieren und UI-Optionen vergleichen.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Bautagebuch: Tagesnavigation / Swipe</strong></td>
+            <td data-label="Problem">Bearbeitung über mehrere Tage ist im aktuellen Flow zu starr.</td>
+            <td data-label="Outcome">Schneller Wechsel zwischen Tagen in der Bautagebuch-Arbeit.</td>
+            <td data-label="Owner">Produkt</td>
+            <td data-label="Status"><span class="status prepare">Idee parken</span></td>
+            <td data-label="Nächster Schritt">Prüfen, ob Tagesansicht, Swipe oder beides den größeren Hebel hat.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Bautagebuch: Einträge zusammenführen</strong></td>
+            <td data-label="Problem">Mehrere Einträge pro Tag erzeugen Reibung und Doppelstruktur.</td>
+            <td data-label="Outcome">Einträge können logisch zu einem Tagesbild zusammengeführt werden.</td>
+            <td data-label="Owner">Produkt</td>
+            <td data-label="Status"><span class="status prepare">Idee parken</span></td>
+            <td data-label="Nächster Schritt">Entscheiden, ob Merge ein eigener Befehl oder Nebenprodukt von Drag & Drop ist.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Dropbox-Integration</strong></td>
+            <td data-label="Problem">Dateien liegen oft schon in Dropbox und müssen extra bewegt werden.</td>
+            <td data-label="Outcome">Niedrigere Reibung beim Import bestehender Projektunterlagen.</td>
+            <td data-label="Owner">Produkt / Integrationen</td>
+            <td data-label="Status"><span class="status prepare">Später prüfen</span></td>
+            <td data-label="Nächster Schritt">Konkreten Use Case priorisieren: Import einzelner Dateien oder Ordner-Kontext.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Finanzsektion projektbasiert steuern</strong></td>
+            <td data-label="Problem">Rollenbasierte Sicht ist zu starr; kleine Projekte brauchen andere Transparenz als große.</td>
+            <td data-label="Outcome">Finanzsicht kann je Projekt für Architekten ein- oder ausgeschaltet werden.</td>
+            <td data-label="Owner">Produkt / Rollenmodell</td>
+            <td data-label="Status"><span class="status prepare">Nicht P0</span></td>
+            <td data-label="Nächster Schritt">Rechtemodell skizzieren: Rolle + Projekt-Override.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>User-Kommunikationsplan</strong></td>
+            <td data-label="Problem">Produktänderungen werden nicht systematisch erklärt oder angekündigt.</td>
+            <td data-label="Outcome">Bessere Adoption, weniger Überraschung, klarere Erwartungshaltung.</td>
+            <td data-label="Owner">Daniel / GTM</td>
+            <td data-label="Status"><span class="status blocked">Abhängig</span></td>
+            <td data-label="Nächster Schritt">Update-Typen definieren: Release Mail, In-App Hinweis, persönlicher Pilot-Check-in.</td>
+          </tr>
+          <tr>
+            <td data-label="Initiative"><strong>Opt-in für Produktmails</strong></td>
+            <td data-label="Problem">Kommunikation braucht saubere Einwilligung.</td>
+            <td data-label="Outcome">Rechtssicherere Produkt-Updates und Reminder-Kommunikation.</td>
+            <td data-label="Owner">Ops / Legal / Produkt</td>
+            <td data-label="Status"><span class="status blocked">Abhängig</span></td>
+            <td data-label="Nächster Schritt">Consent-Scope definieren: Produktupdates, Reminder, News, Sonstiges.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="footer-note">Hinweis: Dieses Board ist absichtlich kein detaillierter Delivery-Plan, sondern ein Entscheidungs- und Priorisierungswerkzeug.</p>
+    </section>
+
+    <section class="section">
+      <h2>Marketing & Founder Cadence · nächste 4 Wochen</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Baustein</th>
+            <th>Rhythmus</th>
+            <th>Ziel</th>
+            <th>Konkreter Standard</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Baustein"><strong>LinkedIn</strong></td>
+            <td data-label="Rhythmus">2x pro Woche</td>
+            <td data-label="Ziel">Sichtbarkeit, Glaubwürdigkeit, dokumentiertes Bauen</td>
+            <td data-label="Konkreter Standard">2 veröffentlichte Posts pro Woche – auch wenn sie bewusst einfach sind.</td>
+          </tr>
+          <tr>
+            <td data-label="Baustein"><strong>Instagram</strong></td>
+            <td data-label="Rhythmus">parallel zu LinkedIn</td>
+            <td data-label="Ziel">Präsenz auf zweitem Kanal ohne doppelte Denkarbeit</td>
+            <td data-label="Konkreter Standard">LinkedIn-Content als Kurzfassung, Visual oder Behind-the-Scenes adaptieren.</td>
+          </tr>
+          <tr>
+            <td data-label="Baustein"><strong>Content-Quelle</strong></td>
+            <td data-label="Rhythmus">laufend</td>
+            <td data-label="Ziel">Kein künstlicher Marketing-Content, sondern echte Signale</td>
+            <td data-label="Konkreter Standard">Posts aus Produktlernen, Pilot-Kunden, Founder-Weg und Architekturbüro-Problemwelt ableiten.</td>
+          </tr>
+          <tr>
+            <td data-label="Baustein"><strong>Wochenplanung</strong></td>
+            <td data-label="Rhythmus">1x pro Woche</td>
+            <td data-label="Ziel">Kontinuität statt Ad-hoc</td>
+            <td data-label="Konkreter Standard">Zu Wochenbeginn Themen wählen, Hook notieren, Veröffentlichungsfenster festlegen.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>Offene Entscheidungen</h2>
+      <ul>
+        <li>Was ist die präzise Definition von „benötigt meine Reaktion“ im Heute-Dashboard?</li>
+        <li>Sollen Statuswechsel jemals im Heute auftauchen, wenn sie rein informativ sind?</li>
+        <li>Ist Markdown zuerst ein internes Format oder direkt ein Nutzer-Feature?</li>
+        <li>Ist Reminder zuerst 1x / datumsgesteuert oder direkt wiederkehrend?</li>
+        <li>Wie genau soll der PDF-zu-Bautagebuch-Flow funktionieren: anhängen, verschieben oder in Eintrag umwandeln?</li>
+        <li>Ist projektbasiertes Finanz-Visibility-Override technisch und konzeptionell sauber genug gegenüber dem aktuellen Rollenmodell?</li>
+        <li>Wie wird die einmalige AGB-Akzeptanz technisch gespeichert und später nachweisbar gemacht?</li>
+        <li>Welche Produktmails sollen echtes Opt-in brauchen?</li>
+        <li>Welche 3–4 Content-Säulen tragen LinkedIn und Instagram, ohne dass es sich nach künstlichem Marketing anfühlt?</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Cadence für Updates</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Rhythmus</th>
+            <th>Wofür geeignet</th>
+            <th>Empfehlung</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Rhythmus"><strong>Wöchentlich</strong></td>
+            <td data-label="Wofür geeignet">Wenn du gerade aktiv Produktform und Prioritäten schärfst.</td>
+            <td data-label="Empfehlung">Gut für die nächsten 4–6 Wochen.</td>
+          </tr>
+          <tr>
+            <td data-label="Rhythmus"><strong>Alle 2 Wochen</strong></td>
+            <td data-label="Wofür geeignet">Wenn die Struktur steht und nur Anpassungen dazukommen.</td>
+            <td data-label="Empfehlung">Später wahrscheinlich nachhaltiger.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</body>
+</html>
