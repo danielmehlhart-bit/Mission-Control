@@ -185,18 +185,68 @@
       <div class="column now">
         <span class="pill">Now</span>
         <div class="card">
-          <h3>Projekte durch Architekten anlegbar machen (P0)</h3>
+          <h3>Projekte durch Architekten anlegbar machen</h3>
           <div class="meta">
             <span class="tag">P0</span>
-            <span class="tag">HAMM-Feedback</span>
             <span class="tag">Rollen & Rechte</span>
+            <span class="tag">Live</span>
           </div>
-          <p><strong>Outcome:</strong> Rolle „Architekt“ kann Projekte selbst anlegen, ohne automatisch Finanzsicht zu bekommen.</p>
-          <p><strong>Nächster Schritt:</strong> Rechtebild schneiden: Projekt anlegen ja, Finanzsicht nein.</p>
+          <p><strong>Outcome:</strong> Admins und Architekten können jetzt Projekte anlegen.</p>
+          <p><strong>Status:</strong> fertig gebaut; Rechtebild für Projektanlage ist damit live.</p>
+          <p><strong>Nächster Schritt:</strong> im Alltag bei HAMM / Weber beobachten, ob irgendwo noch unerwartet Finanzsicht oder Rechte-Nebenwirkungen auftauchen.</p>
         </div>
 
         <div class="card">
-          <h3>Legal / Terms / Consent (P0 nächste Woche)</h3>
+          <h3>Heute-Route stabilisieren</h3>
+          <div class="meta">
+            <span class="tag">Produkt</span>
+            <span class="tag">Heute</span>
+            <span class="tag">Live · beobachten</span>
+          </div>
+          <p><strong>Outcome:</strong> Die Heute-Route ist fertig und zeigt den persönlichen Arbeitsfokus statt eines gemischten Activity-Streams.</p>
+          <p><strong>Status:</strong> live; muss jetzt im realen Usage-Verhalten weiter beobachtet werden.</p>
+          <p><strong>Nächster Schritt:</strong> Edge Cases, falsche Priorisierung und störende passive Events sammeln und dann gezielt nachschärfen.</p>
+        </div>
+
+        <div class="card">
+          <h3>Projektbasierte Inbox fertigbauen</h3>
+          <div class="meta">
+            <span class="tag">Produkt</span>
+            <span class="tag">Inbox</span>
+            <span class="tag">~80%</span>
+          </div>
+          <p><strong>Outcome:</strong> Jede Projekt-Mail landet sauber im richtigen Projektkontext und ist für das Projektteam direkt nutzbar.</p>
+          <p><strong>Status:</strong> ca. 80% fertig — die Grundlogik steht, der Rest ist Finish, Polishing und sauberes End-to-End-Verhalten.</p>
+          <p><strong>Nächster Schritt:</strong> letzten UI-/Flow-Rest schließen, dann End-to-End testen: Eingang, Projektzuordnung, Sichtbarkeit und Alltagstauglichkeit.</p>
+        </div>
+
+        <div class="card">
+          <h3>Review Flow optional machen</h3>
+          <div class="meta">
+            <span class="tag">Produkt</span>
+            <span class="tag">Workflow</span>
+            <span class="tag">~80%</span>
+          </div>
+          <p><strong>Outcome:</strong> Der Review-Schritt ist nicht mehr zwangsläufig Pflicht, sondern kann je nach Team-/Tenant-Setup optional sein.</p>
+          <p><strong>Status:</strong> ca. 80% fertig — das Thema ist aktiv in Arbeit und gehört klar in den aktuellen Fokus.</p>
+          <p><strong>Nächster Schritt:</strong> Optional-Flow zu Ende bauen, Verhalten in Tasks/Subtasks prüfen und dann im Live-Betrieb sauber gegen den bisherigen Review-Zwang validieren.</p>
+        </div>
+
+        <div class="card">
+          <h3>Activity Log sauber abgrenzen</h3>
+          <div class="meta">
+            <span class="tag">Produkt</span>
+            <span class="tag">Informationsarchitektur</span>
+          </div>
+          <p><strong>Outcome:</strong> Passive Events, Status Changes und Lifecycle bleiben nachvollziehbar, aber konkurrieren nicht mit „Was ist neu für mich zu tun?“</p>
+          <p><strong>Nächster Schritt:</strong> Liste definieren: Was gehört in Heute, was ins Activity Log, was in beide nie.</p>
+        </div>
+      </div>
+
+      <div class="column next">
+        <span class="pill">Next</span>
+        <div class="card">
+          <h3>Legal / Terms / Consent (P0 nächstes Paket)</h3>
           <div class="meta">
             <span class="tag">P0</span>
             <span class="tag">Legal</span>
@@ -208,7 +258,7 @@
             <li>einmalige AGB-Akzeptanz im Registrierungsflow</li>
             <li>saubere Nachvollziehbarkeit der Zustimmung</li>
           </ul>
-          <p><strong>Nächster Schritt:</strong> nächste Woche als eigenes P0-Paket umsetzen.</p>
+          <p><strong>Nächster Schritt:</strong> als nächstes abgeschlossenes P0-Paket nach den aktuellen Produkt-Finishes umsetzen.</p>
         </div>
 
         <div class="card">
@@ -229,36 +279,6 @@
           <p><strong>Nächster Schritt:</strong> 3–4 Content-Säulen festziehen und die ersten 8 LinkedIn-Posts für die nächsten 4 Wochen grob vorplanen.</p>
         </div>
 
-        <div class="card">
-          <h3>Heute / Inbox neu denken</h3>
-          <div class="meta">
-            <span class="tag">Produkt</span>
-            <span class="tag">Weber-Feedback</span>
-            <span class="tag">Aktiver Fokus</span>
-          </div>
-          <p><strong>Outcome:</strong> Das neue „Heute“ zeigt nur noch Dinge, die eine Reaktion oder Entscheidung vom User brauchen.</p>
-          <ul>
-            <li>Tasks sichtbar halten</li>
-            <li>Statuswechsel mit Handlungsbedarf zeigen</li>
-            <li>eigentliche Arbeit / offene Inputs bündeln</li>
-            <li>passive Events aus der Inbox rausnehmen</li>
-          </ul>
-          <p><strong>Nächster Schritt:</strong> Scope final einfrieren und als erste klare Produktverbesserung live bringen.</p>
-        </div>
-
-        <div class="card">
-          <h3>Activity Log sauber abgrenzen</h3>
-          <div class="meta">
-            <span class="tag">Produkt</span>
-            <span class="tag">Informationsarchitektur</span>
-          </div>
-          <p><strong>Outcome:</strong> Passive Events, Status Changes und Lifecycle bleiben nachvollziehbar, aber konkurrieren nicht mit „Was ist neu für mich zu tun?“</p>
-          <p><strong>Nächster Schritt:</strong> Liste definieren: Was gehört in Heute, was ins Activity Log, was in beide nie.</p>
-        </div>
-      </div>
-
-      <div class="column next">
-        <span class="pill">Next</span>
         <div class="card">
           <h3>Bautagebuch flexibler machen</h3>
           <div class="meta">
