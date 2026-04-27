@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Onboarding Meeting Summary — Studio Pampa / LUMA</title>
+  <style>
+    :root {
+      --bg: #f6f4ef;
+      --surface: #ffffff;
+      --text: #17202b;
+      --muted: #6f8092;
+      --purple-1: #f0e9ff;
+      --purple-4: #8b5cf6;
+      --purple-5: #5b21b6;
+      --green: #15803d;
+      --amber: #d97706;
+      --red: #dc2626;
+      --blue: #2563eb;
+      --shadow: 0 16px 50px rgba(35,31,54,.08);
+      --content: 1160px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.46;
+    }
+    h1,h2,h3,p,ul { margin: 0; }
+    .rail {
+      position: fixed; right: 22px; top: 50%; transform: translateY(-50%);
+      z-index: 50; display: flex; flex-direction: column; gap: 10px;
+    }
+    .rail a { width: 12px; height: 12px; border-radius: 999px; background: rgba(91,33,182,.16); border: 1px solid rgba(91,33,182,.2); }
+    .section { min-height: 100vh; display: flex; align-items: center; padding: 60px 26px; }
+    .wrap { width: min(100%, var(--content)); margin: 0 auto; }
+    .hero { background: linear-gradient(180deg,#fcfbf8 0%,#f6f4ef 100%); }
+    .hero-grid, .two-col, .three-col { display:grid; gap: 22px; }
+    .hero-grid { grid-template-columns: 1.1fr .9fr; align-items: end; }
+    .two-col { grid-template-columns: 1fr 1fr; }
+    .three-col { grid-template-columns: repeat(3,1fr); }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px;
+      border-radius: 999px; background: rgba(139,92,246,.08);
+      border: 1px solid rgba(139,92,246,.14); color: var(--purple-5);
+      font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .hero h1 { margin-top: 22px; font-size: clamp(40px,6vw,72px); line-height: .98; letter-spacing: -.04em; }
+    .hero p { margin-top: 18px; max-width: 760px; font-size: clamp(18px,2.2vw,24px); color: var(--muted); }
+    .pill-row { display:flex; gap:12px; flex-wrap: wrap; margin-top: 26px; }
+    .pill {
+      padding: 8px 14px; border-radius: 999px; font-size: 12px; font-weight: 700;
+      border: 1px solid rgba(139,92,246,.14); background: rgba(139,92,246,.06); color: var(--purple-5);
+    }
+    .card {
+      background: var(--surface); border-radius: 28px; padding: 24px;
+      box-shadow: var(--shadow); border: 1px solid rgba(139,92,246,.12);
+    }
+    .meta-grid { display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+    .meta-item { padding: 14px 16px; border-radius: 18px; background: #faf8ff; border: 1px solid #efe7ff; }
+    .meta-label { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 4px; font-weight: 700; }
+    .meta-value { font-size: 15px; }
+    .section-head { margin-bottom: 28px; }
+    .section-head h2 { margin-top: 12px; font-size: clamp(30px,4vw,56px); line-height: 1.02; letter-spacing: -.04em; }
+    .section-head p { margin-top: 12px; font-size: 18px; color: var(--muted); max-width: 860px; }
+    .list { display:grid; gap:12px; }
+    .list-item {
+      background: #fff; border-radius: 18px; padding: 16px 18px; border-left: 4px solid var(--purple-4);
+      box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    }
+    .list-item.green { border-left-color: var(--green); }
+    .list-item.amber { border-left-color: var(--amber); }
+    .list-item.red { border-left-color: var(--red); }
+    .list-item.blue { border-left-color: var(--blue); }
+    .list-item h3 { font-size: 15px; margin-bottom: 6px; }
+    .list-item p, .list-item li { color: var(--muted); font-size: 15px; }
+    .spiced-grid { display:grid; grid-template-columns: 150px 1fr; gap: 12px; }
+    .label { color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; font-size: 11px; }
+    .value { font-size: 15px; }
+    .mini-stats { display:grid; grid-template-columns: repeat(4,1fr); gap:14px; margin-bottom: 22px; }
+    .mini-stat { background:#fafafa; border-radius:18px; padding:16px; border:1px solid #f0f0f0; }
+    .mini-stat .v { font-size: 30px; font-weight: 800; color: var(--purple-5); letter-spacing: -.03em; }
+    .mini-stat .l { margin-top: 4px; font-size: 13px; color: var(--muted); }
+    .score-row { display:grid; grid-template-columns: 220px 1fr 60px; gap:14px; align-items:center; margin-bottom: 12px; }
+    .score-track { height: 12px; background:#efeaf7; border-radius: 999px; overflow:hidden; }
+    .score-fill { height:100%; border-radius:999px; background: linear-gradient(90deg,#5b21b6 0%,#7c3aed 45%,#a78bfa 100%); }
+    .score-num { text-align:right; font-size: 14px; font-weight: 800; color: var(--purple-5); }
+    .callout {
+      padding: 18px 20px; border-radius: 20px; background: linear-gradient(180deg,#faf7ff 0%,#fff 100%);
+      border: 1px solid #eee6fb; color: var(--text);
+    }
+    .mail { white-space: pre-line; font-size: 15px; color: var(--text); line-height: 1.65; }
+    @media (max-width: 980px) {
+      .rail { display:none; }
+      .section { min-height:auto; padding: 42px 18px; }
+      .hero-grid, .two-col, .three-col, .mini-stats, .meta-grid, .score-row, .spiced-grid { grid-template-columns: 1fr; }
+      .score-num { text-align:left; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="rail" aria-label="Navigation">
+    <a href="#cover"></a>
+    <a href="#summary"></a>
+    <a href="#spiced"></a>
+    <a href="#decisions"></a>
+    <a href="#coaching"></a>
+    <a href="#followup"></a>
+  </nav>
+
+  <section class="section hero" id="cover">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">LUMA · Onboarding Meeting Summary</div>
+        <h1>Studio Pampa × LUMA</h1>
+        <p>Interne Zusammenfassung des Onboarding-/Follow-up-Calls nach dem Judith-Discovery-Gespräch. Fokus: bestätigte Pains, konkrete Testlogik, Commitment-Signale und was Daniel im nächsten Schritt sauber liefern muss.</p>
+        <div class="pill-row">
+          <div class="pill">27.04.2026</div>
+          <div class="pill">Meeting-Typ: Onboarding / Follow-up Demo</div>
+          <div class="pill">Teilnehmer laut Transkript: Daniel, Luis; Juliane/Judith wurden referenziert</div>
+          <div class="pill">Status: positiver Pilotstart mit klarem Zeit-Track</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="meta-grid">
+          <div class="meta-item"><div class="meta-label">Account</div><div class="meta-value">Studio Pampa</div></div>
+          <div class="meta-item"><div class="meta-label">Primärer Sprecher</div><div class="meta-value">Luis Etchegorry</div></div>
+          <div class="meta-item"><div class="meta-label">Bestätigter Einstiegs-Use-Case</div><div class="meta-value">Bautagebuch / Voice + Aufgaben + relevanter E-Mail-Kontext</div></div>
+          <div class="meta-item"><div class="meta-label">Neuer starker Track</div><div class="meta-value">Zeiterfassung, Budgetierung, Ressourcen-/Projektplanung</div></div>
+          <div class="meta-item"><div class="meta-label">Nächster Termin</div><div class="meta-value">Spätestens Di, 05.05., bevorzugt 15:30, zusammen mit Judith</div></div>
+          <div class="meta-item"><div class="meta-label">Call-Ziel erreicht?</div><div class="meta-value">Teilweise ja — echtes Interesse + Klarheit über nächsten Build-Schritt</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="summary">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Section 1 · Was ich verstanden habe</div>
+        <h2>Studio Pampa will nicht „noch ein Tool“, sondern ein System, das endlich echte Doppelarbeit ersetzt</h2>
+        <p>Der Call bestätigt Judiths Discovery fast vollständig — und verschiebt den Schwerpunkt stärker Richtung Zeiterfassung / Budgetierung, ohne den Baustellen- und E-Mail-Use-Case zu entwerten.</p>
+      </div>
+      <div class="two-col">
+        <div class="list">
+          <div class="list-item green"><h3>1. Baustellen-Doku tut weiterhin weh</h3><p>Luis beschreibt exakt das Problem, das Judith skizziert hatte: Fotos landen per OneDrive/Server irgendwo, Annotationen und strukturierte Nacharbeit passieren zu spät und fressen Post-Work.</p></div>
+          <div class="list-item green"><h3>2. Voice + Strukturierung resonieren</h3><p>Er nutzt heute schon Sprachnotizen + ChatGPT als Workaround. Das ist ein starkes Signal, dass LUMA hier kein neues Verhalten erfinden muss.</p></div>
+          <div class="list-item blue"><h3>3. E-Mail-Ablage ist ein echter Zeitfresser</h3><p>Das Team speichert Mails und Anhänge doppelt, damit Kommunikation für alle sichtbar bleibt. Genau hier sitzt ein harter administrativer Schmerz.</p></div>
+          <div class="list-item blue"><h3>4. Der strategische Mehrwert ist „Wahrheit an einem Ort“</h3><p>Luis sagt explizit: Wenn ein Tool keine Arbeit ersetzt, wird es nicht vertraut. Adoption hängt hier direkt an echter Zeitersparnis.</p></div>
+        </div>
+        <div class="list">
+          <div class="list-item amber"><h3>5. Zeiterfassung ist jetzt der schärfste neue Hebel</h3><p>Nicht als Nice-to-have: gesetzliche Pflicht, Basis für Kalkulation und Voraussetzung für Budget- / Ressourcenblick.</p></div>
+          <div class="list-item amber"><h3>6. Ein Fake-Tryout reicht ihnen nicht</h3><p>Luis macht sehr klar: Ein Test nur mit 3–4 Leuten reicht für den Zeiterfassungs-Case nicht. Sobald der erste Build brauchbar ist, will er das echte Team möglichst schnell mit reinnehmen.</p></div>
+          <div class="list-item red"><h3>7. Planbarkeit und Ressourcen sind Teil des Zielbilds</h3><p>Nicht nur Stunden buchen, sondern sehen: Wer arbeitet woran, wo sind Lücken, was ist Pauschale vs. Sonderleistung, wie greift das in Budgetierung ein?</p></div>
+          <div class="list-item red"><h3>8. Judith bleibt operativer Champion für Bautagebuch</h3><p>Im Transkript wird mehrfach klar: Judith soll den Baustellen-/Bautagebuch-Track praktisch nutzen; mit den Inhabern geht es stärker um Zeit, Planung und Admin-Effizienz.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="spiced">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Section 2 · SPICED Snapshot</div>
+        <h2>Der Call war operativ dicht und hat ein sehr konkretes Zielbild freigelegt</h2>
+      </div>
+      <div class="card">
+        <div class="list" style="gap:16px;">
+          <div class="spiced-grid"><div class="label">Situation</div><div class="value">8-Personen-Struktur, Inhaber tief im Operativen, viele Prozesse über Excel, Outlook, Server/OneDrive, Teams und manuelle Ablage. Judith/Team arbeiten bereits mit Baustellen- und Doku-Workflows, Inhaber kämpfen stark mit administrativen Themen.</div></div>
+          <div class="spiced-grid"><div class="label">Pain</div><div class="value">Fotos, Befunde und E-Mails müssen manuell nachbearbeitet und doppelt abgelegt werden. Zeiterfassung läuft stumpf über Excel. Ressourcen- und Budgetblick fehlen als integrierte Sicht. Das kostet Zeit und verhindert unternehmerischen Überblick.</div></div>
+          <div class="spiced-grid"><div class="label">Impact</div><div class="value">Zu viel Admin, zu wenig Zeit für übergeordnete Aufgaben. Informationen gehen bei Übergaben verloren. Ohne echte Integration bleibt jedes neue Tool nur Zusatzaufwand.</div></div>
+          <div class="spiced-grid"><div class="label">Critical Event</div><div class="value">Daniel soll sehr kurzfristig einen Deep Dive für Zeiterfassung / Planung / Budgetierung machen und danach in ca. 2–3 Wochen eine erste brauchbare Iteration liefern. Wenn die steht, soll das Team zügig real aufgeschaltet werden.</div></div>
+          <div class="spiced-grid"><div class="label">Decision Criteria</div><div class="value">Muss echte Arbeit ersetzen, nicht nur spiegeln. Muss teamfähig sein. Muss Stunden real erfassbar machen. Muss für Projektleitende E-Mails / Aufgaben nutzbar machen. Muss in kurzer Zeit testbar sein.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="decisions">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Section 3 · Decisions, To-dos & offene Punkte</div>
+        <h2>Es gab kein loses Interesse, sondern bereits eine konkrete Testlogik</h2>
+      </div>
+      <div class="mini-stats">
+        <div class="mini-stat"><div class="v">2</div><div class="l">klare Arbeitsstränge</div></div>
+        <div class="mini-stat"><div class="v">1</div><div class="l">bevorzugter Folgetermin</div></div>
+        <div class="mini-stat"><div class="v">2–3</div><div class="l">Wochen bis erste Zeit-Iteration</div></div>
+        <div class="mini-stat"><div class="v">real</div><div class="l">Team-Rollout als Zielbild</div></div>
+      </div>
+      <div class="three-col">
+        <div class="card">
+          <div class="section-head" style="margin-bottom:18px;"><div class="eyebrow">Decisions</div><h2 style="font-size:30px;">Was beschlossen wurde</h2></div>
+          <div class="list">
+            <div class="list-item green"><h3>Beta-Trade-off akzeptiert</h3><p>Kostenloses Mitmachen gegen strukturiertes Feedback wurde nicht abgewehrt, sondern als sinnvoller Modus angenommen.</p></div>
+            <div class="list-item green"><h3>Zwei Tracks statt ein diffuses Alles</h3><p>Judith/Baustellen-Doku einerseits, Inhaber-Track zu Zeit/Planung/Budget andererseits.</p></div>
+            <div class="list-item green"><h3>Nächster Deep Dive gemeinsam</h3><p>Daniel soll mit den relevanten Personen den Ist-Prozess detailliert durchgehen — bevorzugt in einem gemeinsamen Termin.</p></div>
+            <div class="list-item green"><h3>Schneller Team-Rollout, wenn Iteration steht</h3><p>Sobald der Zeit-Track brauchbar ist, will Luis nicht ewig im Mini-Test hängen, sondern echte Mitarbeiter aufschalten.</p></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-head" style="margin-bottom:18px;"><div class="eyebrow">To-dos</div><h2 style="font-size:30px;">Wer was tun muss</h2></div>
+          <div class="list">
+            <div class="list-item blue"><h3>Daniel</h3><p>Follow-up-Mail schicken, Termin bestätigen, Teilnehmerbild glätten (Judith + Inhaber), Deep-Dive-Agenda ankündigen.</p></div>
+            <div class="list-item blue"><h3>Daniel</h3><p>Zeiterfassungs-/Planungs-Zielbild strukturieren: Stundenbuchung, Projektzuordnung, Pauschale vs. Sonderleistung, Ressourcenverteilung, erste Auswertungen.</p></div>
+            <div class="list-item blue"><h3>Studio Pampa</h3><p>Nutzer-/E-Mail-Adressen für Einladungen liefern bzw. bestätigen und intern klären, wer beim Zeit-Deep-Dive dabei ist.</p></div>
+            <div class="list-item blue"><h3>Judith / Team</h3><p>Bautagebuch- und Doku-Track praktisch nutzen bzw. weiter testen.</p></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-head" style="margin-bottom:18px;"><div class="eyebrow">Open Questions</div><h2 style="font-size:30px;">Was noch offen ist</h2></div>
+          <div class="list">
+            <div class="list-item amber"><h3>Terminfinalisierung</h3><p>Im Call fiel Di, 05.05., bevorzugt 15:30; Daniel wollte das per Mail festzurren.</p></div>
+            <div class="list-item amber"><h3>Wieviel E-Mail-Realität sofort rein soll</h3><p>Luis findet den Nutzen plausibel, sieht aber den E-Mail-Track noch etwas abstrakter als Zeit/Planung.</p></div>
+            <div class="list-item amber"><h3>Teamweites Onboarding-Timing</h3><p>Wie schnell nach erster Iteration das ganze Team reingenommen wird, hängt an der Qualität der ersten Zeiterfassungs-Fassung.</p></div>
+            <div class="list-item amber"><h3>Rollen- und Datenmodell</h3><p>Welche Mitarbeiter nur buchen, welche planen, welche Finanzen/Budgets sehen dürfen, muss sauber modelliert werden.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="coaching">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Section 4 · Coaching für Daniel</div>
+        <h2>Der Call war stark im Spiegeln und im Vertrauen — noch stärker wäre gewesen, den Scope früher enger zu schneiden</h2>
+      </div>
+      <div class="card" style="margin-bottom:20px;">
+        <div class="score-row"><div>Rapport / Vertrauen</div><div class="score-track"><div class="score-fill" style="width:90%"></div></div><div class="score-num">9/10</div></div>
+        <div class="score-row"><div>Zusammenfassung des Verständnisses</div><div class="score-track"><div class="score-fill" style="width:88%"></div></div><div class="score-num">9/10</div></div>
+        <div class="score-row"><div>Pain Discovery</div><div class="score-track"><div class="score-fill" style="width:86%"></div></div><div class="score-num">9/10</div></div>
+        <div class="score-row"><div>Gesprächsführung / Stringenz</div><div class="score-track"><div class="score-fill" style="width:70%"></div></div><div class="score-num">7/10</div></div>
+        <div class="score-row"><div>Demo-Relevanz</div><div class="score-track"><div class="score-fill" style="width:82%"></div></div><div class="score-num">8/10</div></div>
+        <div class="score-row"><div>Next-Step-Klarheit</div><div class="score-track"><div class="score-fill" style="width:84%"></div></div><div class="score-num">8/10</div></div>
+      </div>
+      <div class="two-col">
+        <div class="list">
+          <div class="list-item green"><h3>Was stark war</h3><p>Du bist sauber über Judiths Discovery reingegangen und hast direkt gezeigt, dass du das Büro schon verstanden hast. Das schafft sofort Glaubwürdigkeit.</p></div>
+          <div class="list-item green"><h3>Was stark war</h3><p>Du hast nicht defensiv auf den Zeit-/Budget-Shift reagiert, sondern die neue Relevanz sofort aufgegriffen. Das war wichtig.</p></div>
+          <div class="list-item green"><h3>Was stark war</h3><p>Du hast den E-Mail- und Baustellen-Case als "Wahrheit an einem Ort" gut positioniert — das ist ein starker Adoptionsanker.</p></div>
+          <div class="list-item green"><h3>Was stark war</h3><p>Du hast einen realistischen Beta-Modus verkauft: Feedback → schnelle Iteration → nächste Schleife.</p></div>
+        </div>
+        <div class="list">
+          <div class="list-item red"><h3>Was noch stärker gewesen wäre</h3><p>Früher explizit trennen: <strong>Track A = Judith / Baustelle</strong>, <strong>Track B = Inhaber / Zeit & Planung</strong>. Das wurde im Gespräch klar, aber erst relativ spät sauber sortiert.</p></div>
+          <div class="list-item red"><h3>Was noch stärker gewesen wäre</h3><p>Beim E-Mail-Flow etwas knapper bleiben. Für Luis war Zeiterfassung viel greifbarer; dort hättest du noch härter auf konkrete Anforderungen gehen können.</p></div>
+          <div class="list-item red"><h3>Was noch stärker gewesen wäre</h3><p>Success Criteria noch schärfer machen: Woran merken Juliane/Luis nach 2 Wochen, dass der erste Build "echt genug" ist für den Team-Rollout?</p></div>
+          <div class="list-item red"><h3>Was noch stärker gewesen wäre</h3><p>Den Begriff "Fake-Tryout" hätte man noch stärker zurückspiegeln können — darin steckt der zentrale Entscheidungsmaßstab des Accounts.</p></div>
+        </div>
+      </div>
+      <div class="three-col" style="margin-top:20px;">
+        <div class="card">
+          <div class="section-head" style="margin-bottom:18px;"><div class="eyebrow">Missed Opportunity</div><h2 style="font-size:30px;">Was fast da war</h2></div>
+          <div class="list">
+            <div class="list-item amber"><h3>Zentraler Satz des Calls</h3><p>"Wenn es keine echte Arbeit ersetzt, vertraue ich dem Tool nicht." Das ist fast dein gesamter Positionierungs-Satz für Studio Pampa.</p></div>
+            <div class="list-item amber"><h3>Mandat-Thema</h3><p>Dass Zeiterfassung gesetzlich/operativ ohnehin Pflicht ist, ist ein Geschenk: LUMA muss hier nicht Verhalten erfinden, sondern nur den besseren Container liefern.</p></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-head" style="margin-bottom:18px;"><div class="eyebrow">Ideal Flow</div><h2 style="font-size:30px;">Nächster Termin</h2></div>
+          <div class="list">
+            <div class="list-item blue"><h3>1. Ist-Prozess mappen</h3><p>Heute nicht wieder Demo. Stattdessen 30–40 Min nur: Wer bucht was, wo, wann, warum?</p></div>
+            <div class="list-item blue"><h3>2. Zielbild festziehen</h3><p>Welche Auswertungen, Rollen, Projektarten und Sonderleistungen müssen in V1 drin sein?</p></div>
+            <div class="list-item blue"><h3>3. V1-Kriterien definieren</h3><p>Ab wann sagen Juliane/Luis: Jetzt kann das Team real rein?</p></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-head" style="margin-bottom:18px;"><div class="eyebrow">Bessere Fragen</div><h2 style="font-size:30px;">Für Daniel</h2></div>
+          <div class="list">
+            <div class="list-item"><h3>1.</h3><p>Welche drei Auswertungen müsst ihr mit den gebuchten Stunden zwingend sehen?</p></div>
+            <div class="list-item"><h3>2.</h3><p>Welche Mitarbeiterrollen brauchen nur Buchung, welche zusätzlich Budget-/Planungssicht?</p></div>
+            <div class="list-item"><h3>3.</h3><p>Ab welchem Punkt wäre ein Test für euch nicht mehr „fake“, sondern real?</p></div>
+            <div class="list-item"><h3>4.</h3><p>Welche Sonderleistungen oder Projektarten zerlegen euch heute in Excel am meisten?</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:20px;"><strong>Kurzfazit:</strong> Sehr guter Call. Das Opportunity-Upgrade ist klar: Studio Pampa ist nicht nur ein Baustellen-/Doku-Case, sondern potenziell ein extrem wertvoller Design-Partner für Zeiterfassung, Budgetierung und Ressourcensteuerung in kleinen Architekturbüros.</div>
+    </div>
+  </section>
+
+  <section class="section" id="followup">
+    <div class="wrap two-col">
+      <div class="card">
+        <div class="section-head" style="margin-bottom:18px;"><div class="eyebrow">Follow-up Mail Draft</div><h2 style="font-size:34px;">Bestätigung + Erwartungsbild</h2></div>
+        <div class="mail">Betreff: Danke euch – nächster Termin zu Zeiterfassung & Planung
+
+Hi zusammen,
+
+vielen Dank euch für den Austausch heute – das war super hilfreich.
+
+Ich habe aus dem Gespräch vor allem drei Dinge klar mitgenommen:
+- Der Baustellen-/Dokumentations-Use-Case bleibt relevant, gerade für Judith.
+- Ein großer Hebel bei euch liegt zusätzlich in der Zeiterfassung, Budgetierung und Projekt-/Ressourcenplanung.
+- Entscheidend ist, dass LUMA euch echte Arbeit abnimmt und nicht nur einen weiteren Layer neben Excel, Outlook und eure bestehende Ablage setzt.
+
+Wie besprochen würde ich im nächsten Schritt gern einen gemeinsamen Deep Dive mit euch machen, in dem wir uns den aktuellen Ist-Prozess für Zeiterfassung und Planung einmal ganz konkret anschauen:
+- Wie werden Stunden heute erfasst?
+- Wie unterscheidet ihr Pauschalhonorar vs. Sonderleistungen?
+- Welche Auswertungen braucht ihr wirklich?
+- Wie müsste ein erster sinnvoller V1-Stand aussehen, damit ihr danach zügig auch euer Team mit reinnehmen könnt?
+
+Wenn ich es richtig notiert habe, wäre dafür Dienstag, der 05.05., ideal – bevorzugt um 15:30 Uhr. Wenn das für euch passt, bestätige ich euch den Termin gern direkt so.
+
+Ziel für mich ist dann, auf Basis dieses Termins die erste Iteration für den Zeit-/Planungs-Track zu bauen, so dass wir danach relativ schnell in einen echten Test kommen und nicht in einem „Fake-Tryout" hängen bleiben.
+
+Parallel dazu könnt ihr natürlich weiterhin den Baustellen-/Bautagebuch-Track nutzen bzw. testen.
+
+Freue mich auf den nächsten Schritt mit euch.
+
+Viele Grüße
+Daniel</div>
+      </div>
+      <div class="card">
+        <div class="section-head" style="margin-bottom:18px;"><div class="eyebrow">Was die Mail leisten soll</div><h2 style="font-size:34px;">Keine nette Danksagung, sondern Scope-Fixierung</h2></div>
+        <div class="list">
+          <div class="list-item blue"><h3>1. Gespräch richtig rahmen</h3><p>Nicht „noch ein Follow-up“, sondern ganz klar: nächster Termin = Zeit-/Planungs-Deep-Dive.</p></div>
+          <div class="list-item blue"><h3>2. Mehrwert spiegeln</h3><p>Sie sollen sich im Mailtext wiedererkennen: Admin-Last, Excel-Flickenteppich, echter Wunsch nach Entlastung.</p></div>
+          <div class="list-item blue"><h3>3. Erwartung managen</h3><p>Du versprichst keine fertige Suite, sondern eine erste belastbare Iteration mit kurzer Bauzeit.</p></div>
+          <div class="list-item blue"><h3>4. Commitment stärken</h3><p>Der Satz zum „Fake-Tryout“ zeigt: Du hast ihr zentrales Entscheidungskriterium verstanden.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
