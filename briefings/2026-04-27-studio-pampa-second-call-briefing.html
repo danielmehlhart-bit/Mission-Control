@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studio Pampa · Second Call Briefing</title>
+  <style>
+    :root {
+      --bg: #f6f4ef;
+      --surface: #ffffff;
+      --text: #17202b;
+      --muted: #6f8092;
+      --border: #eadffd;
+      --purple-1: #f0e9ff;
+      --purple-4: #8b5cf6;
+      --purple-5: #5b21b6;
+      --green: #15803d;
+      --amber: #d97706;
+      --red: #dc2626;
+      --blue: #2563eb;
+      --shadow: 0 16px 50px rgba(35,31,54,.08);
+      --content: 1140px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+    h1,h2,h3,p,ul,ol { margin: 0; }
+    .section { padding: 56px 24px; }
+    .wrap { width: min(100%, var(--content)); margin: 0 auto; }
+    .hero {
+      background: linear-gradient(180deg,#fcfbf8 0%,#f6f4ef 100%);
+      padding-top: 68px;
+      padding-bottom: 46px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(139,92,246,.08);
+      border: 1px solid rgba(139,92,246,.14);
+      color: var(--purple-5);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      margin-top: 22px;
+      font-size: clamp(38px,6vw,72px);
+      line-height: .98;
+      letter-spacing: -.04em;
+    }
+    .hero p {
+      margin-top: 18px;
+      max-width: 820px;
+      font-size: clamp(18px,2.2vw,24px);
+      color: var(--muted);
+    }
+    .pill-row { display:flex; flex-wrap:wrap; gap:12px; margin-top: 24px; }
+    .pill {
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid rgba(139,92,246,.14);
+      background: rgba(139,92,246,.06);
+      color: var(--purple-5);
+    }
+    .grid-2, .grid-3 { display:grid; gap:20px; }
+    .grid-2 { grid-template-columns: 1.05fr .95fr; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .card {
+      background: var(--surface);
+      border: 1px solid rgba(139,92,246,.12);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .card h2 {
+      font-size: 26px;
+      line-height: 1.1;
+      letter-spacing: -.03em;
+      margin-bottom: 14px;
+    }
+    .card h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+    .list { display:grid; gap:12px; }
+    .item {
+      border-radius: 18px;
+      padding: 16px 18px;
+      background: #fff;
+      border-left: 4px solid var(--purple-4);
+      box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    }
+    .item.green { border-left-color: var(--green); }
+    .item.red { border-left-color: var(--red); }
+    .item.amber { border-left-color: var(--amber); }
+    .item.blue { border-left-color: var(--blue); }
+    .item p, .item li { font-size: 15px; color: var(--text); }
+    .item .muted { color: var(--muted); }
+    .score {
+      display:grid;
+      gap:12px;
+    }
+    .score-row {
+      display:grid;
+      grid-template-columns: 210px 1fr 54px;
+      gap:12px;
+      align-items:center;
+    }
+    .track {
+      height: 12px;
+      border-radius: 999px;
+      background: #efeaf7;
+      overflow: hidden;
+    }
+    .fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg,#5b21b6 0%,#7c3aed 45%,#a78bfa 100%);
+    }
+    .num {
+      text-align: right;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--purple-5);
+    }
+    .section-head {
+      margin-bottom: 24px;
+    }
+    .section-head h2 {
+      margin-top: 12px;
+      font-size: clamp(30px,4vw,54px);
+      line-height: 1.02;
+      letter-spacing: -.04em;
+    }
+    .section-head p {
+      margin-top: 12px;
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 860px;
+    }
+    .callout {
+      padding: 18px 20px;
+      border-radius: 20px;
+      background: linear-gradient(180deg,#faf7ff 0%,#fff 100%);
+      border: 1px solid #eee6fb;
+      font-size: 15px;
+    }
+    .agenda ol { padding-left: 20px; display:grid; gap:10px; }
+    .agenda li { padding-left: 4px; }
+    .quote {
+      font-size: 18px;
+      line-height: 1.5;
+      color: var(--purple-5);
+      font-weight: 700;
+    }
+    @media (max-width: 960px) {
+      .grid-2, .grid-3, .score-row { grid-template-columns: 1fr; }
+      .num { text-align: left; }
+      .section { padding: 40px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">LUMA · Second Call Briefing</div>
+      <h1>Studio Pampa × LUMA</h1>
+      <p>Kurzes internes Briefing für Daniels zweiten Call mit Studio Pampa. Ziel: mit Juliane und Luis aus einem positiven Discovery-Fit ein klares Commitment für einen ersten Start mit echten Usern machen.</p>
+      <div class="pill-row">
+        <div class="pill">Account: Studio Pampa</div>
+        <div class="pill">Kontakte: Judith, Juliane, Luis</div>
+        <div class="pill">Deal Stage: Proposal</div>
+        <div class="pill">Ziel heute: Pilot-Commitment</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid-2">
+      <div class="card">
+        <h2>Call-Ziel</h2>
+        <div class="sub">Heute nicht breit pitchen, sondern auf einen realistischen Start-Workflow convergen.</div>
+        <div class="list">
+          <div class="item green"><h3>Primär</h3><p>Commitment bekommen, mit echten Nutzer:innen loszulegen.</p></div>
+          <div class="item blue"><h3>Wie?</h3><p>Erst Verständnis spiegeln, dann einen ersten Workflow scharf machen, dann Setup + Next Step festzurren.</p></div>
+          <div class="item amber"><h3>Nicht heute</h3><p>Planlisten / indexierte Dateien nicht als erstes großes Paket verkaufen, sondern bewusst hinten anstellen.</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Dein Opening in einem Satz</h2>
+        <div class="quote">„Ich bin gerade in einer offenen Beta und suche bewusst Büros, die kostenlos mit mir zusammenarbeiten, damit wir die wirklich relevanten Workflows gemeinsam fein schleifen.“</div>
+        <div class="callout" style="margin-top:18px;"><strong>Wirkung:</strong> Das nimmt Druck raus, macht das Setting kollaborativ und erklärt sauber, warum du eng mit Pilotbüros iterierst.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Section 1 · Was ich bisher verstanden habe</div>
+        <h2>Diese Punkte solltest du früh spiegeln, um direkt ein paar „Ja, genau“ zu erzeugen</h2>
+        <p>Die Bullets kombinieren die Discovery mit deinem aktuellen Framing für den zweiten Call.</p>
+      </div>
+      <div class="grid-2">
+        <div class="list">
+          <div class="item green"><h3>1. Baustellen-Dokumentation ist heute mühsam und oft zu spät</h3><p>Gerade der Flow „Fotos machen, reinsprechen, vor Abfahrt erledigt“ hat im letzten Call stark resoniert.</p></div>
+          <div class="item green"><h3>2. Voice-to-Text + Aufgabenmanagement passt gut auf eure Realität</h3><p>Nicht als Spielerei, sondern als echter Weg, Dinge direkt vor Ort zu dokumentieren und in Arbeit zu überführen.</p></div>
+          <div class="item green"><h3>3. Planlisten, Indizes und Revisionsstände tun weh</h3><p>Ich habe verstanden, dass das ein echter Pain ist — aber ich würde das für den Start bewusst nicht zum ersten Experiment machen.</p></div>
+        </div>
+        <div class="list">
+          <div class="item blue"><h3>4. Ein stärkerer erster Hebel ist Baustelle + Büro + Aufgaben + E-Mail</h3><p>Also: Dokumentation vor Ort, Aufgabenmanagement und relevanter E-Mail-Kontext an einem Ort.</p></div>
+          <div class="item blue"><h3>5. Stundenerfassung und Budgetkontrolle sind ein zusätzlich spannendes Gestaltungsfeld</h3><p>Hier sehe ich weniger fertige Lösung als gemeinsame Beta-Chance mit euch.</p></div>
+          <div class="item amber"><h3>6. Preis und Komplexität müssen niedrig-friktional wirken</h3><p>Der Einstieg darf nicht nach großem Tool-Rollout klingen, sondern nach pragmischem, schnellem Mehrwert.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid-2">
+      <div class="card agenda">
+        <h2>Beispiel-Agenda für heute</h2>
+        <div class="sub">Kurz, fokussiert, commitment-orientiert.</div>
+        <ol>
+          <li><strong>2–3 Min · Einordnung & Beta-Setup:</strong> Wer du bist, warum offene Beta, wie die Zusammenarbeit mit Pilotbüros funktioniert.</li>
+          <li><strong>4 Min · Was ich verstanden habe:</strong> Pains spiegeln und bewusst ein paar Ja’s einsammeln.</li>
+          <li><strong>6 Min · Ersten Start-Workflow festzurren:</strong> Baustellen-Doku + Voice + Tasks + relevante E-Mails.</li>
+          <li><strong>5 Min · Stundenerfassung/Budgetkontrolle als Beta-Track ansprechen:</strong> Wer von euch kann mir den Workflow genauer erklären?</li>
+          <li><strong>5 Min · Setup & Next Steps:</strong> Wer startet, was testen wir zuerst, wann geht’s los, wann Check-in?</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h2>Dein empfohlenes Framing</h2>
+        <div class="list">
+          <div class="item blue"><h3>Start-Experiment</h3><p>„Ich würde für den Anfang nicht mit Planlisten starten, sondern mit einem Workflow, der sofort Mehrwert bringt: Baustelle, Büro, Aufgaben und E-Mail-Kontext.“</p></div>
+          <div class="item blue"><h3>Stundenerfassung als Co-Design</h3><p>„Wer von euch könnte mir helfen, das Thema Stundenerfassung und Budgetkontrolle konkret zu gestalten? Wenn ich euren Workflow sauber verstehe, kann ich euch in ca. zwei Wochen eine erste auswertbare Version bauen.“</p></div>
+          <div class="item blue"><h3>E-Mail ehrlich framen</h3><p>„Aktuell geht das per Outlook-Regel — nicht schön, aber effektiv. Genau diesen Workflow baue ich gerade mit zwei anderen Büros, die viel E-Mail-Inbound haben.“</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Section 2 · Top Points für dich</div>
+        <h2>Das sind die Kernbotschaften, die du aktiv setzen solltest</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h2 style="font-size:28px;">1. Offene Beta</h2>
+          <div class="list">
+            <div class="item green"><p>Kostenloses Mitmachen gegen ehrliches Feedback.</p></div>
+            <div class="item green"><p>Du schleifst relevante Workflows mit echten Büros fein.</p></div>
+            <div class="item green"><p>Die Schleife ist immer: Verständnis → erste Version → Nutzung → Feedback → Iteration.</p></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2 style="font-size:28px;">2. E-Mail-Track</h2>
+          <div class="list">
+            <div class="item blue"><p>Heute schon möglich via Outlook-Regel.</p></div>
+            <div class="item blue"><p>Aus E-Mails werden Kontext und Tasks im Tool.</p></div>
+            <div class="item blue"><p>Später saubere Microsoft-Integration statt Weiterleitungs-Workaround.</p></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2 style="font-size:28px;">3. Produkt-Roadmap im Gespräch</h2>
+          <div class="list">
+            <div class="item amber"><p>Planlisten/indizierte Dateien sind wichtig, aber nicht der erste Pilot.</p></div>
+            <div class="item amber"><p>Stundenerfassung/Budgetkontrolle kann ein gemeinsamer Beta-Track werden.</p></div>
+            <div class="item amber"><p>Baustellen-Doku + Tasks + E-Mail ist der schnellere Start mit klarem Mehrwert.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid-2">
+      <div class="card">
+        <h2>Was du aus PE Stab mitnehmen solltest</h2>
+        <div class="sub">Aus dem letzten Onboarding-Review: Das war stark — und genau das hilft dir heute.</div>
+        <div class="list">
+          <div class="item green"><h3>Gut gemacht</h3><p>Du bist mit einem klaren Recap gestartet und hast gezeigt, dass du den ersten Call wirklich verstanden hast.</p></div>
+          <div class="item green"><h3>Gut gemacht</h3><p>Du hast echte operative Pains gespiegelt statt generisch zu pitchen.</p></div>
+          <div class="item green"><h3>Gut gemacht</h3><p>Deine Demo war nah am Alltag und nicht abstrakt.</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Worauf du heute achten solltest</h2>
+        <div class="list">
+          <div class="item red"><h3>Früher enger werden</h3><p>Nicht zu viele Flows gleichzeitig. Gemeinsam festnageln: <strong>Was ist der eine Start-Workflow?</strong></p></div>
+          <div class="item red"><h3>Commitment vor Feature-Breite</h3><p>Heute lieber ein klares „wir starten mit X Usern und testen Y“ als noch ein zusätzlicher Feature-Exkurs.</p></div>
+          <div class="item red"><h3>Success-Kriterium setzen</h3><p>Frag explizit: <strong>Woran merkt ihr in 14 Tagen, dass das hier funktioniert?</strong></p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid-2">
+      <div class="card">
+        <h2>Ziel-Commitment am Ende des Calls</h2>
+        <div class="list">
+          <div class="item blue"><p><strong>Wer</strong> startet konkret mit?</p></div>
+          <div class="item blue"><p><strong>Welcher Workflow</strong> ist der erste Test?</p></div>
+          <div class="item blue"><p><strong>Welche E-Mails</strong> bzw. welcher E-Mail-Typ geht als erstes rein?</p></div>
+          <div class="item blue"><p><strong>Wer erklärt dir</strong> den Ist-Prozess für Stundenerfassung/Budgetkontrolle?</p></div>
+          <div class="item blue"><p><strong>Wann</strong> ist der nächste Check-in?</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Dein bestes Closing</h2>
+        <div class="callout"><strong>Vorschlag:</strong><br /><br />„Wenn wir das pragmatisch aufsetzen: Lasst uns nicht alles auf einmal lösen. Ich würde vorschlagen, wir starten mit einem ersten echten Workflow rund um Baustelle, Aufgaben und E-Mail-Kontext. Parallel helft ihr mir, das Thema Stundenerfassung/Budgetkontrolle sauber zu verstehen. Dann kann ich euch in etwa zwei Wochen eine erste auswertbare Version zeigen. Wäre das ein sinnvoller Start für euch?“</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="wrap">
+      <div class="card">
+        <h2>Mini-Score für deine Gesprächsführung heute</h2>
+        <div class="sub">Die Leitplanke aus dem PE-Stab-Review: weniger Fläche, mehr Klarheit.</div>
+        <div class="score">
+          <div class="score-row"><div>Recap / Verständnis</div><div class="track"><div class="fill" style="width:90%"></div></div><div class="num">hoch</div></div>
+          <div class="score-row"><div>Pain-Spiegelung</div><div class="track"><div class="fill" style="width:88%"></div></div><div class="num">hoch</div></div>
+          <div class="score-row"><div>Workflow-Fokus</div><div class="track"><div class="fill" style="width:95%"></div></div><div class="num">max</div></div>
+          <div class="score-row"><div>Feature-Breite vermeiden</div><div class="track"><div class="fill" style="width:92%"></div></div><div class="num">krit.</div></div>
+          <div class="score-row"><div>Commitment holen</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="num">Ziel</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
