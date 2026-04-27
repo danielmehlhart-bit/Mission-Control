@@ -3,185 +3,318 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Wöchentlicher Security Audit</title>
+  <title>Weekly Security Audit</title>
   <style>
     :root {
-      --bg: #141720;
-      --panel: #1b2030;
-      --panel-2: #21273a;
-      --text: #e8ecf3;
-      --muted: #a3adc2;
-      --line: #30384d;
-      --green: #22c55e;
-      --yellow: #f59e0b;
-      --red: #ef4444;
-      --blue: #60a5fa;
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --panel-soft: #fbfcff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --shadow: 0 18px 40px rgba(15, 23, 42, .08);
+      --green: #16a34a;
+      --green-bg: #edfdf3;
+      --yellow: #d97706;
+      --yellow-bg: #fff7ed;
+      --red: #dc2626;
+      --red-bg: #fef2f2;
+      --blue: #2563eb;
+      --blue-bg: #eff6ff;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      background: var(--bg);
-      color: var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #f8fafc 0%, #f3f4f6 100%);
+      color: var(--text);
       line-height: 1.5;
     }
-    .wrap { max-width: 1120px; margin: 0 auto; padding: 32px 20px 56px; }
-    .hero, .card {
-      background: linear-gradient(180deg, var(--panel), var(--panel-2));
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      box-shadow: 0 10px 28px rgba(0,0,0,.22);
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
     }
-    .hero { padding: 22px; margin-bottom: 18px; }
-    .card { padding: 18px 20px; margin-top: 16px; }
-    h1, h2, h3 { margin: 0 0 12px; }
-    h1 { font-size: 32px; }
-    h2 { font-size: 20px; }
-    p, li { color: var(--text); }
+    .hero, .card {
+      background: var(--panel);
+      border: 1px solid rgba(229, 231, 235, .9);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+    .hero {
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .card {
+      padding: 22px;
+      margin-top: 18px;
+    }
+    h1, h2, h3 { margin: 0; }
+    h1 { font-size: 34px; line-height: 1.1; }
+    h2 { font-size: 22px; margin-bottom: 12px; }
+    h3 { font-size: 17px; margin-bottom: 10px; }
+    p { margin: 8px 0 0; }
     .muted { color: var(--muted); }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
-      margin-top: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
     }
     .stat {
-      padding: 14px 16px;
-      border-radius: 14px;
+      padding: 18px;
+      border-radius: 18px;
+      background: var(--panel-soft);
       border: 1px solid var(--line);
-      background: rgba(255,255,255,.02);
     }
-    .stat .k { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
-    .stat .v { font-size: 26px; font-weight: 800; margin-top: 6px; }
+    .stat .k {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .stat .v {
+      font-size: 28px;
+      font-weight: 700;
+      margin-top: 6px;
+    }
     .pill {
-      display: inline-block;
-      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       border-radius: 999px;
+      padding: 7px 12px;
       font-size: 12px;
       font-weight: 700;
+      margin: 10px 8px 0 0;
       border: 1px solid transparent;
-      margin: 0 8px 8px 0;
-      vertical-align: middle;
     }
-    .ok { color: #8be7b1; background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.3); }
-    .warn { color: #f7c66c; background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.3); }
-    .bad { color: #ff9a9a; background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.3); }
-    .info { color: #a9ccff; background: rgba(96,165,250,.12); border-color: rgba(96,165,250,.3); }
-    .status { font-size: 18px; font-weight: 800; }
-    .green { color: var(--green); }
-    .yellow { color: var(--yellow); }
-    .red { color: var(--red); }
-    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 14px; }
-    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
-    th { color: var(--muted); font-weight: 700; }
-    code {
-      background: rgba(255,255,255,.06);
-      padding: 2px 6px;
-      border-radius: 8px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 12px;
+    .red { background: var(--red-bg); color: var(--red); border-color: rgba(220,38,38,.18); }
+    .yellow { background: var(--yellow-bg); color: var(--yellow); border-color: rgba(217,119,6,.18); }
+    .green { background: var(--green-bg); color: var(--green); border-color: rgba(22,163,74,.18); }
+    .blue { background: var(--blue-bg); color: var(--blue); border-color: rgba(37,99,235,.18); }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.3fr .9fr;
+      gap: 18px;
     }
-    ul { margin: 8px 0 0 20px; }
-    .small { font-size: 13px; color: var(--muted); }
-    .note {
-      border-left: 4px solid var(--yellow);
-      padding: 12px 14px;
-      background: rgba(245,158,11,.08);
-      border-radius: 10px;
+    .issue {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: #fff;
       margin-top: 12px;
     }
-    .footer { margin-top: 18px; color: var(--muted); font-size: 12px; }
+    .issue.red-accent { box-shadow: inset 4px 0 0 var(--red); }
+    .issue.yellow-accent { box-shadow: inset 4px 0 0 var(--yellow); }
+    .issue.green-accent { box-shadow: inset 4px 0 0 var(--green); }
+    ul { margin: 8px 0 0 18px; padding: 0; }
+    li { margin: 6px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    th {
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    code {
+      background: #f3f4f6;
+      border-radius: 8px;
+      padding: 2px 6px;
+      font-size: 12px;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.55;
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 18px;
+      padding: 16px;
+      overflow: auto;
+    }
+    .small { font-size: 13px; }
+    @media (max-width: 900px) {
+      .two-col { grid-template-columns: 1fr; }
+      h1 { font-size: 28px; }
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="hero">
-      <h1>Wöchentlicher Security Audit</h1>
-      <p class="muted">Stand: 2026-04-27 10:01:21 CEST · geprüft wurden offene Ports, Firewall, SSH-Fehler, laufende Services, Speicher, Logins und Updates.</p>
-      <p class="status yellow">Gesamtstatus: Gelb</p>
+    <section class="hero">
+      <h1>🔒 Weekly Security Audit</h1>
+      <p class="muted">Host: Raspberry Pi 5 · Debian 13 (Trixie) · erstellt am 2026-04-27 10:03 CEST</p>
       <div class="grid">
-        <div class="stat"><div class="k">Fazit</div><div class="v">Gelb</div></div>
-        <div class="stat"><div class="k">SSH-Fehlversuche</div><div class="v">0</div></div>
-        <div class="stat"><div class="k">Root-Füllstand</div><div class="v">34%</div></div>
-        <div class="stat"><div class="k">Upgradable Pakete</div><div class="v">19+</div></div>
+        <div class="stat"><div class="k">Gesamtstatus</div><div class="v" style="color: var(--red);">Rot</div></div>
+        <div class="stat"><div class="k">Offene TCP-Ports</div><div class="v">6</div></div>
+        <div class="stat"><div class="k">OpenClaw Audit</div><div class="v">3 kritisch</div></div>
+        <div class="stat"><div class="k">Disk Usage /</div><div class="v">34%</div></div>
       </div>
-      <div class="note">
-        <strong>Kurzfazit:</strong> Firewall ist aktiv und sauber konfiguriert, im SSH-Log gibt es keine Auffälligkeiten. Der Audit bleibt aber <strong>gelb</strong>, weil mehrere Updates anstehen und zwei Python-Listener ohne eindeutig zuordenbaren Dienstnamen offen sind. Außerdem ist <code>last</code> auf dem System nicht installiert.
+      <div>
+        <span class="pill red">Kritisch: exec/full + offene Gruppen-Exposition</span>
+        <span class="pill yellow">Auffällig: unbekannte Python-Listener auf 0.0.0.0</span>
+        <span class="pill green">UFW aktiv, inbound auf LAN begrenzt</span>
+        <span class="pill blue">SSH-Server aktuell inaktiv</span>
       </div>
-    </div>
+    </section>
 
-    <div class="card">
-      <h2>Wichtigste Findings</h2>
-      <ul>
-        <li><span class="pill ok">OK</span> <strong>UFW aktiv</strong> mit Default <code>deny incoming</code>; freigegeben sind nur <code>8080/tcp</code> und <code>18789/tcp</code> aus <code>192.168.0.0/16</code>.</li>
-        <li><span class="pill ok">OK</span> <strong>Keine SSH-Fails</strong>: In den letzten 7 Tagen wurden keine <code>failed</code>/<code>invalid</code>-Einträge gefunden.</li>
-        <li><span class="pill warn">Prüfen</span> <strong>Zwei Python-Listener</strong> auf <code>0.0.0.0:45903</code> und <code>0.0.0.0:43119</code> sind offen, aber nicht direkt als Dienst benannt.</li>
-        <li><span class="pill warn">Prüfen</span> <strong>19+ Updates verfügbar</strong>, darunter <code>openssl</code>/<code>libssl3t64</code>, <code>chromium</code>, <code>firefox</code>, <code>nodejs</code> und <code>raspi-firmware</code>.</li>
-        <li><span class="pill warn">Einschränkung</span> <strong><code>last</code> fehlt</strong>; Login-Historie konnte daher mit dem gewünschten Befehl nicht geprüft werden.</li>
-      </ul>
-    </div>
+    <section class="two-col">
+      <div>
+        <div class="card">
+          <h2>Executive Summary</h2>
+          <p>Der Host selbst sieht nicht dramatisch aus: Platte gesund, UFW aktiv, kein laufender SSH-Server, keine fehlgeschlagenen SSH-Logins in den letzten 7 Tagen. Das Problem sitzt in der OpenClaw-Konfiguration: <code>exec security=full</code> ist aktiv, es gibt eine kritische Kanal-/Trust-Exposure und eine Telegram-Elevated-Allowlist mit Wildcard.</p>
+          <div class="issue red-accent">
+            <h3>Warum Rot?</h3>
+            <ul>
+              <li>OpenClaw meldet <strong>3 kritische Findings</strong>.</li>
+              <li>Ein exec-fähiger Agent ist aus einem Gruppen-Kontext erreichbar.</li>
+              <li>Elevated-Allowlist enthält laut Audit eine Wildcard.</li>
+            </ul>
+          </div>
+          <div class="issue yellow-accent">
+            <h3>Was ich zusätzlich komisch finde</h3>
+            <ul>
+              <li><code>python3</code> lauscht auf <code>0.0.0.0:45903</code> und <code>0.0.0.0:43119</code>.</li>
+              <li><code>code-server</code> läuft auf <code>0.0.0.0:8080</code>, aber UFW lässt nur LAN zu — okay, trotzdem bewusst im Blick behalten.</li>
+            </ul>
+          </div>
+        </div>
 
-    <div class="card">
-      <h2>Detailchecks</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Check</th>
-            <th>Ergebnis</th>
-            <th>Bewertung</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>ss -ltnp</code></td>
-            <td>Offene Listener: <code>8080</code> (node), <code>18789/18791</code> (openclaw-gatewa), <code>45903</code> und <code>43119</code> (python3), plus interne/systemnahe Adressen.</td>
-            <td><span class="pill warn">gelb</span></td>
-          </tr>
-          <tr>
-            <td><code>sudo ufw status verbose</code></td>
-            <td>Aktiv, Default deny incoming, allow outgoing, allow in nur für <code>8080/tcp</code> und <code>18789/tcp</code> aus LAN.</td>
-            <td><span class="pill ok">grün</span></td>
-          </tr>
-          <tr>
-            <td><code>journalctl -u ssh --since '7 days ago' | grep -i 'failed\|invalid'</code></td>
-            <td>Keine Treffer.</td>
-            <td><span class="pill ok">grün</span></td>
-          </tr>
-          <tr>
-            <td><code>systemctl list-units --type=service --state=running</code></td>
-            <td>Normale Systemdienste plus u. a. <code>fail2ban</code>, <code>tailscaled</code>, <code>unattended-upgrades</code>, <code>mc-watcher</code>, <code>code-server</code>.</td>
-            <td><span class="pill ok">grün</span></td>
-          </tr>
-          <tr>
-            <td><code>df -h</code></td>
-            <td>Root <code>34%</code> belegt, Boot <code>16%</code>, genügend Reserve vorhanden.</td>
-            <td><span class="pill ok">grün</span></td>
-          </tr>
-          <tr>
-            <td><code>last -10</code></td>
-            <td><code>last: command not found</code></td>
-            <td><span class="pill warn">gelb</span></td>
-          </tr>
-          <tr>
-            <td><code>apt list --upgradable</code></td>
-            <td>Mehrere Upgrades offen, darunter sicherheitsrelevante Basispakete.</td>
-            <td><span class="pill warn">gelb</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+        <div class="card">
+          <h2>Priorisierte Findings</h2>
+          <div class="issue red-accent">
+            <h3>1. OpenClaw Exec Trust zu offen</h3>
+            <p class="small">Audit: <code>tools.exec.security_full_configured</code>, <code>security.exposure.open_channels_with_exec</code></p>
+            <p><strong>Risiko:</strong> Zu breite Tool-Rechte in einem Kontext, der über Telegram-Gruppen erreichbar ist. Das ist genau die Sorte Konfiguration, die irgendwann hässlich wird.</p>
+          </div>
+          <div class="issue red-accent">
+            <h3>2. Elevated Allowlist mit Wildcard</h3>
+            <p class="small">Audit: <code>tools.elevated.allowFrom.telegram.wildcard</code></p>
+            <p><strong>Risiko:</strong> Elevated-Zugriff wird effektiv nicht mehr sauber auf einen engen Kreis begrenzt.</p>
+          </div>
+          <div class="issue yellow-accent">
+            <h3>3. Keine Auth-Rate-Limits am Gateway</h3>
+            <p class="small">Audit: <code>gateway.auth_no_rate_limit</code></p>
+            <p><strong>Risiko:</strong> Wenn das Gateway nicht nur loopback-intern relevant ist, fehlen Bremsen gegen Brute Force.</p>
+          </div>
+          <div class="issue yellow-accent">
+            <h3>4. Unklare Listener</h3>
+            <p><strong>Risiko:</strong> Zwei Python-Prozesse hängen offen auf allen Interfaces. Ohne Kontext ist das kein direkter Alarm, aber es verdient Identifikation.</p>
+          </div>
+        </div>
 
-    <div class="card">
-      <h2>Konkrete Handlung</h2>
-      <ul>
-        <li><strong>In Kürze updaten:</strong> Paket-Updates einspielen, mindestens <code>openssl</code>/<code>libssl3t64</code>, Browser und <code>nodejs</code>.</li>
-        <li><strong>Python-Ports prüfen:</strong> Identifizieren, welche Prozesse auf <code>45903</code> und <code>43119</code> lauschen, und nur bei Bedarf offen lassen.</li>
-        <li><strong>Login-Audit nachziehen:</strong> Wenn gewünscht, <code>util-linux</code> / <code>last</code> installieren oder einen alternativen Login-Check verwenden.</li>
-      </ul>
-      <p class="small">Für Daniel: aktuell kein akuter Vorfall, aber wegen der offenen Updates und der zwei ungeklärten Listener nicht „grün“.</p>
-    </div>
+        <div class="card">
+          <h2>Check-Ergebnisse</h2>
+          <table>
+            <thead>
+              <tr><th>Check</th><th>Ergebnis</th><th>Bewertung</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Offene Ports</td><td>18789/tcp, 8080/tcp, 45903/tcp, 43119/tcp, 18791/tcp localhost, Tailscale-IP 51679/tcp</td><td>⚠️</td></tr>
+              <tr><td>Firewall</td><td>UFW aktiv, Default deny inbound; nur 8080/tcp und 18789/tcp aus 192.168.0.0/16 erlaubt</td><td>✅</td></tr>
+              <tr><td>SSH Fehlversuche</td><td>Keine Treffer in den letzten 7 Tagen; <code>ssh.service</code> ist inaktiv</td><td>✅</td></tr>
+              <tr><td>Laufende Services</td><td>fail2ban, code-server, openclaw gateway, mc-watcher, unattended-upgrades, tailscaled u.a.</td><td>✅</td></tr>
+              <tr><td>Disk Usage</td><td><code>/</code> bei 34%, Boot 16%</td><td>✅</td></tr>
+              <tr><td>Letzte Logins</td><td><code>last</code> auf dem Host nicht verfügbar; ersatzweise nur recente Session-Events sichtbar</td><td>ℹ️</td></tr>
+              <tr><td>Updates</td><td>Mehrere Pakete upgradable, u.a. chromium, firefox, nodejs, openssl, raspi-firmware</td><td>⚠️</td></tr>
+              <tr><td>OpenClaw Security Audit</td><td>3 kritisch / 5 warn / 2 info</td><td>🔴</td></tr>
+              <tr><td>OpenClaw Update Status</td><td>Update verfügbar: 2026.4.24</td><td>⚠️</td></tr>
+            </tbody>
+          </table>
+        </div>
 
-    <div class="footer">Erstellt automatisch durch den Weekly Security Audit.</div>
+        <div class="card">
+          <h2>Empfohlene nächsten Schritte</h2>
+          <ol>
+            <li><strong>OpenClaw exec/security von <code>full</code> auf <code>allowlist</code> ziehen</strong> und Gruppen-Reichweite kappen oder strikt allowlisten.</li>
+            <li><strong>Telegram elevated wildcard entfernen.</strong> Das ist der dickste rote Fleck.</li>
+            <li><strong>Gateway Auth-Rate-Limits setzen.</strong></li>
+            <li><strong>Ports 45903 und 43119 identifizieren.</strong> Wenn unnötig: Prozess abstellen oder Bind auf localhost.</li>
+            <li><strong>Upgrades einspielen</strong> — vor allem Browser, OpenSSL, Node.js, Firmware.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h2>Host-Kontext</h2>
+          <table>
+            <tbody>
+              <tr><th>OS</th><td>Debian GNU/Linux 13 (Trixie)</td></tr>
+              <tr><th>Kernel</th><td>6.12.75+rpt-rpi-2712</td></tr>
+              <tr><th>Hardware</th><td>Raspberry Pi 5</td></tr>
+              <tr><th>Gateway</th><td>OpenClaw lokal aktiv, Port 18789</td></tr>
+              <tr><th>Trust Model</th><td>Personal assistant</td></tr>
+              <tr><th>Firewall</th><td>UFW active</td></tr>
+              <tr><th>SSH</th><td>inaktiv</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h2>Listening Ports</h2>
+          <pre>0.0.0.0:45903   python3
+127.0.0.1:18791 openclaw-gateway
+100.73.197.68:51679 unknown
+0.0.0.0:18789   openclaw-gateway
+0.0.0.0:43119   python3
+0.0.0.0:8080    node (code-server)
+[fd7a:115c:a1e0::3e01:c59f]:40699</pre>
+        </div>
+
+        <div class="card">
+          <h2>UFW Status</h2>
+          <pre>Status: active
+Default: deny (incoming), allow (outgoing), disabled (routed)
+
+ALLOW IN from 192.168.0.0/16:
+- 8080/tcp
+- 18789/tcp</pre>
+        </div>
+
+        <div class="card">
+          <h2>OpenClaw Audit Highlights</h2>
+          <ul>
+            <li><strong>Critical:</strong> elevated wildcard on Telegram</li>
+            <li><strong>Critical:</strong> exec security full configured</li>
+            <li><strong>Critical:</strong> open channel can reach exec-enabled agent</li>
+            <li><strong>Warn:</strong> no gateway auth rate limiting</li>
+            <li><strong>Warn:</strong> autoAllowSkills enabled</li>
+            <li><strong>Warn:</strong> multi-user heuristic triggered</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Upgradable Packages</h2>
+          <pre>chromium, chromium-common, chromium-l10n, chromium-sandbox
+firefox
+gstreamer1.0-plugins-bad, libgstreamer-plugins-bad1.0-0
+libssl3t64, openssl, openssl-provider-legacy
+nodejs
+raspi-firmware
+libvlc-bin, libvlc5, libvlccore9
+python3-sense-hat, rc-gui, libpisp-common, libpisp1</pre>
+        </div>
+      </div>
+    </section>
   </div>
 </body>
 </html>
