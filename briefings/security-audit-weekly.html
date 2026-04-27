@@ -1,161 +1,187 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weekly Security Audit</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            background-color: #F7F7F7;
-            color: #333;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        .header {
-            border-bottom: 1px solid #EAEAEA;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 28px;
-            font-weight: 600;
-        }
-        .header p {
-            margin: 5px 0 0;
-            color: #777;
-        }
-        .status-badge {
-            display: inline-block;
-            padding: 8px 15px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 16px;
-        }
-        .status-yellow {
-            background-color: #FFFBEA;
-            color: #B45309;
-            border: 1px solid #FEEBAE;
-        }
-        .section {
-            margin-bottom: 35px;
-        }
-        .section h2 {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #EAEAEA;
-            padding-bottom: 10px;
-        }
-        pre {
-            background-color: #FDFDFD;
-            border: 1px solid #EAEAEA;
-            padding: 15px;
-            border-radius: 8px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-family: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", monospace;
-            font-size: 14px;
-        }
-        .warning {
-            background-color: #FFFBEA;
-            border-left: 4px solid #FBBF24;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 0 4px 4px 0;
-        }
-        .warning p { margin: 0; }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wöchentlicher Security Audit</title>
+  <style>
+    :root {
+      --bg: #141720;
+      --panel: #1b2030;
+      --panel-2: #21273a;
+      --text: #e8ecf3;
+      --muted: #a3adc2;
+      --line: #30384d;
+      --green: #22c55e;
+      --yellow: #f59e0b;
+      --red: #ef4444;
+      --blue: #60a5fa;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 32px 20px 56px; }
+    .hero, .card {
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 10px 28px rgba(0,0,0,.22);
+    }
+    .hero { padding: 22px; margin-bottom: 18px; }
+    .card { padding: 18px 20px; margin-top: 16px; }
+    h1, h2, h3 { margin: 0 0 12px; }
+    h1 { font-size: 32px; }
+    h2 { font-size: 20px; }
+    p, li { color: var(--text); }
+    .muted { color: var(--muted); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .stat {
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.02);
+    }
+    .stat .k { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    .stat .v { font-size: 26px; font-weight: 800; margin-top: 6px; }
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      margin: 0 8px 8px 0;
+      vertical-align: middle;
+    }
+    .ok { color: #8be7b1; background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.3); }
+    .warn { color: #f7c66c; background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.3); }
+    .bad { color: #ff9a9a; background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.3); }
+    .info { color: #a9ccff; background: rgba(96,165,250,.12); border-color: rgba(96,165,250,.3); }
+    .status { font-size: 18px; font-weight: 800; }
+    .green { color: var(--green); }
+    .yellow { color: var(--yellow); }
+    .red { color: var(--red); }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 14px; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-weight: 700; }
+    code {
+      background: rgba(255,255,255,.06);
+      padding: 2px 6px;
+      border-radius: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+    }
+    ul { margin: 8px 0 0 20px; }
+    .small { font-size: 13px; color: var(--muted); }
+    .note {
+      border-left: 4px solid var(--yellow);
+      padding: 12px 14px;
+      background: rgba(245,158,11,.08);
+      border-radius: 10px;
+      margin-top: 12px;
+    }
+    .footer { margin-top: 18px; color: var(--muted); font-size: 12px; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Wöchentlicher Security Audit</h1>
-            <p>Automatisch generierter Report vom 6. April 2026</p>
-            <p>Gesamtstatus: <span class="status-badge status-yellow">Gelb</span></p>
-        </div>
-
-        <div class="warning">
-            <p><strong>Hinweis:</strong> Der Audit ist unvollständig. Zwei wichtige Prüfungen (Firewall-Status, SSH-Fehlversuche) konnten aufgrund fehlender `sudo`-Berechtigungen im ausführenden Kontext nicht durchgeführt werden. Der Status ist daher 'Gelb'.</p>
-        </div>
-
-        <div class="section">
-            <h2>1. Offene Ports (ss -ltnp)</h2>
-            <pre>
-State  Recv-Q Send-Q               Local Address:Port  Peer Address:PortProcess                                      
-LISTEN 0      511                      127.0.0.1:18791      0.0.0.0:*    users:(("openclaw-gatewa",pid=108717,fd=34))
-LISTEN 0      511                        0.0.0.0:8080       0.0.0.0:*    users:(("node",pid=1670,fd=22))             
-LISTEN 0      511                        0.0.0.0:18789      0.0.0.0:*    users:(("openclaw-gatewa",pid=108717,fd=22))
-LISTEN 0      511                      127.0.0.1:41867      0.0.0.0:*    users:(("openclaw-gatewa",pid=108717,fd=23))
-LISTEN 0      4096                 100.73.197.68:51679      0.0.0.0:*                                                
-LISTEN 0      4096   [fd7a:115c:a1e0::3e01:c59f]:40699         [::]:*
-            </pre>
-            <p><strong>Bewertung:</strong> Ports für OpenClaw-Gateway und einen Node.js-Prozess (vermutlich code-server) sind offen. Keine unerwarteten Services von außen erreichbar. ✅</p>
-        </div>
-
-        <div class="section">
-            <h2>2. Firewall (sudo ufw status verbose)</h2>
-            <pre>FEHLER: Konnte nicht ausgeführt werden (keine sudo-Rechte).</pre>
-        </div>
-
-        <div class="section">
-            <h2>3. Fehlgeschlagene SSH-Logins (letzte 7 Tage)</h2>
-            <pre>FEHLER: Konnte nicht ausgeführt werden (keine sudo-Rechte).</pre>
-        </div>
-
-        <div class="section">
-            <h2>4. Laufende Services (systemctl)</h2>
-            <pre>
-accounts-daemon.service       loaded active running Accounts Service
-avahi-daemon.service          loaded active running Avahi mDNS/DNS-SD Stack
-bluetooth.service             loaded active running Bluetooth service
-code-server@hartner.service   loaded active running code-server
-cron.service                  loaded active running Regular background program processing daemon
-dbus.service                  loaded active running D-Bus System Message Bus
-fail2ban.service              loaded active running Fail2Ban Service
-lightdm.service               loaded active running Light Display Manager
-mc-watcher.service            loaded active running Mission Control Auto-Push Watcher
-NetworkManager.service        loaded active running Network Manager
-systemd-journald.service      loaded active running Journal Service
-systemd-logind.service        loaded active running User Login Management
-systemd-timesyncd.service     loaded active running Network Time Synchronization
-tailscaled.service            loaded active running Tailscale node agent
-unattended-upgrades.service   loaded active running Unattended Upgrades Shutdown
-... (und weitere Systemdienste)
-            </pre>
-            <p><strong>Bewertung:</strong> Standard-Systemdienste laufen. `fail2ban` und `tailscaled` sind aktiv, was positiv ist. ✅</p>
-        </div>
-
-        <div class="section">
-            <h2>5. Disk Usage (df -h)</h2>
-            <pre>
-Filesystem      Size  Used Avail Use% Mounted on
-/dev/mmcblk0p2   96G   22G   70G  24% /
-/dev/mmcblk0p1  510M   79M  432M  16% /boot/firmware
-            </pre>
-            <p><strong>Bewertung:</strong> Hauptpartition bei 24% Auslastung. Kein Grund zur Sorge. ✅</p>
-        </div>
-
-        <div class="section">
-            <h2>6. Letzte Logins (last -10)</h2>
-            <pre>FEHLER: Befehl 'last' nicht gefunden.</pre>
-        </div>
-
-        <div class="section">
-            <h2>7. Verfügbare Updates (apt list --upgradable)</h2>
-            <pre>Keine Updates verfügbar.</pre>
-            <p><strong>Bewertung:</strong> Das System ist auf dem neuesten Stand. ✅</p>
-        </div>
+  <div class="wrap">
+    <div class="hero">
+      <h1>Wöchentlicher Security Audit</h1>
+      <p class="muted">Stand: 2026-04-27 10:01:21 CEST · geprüft wurden offene Ports, Firewall, SSH-Fehler, laufende Services, Speicher, Logins und Updates.</p>
+      <p class="status yellow">Gesamtstatus: Gelb</p>
+      <div class="grid">
+        <div class="stat"><div class="k">Fazit</div><div class="v">Gelb</div></div>
+        <div class="stat"><div class="k">SSH-Fehlversuche</div><div class="v">0</div></div>
+        <div class="stat"><div class="k">Root-Füllstand</div><div class="v">34%</div></div>
+        <div class="stat"><div class="k">Upgradable Pakete</div><div class="v">19+</div></div>
+      </div>
+      <div class="note">
+        <strong>Kurzfazit:</strong> Firewall ist aktiv und sauber konfiguriert, im SSH-Log gibt es keine Auffälligkeiten. Der Audit bleibt aber <strong>gelb</strong>, weil mehrere Updates anstehen und zwei Python-Listener ohne eindeutig zuordenbaren Dienstnamen offen sind. Außerdem ist <code>last</code> auf dem System nicht installiert.
+      </div>
     </div>
+
+    <div class="card">
+      <h2>Wichtigste Findings</h2>
+      <ul>
+        <li><span class="pill ok">OK</span> <strong>UFW aktiv</strong> mit Default <code>deny incoming</code>; freigegeben sind nur <code>8080/tcp</code> und <code>18789/tcp</code> aus <code>192.168.0.0/16</code>.</li>
+        <li><span class="pill ok">OK</span> <strong>Keine SSH-Fails</strong>: In den letzten 7 Tagen wurden keine <code>failed</code>/<code>invalid</code>-Einträge gefunden.</li>
+        <li><span class="pill warn">Prüfen</span> <strong>Zwei Python-Listener</strong> auf <code>0.0.0.0:45903</code> und <code>0.0.0.0:43119</code> sind offen, aber nicht direkt als Dienst benannt.</li>
+        <li><span class="pill warn">Prüfen</span> <strong>19+ Updates verfügbar</strong>, darunter <code>openssl</code>/<code>libssl3t64</code>, <code>chromium</code>, <code>firefox</code>, <code>nodejs</code> und <code>raspi-firmware</code>.</li>
+        <li><span class="pill warn">Einschränkung</span> <strong><code>last</code> fehlt</strong>; Login-Historie konnte daher mit dem gewünschten Befehl nicht geprüft werden.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Detailchecks</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Check</th>
+            <th>Ergebnis</th>
+            <th>Bewertung</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>ss -ltnp</code></td>
+            <td>Offene Listener: <code>8080</code> (node), <code>18789/18791</code> (openclaw-gatewa), <code>45903</code> und <code>43119</code> (python3), plus interne/systemnahe Adressen.</td>
+            <td><span class="pill warn">gelb</span></td>
+          </tr>
+          <tr>
+            <td><code>sudo ufw status verbose</code></td>
+            <td>Aktiv, Default deny incoming, allow outgoing, allow in nur für <code>8080/tcp</code> und <code>18789/tcp</code> aus LAN.</td>
+            <td><span class="pill ok">grün</span></td>
+          </tr>
+          <tr>
+            <td><code>journalctl -u ssh --since '7 days ago' | grep -i 'failed\|invalid'</code></td>
+            <td>Keine Treffer.</td>
+            <td><span class="pill ok">grün</span></td>
+          </tr>
+          <tr>
+            <td><code>systemctl list-units --type=service --state=running</code></td>
+            <td>Normale Systemdienste plus u. a. <code>fail2ban</code>, <code>tailscaled</code>, <code>unattended-upgrades</code>, <code>mc-watcher</code>, <code>code-server</code>.</td>
+            <td><span class="pill ok">grün</span></td>
+          </tr>
+          <tr>
+            <td><code>df -h</code></td>
+            <td>Root <code>34%</code> belegt, Boot <code>16%</code>, genügend Reserve vorhanden.</td>
+            <td><span class="pill ok">grün</span></td>
+          </tr>
+          <tr>
+            <td><code>last -10</code></td>
+            <td><code>last: command not found</code></td>
+            <td><span class="pill warn">gelb</span></td>
+          </tr>
+          <tr>
+            <td><code>apt list --upgradable</code></td>
+            <td>Mehrere Upgrades offen, darunter sicherheitsrelevante Basispakete.</td>
+            <td><span class="pill warn">gelb</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Konkrete Handlung</h2>
+      <ul>
+        <li><strong>In Kürze updaten:</strong> Paket-Updates einspielen, mindestens <code>openssl</code>/<code>libssl3t64</code>, Browser und <code>nodejs</code>.</li>
+        <li><strong>Python-Ports prüfen:</strong> Identifizieren, welche Prozesse auf <code>45903</code> und <code>43119</code> lauschen, und nur bei Bedarf offen lassen.</li>
+        <li><strong>Login-Audit nachziehen:</strong> Wenn gewünscht, <code>util-linux</code> / <code>last</code> installieren oder einen alternativen Login-Check verwenden.</li>
+      </ul>
+      <p class="small">Für Daniel: aktuell kein akuter Vorfall, aber wegen der offenen Updates und der zwei ungeklärten Listener nicht „grün“.</p>
+    </div>
+
+    <div class="footer">Erstellt automatisch durch den Weekly Security Audit.</div>
+  </div>
 </body>
 </html>
