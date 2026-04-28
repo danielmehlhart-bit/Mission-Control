@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autonome Coding-Workflows für Lovable + Supabase — Research Briefing</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f7f7f7; color: #222; line-height: 1.6; }
+    .hero { background: linear-gradient(135deg, #7C3AED 0%, #3B82F6 100%); color: white; padding: 56px 32px 48px; text-align: center; }
+    .hero .label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.7; margin-bottom: 12px; }
+    .hero h1 { font-size: 32px; font-weight: 700; margin-bottom: 12px; }
+    .hero p { font-size: 16px; opacity: 0.9; max-width: 760px; margin: 0 auto; }
+    .hero .meta { margin-top: 20px; font-size: 13px; opacity: 0.65; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 40px 24px; }
+    .section-title { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #555; margin: 48px 0 16px; }
+    .section-title:first-of-type { margin-top: 0; }
+    .tldr { background: #fff; border-left: 4px solid #7C3AED; border-radius: 8px; padding: 24px 28px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 32px; }
+    .tldr h2 { font-size: 18px; margin-bottom: 12px; }
+    .tldr ul { padding-left: 20px; }
+    .tldr li { margin-bottom: 8px; font-size: 15px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .card { background: #fff; border-radius: 10px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .card .icon { font-size: 28px; margin-bottom: 12px; }
+    .card h3 { font-size: 16px; margin-bottom: 8px; }
+    .card p, .card li { font-size: 14px; color: #555; }
+    .card ul { padding-left: 18px; margin-top: 8px; }
+    .table-wrap { background: #fff; border-radius: 10px; padding: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { background: #f0f4f8; text-align: left; padding: 10px 14px; font-weight: 700; color: #444; white-space: nowrap; }
+    td { padding: 10px 14px; border-top: 1px solid #eee; vertical-align: top; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 700; }
+    .green { background: #e8f5e9; color: #2e7d32; }
+    .yellow { background: #fff8e1; color: #f57f17; }
+    .red { background: #ffebee; color: #c62828; }
+    .blue { background: #e3f2fd; color: #1565c0; }
+    .steps { list-style: none; }
+    .steps li { background: #fff; border-radius: 10px; padding: 20px 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 12px; display: flex; gap: 16px; align-items: flex-start; }
+    .step-num { background: #7C3AED; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+    .warn, .success, .danger { border-radius: 10px; padding: 20px 24px; margin-top: 16px; }
+    .warn { background: #fff8e1; border: 1px solid #ffc107; }
+    .success { background: #f1f8e9; border: 1px solid #8bc34a; }
+    .danger { background: #fff0f0; border: 1px solid #f44336; }
+    .sources { margin-top: 40px; padding-top: 24px; border-top: 1px solid #e0e0e0; }
+    .sources h4 { font-size: 13px; color: #999; margin-bottom: 8px; }
+    .sources a { color: #1565c0; font-size: 13px; display: block; margin-bottom: 6px; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+    code { background: #f0f4f8; border-radius: 4px; padding: 2px 6px; }
+    footer { text-align: center; padding: 32px; color: #aaa; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="label">Research Briefing · 2026-04-28</div>
+    <h1>Autonome Coding-Workflows für Lovable + Supabase</h1>
+    <p>Welche Tools helfen Daniel wirklich dabei, von sauberer Spezifikation zu fertigem Feature inkl. Backend, Debugging und Click-Through-QA zu kommen — ohne in Lovable-SQL-Loop-Hölle zu enden?</p>
+    <div class="meta">Für: Daniel Mehlhart · Kontext: LUMA / Lovable + Supabase / Solo Founder Workflow</div>
+  </div>
+
+  <div class="container">
+    <div class="tldr">
+      <h2>⚡ TL;DR</h2>
+      <ul>
+        <li>Dein Engpass ist nicht „zu wenig AI", sondern die falsche Trennung: Lovable sollte UI/Iteration machen, nicht dein primärer Ort für DB- und SQL-Debugging sein.</li>
+        <li>Der beste Hebel ist ein repo-zentrierter Workflow: Lovable ↔ GitHub, Backend über Supabase CLI/Migrations, QA über Playwright, Agenten außerhalb von Lovable.</li>
+        <li>Für echte Autonomie sind Devin und OpenHands die stärksten Kandidaten; Cursor/Windsurf sind stark, aber eher Agenten-IDE als „mach alles alleine“-Systeme.</li>
+        <li>Blitzy wirkt eher wie ein repo-/PR-zentrierter AI-Engineer als wie ein nativer Lovable+Supabase-End-to-End-Autopilot. Interessant, aber wahrscheinlich nicht dein bester Primär-Stack.</li>
+      </ul>
+    </div>
+
+    <div class="section-title">Empfehlungslogik</div>
+    <div class="cards">
+      <div class="card">
+        <div class="icon">🟢</div>
+        <h3>Was gut zu deinem Ziel passt</h3>
+        <p>Repo-basierte Agenten plus reproduzierbarer Backend-Workflow.</p>
+        <ul>
+          <li>Supabase-Migrations statt SQL-Konsole</li>
+          <li>Playwright-Smoke-Tests für Click-Through-QA</li>
+          <li>Agent arbeitet auf Branch + PR + CI</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="icon">🟡</div>
+        <h3>Was teilweise hilft</h3>
+        <p>Lovable, Bolt, v0, Replit Agent helfen stark beim schnellen Bauen, sind aber nicht automatisch stark bei State-Machines, RLS, Migrationen und reproduzierbarem QA-Loop.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔴</div>
+        <h3>Was dich weiter ausbremst</h3>
+        <p>Backend-Logik und SQL iterativ im Lovable-Chat bzw. in eingebetteten Konsolen zu debuggen. Das ist schnell am Anfang, aber teuer in Fokus und Fehlersuche.</p>
+      </div>
+    </div>
+
+    <div class="section-title">Tool-Matrix</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Stärke</th>
+            <th>Für dich</th>
+            <th>Urteil</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Devin</strong></td>
+            <td>Hohe Autonomie auf realen Repos, Shell + Browser + Multi-Step Debugging</td>
+            <td>Sehr gut für „Spec → implementieren → testen → fixen“</td>
+            <td><span class="badge green">Top Fit</span></td>
+          </tr>
+          <tr>
+            <td><strong>OpenHands</strong></td>
+            <td>Open-Source, agentisch, gut kombinierbar mit CLI/Playwright</td>
+            <td>Stark, wenn du Kontrolle willst und dir Setup egal ist</td>
+            <td><span class="badge green">Top Fit</span></td>
+          </tr>
+          <tr>
+            <td><strong>Cursor Agent</strong></td>
+            <td>Sehr stark im Repo, gute Tool- und Agent-Workflows</td>
+            <td>Gut, aber meist noch etwas mehr menschliche Führung nötig</td>
+            <td><span class="badge yellow">Strong Option</span></td>
+          </tr>
+          <tr>
+            <td><strong>Windsurf/Cascade</strong></td>
+            <td>Ähnlich wie Cursor, agentische IDE</td>
+            <td>Hilfreich, aber eher „copilot mit agency“ als Vollautopilot</td>
+            <td><span class="badge yellow">Strong Option</span></td>
+          </tr>
+          <tr>
+            <td><strong>Replit Agent</strong></td>
+            <td>Schnell von Prompt zu laufender App</td>
+            <td>Gut für greenfield, schwächer bei präzisem Supabase-/RLS-Engineering</td>
+            <td><span class="badge yellow">Conditional</span></td>
+          </tr>
+          <tr>
+            <td><strong>Lovable / Bolt / v0</strong></td>
+            <td>UI-first und schneller App-Scaffold</td>
+            <td>Als Frontend-Beschleuniger gut, als autonomer Backend-Debugger schwach</td>
+            <td><span class="badge red">Nicht Primär-Tool</span></td>
+          </tr>
+          <tr>
+            <td><strong>Blitzy</strong></td>
+            <td>Wirkt wie AI-Engineer für Repo-/PR-Workflows</td>
+            <td>Interessant nach GitHub-Sync; keine klare native Lovable/Supabase-Passung sichtbar</td>
+            <td><span class="badge blue">Sekundär-Tool</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-title">Empfohlener Ziel-Workflow</div>
+    <ul class="steps">
+      <li>
+        <div class="step-num">1</div>
+        <div>
+          <strong>Spezifikation zuerst</strong>
+          <p>Definiere wie bisher sauber: Problem-Satz, Event-Map, Hooks, Mermaid, Out-of-Scope, UI-Zielbild.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div>
+          <strong>Lovable an GitHub koppeln</strong>
+          <p>Lovable bleibt UI-Werkzeug; der Repo wird Source of Truth für Branches, PRs, Tests und Agenten.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div>
+          <strong>Backend komplett externalisieren</strong>
+          <p>Alle Schema-/RLS-/Edge-Function-Änderungen nur noch über <code>supabase/migrations</code>, <code>supabase start</code>, <code>supabase db reset</code>, Type-Generation und PR.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <div>
+          <strong>Agent als Builder</strong>
+          <p>Devin/OpenHands/Cursor-Agent bekommt Repo + Spec und arbeitet auf Branch: Migration, TS-Typen, Frontend-Fixes, Seeds, Tests.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">5</div>
+        <div>
+          <strong>Playwright als QA-Gate</strong>
+          <p>Smoke-Tests gegen lokale Umgebung und Preview-Deploy: Login, Kernflow, Rollen, Fehlerfälle. Bei Failure: Screenshot + Trace + Rückgabe an Agent.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">6</div>
+        <div>
+          <strong>Erst dann zurück nach Lovable</strong>
+          <p>Gemergte Änderungen syncen zurück; Lovable ist wieder für UI-Iteration da, nicht für blindes SQL-Heilen.</p>
+        </div>
+      </li>
+    </ul>
+
+    <div class="warn">
+      <strong>⚖️ Einschätzung zu Blitzy</strong>
+      <p>Blitzy ist spannend, aber nach der aktuellen öffentlich sichtbaren Positionierung eher ein AI-Engineer für Repo-, Ticket- und PR-Workflows. Für dein Setup klingt das nach „gut als sekundärer Executor nach GitHub-Sync“, nicht nach dem nativen End-to-End-Autopilot, den du gerade suchst. Zusätzlich war die Website im Browser durch Bot-Protection schwer direkt zu prüfen, daher hier bewusst vorsichtige Einordnung.</p>
+    </div>
+    <div class="success">
+      <strong>✅ Die eigentliche Empfehlung</strong>
+      <p>Wenn du in den nächsten 2 Wochen echten Hebel willst: Lovable + GitHub + Supabase CLI + Playwright + ein externer Coding-Agent. Das ist kein sexy neues Tool, sondern ein sauberer Operating Mode. Genau der nimmt dir die SQL-Konsolen-Hölle ab.</p>
+    </div>
+    <div class="danger">
+      <strong>🚫 Was ich nicht empfehlen würde</strong>
+      <p>Weiter zu hoffen, dass ein einzelner UI-first Builder auch dein verlässlicher DB-Migrations-, RLS-, State-Machine- und QA-Agent wird. Das ist heute bei fast allen Tools die Sollbruchstelle.</p>
+    </div>
+
+    <div class="sources">
+      <h4>Quellen</h4>
+      <a href="https://docs.lovable.dev/integrations/supabase" target="_blank">Lovable Docs — Integrate a backend with Supabase</a>
+      <a href="https://docs.lovable.dev/integrations/github" target="_blank">Lovable Docs — Connect your project to GitHub</a>
+      <a href="https://supabase.com/docs/guides/local-development/cli/getting-started" target="_blank">Supabase Docs — Supabase CLI</a>
+      <a href="https://playwright.dev/" target="_blank">Playwright — Web automation for testing, scripting, and AI agents</a>
+      <a href="https://www.cognition.ai/blog/introducing-devin" target="_blank">Cognition — Introducing Devin</a>
+      <a href="https://docs.all-hands.dev/" target="_blank">OpenHands Docs</a>
+      <a href="https://www.cursor.com/" target="_blank">Cursor</a>
+      <a href="https://windsurf.com/" target="_blank">Windsurf</a>
+      <a href="https://replit.com/ai" target="_blank">Replit AI / Agent</a>
+      <a href="https://blitzy.com/" target="_blank">Blitzy (Homepage; direkte Browser-Prüfung war durch Cloudflare eingeschränkt)</a>
+    </div>
+  </div>
+
+  <footer>Briefing erstellt von Hatti 🏔️ · 2026-04-28 · Für internen Gebrauch</footer>
+</body>
+</html>
