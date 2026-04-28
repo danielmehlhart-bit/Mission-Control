@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMA — Projekt-E-Mails One-Pager</title>
+  <style>
+    :root {
+      --bg: #f5f1ff;
+      --paper: #ffffff;
+      --ink: #171a24;
+      --muted: #667085;
+      --line: #e7ddff;
+      --purple: #7c3aed;
+      --purple-dark: #5b21b6;
+      --purple-soft: #f3edff;
+      --green-soft: #ecfdf3;
+      --green: #027a48;
+      --shadow: 0 24px 80px rgba(91, 33, 182, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      padding: 32px;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(124, 58, 237, 0.08);
+      padding: 22mm 18mm 18mm 18mm;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 10px;
+      background: linear-gradient(90deg, var(--purple-dark), var(--purple));
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--purple-soft);
+      color: var(--purple-dark);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 18px 0 10px;
+      font-size: 34px;
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+    }
+
+    .subheadline {
+      font-size: 18px;
+      line-height: 1.5;
+      color: var(--muted);
+      max-width: 92%;
+      margin-bottom: 22px;
+    }
+
+    .hero-card {
+      background: linear-gradient(180deg, #faf7ff 0%, #ffffff 100%);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+    }
+
+    .hero-card strong {
+      color: var(--purple-dark);
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 20px 0;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    .card.soft {
+      background: #fcfbff;
+    }
+
+    .card.green {
+      background: var(--green-soft);
+      border-color: rgba(2, 122, 72, 0.16);
+    }
+
+    .kicker {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--purple-dark);
+      margin-bottom: 8px;
+    }
+
+    .green .kicker {
+      color: var(--green);
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+    }
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.55;
+      color: #344054;
+    }
+
+    ul {
+      margin: 10px 0 0 18px;
+      padding: 0;
+      color: #344054;
+    }
+
+    li {
+      margin: 0 0 8px;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .steps {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 12px 14px;
+      background: #faf7ff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: var(--purple);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .quote {
+      margin-top: 16px;
+      padding: 16px 18px;
+      border-left: 4px solid var(--purple);
+      background: #faf7ff;
+      border-radius: 0 16px 16px 0;
+      font-size: 15px;
+      line-height: 1.55;
+      color: #1f2937;
+    }
+
+    .footer {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .footer strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .tiny {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background: #fff;
+      }
+      .page {
+        margin: 0;
+        width: 210mm;
+        min-height: 297mm;
+        box-shadow: none;
+        border: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      body { padding: 12px; }
+      .page {
+        width: 100%;
+        min-height: auto;
+        padding: 24px 18px;
+      }
+      .grid-3, .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .subheadline { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="eyebrow">LUMA · One-Pager</div>
+    <h1>Projekt-E-Mails</h1>
+    <div class="subheadline">
+      Weniger Outlook-Ablage. Mehr Überblick, bessere Zusammenarbeit und ein zentraler Ort,
+      an dem projektbezogene Kommunikation direkt in Aufgaben, Briefings und Klarheit übersetzt wird.
+    </div>
+
+    <section class="hero-card">
+      <p>
+        In vielen Architekturbüros laufen <strong>hunderte E-Mails pro Tag</strong> auf. Damit nichts verloren geht,
+        wird Kommunikation manuell in komplexen Outlook-Strukturen abgelegt — zeitaufwendig, fehleranfällig und mit der Zeit kaum noch sinnvoll durchsuchbar.
+        <strong>Projekt-E-Mails in LUMA lösen genau diesen Ablage-Schmerz:</strong> E-Mails landen direkt am richtigen Projekt,
+        bleiben für das Team nutzbar und werden zur Grundlage für gemeinsame Aufgaben und schnellen Überblick.
+      </p>
+    </section>
+
+    <section class="grid-3">
+      <div class="card soft">
+        <div class="kicker">Was ist das?</div>
+        <h2>Ein eigener Eingang pro Projekt</h2>
+        <p>
+          Für jedes Projekt kann in LUMA eine eigene Weiterleitungsadresse erzeugt werden.
+          Projektbezogene E-Mails von Bauherren, Fachplanern, Gewerken oder internen Postfächern
+          landen damit direkt am richtigen Projekt.
+        </p>
+      </div>
+      <div class="card soft">
+        <div class="kicker">Wie funktioniert’s?</div>
+        <h2>Aus E-Mails wird Teamarbeit</h2>
+        <p>
+          Eingehende Kommunikation wird zentral verfügbar. Jedes Teammitglied kann E-Mails lesen,
+          per Co-Pilot zusammenfassen, durchsuchen und direkt in Aufgaben übersetzen.
+        </p>
+      </div>
+      <div class="card green">
+        <div class="kicker">Hauptnutzen</div>
+        <h2>Weniger Ablage, mehr Zusammenarbeit</h2>
+        <p>
+          Statt Mails mühsam in gewachsene Ordnerstrukturen zu sortieren, entsteht ein gemeinsamer
+          Projektkontext aus Kommunikation, Aufgaben und aktuellem Status.
+        </p>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <div class="kicker">Mehrwert für euer Team</div>
+        <h2>Zentralisieren statt zusammensuchen</h2>
+        <ul>
+          <li>Alle projektbezogenen E-Mails laufen an einem Ort zusammen.</li>
+          <li>Aus jeder E-Mail können direkt Aufgaben erstellt werden.</li>
+          <li>Aufgaben lassen sich sofort den richtigen Personen zuweisen.</li>
+          <li>Kommunikation bleibt für das gesamte Projektteam nachvollziehbar.</li>
+          <li>Wichtige Informationen verschwinden nicht mehr in persönlichen Postfächern.</li>
+          <li>Der Aufwand für manuelle Outlook-Ablage sinkt deutlich.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="kicker">Co-Pilot</div>
+        <h2>Durchsuchbar. Zusammenfassbar. Briefing-fähig.</h2>
+        <ul>
+          <li>Projekt-E-Mails werden über den LUMA Co-Pilot gezielt durchsuchbar.</li>
+          <li>Ihr könnt euch schnell zusammenfassen lassen, was zuletzt passiert ist.</li>
+          <li>Statusberichte lassen sich aus E-Mails, Aufgaben und Projektereignissen ableiten.</li>
+          <li>Projektleiter und Mitarbeitende können sich bei Bedarf ein schnelles Briefing holen.</li>
+        </ul>
+        <div class="quote">
+          Zum Beispiel: <strong>„Was ist in den letzten 2 Tagen passiert?“</strong><br />
+          Oder: <strong>„Welche Themen sind offen und welche Aufgaben wurden bereits erledigt?“</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:16px;">
+      <div class="kicker">Erster konkreter nächster Schritt</div>
+      <h2>So kommt das Team ins Laufen</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <p><strong>Projekt in LUMA anlegen</strong><br />
+            Für jedes aktive Projekt wird in den Projekt-Einstellungen eine eigene Weiterleitungsadresse erzeugt.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <p><strong>Bestehende Projektkommunikation weiterleiten</strong><br />
+            Die vorhandene Projekt-E-Mail-Adresse oder relevante Outlook-Kommunikation wird an diese Adresse weitergeleitet.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <p><strong>Aufgaben und Briefings direkt aus dem Projekt heraus nutzen</strong><br />
+            So entsteht Schritt für Schritt ein zentraler Projektverlauf mit Aufgaben, Zuständigkeiten und aktuellem Überblick.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>
+        <strong>LUMA</strong>
+        <div class="tiny">Projektbezogene Kommunikation, Aufgaben und Überblick an einem Ort.</div>
+      </div>
+      <div class="tiny">One-Pager · Stand April 2026</div>
+    </footer>
+  </main>
+</body>
+</html>
