@@ -91,12 +91,18 @@ function ensureSessionState(session: VoiceSession, allowed: VoiceSession["state"
   }
 }
 
-function transitionSession(session: VoiceSession, to: VoiceSession["state"], reason?: string): VoiceSession {
+function transitionSession(
+  session: VoiceSession,
+  to: VoiceSession["state"],
+  reason?: string,
+  options: { lastError?: string; endedAt?: string } = {},
+): VoiceSession {
   const transition = assertTransition(session.state, to, reason);
   const next = updateVoiceSessionState({
     sessionId: session.id,
     state: to,
-    ...(to === "completed" ? { endedAt: new Date().toISOString() } : {}),
+    ...(to === "completed" ? { endedAt: options.endedAt ?? new Date().toISOString() } : {}),
+    ...(options.lastError !== undefined ? { lastError: options.lastError } : {}),
   });
   appendVoiceEvent({
     sessionId: session.id,
@@ -106,6 +112,7 @@ function transitionSession(session: VoiceSession, to: VoiceSession["state"], rea
     payload: {
       at: transition.at,
       ...(transition.reason ? { reason: transition.reason } : {}),
+      ...(options.lastError ? { lastError: options.lastError } : {}),
     },
   });
   return next;
@@ -122,6 +129,59 @@ function normalizeAssistantText(text: string): string {
     throw new Error("Assistant reply must not be empty");
   }
   return normalized;
+}
+
+function normalizeUserTurnText(text: string): string {
+  const normalized = text.trim();
+  if (!normalized) {
+    throw new Error("User turn text must not be empty");
+  }
+  if (normalized.length > 4000) {
+    throw new Error("User turn text exceeds 4000 characters");
+  }
+  return normalized;
+}
+
+async function hydrateSessionContext(
+  session: VoiceSession,
+  profile: VoiceProfile,
+  calendarProvider?: VoiceServiceCalendarProvider,
+): Promise<VoiceSession> {
+  let currentSession = session;
+
+  const beforeHydration = await runVoiceHooks("beforeHydration", {
+    session: currentSession,
+    profile,
+    resolvedContext: currentSession.resolvedContext,
+  });
+  currentSession = persistResolvedContext(currentSession.id, currentSession, beforeHydration.patch.resolvedContext);
+
+  const resolvedContext = await resolveVoiceProfileContext(profile.slug, {
+    calendarProvider,
+  });
+
+  const profileHydration = await runVoiceHooks("hydrateProfileContext", {
+    session: currentSession,
+    profile,
+    resolvedContext,
+  });
+  const mergedProfileContext = mergeContext(resolvedContext, profileHydration.patch.resolvedContext);
+
+  const freshHydration = await runVoiceHooks("hydrateFreshContext", {
+    session: currentSession,
+    profile,
+    resolvedContext: mergedProfileContext,
+  });
+  const mergedFreshContext = mergeContext(mergedProfileContext, freshHydration.patch.resolvedContext);
+
+  const afterHydration = await runVoiceHooks("afterHydration", {
+    session: currentSession,
+    profile,
+    resolvedContext: mergedFreshContext,
+  });
+  const finalResolvedContext = mergeContext(mergedFreshContext, afterHydration.patch.resolvedContext);
+
+  return updateVoiceSessionContext(currentSession.id, finalResolvedContext);
 }
 
 function buildDefaultAssistantReply(context: {

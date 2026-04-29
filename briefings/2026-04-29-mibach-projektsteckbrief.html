@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mibach · Projektsteckbrief Pilot · 29.04.2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --bg: #f5f3ff;
+      --page: #ffffff;
+      --ink: #17142b;
+      --muted: #6f6b86;
+      --line: #e7e1f5;
+      --purple: #6d28d9;
+      --purple-2: #8b5cf6;
+      --purple-3: #ede9fe;
+      --purple-4: #faf7ff;
+      --green-bg: #ecfdf3;
+      --green-line: #b7ebc6;
+      --green-text: #166534;
+      --amber-bg: #fff7ed;
+      --amber-line: #fed7aa;
+      --amber-text: #9a3412;
+      --red-bg: #fef2f2;
+      --red-line: #fecaca;
+      --red-text: #991b1b;
+      --blue-bg: #eff6ff;
+      --blue-line: #bfdbfe;
+      --blue-text: #1d4ed8;
+      --shadow: 0 20px 50px rgba(39, 23, 77, 0.10);
+      --radius: 18px;
+      --radius-sm: 12px;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.55;
+    }
+
+    body {
+      padding: 28px 0 40px;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto 18px;
+      background: var(--page);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+    }
+
+    .page:last-child { page-break-after: auto; }
+
+    .page-inner {
+      padding: 22mm 18mm 18mm;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #20153f 0%, #362164 56%, #6d28d9 100%);
+      color: #fff;
+      padding: 22mm 18mm 18mm;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero:before, .hero:after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255,255,255,0.16), rgba(255,255,255,0));
+    }
+
+    .hero:before {
+      width: 220px; height: 220px; right: -40px; top: -30px;
+    }
+
+    .hero:after {
+      width: 180px; height: 180px; left: -40px; bottom: -60px;
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #c4b5fd;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: 34px;
+      line-height: 1.15;
+      margin: 0 0 10px;
+      font-weight: 800;
+      max-width: 680px;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: rgba(255,255,255,0.88);
+      max-width: 760px;
+      margin: 0 0 16px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .hero-pill {
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    .intro-card {
+      margin-top: -28px;
+      position: relative;
+      z-index: 2;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 40px rgba(47, 24, 94, 0.08);
+      padding: 20px 22px;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .intro-item {
+      background: var(--purple-4);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+    }
+
+    .label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 5px;
+    }
+
+    .value {
+      font-size: 13px;
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .section {
+      margin-top: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .section-head {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fff 0%, var(--purple-4) 100%);
+    }
+
+    .section-kicker {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .section-body {
+      padding: 18px 20px 20px;
+    }
+
+    p { margin: 0 0 12px; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .box {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      background: #fff;
+    }
+
+    .box.soft {
+      background: var(--purple-4);
+    }
+
+    .box h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    li {
+      margin: 0 0 8px;
+      color: #312e46;
+      font-size: 14px;
+    }
+
+    .usecase {
+      border: 1px solid var(--purple-2);
+      background: linear-gradient(180deg, #fff 0%, var(--purple-4) 100%);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+    }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .flow-step {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .flow-arrow {
+      align-self: center;
+      color: var(--purple-2);
+      font-weight: 700;
+      padding: 0 2px;
+    }
+
+    .fit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .fit-card {
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      border: 1px solid;
+    }
+
+    .fit-card.green { background: var(--green-bg); border-color: var(--green-line); }
+    .fit-card.red { background: var(--red-bg); border-color: var(--red-line); }
+    .fit-card.amber { background: var(--amber-bg); border-color: var(--amber-line); }
+    .fit-card.blue { background: var(--blue-bg); border-color: var(--blue-line); }
+
+    .fit-card .title {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 8px;
+    }
+
+    .fit-card.green .title { color: var(--green-text); }
+    .fit-card.red .title { color: var(--red-text); }
+    .fit-card.amber .title { color: var(--amber-text); }
+    .fit-card.blue .title { color: var(--blue-text); }
+
+    .callout {
+      border-left: 4px solid var(--purple);
+      background: var(--purple-4);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-top: 14px;
+      font-size: 14px;
+    }
+
+    .steps {
+      display: grid;
+      gap: 12px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--purple-2));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .step-title {
+      margin: 0 0 4px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .step-text {
+      font-size: 14px;
+      color: #433e5e;
+      margin: 0;
+    }
+
+    .footer-note {
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .pb-after {
+      page-break-after: always;
+      break-after: page;
+    }
+
+    @page {
+      size: A4;
+      margin: 14mm;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+      .page {
+        margin: 0;
+        width: auto;
+        min-height: auto;
+        box-shadow: none;
+      }
+      .no-break, .section, .box, .step, .fit-card, .usecase, .intro-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+    }
+
+    @media screen and (max-width: 900px) {
+      .page { width: 100%; min-height: auto; }
+      .page-inner, .hero { padding: 24px 18px; }
+      .intro-grid, .grid-2, .fit-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="page">
+    <div class="hero">
+      <div class="hero-content">
+        <div class="eyebrow">luma · Projektsteckbrief Pilot</div>
+        <h1>Mibach · Sprachgestützte Audit-Dokumentation im Pilot</h1>
+        <p class="hero-subtitle">
+          Arbeitsgrundlage für einen möglichen ersten Pilot-Use-Case bei Mibach. Ziel ist kein Full-Rollout, sondern ein sauber abgegrenzter Test, der Nutzen, Scope und Erfolgskriterien transparent macht.
+        </p>
+        <div class="hero-meta">
+          <span class="hero-pill">29. April 2026</span>
+          <span class="hero-pill">Adressaten: Christian, Jens, interne Fachseite</span>
+          <span class="hero-pill">Format: Pilot Charter / Decision Memo light</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-inner">
+      <div class="intro-card no-break">
+        <div class="label">Kurzüberblick</div>
+        <p style="margin:0;font-size:15px;color:#3f3a57;">
+          Ausgangspunkt aus dem Gespräch: Mibach sieht Potenzial in einer einfachen, voice-first Lösung für Begehungen, Audits und die strukturierte Nachbereitung von Findings, Fotos und Folgeaufgaben — zunächst klein, pragmatisch und mit klarer Abgrenzung.
+        </p>
+        <div class="intro-grid">
+          <div class="intro-item"><div class="label">Erster Use Case</div><div class="value">Lager-Audit / Begehung</div></div>
+          <div class="intro-item"><div class="label">Pilotgröße</div><div class="value">2–4 Nutzer</div></div>
+          <div class="intro-item"><div class="label">Ziel</div><div class="value">Dokumentation + Follow-up beschleunigen</div></div>
+          <div class="intro-item"><div class="label">Ansatz</div><div class="value">klein starten, Nutzen belegen, dann entscheiden</div></div>
+        </div>
+      </div>
+
+      <div class="section no-break">
+        <div class="section-head">
+          <div class="section-kicker">1 · Ausgangslage</div>
+          <h2 class="section-title">Heute ist der Prozess funktional — aber fragmentiert</h2>
+        </div>
+        <div class="section-body">
+          <div class="grid-2">
+            <div class="box soft">
+              <h3>Beobachtete Situation</h3>
+              <ul>
+                <li>Bei Audits und Begehungen werden Beobachtungen heute teils mit Zettel, Stift, Notebook oder Einzel-Tools festgehalten.</li>
+                <li>Notizen, Fotos und Folgepunkte liegen nicht automatisch in einer gemeinsamen, strukturierten Arbeitsgrundlage zusammen.</li>
+                <li>Ein Teil der Nachbereitung passiert erst später am Rechner — mit entsprechendem Medienbruch.</li>
+              </ul>
+            </div>
+            <div class="box">
+              <h3>Relevante Konsequenzen</h3>
+              <ul>
+                <li>Informationen gehen zwischen Vor-Ort-Erfassung und Nachbearbeitung teilweise verloren.</li>
+                <li>Fotos und Beobachtungen sind nicht immer sauber einem Bereich oder Finding zugeordnet.</li>
+                <li>Aus Erkenntnissen entstehen nicht automatisch klare To-dos, Zuständigkeiten und Nachverfolgung.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout">
+            <strong>Kernaussage:</strong> Der Engpass ist nicht primär „noch ein Tool“, sondern ein fehlender, leichtgewichtiger Ablauf von <em>Beobachtung → Struktur → Follow-up</em>.
+          </div>
+        </div>
+      </div>
+
+      <div class="section no-break">
+        <div class="section-head">
+          <div class="section-kicker">2 · Zielbild</div>
+          <h2 class="section-title">Was der Pilot für Mibach leisten soll</h2>
+        </div>
+        <div class="section-body">
+          <div class="grid-2">
+            <div class="box">
+              <h3>Ziel des Piloten</h3>
+              <ul>
+                <li>Beobachtungen direkt im Feld schneller und sauberer erfassen.</li>
+                <li>Weniger Medienbruch zwischen Vor-Ort-Termin und Nachbereitung.</li>
+                <li>Notizen, Fotos und Folgepunkte zentral und nachvollziehbar bündeln.</li>
+                <li>Prüfen, ob ein voice-first Ansatz in Mibachs Alltag echten Nutzen stiftet.</li>
+              </ul>
+            </div>
+            <div class="box soft">
+              <h3>Nicht das Ziel</h3>
+              <ul>
+                <li>Im ersten Schritt alle Mibach-Prozesse digital abzubilden.</li>
+                <li>Einen konzernweiten Rollout vorzubereiten.</li>
+                <li>Bereits im Pilot perfekte Integrationstiefe in bestehende Systeme zu liefern.</li>
+                <li>Eine fertige Endlösung für alle Fachbereiche zu versprechen.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section pb-after">
+        <div class="section-head">
+          <div class="section-kicker">3 · Erster Use Case</div>
+          <h2 class="section-title">Pilot-Use-Case: Lager-Audit / Begehung mit Spracheingabe</h2>
+        </div>
+        <div class="section-body">
+          <div class="usecase no-break">
+            <p style="font-size:15px;margin-bottom:8px;"><strong>Vorgeschlagener Startpunkt:</strong> Ein klar abgegrenzter Audit-/Begehungsprozess mit wenigen Pilotnutzern, bei dem Beobachtungen per Sprache erfasst, mit Bereichen/Fotos verknüpft und in strukturierte Findings bzw. Folgeaufgaben überführt werden.</p>
+            <div class="flow">
+              <span class="flow-step">Begehung starten</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">Beobachtung einsprechen</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">Bereich zuordnen</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">Foto / Kontext ergänzen</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">Finding / To-do erzeugen</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">Nachbereitung & Review</span>
+            </div>
+          </div>
+          <div class="callout">
+            <strong>Warum genau dieser Use Case?</strong> Er ist konkret genug, um testbar zu sein, und nah genug am Alltag von Jens, Christian und den beteiligten Fachbereichen, um intern schnell bewertet werden zu können.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="page-inner">
+      <div class="section no-break">
+        <div class="section-head">
+          <div class="section-kicker">4 · Scope</div>
+          <h2 class="section-title">Was im ersten Schritt drin ist — und was bewusst nicht</h2>
+        </div>
+        <div class="section-body">
+          <div class="fit-grid">
+            <div class="fit-card green no-break">
+              <div class="title">In Scope</div>
+              <ul>
+                <li>Sprachgestützte Erfassung von Beobachtungen</li>
+                <li>Zuordnung zu Lagerbereichen / Audit-Kontext</li>
+                <li>Foto-Dokumentation im selben Ablauf</li>
+                <li>Strukturierte Ausgabe von Findings / Maßnahmen</li>
+                <li>Einfache Übergabe oder Nachverfolgung von Folgepunkten</li>
+                <li>Test mit kleinem Nutzerkreis und engem Feedback-Loop</li>
+              </ul>
+            </div>
+            <div class="fit-card red no-break">
+              <div class="title">Nicht im Scope</div>
+              <ul>
+                <li>Unternehmensweiter Rollout über alle Bereiche</li>
+                <li>Vollständige Abbildung sämtlicher Projekt- und Auditprozesse</li>
+                <li>Tiefe ERP-, SharePoint- oder sonstige Systemintegration im Pilot</li>
+                <li>Abbildung jeder Sonderlogik für alle Mibach-Use-Cases</li>
+                <li>Ein „Big Bang“ mit perfekter Endlösung von Tag 1</li>
+              </ul>
+            </div>
+          </div>
+          <div class="fit-grid">
+            <div class="fit-card amber no-break">
+              <div class="title">Offene Designfragen</div>
+              <ul>
+                <li>Welche Lagerbereiche oder Zonen müssen im Pilot modelliert werden?</li>
+                <li>Welche Output-Form ist intern am nützlichsten: Findings, Tasks, Bericht, Mängelliste?</li>
+                <li>Welche minimale Foto-/Dokumentationsstruktur ist nötig, um echten Nutzen zu stiften?</li>
+              </ul>
+            </div>
+            <div class="fit-card blue no-break">
+              <div class="title">Pragmatischer Grundsatz</div>
+              <ul>
+                <li>Erst einen klaren Kernprozess belastbar machen.</li>
+                <li>Danach gemeinsam prüfen, ob Ausweitung auf weitere Use Cases sinnvoll ist.</li>
+                <li>Scope-Erweiterung nur auf Basis von echtem Pilotergebnis, nicht aus Hypothesen.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section no-break">
+        <div class="section-head">
+          <div class="section-kicker">5 · Nutzenhypothese</div>
+          <h2 class="section-title">Welchen Mehrwert Mibach im Pilot validieren kann</h2>
+        </div>
+        <div class="section-body">
+          <div class="grid-2">
+            <div class="box soft">
+              <h3>Operativer Nutzen</h3>
+              <ul>
+                <li>Weniger manuelle Nacharbeit nach Begehungen.</li>
+                <li>Weniger Verlust von Details zwischen Termin und Nachbereitung.</li>
+                <li>Schnellere Übergabe von Beobachtungen in nachvollziehbare Folgepunkte.</li>
+                <li>Bessere Zentralisierung von Fotos, Notizen und Aufgaben.</li>
+              </ul>
+            </div>
+            <div class="box">
+              <h3>Strategischer Nutzen</h3>
+              <ul>
+                <li>Frühe Validierung, ob voice-first Dokumentation im Mibach-Kontext tragfähig ist.</li>
+                <li>Saubere Entscheidungsbasis, ob ein größerer Ausbau überhaupt Sinn macht.</li>
+                <li>Klareres Bild, welche Anforderungen später in User Stories und Scope überführt werden sollten.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout">
+            <strong>Wichtig:</strong> Der Nutzen muss nicht im Pilot „maximal“ sein — er muss klar genug sein, um eine informierte Weiter-/Stop-Entscheidung zu ermöglichen.
+          </div>
+        </div>
+      </div>
+
+      <div class="section no-break">
+        <div class="section-head">
+          <div class="section-kicker">6 · Pilot-Setup</div>
+          <h2 class="section-title">Vorschlag für einen risikoarmen Start</h2>
+        </div>
+        <div class="section-body">
+          <div class="steps">
+            <div class="step no-break">
+              <div class="step-num">1</div>
+              <div>
+                <div class="step-title">Pilotnutzer festlegen</div>
+                <p class="step-text">2–4 Personen aus einem klar abgrenzbaren Anwendungsfall benennen, die den Prozess real oder realitätsnah testen.</p>
+              </div>
+            </div>
+            <div class="step no-break">
+              <div class="step-num">2</div>
+              <div>
+                <div class="step-title">Use Case scharf schneiden</div>
+                <p class="step-text">Einen konkreten Audit- bzw. Begehungsablauf auswählen, statt mehrere Prozesse parallel zu starten.</p>
+              </div>
+            </div>
+            <div class="step no-break">
+              <div class="step-num">3</div>
+              <div>
+                <div class="step-title">Kurze Demo / Walkthrough aufsetzen</div>
+                <p class="step-text">Zum Beispiel im Büro oder an einem geeigneten Objekt mit wenigen, greifbaren Szenen: Beobachtung, Foto, Follow-up.</p>
+              </div>
+            </div>
+            <div class="step no-break">
+              <div class="step-num">4</div>
+              <div>
+                <div class="step-title">2–4 Wochen testen</div>
+                <p class="step-text">Keine lange Implementierungsphase, sondern ein überschaubarer Pilotraum mit enger Rückkopplung.</p>
+              </div>
+            </div>
+            <div class="step no-break">
+              <div class="step-num">5</div>
+              <div>
+                <div class="step-title">Review & Entscheidung</div>
+                <p class="step-text">Nach dem Pilot gemeinsam bewerten: Was hat funktioniert, was nicht, und lohnt die nächste Ausbaustufe?</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section pb-after">
+        <div class="section-head">
+          <div class="section-kicker">7 · Erfolgskriterien</div>
+          <h2 class="section-title">Woran der Pilot gemessen werden kann</h2>
+        </div>
+        <div class="section-body">
+          <div class="grid-2">
+            <div class="box">
+              <h3>Messbar / beobachtbar</h3>
+              <ul>
+                <li>Reduzierte Nachbereitungszeit nach Begehungen</li>
+                <li>Weniger verlorene oder vergessene Beobachtungen</li>
+                <li>Bessere Struktur in der Dokumentation</li>
+                <li>Ausreichende Qualität der erzeugten Findings / Maßnahmen</li>
+              </ul>
+            </div>
+            <div class="box soft">
+              <h3>Nutzerseitig</h3>
+              <ul>
+                <li>Wird der Ablauf im Feld tatsächlich als einfacher empfunden?</li>
+                <li>Ist der Nutzen für die Pilotnutzer direkt spürbar?</li>
+                <li>Würden die Beteiligten den Ansatz erneut verwenden wollen?</li>
+                <li>Entsteht daraus ein valider Kandidat für den nächsten Scope-Schritt?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="page-inner">
+      <div class="section no-break">
+        <div class="section-head">
+          <div class="section-kicker">8 · Nächste Schritte</div>
+          <h2 class="section-title">Empfohlene Arbeitsabfolge</h2>
+        </div>
+        <div class="section-body">
+          <div class="steps">
+            <div class="step no-break">
+              <div class="step-num">1</div>
+              <div>
+                <div class="step-title">Pilot-Use-Case bestätigen</div>
+                <p class="step-text">Gemeinsam festlegen, ob Lager-Audit / Begehung wirklich der sinnvollste Einstieg ist.</p>
+              </div>
+            </div>
+            <div class="step no-break">
+              <div class="step-num">2</div>
+              <div>
+                <div class="step-title">Pilotkreis benennen</div>
+                <p class="step-text">Jens, Christian und ggf. 1–2 weitere relevante Personen aus dem Fachbereich festziehen.</p>
+              </div>
+            </div>
+            <div class="step no-break">
+              <div class="step-num">3</div>
+              <div>
+                <div class="step-title">Kurzen Scope-Workshop machen</div>
+                <p class="step-text">30–60 Minuten, um Bereiche, Outputs, Minimalanforderungen und Erfolgskriterien zu konkretisieren.</p>
+              </div>
+            </div>
+            <div class="step no-break">
+              <div class="step-num">4</div>
+              <div>
+                <div class="step-title">Kleine Vor-Ort- oder Büro-Demo durchführen</div>
+                <p class="step-text">Ein realistischer Walkthrough ist wahrscheinlich der schnellste Weg, interne Anschlussfähigkeit zu erzeugen.</p>
+              </div>
+            </div>
+            <div class="step no-break">
+              <div class="step-num">5</div>
+              <div>
+                <div class="step-title">Danach über Ausbau entscheiden</div>
+                <p class="step-text">Erst nach Pilot-Feedback in User Stories, erweiterten Scope oder separates Mibach-Setup investieren.</p>
+              </div>
+            </div>
+          </div>
+          <div class="callout">
+            <strong>Empfohlener Grundton:</strong> klein starten, schnell sichtbar machen, intern bewerten, dann erst skalieren.
+          </div>
+        </div>
+      </div>
+
+      <div class="section no-break">
+        <div class="section-head">
+          <div class="section-kicker">9 · Abschluss</div>
+          <h2 class="section-title">Warum dieses Format für Mibach sinnvoll ist</h2>
+        </div>
+        <div class="section-body">
+          <p>
+            Da Mibach selbst beratungsnah und strukturiert auf Projekte blickt, ist dieses Dokument bewusst nicht als Produktbroschüre formuliert, sondern als <strong>arbeitsfähiger Pilot-Steckbrief</strong>. Er soll intern anschlussfähig sein, Diskussionen fokussieren und eine erste Entscheidungsgrundlage schaffen.
+          </p>
+          <p>
+            Wenn gewünscht, kann daraus im nächsten Schritt direkt ein <strong>Pilot-Memo mit Verantwortlichkeiten, Zeitrahmen und Erfolgskriterien</strong> oder eine <strong>kompakte Vor-Ort-Demo-Agenda</strong> abgeleitet werden.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        Erstellt auf Basis des Discovery-Calls vom 29.04.2026 · LUMA / Daniel Mehlhart
+      </div>
+    </div>
+  </section>
+</body>
+</html>
