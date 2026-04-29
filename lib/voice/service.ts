@@ -95,7 +95,7 @@ function transitionSession(
   session: VoiceSession,
   to: VoiceSession["state"],
   reason?: string,
-  options: { lastError?: string; endedAt?: string } = {},
+  options: { lastError?: string | null; endedAt?: string } = {},
 ): VoiceSession {
   const transition = assertTransition(session.state, to, reason);
   const next = updateVoiceSessionState({
