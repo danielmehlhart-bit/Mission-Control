@@ -154,7 +154,7 @@ async function loadBriefingsContext(bindings: VoiceContextBindings, limit = 5) {
       }
     }));
 
-    return hydrated.filter((file): file is Record<string, unknown> => Boolean(file));
+    return hydrated.filter((file): file is NonNullable<(typeof hydrated)[number]> => file !== null);
   } catch {
     return [];
   }
