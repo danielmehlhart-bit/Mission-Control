@@ -20,6 +20,23 @@ function isLumaRoadmap(name: string): boolean {
   return /(^|-)luma-roadmap(-|$)|(^|-)luma-product-roadmap(-|$)/i.test(name.replace(/\.html?$/i, ""));
 }
 
+function pickFeaturedRoadmap(files: BriefingFile[]): BriefingFile | null {
+  const roadmapCandidates = files.filter((f) => isLumaRoadmap(f.name));
+  if (roadmapCandidates.length === 0) return null;
+  const priority = (name: string) => {
+    const slug = name.replace(/\.html?$/i, "").toLowerCase();
+    if (slug.includes("luma-roadmap-planung")) return 0;
+    if (slug.includes("luma-roadmap")) return 1;
+    if (slug.includes("luma-product-roadmap")) return 2;
+    return 9;
+  };
+  return roadmapCandidates.sort((a, b) => {
+    const prioDiff = priority(a.name) - priority(b.name);
+    if (prioDiff !== 0) return prioDiff;
+    return b.name.localeCompare(a.name);
+  })[0] ?? null;
+}
+
 function formatFilename(name: string): { title: string; date: string } {
   const match = name.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.html$/);
   if (match) {
