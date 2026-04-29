@@ -163,7 +163,7 @@ export async function runVoiceHooks(
       });
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      await emitHookFailureEvent(name, hook, context, error);
+      await emitHookFailureEvent(name, hook, currentContext, error);
       results.push({
         hookId: hook.id,
         hookName: name,
