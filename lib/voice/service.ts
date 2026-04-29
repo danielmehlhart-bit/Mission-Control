@@ -46,6 +46,7 @@ export type GenerateAssistantTurnInput = {
 export type SwitchSessionContextInput = {
   sessionId: string;
   targetProfileSlug: VoiceProfileSlug;
+  reason?: string;
   calendarProvider?: VoiceServiceCalendarProvider;
 };
 
