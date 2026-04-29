@@ -181,6 +181,21 @@ test("loadVoiceContextSources degrades gracefully when briefings or calendar are
   assert.equal(result.globalMemory.length, 1);
 });
 
+test("resolveVoiceProfileContext keeps accountName from profile context binding", async () => {
+  await seedVoiceFixtures();
+  const { dbModule, contextRouterModule } = await loadModules();
+  const { getDb } = dbModule;
+  const { resolveVoiceProfileContext } = contextRouterModule;
+  const db = getDb();
+
+  db.prepare("UPDATE voice_profiles SET context_binding_json = ? WHERE slug = ?")
+    .run(JSON.stringify({ mode: "fitness", accountName: "Recovery Lab" }), "fitness");
+
+  const resolved = await resolveVoiceProfileContext("fitness", { calendarProvider: async () => [] });
+  assert.equal(resolved.bindings.accountName, "Recovery Lab");
+  assert.equal(resolved.contextSummary?.includes("Recovery Lab"), true);
+});
+
 test("readMemoryFile only allows enumerated memory files", async () => {
   await seedVoiceFixtures();
   const { fsModule } = await loadModules();
