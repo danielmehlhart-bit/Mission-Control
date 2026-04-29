@@ -124,6 +124,25 @@ test("commitUserTurn stores transcript and emits user-turn event", async () => {
   assert.equal(listVoiceSessionEvents(session.id).some((event) => event.eventType === "voice.user_turn_committed"), true);
 });
 
+test("commitUserTurn rejects empty or whitespace-only user text", async () => {
+  await seedVoiceFixtures();
+  const { serviceModule, sessionStoreModule, hooksModule } = await loadModules();
+  const { createSessionForProfile, commitUserTurn } = serviceModule;
+  const { getVoiceSession, listVoiceTurns } = sessionStoreModule;
+  const { clearVoiceHookRegistry } = hooksModule;
+
+  clearVoiceHookRegistry();
+  const session = await createSessionForProfile({ profileSlug: "sales_support", calendarProvider: async () => [] });
+
+  await assert.rejects(
+    commitUserTurn({ sessionId: session.id, text: "   \n  " }),
+    /User turn text must not be empty/,
+  );
+
+  assert.equal(getVoiceSession(session.id)?.lastUserTranscript, undefined);
+  assert.equal(listVoiceTurns(session.id).length, 0);
+});
+
 test("generateAssistantTurn transitions through thinking and stores assistant output", async () => {
   await seedVoiceFixtures();
   const { serviceModule, sessionStoreModule, hooksModule } = await loadModules();
@@ -156,6 +175,41 @@ test("generateAssistantTurn transitions through thinking and stores assistant ou
   assert.equal(events.some((event) => event.eventType === "voice.state_changed" && event.toState === "awaiting_user"), true);
 });
 
+test("generateAssistantTurn does not misclassify post-generation hook failures as provider errors", async () => {
+  await seedVoiceFixtures();
+  const { serviceModule, sessionStoreModule, hooksModule } = await loadModules();
+  const { createSessionForProfile, commitUserTurn, generateAssistantTurn } = serviceModule;
+  const { getVoiceSession, listVoiceSessionEvents } = sessionStoreModule;
+  const { clearVoiceHookRegistry, registerVoiceHook } = hooksModule;
+
+  clearVoiceHookRegistry();
+  registerVoiceHook("afterAssistantGenerate", {
+    id: "test.afterAssistantGenerate.fail",
+    criticality: "required",
+    run: async () => {
+      throw new Error("after-generate boom");
+    },
+  });
+
+  const session = await createSessionForProfile({ profileSlug: "sales_support", calendarProvider: async () => [] });
+  await commitUserTurn({ sessionId: session.id, text: "Bitte gib mir ein Update." });
+
+  await assert.rejects(
+    generateAssistantTurn({
+      sessionId: session.id,
+      generateReply: async () => ({ text: "Kurze Antwort", metadata: { provider: "test-stub" } }),
+    }),
+    /after-generate boom/,
+  );
+
+  const persisted = getVoiceSession(session.id);
+  assert.equal(persisted?.state, "failed");
+  assert.equal(persisted?.lastError, "after-generate boom");
+  const events = listVoiceSessionEvents(session.id);
+  assert.equal(events.some((event) => event.eventType === "voice.provider_error"), false);
+  assert.equal(events.some((event) => event.eventType === "voice.hook_failed"), true);
+});
+
 test("switchSessionContext rehydrates target profile and appends a system note", async () => {
   await seedVoiceFixtures();
   const { serviceModule, sessionStoreModule, hooksModule } = await loadModules();
@@ -178,8 +232,32 @@ test("switchSessionContext rehydrates target profile and appends a system note",
 
   const events = listVoiceSessionEvents(session.id);
   assert.equal(events.some((event) => event.eventType === "voice.context_switch_requested"), true);
+  assert.equal(events.some((event) => event.eventType === "voice.hydration_started" && event.payload.reason === "context-switch"), true);
+  assert.equal(events.some((event) => event.eventType === "voice.hydration_completed" && event.payload.reason === "context-switch"), true);
+  assert.equal(events.some((event) => event.eventType === "voice.state_changed" && event.toState === "hydrating_context"), true);
   assert.equal(events.some((event) => event.eventType === "voice.context_switch_applied"), true);
   assert.equal(listVoiceTurns(session.id).some((turn) => turn.speaker === "system" && turn.text.includes("Call LUMA")), true);
+});
+
+test("switchSessionContext rejects invalid targets without failing the active session", async () => {
+  await seedVoiceFixtures();
+  const { serviceModule, sessionStoreModule, hooksModule } = await loadModules();
+  const { createSessionForProfile, switchSessionContext } = serviceModule;
+  const { getVoiceSession, listVoiceSessionEvents } = sessionStoreModule;
+  const { clearVoiceHookRegistry } = hooksModule;
+
+  clearVoiceHookRegistry();
+  const session = await createSessionForProfile({ profileSlug: "sales_support", calendarProvider: async () => [] });
+
+  await assert.rejects(
+    switchSessionContext({ sessionId: session.id, targetProfileSlug: "fitness", calendarProvider: async () => [] }),
+    /Voice profile switch not allowed/,
+  );
+
+  const persisted = getVoiceSession(session.id);
+  assert.equal(persisted?.state, "ready");
+  assert.equal(persisted?.lastError, undefined);
+  assert.equal(listVoiceSessionEvents(session.id).some((event) => event.eventType === "voice.context_switch_requested"), false);
 });
 
 test("endSession runs end hooks, transitions to completed, and emits end event", async () => {

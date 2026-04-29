@@ -282,19 +282,20 @@ export async function commitUserTurn(input: CommitUserTurnInput): Promise<{ sess
   ensureSessionState(session, ["ready", "listening", "awaiting_user"]);
   const profile = requireProfile(session.profileId);
 
+  const normalizedInputText = normalizeUserTurnText(input.text);
   const hookRun = await runVoiceHooks("beforeTurnCommit", {
     session,
     profile,
     resolvedContext: session.resolvedContext,
     payload: {
-      text: input.text,
+      text: normalizedInputText,
       ...(input.metadata ? { metadata: input.metadata } : {}),
       ...(input.source ? { source: input.source } : {}),
     },
   });
   session = persistResolvedContext(session.id, session, hookRun.patch.resolvedContext);
 
-  const turnText = typeof hookRun.patch.payload?.text === "string" ? hookRun.patch.payload.text : input.text;
+  const turnText = typeof hookRun.patch.payload?.text === "string" ? normalizeUserTurnText(hookRun.patch.payload.text) : normalizedInputText;
   const turnMetadata = {
     ...(input.metadata ?? {}),
     ...(hookRun.patch.payload?.metadata && typeof hookRun.patch.payload.metadata === "object"
@@ -345,31 +346,55 @@ export async function generateAssistantTurn(input: GenerateAssistantTurnInput): 
   });
   session = persistResolvedContext(session.id, session, beforeGenerate.patch.resolvedContext);
 
+  let generated: Awaited<ReturnType<NonNullable<GenerateAssistantTurnInput["generateReply"]>>>;
   try {
-    const generated = await (input.generateReply
+    generated = await (input.generateReply
       ? input.generateReply({ session, profile, resolvedContext: session.resolvedContext, recentTurns })
       : buildDefaultAssistantReply({ session, profile, resolvedContext: session.resolvedContext, recentTurns }));
-
-    const normalizedText = normalizeAssistantText(generated.text);
-    const turn = appendVoiceTurn({
-      sessionId: session.id,
-      speaker: "assistant",
-      text: normalizedText,
-      metadata: generated.metadata ?? {},
-    });
-    session = updateVoiceSessionAssistantText(session.id, normalizedText);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
     appendVoiceEvent({
       sessionId: session.id,
-      eventType: "voice.assistant_turn_generated",
-      fromState: "thinking",
-      toState: "awaiting_user",
+      eventType: "voice.provider_error",
+      fromState: session.state,
+      toState: "failed",
       payload: {
-        turnId: turn.id,
-        sequenceNo: turn.sequenceNo,
-        ...(generated.metadata ? { metadata: generated.metadata } : {}),
+        message,
       },
     });
+    await runVoiceHooks("onProviderError", {
+      session,
+      profile,
+      resolvedContext: session.resolvedContext,
+      payload: {
+        message,
+      },
+    });
+    session = transitionSession(session, "failed", "provider-error", { lastError: message });
+    throw error;
+  }
 
+  const normalizedText = normalizeAssistantText(generated.text);
+  const turn = appendVoiceTurn({
+    sessionId: session.id,
+    speaker: "assistant",
+    text: normalizedText,
+    metadata: generated.metadata ?? {},
+  });
+  session = updateVoiceSessionAssistantText(session.id, normalizedText);
+  appendVoiceEvent({
+    sessionId: session.id,
+    eventType: "voice.assistant_turn_generated",
+    fromState: "thinking",
+    toState: "awaiting_user",
+    payload: {
+      turnId: turn.id,
+      sequenceNo: turn.sequenceNo,
+      ...(generated.metadata ? { metadata: generated.metadata } : {}),
+    },
+  });
+
+  try {
     const afterGenerate = await runVoiceHooks("afterAssistantGenerate", {
       session,
       profile,
@@ -379,27 +404,11 @@ export async function generateAssistantTurn(input: GenerateAssistantTurnInput): 
       },
     });
     session = persistResolvedContext(session.id, session, afterGenerate.patch.resolvedContext);
-    session = transitionSession(session, "awaiting_user", "assistant-generated");
+    session = transitionSession(session, "awaiting_user", "assistant-generated", { lastError: null });
     return { session, turn };
   } catch (error) {
-    appendVoiceEvent({
-      sessionId: session.id,
-      eventType: "voice.provider_error",
-      fromState: session.state,
-      toState: "failed",
-      payload: {
-        message: error instanceof Error ? error.message : String(error),
-      },
-    });
-    await runVoiceHooks("onProviderError", {
-      session,
-      profile,
-      resolvedContext: session.resolvedContext,
-      payload: {
-        message: error instanceof Error ? error.message : String(error),
-      },
-    });
-    session = transitionSession(session, "failed", "provider-error");
+    const message = error instanceof Error ? error.message : String(error);
+    session = transitionSession(session, "failed", "after-assistant-generate-failed", { lastError: message });
     throw error;
   }
 }
@@ -408,6 +417,10 @@ export async function switchSessionContext(input: SwitchSessionContextInput): Pr
   let session = requireSession(input.sessionId);
   ensureSessionState(session, ["ready", "listening", "awaiting_user"]);
   const currentProfile = requireProfile(session.profileId);
+
+  if (!currentProfile.allowedSwitchTargets.includes(input.targetProfileSlug)) {
+    throw new Error(`Voice profile switch not allowed: ${currentProfile.slug} -> ${input.targetProfileSlug}`);
+  }
 
   const requestedFromState = session.state;
   if (session.state === "ready") {
@@ -433,27 +446,55 @@ export async function switchSessionContext(input: SwitchSessionContextInput): Pr
   });
   session = persistResolvedContext(session.id, session, beforeSwitch.patch.resolvedContext);
 
+  const targetProfile = getVoiceProfileBySlug(input.targetProfileSlug);
+  if (!targetProfile) {
+    throw new Error(`Voice profile not found: ${input.targetProfileSlug}`);
+  }
+
   try {
+    session = transitionSession(session, "hydrating_context", `hydrate-switch-${targetProfile.slug}`);
+    appendVoiceEvent({
+      sessionId: session.id,
+      eventType: "voice.hydration_started",
+      fromState: "switching_context",
+      toState: "hydrating_context",
+      payload: {
+        profileSlug: targetProfile.slug,
+        reason: "context-switch",
+      },
+    });
+
     const resolvedContext = await resolveVoiceContextSwitch(
       { profileSlug: currentProfile.slug },
       input.targetProfileSlug,
       { calendarProvider: input.calendarProvider },
     );
-    const targetProfile = getVoiceProfileBySlug(input.targetProfileSlug);
-    if (!targetProfile) {
-      throw new Error(`Voice profile not found: ${input.targetProfileSlug}`);
-    }
+
+    session = updateVoiceSessionRouting(session.id, targetProfile.id, targetProfile.baseSessionKey);
+    session = updateVoiceSessionContext(session.id, resolvedContext);
+    session = await hydrateSessionContext(session, targetProfile, input.calendarProvider);
 
     const afterSwitch = await runVoiceHooks("afterContextSwitch", {
       session,
       profile: targetProfile,
-      resolvedContext,
+      resolvedContext: session.resolvedContext,
       payload: { fromProfileSlug: currentProfile.slug, targetProfileSlug: targetProfile.slug },
     });
-    const finalResolvedContext = mergeContext(resolvedContext, afterSwitch.patch.resolvedContext);
+    session = persistResolvedContext(session.id, session, afterSwitch.patch.resolvedContext);
 
-    session = updateVoiceSessionRouting(session.id, targetProfile.id, targetProfile.baseSessionKey);
-    session = updateVoiceSessionContext(session.id, finalResolvedContext);
+    appendVoiceEvent({
+      sessionId: session.id,
+      eventType: "voice.hydration_completed",
+      fromState: "hydrating_context",
+      toState: "ready",
+      payload: {
+        profileSlug: targetProfile.slug,
+        reason: "context-switch",
+        contextSummary: (session.resolvedContext as Record<string, unknown>).contextSummary,
+      },
+    });
+    session = transitionSession(session, "ready", `context-switch-ready-${targetProfile.slug}`, { lastError: null });
+    session = transitionSession(session, "listening", `announce-switch-${targetProfile.slug}`);
 
     const systemTurn = appendVoiceTurn({
       sessionId: session.id,
@@ -473,13 +514,26 @@ export async function switchSessionContext(input: SwitchSessionContextInput): Pr
       payload: {
         fromProfileSlug: currentProfile.slug,
         targetProfileSlug: targetProfile.slug,
-        contextSummary: (finalResolvedContext as Record<string, unknown>).contextSummary,
+        contextSummary: (session.resolvedContext as Record<string, unknown>).contextSummary,
       },
     });
-    session = transitionSession(session, "awaiting_user", `switch-applied-${targetProfile.slug}`);
+    session = transitionSession(session, "thinking", `announce-switch-thinking-${targetProfile.slug}`);
+    session = transitionSession(session, "speaking", `announce-switch-speaking-${targetProfile.slug}`);
+    session = transitionSession(session, "awaiting_user", `switch-applied-${targetProfile.slug}`, { lastError: null });
     return { session, systemTurn };
   } catch (error) {
-    session = transitionSession(session, "failed", "context-switch-failed");
+    const message = error instanceof Error ? error.message : String(error);
+    appendVoiceEvent({
+      sessionId: session.id,
+      eventType: "voice.hydration_failed",
+      fromState: session.state,
+      toState: "failed",
+      payload: {
+        message,
+        reason: "context-switch",
+      },
+    });
+    session = transitionSession(session, "failed", "context-switch-failed", { lastError: message });
     throw error;
   }
 }
