@@ -110,5 +110,7 @@ export async function resolveVoiceContextSwitch(
     throw new Error(`Voice profile switch not allowed: ${current.profileSlug} -> ${targetProfileSlug}`);
   }
 
-  return resolveVoiceProfileContext(targetProfileSlug, options);
+  return resolveVoiceProfileContext(targetProfileSlug, {
+    calendarProvider: options.calendarProvider,
+  });
 }
