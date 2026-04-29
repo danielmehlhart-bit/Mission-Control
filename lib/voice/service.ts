@@ -139,15 +139,6 @@ function buildDefaultAssistantReply(context: {
   };
 }
 
-function profileSlugFromResolvedContext(session: VoiceSession): VoiceProfileSlug {
-  const slug = (session.resolvedContext as Record<string, unknown>)?.profile as Record<string, unknown> | undefined;
-  if (slug && typeof slug.slug === "string") {
-    return slug.slug as VoiceProfileSlug;
-  }
-  const profile = requireProfile(session.profileId);
-  return profile.slug;
-}
-
 export async function createSessionForProfile(input: CreateSessionForProfileInput): Promise<VoiceSession> {
   const profile = getVoiceProfileBySlug(input.profileSlug);
   if (!profile) {
@@ -415,7 +406,7 @@ export async function switchSessionContext(input: SwitchSessionContextInput): Pr
 
   try {
     const resolvedContext = await resolveVoiceContextSwitch(
-      { profileSlug: profileSlugFromResolvedContext(session) },
+      { profileSlug: currentProfile.slug },
       input.targetProfileSlug,
       { calendarProvider: input.calendarProvider },
     );
