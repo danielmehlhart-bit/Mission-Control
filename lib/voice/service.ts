@@ -248,39 +248,7 @@ export async function createSessionForProfile(input: CreateSessionForProfileInpu
       payload: { profileSlug: profile.slug },
     });
 
-    const beforeHydration = await runVoiceHooks("beforeHydration", {
-      session,
-      profile,
-      resolvedContext: session.resolvedContext,
-    });
-    session = persistResolvedContext(session.id, session, beforeHydration.patch.resolvedContext);
-
-    const resolvedContext = await resolveVoiceProfileContext(profile.slug, {
-      calendarProvider: input.calendarProvider,
-    });
-
-    const profileHydration = await runVoiceHooks("hydrateProfileContext", {
-      session,
-      profile,
-      resolvedContext,
-    });
-    const mergedProfileContext = mergeContext(resolvedContext, profileHydration.patch.resolvedContext);
-
-    const freshHydration = await runVoiceHooks("hydrateFreshContext", {
-      session,
-      profile,
-      resolvedContext: mergedProfileContext,
-    });
-    const mergedFreshContext = mergeContext(mergedProfileContext, freshHydration.patch.resolvedContext);
-
-    const afterHydration = await runVoiceHooks("afterHydration", {
-      session,
-      profile,
-      resolvedContext: mergedFreshContext,
-    });
-    const finalResolvedContext = mergeContext(mergedFreshContext, afterHydration.patch.resolvedContext);
-
-    session = updateVoiceSessionContext(session.id, finalResolvedContext);
+    session = await hydrateSessionContext(session, profile, input.calendarProvider);
     appendVoiceEvent({
       sessionId: session.id,
       eventType: "voice.hydration_completed",
@@ -288,22 +256,23 @@ export async function createSessionForProfile(input: CreateSessionForProfileInpu
       toState: "ready",
       payload: {
         profileSlug: profile.slug,
-        contextSummary: (finalResolvedContext as Record<string, unknown>).contextSummary,
+        contextSummary: (session.resolvedContext as Record<string, unknown>).contextSummary,
       },
     });
-    session = transitionSession(session, "ready", "context-ready");
+    session = transitionSession(session, "ready", "context-ready", { lastError: null });
     return session;
   } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
     appendVoiceEvent({
       sessionId: session.id,
       eventType: "voice.hydration_failed",
       fromState: session.state,
       toState: "failed",
       payload: {
-        message: error instanceof Error ? error.message : String(error),
+        message,
       },
     });
-    session = transitionSession(session, "failed", "hydration-failed");
+    session = transitionSession(session, "failed", "hydration-failed", { lastError: message });
     throw error;
   }
 }
