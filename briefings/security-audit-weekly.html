@@ -169,7 +169,7 @@
         <div class="stat"><div class="k">Disk Usage /</div><div class="v">34%</div></div>
       </div>
       <div>
-        <span class="pill red">Kritisch: exec/full + offene Gruppen-Exposition</span>
+        <span class="pill red">Kritisch: Wildcard-Allowlist + Gruppen-Exposition</span>
         <span class="pill yellow">Auffällig: unbekannte Python-Listener auf 0.0.0.0</span>
         <span class="pill green">UFW aktiv, inbound auf LAN begrenzt</span>
         <span class="pill blue">SSH-Server aktuell inaktiv</span>
@@ -180,13 +180,13 @@
       <div>
         <div class="card">
           <h2>Executive Summary</h2>
-          <p>Der Host selbst sieht nicht dramatisch aus: Platte gesund, UFW aktiv, kein laufender SSH-Server, keine fehlgeschlagenen SSH-Logins in den letzten 7 Tagen. Das Problem sitzt in der OpenClaw-Konfiguration: <code>exec security=full</code> ist aktiv, es gibt eine kritische Kanal-/Trust-Exposure und eine Telegram-Elevated-Allowlist mit Wildcard.</p>
+          <p>Der Host selbst sieht nicht dramatisch aus: Platte gesund, UFW aktiv, kein laufender SSH-Server, keine fehlgeschlagenen SSH-Logins in den letzten 7 Tagen. Wichtig: <code>elevated</code> an sich ist hier nicht das Problem. Der rote Teil entsteht aus der Kombination aus <code>exec security=full</code>, einer Telegram-Allowlist mit Wildcard und Gruppen-Kontext.</p>
           <div class="issue red-accent">
             <h3>Warum Rot?</h3>
             <ul>
               <li>OpenClaw meldet <strong>3 kritische Findings</strong>.</li>
               <li>Ein exec-fähiger Agent ist aus einem Gruppen-Kontext erreichbar.</li>
-              <li>Elevated-Allowlist enthält laut Audit eine Wildcard.</li>
+              <li>Die Elevated-Allowlist ist nicht eng auf Daniel begrenzt, sondern steht auf Wildcard.</li>
             </ul>
           </div>
           <div class="issue yellow-accent">
@@ -206,9 +206,9 @@
             <p><strong>Risiko:</strong> Zu breite Tool-Rechte in einem Kontext, der über Telegram-Gruppen erreichbar ist. Das ist genau die Sorte Konfiguration, die irgendwann hässlich wird.</p>
           </div>
           <div class="issue red-accent">
-            <h3>2. Elevated Allowlist mit Wildcard</h3>
+            <h3>2. Elevated selbst okay — die Wildcard ist das Problem</h3>
             <p class="small">Audit: <code>tools.elevated.allowFrom.telegram.wildcard</code></p>
-            <p><strong>Risiko:</strong> Elevated-Zugriff wird effektiv nicht mehr sauber auf einen engen Kreis begrenzt.</p>
+            <p><strong>Risiko:</strong> Nicht der Elevated-Default ist heikel, sondern dass Telegram aktuell per Wildcard freigeschaltet ist statt auf Daniel eingegrenzt zu sein.</p>
           </div>
           <div class="issue yellow-accent">
             <h3>3. Keine Auth-Rate-Limits am Gateway</h3>
@@ -244,8 +244,8 @@
         <div class="card">
           <h2>Empfohlene nächsten Schritte</h2>
           <ol>
-            <li><strong>OpenClaw exec/security von <code>full</code> auf <code>allowlist</code> ziehen</strong> und Gruppen-Reichweite kappen oder strikt allowlisten.</li>
-            <li><strong>Telegram elevated wildcard entfernen.</strong> Das ist der dickste rote Fleck.</li>
+            <li><strong>Telegram Elevated-Allowlist auf Daniel eingrenzen.</strong> Das ist der eigentliche rote Fleck.</li>
+            <li><strong>Prüfen, welche Gruppen wirklich exec-fähige Agenten brauchen.</strong> Gruppen-Reichweite nur dort offen lassen, wo sie bewusst gewollt ist.</li>
             <li><strong>Gateway Auth-Rate-Limits setzen.</strong></li>
             <li><strong>Ports 45903 und 43119 identifizieren.</strong> Wenn unnötig: Prozess abstellen oder Bind auf localhost.</li>
             <li><strong>Upgrades einspielen</strong> — vor allem Browser, OpenSSL, Node.js, Firmware.</li>
@@ -294,8 +294,8 @@ ALLOW IN from 192.168.0.0/16:
           <h2>OpenClaw Audit Highlights</h2>
           <ul>
             <li><strong>Critical:</strong> elevated wildcard on Telegram</li>
-            <li><strong>Critical:</strong> exec security full configured</li>
             <li><strong>Critical:</strong> open channel can reach exec-enabled agent</li>
+            <li><strong>Context:</strong> <code>exec security=full</code> ist vor allem in Kombination mit Wildcard + Gruppenreichweite kritisch</li>
             <li><strong>Warn:</strong> no gateway auth rate limiting</li>
             <li><strong>Warn:</strong> autoAllowSkills enabled</li>
             <li><strong>Warn:</strong> multi-user heuristic triggered</li>
