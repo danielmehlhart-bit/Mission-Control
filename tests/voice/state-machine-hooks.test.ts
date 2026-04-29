@@ -62,6 +62,7 @@ test("runVoiceStateMachineSelfCheck reports valid and invalid coverage", async (
   assert.ok(result.validCount > 0);
   assert.ok(result.invalidCount > 0);
   assert.equal(result.missingStates.length, 0);
+  assert.equal(result.unreachableStates.length, 0);
   assert.equal(result.invalidExamples.some((example: string) => example === "idle->ready"), true);
 });
 
@@ -92,14 +93,19 @@ test("runVoiceHooks composes patches in registration order", async () => {
   registerVoiceHook("beforeHydration", {
     id: "required-b",
     criticality: "required",
-    run: async () => ({
-      resolvedContext: {
-        hydrated: true,
-      },
-      metadata: {
-        order: ["required-a", "required-b"],
-      },
-    }),
+    run: async (context: { resolvedContext: Record<string, unknown> }) => {
+      assert.equal(context.resolvedContext.profileSummary, "main");
+      assert.deepEqual(context.resolvedContext.sources, ["profile"]);
+
+      return {
+        resolvedContext: {
+          hydrated: true,
+        },
+        metadata: {
+          order: ["required-a", "required-b"],
+        },
+      };
+    },
   });
 
   const result = await runVoiceHooks("beforeHydration", {

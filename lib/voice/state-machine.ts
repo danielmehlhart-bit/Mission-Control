@@ -4,11 +4,11 @@ export const ALLOWED_VOICE_STATE_TRANSITIONS: Record<VoiceSessionState, VoiceSes
   idle: ["booting"],
   booting: ["hydrating_context", "failed"],
   hydrating_context: ["ready", "failed"],
-  ready: ["listening", "ending"],
-  listening: ["thinking", "switching_context", "ending", "failed"],
+  ready: ["listening", "paused", "ending"],
+  listening: ["thinking", "switching_context", "paused", "ending", "failed"],
   thinking: ["speaking", "awaiting_user", "failed"],
   speaking: ["awaiting_user", "listening", "ending", "failed"],
-  awaiting_user: ["listening", "switching_context", "ending"],
+  awaiting_user: ["listening", "switching_context", "paused", "ending"],
   switching_context: ["hydrating_context", "awaiting_user", "failed"],
   paused: ["listening", "ending"],
   ending: ["completed", "failed"],
@@ -48,6 +48,7 @@ export function runVoiceStateMachineSelfCheck(): {
   validCount: number;
   invalidCount: number;
   missingStates: VoiceSessionState[];
+  unreachableStates: VoiceSessionState[];
   invalidExamples: string[];
 } {
   const allStates = [...VOICE_SESSION_STATES];
@@ -70,10 +71,25 @@ export function runVoiceStateMachineSelfCheck(): {
     }
   }
 
+  const reachable = new Set<VoiceSessionState>(["idle"]);
+  const queue: VoiceSessionState[] = ["idle"];
+
+  while (queue.length > 0) {
+    const current = queue.shift()!;
+    for (const next of ALLOWED_VOICE_STATE_TRANSITIONS[current]) {
+      if (reachable.has(next)) continue;
+      reachable.add(next);
+      queue.push(next);
+    }
+  }
+
+  const unreachableStates = allStates.filter((state) => !reachable.has(state));
+
   return {
     validCount,
     invalidCount,
     missingStates,
+    unreachableStates,
     invalidExamples,
   };
 }

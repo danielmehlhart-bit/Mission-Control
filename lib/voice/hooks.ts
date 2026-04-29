@@ -76,6 +76,22 @@ function mergeVoiceHookPatch(base: VoiceHookPatch, next?: VoiceHookPatch | void)
   };
 }
 
+function applyPatchToContext(
+  context: VoiceHookContext,
+  patch?: VoiceHookPatch | void,
+): VoiceHookContext {
+  if (!patch) return context;
+
+  return {
+    ...context,
+    ...(patch.session ? { session: { ...(context.session ?? {}), ...patch.session } as VoiceSession } : {}),
+    ...(patch.resolvedContext
+      ? { resolvedContext: { ...(context.resolvedContext ?? {}), ...patch.resolvedContext } }
+      : {}),
+    ...(patch.payload ? { payload: { ...(context.payload ?? {}), ...patch.payload } } : {}),
+  };
+}
+
 function getVoiceHookEntries(name: VoiceHookName): VoiceHookDefinition[] {
   return voiceHookRegistry.get(name) ?? [];
 }
@@ -131,12 +147,14 @@ export async function runVoiceHooks(
   results: VoiceHookRunResult[];
 }> {
   let patch: VoiceHookPatch = {};
+  let currentContext = context;
   const results: VoiceHookRunResult[] = [];
 
   for (const hook of getVoiceHookEntries(name)) {
     try {
-      const nextPatch = await hook.run(context);
+      const nextPatch = await hook.run(currentContext);
       patch = mergeVoiceHookPatch(patch, nextPatch);
+      currentContext = applyPatchToContext(currentContext, nextPatch ?? {});
       results.push({
         hookId: hook.id,
         hookName: name,
