@@ -132,6 +132,69 @@ function initSchema(db: Database.Database): void {
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS voice_profiles (
+      id                         TEXT PRIMARY KEY,
+      slug                       TEXT NOT NULL UNIQUE,
+      label                      TEXT NOT NULL,
+      description                TEXT,
+      status                     TEXT NOT NULL DEFAULT 'active',
+      color                      TEXT,
+      icon                       TEXT,
+      base_session_key           TEXT NOT NULL,
+      default_prompt             TEXT,
+      context_binding_json       TEXT NOT NULL DEFAULT '{}',
+      context_sources_json       TEXT NOT NULL DEFAULT '[]',
+      allowed_switch_targets_json TEXT NOT NULL DEFAULT '[]',
+      sort_order                 INTEGER NOT NULL DEFAULT 0,
+      created_at                 TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at                 TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS voice_sessions (
+      id                    TEXT PRIMARY KEY,
+      profile_id            TEXT NOT NULL,
+      state                 TEXT NOT NULL,
+      transport             TEXT NOT NULL DEFAULT 'web',
+      base_session_key      TEXT NOT NULL,
+      resolved_context_json TEXT NOT NULL DEFAULT '{}',
+      last_user_transcript  TEXT,
+      last_assistant_text   TEXT,
+      last_error            TEXT,
+      started_at            TEXT NOT NULL DEFAULT (datetime('now')),
+      ended_at              TEXT,
+      updated_at            TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS voice_session_events (
+      id          TEXT PRIMARY KEY,
+      session_id  TEXT NOT NULL,
+      event_type  TEXT NOT NULL,
+      from_state  TEXT,
+      to_state    TEXT,
+      payload_json TEXT NOT NULL DEFAULT '{}',
+      created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS voice_turns (
+      id            TEXT PRIMARY KEY,
+      session_id    TEXT NOT NULL,
+      speaker       TEXT NOT NULL,
+      text          TEXT NOT NULL,
+      source        TEXT NOT NULL DEFAULT 'voice',
+      sequence_no   INTEGER NOT NULL,
+      metadata_json TEXT NOT NULL DEFAULT '{}',
+      created_at    TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS voice_profile_bindings (
+      id            TEXT PRIMARY KEY,
+      profile_id    TEXT NOT NULL,
+      binding_type  TEXT NOT NULL,
+      binding_value TEXT NOT NULL,
+      metadata_json TEXT NOT NULL DEFAULT '{}',
+      created_at    TEXT NOT NULL DEFAULT (datetime('now'))
+    );
   `);
 
   // Spalten nachträglich hinzufügen (ALTER TABLE IF NOT EXISTS column nicht in SQLite → try/catch)
@@ -158,6 +221,15 @@ function initSchema(db: Database.Database): void {
       id         TEXT PRIMARY KEY,
       applied_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    CREATE INDEX IF NOT EXISTS idx_voice_sessions_profile_started
+      ON voice_sessions(profile_id, started_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_voice_session_events_session_created
+      ON voice_session_events(session_id, created_at ASC);
+    CREATE INDEX IF NOT EXISTS idx_voice_turns_session_sequence
+      ON voice_turns(session_id, sequence_no ASC);
+    CREATE INDEX IF NOT EXISTS idx_voice_profile_bindings_profile_type
+      ON voice_profile_bindings(profile_id, binding_type);
   `);
   db.exec("SELECT 1"); // flush
 
@@ -616,5 +688,94 @@ function initSchema(db: Database.Database): void {
         updated_at TEXT NOT NULL DEFAULT (datetime('now'))
       );
     `);
+  });
+
+  // Migration: Seed backend-first voice profiles for Mission Control voice mode
+  runMigration("seed_voice_profiles_20260429", () => {
+    const existingCount = (db.prepare("SELECT COUNT(*) as c FROM voice_profiles").get() as { c: number }).c;
+    if (existingCount > 0) return;
+
+    const insertProfile = db.prepare(`
+      INSERT INTO voice_profiles (
+        id, slug, label, description, status, color, icon, base_session_key,
+        default_prompt, context_binding_json, context_sources_json,
+        allowed_switch_targets_json, sort_order, created_at, updated_at
+      ) VALUES (
+        @id, @slug, @label, @description, @status, @color, @icon, @base_session_key,
+        @default_prompt, @context_binding_json, @context_sources_json,
+        @allowed_switch_targets_json, @sort_order, datetime('now'), datetime('now')
+      )
+    `);
+
+    const profileRows = [
+      {
+        id: "vp_main",
+        slug: "main",
+        label: "Call Hermes",
+        description: "General primary voice context for Daniel.",
+        status: "active",
+        color: "#6366f1",
+        icon: "sparkles",
+        base_session_key: "voice.main",
+        default_prompt: "You are speaking with Daniel in the main Mission Control voice line.",
+        context_binding_json: JSON.stringify({ mode: "general" }),
+        context_sources_json: JSON.stringify(["global_memory", "recent_activities", "recent_tasks"]),
+        allowed_switch_targets_json: JSON.stringify(["sales_support", "luma", "fitness"]),
+        sort_order: 0,
+      },
+      {
+        id: "vp_sales_support",
+        slug: "sales_support",
+        label: "Call Sales Support",
+        description: "Sales-support context with discovery, deal, and account activity focus.",
+        status: "active",
+        color: "#f59e0b",
+        icon: "phone-call",
+        base_session_key: "voice.sales_support",
+        default_prompt: "You are speaking with Daniel in the Sales Support voice line.",
+        context_binding_json: JSON.stringify({ mode: "sales_support" }),
+        context_sources_json: JSON.stringify(["accounts", "deals", "activities", "discovery_notes", "calendar"]),
+        allowed_switch_targets_json: JSON.stringify(["main", "luma"]),
+        sort_order: 1,
+      },
+      {
+        id: "vp_luma",
+        slug: "luma",
+        label: "Call LUMA",
+        description: "LUMA product and customer context for voice-first work.",
+        status: "active",
+        color: "#10b981",
+        icon: "rocket",
+        base_session_key: "voice.luma",
+        default_prompt: "You are speaking with Daniel in the LUMA voice line.",
+        context_binding_json: JSON.stringify({ mode: "luma", projectSlug: "luma" }),
+        context_sources_json: JSON.stringify(["projects", "tasks", "activities", "briefings", "notes"]),
+        allowed_switch_targets_json: JSON.stringify(["main", "sales_support"]),
+        sort_order: 2,
+      },
+      {
+        id: "vp_fitness",
+        slug: "fitness",
+        label: "Call Fitness",
+        description: "Fitness context for health, routines, and training conversations.",
+        status: "active",
+        color: "#ec4899",
+        icon: "dumbbell",
+        base_session_key: "voice.fitness",
+        default_prompt: "You are speaking with Daniel in the Fitness voice line.",
+        context_binding_json: JSON.stringify({ mode: "fitness" }),
+        context_sources_json: JSON.stringify(["global_memory"]),
+        allowed_switch_targets_json: JSON.stringify(["main"]),
+        sort_order: 3,
+      },
+    ];
+
+    const seedProfiles = db.transaction(() => {
+      for (const profile of profileRows) {
+        insertProfile.run(profile);
+      }
+    });
+
+    seedProfiles();
   });
 }
