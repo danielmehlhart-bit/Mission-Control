@@ -8,6 +8,7 @@ import * as path from "node:path";
 const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "mc-voice-phase3-"));
 process.env.DB_PATH = path.join(tempRoot, "mission-control.db");
 process.env.BRIEFINGS_DIR = path.join(tempRoot, "briefings");
+process.env.MEMORY_DIR = tempRoot;
 
 async function loadModules() {
   const sessionStoreModule = await import("../../lib/voice/session-store.ts");
@@ -30,9 +31,15 @@ async function seedVoiceFixtures() {
   const db = getDb();
 
   await fsp.mkdir(process.env.BRIEFINGS_DIR!, { recursive: true });
+  await fsp.mkdir(path.join(process.env.MEMORY_DIR!, "memory"), { recursive: true });
   await fsp.writeFile(
     path.join(process.env.BRIEFINGS_DIR!, "2026-04-29-luma-onboarding.html"),
     "<html><body>LUMA onboarding briefing</body></html>",
+    "utf8",
+  );
+  await fsp.writeFile(
+    path.join(process.env.MEMORY_DIR!, "memory", "2026-04-29.md"),
+    "# Daily Memory\nDaniel discussed LUMA voice workflows.",
     "utf8",
   );
 
@@ -134,6 +141,36 @@ test("resolveVoiceProfileContext builds a normalized resolved context with summa
   assert.equal(typeof resolved.contextSummary, "string");
   assert.equal(resolved.contextSummary?.includes("LUMA GmbH"), true);
   assert.equal((resolved.metadata as Record<string, unknown>).accountName, "LUMA GmbH");
+
+  const mainResolved = await resolveVoiceProfileContext("main", {
+    calendarProvider: async () => [],
+  });
+  assert.equal(mainResolved.sources.some((source: { type: string; count?: number }) => source.type === "global_memory" && source.count === 1), true);
+});
+
+test("loadVoiceContextSources degrades gracefully when briefings or calendar are unavailable", async () => {
+  await seedVoiceFixtures();
+  await fsp.rm(process.env.BRIEFINGS_DIR!, { recursive: true, force: true });
+  const { contextSourcesModule } = await loadModules();
+  const { loadVoiceContextSources } = contextSourcesModule;
+
+  const result = await loadVoiceContextSources(
+    ["briefings", "calendar", "global_memory"],
+    {
+      bindings: {
+        accountId: "acc_luma",
+        projectId: "proj_luma",
+        projectName: "LUMA",
+      },
+      calendarProvider: async () => {
+        throw new Error("calendar offline");
+      },
+    },
+  );
+
+  assert.equal(result.briefings.length, 0);
+  assert.equal(result.calendar.length, 0);
+  assert.equal(result.globalMemory.length, 1);
 });
 
 test("resolveVoiceContextSwitch enforces allowed targets and hydrates the target profile", async () => {

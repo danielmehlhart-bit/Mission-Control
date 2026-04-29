@@ -1,5 +1,5 @@
 import { getDb } from "@/lib/db";
-import { listBriefings, readBriefing } from "@/lib/fs";
+import { listBriefings, listMemory, readBriefing, readMemory } from "@/lib/fs";
 import { getUpcomingEvents, type CalendarEvent } from "@/lib/google-calendar";
 
 export type VoiceContextBindings = {
@@ -40,6 +40,7 @@ export type LoadedVoiceContextSources = {
   tasks: Array<Record<string, unknown>>;
   briefings: Array<Record<string, unknown>>;
   calendar: Array<Record<string, unknown>>;
+  globalMemory: Array<Record<string, unknown>>;
   notes: { content: string | null; updatedAt: string | null };
 };
 
@@ -130,21 +131,33 @@ async function loadTasksContext(bindings: VoiceContextBindings, limit = 10) {
 }
 
 async function loadBriefingsContext(bindings: VoiceContextBindings, limit = 5) {
-  const listing = await listBriefings();
-  const terms = [bindings.projectName, bindings.accountName, bindings.projectSlug]
-    .filter((value): value is string => typeof value === "string" && value.trim().length > 0)
-    .map((value) => value.toLowerCase());
+  try {
+    const listing = await listBriefings();
+    const terms = [bindings.projectName, bindings.accountName, bindings.projectSlug]
+      .filter((value): value is string => typeof value === "string" && value.trim().length > 0)
+      .map((value) => value.toLowerCase());
 
-  const matched = listing.files.filter((file) => {
-    if (terms.length === 0) return false;
-    const haystack = `${file.name} ${file.path}`.toLowerCase();
-    return terms.some((term) => haystack.includes(term));
-  }).slice(0, limit);
+    const matched = listing.files.filter((file) => {
+      if (terms.length === 0) return false;
+      const haystack = `${file.name} ${file.path}`.toLowerCase();
+      return terms.some((term) => haystack.includes(term));
+    }).slice(0, limit);
 
-  return Promise.all(matched.map(async (file) => ({
-    ...file,
-    preview: (await readBriefing(file.path)).slice(0, 240),
-  })));
+    const hydrated = await Promise.all(matched.map(async (file) => {
+      try {
+        return {
+          ...file,
+          preview: (await readBriefing(file.path)).slice(0, 240),
+        };
+      } catch {
+        return null;
+      }
+    }));
+
+    return hydrated.filter((file): file is Record<string, unknown> => Boolean(file));
+  } catch {
+    return [];
+  }
 }
 
 async function loadCalendarContext(
@@ -158,22 +171,51 @@ async function loadCalendarContext(
     .all() as { id: string; name: string; email: string; project?: string; account_id?: string }[];
 
   const emailToPerson = new Map(people.map((person) => [person.email.toLowerCase(), person]));
-  const events = await calendarProvider(60);
 
-  return events
-    .filter((event) => {
-      if (!bindings.accountId && !bindings.projectName) return true;
-      const attendees = event.attendees.map((email) => emailToPerson.get(email.toLowerCase())).filter(Boolean);
-      return attendees.some((person) => {
-        if (!person) return false;
-        return (
-          (!!bindings.accountId && person.account_id === bindings.accountId) ||
-          (!!bindings.projectName && person.project?.toLowerCase() === bindings.projectName.toLowerCase())
-        );
-      });
-    })
-    .slice(0, limit)
-    .map((event) => ({ ...event }));
+  try {
+    const events = await calendarProvider(60);
+
+    return events
+      .filter((event) => {
+        if (!bindings.accountId && !bindings.projectName) return true;
+        const attendees = event.attendees.map((email) => emailToPerson.get(email.toLowerCase())).filter(Boolean);
+        return attendees.some((person) => {
+          if (!person) return false;
+          return (
+            (!!bindings.accountId && person.account_id === bindings.accountId) ||
+            (!!bindings.projectName && person.project?.toLowerCase() === bindings.projectName.toLowerCase())
+          );
+        });
+      })
+      .slice(0, limit)
+      .map((event) => ({ ...event }));
+  } catch {
+    return [];
+  }
+}
+
+async function loadGlobalMemoryContext(limit = 3) {
+  try {
+    const listing = await listMemory();
+    const files = [...listing.files]
+      .sort((a, b) => b.modified.localeCompare(a.modified))
+      .slice(0, limit);
+
+    const hydrated = await Promise.all(files.map(async (file) => {
+      try {
+        return {
+          ...file,
+          preview: (await readMemory(file.path)).slice(0, 240),
+        };
+      } catch {
+        return null;
+      }
+    }));
+
+    return hydrated.filter((file): file is Record<string, unknown> => Boolean(file));
+  } catch {
+    return [];
+  }
 }
 
 async function loadAccountNotesContext(bindings: VoiceContextBindings) {
@@ -209,6 +251,7 @@ export async function loadVoiceContextSources(
     : [];
   const briefings = sourceNames.includes("briefings") ? await loadBriefingsContext(options.bindings, Math.min(limit, 5)) : [];
   const calendar = sourceNames.includes("calendar") ? await loadCalendarContext(options.bindings, calendarProvider, Math.min(limit, 5)) : [];
+  const globalMemory = sourceNames.includes("global_memory") ? await loadGlobalMemoryContext(Math.min(limit, 3)) : [];
   const notes = sourceNames.includes("notes") ? await loadAccountNotesContext(options.bindings) : { content: null, updatedAt: null };
 
   return {
@@ -220,6 +263,7 @@ export async function loadVoiceContextSources(
     tasks,
     briefings,
     calendar,
+    globalMemory,
     notes,
   };
 }

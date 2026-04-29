@@ -37,6 +37,7 @@ function buildSourceCounts(loaded: Awaited<ReturnType<typeof loadVoiceContextSou
     { type: "tasks", count: loaded.tasks.length, label: "Tasks" },
     { type: "briefings", count: loaded.briefings.length, label: "Briefings" },
     { type: "calendar", count: loaded.calendar.length, label: "Calendar" },
+    { type: "global_memory", count: loaded.globalMemory.length, label: "Global Memory" },
     { type: "notes", count: loaded.notes.content ? 1 : 0, label: "Notes" },
   ].filter((source) => source.count > 0);
 }
