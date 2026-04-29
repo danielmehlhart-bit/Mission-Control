@@ -270,7 +270,8 @@ test("switchSessionContext rejects missing target profiles without mutating the 
 
   clearVoiceHookRegistry();
   const session = await createSessionForProfile({ profileSlug: "sales_support", calendarProvider: async () => [] });
-  getDb().prepare("DELETE FROM voice_profiles WHERE slug = ?").run("luma");
+  const db = getDb();
+  db.prepare("DELETE FROM voice_profiles WHERE slug = ?").run("luma");
 
   await assert.rejects(
     switchSessionContext({ sessionId: session.id, targetProfileSlug: "luma", calendarProvider: async () => [] }),
@@ -280,6 +281,28 @@ test("switchSessionContext rejects missing target profiles without mutating the 
   const persisted = getVoiceSession(session.id);
   assert.equal(persisted?.state, "ready");
   assert.equal(listVoiceSessionEvents(session.id).some((event) => event.eventType === "voice.context_switch_requested"), false);
+
+  db.prepare(`
+    INSERT OR REPLACE INTO voice_profiles (
+      id, slug, label, description, status, color, icon, base_session_key,
+      default_prompt, context_binding_json, context_sources_json,
+      allowed_switch_targets_json, sort_order, created_at, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  `).run(
+    "vp_luma",
+    "luma",
+    "Call LUMA",
+    "LUMA product and customer context for voice-first work.",
+    "active",
+    "#10b981",
+    "rocket",
+    "voice.luma",
+    "You are speaking with Daniel in the LUMA voice line.",
+    JSON.stringify({ mode: "luma", projectSlug: "luma" }),
+    JSON.stringify(["projects", "tasks", "activities", "briefings", "notes"]),
+    JSON.stringify(["main", "sales_support"]),
+    2,
+  );
 });
 
 test("endSession runs end hooks, transitions to completed, and emits end event", async () => {
