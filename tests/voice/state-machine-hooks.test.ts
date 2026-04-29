@@ -145,6 +145,16 @@ test("best-effort hook failures emit voice.hook_failed without aborting", async 
   const session = createVoiceSession({ profileId: profile!.id });
 
   registerVoiceHook("beforeHydration", {
+    id: "set-session-state",
+    criticality: "required",
+    run: async () => ({
+      session: {
+        state: "thinking",
+      },
+    }),
+  });
+
+  registerVoiceHook("beforeHydration", {
     id: "best-effort-fail",
     criticality: "best_effort",
     run: async () => {
@@ -169,13 +179,16 @@ test("best-effort hook failures emit voice.hook_failed without aborting", async 
     resolvedContext: {},
   });
 
-  assert.equal(result.results[0].status, "failed");
-  assert.equal(result.results[1].status, "fulfilled");
+  assert.equal(result.results[0].status, "fulfilled");
+  assert.equal(result.results[1].status, "failed");
+  assert.equal(result.results[2].status, "fulfilled");
   assert.deepEqual(result.patch.resolvedContext, { recovered: true });
 
   const events = listVoiceSessionEvents(session.id);
   const hookFailureEvent = events.find((event: { eventType: string }) => event.eventType === "voice.hook_failed");
   assert.ok(hookFailureEvent);
+  assert.equal(hookFailureEvent?.fromState, "thinking");
+  assert.equal(hookFailureEvent?.toState, "thinking");
   assert.equal(hookFailureEvent?.payload.hookId, "best-effort-fail");
   assert.equal(hookFailureEvent?.payload.hookName, "beforeHydration");
   assert.equal(hookFailureEvent?.payload.message, "calendar source offline");
