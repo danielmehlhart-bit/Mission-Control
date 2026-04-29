@@ -253,6 +253,12 @@ export async function listMemoryByCategory(): Promise<{ category: string; files:
 }
 
 export async function readMemoryFile(logicalPath: string): Promise<string> {
+  const allowedFiles = (await listMemoryByCategory()).flatMap((category) => category.files);
+  const allowed = allowedFiles.find((file) => file.path === logicalPath);
+  if (!allowed) {
+    throw new Error("Access denied");
+  }
+
   const memoryDir = ROOTS.memory;
   const layout = await detectLayout(memoryDir);
   const memRoot = layout === "hetzner" ? memoryDir : path.join(memoryDir, MEMORY_SUBDIR);
@@ -260,7 +266,6 @@ export async function readMemoryFile(logicalPath: string): Promise<string> {
 
   if (logicalPath.startsWith("ws:")) {
     const fname = logicalPath.slice(3);
-    if (!CORE_FILES_ALLOWLIST.includes(fname)) throw new Error("Access denied");
     const fullPath = safeResolve(coreRoot, fname);
     return fs.readFile(fullPath, "utf8");
   } else if (logicalPath.startsWith("mem:")) {
@@ -278,34 +283,19 @@ export async function readMemoryFile(logicalPath: string): Promise<string> {
 
 // Legacy — kept for backward compat
 export async function listMemory() {
-  const root = ROOTS.memory;
-  const memoryRoot = path.join(root, MEMORY_SUBDIR);
-  let files: string[] = [];
-  try {
-    files = await walkDir(memoryRoot);
-  } catch {
-    return { root: memoryRoot, files: [] };
-  }
+  const byCategory = await listMemoryByCategory();
   return {
-    root: memoryRoot,
-    files: await Promise.all(
-      files
-        .filter((file) => /\.md$/i.test(file))
-        .map(async (file) => {
-          const stat = await fs.stat(file);
-          return {
-            name: path.basename(file),
-            path: path.relative(memoryRoot, file),
-            modified: stat.mtime.toISOString(),
-          };
-        })
+    root: ROOTS.memory,
+    files: byCategory.flatMap((category) =>
+      category.files.map((file) => ({
+        name: file.name,
+        path: file.path,
+        modified: file.modified,
+      })),
     ),
   };
 }
 
 export async function readMemory(filePath: string) {
-  const root = ROOTS.memory;
-  const memoryRoot = path.join(root, MEMORY_SUBDIR);
-  const fullPath = safeResolve(memoryRoot, filePath);
-  return fs.readFile(fullPath, "utf8");
+  return readMemoryFile(filePath.startsWith("mem:") || filePath.startsWith("proj:") || filePath.startsWith("ws:") ? filePath : `mem:${filePath}`);
 }

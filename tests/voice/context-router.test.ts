@@ -15,12 +15,14 @@ async function loadModules() {
   const contextSourcesModule = await import("../../lib/voice/context-sources.ts");
   const contextRouterModule = await import("../../lib/voice/context-router.ts");
   const dbModule = await import("../../lib/db.ts");
+  const fsModule = await import("../../lib/fs.ts");
 
   return {
     sessionStoreModule,
     contextSourcesModule,
     contextRouterModule,
     dbModule,
+    fsModule,
   };
 }
 
@@ -41,6 +43,11 @@ async function seedVoiceFixtures() {
   await fsp.writeFile(
     path.join(process.env.MEMORY_DIR!, "2026-04-29.md"),
     "# Daily Memory\nDaniel discussed LUMA voice workflows.",
+    "utf8",
+  );
+  await fsp.writeFile(
+    path.join(process.env.MEMORY_DIR!, "secrets.txt"),
+    "should-not-be-readable",
     "utf8",
   );
 
@@ -172,6 +179,17 @@ test("loadVoiceContextSources degrades gracefully when briefings or calendar are
   assert.equal(result.briefings.length, 0);
   assert.equal(result.calendar.length, 0);
   assert.equal(result.globalMemory.length, 1);
+});
+
+test("readMemoryFile only allows enumerated memory files", async () => {
+  await seedVoiceFixtures();
+  const { fsModule } = await loadModules();
+  const { readMemoryFile } = fsModule;
+
+  const allowed = await readMemoryFile("mem:2026-04-29.md");
+  assert.equal(allowed.includes("LUMA voice workflows"), true);
+
+  await assert.rejects(() => readMemoryFile("mem:secrets.txt"), /Access denied/);
 });
 
 test("resolveVoiceContextSwitch enforces allowed targets and hydrates the target profile", async () => {
