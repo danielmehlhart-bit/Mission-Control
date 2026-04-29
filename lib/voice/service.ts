@@ -15,7 +15,7 @@ import {
 import { resolveVoiceContextSwitch, resolveVoiceProfileContext } from "./context-router";
 import { assertTransition } from "./state-machine";
 import { runVoiceHooks } from "./hooks";
-import type { ResolvedVoiceContext, VoiceProfile, VoiceProfileSlug, VoiceSession, VoiceTurn, VoiceTurnSpeaker, VoiceTransport } from "./types";
+import type { ResolvedVoiceContext, VoiceProfile, VoiceProfileSlug, VoiceSession, VoiceTurn, VoiceTransport } from "./types";
 import type { CalendarEvent } from "@/lib/google-calendar";
 
 export type VoiceServiceCalendarProvider = (days?: number) => Promise<CalendarEvent[]>;
