@@ -196,8 +196,9 @@ async function loadCalendarContext(
 
 async function loadGlobalMemoryContext(limit = 3) {
   try {
-    const listing = await listMemory();
-    const files = [...listing.files]
+    const categories = await listMemoryByCategory();
+    const files = categories
+      .flatMap((category) => category.files)
       .sort((a, b) => b.modified.localeCompare(a.modified))
       .slice(0, limit);
 
@@ -205,7 +206,7 @@ async function loadGlobalMemoryContext(limit = 3) {
       try {
         return {
           ...file,
-          preview: (await readMemory(file.path)).slice(0, 240),
+          preview: (await readMemoryFile(file.path)).slice(0, 240),
         };
       } catch {
         return null;
