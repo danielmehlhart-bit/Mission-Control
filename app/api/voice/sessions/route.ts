@@ -5,7 +5,9 @@ import {
   buildSessionEnvelope,
   parseJsonBody,
   parseLimit,
+  requireActiveProfileById,
   requireProfileById,
+  serializeVoiceProfile,
   validateTransport,
   voiceErrorResponse,
 } from "@/lib/voice/api";

@@ -129,6 +129,29 @@ test("POST /api/voice/sessions validates transport and creates a hydrated sessio
   assert.equal(payload.profile.slug, "sales_support");
   assert.equal(typeof payload.contextSummary, "string");
   assert.equal(payload.session.transport, "web");
+  assert.equal("baseSessionKey" in payload.profile, false);
+});
+
+test("POST /api/voice/sessions rejects inactive profiles", async () => {
+  await seedVoiceFixtures();
+  const { dbModule, sessionsRouteModule, sessionStoreModule } = await loadModules();
+  const { getDb } = dbModule;
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const salesProfile = getVoiceProfileBySlug("sales_support");
+  assert.ok(salesProfile);
+
+  getDb().prepare("UPDATE voice_profiles SET status = 'inactive' WHERE id = ?").run(salesProfile!.id);
+
+  const response = await sessionsRouteModule.POST(
+    makeRequest("http://localhost/api/voice/sessions", {
+      method: "POST",
+      body: JSON.stringify({ profileId: salesProfile!.id, transport: "web" }),
+    }),
+  );
+
+  assert.equal(response.status, 400);
+  const payload = await response.json();
+  assert.match(payload.error, /inactive/i);
 });
 
 test("GET /api/voice/sessions/[id] returns session envelope with recent turns", async () => {
@@ -154,6 +177,7 @@ test("GET /api/voice/sessions/[id] returns session envelope with recent turns", 
   assert.equal(payload.profile.slug, "sales_support");
   assert.deepEqual(payload.turns, []);
   assert.equal(typeof payload.contextSummary, "string");
+  assert.equal("baseSessionKey" in payload.profile, false);
 });
 
 test("POST /api/voice/sessions/[id]/transcript persists interim transcript and emits transcript_received", async () => {
@@ -237,6 +261,7 @@ test("POST /api/voice/sessions/[id]/context-switch and GET /events expose update
   assert.equal(switchPayload.profile.slug, "luma");
   assert.equal(switchPayload.session.state, "awaiting_user");
   assert.equal(switchPayload.systemTurn.speaker, "system");
+  assert.equal(switchPayload.reason, "user_request");
 
   const eventsResponse = await eventsRouteModule.GET(
     makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/events`),
@@ -247,5 +272,12 @@ test("POST /api/voice/sessions/[id]/context-switch and GET /events expose update
   const eventsPayload = await eventsResponse.json();
   assert.equal(Array.isArray(eventsPayload.events), true);
   assert.equal(eventsPayload.events.some((event: { eventType: string }) => event.eventType === "voice.context_switch_applied"), true);
+  assert.equal(
+    eventsPayload.events.some(
+      (event: { eventType: string; payload?: { reason?: string } }) =>
+        event.eventType === "voice.context_switch_requested" && event.payload?.reason === "user_request",
+    ),
+    true,
+  );
   assert.equal(eventsPayload.events[0].eventType, "voice.state_changed");
 });

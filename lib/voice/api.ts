@@ -48,10 +48,30 @@ export function validateTransport(value: unknown): VoiceTransport {
   return value as VoiceTransport;
 }
 
+export function serializeVoiceProfile(profile: VoiceProfile) {
+  return {
+    id: profile.id,
+    slug: profile.slug,
+    label: profile.label,
+    description: profile.description ?? null,
+    color: profile.color ?? null,
+    icon: profile.icon ?? null,
+    status: profile.status,
+  };
+}
+
 export function requireProfileById(profileId: string): VoiceProfile {
   const profile = getVoiceProfileById(profileId);
   if (!profile) {
     throw new Error(`Voice profile not found: ${profileId}`);
+  }
+  return profile;
+}
+
+export function requireActiveProfileById(profileId: string): VoiceProfile {
+  const profile = requireProfileById(profileId);
+  if (profile.status !== "active") {
+    throw new Error(`Voice profile inactive: ${profileId}`);
   }
   return profile;
 }
@@ -65,15 +85,7 @@ export function requireSession(sessionId: string): VoiceSession {
 }
 
 export function listButtonReadyProfiles() {
-  return listActiveVoiceProfiles().map((profile) => ({
-    id: profile.id,
-    slug: profile.slug,
-    label: profile.label,
-    description: profile.description ?? null,
-    color: profile.color ?? null,
-    icon: profile.icon ?? null,
-    status: profile.status,
-  }));
+  return listActiveVoiceProfiles().map(serializeVoiceProfile);
 }
 
 export function buildSessionEnvelope(sessionId: string, turnLimit = 50) {
@@ -84,7 +96,7 @@ export function buildSessionEnvelope(sessionId: string, turnLimit = 50) {
 
   return {
     session,
-    profile,
+    profile: serializeVoiceProfile(profile),
     turns,
     contextSummary: typeof resolvedContext.contextSummary === "string" ? resolvedContext.contextSummary : profile.label,
     switchTargets: Array.isArray(resolvedContext.switchTargets) ? resolvedContext.switchTargets : profile.allowedSwitchTargets,
