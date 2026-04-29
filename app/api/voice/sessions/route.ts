@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     }
 
     const transport = body.transport === undefined ? "web" : validateTransport(body.transport);
-    const profile = requireProfileById(profileId);
+    const profile = requireActiveProfileById(profileId);
     const session = await createSessionForProfile({ profileSlug: profile.slug, transport });
 
     return NextResponse.json(buildSessionEnvelope(session.id), { status: 201 });
