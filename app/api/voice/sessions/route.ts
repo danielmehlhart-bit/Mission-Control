@@ -22,7 +22,7 @@ export async function GET(request: Request) {
       const resolvedContext = session.resolvedContext as Record<string, unknown>;
       return {
         session,
-        profile,
+        profile: serializeVoiceProfile(profile),
         contextSummary: typeof resolvedContext.contextSummary === "string" ? resolvedContext.contextSummary : profile.label,
       };
     });
