@@ -32,6 +32,7 @@ export const VOICE_EVENT_TYPES = [
   "voice.provider_error",
   "voice.session_ended",
   "voice.invalid_transition",
+  "voice.hook_failed",
 ] as const;
 export type VoiceEventType = typeof VOICE_EVENT_TYPES[number];
 
