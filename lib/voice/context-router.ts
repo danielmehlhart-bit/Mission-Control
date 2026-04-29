@@ -19,6 +19,7 @@ function normalizeBindings(profileId: string, profileContextBinding: Record<stri
   }
 
   if (typeof profileContextBinding.accountId === "string") normalized.accountId = profileContextBinding.accountId;
+  if (typeof profileContextBinding.accountName === "string") normalized.accountName = profileContextBinding.accountName;
   if (typeof profileContextBinding.dealId === "string") normalized.dealId = profileContextBinding.dealId;
   if (typeof profileContextBinding.projectId === "string") normalized.projectId = profileContextBinding.projectId;
   if (typeof profileContextBinding.projectName === "string") normalized.projectName = profileContextBinding.projectName;
