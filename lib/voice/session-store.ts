@@ -318,6 +318,21 @@ export function updateVoiceSessionContext(sessionId: string, resolvedContext: Re
   return mapVoiceSession(row);
 }
 
+export function updateVoiceSessionRouting(sessionId: string, profileId: string, baseSessionKey: string): VoiceSession {
+  const db = getDb();
+  db.prepare(`
+    UPDATE voice_sessions
+    SET profile_id = ?, base_session_key = ?, updated_at = datetime('now')
+    WHERE id = ?
+  `).run(profileId, baseSessionKey, sessionId);
+
+  const row = db.prepare("SELECT * FROM voice_sessions WHERE id = ?").get(sessionId) as VoiceSessionRow | undefined;
+  if (!row) {
+    throw new Error(`Voice session not found: ${sessionId}`);
+  }
+  return mapVoiceSession(row);
+}
+
 export function updateVoiceSessionTranscript(sessionId: string, transcript: string | null): VoiceSession {
   const db = getDb();
   db.prepare(`
