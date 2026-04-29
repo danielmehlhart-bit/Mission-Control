@@ -207,6 +207,29 @@ test("readMemoryFile only allows enumerated memory files", async () => {
   await assert.rejects(() => readMemoryFile("mem:secrets.txt"), /Access denied/);
 });
 
+test("resolveVoiceContextSwitch ignores caller-supplied binding overrides", async () => {
+  await seedVoiceFixtures();
+  const { contextRouterModule } = await loadModules();
+  const { resolveVoiceContextSwitch } = contextRouterModule;
+
+  const switched = await resolveVoiceContextSwitch(
+    { profileSlug: "sales_support" },
+    "luma",
+    {
+      calendarProvider: async () => [],
+      extraBindings: {
+        accountId: "acc_override",
+        projectId: "proj_override",
+        projectName: "Override",
+      },
+    },
+  );
+
+  assert.equal(switched.bindings.accountId, "acc_luma");
+  assert.equal(switched.bindings.projectId, "proj_luma");
+  assert.equal(switched.bindings.projectName, "LUMA");
+});
+
 test("resolveVoiceContextSwitch enforces allowed targets and hydrates the target profile", async () => {
   await seedVoiceFixtures();
   const { contextRouterModule } = await loadModules();
