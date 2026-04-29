@@ -98,7 +98,7 @@ export default function HomePage() {
           .sort((a: BriefingFile, b: BriefingFile) => b.name.localeCompare(a.name));
         const sorted = allDated.slice(0, 8);
         setBriefings(sorted);
-        setFeaturedRoadmap(allDated.find((f: BriefingFile) => isLumaRoadmap(f.name)) ?? null);
+        setFeaturedRoadmap(pickFeaturedRoadmap(allDated));
         const count = sorted.filter((f: BriefingFile) => new Date(f.modified).getTime() > ts).length;
         setNewCount(count);
         if (count > 0 && window.innerWidth < 768 && !sessionStorage.getItem("toastShown")) {
