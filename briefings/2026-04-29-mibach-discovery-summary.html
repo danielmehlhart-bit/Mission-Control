@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mibach · Discovery Summary · 29.04.2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #F97316;
+      --orange-light: #FFF7ED;
+      --orange-mid: #FFEDD5;
+      --dark: #1a1a2e;
+      --dark-mid: #2d2d44;
+      --gray-50: #F9FAFB;
+      --gray-100: #F3F4F6;
+      --gray-200: #E5E7EB;
+      --gray-400: #9CA3AF;
+      --gray-600: #4B5563;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --green: #16A34A;
+      --green-light: #F0FDF4;
+      --green-mid: #DCFCE7;
+      --red: #DC2626;
+      --red-light: #FEF2F2;
+      --red-mid: #FEE2E2;
+      --blue-light: #EFF6FF;
+      --blue-mid: #DBEAFE;
+      --blue: #2563EB;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.05);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --radius-xs: 6px;
+    }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-900);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .header {
+      background: linear-gradient(135deg, var(--dark) 0%, var(--dark-mid) 100%);
+      padding: 40px 20px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(249,115,22,0.18) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -40px;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(249,115,22,0.10) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .header-inner { max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
+    .header-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(249,115,22,0.15); border: 1px solid rgba(249,115,22,0.30);
+      color: var(--orange); font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 5px 12px; border-radius: 100px; margin-bottom: 16px;
+    }
+    .header-badge::before { content: '●'; font-size: 8px; }
+    h1 { font-size: clamp(22px, 4vw, 34px); font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 8px; }
+    .header-date { color: var(--gray-400); font-size: 14px; font-weight: 500; margin-bottom: 24px; }
+    .header-subtitle { color: #E5E7EB; max-width: 760px; font-size: 15px; margin-bottom: 20px; }
+    .participants { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 100px; padding: 7px 14px; color: #fff; font-size: 13px;
+    }
+    .pill-avatar {
+      width: 26px; height: 26px; border-radius: 50%; background: var(--orange);
+      display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .pill-name { font-weight: 600; }
+    .pill-role { color: var(--gray-400); font-size: 12px; }
+    .main { max-width: 960px; margin: 0 auto; padding: 32px 16px 64px; display: flex; flex-direction: column; gap: 24px; }
+    .card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 28px; border: 1px solid var(--gray-200); }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 4px; }
+    .section-title { font-size: 20px; font-weight: 700; color: var(--dark); margin-bottom: 20px; }
+    .snapshot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+    .snapshot-item { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 14px 16px; }
+    .snapshot-item-label { font-size: 11px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .snapshot-item-value { font-size: 14px; font-weight: 600; color: var(--gray-900); }
+    .chain { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 14px; }
+    .chain-step { background: var(--orange-mid); color: var(--orange); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: var(--radius-xs); }
+    .chain-arrow { color: var(--gray-400); font-size: 12px; }
+    .tech-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .tech-tag { background: var(--gray-100); color: var(--gray-700); font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: var(--radius-xs); border: 1px solid var(--gray-200); }
+    .tech-tag.partial { border-color: #FDE68A; background: #FFFBEB; color: #92400E; }
+    .pain-grid { display: grid; gap: 16px; }
+    .pain-card { border-radius: var(--radius-sm); border: 1px solid var(--gray-200); overflow: hidden; }
+    .pain-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: var(--gray-50); border-bottom: 1px solid var(--gray-200); }
+    .prio-badge { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; }
+    .prio-1 { background: #FEE2E2; color: #991B1B; }
+    .prio-2 { background: #FEF3C7; color: #92400E; }
+    .prio-3 { background: #DCFCE7; color: #166534; }
+    .prio-4 { background: #E0E7FF; color: #3730A3; }
+    .pain-title { font-size: 15px; font-weight: 700; color: var(--dark); }
+    .pain-body { padding: 16px 20px; }
+    .pain-list { list-style: none; display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+    .pain-list li { position: relative; padding-left: 18px; color: var(--gray-700); }
+    .pain-list li::before { content: '•'; position: absolute; left: 0; color: var(--orange); font-weight: 700; }
+    .quote-box, .goal-box {
+      margin-top: 16px; border-radius: var(--radius-sm); padding: 16px 18px; font-size: 14px;
+      border: 1px solid var(--gray-200); background: var(--gray-50);
+    }
+    .goal-box strong { color: var(--dark); }
+    .biz-vision {
+      border: 1px solid var(--orange-mid); background: linear-gradient(180deg, #fff 0%, var(--orange-light) 100%);
+      border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
+    }
+    .biz-vision-title { font-size: 18px; font-weight: 700; color: var(--dark); margin-bottom: 12px; }
+    .vision-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 14px; }
+    .vision-step { background: #fff; border: 1px solid var(--orange-mid); color: var(--dark); font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 999px; }
+    .vision-step.final { background: var(--green-light); border-color: var(--green-mid); color: var(--green); }
+    .vision-arrow { color: var(--gray-400); font-size: 12px; }
+    .vision-description { color: var(--gray-700); font-size: 14px; }
+    .signal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 12px; margin-top: 18px; }
+    .signal-card { border-radius: var(--radius-sm); padding: 16px; border: 1px solid var(--gray-200); }
+    .signal-card.buy { background: var(--green-light); border-color: var(--green-mid); }
+    .signal-card.risk { background: var(--red-light); border-color: var(--red-mid); }
+    .signal-card.crit { background: var(--blue-light); border-color: var(--blue-mid); }
+    .signal-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+    .signal-card.buy .signal-title { color: var(--green); }
+    .signal-card.risk .signal-title { color: var(--red); }
+    .signal-card.crit .signal-title { color: var(--blue); }
+    .signal-card p, .signal-card li { font-size: 14px; color: var(--gray-700); }
+    .signal-card ul { margin-left: 18px; }
+    .steps-list { display: grid; gap: 14px; }
+    .step-item { display: flex; gap: 14px; align-items: flex-start; padding: 16px; border-radius: var(--radius-sm); background: var(--gray-50); border: 1px solid var(--gray-200); }
+    .step-check { width: 30px; height: 30px; border-radius: 50%; background: var(--orange); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; flex-shrink: 0; }
+    .step-title { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+    .step-meta { font-size: 14px; color: var(--gray-700); }
+    footer { max-width: 960px; margin: 0 auto; padding: 0 16px 40px; color: var(--gray-400); font-size: 12px; }
+    footer a { color: inherit; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-badge">Discovery Summary</div>
+      <h1>Mibach · Voice-first Audit & Projekt-Dokumentation</h1>
+      <div class="header-date">29. April 2026 · internes Discovery Summary für Daniel</div>
+      <p class="header-subtitle">
+        Ausgangspunkt ist nicht "LUMA für Architekten", sondern ein möglicher Mibach-spezifischer Pilot rund um Lagerbegehungen, Audio-Dokumentation, Foto-Ablage und automatische Aufgabenübergabe.
+      </p>
+      <div class="participants">
+        <div class="pill"><div class="pill-avatar">DM</div><div><div class="pill-name">Daniel Mehlhart</div><div class="pill-role">LUMA / Discovery</div></div></div>
+        <div class="pill"><div class="pill-avatar">JB</div><div><div class="pill-name">Jens Burchard</div><div class="pill-role">Champion / Fachseite</div></div></div>
+        <div class="pill"><div class="pill-avatar">CL</div><div><div class="pill-name">Christian Lüdckemeyer</div><div class="pill-role">Chief of Staff / Strategie</div></div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="card">
+      <div class="section-label">Unternehmen</div>
+      <div class="section-title">Company Snapshot</div>
+
+      <div class="snapshot-grid">
+        <div class="snapshot-item">
+          <div class="snapshot-item-label">Firma</div>
+          <div class="snapshot-item-value">Mibach</div>
+        </div>
+        <div class="snapshot-item">
+          <div class="snapshot-item-label">Erster Use Case</div>
+          <div class="snapshot-item-value">Lageraudit / Begehung / Mängel- und Findings-Doku</div>
+        </div>
+        <div class="snapshot-item">
+          <div class="snapshot-item-label">Kernnutzer</div>
+          <div class="snapshot-item-value">Teams, die Audits, Besichtigungen und Projekt-Updates in Lagern dokumentieren</div>
+        </div>
+        <div class="snapshot-item">
+          <div class="snapshot-item-label">Vertriebsstatus</div>
+          <div class="snapshot-item-value">Warmes Discovery mit klarer Pilot-Offenheit, aber noch ohne Commit</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <div class="snapshot-item-label" style="margin-bottom: 8px;">Ziel-Workflow</div>
+        <div class="chain">
+          <span class="chain-step">Begehung / Audit</span>
+          <span class="chain-arrow">→</span>
+          <span class="chain-step">Audio-Input</span>
+          <span class="chain-arrow">→</span>
+          <span class="chain-step">Strukturierte Findings</span>
+          <span class="chain-arrow">→</span>
+          <span class="chain-step">Fotos + Bereichszuordnung</span>
+          <span class="chain-arrow">→</span>
+          <span class="chain-step">Tasks / Follow-up</span>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <div class="snapshot-item-label" style="margin-bottom: 8px;">Aktueller Stack / Workarounds</div>
+        <div class="tech-tags">
+          <span class="tech-tag">Zettel &amp; Stift</span>
+          <span class="tech-tag">Notebook ad hoc</span>
+          <span class="tech-tag">ChatGPT punktuell</span>
+          <span class="tech-tag">Excel / VBA-Mängelliste</span>
+          <span class="tech-tag partial">PlanRadar (nur für große Baustellen)</span>
+          <span class="tech-tag">SharePoint / Endgeräte-Fotos</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-label">Analyse</div>
+      <div class="section-title">Pain Points · Priorisiert</div>
+      <div class="pain-grid">
+        <div class="pain-card">
+          <div class="pain-header">
+            <span class="prio-badge prio-1">🔴 Prio 1</span>
+            <span class="pain-title">Audit- und Begehungsdoku ist heute fragmentiert</span>
+          </div>
+          <div class="pain-body">
+            <ul class="pain-list">
+              <li>Bei Audits laufen laut Jens oft mehrere Leute mit Zettel und Stift herum; Inhalte landen später nur teilweise im Rechner.</li>
+              <li>Notizen springen zwischen Bereichen, Seiten und Kontexten — die Zuordnung zu Ort und Finding wird nachträglich unsauber.</li>
+              <li>Gerade bei Lagerbegehungen fehlt ein einfacher Weg, Findings direkt im Moment der Beobachtung sauber zu erfassen.</li>
+            </ul>
+            <div class="quote-box"><strong>Signal aus dem Call:</strong> „Also auf jeden Fall geht da einiges an [Information] verloren.“</div>
+          </div>
+        </div>
+
+        <div class="pain-card">
+          <div class="pain-header">
+            <span class="prio-badge prio-2">🟡 Prio 2</span>
+            <span class="pain-title">Fotos, Tests und Folgeaufgaben hängen nicht an einem durchgehenden Audit Trail</span>
+          </div>
+          <div class="pain-body">
+            <ul class="pain-list">
+              <li>Fotos bleiben auf einzelnen Endgeräten und schaffen keinen zentralen, teamfähigen Nachweis.</li>
+              <li>Testabläufe an Anlagen könnten per Sprache dokumentiert werden, werden heute aber nicht strukturiert erfasst.</li>
+              <li>Aus Beobachtungen entstehen nicht automatisch Tasks oder abgestimmte Follow-ups.</li>
+            </ul>
+            <div class="quote-box"><strong>Relevanz:</strong> Im gewerblichen Kontext ist saubere Dokumentation nicht nur Komfort, sondern Risiko-Mitigation.</div>
+          </div>
+        </div>
+
+        <div class="pain-card">
+          <div class="pain-header">
+            <span class="prio-badge prio-3">🟢 Prio 3</span>
+            <span class="pain-title">Es fehlt ein leichtgewichtiges Alltagstool zwischen Audit, Meeting-Recap und Projektstatus</span>
+          </div>
+          <div class="pain-body">
+            <ul class="pain-list">
+              <li>Use Case geht über Audits hinaus: spontane Projektideen, Meeting-Zusammenfassungen und Status-Updates sollen ebenfalls per Sprache erfasst werden.</li>
+              <li>PlanRadar ist für große Baustellen okay, aber nicht die generelle „Mibach-Alltags-App“ für Besichtigungen und Audits.</li>
+              <li>Die Vision ist ein generisches Kernwerkzeug, das später je Bereich spezifiziert werden kann.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pain-card">
+          <div class="pain-header">
+            <span class="prio-badge prio-4">🔵 Prio 4</span>
+            <span class="pain-title">Einführung klappt nur mit engem Scope, Champions und sichtbarer Demo</span>
+          </div>
+          <div class="pain-body">
+            <ul class="pain-list">
+              <li>Mibach ist bei Softwareeinführungen konservativ; erst ein kleiner, glaubwürdiger Use Case baut Vertrauen auf.</li>
+              <li>Jens will ein internes Projekt mit User Stories und klarer Scope-Grenze, bevor Budget freigegeben wird.</li>
+              <li>Eine konkrete Vor-Ort-Demo im Büro wurde als sinnvollster Einstieg genannt.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-label">Potenzial</div>
+      <div class="section-title">Business Case & Pilot-Ansatz</div>
+
+      <div class="biz-vision">
+        <div class="biz-vision-title">Scharfer Startpunkt — Voice-first Lageraudit</div>
+        <div class="vision-steps">
+          <span class="vision-step">Bereich benennen</span>
+          <span class="vision-arrow">→</span>
+          <span class="vision-step">Finding einsprechen</span>
+          <span class="vision-arrow">→</span>
+          <span class="vision-step">Foto anhängen</span>
+          <span class="vision-arrow">→</span>
+          <span class="vision-step">Task erzeugen</span>
+          <span class="vision-arrow">→</span>
+          <span class="vision-step final">Review / Abarbeitung sichtbar</span>
+        </div>
+        <p class="vision-description">
+          Der beste Einstieg ist kein großer Plattform-Rollout, sondern ein klarer Audit-Flow: Wareneingang / Hochregallager / weiterer Bereich wird benannt, Beobachtung per Sprache erfasst, Foto direkt zugeordnet und daraus entsteht unmittelbar eine nachvollziehbare Punkteliste oder Aufgabe. Von dort kann Mibach später Richtung Projektstatus, Meeting-Recaps und Testdokumentation erweitern.
+        </p>
+      </div>
+
+      <div class="goal-box"><strong>Warum Mibach offen ist:</strong> Es gibt strategisches AI-Interesse, aber zu wenig interne Programmierkapazität, um solche Spezialworkflows schnell selbst produktiv zu bauen.</div>
+
+      <div class="signal-grid">
+        <div class="signal-card buy">
+          <div class="signal-title">Buying Signals</div>
+          <ul>
+            <li>„Ich sehe da auf jeden Fall grundsätzlich einen Mehrwert bei uns.“</li>
+            <li>Bitte um Unterlagen: Nutzen, Scope, Out-of-Scope, was Daniel von ihnen braucht.</li>
+            <li>Interne Idee für Pilot / Vor-Ort-Demo wurde direkt vom Kunden selbst vorgeschlagen.</li>
+            <li>Post-Call intern: „Das wäre dumm, wenn wir es jetzt wieder komplett selbst bauen.“</li>
+          </ul>
+        </div>
+        <div class="signal-card crit">
+          <div class="signal-title">Decision Criteria</div>
+          <ul>
+            <li>Kleiner, sauber abgegrenzter Projektsteckbrief</li>
+            <li>2–3 interne Mitstreiter + Jens als Champion</li>
+            <li>Erst Test / Demo / Erfolgskriterien, dann Budget</li>
+            <li>Frank gibt am Ende Budgets frei</li>
+          </ul>
+        </div>
+        <div class="signal-card risk">
+          <div class="signal-title">Risiken / Hürden</div>
+          <ul>
+            <li>LUMA ist eigentlich außerhalb des Kern-ICP; wahrscheinlich braucht Mibach eher ein separates Setup / Repo.</li>
+            <li>Security / Datenschutz-Fragen werden später sicher härter kommen.</li>
+            <li>Ohne klaren ersten Scope droht schnell „zu viel Welt“ statt eines fokussierten Piloten.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-label">Vereinbart</div>
+      <div class="section-title">Nächste Schritte</div>
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-check">1</div>
+          <div>
+            <div class="step-title">Projektsteckbrief / Discovery Summary an Jens &amp; Christian senden</div>
+            <div class="step-meta">Kurz und konkret: Probleme, erster Use Case, Nutzen, Out-of-Scope, Vorschlag für Pilot-Setup.</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-check">2</div>
+          <div>
+            <div class="step-title">Mibach klärt intern Champion-Kreis und Pilotkandidaten</div>
+            <div class="step-meta">Jens stimmt sich mit Christian ab; mögliche weitere Stakeholder: Felix, Christoph Müller, später Frank als Budget-Freigabe.</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-check">3</div>
+          <div>
+            <div class="step-title">Kleine Vor-Ort-Demo im Mibach-Büro vorbereiten</div>
+            <div class="step-meta">Beispielhafter Rundgang mit 2–3 Kollegen: Schrank kaputt, Kaffeemaschine, Finding + Foto + Task an der Wand sichtbar machen.</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-check">4</div>
+          <div>
+            <div class="step-title">Erfolgskriterien für Testphase vorab definieren</div>
+            <div class="step-meta">Zum Beispiel: weniger Nachdokumentation, keine verlorenen Fotos, klarere Task-Übergabe, sauberere Bereichszuordnung.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Mibach · Discovery Summary · 29. April 2026 · Quelle: Transkript „Abstimmung PM Tool" · <a href="https://mc.mehlhart.de" target="_blank">mc.mehlhart.de</a>
+  </footer>
+</body>
+</html>
