@@ -31,6 +31,7 @@ async function seedVoiceFixtures() {
   const db = getDb();
 
   await fsp.mkdir(process.env.BRIEFINGS_DIR!, { recursive: true });
+  await fsp.mkdir(path.join(process.env.MEMORY_DIR!, "core"), { recursive: true });
   await fsp.mkdir(path.join(process.env.MEMORY_DIR!, "memory"), { recursive: true });
   await fsp.writeFile(
     path.join(process.env.BRIEFINGS_DIR!, "2026-04-29-luma-onboarding.html"),
@@ -38,7 +39,7 @@ async function seedVoiceFixtures() {
     "utf8",
   );
   await fsp.writeFile(
-    path.join(process.env.MEMORY_DIR!, "memory", "2026-04-29.md"),
+    path.join(process.env.MEMORY_DIR!, "2026-04-29.md"),
     "# Daily Memory\nDaniel discussed LUMA voice workflows.",
     "utf8",
   );
