@@ -382,17 +382,6 @@ export async function generateAssistantTurn(input: GenerateAssistantTurnInput): 
     metadata: generated.metadata ?? {},
   });
   session = updateVoiceSessionAssistantText(session.id, normalizedText);
-  appendVoiceEvent({
-    sessionId: session.id,
-    eventType: "voice.assistant_turn_generated",
-    fromState: "thinking",
-    toState: "awaiting_user",
-    payload: {
-      turnId: turn.id,
-      sequenceNo: turn.sequenceNo,
-      ...(generated.metadata ? { metadata: generated.metadata } : {}),
-    },
-  });
 
   try {
     const afterGenerate = await runVoiceHooks("afterAssistantGenerate", {
@@ -405,6 +394,17 @@ export async function generateAssistantTurn(input: GenerateAssistantTurnInput): 
     });
     session = persistResolvedContext(session.id, session, afterGenerate.patch.resolvedContext);
     session = transitionSession(session, "awaiting_user", "assistant-generated", { lastError: null });
+    appendVoiceEvent({
+      sessionId: session.id,
+      eventType: "voice.assistant_turn_generated",
+      fromState: "thinking",
+      toState: "awaiting_user",
+      payload: {
+        turnId: turn.id,
+        sequenceNo: turn.sequenceNo,
+        ...(generated.metadata ? { metadata: generated.metadata } : {}),
+      },
+    });
     return { session, turn };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);

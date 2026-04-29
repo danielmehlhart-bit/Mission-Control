@@ -87,6 +87,18 @@
       width: 180px; height: 180px; left: -40px; bottom: -60px;
     }
 
+    .hero-logo-glow {
+      position: absolute;
+      top: -24px;
+      left: -26px;
+      width: 360px;
+      height: 170px;
+      border-radius: 36px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.82) 52%, rgba(255,255,255,0.08) 100%);
+      filter: blur(2px);
+      z-index: 0;
+    }
+
     .hero-content { position: relative; z-index: 1; }
 
     .hero-logo {
@@ -94,7 +106,21 @@
       width: 220px;
       height: auto;
       margin: 0 0 22px;
-      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.16));
+      position: relative;
+      z-index: 2;
+      filter: drop-shadow(0 6px 18px rgba(255,255,255,0.22));
+    }
+
+    .hero-author {
+      margin: 0 0 16px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.92);
+      font-weight: 500;
+    }
+
+    .hero-author strong {
+      color: #fff;
+      font-weight: 700;
     }
 
     .page-brand-footer {
@@ -435,6 +461,7 @@
   <section class="page">
     <div class="hero">
       <div class="hero-content">
+        <div class="hero-logo-glow"></div>
         <img class="hero-logo" src="data:image/png;base64,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" alt="LUMA Logo" />
         <div class="eyebrow">luma · Projektsteckbrief Pilot</div>
         <h1>Miebach · Sprachgestützte Audit-Dokumentation im Pilot</h1>
