@@ -80,19 +80,6 @@ export async function readBriefing(filePath: string) {
 // Memory: Zugriff auf workspace root (core files) + memory/ subdir
 const MEMORY_SUBDIR = "memory";
 
-// Allowlist der core workspace files die exponiert werden dürfen
-const CORE_FILES_ALLOWLIST = [
-  "MEMORY.md",
-  "SOUL.md",
-  "USER.md",
-  "IDENTITY.md",
-  "AGENTS.md",
-  "TOOLS.md",
-  "HEARTBEAT.md",
-  "PROJECTS.md",
-  "RULES.md",
-];
-
 // Kategorien-Mapping
 export const MEMORY_CATEGORIES = [
   {
