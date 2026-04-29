@@ -417,6 +417,11 @@ export async function switchSessionContext(input: SwitchSessionContextInput): Pr
   let session = requireSession(input.sessionId);
   ensureSessionState(session, ["ready", "listening", "awaiting_user"]);
   const currentProfile = requireProfile(session.profileId);
+  const targetProfile = getVoiceProfileBySlug(input.targetProfileSlug);
+
+  if (!targetProfile) {
+    throw new Error(`Voice profile not found: ${input.targetProfileSlug}`);
+  }
 
   if (!currentProfile.allowedSwitchTargets.includes(input.targetProfileSlug)) {
     throw new Error(`Voice profile switch not allowed: ${currentProfile.slug} -> ${input.targetProfileSlug}`);
@@ -445,11 +450,6 @@ export async function switchSessionContext(input: SwitchSessionContextInput): Pr
     payload: { targetProfileSlug: input.targetProfileSlug },
   });
   session = persistResolvedContext(session.id, session, beforeSwitch.patch.resolvedContext);
-
-  const targetProfile = getVoiceProfileBySlug(input.targetProfileSlug);
-  if (!targetProfile) {
-    throw new Error(`Voice profile not found: ${input.targetProfileSlug}`);
-  }
 
   try {
     session = transitionSession(session, "hydrating_context", `hydrate-switch-${targetProfile.slug}`);

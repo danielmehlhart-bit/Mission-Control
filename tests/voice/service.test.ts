@@ -260,6 +260,28 @@ test("switchSessionContext rejects invalid targets without failing the active se
   assert.equal(listVoiceSessionEvents(session.id).some((event) => event.eventType === "voice.context_switch_requested"), false);
 });
 
+test("switchSessionContext rejects missing target profiles without mutating the active session", async () => {
+  await seedVoiceFixtures();
+  const { dbModule, serviceModule, sessionStoreModule, hooksModule } = await loadModules();
+  const { createSessionForProfile, switchSessionContext } = serviceModule;
+  const { getVoiceSession, listVoiceSessionEvents } = sessionStoreModule;
+  const { getDb } = dbModule;
+  const { clearVoiceHookRegistry } = hooksModule;
+
+  clearVoiceHookRegistry();
+  const session = await createSessionForProfile({ profileSlug: "sales_support", calendarProvider: async () => [] });
+  getDb().prepare("DELETE FROM voice_profiles WHERE slug = ?").run("luma");
+
+  await assert.rejects(
+    switchSessionContext({ sessionId: session.id, targetProfileSlug: "luma", calendarProvider: async () => [] }),
+    /Voice profile not found/,
+  );
+
+  const persisted = getVoiceSession(session.id);
+  assert.equal(persisted?.state, "ready");
+  assert.equal(listVoiceSessionEvents(session.id).some((event) => event.eventType === "voice.context_switch_requested"), false);
+});
+
 test("endSession runs end hooks, transitions to completed, and emits end event", async () => {
   await seedVoiceFixtures();
   const { serviceModule, sessionStoreModule, hooksModule } = await loadModules();

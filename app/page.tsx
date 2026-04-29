@@ -16,6 +16,10 @@ type CalendarEvent = {
   linkedAccount?: { id: string; name: string; color: string };
 };
 
+function isLumaRoadmap(name: string): boolean {
+  return /(^|-)luma-roadmap(-|$)|(^|-)luma-product-roadmap(-|$)/i.test(name.replace(/\.html?$/i, ""));
+}
+
 function formatFilename(name: string): { title: string; date: string } {
   const match = name.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.html$/);
   if (match) {
@@ -30,6 +34,7 @@ function formatFilename(name: string): { title: string; date: string } {
 export default function HomePage() {
   const router = useRouter();
   const [briefings, setBriefings] = useState<BriefingFile[]>([]);
+  const [featuredRoadmap, setFeaturedRoadmap] = useState<BriefingFile | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [deals, setDeals] = useState<Deal[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -71,11 +76,12 @@ export default function HomePage() {
         setDeals(dealData.deals ?? []);
         setAccounts(accData.accounts ?? []);
         const DATED = /^\d{4}-\d{2}-\d{2}-.*\.html?$/i;
-      const sorted = (data.files ?? [])
-        .filter((f: BriefingFile) => DATED.test(f.name))
-        .sort((a: BriefingFile, b: BriefingFile) => b.name.localeCompare(a.name))
-        .slice(0, 8);
+        const allDated = (data.files ?? [])
+          .filter((f: BriefingFile) => DATED.test(f.name))
+          .sort((a: BriefingFile, b: BriefingFile) => b.name.localeCompare(a.name));
+        const sorted = allDated.slice(0, 8);
         setBriefings(sorted);
+        setFeaturedRoadmap(allDated.find((f: BriefingFile) => isLumaRoadmap(f.name)) ?? null);
         const count = sorted.filter((f: BriefingFile) => new Date(f.modified).getTime() > ts).length;
         setNewCount(count);
         if (count > 0 && window.innerWidth < 768 && !sessionStorage.getItem("toastShown")) {
@@ -279,6 +285,78 @@ export default function HomePage() {
               );
             })}
           </div>
+        </div>
+      )}
+
+      {/* Pinned LUMA Roadmap */}
+      {featuredRoadmap && (
+        <div style={{
+          ...card,
+          marginBottom: 20,
+          border: "1px solid rgba(16,185,129,0.28)",
+          background: "linear-gradient(135deg, rgba(16,185,129,0.08), rgba(20,23,32,1) 42%)",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.22)",
+        }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 12, flexWrap: "wrap" }}>
+            <div>
+              <div style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "#10B981", marginBottom: 6 }}>
+                Angepinnt · LUMA
+              </div>
+              <div style={{ fontSize: 20, fontWeight: 700, color: "#f0f2f5", letterSpacing: "-0.02em" }}>
+                Aktuelle Roadmap
+              </div>
+            </div>
+            <button
+              onClick={() => router.push(`/docs?file=${encodeURIComponent(featuredRoadmap.name)}`)}
+              style={{
+                padding: "8px 14px",
+                borderRadius: 999,
+                border: "1px solid rgba(16,185,129,0.28)",
+                background: "rgba(16,185,129,0.12)",
+                color: "#34d399",
+                fontSize: 12,
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              Öffnen →
+            </button>
+          </div>
+
+          <button
+            onClick={() => router.push(`/docs?file=${encodeURIComponent(featuredRoadmap.name)}`)}
+            style={{
+              width: "100%",
+              textAlign: "left",
+              border: "1px solid #1f2937",
+              borderRadius: 12,
+              padding: "14px 16px",
+              background: "rgba(15,23,42,0.55)",
+              cursor: "pointer",
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = "rgba(30,41,59,0.7)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "rgba(15,23,42,0.55)"; }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 18 }}>🗺️</span>
+              <span style={{ fontSize: 15, fontWeight: 600, color: "#f0f2f5" }}>
+                {formatFilename(featuredRoadmap.name).title}
+              </span>
+              {isNew(featuredRoadmap) && (
+                <span style={{ fontSize: 10, fontWeight: 700, color: "#f87171", background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 999, padding: "2px 6px" }}>
+                  NEU
+                </span>
+              )}
+            </div>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 13, color: "#9ca3af" }}>
+                Immer griffbereit auf Home — unabhängig davon, wie viele neuere Briefings dazukommen.
+              </span>
+              <span style={{ fontSize: 12, color: "#6b7280", flexShrink: 0 }}>
+                {formatFilename(featuredRoadmap.name).date}
+              </span>
+            </div>
+          </button>
         </div>
       )}
 
