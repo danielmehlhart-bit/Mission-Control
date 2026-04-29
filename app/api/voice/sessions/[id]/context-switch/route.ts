@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { switchSessionContext } from "@/lib/voice/service";
-import { parseJsonBody, requireProfileById, requireSession, requireString, voiceErrorResponse } from "@/lib/voice/api";
+import { parseJsonBody, requireProfileById, requireSession, requireString, serializeVoiceProfile, voiceErrorResponse } from "@/lib/voice/api";
 
 export const dynamic = "force-dynamic";
 
@@ -10,16 +10,18 @@ export async function POST(request: Request, context: { params: { id: string } }
     requireProfileById(session.profileId);
     const body = await parseJsonBody(request);
     const targetProfileSlug = requireString(body.targetProfileSlug, "targetProfileSlug") as "main" | "sales_support" | "luma" | "fitness";
-    const result = await switchSessionContext({ sessionId: context.params.id, targetProfileSlug });
+    const reason = typeof body.reason === "string" && body.reason.trim() ? body.reason.trim() : undefined;
+    const result = await switchSessionContext({ sessionId: context.params.id, targetProfileSlug, reason });
     const profile = requireProfileById(result.session.profileId);
 
     return NextResponse.json({
       session: result.session,
-      profile,
+      profile: serializeVoiceProfile(profile),
       contextSummary: typeof (result.session.resolvedContext as Record<string, unknown>).contextSummary === "string"
         ? (result.session.resolvedContext as Record<string, unknown>).contextSummary
         : profile.label,
       systemTurn: result.systemTurn,
+      reason: reason ?? null,
     });
   } catch (error) {
     return voiceErrorResponse(error);

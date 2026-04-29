@@ -441,6 +441,7 @@ export async function switchSessionContext(input: SwitchSessionContextInput): Pr
     payload: {
       fromProfileSlug: currentProfile.slug,
       targetProfileSlug: input.targetProfileSlug,
+      ...(input.reason ? { reason: input.reason } : {}),
     },
   });
 
