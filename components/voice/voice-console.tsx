@@ -784,23 +784,8 @@ export default function VoiceConsole() {
 
   const submitTurn = useCallback(async () => {
     if (!active?.session.id || draft.trim().length === 0) return;
-    setError(null);
-    setIsSubmitting(true);
-    setLastActionLabel("Turn wird verarbeitet");
-    try {
-      await readJson<{ session: VoiceSessionSummary }>(`/api/voice/sessions/${active.session.id}/complete-turn`, {
-        method: "POST",
-        body: JSON.stringify({ userText: draft.trim() }),
-      });
-      setDraft("");
-      await Promise.all([loadSessions(), loadSessionDetail(active.session.id)]);
-      setLastActionLabel("Antwort empfangen");
-    } catch (nextError) {
-      setError(nextError instanceof Error ? nextError.message : String(nextError));
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, [active?.session.id, draft, loadSessionDetail, loadSessions]);
+    await sendVoiceTurn(draft.trim());
+  }, [active?.session.id, draft, sendVoiceTurn]);
 
   const switchContext = useCallback(async (targetProfileSlug: string) => {
     if (!active?.session.id) return;
