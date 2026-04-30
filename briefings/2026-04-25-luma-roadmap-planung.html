@@ -188,6 +188,18 @@
       <div class="column now">
         <span class="pill">Now</span>
         <div class="card">
+          <h3>P0 Bug: Projekttyp bei Projektanlage nicht auswählbar</h3>
+          <div class="meta">
+            <span class="tag">P0</span>
+            <span class="tag">Bug</span>
+            <span class="tag">Projektanlage</span>
+          </div>
+          <p><strong>Outcome:</strong> Bei der Erstellung eines neuen Projekts lässt sich der Projekttyp wieder zuverlässig auswählen, damit der Anlage-Flow nicht blockiert.</p>
+          <p><strong>Status:</strong> kritischer Produkt-Bug im zentralen Core-Flow.</p>
+          <p><strong>Nächster Schritt:</strong> Root Cause im Projektanlage-Formular prüfen, Auswahlfeld/State wieder funktionsfähig machen und den Flow einmal Ende-zu-Ende testen.</p>
+        </div>
+
+        <div class="card">
           <h3>Activity Log sauber abgrenzen</h3>
           <div class="meta">
             <span class="tag">Produkt</span>
@@ -332,6 +344,15 @@
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <td data-label="Initiative"><strong>P0 Bug: Projekttyp bei Projektanlage nicht auswählbar</strong></td>
+            <td data-label="Problem">Im Projektanlage-Flow kann aktuell kein Projekttyp ausgewählt werden, wodurch ein zentraler Core-Flow blockiert oder unvollständig wird.</td>
+            <td data-label="Outcome">Neue Projekte lassen sich wieder mit korrektem Projekttyp anlegen.</td>
+            <td data-label="Owner">Produkt / App</td>
+            <td data-label="Status"><span class="status focus">P0 Bug</span></td>
+            <td data-label="Nächster Schritt">Projektanlage-Formular debuggen, fehlende Auswahl wiederherstellen und den Create-Flow Ende-zu-Ende verifizieren.</td>
+          </tr>
+
           <tr>
             <td data-label="Initiative"><strong>Beta-Pill im LUMA-Logo (Desktop Sidebar)</strong></td>
             <td data-label="Problem">Der Beta-Status des Produkts ist im eingeloggten Produktkontext noch nicht sichtbar genug markiert.</td>
