@@ -576,7 +576,6 @@ export default function VoiceConsole() {
     utterance.lang = preferredVoice?.lang || "de-DE";
     if (preferredVoice) {
       utterance.voice = preferredVoice;
-      utterance.voiceURI = preferredVoice.voiceURI;
     }
     utterance.rate = 0.96;
     utterance.pitch = 1;
