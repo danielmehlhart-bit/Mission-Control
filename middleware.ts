@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
+import { SECURITY_HEADERS } from "./lib/security-headers.mjs";
 
 // Fix 1: Hard-fail — kein Silent-Fallback auf schwaches Default-Secret
 const jwtSecret = process.env.MC_JWT_SECRET;
