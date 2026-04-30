@@ -2,6 +2,8 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { pickPreferredSpeechSynthesisVoice } from "@/lib/voice/browser-voice";
+
 type VoiceProfileSummary = {
   id: string;
   slug: string;
@@ -566,9 +568,18 @@ export default function VoiceConsole() {
     if (typeof window === "undefined" || !window.speechSynthesis || !text.trim()) {
       return;
     }
+    const availableVoices = window.speechSynthesis.getVoices();
+    const preferredVoice = pickPreferredSpeechSynthesisVoice(availableVoices);
+
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text.trim());
-    utterance.lang = "de-DE";
+    utterance.lang = preferredVoice?.lang || "de-DE";
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
+      utterance.voiceURI = preferredVoice.voiceURI;
+    }
+    utterance.rate = 0.96;
+    utterance.pitch = 1;
     utterance.onstart = () => setVoiceMode("speaking");
     utterance.onend = () => setVoiceMode(isVoiceModeEnabled ? "listening" : "idle");
     utterance.onerror = () => setVoiceMode("error");

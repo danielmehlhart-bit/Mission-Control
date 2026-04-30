@@ -15,6 +15,7 @@ import {
 import { resolveVoiceContextSwitch, resolveVoiceProfileContext } from "./context-router";
 import { assertTransition } from "./state-machine";
 import { runVoiceHooks } from "./hooks";
+import { generateDefaultVoiceReply } from "./providers";
 import type { ResolvedVoiceContext, VoiceProfile, VoiceProfileSlug, VoiceSession, VoiceTurn, VoiceTransport } from "./types";
 import type { CalendarEvent } from "@/lib/google-calendar";
 
@@ -202,21 +203,6 @@ async function hydrateSessionContext(
   return updateVoiceSessionContext(currentSession.id, finalResolvedContext);
 }
 
-function buildDefaultAssistantReply(context: {
-  session: VoiceSession;
-  profile: VoiceProfile;
-  resolvedContext: Record<string, unknown> | ResolvedVoiceContext;
-  recentTurns: VoiceTurn[];
-}): { text: string; metadata?: Record<string, unknown> } {
-  const resolvedContext = context.resolvedContext as Record<string, unknown>;
-  const summary = typeof resolvedContext.contextSummary === "string" ? resolvedContext.contextSummary : context.profile.label;
-  const userTurn = [...context.recentTurns].reverse().find((turn) => turn.speaker === "user");
-  return {
-    text: `Stub reply for ${context.profile.label}: ${summary}${userTurn ? ` | Letzte Frage: ${userTurn.text}` : ""}`,
-    metadata: { provider: "stub" },
-  };
-}
-
 export async function createSessionForProfile(input: CreateSessionForProfileInput): Promise<VoiceSession> {
   const profile = getVoiceProfileBySlug(input.profileSlug);
   if (!profile) {
@@ -372,7 +358,7 @@ export async function generateAssistantTurn(input: GenerateAssistantTurnInput): 
   try {
     generated = await (input.generateReply
       ? input.generateReply({ session, profile, resolvedContext: session.resolvedContext, recentTurns })
-      : buildDefaultAssistantReply({ session, profile, resolvedContext: session.resolvedContext, recentTurns }));
+      : generateDefaultVoiceReply({ session, profile, resolvedContext: session.resolvedContext, recentTurns }));
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     appendVoiceEvent({
