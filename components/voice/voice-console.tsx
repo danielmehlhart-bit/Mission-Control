@@ -537,6 +537,13 @@ export default function VoiceConsole() {
   const [isBooting, setIsBooting] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [lastActionLabel, setLastActionLabel] = useState<string | null>(null);
+  const [voiceMode, setVoiceMode] = useState<BrowserVoiceMode>("idle");
+  const [browserVoiceSupported, setBrowserVoiceSupported] = useState(true);
+  const [liveTranscript, setLiveTranscript] = useState("");
+  const [isVoiceModeEnabled, setIsVoiceModeEnabled] = useState(false);
+  const recognitionRef = useRef<BrowserSpeechRecognition | null>(null);
+  const shouldRestartRecognitionRef = useRef(false);
+  const activeSessionIdRef = useRef<string | null>(null);
 
   const loadProfiles = useCallback(async () => {
     const data = await readJson<{ profiles: VoiceProfileSummary[] }>("/api/voice/profiles");
