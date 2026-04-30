@@ -226,12 +226,17 @@ export type VoiceConsoleViewProps = {
   isSubmitting: boolean;
   error: string | null;
   lastActionLabel: string | null;
+  voiceMode: BrowserVoiceMode;
+  browserVoiceSupported: boolean;
+  liveTranscript: string;
+  isVoiceModeEnabled: boolean;
   onDraftChange: (value: string) => void;
   onCreateSession: (profileId: string) => void;
   onSelectSession: (sessionId: string) => void;
   onRefresh: () => void;
   onSubmitTurn: () => void;
   onSwitchContext: (targetProfileSlug: string) => void;
+  onToggleVoiceMode: () => void;
 };
 
 export function VoiceConsoleView({
