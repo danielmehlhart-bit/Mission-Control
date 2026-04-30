@@ -146,6 +146,7 @@ export default function HomePage() {
       <div style={{ display: "flex", gap: 8, marginBottom: showCapture ? 12 : 24, flexWrap: "wrap" }}>
         {[
           { label: "+ Task", onClick: () => setShowCapture(v => !v) },
+          { label: "🎙 Voice", onClick: () => router.push("/voice") },
           { label: "💬 Hatti", onClick: () => router.push("/hatti") },
           { label: "📄 Briefings", onClick: () => router.push("/docs") },
         ].map(a => (
