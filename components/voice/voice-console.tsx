@@ -252,12 +252,17 @@ export function VoiceConsoleView({
   isSubmitting,
   error,
   lastActionLabel,
+  voiceMode,
+  browserVoiceSupported,
+  liveTranscript,
+  isVoiceModeEnabled,
   onDraftChange,
   onCreateSession,
   onSelectSession,
   onRefresh,
   onSubmitTurn,
   onSwitchContext,
+  onToggleVoiceMode,
 }: VoiceConsoleViewProps) {
   const activeColor = activeProfile?.color ?? "#10B981";
 
