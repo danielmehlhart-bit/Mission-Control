@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 
 import { getDefaultVoiceReplyStrategy } from "../../lib/voice/providers";
 import { pickPreferredSpeechSynthesisVoice } from "../../lib/voice/browser-voice";
+import { getPreferredVoiceTtsProvider, hasElevenLabsTtsConfig } from "../../lib/voice/tts";
 
 test("getDefaultVoiceReplyStrategy defaults to hermes-cli in production mode", () => {
   const previousNodeEnv = process.env.NODE_ENV;
@@ -29,4 +30,17 @@ test("pickPreferredSpeechSynthesisVoice prefers a natural German voice over robo
   ]);
 
   assert.equal(selected?.name, "Google Deutsch");
+});
+
+test("getPreferredVoiceTtsProvider falls back to browser unless ElevenLabs is explicitly configured", () => {
+  assert.equal(hasElevenLabsTtsConfig({}), false);
+  assert.equal(getPreferredVoiceTtsProvider({}), "browser");
+  assert.equal(
+    getPreferredVoiceTtsProvider({
+      MC_VOICE_TTS_PROVIDER: "elevenlabs",
+      ELEVENLABS_API_KEY: "test-key",
+      MC_VOICE_ELEVENLABS_VOICE_ID: "voice-123",
+    }),
+    "elevenlabs",
+  );
 });

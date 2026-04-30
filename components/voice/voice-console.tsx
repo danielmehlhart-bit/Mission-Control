@@ -117,17 +117,17 @@ function slugLabel(slug: string) {
 function stateLabel(state: string) {
   switch (state) {
     case "booting":
-      return "Booting";
+      return "Verbindet";
     case "hydrating_context":
-      return "Hydrating";
+      return "Lädt Kontext";
     case "ready":
       return "Bereit";
     case "listening":
-      return "Listening";
+      return "Hört zu";
     case "thinking":
-      return "Thinking";
+      return "Denkt nach";
     case "speaking":
-      return "Speaking";
+      return "Spricht";
     case "awaiting_user":
       return "Wartet auf dich";
     case "switching_context":
@@ -280,10 +280,10 @@ export function VoiceConsoleView({
     <div style={{ padding: isMobileLayout ? "16px 12px" : "20px 24px", maxWidth: 1180, margin: "0 auto" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, marginBottom: 24, flexWrap: "wrap" }}>
         <div>
-          <div style={{ fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase", color: "#10B981", marginBottom: 8 }}>Voice Workspace</div>
+          <div style={{ fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase", color: "#10B981", marginBottom: 8 }}>Call Mode</div>
           <h1 style={{ fontSize: 28, fontWeight: 700, color: "#f0f2f5", margin: 0 }}>Mission Control Voice</h1>
           <p style={{ marginTop: 8, marginBottom: 0, color: "#8b90a0", fontSize: 14, maxWidth: 780 }}>
-            Starte kontextgebundene Calls, simuliere Turns gegen den live Voice-Backend-Stack und springe zwischen Hermes, Sales Support, LUMA und Fitness.
+            Starte einen natürlichen Voice-Call mit Hermes, Sales Support oder LUMA. Ein Tap zum Verbinden — danach begrüßt Hermes dich und hört weiter zu.
           </p>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
@@ -320,7 +320,7 @@ export function VoiceConsoleView({
       <div style={{ display: "grid", gridTemplateColumns: isMobileLayout ? "1fr" : "minmax(290px, 360px) minmax(0, 1fr)", gap: 18, alignItems: "start" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           <section style={{ ...CARD_STYLE, padding: 18 }}>
-            <div style={{ fontSize: 12, color: "#8b90a0", marginBottom: 12 }}>Wähle ein Voice-Profil</div>
+            <div style={{ fontSize: 12, color: "#8b90a0", marginBottom: 12 }}>Wähle, wen du anrufen willst</div>
             <div style={{ display: "grid", gap: 10 }}>
               {profiles.map((profile) => (
                 <button
@@ -337,7 +337,7 @@ export function VoiceConsoleView({
                 >
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
                     <span style={{ color: "#f0f2f5", fontWeight: 600, fontSize: 14 }}>{profile.label}</span>
-                    <span style={{ fontSize: 11, color: profile.color ?? "#10B981" }}>Start</span>
+                    <span style={{ fontSize: 11, color: profile.color ?? "#10B981" }}>Gespräch starten</span>
                   </div>
                   <div style={{ marginTop: 6, fontSize: 12, color: "#8b90a0" }}>{profile.description ?? slugLabel(profile.slug)}</div>
                 </button>
@@ -380,8 +380,8 @@ export function VoiceConsoleView({
           {!activeSession || !activeProfile ? (
             <div style={{ minHeight: isMobileLayout ? 240 : 460, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", color: "#8b90a0", padding: isMobileLayout ? 20 : 32 }}>
               <div style={{ fontSize: 42, marginBottom: 10 }}>🎙️</div>
-              <div style={{ fontSize: 16, color: "#f0f2f5", fontWeight: 600, marginBottom: 8 }}>Noch keine Voice-Session aktiv</div>
-              <div style={{ fontSize: 13, maxWidth: 420 }}>Starte links ein Profil. Danach siehst du hier Kontext, Verlauf, Session-Status und kannst direkt testweise Turns schicken.</div>
+              <div style={{ fontSize: 16, color: "#f0f2f5", fontWeight: 600, marginBottom: 8 }}>Noch kein Gespräch aktiv</div>
+              <div style={{ fontSize: 13, maxWidth: 420 }}>Starte links einen Call. Hermes meldet sich direkt und du kannst danach freihändig weiterreden.</div>
             </div>
           ) : (
             <>
@@ -406,15 +406,15 @@ export function VoiceConsoleView({
                 <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                   <div style={{ background: "#0f1219", border: "1px solid #1e2128", borderRadius: 14, padding: 14 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap", marginBottom: 10 }}>
-                      <div style={{ fontSize: 11, color: "#4a5068", letterSpacing: "0.14em", textTransform: "uppercase" }}>Voice Mode</div>
+                      <div style={{ fontSize: 11, color: "#4a5068", letterSpacing: "0.14em", textTransform: "uppercase" }}>Live Call</div>
                       <span style={{ padding: "4px 10px", borderRadius: 999, background: `${activeColor}22`, color: activeColor, fontSize: 11, fontWeight: 700 }}>
                         {getVoiceModeLabel(voiceMode)}
                       </span>
                     </div>
                     <div style={{ fontSize: 12, color: "#8b90a0", lineHeight: 1.5, marginBottom: 10 }}>
                       {browserVoiceSupported
-                        ? "Sprich direkt ins Mikrofon. Finale Spracheingaben werden als Turn an Hermes geschickt und die Antwort wird vorgelesen."
-                        : "Für echten Browser-Voice-Modus brauchst du einen Browser mit SpeechRecognition + SpeechSynthesis."}
+                        ? "Einmal Gespräch starten und dann natürlich sprechen. Hermes antwortet automatisch und geht danach wieder zurück ins Zuhören."
+                        : "Für den freihändigen Call-Modus brauchst du einen Browser mit SpeechRecognition + SpeechSynthesis."}
                     </div>
                     {liveTranscript && (
                       <div style={{ marginBottom: 10, background: "#141720", border: "1px solid #1e2128", borderRadius: 12, padding: "10px 12px", color: "#f0f2f5", fontSize: 13 }}>
@@ -436,7 +436,7 @@ export function VoiceConsoleView({
                           width: isMobileLayout ? "100%" : undefined,
                         }}
                       >
-                        {isVoiceModeEnabled ? "Voice stoppen" : "Voice starten"}
+                        {isVoiceModeEnabled ? "Gespräch beenden" : "Gespräch starten"}
                       </button>
                       {canReplayAssistant && (
                         <button
@@ -453,14 +453,14 @@ export function VoiceConsoleView({
                             width: isMobileLayout ? "100%" : undefined,
                           }}
                         >
-                          Antwort anhören
+                          Nochmal abspielen
                         </button>
                       )}
                     </div>
                   </div>
 
                   <div style={{ background: "#0f1219", border: "1px solid #1e2128", borderRadius: 14, minHeight: isMobileLayout ? 240 : 320, maxHeight: isMobileLayout ? "none" : 520, overflowY: "auto", padding: 14 }}>
-                    <div style={{ fontSize: 11, color: "#4a5068", marginBottom: 12, letterSpacing: "0.14em", textTransform: "uppercase" }}>Transcript</div>
+                    <div style={{ fontSize: 11, color: "#4a5068", marginBottom: 12, letterSpacing: "0.14em", textTransform: "uppercase" }}>Gespräch</div>
                     {turns.length === 0 ? (
                       <div style={{ fontSize: 12, color: "#4a5068" }}>Noch keine Turns vorhanden.</div>
                     ) : (
@@ -494,7 +494,7 @@ export function VoiceConsoleView({
                   </div>
 
                   <div style={{ background: "#0f1219", border: "1px solid #1e2128", borderRadius: 14, padding: 14 }}>
-                    <div style={{ fontSize: 11, color: "#4a5068", marginBottom: 8, letterSpacing: "0.14em", textTransform: "uppercase" }}>Text Turn</div>
+                    <div style={{ fontSize: 11, color: "#4a5068", marginBottom: 8, letterSpacing: "0.14em", textTransform: "uppercase" }}>Text-Fallback</div>
                     <textarea
                       value={draft}
                       onChange={(event) => onDraftChange(event.target.value)}
@@ -502,7 +502,7 @@ export function VoiceConsoleView({
                       style={{ width: "100%", minHeight: 110, resize: "vertical", borderRadius: 12, border: "1px solid #1e2128", background: "#141720", color: "#f0f2f5", padding: 12, fontSize: 13, outline: "none", boxSizing: "border-box" }}
                     />
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: isMobileLayout ? "stretch" : "center", marginTop: 10, gap: 12, flexWrap: "wrap", flexDirection: isMobileLayout ? "column" : "row" }}>
-                      <div style={{ fontSize: 11, color: "#8b90a0" }}>Text bleibt als Fallback aktiv, Voice läuft direkt im Browser darüber.</div>
+                      <div style={{ fontSize: 11, color: "#8b90a0" }}>Nur falls Mic oder Audio klemmt: hier kannst du Hermes auch tippen.</div>
                       <button
                         onClick={onSubmitTurn}
                         disabled={isSubmitting || draft.trim().length === 0}
@@ -517,7 +517,7 @@ export function VoiceConsoleView({
                           width: isMobileLayout ? "100%" : undefined,
                         }}
                       >
-                        {isSubmitting ? "Sende …" : "Antwort senden"}
+                        {isSubmitting ? "Sende …" : "Text senden"}
                       </button>
                     </div>
                   </div>
@@ -578,6 +578,8 @@ export default function VoiceConsole() {
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const recognitionRef = useRef<BrowserSpeechRecognition | null>(null);
   const shouldRestartRecognitionRef = useRef(false);
+  const recognitionHoldRef = useRef(false);
+  const assistantAudioRef = useRef<HTMLAudioElement | null>(null);
   const activeSessionIdRef = useRef<string | null>(null);
 
   const loadProfiles = useCallback(async () => {
@@ -605,10 +607,31 @@ export default function VoiceConsole() {
     window.speechSynthesis.resume();
   }, []);
 
+  const resumeRecognitionAfterAssistant = useCallback(() => {
+    recognitionHoldRef.current = false;
+    if (!shouldRestartRecognitionRef.current) {
+      setVoiceMode("idle");
+      return;
+    }
+    try {
+      recognitionRef.current?.start();
+      setVoiceMode("listening");
+      setLastActionLabel("Hermes hört wieder zu");
+    } catch {
+      setVoiceMode("listening");
+    }
+  }, []);
+
+  const pauseRecognitionForAssistant = useCallback(() => {
+    recognitionHoldRef.current = true;
+    recognitionRef.current?.stop();
+  }, []);
+
   const speakAssistantText = useCallback((text: string) => {
     if (typeof window === "undefined" || !window.speechSynthesis || !text.trim()) {
       return;
     }
+    pauseRecognitionForAssistant();
     primeSpeechSynthesis();
     const voicePool = availableVoices.length > 0 ? availableVoices : window.speechSynthesis.getVoices();
     const preferredVoice = pickPreferredSpeechSynthesisVoice(voicePool);
@@ -626,22 +649,72 @@ export default function VoiceConsole() {
       setLastActionLabel("Hermes spricht");
     };
     utterance.onend = () => {
-      setVoiceMode(isVoiceModeEnabled ? "listening" : "idle");
-      setLastActionLabel(isVoiceModeEnabled ? "Voice hört wieder zu" : "Audio abgespielt");
+      resumeRecognitionAfterAssistant();
     };
     utterance.onerror = () => {
       setVoiceMode("error");
-      setLastActionLabel("Audio blockiert? Tippe auf „Antwort anhören“.");
+      setLastActionLabel("Audio blockiert? Tippe auf „Nochmal abspielen“.");
+      recognitionHoldRef.current = false;
     };
     window.speechSynthesis.speak(utterance);
-  }, [availableVoices, isVoiceModeEnabled, primeSpeechSynthesis]);
+  }, [availableVoices, pauseRecognitionForAssistant, primeSpeechSynthesis, resumeRecognitionAfterAssistant]);
+
+  const playAssistantResponse = useCallback(async (text: string) => {
+    const normalized = text.trim();
+    if (!normalized) {
+      resumeRecognitionAfterAssistant();
+      return;
+    }
+
+    pauseRecognitionForAssistant();
+    try {
+      const response = await fetch("/api/voice/tts", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ text: normalized }),
+      });
+
+      const contentType = response.headers.get("content-type") || "";
+      if (!response.ok) {
+        throw new Error(`TTS request failed (${response.status})`);
+      }
+
+      if (contentType.includes("application/json")) {
+        speakAssistantText(normalized);
+        return;
+      }
+
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      assistantAudioRef.current?.pause();
+      assistantAudioRef.current = new Audio(objectUrl);
+      assistantAudioRef.current.onplay = () => {
+        setVoiceMode("speaking");
+        setLastActionLabel("Hermes spricht");
+      };
+      assistantAudioRef.current.onended = () => {
+        URL.revokeObjectURL(objectUrl);
+        assistantAudioRef.current = null;
+        resumeRecognitionAfterAssistant();
+      };
+      assistantAudioRef.current.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        assistantAudioRef.current = null;
+        speakAssistantText(normalized);
+      };
+      await assistantAudioRef.current.play();
+    } catch {
+      speakAssistantText(normalized);
+    }
+  }, [pauseRecognitionForAssistant, resumeRecognitionAfterAssistant, speakAssistantText]);
 
   const sendVoiceTurn = useCallback(async (userText: string) => {
     if (!activeSessionIdRef.current || userText.trim().length === 0) return;
     setError(null);
     setIsSubmitting(true);
+    pauseRecognitionForAssistant();
     setVoiceMode("thinking");
-    setLastActionLabel("Voice-Turn wird verarbeitet");
+    setLastActionLabel("Hermes verarbeitet deine Frage");
     try {
       const response = await readJson<{ session: VoiceSessionSummary; assistantText: string }>(
         `/api/voice/sessions/${activeSessionIdRef.current}/complete-turn`,
@@ -653,19 +726,20 @@ export default function VoiceConsole() {
       setDraft("");
       setLiveTranscript("");
       await Promise.all([loadSessions(), loadSessionDetail(activeSessionIdRef.current)]);
-      setLastActionLabel("Voice-Antwort empfangen");
+      setLastActionLabel("Antwort da");
       if (response.assistantText) {
-        speakAssistantText(response.assistantText);
+        await playAssistantResponse(response.assistantText);
       } else {
-        setVoiceMode(isVoiceModeEnabled ? "listening" : "idle");
+        resumeRecognitionAfterAssistant();
       }
     } catch (nextError) {
       setVoiceMode("error");
+      recognitionHoldRef.current = false;
       setError(nextError instanceof Error ? nextError.message : String(nextError));
     } finally {
       setIsSubmitting(false);
     }
-  }, [isVoiceModeEnabled, loadSessionDetail, loadSessions, speakAssistantText]);
+  }, [loadSessionDetail, loadSessions, pauseRecognitionForAssistant, playAssistantResponse, resumeRecognitionAfterAssistant]);
 
   const pushInterimTranscript = useCallback(async (text: string) => {
     if (!activeSessionIdRef.current || text.trim().length === 0) return;
@@ -681,14 +755,17 @@ export default function VoiceConsole() {
 
   const stopVoiceMode = useCallback(() => {
     shouldRestartRecognitionRef.current = false;
+    recognitionHoldRef.current = false;
     recognitionRef.current?.stop();
+    assistantAudioRef.current?.pause();
+    assistantAudioRef.current = null;
     if (typeof window !== "undefined" && window.speechSynthesis) {
       window.speechSynthesis.cancel();
     }
     setIsVoiceModeEnabled(false);
     setVoiceMode("idle");
     setLiveTranscript("");
-    setLastActionLabel("Voice gestoppt");
+    setLastActionLabel("Gespräch beendet");
   }, []);
 
   const startVoiceMode = useCallback(async () => {
@@ -716,19 +793,22 @@ export default function VoiceConsole() {
 
     recognition.onstart = () => {
       setVoiceMode("listening");
-      setLastActionLabel("Voice hört zu");
+      setLastActionLabel("Hermes hört zu");
     };
     recognition.onend = () => {
-      if (shouldRestartRecognitionRef.current) {
+      if (shouldRestartRecognitionRef.current && !recognitionHoldRef.current) {
         recognition.start();
         return;
       }
-      setVoiceMode("idle");
+      if (!recognitionHoldRef.current) {
+        setVoiceMode("idle");
+      }
     };
     recognition.onerror = (event) => {
       setVoiceMode("error");
       setError(event.error ?? event.message ?? "Spracherkennung fehlgeschlagen.");
       shouldRestartRecognitionRef.current = false;
+      recognitionHoldRef.current = false;
       setIsVoiceModeEnabled(false);
     };
     recognition.onresult = (event) => {
@@ -739,6 +819,7 @@ export default function VoiceConsole() {
         if (!transcript) continue;
         if (result.isFinal) {
           setDraft(transcript);
+          pauseRecognitionForAssistant();
           void sendVoiceTurn(transcript);
         } else {
           interim = transcript;
@@ -752,10 +833,11 @@ export default function VoiceConsole() {
 
     recognitionRef.current = recognition;
     shouldRestartRecognitionRef.current = true;
+    recognitionHoldRef.current = false;
     setError(null);
     setIsVoiceModeEnabled(true);
     recognition.start();
-  }, [primeSpeechSynthesis, pushInterimTranscript, sendVoiceTurn]);
+  }, [pauseRecognitionForAssistant, primeSpeechSynthesis, pushInterimTranscript, sendVoiceTurn]);
 
   const toggleVoiceMode = useCallback(async () => {
     if (isVoiceModeEnabled) {
@@ -835,7 +917,10 @@ export default function VoiceConsole() {
   useEffect(() => {
     return () => {
       shouldRestartRecognitionRef.current = false;
+      recognitionHoldRef.current = false;
       recognitionRef.current?.stop();
+      assistantAudioRef.current?.pause();
+      assistantAudioRef.current = null;
       if (typeof window !== "undefined" && window.speechSynthesis) {
         window.speechSynthesis.cancel();
       }
@@ -845,23 +930,27 @@ export default function VoiceConsole() {
   const createSession = useCallback(async (profileId: string) => {
     setError(null);
     setIsSubmitting(true);
-    setLastActionLabel("Session wird aufgebaut");
+    setLastActionLabel("Gespräch wird aufgebaut");
     try {
       const data = await readJson<VoiceSessionEnvelope>("/api/voice/sessions", {
         method: "POST",
-        body: JSON.stringify({ profileId, transport: "web" }),
+        body: JSON.stringify({ profileId, transport: "web", autoGreeting: true }),
       });
       setActive(data);
       setDraft("");
       await loadSessions();
-      setLastActionLabel(`Session aktiv: ${data.profile.label}`);
+      setLastActionLabel(`Verbunden mit ${data.profile.label}`);
+      const greeting = data.session.lastAssistantText?.trim();
+      if (greeting) {
+        await playAssistantResponse(greeting);
+      }
     } catch (nextError) {
       setError(nextError instanceof Error ? nextError.message : String(nextError));
     } finally {
       setIsSubmitting(false);
       setIsBooting(false);
     }
-  }, [loadSessions]);
+  }, [loadSessions, playAssistantResponse]);
 
   const selectSession = useCallback(async (sessionId: string) => {
     setError(null);
@@ -882,9 +971,8 @@ export default function VoiceConsole() {
   const replayAssistant = useCallback(() => {
     const lastAssistantText = active?.session.lastAssistantText?.trim();
     if (!lastAssistantText) return;
-    primeSpeechSynthesis();
-    speakAssistantText(lastAssistantText);
-  }, [active?.session.lastAssistantText, primeSpeechSynthesis, speakAssistantText]);
+    void playAssistantResponse(lastAssistantText);
+  }, [active?.session.lastAssistantText, playAssistantResponse]);
 
   const switchContext = useCallback(async (targetProfileSlug: string) => {
     if (!active?.session.id) return;

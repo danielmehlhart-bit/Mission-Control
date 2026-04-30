@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createSessionForProfile } from "@/lib/voice/service";
+import { createSessionForProfile, generateAssistantTurn } from "@/lib/voice/service";
 import { listVoiceSessions } from "@/lib/voice/session-store";
 import {
   buildSessionEnvelope,
@@ -42,8 +42,12 @@ export async function POST(request: Request) {
     }
 
     const transport = body.transport === undefined ? "web" : validateTransport(body.transport);
+    const autoGreeting = body.autoGreeting !== false;
     const profile = requireActiveProfileById(profileId);
     const session = await createSessionForProfile({ profileSlug: profile.slug, transport });
+    if (autoGreeting) {
+      await generateAssistantTurn({ sessionId: session.id });
+    }
 
     return NextResponse.json(buildSessionEnvelope(session.id), { status: 201 });
   } catch (error) {

@@ -48,7 +48,8 @@ test("VoiceConsoleView renders headline and profile launch buttons in empty stat
   assert.match(html, /Mission Control Voice/i);
   assert.match(html, /Call Hermes/);
   assert.match(html, /Call Sales Support/);
-  assert.match(html, /Wähle ein Voice-Profil/);
+  assert.match(html, /Wähle, wen du anrufen willst/);
+  assert.match(html, /Gespräch starten/);
 });
 
 test("VoiceConsoleView renders active session transcript, context summary, and switch targets", () => {
@@ -83,12 +84,12 @@ test("VoiceConsoleView renders active session transcript, context summary, and s
   assert.match(html, /Wie ist der Stand bei LUMA\?/);
   assert.match(html, /LUMA ist in der Angebotsphase\./);
   assert.match(html, /Zu LUMA wechseln/);
-  assert.match(html, /Antwort senden/);
-  assert.match(html, /Voice Mode/);
+  assert.match(html, /Text senden/);
+  assert.match(html, /Live Call/);
   assert.match(html, /Mikrofon läuft/);
   assert.match(html, /Sag mir den nächsten Schritt/);
-  assert.match(html, /Voice stoppen/);
-  assert.match(html, /Antwort anhören/);
+  assert.match(html, /Gespräch beenden/);
+  assert.match(html, /Nochmal abspielen/);
 });
 
 test("VoiceConsoleView renders a stacked mobile layout with replay action", () => {
@@ -115,7 +116,7 @@ test("VoiceConsoleView renders a stacked mobile layout with replay action", () =
   });
 
   assert.match(html, /grid-template-columns:1fr/);
-  assert.match(html, /Antwort anhören/);
+  assert.match(html, /Nochmal abspielen/);
   assert.match(html, /min-height:240px/);
 });
 

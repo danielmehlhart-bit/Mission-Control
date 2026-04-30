@@ -103,7 +103,7 @@ test("GET /api/voice/profiles returns active button-ready profiles ordered by so
   assert.deepEqual(Object.keys(payload.profiles[0]).sort(), ["color", "description", "icon", "id", "label", "slug", "status"]);
 });
 
-test("POST /api/voice/sessions validates transport and creates a hydrated session envelope", async () => {
+test("POST /api/voice/sessions validates transport and creates a hydrated session envelope with auto greeting", async () => {
   await seedVoiceFixtures();
   const { sessionsRouteModule, sessionStoreModule } = await loadModules();
   const { getVoiceProfileBySlug } = sessionStoreModule;
@@ -127,13 +127,35 @@ test("POST /api/voice/sessions validates transport and creates a hydrated sessio
   assert.equal(response.status, 201);
 
   const payload = await response.json();
-  assert.equal(payload.session.state, "ready");
+  assert.equal(payload.session.state, "awaiting_user");
   assert.equal(payload.profile.slug, "sales_support");
   assert.equal(typeof payload.contextSummary, "string");
   assert.equal(payload.session.transport, "web");
+  assert.equal(payload.turns[0]?.speaker, "assistant");
+  assert.match(payload.turns[0]?.text ?? "", /was kann ich für dich tun|wobei ich helfen kann/i);
   assert.equal("baseSessionKey" in payload.profile, false);
   assert.equal("baseSessionKey" in payload.session, false);
   assert.equal("resolvedContext" in payload.session, false);
+});
+
+test("POST /api/voice/sessions allows disabling the auto greeting", async () => {
+  await seedVoiceFixtures();
+  const { sessionsRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const salesProfile = getVoiceProfileBySlug("sales_support");
+  assert.ok(salesProfile);
+
+  const response = await sessionsRouteModule.POST(
+    makeRequest("http://localhost/api/voice/sessions", {
+      method: "POST",
+      body: JSON.stringify({ profileId: salesProfile!.id, transport: "web", autoGreeting: false }),
+    }),
+  );
+
+  assert.equal(response.status, 201);
+  const payload = await response.json();
+  assert.equal(payload.session.state, "ready");
+  assert.deepEqual(payload.turns, []);
 });
 
 test("POST /api/voice/sessions rejects inactive profiles", async () => {
@@ -182,7 +204,8 @@ test("GET /api/voice/sessions/[id] returns session envelope with recent turns", 
   const payload = await response.json();
   assert.equal(payload.session.id, created.session.id);
   assert.equal(payload.profile.slug, "sales_support");
-  assert.deepEqual(payload.turns, []);
+  assert.equal(payload.turns.length >= 1, true);
+  assert.equal(payload.turns[0]?.speaker, "assistant");
   assert.equal(typeof payload.contextSummary, "string");
   assert.equal("baseSessionKey" in payload.profile, false);
   assert.equal("baseSessionKey" in payload.session, false);

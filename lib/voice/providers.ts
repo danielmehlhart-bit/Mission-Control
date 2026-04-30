@@ -27,12 +27,18 @@ export function getDefaultVoiceReplyStrategy(): VoiceReplyStrategy {
   return process.env.NODE_ENV === "production" ? "hermes-cli" : "stub";
 }
 
+function buildGreeting(input: VoiceReplyInput): string {
+  const resolvedContext = input.resolvedContext as Record<string, unknown>;
+  const summary = typeof resolvedContext.contextSummary === "string" ? resolvedContext.contextSummary : input.profile.label;
+  return `Hi Daniel, ich bin jetzt in ${input.profile.label}. ${summary}. Was kann ich für dich tun?`;
+}
+
 function buildStubReply(input: VoiceReplyInput): VoiceReplyOutput {
   const resolvedContext = input.resolvedContext as Record<string, unknown>;
   const summary = typeof resolvedContext.contextSummary === "string" ? resolvedContext.contextSummary : input.profile.label;
   const userTurn = [...input.recentTurns].reverse().find((turn) => turn.speaker === "user");
   return {
-    text: `Stub reply for ${input.profile.label}: ${summary}${userTurn ? ` | Letzte Frage: ${userTurn.text}` : ""}`,
+    text: userTurn ? `Klar — ${summary}. Meine kurze Antwort: ${userTurn.text}` : buildGreeting(input),
     metadata: { provider: "stub" },
   };
 }
@@ -48,12 +54,15 @@ function buildHermesPrompt(input: VoiceReplyInput): string {
   const resolvedContext = input.resolvedContext as Record<string, unknown>;
   const contextSummary = typeof resolvedContext.contextSummary === "string" ? resolvedContext.contextSummary : input.profile.label;
   const recentTurns = summarizeRecentTurns(input.recentTurns);
+  const hasUserTurn = input.recentTurns.some((turn) => turn.speaker === "user");
 
   return [
     `Du bist ${input.profile.label} in Mission Control und antwortest Daniel direkt.`,
     "Antworte auf Deutsch, natürlich, hilfreich und knapp.",
     "Keine Metakommentare, keine Erwähnung von Stub/Test/Prompt/System, keine Listen außer wenn nötig.",
-    "Wenn etwas unklar ist, stelle höchstens eine kurze Rückfrage.",
+    hasUserTurn
+      ? "Wenn etwas unklar ist, stelle höchstens eine kurze Rückfrage."
+      : "Es gibt noch keine Nutzerfrage. Begrüße Daniel kurz natürlich und frage, wobei du helfen kannst.",
     "",
     `Profil: ${input.profile.slug}`,
     `Kontext: ${contextSummary}`,
