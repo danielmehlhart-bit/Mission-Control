@@ -6,6 +6,7 @@ import {
   persistInterimTranscript,
   requireSession,
   requireString,
+  serializeVoiceSession,
   voiceErrorResponse,
 } from "@/lib/voice/api";
 
@@ -32,14 +33,14 @@ export async function POST(request: Request, context: { params: { id: string } }
       });
 
       return NextResponse.json({
-        session: committed.session,
+        session: serializeVoiceSession(committed.session),
         committedTurn: committed.turn,
       });
     }
 
     const session = persistInterimTranscript(context.params.id, text);
     return NextResponse.json({
-      session,
+      session: serializeVoiceSession(session),
       committedTurn: null,
     });
   } catch (error) {

@@ -8,6 +8,7 @@ import {
   requireActiveProfileById,
   requireProfileById,
   serializeVoiceProfile,
+  serializeVoiceSession,
   validateTransport,
   voiceErrorResponse,
 } from "@/lib/voice/api";
@@ -21,7 +22,7 @@ export async function GET(request: Request) {
       const profile = requireProfileById(session.profileId);
       const resolvedContext = session.resolvedContext as Record<string, unknown>;
       return {
-        session,
+        session: serializeVoiceSession(session),
         profile: serializeVoiceProfile(profile),
         contextSummary: typeof resolvedContext.contextSummary === "string" ? resolvedContext.contextSummary : profile.label,
       };

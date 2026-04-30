@@ -64,6 +64,8 @@ async function seedVoiceFixtures() {
   db.prepare("INSERT OR REPLACE INTO account_notes (account_id, content, updated_at) VALUES (?, ?, datetime('now'))")
     .run("acc_luma", "{\"summary\":\"Account note for LUMA\"}");
 
+  db.prepare("UPDATE voice_profiles SET status = 'active' WHERE slug IN ('main', 'sales_support', 'luma', 'fitness')").run();
+
   const salesProfile = getVoiceProfileBySlug("sales_support");
   const lumaProfile = getVoiceProfileBySlug("luma");
   assert.ok(salesProfile);
@@ -130,6 +132,8 @@ test("POST /api/voice/sessions validates transport and creates a hydrated sessio
   assert.equal(typeof payload.contextSummary, "string");
   assert.equal(payload.session.transport, "web");
   assert.equal("baseSessionKey" in payload.profile, false);
+  assert.equal("baseSessionKey" in payload.session, false);
+  assert.equal("resolvedContext" in payload.session, false);
 });
 
 test("POST /api/voice/sessions rejects inactive profiles", async () => {
@@ -156,12 +160,15 @@ test("POST /api/voice/sessions rejects inactive profiles", async () => {
 
 test("GET /api/voice/sessions/[id] returns session envelope with recent turns", async () => {
   await seedVoiceFixtures();
-  const { sessionsRouteModule, sessionRouteModule } = await loadModules();
+  const { sessionsRouteModule, sessionRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const salesProfile = getVoiceProfileBySlug("sales_support");
+  assert.ok(salesProfile);
 
   const createdResponse = await sessionsRouteModule.POST(
     makeRequest("http://localhost/api/voice/sessions", {
       method: "POST",
-      body: JSON.stringify({ profileId: "vp_sales_support", transport: "web" }),
+      body: JSON.stringify({ profileId: salesProfile!.id, transport: "web" }),
     }),
   );
   const created = await createdResponse.json();
@@ -178,17 +185,21 @@ test("GET /api/voice/sessions/[id] returns session envelope with recent turns", 
   assert.deepEqual(payload.turns, []);
   assert.equal(typeof payload.contextSummary, "string");
   assert.equal("baseSessionKey" in payload.profile, false);
+  assert.equal("baseSessionKey" in payload.session, false);
+  assert.equal("resolvedContext" in payload.session, false);
 });
 
 test("POST /api/voice/sessions/[id]/transcript persists interim transcript and emits transcript_received", async () => {
   await seedVoiceFixtures();
   const { sessionsRouteModule, transcriptRouteModule, sessionStoreModule } = await loadModules();
-  const { listVoiceSessionEvents } = sessionStoreModule;
+  const { listVoiceSessionEvents, getVoiceProfileBySlug } = sessionStoreModule;
+  const salesProfile = getVoiceProfileBySlug("sales_support");
+  assert.ok(salesProfile);
 
   const createdResponse = await sessionsRouteModule.POST(
     makeRequest("http://localhost/api/voice/sessions", {
       method: "POST",
-      body: JSON.stringify({ profileId: "vp_sales_support", transport: "web" }),
+      body: JSON.stringify({ profileId: salesProfile!.id, transport: "web" }),
     }),
   );
   const created = await createdResponse.json();
@@ -210,12 +221,15 @@ test("POST /api/voice/sessions/[id]/transcript persists interim transcript and e
 
 test("POST /api/voice/sessions/[id]/complete-turn stores user+assistant turns and returns awaiting_user state", async () => {
   await seedVoiceFixtures();
-  const { sessionsRouteModule, completeTurnRouteModule } = await loadModules();
+  const { sessionsRouteModule, completeTurnRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const salesProfile = getVoiceProfileBySlug("sales_support");
+  assert.ok(salesProfile);
 
   const createdResponse = await sessionsRouteModule.POST(
     makeRequest("http://localhost/api/voice/sessions", {
       method: "POST",
-      body: JSON.stringify({ profileId: "vp_sales_support", transport: "web" }),
+      body: JSON.stringify({ profileId: salesProfile!.id, transport: "web" }),
     }),
   );
   const created = await createdResponse.json();
@@ -234,16 +248,81 @@ test("POST /api/voice/sessions/[id]/complete-turn stores user+assistant turns an
   assert.equal(payload.userTurn.text, "Was ist der Stand bei LUMA?");
   assert.equal(payload.assistantTurn.speaker, "assistant");
   assert.equal(typeof payload.assistantText, "string");
+  assert.equal("baseSessionKey" in payload.session, false);
+  assert.equal("resolvedContext" in payload.session, false);
 });
 
-test("POST /api/voice/sessions/[id]/context-switch and GET /events expose updated profile and chronological trace", async () => {
+test("POST /api/voice/sessions/[id]/context-switch sanitizes unexpected internal errors", async () => {
   await seedVoiceFixtures();
-  const { sessionsRouteModule, contextSwitchRouteModule, eventsRouteModule } = await loadModules();
+  const { hooksModule, sessionsRouteModule, sessionRouteModule, contextSwitchRouteModule, eventsRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const { clearVoiceHookRegistry, registerVoiceHook } = hooksModule;
+  const salesProfile = getVoiceProfileBySlug("sales_support");
+  assert.ok(salesProfile);
+
+  clearVoiceHookRegistry();
+  registerVoiceHook("afterContextSwitch", {
+    id: "test.afterContextSwitch.fail-route",
+    criticality: "required",
+    run: async () => {
+      throw new Error("super secret provider detail");
+    },
+  });
 
   const createdResponse = await sessionsRouteModule.POST(
     makeRequest("http://localhost/api/voice/sessions", {
       method: "POST",
-      body: JSON.stringify({ profileId: "vp_sales_support", transport: "web" }),
+      body: JSON.stringify({ profileId: salesProfile!.id, transport: "web" }),
+    }),
+  );
+  const created = await createdResponse.json();
+
+  const response = await contextSwitchRouteModule.POST(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/context-switch`, {
+      method: "POST",
+      body: JSON.stringify({ targetProfileSlug: "luma", reason: "user_request" }),
+    }),
+    { params: { id: created.session.id } },
+  );
+
+  assert.equal(response.status, 500);
+  const payload = await response.json();
+  assert.equal(payload.error, "Internal voice API error");
+
+  const sessionResponse = await sessionRouteModule.GET(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}`),
+    { params: { id: created.session.id } },
+  );
+  assert.equal(sessionResponse.status, 200);
+  const sessionPayload = await sessionResponse.json();
+  assert.equal(sessionPayload.session.lastError, "Internal voice error");
+
+  const eventsResponse = await eventsRouteModule.GET(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/events`),
+    { params: { id: created.session.id } },
+  );
+  assert.equal(eventsResponse.status, 200);
+  const eventsPayload = await eventsResponse.json();
+  const failureEvent = eventsPayload.events.find(
+    (event: { eventType: string; payload?: { message?: string } }) => event.eventType === "voice.hook_failed",
+  );
+  assert.ok(failureEvent);
+  assert.equal(failureEvent.payload?.message, "Internal voice error");
+  assert.equal(JSON.stringify(eventsPayload.events).includes("super secret provider detail"), false);
+  clearVoiceHookRegistry();
+});
+
+test("POST /api/voice/sessions/[id]/context-switch and GET /events expose updated profile and chronological trace", async () => {
+  await seedVoiceFixtures();
+  const { sessionsRouteModule, contextSwitchRouteModule, eventsRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const salesProfile = getVoiceProfileBySlug("sales_support");
+  assert.ok(salesProfile);
+
+  const createdResponse = await sessionsRouteModule.POST(
+    makeRequest("http://localhost/api/voice/sessions", {
+      method: "POST",
+      body: JSON.stringify({ profileId: salesProfile!.id, transport: "web" }),
     }),
   );
   const created = await createdResponse.json();
@@ -262,6 +341,8 @@ test("POST /api/voice/sessions/[id]/context-switch and GET /events expose update
   assert.equal(switchPayload.session.state, "awaiting_user");
   assert.equal(switchPayload.systemTurn.speaker, "system");
   assert.equal(switchPayload.reason, "user_request");
+  assert.equal("baseSessionKey" in switchPayload.session, false);
+  assert.equal("resolvedContext" in switchPayload.session, false);
 
   const eventsResponse = await eventsRouteModule.GET(
     makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/events`),
@@ -280,4 +361,35 @@ test("POST /api/voice/sessions/[id]/context-switch and GET /events expose update
     true,
   );
   assert.equal(eventsPayload.events[0].eventType, "voice.state_changed");
+});
+
+test("POST /api/voice/sessions/[id]/context-switch rejects inactive target profiles", async () => {
+  await seedVoiceFixtures();
+  const { dbModule, sessionsRouteModule, contextSwitchRouteModule, sessionStoreModule } = await loadModules();
+  const { getDb } = dbModule;
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const salesProfile = getVoiceProfileBySlug("sales_support");
+  assert.ok(salesProfile);
+
+  const createdResponse = await sessionsRouteModule.POST(
+    makeRequest("http://localhost/api/voice/sessions", {
+      method: "POST",
+      body: JSON.stringify({ profileId: salesProfile!.id, transport: "web" }),
+    }),
+  );
+  const created = await createdResponse.json();
+
+  getDb().prepare("UPDATE voice_profiles SET status = 'inactive' WHERE slug = ?").run("luma");
+
+  const switchResponse = await contextSwitchRouteModule.POST(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/context-switch`, {
+      method: "POST",
+      body: JSON.stringify({ targetProfileSlug: "luma", reason: "user_request" }),
+    }),
+    { params: { id: created.session.id } },
+  );
+
+  assert.equal(switchResponse.status, 400);
+  const payload = await switchResponse.json();
+  assert.equal(payload.error, "Voice profile inactive: luma");
 });

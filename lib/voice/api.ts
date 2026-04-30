@@ -84,8 +84,58 @@ export function requireSession(sessionId: string): VoiceSession {
   return session;
 }
 
+function sanitizeVoiceErrorDetail(message: string | null | undefined): string | null {
+  return message ? "Internal voice error" : null;
+}
+
+function sanitizeVoiceEventPayload(eventType: string, payload: unknown): unknown {
+  if (!payload || typeof payload !== "object") {
+    return payload;
+  }
+
+  const nextPayload = { ...(payload as Record<string, unknown>) };
+  if ("lastError" in nextPayload) {
+    nextPayload.lastError = sanitizeVoiceErrorDetail(
+      typeof nextPayload.lastError === "string" ? nextPayload.lastError : null,
+    );
+  }
+  if (
+    eventType === "voice.hook_failed" ||
+    eventType === "voice.hydration_failed" ||
+    eventType === "voice.provider_error"
+  ) {
+    if ("message" in nextPayload) {
+      nextPayload.message = "Internal voice error";
+    }
+  }
+
+  return nextPayload;
+}
+
+function serializeVoiceEvent(event: ReturnType<typeof listVoiceSessionEvents>[number]) {
+  return {
+    ...event,
+    payload: sanitizeVoiceEventPayload(event.eventType, event.payload),
+  };
+}
+
 export function listButtonReadyProfiles() {
   return listActiveVoiceProfiles().map(serializeVoiceProfile);
+}
+
+export function serializeVoiceSession(session: VoiceSession) {
+  return {
+    id: session.id,
+    profileId: session.profileId,
+    state: session.state,
+    transport: session.transport,
+    lastUserTranscript: session.lastUserTranscript ?? null,
+    lastAssistantText: session.lastAssistantText ?? null,
+    lastError: sanitizeVoiceErrorDetail(session.lastError ?? null),
+    startedAt: session.startedAt,
+    endedAt: session.endedAt ?? null,
+    updatedAt: session.updatedAt,
+  };
 }
 
 export function buildSessionEnvelope(sessionId: string, turnLimit = 50) {
@@ -95,12 +145,12 @@ export function buildSessionEnvelope(sessionId: string, turnLimit = 50) {
   const resolvedContext = session.resolvedContext as Record<string, unknown>;
 
   return {
-    session,
+    session: serializeVoiceSession(session),
     profile: serializeVoiceProfile(profile),
     turns,
     contextSummary: typeof resolvedContext.contextSummary === "string" ? resolvedContext.contextSummary : profile.label,
     switchTargets: Array.isArray(resolvedContext.switchTargets) ? resolvedContext.switchTargets : profile.allowedSwitchTargets,
-    lastError: session.lastError ?? null,
+    lastError: sanitizeVoiceErrorDetail(session.lastError ?? null),
   };
 }
 
@@ -124,7 +174,7 @@ export function persistInterimTranscript(sessionId: string, text: string) {
 export function listEventsEnvelope(sessionId: string, limit = 200) {
   requireSession(sessionId);
   return {
-    events: listVoiceSessionEvents(sessionId, limit),
+    events: listVoiceSessionEvents(sessionId, limit).map(serializeVoiceEvent),
   };
 }
 
@@ -138,6 +188,7 @@ export function voiceErrorResponse(error: unknown) {
   if (
     normalized.includes("required") ||
     normalized.includes("invalid") ||
+    normalized.includes("inactive") ||
     normalized.includes("not allowed") ||
     normalized.includes("must not be empty") ||
     normalized.includes("exceeds") ||
@@ -146,5 +197,5 @@ export function voiceErrorResponse(error: unknown) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 
-  return NextResponse.json({ error: message }, { status: 500 });
+  return NextResponse.json({ error: "Internal voice API error" }, { status: 500 });
 }

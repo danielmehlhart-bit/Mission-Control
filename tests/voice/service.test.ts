@@ -52,6 +52,8 @@ async function seedVoiceFixtures() {
   db.prepare("INSERT OR REPLACE INTO account_notes (account_id, content, updated_at) VALUES (?, ?, datetime('now'))")
     .run("acc_luma", "{\"summary\":\"Account note for LUMA\"}");
 
+  db.prepare("UPDATE voice_profiles SET status = 'active' WHERE slug IN ('main', 'sales_support', 'luma', 'fitness')").run();
+
   const salesProfile = getVoiceProfileBySlug("sales_support");
   const lumaProfile = getVoiceProfileBySlug("luma");
   assert.ok(salesProfile);
@@ -101,6 +103,22 @@ test("createSessionForProfile creates, hydrates, and readies a new voice session
   assert.equal(events.some((event) => event.eventType === "voice.hydration_completed"), true);
   assert.equal(events.some((event) => event.eventType === "voice.state_changed" && event.toState === "hydrating_context"), true);
   assert.equal(events.some((event) => event.eventType === "voice.state_changed" && event.toState === "ready"), true);
+});
+
+test("createSessionForProfile rejects inactive profiles", async () => {
+  await seedVoiceFixtures();
+  const { dbModule, serviceModule, hooksModule } = await loadModules();
+  const { createSessionForProfile } = serviceModule;
+  const { getDb } = dbModule;
+  const { clearVoiceHookRegistry } = hooksModule;
+
+  clearVoiceHookRegistry();
+  getDb().prepare("UPDATE voice_profiles SET status = 'inactive' WHERE slug = ?").run("sales_support");
+
+  await assert.rejects(
+    createSessionForProfile({ profileSlug: "sales_support", calendarProvider: async () => [] }),
+    /Voice profile inactive/,
+  );
 });
 
 test("commitUserTurn stores transcript and emits user-turn event", async () => {
@@ -303,6 +321,69 @@ test("switchSessionContext rejects missing target profiles without mutating the 
     JSON.stringify(["main", "sales_support"]),
     2,
   );
+});
+
+test("switchSessionContext rejects inactive target profiles without mutating the active session", async () => {
+  await seedVoiceFixtures();
+  const { dbModule, serviceModule, sessionStoreModule, hooksModule } = await loadModules();
+  const { createSessionForProfile, switchSessionContext } = serviceModule;
+  const { getVoiceSession, listVoiceSessionEvents } = sessionStoreModule;
+  const { getDb } = dbModule;
+  const { clearVoiceHookRegistry } = hooksModule;
+
+  clearVoiceHookRegistry();
+  const session = await createSessionForProfile({ profileSlug: "sales_support", calendarProvider: async () => [] });
+  getDb().prepare("UPDATE voice_profiles SET status = 'inactive' WHERE slug = ?").run("luma");
+
+  await assert.rejects(
+    switchSessionContext({ sessionId: session.id, targetProfileSlug: "luma", calendarProvider: async () => [] }),
+    /Voice profile inactive/,
+  );
+
+  const persisted = getVoiceSession(session.id);
+  assert.equal(persisted?.profileId, session.profileId);
+  assert.equal(persisted?.baseSessionKey, session.baseSessionKey);
+  assert.equal(persisted?.state, "ready");
+  assert.equal(listVoiceSessionEvents(session.id).some((event) => event.eventType === "voice.context_switch_requested"), false);
+});
+
+test("switchSessionContext restores original routing/context when afterContextSwitch fails", async () => {
+  await seedVoiceFixtures();
+  const { serviceModule, sessionStoreModule, hooksModule } = await loadModules();
+  const { createSessionForProfile, switchSessionContext } = serviceModule;
+  const { getVoiceSession, listVoiceSessionEvents, getVoiceProfileBySlug } = sessionStoreModule;
+  const { clearVoiceHookRegistry, registerVoiceHook } = hooksModule;
+
+  clearVoiceHookRegistry();
+  registerVoiceHook("beforeContextSwitch", {
+    id: "test.beforeContextSwitch.patch",
+    criticality: "required",
+    run: async () => ({ resolvedContext: { switchMarker: "pre-switch" } }),
+  });
+  registerVoiceHook("afterContextSwitch", {
+    id: "test.afterContextSwitch.fail",
+    criticality: "required",
+    run: async () => {
+      throw new Error("after-switch boom");
+    },
+  });
+
+  const session = await createSessionForProfile({ profileSlug: "sales_support", calendarProvider: async () => [] });
+  const salesProfile = getVoiceProfileBySlug("sales_support");
+  assert.ok(salesProfile);
+
+  await assert.rejects(
+    switchSessionContext({ sessionId: session.id, targetProfileSlug: "luma", calendarProvider: async () => [] }),
+    /after-switch boom/,
+  );
+
+  const persisted = getVoiceSession(session.id);
+  assert.equal(persisted?.profileId, salesProfile!.id);
+  assert.equal(persisted?.baseSessionKey, salesProfile!.baseSessionKey);
+  assert.equal(((persisted?.resolvedContext as Record<string, unknown>).profile as Record<string, unknown>).slug, "sales_support");
+  assert.equal((persisted?.resolvedContext as Record<string, unknown>).switchMarker, undefined);
+  assert.equal(persisted?.state, "failed");
+  assert.equal(listVoiceSessionEvents(session.id).some((event) => event.eventType === "voice.hydration_failed"), true);
 });
 
 test("endSession runs end hooks, transitions to completed, and emits end event", async () => {

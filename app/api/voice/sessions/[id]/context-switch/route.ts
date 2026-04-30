@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { switchSessionContext } from "@/lib/voice/service";
-import { parseJsonBody, requireProfileById, requireSession, requireString, serializeVoiceProfile, voiceErrorResponse } from "@/lib/voice/api";
+import { parseJsonBody, requireProfileById, requireSession, requireString, serializeVoiceProfile, serializeVoiceSession, voiceErrorResponse } from "@/lib/voice/api";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +15,7 @@ export async function POST(request: Request, context: { params: { id: string } }
     const profile = requireProfileById(result.session.profileId);
 
     return NextResponse.json({
-      session: result.session,
+      session: serializeVoiceSession(result.session),
       profile: serializeVoiceProfile(profile),
       contextSummary: typeof (result.session.resolvedContext as Record<string, unknown>).contextSummary === "string"
         ? (result.session.resolvedContext as Record<string, unknown>).contextSummary

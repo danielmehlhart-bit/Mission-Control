@@ -55,6 +55,8 @@ export type EndSessionInput = {
   reason?: string;
 };
 
+const ALLOWED_TRANSPORTS = new Set<VoiceTransport>(["web", "telegram", "internal"]);
+
 function asObject(value: Record<string, unknown> | ResolvedVoiceContext | undefined): Record<string, unknown> {
   if (!value) return {};
   return value as Record<string, unknown>;
@@ -84,6 +86,21 @@ function requireProfile(profileId: string): VoiceProfile {
     throw new Error(`Voice profile not found: ${profileId}`);
   }
   return profile;
+}
+
+function requireActiveProfile(profileId: string): VoiceProfile {
+  const profile = requireProfile(profileId);
+  if (profile.status !== "active") {
+    throw new Error(`Voice profile inactive: ${profileId}`);
+  }
+  return profile;
+}
+
+function ensureValidTransport(transport: VoiceTransport): VoiceTransport {
+  if (!ALLOWED_TRANSPORTS.has(transport)) {
+    throw new Error(`Invalid transport: ${transport}`);
+  }
+  return transport;
 }
 
 function ensureSessionState(session: VoiceSession, allowed: VoiceSession["state"][]): void {
@@ -205,16 +222,20 @@ export async function createSessionForProfile(input: CreateSessionForProfileInpu
   if (!profile) {
     throw new Error(`Voice profile not found: ${input.profileSlug}`);
   }
+  if (profile.status !== "active") {
+    throw new Error(`Voice profile inactive: ${input.profileSlug}`);
+  }
+  const transport = ensureValidTransport(input.transport ?? "web");
 
   const beforeCreate = await runVoiceHooks("beforeSessionCreate", {
     profile,
     resolvedContext: {},
-    payload: { transport: input.transport ?? "web" },
+    payload: { transport },
   });
 
   let session = createVoiceSession({
     profileId: profile.id,
-    transport: input.transport ?? "web",
+    transport,
     baseSessionKey: profile.baseSessionKey,
     resolvedContext: beforeCreate.patch.resolvedContext ?? {},
   });
@@ -417,11 +438,14 @@ export async function generateAssistantTurn(input: GenerateAssistantTurnInput): 
 export async function switchSessionContext(input: SwitchSessionContextInput): Promise<{ session: VoiceSession; systemTurn: VoiceTurn }> {
   let session = requireSession(input.sessionId);
   ensureSessionState(session, ["ready", "listening", "awaiting_user"]);
-  const currentProfile = requireProfile(session.profileId);
+  const currentProfile = requireActiveProfile(session.profileId);
   const targetProfile = getVoiceProfileBySlug(input.targetProfileSlug);
 
   if (!targetProfile) {
     throw new Error(`Voice profile not found: ${input.targetProfileSlug}`);
+  }
+  if (targetProfile.status !== "active") {
+    throw new Error(`Voice profile inactive: ${input.targetProfileSlug}`);
   }
 
   if (!currentProfile.allowedSwitchTargets.includes(input.targetProfileSlug)) {
@@ -429,6 +453,7 @@ export async function switchSessionContext(input: SwitchSessionContextInput): Pr
   }
 
   const requestedFromState = session.state;
+  const previousResolvedContext = asObject(session.resolvedContext);
   if (session.state === "ready") {
     session = transitionSession(session, "listening", "prepare-context-switch");
   }
@@ -472,7 +497,6 @@ export async function switchSessionContext(input: SwitchSessionContextInput): Pr
       { calendarProvider: input.calendarProvider },
     );
 
-    session = updateVoiceSessionRouting(session.id, targetProfile.id, targetProfile.baseSessionKey);
     session = updateVoiceSessionContext(session.id, resolvedContext);
     session = await hydrateSessionContext(session, targetProfile, input.calendarProvider);
 
@@ -483,6 +507,7 @@ export async function switchSessionContext(input: SwitchSessionContextInput): Pr
       payload: { fromProfileSlug: currentProfile.slug, targetProfileSlug: targetProfile.slug },
     });
     session = persistResolvedContext(session.id, session, afterSwitch.patch.resolvedContext);
+    session = updateVoiceSessionRouting(session.id, targetProfile.id, targetProfile.baseSessionKey);
 
     appendVoiceEvent({
       sessionId: session.id,
@@ -525,6 +550,15 @@ export async function switchSessionContext(input: SwitchSessionContextInput): Pr
     return { session, systemTurn };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
+    const currentPersisted = getVoiceSession(session.id);
+    if (currentPersisted) {
+      if (currentPersisted.profileId !== currentProfile.id || currentPersisted.baseSessionKey !== currentProfile.baseSessionKey) {
+        session = updateVoiceSessionRouting(session.id, currentProfile.id, currentProfile.baseSessionKey);
+      } else {
+        session = currentPersisted;
+      }
+      session = updateVoiceSessionContext(session.id, previousResolvedContext);
+    }
     appendVoiceEvent({
       sessionId: session.id,
       eventType: "voice.hydration_failed",

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { commitUserTurn, generateAssistantTurn } from "@/lib/voice/service";
-import { parseJsonBody, requireSession, requireString, voiceErrorResponse } from "@/lib/voice/api";
+import { parseJsonBody, requireSession, requireString, serializeVoiceSession, voiceErrorResponse } from "@/lib/voice/api";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +22,7 @@ export async function POST(request: Request, context: { params: { id: string } }
     const assistantResult = await generateAssistantTurn({ sessionId: context.params.id });
 
     return NextResponse.json({
-      session: assistantResult.session,
+      session: serializeVoiceSession(assistantResult.session),
       userTurn: userResult.turn,
       assistantTurn: assistantResult.turn,
       assistantText: assistantResult.turn.text,
