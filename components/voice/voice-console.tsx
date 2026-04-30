@@ -301,6 +301,12 @@ export function VoiceConsoleView({
         </div>
       )}
 
+      {!browserVoiceSupported && (
+        <div style={{ ...CARD_STYLE, padding: "12px 16px", marginBottom: 16, color: "#fcd34d", fontSize: 13 }}>
+          Sprachmodus in diesem Browser nicht unterstützt.
+        </div>
+      )}
+
       <div style={{ display: "grid", gridTemplateColumns: "minmax(290px, 360px) minmax(0, 1fr)", gap: 18, alignItems: "start" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           <section style={{ ...CARD_STYLE, padding: 18 }}>
