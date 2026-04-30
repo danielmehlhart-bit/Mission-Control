@@ -52,6 +52,7 @@ type VoiceSessionEnvelope = {
 };
 
 type BrowserVoiceMode = "idle" | "listening" | "thinking" | "speaking" | "error";
+type VoiceConsoleLayoutMode = "desktop" | "mobile";
 
 type SpeechRecognitionResultItem = {
   transcript: string;
@@ -232,6 +233,8 @@ export type VoiceConsoleViewProps = {
   browserVoiceSupported: boolean;
   liveTranscript: string;
   isVoiceModeEnabled: boolean;
+  layoutMode: VoiceConsoleLayoutMode;
+  canReplayAssistant: boolean;
   onDraftChange: (value: string) => void;
   onCreateSession: (profileId: string) => void;
   onSelectSession: (sessionId: string) => void;
@@ -239,6 +242,7 @@ export type VoiceConsoleViewProps = {
   onSubmitTurn: () => void;
   onSwitchContext: (targetProfileSlug: string) => void;
   onToggleVoiceMode: () => void;
+  onReplayAssistant: () => void;
 };
 
 export function VoiceConsoleView({
@@ -258,6 +262,8 @@ export function VoiceConsoleView({
   browserVoiceSupported,
   liveTranscript,
   isVoiceModeEnabled,
+  layoutMode,
+  canReplayAssistant,
   onDraftChange,
   onCreateSession,
   onSelectSession,
@@ -265,11 +271,13 @@ export function VoiceConsoleView({
   onSubmitTurn,
   onSwitchContext,
   onToggleVoiceMode,
+  onReplayAssistant,
 }: VoiceConsoleViewProps) {
   const activeColor = activeProfile?.color ?? "#10B981";
+  const isMobileLayout = layoutMode === "mobile";
 
   return (
-    <div style={{ padding: "20px 24px", maxWidth: 1180, margin: "0 auto" }}>
+    <div style={{ padding: isMobileLayout ? "16px 12px" : "20px 24px", maxWidth: 1180, margin: "0 auto" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, marginBottom: 24, flexWrap: "wrap" }}>
         <div>
           <div style={{ fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase", color: "#10B981", marginBottom: 8 }}>Voice Workspace</div>
@@ -309,7 +317,7 @@ export function VoiceConsoleView({
         </div>
       )}
 
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(290px, 360px) minmax(0, 1fr)", gap: 18, alignItems: "start" }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobileLayout ? "1fr" : "minmax(290px, 360px) minmax(0, 1fr)", gap: 18, alignItems: "start" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           <section style={{ ...CARD_STYLE, padding: 18 }}>
             <div style={{ fontSize: 12, color: "#8b90a0", marginBottom: 12 }}>Wähle ein Voice-Profil</div>
@@ -370,7 +378,7 @@ export function VoiceConsoleView({
 
         <section style={{ ...CARD_STYLE, padding: 18 }}>
           {!activeSession || !activeProfile ? (
-            <div style={{ minHeight: 460, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", color: "#8b90a0", padding: 32 }}>
+            <div style={{ minHeight: isMobileLayout ? 240 : 460, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", color: "#8b90a0", padding: isMobileLayout ? 20 : 32 }}>
               <div style={{ fontSize: 42, marginBottom: 10 }}>🎙️</div>
               <div style={{ fontSize: 16, color: "#f0f2f5", fontWeight: 600, marginBottom: 8 }}>Noch keine Voice-Session aktiv</div>
               <div style={{ fontSize: 13, maxWidth: 420 }}>Starte links ein Profil. Danach siehst du hier Kontext, Verlauf, Session-Status und kannst direkt testweise Turns schicken.</div>
@@ -387,14 +395,14 @@ export function VoiceConsoleView({
                   </div>
                   <div style={{ marginTop: 8, color: "#8b90a0", fontSize: 13 }}>{contextSummary ?? activeProfile.label}</div>
                 </div>
-                <div style={{ display: "grid", gap: 4, fontSize: 11, color: "#8b90a0", minWidth: 170 }}>
+                <div style={{ display: "grid", gap: 4, fontSize: 11, color: "#8b90a0", minWidth: isMobileLayout ? 0 : 170 }}>
                   <span>Session: {activeSession.id.slice(0, 8)}</span>
                   <span>Transport: {activeSession.transport}</span>
                   <span>Aktualisiert: {formatTimestamp(activeSession.updatedAt)}</span>
                 </div>
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 260px", gap: 16, alignItems: "start" }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobileLayout ? "1fr" : "minmax(0, 1fr) 260px", gap: 16, alignItems: "start" }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                   <div style={{ background: "#0f1219", border: "1px solid #1e2128", borderRadius: 14, padding: 14 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap", marginBottom: 10 }}>
@@ -413,7 +421,7 @@ export function VoiceConsoleView({
                         {liveTranscript}
                       </div>
                     )}
-                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap", flexDirection: isMobileLayout ? "column" : "row" }}>
                       <button
                         onClick={onToggleVoiceMode}
                         disabled={!browserVoiceSupported || isSubmitting}
@@ -425,14 +433,33 @@ export function VoiceConsoleView({
                           color: "#fff",
                           fontWeight: 700,
                           cursor: !browserVoiceSupported || isSubmitting ? "default" : "pointer",
+                          width: isMobileLayout ? "100%" : undefined,
                         }}
                       >
                         {isVoiceModeEnabled ? "Voice stoppen" : "Voice starten"}
                       </button>
+                      {canReplayAssistant && (
+                        <button
+                          onClick={onReplayAssistant}
+                          disabled={isSubmitting}
+                          style={{
+                            padding: "10px 14px",
+                            borderRadius: 10,
+                            border: "1px solid #1e2128",
+                            background: "#141720",
+                            color: "#f0f2f5",
+                            fontWeight: 700,
+                            cursor: isSubmitting ? "default" : "pointer",
+                            width: isMobileLayout ? "100%" : undefined,
+                          }}
+                        >
+                          Antwort anhören
+                        </button>
+                      )}
                     </div>
                   </div>
 
-                  <div style={{ background: "#0f1219", border: "1px solid #1e2128", borderRadius: 14, minHeight: 320, maxHeight: 520, overflowY: "auto", padding: 14 }}>
+                  <div style={{ background: "#0f1219", border: "1px solid #1e2128", borderRadius: 14, minHeight: isMobileLayout ? 240 : 320, maxHeight: isMobileLayout ? "none" : 520, overflowY: "auto", padding: 14 }}>
                     <div style={{ fontSize: 11, color: "#4a5068", marginBottom: 12, letterSpacing: "0.14em", textTransform: "uppercase" }}>Transcript</div>
                     {turns.length === 0 ? (
                       <div style={{ fontSize: 12, color: "#4a5068" }}>Noch keine Turns vorhanden.</div>
@@ -474,7 +501,7 @@ export function VoiceConsoleView({
                       placeholder="Frag z. B. nach dem Status von LUMA oder bitte um einen nächsten Schritt."
                       style={{ width: "100%", minHeight: 110, resize: "vertical", borderRadius: 12, border: "1px solid #1e2128", background: "#141720", color: "#f0f2f5", padding: 12, fontSize: 13, outline: "none", boxSizing: "border-box" }}
                     />
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 10, gap: 12, flexWrap: "wrap" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: isMobileLayout ? "stretch" : "center", marginTop: 10, gap: 12, flexWrap: "wrap", flexDirection: isMobileLayout ? "column" : "row" }}>
                       <div style={{ fontSize: 11, color: "#8b90a0" }}>Text bleibt als Fallback aktiv, Voice läuft direkt im Browser darüber.</div>
                       <button
                         onClick={onSubmitTurn}
@@ -487,6 +514,7 @@ export function VoiceConsoleView({
                           color: "#fff",
                           fontWeight: 700,
                           cursor: isSubmitting || draft.trim().length === 0 ? "default" : "pointer",
+                          width: isMobileLayout ? "100%" : undefined,
                         }}
                       >
                         {isSubmitting ? "Sende …" : "Antwort senden"}
@@ -543,6 +571,11 @@ export default function VoiceConsole() {
   const [browserVoiceSupported, setBrowserVoiceSupported] = useState(true);
   const [liveTranscript, setLiveTranscript] = useState("");
   const [isVoiceModeEnabled, setIsVoiceModeEnabled] = useState(false);
+  const [layoutMode, setLayoutMode] = useState<VoiceConsoleLayoutMode>(() => {
+    if (typeof window === "undefined") return "desktop";
+    return window.innerWidth <= 900 ? "mobile" : "desktop";
+  });
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const recognitionRef = useRef<BrowserSpeechRecognition | null>(null);
   const shouldRestartRecognitionRef = useRef(false);
   const activeSessionIdRef = useRef<string | null>(null);
@@ -564,12 +597,21 @@ export default function VoiceConsole() {
     return data;
   }, []);
 
+  const primeSpeechSynthesis = useCallback(() => {
+    if (typeof window === "undefined" || !window.speechSynthesis) {
+      return;
+    }
+    void window.speechSynthesis.getVoices();
+    window.speechSynthesis.resume();
+  }, []);
+
   const speakAssistantText = useCallback((text: string) => {
     if (typeof window === "undefined" || !window.speechSynthesis || !text.trim()) {
       return;
     }
-    const availableVoices = window.speechSynthesis.getVoices();
-    const preferredVoice = pickPreferredSpeechSynthesisVoice(availableVoices);
+    primeSpeechSynthesis();
+    const voicePool = availableVoices.length > 0 ? availableVoices : window.speechSynthesis.getVoices();
+    const preferredVoice = pickPreferredSpeechSynthesisVoice(voicePool);
 
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text.trim());
@@ -579,11 +621,20 @@ export default function VoiceConsole() {
     }
     utterance.rate = 0.96;
     utterance.pitch = 1;
-    utterance.onstart = () => setVoiceMode("speaking");
-    utterance.onend = () => setVoiceMode(isVoiceModeEnabled ? "listening" : "idle");
-    utterance.onerror = () => setVoiceMode("error");
+    utterance.onstart = () => {
+      setVoiceMode("speaking");
+      setLastActionLabel("Hermes spricht");
+    };
+    utterance.onend = () => {
+      setVoiceMode(isVoiceModeEnabled ? "listening" : "idle");
+      setLastActionLabel(isVoiceModeEnabled ? "Voice hört wieder zu" : "Audio abgespielt");
+    };
+    utterance.onerror = () => {
+      setVoiceMode("error");
+      setLastActionLabel("Audio blockiert? Tippe auf „Antwort anhören“.");
+    };
     window.speechSynthesis.speak(utterance);
-  }, [isVoiceModeEnabled]);
+  }, [availableVoices, isVoiceModeEnabled, primeSpeechSynthesis]);
 
   const sendVoiceTurn = useCallback(async (userText: string) => {
     if (!activeSessionIdRef.current || userText.trim().length === 0) return;
@@ -655,6 +706,7 @@ export default function VoiceConsole() {
     if (typeof navigator !== "undefined" && navigator.mediaDevices?.getUserMedia) {
       await navigator.mediaDevices.getUserMedia({ audio: true });
     }
+    primeSpeechSynthesis();
 
     recognitionRef.current?.stop();
     const recognition = new SpeechRecognitionCtor();
@@ -703,7 +755,7 @@ export default function VoiceConsole() {
     setError(null);
     setIsVoiceModeEnabled(true);
     recognition.start();
-  }, [pushInterimTranscript, sendVoiceTurn]);
+  }, [primeSpeechSynthesis, pushInterimTranscript, sendVoiceTurn]);
 
   const toggleVoiceMode = useCallback(async () => {
     if (isVoiceModeEnabled) {
@@ -739,7 +791,37 @@ export default function VoiceConsole() {
   }, [active?.session.id, loadProfiles, loadSessionDetail, loadSessions]);
 
   useEffect(() => {
-    setBrowserVoiceSupported(Boolean(getSpeechRecognitionConstructor()) && typeof window !== "undefined" && "speechSynthesis" in window);
+    if (typeof window === "undefined") return;
+
+    const syncLayout = () => {
+      setLayoutMode(window.innerWidth <= 900 ? "mobile" : "desktop");
+    };
+
+    syncLayout();
+    window.addEventListener("resize", syncLayout);
+    return () => window.removeEventListener("resize", syncLayout);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    setBrowserVoiceSupported(Boolean(getSpeechRecognitionConstructor()) && "speechSynthesis" in window);
+
+    if (!("speechSynthesis" in window)) {
+      setAvailableVoices([]);
+      return;
+    }
+
+    const syncVoices = () => {
+      setAvailableVoices(window.speechSynthesis.getVoices());
+    };
+
+    syncVoices();
+    window.speechSynthesis.addEventListener?.("voiceschanged", syncVoices);
+
+    return () => {
+      window.speechSynthesis.removeEventListener?.("voiceschanged", syncVoices);
+    };
   }, []);
 
   useEffect(() => {
@@ -797,6 +879,13 @@ export default function VoiceConsole() {
     await sendVoiceTurn(draft.trim());
   }, [active?.session.id, draft, sendVoiceTurn]);
 
+  const replayAssistant = useCallback(() => {
+    const lastAssistantText = active?.session.lastAssistantText?.trim();
+    if (!lastAssistantText) return;
+    primeSpeechSynthesis();
+    speakAssistantText(lastAssistantText);
+  }, [active?.session.lastAssistantText, primeSpeechSynthesis, speakAssistantText]);
+
   const switchContext = useCallback(async (targetProfileSlug: string) => {
     if (!active?.session.id) return;
     setError(null);
@@ -840,6 +929,8 @@ export default function VoiceConsole() {
       browserVoiceSupported={browserVoiceSupported}
       liveTranscript={liveTranscript}
       isVoiceModeEnabled={isVoiceModeEnabled}
+      layoutMode={layoutMode}
+      canReplayAssistant={Boolean(activeSession?.lastAssistantText?.trim())}
       onDraftChange={setDraft}
       onCreateSession={createSession}
       onSelectSession={selectSession}
@@ -847,6 +938,7 @@ export default function VoiceConsole() {
       onSubmitTurn={submitTurn}
       onSwitchContext={switchContext}
       onToggleVoiceMode={toggleVoiceMode}
+      onReplayAssistant={replayAssistant}
     />
   );
 }

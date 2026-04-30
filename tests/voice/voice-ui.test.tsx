@@ -26,6 +26,8 @@ function renderVoiceView(overrides: Partial<VoiceConsoleViewProps> = {}) {
     browserVoiceSupported: true,
     liveTranscript: "",
     isVoiceModeEnabled: false,
+    layoutMode: "desktop",
+    canReplayAssistant: false,
     onDraftChange: () => {},
     onCreateSession: () => {},
     onSelectSession: () => {},
@@ -33,6 +35,7 @@ function renderVoiceView(overrides: Partial<VoiceConsoleViewProps> = {}) {
     onSubmitTurn: () => {},
     onSwitchContext: () => {},
     onToggleVoiceMode: () => {},
+    onReplayAssistant: () => {},
     ...overrides,
   };
 
@@ -73,6 +76,7 @@ test("VoiceConsoleView renders active session transcript, context summary, and s
     isVoiceModeEnabled: true,
     voiceMode: "listening",
     liveTranscript: "Sag mir den nächsten Schritt",
+    canReplayAssistant: true,
   });
 
   assert.match(html, /LUMA GmbH/);
@@ -84,6 +88,35 @@ test("VoiceConsoleView renders active session transcript, context summary, and s
   assert.match(html, /Mikrofon läuft/);
   assert.match(html, /Sag mir den nächsten Schritt/);
   assert.match(html, /Voice stoppen/);
+  assert.match(html, /Antwort anhören/);
+});
+
+test("VoiceConsoleView renders a stacked mobile layout with replay action", () => {
+  const html = renderVoiceView({
+    layoutMode: "mobile",
+    activeProfile: { id: "vp_main", slug: "main", label: "Call Hermes", color: "#10B981", description: "General command bridge" },
+    activeSession: {
+      id: "vs_mobile",
+      profileId: "vp_main",
+      state: "awaiting_user",
+      transport: "web",
+      lastUserTranscript: "Hörst du mich?",
+      lastAssistantText: "Ja, ich höre dich.",
+      lastError: null,
+      startedAt: "2026-04-30T10:00:00.000Z",
+      endedAt: null,
+      updatedAt: "2026-04-30T10:01:00.000Z",
+    },
+    turns: [
+      { id: "turn_mobile_user", sessionId: "vs_mobile", sequence: 1, speaker: "user", text: "Hörst du mich?", source: "complete-turn", createdAt: "2026-04-30T10:00:00.000Z", metadata: null },
+      { id: "turn_mobile_assistant", sessionId: "vs_mobile", sequence: 2, speaker: "assistant", text: "Ja, ich höre dich.", source: "assistant", createdAt: "2026-04-30T10:00:05.000Z", metadata: null },
+    ],
+    canReplayAssistant: true,
+  });
+
+  assert.match(html, /grid-template-columns:1fr/);
+  assert.match(html, /Antwort anhören/);
+  assert.match(html, /min-height:240px/);
 });
 
 test("VoiceConsoleView renders loading and error states", () => {
