@@ -22,12 +22,17 @@ function renderVoiceView(overrides: Partial<VoiceConsoleViewProps> = {}) {
     isSubmitting: false,
     error: null,
     lastActionLabel: null,
+    voiceMode: "idle",
+    browserVoiceSupported: true,
+    liveTranscript: "",
+    isVoiceModeEnabled: false,
     onDraftChange: () => {},
     onCreateSession: () => {},
     onSelectSession: () => {},
     onRefresh: () => {},
     onSubmitTurn: () => {},
     onSwitchContext: () => {},
+    onToggleVoiceMode: () => {},
     ...overrides,
   };
 
@@ -65,6 +70,9 @@ test("VoiceConsoleView renders active session transcript, context summary, and s
     ],
     switchTargets: ["main", "luma"],
     draft: "Nächster Schritt?",
+    isVoiceModeEnabled: true,
+    voiceMode: "listening",
+    liveTranscript: "Sag mir den nächsten Schritt",
   });
 
   assert.match(html, /LUMA GmbH/);
@@ -72,6 +80,10 @@ test("VoiceConsoleView renders active session transcript, context summary, and s
   assert.match(html, /LUMA ist in der Angebotsphase\./);
   assert.match(html, /Zu LUMA wechseln/);
   assert.match(html, /Antwort senden/);
+  assert.match(html, /Voice Mode/);
+  assert.match(html, /Mikrofon läuft/);
+  assert.match(html, /Sag mir den nächsten Schritt/);
+  assert.match(html, /Voice stoppen/);
 });
 
 test("VoiceConsoleView renders loading and error states", () => {
@@ -79,9 +91,11 @@ test("VoiceConsoleView renders loading and error states", () => {
     isBooting: true,
     error: "Voice API nicht erreichbar",
     lastActionLabel: "Session wird aufgebaut",
+    browserVoiceSupported: false,
   });
 
   assert.match(html, /Session wird aufgebaut/);
   assert.match(html, /Voice API nicht erreichbar/);
   assert.match(html, /Lade Voice-Kontext/);
+  assert.match(html, /Sprachmodus in diesem Browser nicht unterstützt/);
 });
