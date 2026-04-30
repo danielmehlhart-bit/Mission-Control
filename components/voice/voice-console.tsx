@@ -562,6 +562,153 @@ export default function VoiceConsole() {
     return data;
   }, []);
 
+  const speakAssistantText = useCallback((text: string) => {
+    if (typeof window === "undefined" || !window.speechSynthesis || !text.trim()) {
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text.trim());
+    utterance.lang = "de-DE";
+    utterance.onstart = () => setVoiceMode("speaking");
+    utterance.onend = () => setVoiceMode(isVoiceModeEnabled ? "listening" : "idle");
+    utterance.onerror = () => setVoiceMode("error");
+    window.speechSynthesis.speak(utterance);
+  }, [isVoiceModeEnabled]);
+
+  const sendVoiceTurn = useCallback(async (userText: string) => {
+    if (!activeSessionIdRef.current || userText.trim().length === 0) return;
+    setError(null);
+    setIsSubmitting(true);
+    setVoiceMode("thinking");
+    setLastActionLabel("Voice-Turn wird verarbeitet");
+    try {
+      const response = await readJson<{ session: VoiceSessionSummary; assistantText: string }>(
+        `/api/voice/sessions/${activeSessionIdRef.current}/complete-turn`,
+        {
+          method: "POST",
+          body: JSON.stringify({ userText: userText.trim(), source: "browser-voice" }),
+        },
+      );
+      setDraft("");
+      setLiveTranscript("");
+      await Promise.all([loadSessions(), loadSessionDetail(activeSessionIdRef.current)]);
+      setLastActionLabel("Voice-Antwort empfangen");
+      if (response.assistantText) {
+        speakAssistantText(response.assistantText);
+      } else {
+        setVoiceMode(isVoiceModeEnabled ? "listening" : "idle");
+      }
+    } catch (nextError) {
+      setVoiceMode("error");
+      setError(nextError instanceof Error ? nextError.message : String(nextError));
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [isVoiceModeEnabled, loadSessionDetail, loadSessions, speakAssistantText]);
+
+  const pushInterimTranscript = useCallback(async (text: string) => {
+    if (!activeSessionIdRef.current || text.trim().length === 0) return;
+    try {
+      await readJson<{ session: VoiceSessionSummary }>(`/api/voice/sessions/${activeSessionIdRef.current}/transcript`, {
+        method: "POST",
+        body: JSON.stringify({ text: text.trim(), isFinal: false, source: "browser-voice-interim" }),
+      });
+    } catch {
+      // best effort only
+    }
+  }, []);
+
+  const stopVoiceMode = useCallback(() => {
+    shouldRestartRecognitionRef.current = false;
+    recognitionRef.current?.stop();
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+    setIsVoiceModeEnabled(false);
+    setVoiceMode("idle");
+    setLiveTranscript("");
+    setLastActionLabel("Voice gestoppt");
+  }, []);
+
+  const startVoiceMode = useCallback(async () => {
+    if (!activeSessionIdRef.current) {
+      setError("Starte zuerst eine Voice-Session.");
+      return;
+    }
+    const SpeechRecognitionCtor = getSpeechRecognitionConstructor();
+    if (!SpeechRecognitionCtor) {
+      setBrowserVoiceSupported(false);
+      setError("Sprachmodus in diesem Browser nicht unterstützt.");
+      return;
+    }
+
+    if (typeof navigator !== "undefined" && navigator.mediaDevices?.getUserMedia) {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+    }
+
+    recognitionRef.current?.stop();
+    const recognition = new SpeechRecognitionCtor();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = "de-DE";
+
+    recognition.onstart = () => {
+      setVoiceMode("listening");
+      setLastActionLabel("Voice hört zu");
+    };
+    recognition.onend = () => {
+      if (shouldRestartRecognitionRef.current) {
+        recognition.start();
+        return;
+      }
+      setVoiceMode("idle");
+    };
+    recognition.onerror = (event) => {
+      setVoiceMode("error");
+      setError(event.error ?? event.message ?? "Spracherkennung fehlgeschlagen.");
+      shouldRestartRecognitionRef.current = false;
+      setIsVoiceModeEnabled(false);
+    };
+    recognition.onresult = (event) => {
+      let interim = "";
+      for (let index = event.resultIndex; index < event.results.length; index += 1) {
+        const result = event.results[index];
+        const transcript = result?.[0]?.transcript?.trim() ?? "";
+        if (!transcript) continue;
+        if (result.isFinal) {
+          setDraft(transcript);
+          void sendVoiceTurn(transcript);
+        } else {
+          interim = transcript;
+        }
+      }
+      if (interim) {
+        setLiveTranscript(interim);
+        void pushInterimTranscript(interim);
+      }
+    };
+
+    recognitionRef.current = recognition;
+    shouldRestartRecognitionRef.current = true;
+    setError(null);
+    setIsVoiceModeEnabled(true);
+    recognition.start();
+  }, [pushInterimTranscript, sendVoiceTurn]);
+
+  const toggleVoiceMode = useCallback(async () => {
+    if (isVoiceModeEnabled) {
+      stopVoiceMode();
+      return;
+    }
+    try {
+      await startVoiceMode();
+    } catch (nextError) {
+      setVoiceMode("error");
+      setIsVoiceModeEnabled(false);
+      setError(nextError instanceof Error ? nextError.message : String(nextError));
+    }
+  }, [isVoiceModeEnabled, startVoiceMode, stopVoiceMode]);
+
   const refreshAll = useCallback(async () => {
     setError(null);
     setIsBooting(true);
