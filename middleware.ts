@@ -12,6 +12,13 @@ const SECRET = new TextEncoder().encode(jwtSecret ?? "");
 
 const PUBLIC_PATHS = ["/login", "/api/auth/login"];
 
+function withSecurityHeaders(response: NextResponse) {
+  for (const header of SECURITY_HEADERS) {
+    response.headers.set(header.key, header.value);
+  }
+  return response;
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
