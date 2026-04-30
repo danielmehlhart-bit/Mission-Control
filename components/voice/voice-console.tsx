@@ -40,14 +40,6 @@ type VoiceSessionListItem = {
   contextSummary: string;
 };
 
-type VoiceEvent = {
-  id: string;
-  eventType: string;
-  sequence: number;
-  createdAt: string;
-  payload: Record<string, unknown> | null;
-};
-
 type VoiceSessionEnvelope = {
   session: VoiceSessionSummary;
   profile: VoiceProfileSummary;
@@ -453,7 +445,8 @@ export default function VoiceConsole() {
     setError(null);
     setIsBooting(true);
     try {
-      const [_, loadedSessions] = await Promise.all([loadProfiles(), loadSessions()]);
+      const [loadedProfiles, loadedSessions] = await Promise.all([loadProfiles(), loadSessions()]);
+      void loadedProfiles;
       if (active?.session.id) {
         await loadSessionDetail(active.session.id);
       } else if (loadedSessions[0]?.session.id) {
