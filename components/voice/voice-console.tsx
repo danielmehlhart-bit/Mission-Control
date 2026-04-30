@@ -729,8 +729,26 @@ export default function VoiceConsole() {
   }, [active?.session.id, loadProfiles, loadSessionDetail, loadSessions]);
 
   useEffect(() => {
+    setBrowserVoiceSupported(Boolean(getSpeechRecognitionConstructor()) && typeof window !== "undefined" && "speechSynthesis" in window);
+  }, []);
+
+  useEffect(() => {
+    activeSessionIdRef.current = active?.session.id ?? null;
+  }, [active?.session.id]);
+
+  useEffect(() => {
     refreshAll();
   }, [refreshAll]);
+
+  useEffect(() => {
+    return () => {
+      shouldRestartRecognitionRef.current = false;
+      recognitionRef.current?.stop();
+      if (typeof window !== "undefined" && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
 
   const createSession = useCallback(async (profileId: string) => {
     setError(null);
