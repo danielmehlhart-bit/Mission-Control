@@ -826,12 +826,17 @@ export default function VoiceConsole() {
       isSubmitting={isSubmitting}
       error={error}
       lastActionLabel={lastActionLabel}
+      voiceMode={voiceMode}
+      browserVoiceSupported={browserVoiceSupported}
+      liveTranscript={liveTranscript}
+      isVoiceModeEnabled={isVoiceModeEnabled}
       onDraftChange={setDraft}
       onCreateSession={createSession}
       onSelectSession={selectSession}
       onRefresh={refreshAll}
       onSubmitTurn={submitTurn}
       onSwitchContext={switchContext}
+      onToggleVoiceMode={toggleVoiceMode}
     />
   );
 }
