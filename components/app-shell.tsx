@@ -6,6 +6,7 @@ import { NavBadge } from "@/components/nav-badge";
 
 const navItems = [
   { href: "/",          label: "Home",      icon: "⌂" },
+  { href: "/voice",     label: "Voice",     icon: "🎙️" },
   { href: "/accounts",  label: "Accounts",  icon: "🏢" },
   { href: "/pipeline",  label: "Pipeline",  icon: "📊" },
   { href: "/people",    label: "People",    icon: "👥" },
