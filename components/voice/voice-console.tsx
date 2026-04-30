@@ -394,6 +394,42 @@ export function VoiceConsoleView({
 
               <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 260px", gap: 16, alignItems: "start" }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                  <div style={{ background: "#0f1219", border: "1px solid #1e2128", borderRadius: 14, padding: 14 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap", marginBottom: 10 }}>
+                      <div style={{ fontSize: 11, color: "#4a5068", letterSpacing: "0.14em", textTransform: "uppercase" }}>Voice Mode</div>
+                      <span style={{ padding: "4px 10px", borderRadius: 999, background: `${activeColor}22`, color: activeColor, fontSize: 11, fontWeight: 700 }}>
+                        {getVoiceModeLabel(voiceMode)}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: 12, color: "#8b90a0", lineHeight: 1.5, marginBottom: 10 }}>
+                      {browserVoiceSupported
+                        ? "Sprich direkt ins Mikrofon. Finale Spracheingaben werden als Turn an Hermes geschickt und die Antwort wird vorgelesen."
+                        : "Für echten Browser-Voice-Modus brauchst du einen Browser mit SpeechRecognition + SpeechSynthesis."}
+                    </div>
+                    {liveTranscript && (
+                      <div style={{ marginBottom: 10, background: "#141720", border: "1px solid #1e2128", borderRadius: 12, padding: "10px 12px", color: "#f0f2f5", fontSize: 13 }}>
+                        {liveTranscript}
+                      </div>
+                    )}
+                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                      <button
+                        onClick={onToggleVoiceMode}
+                        disabled={!browserVoiceSupported || isSubmitting}
+                        style={{
+                          padding: "10px 14px",
+                          borderRadius: 10,
+                          border: "none",
+                          background: !browserVoiceSupported ? "#374151" : isVoiceModeEnabled ? "#ef4444" : "#10B981",
+                          color: "#fff",
+                          fontWeight: 700,
+                          cursor: !browserVoiceSupported || isSubmitting ? "default" : "pointer",
+                        }}
+                      >
+                        {isVoiceModeEnabled ? "Voice stoppen" : "Voice starten"}
+                      </button>
+                    </div>
+                  </div>
+
                   <div style={{ background: "#0f1219", border: "1px solid #1e2128", borderRadius: 14, minHeight: 320, maxHeight: 520, overflowY: "auto", padding: 14 }}>
                     <div style={{ fontSize: 11, color: "#4a5068", marginBottom: 12, letterSpacing: "0.14em", textTransform: "uppercase" }}>Transcript</div>
                     {turns.length === 0 ? (
