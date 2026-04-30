@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import { VoiceConsoleView, type VoiceConsoleViewProps } from "../../components/voice/voice-console";
+import { extractRecognitionTranscripts, VoiceConsoleView, type VoiceConsoleViewProps } from "../../components/voice/voice-console";
 
 function renderVoiceView(overrides: Partial<VoiceConsoleViewProps> = {}) {
   const props: VoiceConsoleViewProps = {
@@ -41,6 +41,22 @@ function renderVoiceView(overrides: Partial<VoiceConsoleViewProps> = {}) {
 
   return renderToStaticMarkup(React.createElement(VoiceConsoleView, props));
 }
+
+test("extractRecognitionTranscripts collapses duplicate final results into one final transcript", () => {
+  const event = {
+    resultIndex: 0,
+    results: [
+      { 0: { transcript: "Hallo" }, isFinal: true, length: 1 },
+      { 0: { transcript: "Hallo Hermes" }, isFinal: true, length: 1 },
+      { 0: { transcript: "wie ist" }, isFinal: false, length: 1 },
+    ],
+  } as unknown as Parameters<typeof extractRecognitionTranscripts>[0];
+
+  const transcripts = extractRecognitionTranscripts(event);
+
+  assert.equal(transcripts.finalTranscript, "Hallo Hermes");
+  assert.equal(transcripts.interimTranscript, "wie ist");
+});
 
 test("VoiceConsoleView renders headline and profile launch buttons in empty state", () => {
   const html = renderVoiceView();

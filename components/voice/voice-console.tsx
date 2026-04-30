@@ -69,6 +69,28 @@ type SpeechRecognitionEventShape = Event & {
   results: ArrayLike<SpeechRecognitionResultShape>;
 };
 
+export function extractRecognitionTranscripts(event: SpeechRecognitionEventShape): {
+  finalTranscript: string | null;
+  interimTranscript: string | null;
+} {
+  let finalTranscript: string | null = null;
+  let interimTranscript: string | null = null;
+
+  for (let index = event.resultIndex; index < event.results.length; index += 1) {
+    const result = event.results[index];
+    const transcript = result?.[0]?.transcript?.trim() ?? "";
+    if (!transcript) continue;
+
+    if (result.isFinal) {
+      finalTranscript = transcript;
+    } else {
+      interimTranscript = transcript;
+    }
+  }
+
+  return { finalTranscript, interimTranscript };
+}
+
 type SpeechRecognitionErrorEventShape = Event & {
   error?: string;
   message?: string;
@@ -581,6 +603,7 @@ export default function VoiceConsole() {
   const recognitionHoldRef = useRef(false);
   const assistantAudioRef = useRef<HTMLAudioElement | null>(null);
   const activeSessionIdRef = useRef<string | null>(null);
+  const isSubmittingRef = useRef(false);
 
   const loadProfiles = useCallback(async () => {
     const data = await readJson<{ profiles: VoiceProfileSummary[] }>("/api/voice/profiles");
@@ -709,7 +732,8 @@ export default function VoiceConsole() {
   }, [pauseRecognitionForAssistant, resumeRecognitionAfterAssistant, speakAssistantText]);
 
   const sendVoiceTurn = useCallback(async (userText: string) => {
-    if (!activeSessionIdRef.current || userText.trim().length === 0) return;
+    if (!activeSessionIdRef.current || userText.trim().length === 0 || isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
     setError(null);
     setIsSubmitting(true);
     pauseRecognitionForAssistant();
@@ -737,6 +761,7 @@ export default function VoiceConsole() {
       recognitionHoldRef.current = false;
       setError(nextError instanceof Error ? nextError.message : String(nextError));
     } finally {
+      isSubmittingRef.current = false;
       setIsSubmitting(false);
     }
   }, [loadSessionDetail, loadSessions, pauseRecognitionForAssistant, playAssistantResponse, resumeRecognitionAfterAssistant]);
@@ -756,6 +781,7 @@ export default function VoiceConsole() {
   const stopVoiceMode = useCallback(() => {
     shouldRestartRecognitionRef.current = false;
     recognitionHoldRef.current = false;
+    isSubmittingRef.current = false;
     recognitionRef.current?.stop();
     assistantAudioRef.current?.pause();
     assistantAudioRef.current = null;
@@ -812,22 +838,22 @@ export default function VoiceConsole() {
       setIsVoiceModeEnabled(false);
     };
     recognition.onresult = (event) => {
-      let interim = "";
-      for (let index = event.resultIndex; index < event.results.length; index += 1) {
-        const result = event.results[index];
-        const transcript = result?.[0]?.transcript?.trim() ?? "";
-        if (!transcript) continue;
-        if (result.isFinal) {
-          setDraft(transcript);
-          pauseRecognitionForAssistant();
-          void sendVoiceTurn(transcript);
-        } else {
-          interim = transcript;
-        }
+      if (recognitionHoldRef.current || isSubmittingRef.current) {
+        return;
       }
-      if (interim) {
-        setLiveTranscript(interim);
-        void pushInterimTranscript(interim);
+
+      const { finalTranscript, interimTranscript } = extractRecognitionTranscripts(event);
+
+      if (finalTranscript) {
+        setDraft(finalTranscript);
+        pauseRecognitionForAssistant();
+        void sendVoiceTurn(finalTranscript);
+        return;
+      }
+
+      if (interimTranscript) {
+        setLiveTranscript(interimTranscript);
+        void pushInterimTranscript(interimTranscript);
       }
     };
 
@@ -918,6 +944,7 @@ export default function VoiceConsole() {
     return () => {
       shouldRestartRecognitionRef.current = false;
       recognitionHoldRef.current = false;
+      isSubmittingRef.current = false;
       recognitionRef.current?.stop();
       assistantAudioRef.current?.pause();
       assistantAudioRef.current = null;
