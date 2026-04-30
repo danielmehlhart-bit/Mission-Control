@@ -28,7 +28,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/favicon") ||
     PUBLIC_PATHS.some(p => pathname.startsWith(p))
   ) {
-    return NextResponse.next();
+    return withSecurityHeaders(NextResponse.next());
   }
 
   // Check JWT cookie
