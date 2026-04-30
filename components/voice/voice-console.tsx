@@ -168,6 +168,27 @@ function formatTimestamp(value: string | null) {
   });
 }
 
+function getSpeechRecognitionConstructor(): BrowserSpeechRecognitionConstructor | null {
+  if (typeof window === "undefined") return null;
+  const browserWindow = window as BrowserWindowWithSpeech;
+  return browserWindow.SpeechRecognition ?? browserWindow.webkitSpeechRecognition ?? null;
+}
+
+function getVoiceModeLabel(mode: BrowserVoiceMode) {
+  switch (mode) {
+    case "listening":
+      return "Mikrofon läuft";
+    case "thinking":
+      return "Hermes denkt";
+    case "speaking":
+      return "Hermes spricht";
+    case "error":
+      return "Voice-Fehler";
+    default:
+      return "Bereit für Sprache";
+  }
+}
+
 async function readJson<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const response = await fetch(input, {
     cache: "no-store",
