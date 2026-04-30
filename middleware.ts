@@ -37,13 +37,13 @@ export async function middleware(request: NextRequest) {
   if (!jwtSecret) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
-    return NextResponse.redirect(loginUrl);
+    return withSecurityHeaders(NextResponse.redirect(loginUrl));
   }
 
   if (token) {
     try {
       await jwtVerify(token, SECRET);
-      return NextResponse.next();
+      return withSecurityHeaders(NextResponse.next());
     } catch {
       // Invalid/expired token → fall through to redirect
     }
@@ -52,7 +52,7 @@ export async function middleware(request: NextRequest) {
   // Not authenticated → redirect to login
   const loginUrl = request.nextUrl.clone();
   loginUrl.pathname = "/login";
-  return NextResponse.redirect(loginUrl);
+  return withSecurityHeaders(NextResponse.redirect(loginUrl));
 }
 
 export const config = {
