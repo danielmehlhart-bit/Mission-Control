@@ -49,6 +49,47 @@ type VoiceSessionEnvelope = {
   lastError: string | null;
 };
 
+type BrowserVoiceMode = "idle" | "listening" | "thinking" | "speaking" | "error";
+
+type SpeechRecognitionResultItem = {
+  transcript: string;
+};
+
+type SpeechRecognitionResultShape = {
+  0: SpeechRecognitionResultItem;
+  isFinal: boolean;
+  length: number;
+};
+
+type SpeechRecognitionEventShape = Event & {
+  resultIndex: number;
+  results: ArrayLike<SpeechRecognitionResultShape>;
+};
+
+type SpeechRecognitionErrorEventShape = Event & {
+  error?: string;
+  message?: string;
+};
+
+type BrowserSpeechRecognition = {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onstart: ((event: Event) => void) | null;
+  onend: ((event: Event) => void) | null;
+  onerror: ((event: SpeechRecognitionErrorEventShape) => void) | null;
+  onresult: ((event: SpeechRecognitionEventShape) => void) | null;
+  start: () => void;
+  stop: () => void;
+};
+
+type BrowserSpeechRecognitionConstructor = new () => BrowserSpeechRecognition;
+
+type BrowserWindowWithSpeech = Window & typeof globalThis & {
+  SpeechRecognition?: BrowserSpeechRecognitionConstructor;
+  webkitSpeechRecognition?: BrowserSpeechRecognitionConstructor;
+};
+
 const CARD_STYLE = {
   background: "#141720",
   border: "1px solid #1e2128",
