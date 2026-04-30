@@ -473,7 +473,7 @@ export function VoiceConsoleView({
                       style={{ width: "100%", minHeight: 110, resize: "vertical", borderRadius: 12, border: "1px solid #1e2128", background: "#141720", color: "#f0f2f5", padding: 12, fontSize: 13, outline: "none", boxSizing: "border-box" }}
                     />
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 10, gap: 12, flexWrap: "wrap" }}>
-                      <div style={{ fontSize: 11, color: "#8b90a0" }}>Web-Transport live, Audio-Layer kommt als nächster Schritt oben drauf.</div>
+                      <div style={{ fontSize: 11, color: "#8b90a0" }}>Text bleibt als Fallback aktiv, Voice läuft direkt im Browser darüber.</div>
                       <button
                         onClick={onSubmitTurn}
                         disabled={isSubmitting || draft.trim().length === 0}
