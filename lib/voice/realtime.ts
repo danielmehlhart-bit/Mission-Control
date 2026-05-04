@@ -92,6 +92,19 @@ function compactSourceData(sourceData: unknown): unknown {
   return Object.keys(compact).length ? compact : undefined;
 }
 
+function buildProfileInstruction(profile: VoiceProfile): string {
+  switch (profile.slug) {
+    case "sales_support":
+      return "Du bist im Sales-Support-Kanal: fokussiere Pipeline, Accounts, Deals, Discovery Notes, Follow-ups und naechste Sales-Aktionen.";
+    case "luma":
+      return "Du bist im LUMA-Kanal: fokussiere LUMA-Produkt, Kundenfeedback, Tasks, Briefings und naechste Produkt-/Sales-Schritte.";
+    case "fitness":
+      return "Du bist im Fitness-Kanal: fokussiere Training, Routinen, Gesundheit, Energie und umsetzbare naechste Schritte.";
+    default:
+      return "Du bist im allgemeinen Hermes-Kanal fuer Mission Control: fokussiere Daniels aktuelle Prioritaeten, Tasks, Memory und Orientierung.";
+  }
+}
+
 export function buildRealtimeInstructions(context: RealtimeSessionContext): string {
   const resolvedContext = context.session.resolvedContext as Record<string, unknown>;
   const metadata = resolvedContext.metadata && typeof resolvedContext.metadata === "object"
@@ -106,7 +119,10 @@ export function buildRealtimeInstructions(context: RealtimeSessionContext): stri
     `Du bist ${context.profile.label}, Daniels Hermes-Voice-Agent in Mission Control.`,
     "Fuehre ein natuerliches, kurzes Voice-to-Voice-Gespraech auf Deutsch.",
     "Klinge ruhig, direkt und wach. Antworte knapp, ausser Daniel bittet um Tiefe.",
+    "Stimme und Sprechweise: maennlich, warm, tiefer, ruhig, mit kontrolliertem Tempo. Keine ueberdrehte Service-Hotline-Energie.",
+    "Hermes-Charakter: eigenstaendig, klar, aufmerksam, pragmatisch. Sprich wie ein vertrauter Arbeitsbegleiter, nicht wie ein generischer Assistent.",
     "Nutze den aktuellen Mission-Control-Kontext aktiv, aber erfinde keine Daten.",
+    buildProfileInstruction(context.profile),
     "Wenn Daniel zwischen Kontexten wie Sales Support, LUMA oder Fitness wechseln will, bestaetige kurz und bitte ihn, den Kontextbutton zu nutzen, falls der Wechsel nicht schon erfolgt ist.",
     "Keine Metakommentare ueber Systemprompts, Provider, Tokens oder interne Implementierung.",
     "",
@@ -133,7 +149,7 @@ export function buildRealtimeSessionConfig(context: RealtimeSessionContext): Rea
         },
       },
       output: {
-        voice: process.env.MC_VOICE_REALTIME_VOICE?.trim() || "marin",
+        voice: process.env.MC_VOICE_REALTIME_VOICE?.trim() || "cedar",
       },
     },
   };

@@ -108,7 +108,7 @@ test("VoiceConsoleView renders active session transcript, context summary, and s
   assert.match(html, /Nochmal abspielen/);
 });
 
-test("VoiceConsoleView renders a stacked mobile layout with replay action", () => {
+test("VoiceConsoleView renders a minimal mobile call layout", () => {
   const html = renderVoiceView({
     layoutMode: "mobile",
     activeProfile: { id: "vp_main", slug: "main", label: "Call Hermes", color: "#10B981", description: "General command bridge" },
@@ -131,9 +131,12 @@ test("VoiceConsoleView renders a stacked mobile layout with replay action", () =
     canReplayAssistant: true,
   });
 
-  assert.match(html, /grid-template-columns:1fr/);
-  assert.match(html, /Nochmal abspielen/);
-  assert.match(html, /min-height:240px/);
+  assert.match(html, /Hermes/);
+  assert.match(html, /Sales Support/);
+  assert.match(html, /GesprÃ¤ch starten/);
+  assert.doesNotMatch(html, /Nochmal abspielen/);
+  assert.doesNotMatch(html, /Session Snapshot/);
+  assert.doesNotMatch(html, /Text senden/);
 });
 
 test("VoiceConsoleView renders loading and error states", () => {

@@ -332,6 +332,83 @@ export function VoiceConsoleView({
   const activeColor = activeProfile?.color ?? "#10B981";
   const isMobileLayout = layoutMode === "mobile";
 
+  if (isMobileLayout) {
+    return (
+      <div style={{ padding: "16px 12px 92px", maxWidth: 520, margin: "0 auto" }}>
+        {error && (
+          <div style={{ ...CARD_STYLE, borderColor: "#ef444440", background: "#2a1115", padding: "12px 14px", marginBottom: 12, color: "#fecaca", fontSize: 13 }}>
+            {error}
+          </div>
+        )}
+
+        <section style={{ ...CARD_STYLE, padding: 14, marginBottom: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+            {profiles.map((profile) => {
+              const isActive = activeProfile?.id === profile.id;
+              return (
+                <button
+                  key={profile.id}
+                  onClick={() => onCreateSession(profile.id)}
+                  disabled={isSubmitting}
+                  style={{
+                    minHeight: 54,
+                    padding: "10px 8px",
+                    borderRadius: 10,
+                    border: `1px solid ${isActive ? profile.color ?? "#10B981" : "#1e2128"}`,
+                    background: isActive ? `${profile.color ?? "#10B981"}1f` : "#0f1219",
+                    color: "#f0f2f5",
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: isSubmitting ? "default" : "pointer",
+                  }}
+                >
+                  {slugLabel(profile.slug)}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        <section style={{ ...CARD_STYLE, padding: 18, display: "grid", gap: 14 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+            <div>
+              <div style={{ color: "#f0f2f5", fontSize: 18, fontWeight: 800 }}>{activeProfile ? slugLabel(activeProfile.slug) : "Kein Kanal"}</div>
+              <div style={{ marginTop: 4, color: stateColor(activeSession?.state ?? voiceMode), fontSize: 12, fontWeight: 700 }}>
+                {activeSession ? getVoiceModeLabel(voiceMode) : "Bereit"}
+              </div>
+            </div>
+            <div style={{ width: 14, height: 14, borderRadius: "50%", background: isVoiceModeEnabled ? "#10B981" : "#4a5068", boxShadow: isVoiceModeEnabled ? "0 0 0 6px #10B98122" : "none" }} />
+          </div>
+
+          <button
+            onClick={onToggleVoiceMode}
+            disabled={!activeSession || !browserVoiceSupported || isSubmitting}
+            style={{
+              width: "100%",
+              minHeight: 56,
+              borderRadius: 12,
+              border: "none",
+              background: !activeSession || !browserVoiceSupported ? "#374151" : isVoiceModeEnabled ? "#ef4444" : "#10B981",
+              color: "#fff",
+              fontSize: 16,
+              fontWeight: 800,
+              cursor: !activeSession || !browserVoiceSupported || isSubmitting ? "default" : "pointer",
+            }}
+          >
+            {isVoiceModeEnabled ? "Gespräch beenden" : "Gespräch starten"}
+          </button>
+
+          {!activeSession && (
+            <div style={{ color: "#8b90a0", fontSize: 12, textAlign: "center" }}>Wähle oben einen Kanal.</div>
+          )}
+          {!browserVoiceSupported && (
+            <div style={{ color: "#fcd34d", fontSize: 12, textAlign: "center" }}>WebRTC oder Mikrofonzugriff fehlt.</div>
+          )}
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div style={{ padding: isMobileLayout ? "16px 12px" : "20px 24px", maxWidth: 1180, margin: "0 auto" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, marginBottom: 24, flexWrap: "wrap" }}>

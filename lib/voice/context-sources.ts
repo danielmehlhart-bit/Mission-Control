@@ -61,14 +61,18 @@ function likeTerm(term: string): string {
 }
 
 async function loadAccountContext(bindings: VoiceContextBindings) {
-  if (!bindings.accountId) return [];
   const db = getDb();
+  if (!bindings.accountId) {
+    return db.prepare("SELECT * FROM accounts ORDER BY created_at DESC LIMIT 8").all() as Record<string, unknown>[];
+  }
   return db.prepare("SELECT * FROM accounts WHERE id = ?").all(bindings.accountId) as Record<string, unknown>[];
 }
 
 async function loadDealContext(bindings: VoiceContextBindings) {
-  if (!bindings.dealId) return [];
   const db = getDb();
+  if (!bindings.dealId) {
+    return db.prepare("SELECT * FROM deals ORDER BY created_at DESC LIMIT 8").all() as Record<string, unknown>[];
+  }
   return db.prepare("SELECT * FROM deals WHERE id = ?").all(bindings.dealId) as Record<string, unknown>[];
 }
 
@@ -106,8 +110,12 @@ async function loadActivitiesContext(bindings: VoiceContextBindings, limit = 10)
 }
 
 async function loadDiscoveryNotesContext(bindings: VoiceContextBindings, limit = 10) {
-  if (!bindings.accountId) return [];
   const db = getDb();
+  if (!bindings.accountId) {
+    return db
+      .prepare("SELECT * FROM discovery_notes ORDER BY created_at DESC LIMIT ?")
+      .all(limit) as Record<string, unknown>[];
+  }
   return db
     .prepare("SELECT * FROM discovery_notes WHERE account_id = ? ORDER BY created_at DESC LIMIT ?")
     .all(bindings.accountId, limit) as Record<string, unknown>[];
@@ -123,8 +131,12 @@ async function resolveProjectName(bindings: VoiceContextBindings): Promise<strin
 
 async function loadTasksContext(bindings: VoiceContextBindings, limit = 10) {
   const projectName = await resolveProjectName(bindings);
-  if (!projectName) return [];
   const db = getDb();
+  if (!projectName) {
+    return db
+      .prepare("SELECT * FROM tasks ORDER BY CASE status WHEN 'todo' THEN 0 ELSE 1 END, created_at DESC LIMIT ?")
+      .all(limit) as Record<string, unknown>[];
+  }
   return db
     .prepare("SELECT * FROM tasks WHERE lower(project) = lower(?) ORDER BY CASE status WHEN 'todo' THEN 0 ELSE 1 END, created_at DESC LIMIT ?")
     .all(projectName, limit) as Record<string, unknown>[];
