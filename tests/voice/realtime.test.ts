@@ -29,7 +29,6 @@ test("buildRealtimeSessionConfig creates German speech-to-speech config with pro
 
   assert.equal(config.type, "realtime");
   assert.equal(config.model, "gpt-realtime");
-  assert.equal(config.audio.input.language, "de");
   assert.equal(config.audio.input.turn_detection.type, "semantic_vad");
   assert.equal(config.audio.input.turn_detection.create_response, true);
   assert.equal(config.audio.output.voice, "marin");

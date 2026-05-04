@@ -8,7 +8,6 @@ export type RealtimeSessionConfig = {
   output_modalities: ["audio"];
   audio: {
     input: {
-      language: string;
       turn_detection: {
         type: "semantic_vad";
         eagerness: "auto";
@@ -126,7 +125,6 @@ export function buildRealtimeSessionConfig(context: RealtimeSessionContext): Rea
     output_modalities: ["audio"],
     audio: {
       input: {
-        language: "de",
         turn_detection: {
           type: "semantic_vad",
           eagerness: "auto",
