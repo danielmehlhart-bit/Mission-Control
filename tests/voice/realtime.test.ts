@@ -74,3 +74,37 @@ test("createRealtimeSdpAnswer posts multipart SDP and session config to OpenAI",
     process.env.OPENAI_API_KEY = previousApiKey;
   }
 });
+
+test("createRealtimeClientSecret posts session config to the client secrets endpoint", async () => {
+  const previousApiKey = process.env.OPENAI_API_KEY;
+  process.env.OPENAI_API_KEY = "test-key";
+
+  const { serviceModule, realtimeModule, sessionStoreModule } = await loadModules();
+  const { createSessionForProfile } = serviceModule;
+  const { createRealtimeClientSecret } = realtimeModule;
+  const { listVoiceSessionEvents } = sessionStoreModule;
+  const session = await createSessionForProfile({ profileSlug: "main", transport: "web" });
+
+  let capturedUrl = "";
+  let capturedBody = "";
+  const token = await createRealtimeClientSecret({
+    sessionId: session.id,
+    fetchImpl: async (url, init) => {
+      capturedUrl = String(url);
+      capturedBody = String(init?.body);
+      return Response.json({ value: "ek_test" }, { status: 200 });
+    },
+  });
+
+  assert.equal(token.value, "ek_test");
+  assert.equal(capturedUrl, "https://api.openai.com/v1/realtime/client_secrets");
+  assert.match(capturedBody, /"session"/);
+  assert.match(capturedBody, /"gpt-realtime"/);
+  assert.equal(listVoiceSessionEvents(session.id).some((event) => event.eventType === "voice.realtime_client_secret_created"), true);
+
+  if (previousApiKey === undefined) {
+    delete process.env.OPENAI_API_KEY;
+  } else {
+    process.env.OPENAI_API_KEY = previousApiKey;
+  }
+});

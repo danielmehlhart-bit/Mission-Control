@@ -29,12 +29,18 @@ export type CreateRealtimeSdpAnswerInput = {
   fetchImpl?: typeof fetch;
 };
 
+export type CreateRealtimeClientSecretInput = {
+  sessionId: string;
+  fetchImpl?: typeof fetch;
+};
+
 export type RealtimeSessionContext = {
   session: VoiceSession;
   profile: VoiceProfile;
 };
 
 const OPENAI_REALTIME_CALLS_URL = "https://api.openai.com/v1/realtime/calls";
+const OPENAI_REALTIME_CLIENT_SECRETS_URL = "https://api.openai.com/v1/realtime/client_secrets";
 
 function requireOpenAiApiKey(): string {
   const apiKey = process.env.OPENAI_API_KEY?.trim();
@@ -193,4 +199,40 @@ export async function createRealtimeSdpAnswer(input: CreateRealtimeSdpAnswerInpu
   });
 
   return answer;
+}
+
+export async function createRealtimeClientSecret(input: CreateRealtimeClientSecretInput): Promise<Record<string, unknown>> {
+  const context = requireRealtimeSessionContext(input.sessionId);
+  const realtimeConfig = buildRealtimeSessionConfig(context);
+  const response = await (input.fetchImpl ?? fetch)(OPENAI_REALTIME_CLIENT_SECRETS_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${requireOpenAiApiKey()}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      session: realtimeConfig,
+    }),
+  });
+
+  const data = await response.json().catch(() => null) as Record<string, unknown> | null;
+  if (!response.ok) {
+    throw new Error(`OpenAI realtime token failed (${response.status}): ${JSON.stringify(data).slice(0, 240)}`);
+  }
+  if (!data || typeof data !== "object") {
+    throw new Error("OpenAI realtime token response was empty");
+  }
+
+  appendVoiceEvent({
+    sessionId: context.session.id,
+    eventType: "voice.realtime_client_secret_created",
+    fromState: context.session.state,
+    toState: context.session.state,
+    payload: {
+      model: realtimeConfig.model,
+      voice: realtimeConfig.audio.output.voice,
+    },
+  });
+
+  return data;
 }

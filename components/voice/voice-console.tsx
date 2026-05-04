@@ -234,6 +234,20 @@ function waitForIceGatheringComplete(peerConnection: RTCPeerConnection): Promise
   });
 }
 
+function extractRealtimeClientSecret(data: unknown): string | null {
+  if (!data || typeof data !== "object") return null;
+  const record = data as Record<string, unknown>;
+  if (typeof record.value === "string") return record.value;
+
+  const clientSecret = record.client_secret;
+  if (clientSecret && typeof clientSecret === "object") {
+    const value = (clientSecret as Record<string, unknown>).value;
+    return typeof value === "string" ? value : null;
+  }
+
+  return null;
+}
+
 async function readJson<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const response = await fetch(input, {
     cache: "no-store",
@@ -919,6 +933,27 @@ export default function VoiceConsole() {
       setError("Realtime-DataChannel fehlgeschlagen.");
     };
 
+    const tokenResponse = await fetch(`/api/voice/realtime/token?sessionId=${encodeURIComponent(sessionId)}`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+    });
+
+    if (!tokenResponse.ok) {
+      let message = `Realtime token failed (${tokenResponse.status})`;
+      try {
+        const data = await tokenResponse.json();
+        if (data && typeof data.error === "string") {
+          message = data.error;
+        }
+      } catch {}
+      throw new Error(message);
+    }
+
+    const realtimeClientSecret = extractRealtimeClientSecret(await tokenResponse.json());
+    if (!realtimeClientSecret) {
+      throw new Error("Realtime Token enthielt kein Client-Secret.");
+    }
+
     const offer = await peerConnection.createOffer();
     await peerConnection.setLocalDescription(offer);
     await waitForIceGatheringComplete(peerConnection);
@@ -927,23 +962,19 @@ export default function VoiceConsole() {
       throw new Error("Browser hat kein gültiges SDP-Angebot erzeugt.");
     }
 
-    const sdpResponse = await fetch(`/api/voice/realtime/sdp?sessionId=${encodeURIComponent(sessionId)}`, {
+    const sdpResponse = await fetch("https://api.openai.com/v1/realtime/calls", {
       method: "POST",
-      headers: { "content-type": "application/sdp" },
+      headers: {
+        Authorization: `Bearer ${realtimeClientSecret}`,
+        "Content-Type": "application/sdp",
+      },
       body: localSdp,
     });
 
     if (!sdpResponse.ok) {
       let message = `Realtime SDP failed (${sdpResponse.status})`;
-      try {
-        const data = await sdpResponse.json();
-        if (data && typeof data.error === "string") {
-          message = data.error;
-        }
-      } catch {
-        const text = await sdpResponse.text();
-        if (text.trim()) message = text.trim();
-      }
+      const text = await sdpResponse.text();
+      if (text.trim()) message = text.trim();
       throw new Error(message);
     }
 
