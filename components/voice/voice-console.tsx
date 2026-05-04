@@ -51,7 +51,7 @@ type VoiceSessionEnvelope = {
   lastError: string | null;
 };
 
-type BrowserVoiceMode = "idle" | "listening" | "thinking" | "speaking" | "error";
+type BrowserVoiceMode = "idle" | "connecting" | "listening" | "thinking" | "speaking" | "error";
 type VoiceConsoleLayoutMode = "desktop" | "mobile";
 
 type SpeechRecognitionResultItem = {
@@ -106,13 +106,6 @@ type BrowserSpeechRecognition = {
   onresult: ((event: SpeechRecognitionEventShape) => void) | null;
   start: () => void;
   stop: () => void;
-};
-
-type BrowserSpeechRecognitionConstructor = new () => BrowserSpeechRecognition;
-
-type BrowserWindowWithSpeech = Window & typeof globalThis & {
-  SpeechRecognition?: BrowserSpeechRecognitionConstructor;
-  webkitSpeechRecognition?: BrowserSpeechRecognitionConstructor;
 };
 
 const CARD_STYLE = {
@@ -193,14 +186,10 @@ function formatTimestamp(value: string | null) {
   });
 }
 
-function getSpeechRecognitionConstructor(): BrowserSpeechRecognitionConstructor | null {
-  if (typeof window === "undefined") return null;
-  const browserWindow = window as BrowserWindowWithSpeech;
-  return browserWindow.SpeechRecognition ?? browserWindow.webkitSpeechRecognition ?? null;
-}
-
 function getVoiceModeLabel(mode: BrowserVoiceMode) {
   switch (mode) {
+    case "connecting":
+      return "Realtime verbindet";
     case "listening":
       return "Mikrofon läuft";
     case "thinking":
@@ -211,6 +200,15 @@ function getVoiceModeLabel(mode: BrowserVoiceMode) {
       return "Voice-Fehler";
     default:
       return "Bereit für Sprache";
+  }
+}
+
+function getRealtimeEventType(event: MessageEvent<string>): string | null {
+  try {
+    const parsed = JSON.parse(event.data);
+    return typeof parsed.type === "string" ? parsed.type : null;
+  } catch {
+    return null;
   }
 }
 
@@ -435,8 +433,8 @@ export function VoiceConsoleView({
                     </div>
                     <div style={{ fontSize: 12, color: "#8b90a0", lineHeight: 1.5, marginBottom: 10 }}>
                       {browserVoiceSupported
-                        ? "Einmal Gespräch starten und dann natürlich sprechen. Hermes antwortet automatisch und geht danach wieder zurück ins Zuhören."
-                        : "Für den freihändigen Call-Modus brauchst du einen Browser mit SpeechRecognition + SpeechSynthesis."}
+                        ? "Einmal Gespräch starten und dann natürlich sprechen. Hermes läuft direkt über OpenAI Realtime WebRTC mit Mikrofon und Audio-Rückkanal."
+                        : "Für den freihändigen Call-Modus brauchst du einen Browser mit WebRTC und Mikrofonzugriff."}
                     </div>
                     {liveTranscript && (
                       <div style={{ marginBottom: 10, background: "#141720", border: "1px solid #1e2128", borderRadius: 12, padding: "10px 12px", color: "#f0f2f5", fontSize: 13 }}>
@@ -602,6 +600,10 @@ export default function VoiceConsole() {
   const shouldRestartRecognitionRef = useRef(false);
   const recognitionHoldRef = useRef(false);
   const assistantAudioRef = useRef<HTMLAudioElement | null>(null);
+  const realtimePeerRef = useRef<RTCPeerConnection | null>(null);
+  const realtimeDataChannelRef = useRef<RTCDataChannel | null>(null);
+  const realtimeMediaStreamRef = useRef<MediaStream | null>(null);
+  const realtimeAudioElementRef = useRef<HTMLAudioElement | null>(null);
   const activeSessionIdRef = useRef<string | null>(null);
   const isSubmittingRef = useRef(false);
 
@@ -766,16 +768,16 @@ export default function VoiceConsole() {
     }
   }, [loadSessionDetail, loadSessions, pauseRecognitionForAssistant, playAssistantResponse, resumeRecognitionAfterAssistant]);
 
-  const pushInterimTranscript = useCallback(async (text: string) => {
-    if (!activeSessionIdRef.current || text.trim().length === 0) return;
-    try {
-      await readJson<{ session: VoiceSessionSummary }>(`/api/voice/sessions/${activeSessionIdRef.current}/transcript`, {
-        method: "POST",
-        body: JSON.stringify({ text: text.trim(), isFinal: false, source: "browser-voice-interim" }),
-      });
-    } catch {
-      // best effort only
-    }
+  const closeRealtimeConnection = useCallback(() => {
+    realtimeDataChannelRef.current?.close();
+    realtimeDataChannelRef.current = null;
+    realtimePeerRef.current?.getSenders().forEach((sender) => sender.track?.stop());
+    realtimePeerRef.current?.close();
+    realtimePeerRef.current = null;
+    realtimeMediaStreamRef.current?.getTracks().forEach((track) => track.stop());
+    realtimeMediaStreamRef.current = null;
+    realtimeAudioElementRef.current?.pause();
+    realtimeAudioElementRef.current = null;
   }, []);
 
   const stopVoiceMode = useCallback(() => {
@@ -783,6 +785,7 @@ export default function VoiceConsole() {
     recognitionHoldRef.current = false;
     isSubmittingRef.current = false;
     recognitionRef.current?.stop();
+    closeRealtimeConnection();
     assistantAudioRef.current?.pause();
     assistantAudioRef.current = null;
     if (typeof window !== "undefined" && window.speechSynthesis) {
@@ -792,78 +795,139 @@ export default function VoiceConsole() {
     setVoiceMode("idle");
     setLiveTranscript("");
     setLastActionLabel("Gespräch beendet");
-  }, []);
+  }, [closeRealtimeConnection]);
 
-  const startVoiceMode = useCallback(async () => {
-    if (!activeSessionIdRef.current) {
+  const startVoiceMode = useCallback(async (sessionIdOverride?: string) => {
+    const sessionId = sessionIdOverride ?? activeSessionIdRef.current;
+    if (!sessionId) {
       setError("Starte zuerst eine Voice-Session.");
       return;
     }
-    const SpeechRecognitionCtor = getSpeechRecognitionConstructor();
-    if (!SpeechRecognitionCtor) {
+    if (
+      typeof window === "undefined"
+      || typeof RTCPeerConnection === "undefined"
+      || !navigator.mediaDevices?.getUserMedia
+    ) {
       setBrowserVoiceSupported(false);
-      setError("Sprachmodus in diesem Browser nicht unterstützt.");
+      setError("Realtime-WebRTC wird in diesem Browser nicht unterstützt.");
       return;
     }
 
-    if (typeof navigator !== "undefined" && navigator.mediaDevices?.getUserMedia) {
-      await navigator.mediaDevices.getUserMedia({ audio: true });
-    }
-    primeSpeechSynthesis();
+    closeRealtimeConnection();
+    setError(null);
+    setIsSubmitting(true);
+    setIsVoiceModeEnabled(true);
+    setVoiceMode("connecting");
+    setLiveTranscript("");
+    setLastActionLabel("Realtime-Verbindung wird aufgebaut");
 
-    recognitionRef.current?.stop();
-    const recognition = new SpeechRecognitionCtor();
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.lang = "de-DE";
+    const peerConnection = new RTCPeerConnection();
+    realtimePeerRef.current = peerConnection;
 
-    recognition.onstart = () => {
-      setVoiceMode("listening");
-      setLastActionLabel("Hermes hört zu");
+    const remoteAudio = document.createElement("audio");
+    remoteAudio.autoplay = true;
+    realtimeAudioElementRef.current = remoteAudio;
+
+    peerConnection.ontrack = (event) => {
+      remoteAudio.srcObject = event.streams[0];
+      void remoteAudio.play().catch(() => {
+        setLastActionLabel("Audio wartet auf Browser-Freigabe");
+      });
     };
-    recognition.onend = () => {
-      if (shouldRestartRecognitionRef.current && !recognitionHoldRef.current) {
-        recognition.start();
-        return;
+
+    peerConnection.onconnectionstatechange = () => {
+      if (peerConnection.connectionState === "connected") {
+        setVoiceMode("listening");
+        setLastActionLabel("Realtime-Call aktiv");
       }
-      if (!recognitionHoldRef.current) {
+      if (peerConnection.connectionState === "failed" || peerConnection.connectionState === "disconnected") {
+        setVoiceMode("error");
+        setError(`Realtime-Verbindung ${peerConnection.connectionState}.`);
+        setIsVoiceModeEnabled(false);
+      }
+      if (peerConnection.connectionState === "closed") {
         setVoiceMode("idle");
       }
     };
-    recognition.onerror = (event) => {
+
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true,
+      },
+    });
+    realtimeMediaStreamRef.current = stream;
+    peerConnection.addTrack(stream.getAudioTracks()[0], stream);
+
+    const dataChannel = peerConnection.createDataChannel("oai-events");
+    realtimeDataChannelRef.current = dataChannel;
+    dataChannel.onopen = () => {
+      setVoiceMode("listening");
+      setLastActionLabel("Hermes hört live zu");
+      dataChannel.send(JSON.stringify({
+        type: "response.create",
+        response: {
+          instructions: "Begruesse Daniel kurz und frage, wobei du im aktuellen Mission-Control-Kontext helfen kannst.",
+        },
+      }));
+    };
+    dataChannel.onmessage = (event) => {
+      const eventType = getRealtimeEventType(event);
+      if (!eventType) return;
+
+      if (eventType === "input_audio_buffer.speech_started") {
+        setVoiceMode("listening");
+        setLiveTranscript("");
+      }
+      if (eventType === "response.created") {
+        setVoiceMode("thinking");
+      }
+      if (eventType === "response.audio.delta") {
+        setVoiceMode("speaking");
+      }
+      if (eventType === "response.done") {
+        setVoiceMode("listening");
+        setLastActionLabel("Hermes hört weiter zu");
+        void loadSessionDetail(sessionId).catch(() => {});
+      }
+    };
+    dataChannel.onerror = () => {
       setVoiceMode("error");
-      setError(event.error ?? event.message ?? "Spracherkennung fehlgeschlagen.");
-      shouldRestartRecognitionRef.current = false;
-      recognitionHoldRef.current = false;
-      setIsVoiceModeEnabled(false);
-    };
-    recognition.onresult = (event) => {
-      if (recognitionHoldRef.current || isSubmittingRef.current) {
-        return;
-      }
-
-      const { finalTranscript, interimTranscript } = extractRecognitionTranscripts(event);
-
-      if (finalTranscript) {
-        setDraft(finalTranscript);
-        pauseRecognitionForAssistant();
-        void sendVoiceTurn(finalTranscript);
-        return;
-      }
-
-      if (interimTranscript) {
-        setLiveTranscript(interimTranscript);
-        void pushInterimTranscript(interimTranscript);
-      }
+      setError("Realtime-DataChannel fehlgeschlagen.");
     };
 
-    recognitionRef.current = recognition;
-    shouldRestartRecognitionRef.current = true;
-    recognitionHoldRef.current = false;
-    setError(null);
-    setIsVoiceModeEnabled(true);
-    recognition.start();
-  }, [pauseRecognitionForAssistant, primeSpeechSynthesis, pushInterimTranscript, sendVoiceTurn]);
+    const offer = await peerConnection.createOffer();
+    await peerConnection.setLocalDescription(offer);
+
+    const sdpResponse = await fetch(`/api/voice/realtime/sdp?sessionId=${encodeURIComponent(sessionId)}`, {
+      method: "POST",
+      headers: { "content-type": "application/sdp" },
+      body: offer.sdp,
+    });
+
+    if (!sdpResponse.ok) {
+      let message = `Realtime SDP failed (${sdpResponse.status})`;
+      try {
+        const data = await sdpResponse.json();
+        if (data && typeof data.error === "string") {
+          message = data.error;
+        }
+      } catch {
+        const text = await sdpResponse.text();
+        if (text.trim()) message = text.trim();
+      }
+      throw new Error(message);
+    }
+
+    await peerConnection.setRemoteDescription({
+      type: "answer",
+      sdp: await sdpResponse.text(),
+    });
+
+    setLastActionLabel("Realtime verbunden");
+    setIsSubmitting(false);
+  }, [closeRealtimeConnection, loadSessionDetail]);
 
   const toggleVoiceMode = useCallback(async () => {
     if (isVoiceModeEnabled) {
@@ -873,11 +937,13 @@ export default function VoiceConsole() {
     try {
       await startVoiceMode();
     } catch (nextError) {
+      closeRealtimeConnection();
       setVoiceMode("error");
       setIsVoiceModeEnabled(false);
+      setIsSubmitting(false);
       setError(nextError instanceof Error ? nextError.message : String(nextError));
     }
-  }, [isVoiceModeEnabled, startVoiceMode, stopVoiceMode]);
+  }, [closeRealtimeConnection, isVoiceModeEnabled, startVoiceMode, stopVoiceMode]);
 
   const refreshAll = useCallback(async () => {
     setError(null);
@@ -913,7 +979,7 @@ export default function VoiceConsole() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    setBrowserVoiceSupported(Boolean(getSpeechRecognitionConstructor()) && "speechSynthesis" in window);
+    setBrowserVoiceSupported(typeof RTCPeerConnection !== "undefined" && Boolean(navigator.mediaDevices?.getUserMedia));
 
     if (!("speechSynthesis" in window)) {
       setAvailableVoices([]);
@@ -946,13 +1012,14 @@ export default function VoiceConsole() {
       recognitionHoldRef.current = false;
       isSubmittingRef.current = false;
       recognitionRef.current?.stop();
+      closeRealtimeConnection();
       assistantAudioRef.current?.pause();
       assistantAudioRef.current = null;
       if (typeof window !== "undefined" && window.speechSynthesis) {
         window.speechSynthesis.cancel();
       }
     };
-  }, []);
+  }, [closeRealtimeConnection]);
 
   const createSession = useCallback(async (profileId: string) => {
     setError(null);
@@ -961,23 +1028,23 @@ export default function VoiceConsole() {
     try {
       const data = await readJson<VoiceSessionEnvelope>("/api/voice/sessions", {
         method: "POST",
-        body: JSON.stringify({ profileId, transport: "web", autoGreeting: true }),
+        body: JSON.stringify({ profileId, transport: "web", autoGreeting: false }),
       });
       setActive(data);
       setDraft("");
       await loadSessions();
       setLastActionLabel(`Verbunden mit ${data.profile.label}`);
-      const greeting = data.session.lastAssistantText?.trim();
-      if (greeting) {
-        await playAssistantResponse(greeting);
-      }
+      await startVoiceMode(data.session.id);
     } catch (nextError) {
+      closeRealtimeConnection();
+      setIsVoiceModeEnabled(false);
+      setVoiceMode("error");
       setError(nextError instanceof Error ? nextError.message : String(nextError));
     } finally {
       setIsSubmitting(false);
       setIsBooting(false);
     }
-  }, [loadSessions, playAssistantResponse]);
+  }, [closeRealtimeConnection, loadSessions, startVoiceMode]);
 
   const selectSession = useCallback(async (sessionId: string) => {
     setError(null);

@@ -18,6 +18,7 @@ export type VoiceReplyOutput = {
 };
 
 export type VoiceReplyStrategy = "stub" | "hermes-cli";
+export type VoiceReplyFallbackStrategy = "stub" | "none";
 
 export function getDefaultVoiceReplyStrategy(): VoiceReplyStrategy {
   const configured = process.env.MC_VOICE_REPLY_STRATEGY?.trim().toLowerCase();
@@ -40,6 +41,26 @@ function buildStubReply(input: VoiceReplyInput): VoiceReplyOutput {
   return {
     text: userTurn ? `Klar — ${summary}. Meine kurze Antwort: ${userTurn.text}` : buildGreeting(input),
     metadata: { provider: "stub" },
+  };
+}
+
+export function getVoiceReplyFallbackStrategy(): VoiceReplyFallbackStrategy {
+  const configured = process.env.MC_VOICE_REPLY_FALLBACK?.trim().toLowerCase();
+  if (configured === "none") {
+    return "none";
+  }
+  return "stub";
+}
+
+function buildFallbackReply(input: VoiceReplyInput, reason: unknown): VoiceReplyOutput {
+  const fallback = buildStubReply(input);
+  return {
+    text: fallback.text,
+    metadata: {
+      ...fallback.metadata,
+      fallbackFrom: "hermes-cli",
+      fallbackReason: reason instanceof Error ? reason.message : String(reason),
+    },
   };
 }
 
@@ -78,14 +99,28 @@ function buildHermesPrompt(input: VoiceReplyInput): string {
 async function generateHermesCliReply(input: VoiceReplyInput): Promise<VoiceReplyOutput> {
   const command = process.env.MC_VOICE_HERMES_COMMAND?.trim() || "hermes";
   const prompt = buildHermesPrompt(input);
-  const { stdout } = await execFileAsync(command, ["chat", "-q", prompt, "--quiet"], {
-    timeout: Number(process.env.MC_VOICE_HERMES_TIMEOUT_MS || 45000),
-    maxBuffer: 1024 * 1024,
-    env: process.env,
-  });
+  let stdout = "";
+
+  try {
+    const result = await execFileAsync(command, ["chat", "-q", prompt, "--quiet"], {
+      timeout: Number(process.env.MC_VOICE_HERMES_TIMEOUT_MS || 45000),
+      maxBuffer: 1024 * 1024,
+      env: process.env,
+    });
+    stdout = result.stdout;
+  } catch (error) {
+    if (getVoiceReplyFallbackStrategy() !== "stub") {
+      throw error;
+    }
+
+    return buildFallbackReply(input, error);
+  }
 
   const text = stdout.trim();
   if (!text) {
+    if (getVoiceReplyFallbackStrategy() === "stub") {
+      return buildFallbackReply(input, "Hermes voice reply was empty");
+    }
     throw new Error("Hermes voice reply was empty");
   }
 

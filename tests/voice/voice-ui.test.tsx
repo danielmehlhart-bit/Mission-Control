@@ -147,5 +147,5 @@ test("VoiceConsoleView renders loading and error states", () => {
   assert.match(html, /Session wird aufgebaut/);
   assert.match(html, /Voice API nicht erreichbar/);
   assert.match(html, /Lade Voice-Kontext/);
-  assert.match(html, /Sprachmodus in diesem Browser nicht unterstützt/);
+  assert.match(html, /WebRTC und Mikrofonzugriff/);
 });
