@@ -206,19 +206,25 @@ async function loadCalendarContext(
   }
 }
 
-async function loadGlobalMemoryContext(limit = 3) {
+async function loadGlobalMemoryContext(limit = 12) {
   try {
     const categories = await listMemoryByCategory();
-    const files = categories
-      .flatMap((category) => category.files)
+    const corePriority = ["MEMORY.md", "SOUL.md", "USER.md", "IDENTITY.md", "RULES.md", "PROJECTS.md", "TOOLS.md"];
+    const allFiles = categories.flatMap((category) => category.files);
+    const coreFiles = corePriority
+      .map((name) => allFiles.find((file) => file.name === name))
+      .filter((file): file is NonNullable<typeof file> => Boolean(file));
+    const recentFiles = allFiles
+      .filter((file) => !coreFiles.some((coreFile) => coreFile.path === file.path))
       .sort((a, b) => b.modified.localeCompare(a.modified))
-      .slice(0, limit);
+      .slice(0, Math.max(0, limit - coreFiles.length));
+    const files = [...coreFiles, ...recentFiles].slice(0, limit);
 
     const hydrated = await Promise.all(files.map(async (file) => {
       try {
         return {
           ...file,
-          preview: (await readMemoryFile(file.path)).slice(0, 240),
+          content: (await readMemoryFile(file.path)).slice(0, 2200),
         };
       } catch {
         return null;
@@ -264,7 +270,7 @@ export async function loadVoiceContextSources(
     : [];
   const briefings = sourceNames.includes("briefings") ? await loadBriefingsContext(options.bindings, Math.min(limit, 5)) : [];
   const calendar = sourceNames.includes("calendar") ? await loadCalendarContext(options.bindings, calendarProvider, Math.min(limit, 5)) : [];
-  const globalMemory = sourceNames.includes("global_memory") ? await loadGlobalMemoryContext(Math.min(limit, 3)) : [];
+  const globalMemory = sourceNames.includes("global_memory") ? await loadGlobalMemoryContext(Math.max(limit, 12)) : [];
   const notes = sourceNames.includes("notes") ? await loadAccountNotesContext(options.bindings) : { content: null, updatedAt: null };
 
   return {

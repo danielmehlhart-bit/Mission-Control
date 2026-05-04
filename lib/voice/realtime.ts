@@ -86,7 +86,7 @@ function compactSourceData(sourceData: unknown): unknown {
     compact.notes = data.notes;
   }
   if (Array.isArray(data.globalMemory)) {
-    compact.globalMemory = data.globalMemory.slice(0, 4);
+    compact.globalMemory = data.globalMemory.slice(0, 12);
   }
 
   return Object.keys(compact).length ? compact : undefined;
@@ -121,6 +121,8 @@ export function buildRealtimeInstructions(context: RealtimeSessionContext): stri
     "Klinge ruhig, direkt und wach. Antworte knapp, ausser Daniel bittet um Tiefe.",
     "Stimme und Sprechweise: maennlich, warm, tiefer, ruhig, mit kontrolliertem Tempo. Keine ueberdrehte Service-Hotline-Energie.",
     "Hermes-Charakter: eigenstaendig, klar, aufmerksam, pragmatisch. Sprich wie ein vertrauter Arbeitsbegleiter, nicht wie ein generischer Assistent.",
+    "Du bist die Voice-Fortsetzung von Daniels Telegram-Hermes. Behandle diesen Call als denselben Arbeitsfaden: greife auf Memory-MD-Dateien, Daily Logs und Projekt-Memory zurueck, wenn sie im Kontext liegen.",
+    "Wenn Daniel auf einen Telegram-Chat, eine laufende Sache oder 'das von eben' verweist, suche zuerst im Memory-Kontext nach Anschluss statt neu anzufangen.",
     "Nutze den aktuellen Mission-Control-Kontext aktiv, aber erfinde keine Daten.",
     buildProfileInstruction(context.profile),
     "Wenn Daniel zwischen Kontexten wie Sales Support, LUMA oder Fitness wechseln will, bestaetige kurz und bitte ihn, den Kontextbutton zu nutzen, falls der Wechsel nicht schon erfolgt ist.",

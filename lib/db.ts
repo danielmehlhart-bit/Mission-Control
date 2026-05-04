@@ -778,4 +778,21 @@ function initSchema(db: Database.Database): void {
 
     seedProfiles();
   });
+
+  runMigration("voice_profiles_add_memory_sources_20260504", () => {
+    const rows = db.prepare("SELECT id, context_sources_json FROM voice_profiles").all() as { id: string; context_sources_json: string }[];
+    const update = db.prepare("UPDATE voice_profiles SET context_sources_json = ?, updated_at = datetime('now') WHERE id = ?");
+    for (const row of rows) {
+      let sources: string[] = [];
+      try {
+        const parsed = JSON.parse(row.context_sources_json);
+        sources = Array.isArray(parsed) ? parsed.filter((value): value is string => typeof value === "string") : [];
+      } catch {
+        sources = [];
+      }
+      if (!sources.includes("global_memory")) {
+        update.run(JSON.stringify(["global_memory", ...sources]), row.id);
+      }
+    }
+  });
 }
