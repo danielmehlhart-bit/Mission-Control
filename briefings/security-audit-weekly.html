@@ -31,7 +31,7 @@
       line-height: 1.5;
     }
     .wrap {
-      max-width: 1180px;
+      max-width: 1120px;
       margin: 0 auto;
       padding: 32px 20px 64px;
     }
@@ -41,14 +41,8 @@
       border-radius: 24px;
       box-shadow: var(--shadow);
     }
-    .hero {
-      padding: 28px;
-      margin-bottom: 20px;
-    }
-    .card {
-      padding: 22px;
-      margin-top: 18px;
-    }
+    .hero { padding: 28px; margin-bottom: 20px; }
+    .card { padding: 22px; margin-top: 18px; }
     h1, h2, h3 { margin: 0; }
     h1 { font-size: 34px; line-height: 1.1; }
     h2 { font-size: 22px; margin-bottom: 12px; }
@@ -95,7 +89,7 @@
     .blue { background: var(--blue-bg); color: var(--blue); border-color: rgba(37,99,235,.18); }
     .two-col {
       display: grid;
-      grid-template-columns: 1.3fr .9fr;
+      grid-template-columns: 1.2fr .8fr;
       gap: 18px;
     }
     .issue {
@@ -129,9 +123,7 @@
       text-transform: uppercase;
       letter-spacing: .06em;
     }
-    code, pre {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
     code {
       background: #f3f4f6;
       border-radius: 8px;
@@ -151,6 +143,11 @@
       overflow: auto;
     }
     .small { font-size: 13px; }
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
     @media (max-width: 900px) {
       .two-col { grid-template-columns: 1fr; }
       h1 { font-size: 28px; }
@@ -161,160 +158,92 @@
   <div class="wrap">
     <section class="hero">
       <h1>🔒 Weekly Security Audit</h1>
-      <p class="muted">Host: Raspberry Pi 5 · Debian 13 (Trixie) · erstellt am 2026-04-27 10:03 CEST</p>
+      <p class="muted">Host: Mission Control · erstellt am 2026-05-04 10:01 CEST</p>
       <div class="grid">
-        <div class="stat"><div class="k">Gesamtstatus</div><div class="v" style="color: var(--red);">Rot</div></div>
-        <div class="stat"><div class="k">Offene TCP-Ports</div><div class="v">6</div></div>
-        <div class="stat"><div class="k">OpenClaw Audit</div><div class="v">3 kritisch</div></div>
-        <div class="stat"><div class="k">Disk Usage /</div><div class="v">34%</div></div>
+        <div class="stat"><div class="k">Gesamtstatus</div><div class="v" style="color: var(--yellow);">Gelb</div></div>
+        <div class="stat"><div class="k">Offene TCP-Listener</div><div class="v">5</div></div>
+        <div class="stat"><div class="k">Upgradable Packages</div><div class="v">19+</div></div>
+        <div class="stat"><div class="k">SSH-Fehlerlog</div><div class="v">0</div></div>
       </div>
       <div>
-        <span class="pill red">Kritisch: Wildcard-Allowlist + Gruppen-Exposition</span>
-        <span class="pill yellow">Auffällig: unbekannte Python-Listener auf 0.0.0.0</span>
-        <span class="pill green">UFW aktiv, inbound auf LAN begrenzt</span>
-        <span class="pill blue">SSH-Server aktuell inaktiv</span>
+        <span class="pill green">UFW aktiv · default deny incoming</span>
+        <span class="pill green">Fail2Ban läuft</span>
+        <span class="pill green">Unattended-Updates aktiv</span>
+        <span class="pill yellow">`last` auf diesem Host nicht verfügbar</span>
       </div>
     </section>
 
     <section class="two-col">
       <div>
         <div class="card">
-          <h2>Executive Summary</h2>
-          <p>Der Host selbst sieht nicht dramatisch aus: Platte gesund, UFW aktiv, kein laufender SSH-Server, keine fehlgeschlagenen SSH-Logins in den letzten 7 Tagen. Wichtig: <code>elevated</code> an sich ist hier nicht das Problem. Der rote Teil entsteht aus der Kombination aus <code>exec security=full</code>, einer Telegram-Allowlist mit Wildcard und Gruppen-Kontext.</p>
-          <div class="issue red-accent">
-            <h3>Warum Rot?</h3>
-            <ul>
-              <li>OpenClaw meldet <strong>3 kritische Findings</strong>.</li>
-              <li>Ein exec-fähiger Agent ist aus einem Gruppen-Kontext erreichbar.</li>
-              <li>Die Elevated-Allowlist ist nicht eng auf Daniel begrenzt, sondern steht auf Wildcard.</li>
-            </ul>
-          </div>
+          <h2>Kurzfazit</h2>
+          <p>Der Host wirkt insgesamt ordentlich abgesichert: Firewall aktiv, SSH-Log der letzten 7 Tage ohne gefundene <code>failed</code>/<code>invalid</code>-Einträge, Fail2Ban und unattended-upgrades laufen. Der Status ist trotzdem <strong>Gelb</strong>, weil mehrere Pakete ausstehen und ein Teil des Login-Historien-Checks wegen fehlendem <code>last</code> nicht vollständig war.</p>
           <div class="issue yellow-accent">
-            <h3>Was ich zusätzlich komisch finde</h3>
-            <ul>
-              <li><code>python3</code> lauscht auf <code>0.0.0.0:45903</code> und <code>0.0.0.0:43119</code>.</li>
-              <li><code>code-server</code> läuft auf <code>0.0.0.0:8080</code>, aber UFW lässt nur LAN zu — okay, trotzdem bewusst im Blick behalten.</li>
-            </ul>
+            <h3>Wichtigste Handlung</h3>
+            <p>Pakete zeitnah aktualisieren, insbesondere sicherheitsrelevante Komponenten wie <code>openssl</code>, <code>libssl3t64</code>, <code>firefox</code>, <code>chromium</code> und <code>nodejs</code>. Danach den Login-Historien-Check nachziehen bzw. <code>last</code> verfügbar machen, falls das auf dem Host erwartet ist.</p>
           </div>
         </div>
 
         <div class="card">
-          <h2>Priorisierte Findings</h2>
-          <div class="issue red-accent">
-            <h3>1. OpenClaw Exec Trust zu offen</h3>
-            <p class="small">Audit: <code>tools.exec.security_full_configured</code>, <code>security.exposure.open_channels_with_exec</code></p>
-            <p><strong>Risiko:</strong> Zu breite Tool-Rechte in einem Kontext, der über Telegram-Gruppen erreichbar ist. Das ist genau die Sorte Konfiguration, die irgendwann hässlich wird.</p>
+          <h2>Top-Findings</h2>
+          <div class="issue green-accent">
+            <h3>1. UFW ist aktiv und inbound stark begrenzt</h3>
+            <p class="small">Default: deny incoming, allow outgoing. Freigegeben sind nur <code>8080/tcp</code> und <code>18789/tcp</code> für <code>192.168.0.0/16</code>.</p>
           </div>
-          <div class="issue red-accent">
-            <h3>2. Elevated selbst okay — die Wildcard ist das Problem</h3>
-            <p class="small">Audit: <code>tools.elevated.allowFrom.telegram.wildcard</code></p>
-            <p><strong>Risiko:</strong> Nicht der Elevated-Default ist heikel, sondern dass Telegram aktuell per Wildcard freigeschaltet ist statt auf Daniel eingegrenzt zu sein.</p>
+          <div class="issue green-accent">
+            <h3>2. Keine auffälligen SSH-Fehler der letzten 7 Tage</h3>
+            <p class="small">Im SSH-Journal wurden keine passenden <code>failed</code>- oder <code>invalid</code>-Einträge gefunden.</p>
           </div>
           <div class="issue yellow-accent">
-            <h3>3. Keine Auth-Rate-Limits am Gateway</h3>
-            <p class="small">Audit: <code>gateway.auth_no_rate_limit</code></p>
-            <p><strong>Risiko:</strong> Wenn das Gateway nicht nur loopback-intern relevant ist, fehlen Bremsen gegen Brute Force.</p>
+            <h3>3. Mehrere Updates stehen aus</h3>
+            <p class="small">Unter anderem betroffen: <code>openssl</code>, <code>libssl3t64</code>, <code>chromium</code>, <code>firefox</code>, <code>nodejs</code>, <code>raspi-firmware</code>.</p>
           </div>
           <div class="issue yellow-accent">
-            <h3>4. Unklare Listener</h3>
-            <p><strong>Risiko:</strong> Zwei Python-Prozesse hängen offen auf allen Interfaces. Ohne Kontext ist das kein direkter Alarm, aber es verdient Identifikation.</p>
+            <h3>4. <code>last</code> nicht vorhanden</h3>
+            <p class="small">Der Befehl <code>last -10</code> lieferte <code>not found</code>. Damit konnte die Login-Historie nicht geprüft werden.</p>
           </div>
-        </div>
-
-        <div class="card">
-          <h2>Check-Ergebnisse</h2>
-          <table>
-            <thead>
-              <tr><th>Check</th><th>Ergebnis</th><th>Bewertung</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Offene Ports</td><td>18789/tcp, 8080/tcp, 45903/tcp, 43119/tcp, 18791/tcp localhost, Tailscale-IP 51679/tcp</td><td>⚠️</td></tr>
-              <tr><td>Firewall</td><td>UFW aktiv, Default deny inbound; nur 8080/tcp und 18789/tcp aus 192.168.0.0/16 erlaubt</td><td>✅</td></tr>
-              <tr><td>SSH Fehlversuche</td><td>Keine Treffer in den letzten 7 Tagen; <code>ssh.service</code> ist inaktiv</td><td>✅</td></tr>
-              <tr><td>Laufende Services</td><td>fail2ban, code-server, openclaw gateway, mc-watcher, unattended-upgrades, tailscaled u.a.</td><td>✅</td></tr>
-              <tr><td>Disk Usage</td><td><code>/</code> bei 34%, Boot 16%</td><td>✅</td></tr>
-              <tr><td>Letzte Logins</td><td><code>last</code> auf dem Host nicht verfügbar; ersatzweise nur recente Session-Events sichtbar</td><td>ℹ️</td></tr>
-              <tr><td>Updates</td><td>Mehrere Pakete upgradable, u.a. chromium, firefox, nodejs, openssl, raspi-firmware</td><td>⚠️</td></tr>
-              <tr><td>OpenClaw Security Audit</td><td>3 kritisch / 5 warn / 2 info</td><td>🔴</td></tr>
-              <tr><td>OpenClaw Update Status</td><td>Update verfügbar: 2026.4.24</td><td>⚠️</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="card">
-          <h2>Empfohlene nächsten Schritte</h2>
-          <ol>
-            <li><strong>Telegram Elevated-Allowlist auf Daniel eingrenzen.</strong> Das ist der eigentliche rote Fleck.</li>
-            <li><strong>Prüfen, welche Gruppen wirklich exec-fähige Agenten brauchen.</strong> Gruppen-Reichweite nur dort offen lassen, wo sie bewusst gewollt ist.</li>
-            <li><strong>Gateway Auth-Rate-Limits setzen.</strong></li>
-            <li><strong>Ports 45903 und 43119 identifizieren.</strong> Wenn unnötig: Prozess abstellen oder Bind auf localhost.</li>
-            <li><strong>Upgrades einspielen</strong> — vor allem Browser, OpenSSL, Node.js, Firmware.</li>
-          </ol>
+          <div class="issue green-accent">
+            <h3>5. Laufende Schutzdienste sind aktiv</h3>
+            <p class="small"><code>fail2ban</code> und <code>unattended-upgrades</code> laufen, außerdem diverse Standarddienste und das Mission-Control-spezifische <code>mc-watcher</code>.</p>
+          </div>
         </div>
       </div>
 
       <div>
         <div class="card">
-          <h2>Host-Kontext</h2>
+          <h2>Check-Auszug</h2>
           <table>
-            <tbody>
-              <tr><th>OS</th><td>Debian GNU/Linux 13 (Trixie)</td></tr>
-              <tr><th>Kernel</th><td>6.12.75+rpt-rpi-2712</td></tr>
-              <tr><th>Hardware</th><td>Raspberry Pi 5</td></tr>
-              <tr><th>Gateway</th><td>OpenClaw lokal aktiv, Port 18789</td></tr>
-              <tr><th>Trust Model</th><td>Personal assistant</td></tr>
-              <tr><th>Firewall</th><td>UFW active</td></tr>
-              <tr><th>SSH</th><td>inaktiv</td></tr>
-            </tbody>
+            <tr><th>Prüfung</th><th>Ergebnis</th></tr>
+            <tr><td><code>ss -ltnp</code></td><td>Listener auf <code>8080</code>, <code>18789</code>, lokaler <code>gws</code>-Port sowie 2 weitere interne Sockets.</td></tr>
+            <tr><td><code>sudo ufw status verbose</code></td><td>Aktiv, inbound deny, outbound allow.</td></tr>
+            <tr><td><code>journalctl ssh</code></td><td>Keine Treffer für <code>failed</code>/<code>invalid</code>.</td></tr>
+            <tr><td><code>systemctl ... running</code></td><td>25 laufende Services.</td></tr>
+            <tr><td><code>df -h</code></td><td>Root-Partition bei ca. 33% belegt.</td></tr>
+            <tr><td><code>last -10</code></td><td>Nicht verfügbar.</td></tr>
+            <tr><td><code>apt list --upgradable</code></td><td>Mehrere Updates ausstehend.</td></tr>
           </table>
         </div>
 
         <div class="card">
-          <h2>Listening Ports</h2>
-          <pre>0.0.0.0:45903   python3
-127.0.0.1:18791 openclaw-gateway
-100.73.197.68:51679 unknown
-0.0.0.0:18789   openclaw-gateway
-0.0.0.0:43119   python3
-0.0.0.0:8080    node (code-server)
-[fd7a:115c:a1e0::3e01:c59f]:40699</pre>
+          <h2>Handlungsempfehlung</h2>
+          <div class="issue blue-accent">
+            <ul>
+              <li>Updates einspielen und danach neu prüfen.</li>
+              <li>Falls <code>8080</code>/<code>18789</code> nicht bewusst LAN-exponiert sein sollen: weiter einschränken.</li>
+              <li>Wenn Login-Audits gewünscht sind: <code>last</code> bzw. das zugrunde liegende Paket wieder verfügbar machen.</li>
+            </ul>
+          </div>
         </div>
 
         <div class="card">
-          <h2>UFW Status</h2>
-          <pre>Status: active
-Default: deny (incoming), allow (outgoing), disabled (routed)
-
-ALLOW IN from 192.168.0.0/16:
-- 8080/tcp
-- 18789/tcp</pre>
-        </div>
-
-        <div class="card">
-          <h2>OpenClaw Audit Highlights</h2>
-          <ul>
-            <li><strong>Critical:</strong> elevated wildcard on Telegram</li>
-            <li><strong>Critical:</strong> open channel can reach exec-enabled agent</li>
-            <li><strong>Context:</strong> <code>exec security=full</code> ist vor allem in Kombination mit Wildcard + Gruppenreichweite kritisch</li>
-            <li><strong>Warn:</strong> no gateway auth rate limiting</li>
-            <li><strong>Warn:</strong> autoAllowSkills enabled</li>
-            <li><strong>Warn:</strong> multi-user heuristic triggered</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <h2>Upgradable Packages</h2>
-          <pre>chromium, chromium-common, chromium-l10n, chromium-sandbox
-firefox
-gstreamer1.0-plugins-bad, libgstreamer-plugins-bad1.0-0
-libssl3t64, openssl, openssl-provider-legacy
-nodejs
-raspi-firmware
-libvlc-bin, libvlc5, libvlccore9
-python3-sense-hat, rc-gui, libpisp-common, libpisp1</pre>
+          <h2>Daniel-Short-Note</h2>
+          <p><strong>Gesamtstatus:</strong> Gelb.</p>
+          <p><strong>Kurz:</strong> Keine akuten SSH-Auffälligkeiten, Firewall und Schutzdienste sind in Ordnung. Es stehen aber einige Updates aus, und <code>last</code> war auf dem Host nicht verfügbar. Bitte zeitnah patchen.</p>
         </div>
       </div>
     </section>
+
+    <div class="footer">Report generiert automatisch im Rahmen des wöchentlichen Security Audits.</div>
   </div>
 </body>
 </html>
