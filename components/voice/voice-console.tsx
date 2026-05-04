@@ -212,6 +212,28 @@ function getRealtimeEventType(event: MessageEvent<string>): string | null {
   }
 }
 
+function waitForIceGatheringComplete(peerConnection: RTCPeerConnection): Promise<void> {
+  if (peerConnection.iceGatheringState === "complete") {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve) => {
+    const timeout = window.setTimeout(() => {
+      peerConnection.removeEventListener("icegatheringstatechange", handleChange);
+      resolve();
+    }, 1500);
+
+    function handleChange() {
+      if (peerConnection.iceGatheringState !== "complete") return;
+      window.clearTimeout(timeout);
+      peerConnection.removeEventListener("icegatheringstatechange", handleChange);
+      resolve();
+    }
+
+    peerConnection.addEventListener("icegatheringstatechange", handleChange);
+  });
+}
+
 async function readJson<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const response = await fetch(input, {
     cache: "no-store",
@@ -899,11 +921,16 @@ export default function VoiceConsole() {
 
     const offer = await peerConnection.createOffer();
     await peerConnection.setLocalDescription(offer);
+    await waitForIceGatheringComplete(peerConnection);
+    const localSdp = peerConnection.localDescription?.sdp?.trim() ?? "";
+    if (!localSdp.startsWith("v=0")) {
+      throw new Error("Browser hat kein gültiges SDP-Angebot erzeugt.");
+    }
 
     const sdpResponse = await fetch(`/api/voice/realtime/sdp?sessionId=${encodeURIComponent(sessionId)}`, {
       method: "POST",
       headers: { "content-type": "application/sdp" },
-      body: offer.sdp,
+      body: localSdp,
     });
 
     if (!sdpResponse.ok) {

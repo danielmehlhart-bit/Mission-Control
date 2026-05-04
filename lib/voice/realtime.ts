@@ -139,6 +139,9 @@ export async function createRealtimeSdpAnswer(input: CreateRealtimeSdpAnswerInpu
   if (!normalizedSdp) {
     throw new Error("SDP offer required");
   }
+  if (!normalizedSdp.startsWith("v=0")) {
+    throw new Error("Invalid SDP offer");
+  }
 
   const context = requireRealtimeSessionContext(input.sessionId);
   const realtimeConfig = buildRealtimeSessionConfig(context);
