@@ -268,6 +268,31 @@ export async function readMemoryFile(logicalPath: string): Promise<string> {
   throw new Error("Invalid path prefix");
 }
 
+export async function appendDailyMemoryEntry(title: string, body: string): Promise<{ path: string; content: string }> {
+  const memoryDir = ROOTS.memory;
+  const layout = await detectLayout(memoryDir);
+  const memRoot = layout === "hetzner" ? memoryDir : path.join(memoryDir, MEMORY_SUBDIR);
+  const today = new Date().toISOString().slice(0, 10);
+  const filePath = safeResolve(memRoot, `${today}.md`);
+  const heading = title.trim() || "Voice Call";
+  const normalizedBody = body.trim();
+  const entry = [
+    "",
+    `## ${new Date().toISOString()} - ${heading}`,
+    "",
+    normalizedBody || "_Keine Details gespeichert._",
+    "",
+  ].join("\n");
+
+  await fs.mkdir(memRoot, { recursive: true });
+  await fs.appendFile(filePath, entry, "utf8");
+
+  return {
+    path: `mem:${today}.md`,
+    content: entry,
+  };
+}
+
 // Legacy — kept for backward compat
 export async function listMemory() {
   const byCategory = await listMemoryByCategory();

@@ -212,6 +212,23 @@ function getRealtimeEventType(event: MessageEvent<string>): string | null {
   }
 }
 
+function parseRealtimeEvent(event: MessageEvent<string>): Record<string, unknown> | null {
+  try {
+    const parsed = JSON.parse(event.data);
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed)
+      ? (parsed as Record<string, unknown>)
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function getRealtimeTranscriptPayload(event: Record<string, unknown>): string | null {
+  if (typeof event.transcript === "string") return event.transcript.trim();
+  if (typeof event.text === "string") return event.text.trim();
+  return null;
+}
+
 function waitForIceGatheringComplete(peerConnection: RTCPeerConnection): Promise<void> {
   if (peerConnection.iceGatheringState === "complete") {
     return Promise.resolve();
@@ -881,6 +898,37 @@ export default function VoiceConsole() {
     }
   }, [loadSessionDetail, loadSessions, pauseRecognitionForAssistant, playAssistantResponse, resumeRecognitionAfterAssistant]);
 
+  const recordRealtimeTranscript = useCallback(async (
+    sessionId: string,
+    speaker: "user" | "assistant",
+    text: string,
+    metadata?: Record<string, unknown>,
+  ) => {
+    if (!text.trim()) return;
+    try {
+      await readJson(`/api/voice/sessions/${sessionId}/realtime-turn`, {
+        method: "POST",
+        body: JSON.stringify({ speaker, text: text.trim(), metadata }),
+      });
+      await loadSessionDetail(sessionId);
+    } catch {
+      // Transcript capture should never interrupt a live call.
+    }
+  }, [loadSessionDetail]);
+
+  const saveVoiceMemorySummary = useCallback(async (sessionId: string) => {
+    try {
+      const result = await readJson<{ memoryPath: string }>(`/api/voice/sessions/${sessionId}/memory-summary`, {
+        method: "POST",
+        body: JSON.stringify({ reason: "voice-ended" }),
+      });
+      setLastActionLabel(`Gespräch gespeichert: ${result.memoryPath}`);
+    } catch (nextError) {
+      setLastActionLabel("Gespräch beendet, Memory-Speicherung fehlgeschlagen");
+      setError(nextError instanceof Error ? nextError.message : String(nextError));
+    }
+  }, []);
+
   const closeRealtimeConnection = useCallback(() => {
     realtimeDataChannelRef.current?.close();
     realtimeDataChannelRef.current = null;
@@ -893,7 +941,8 @@ export default function VoiceConsole() {
     realtimeAudioElementRef.current = null;
   }, []);
 
-  const stopVoiceMode = useCallback(() => {
+  const stopVoiceMode = useCallback(async () => {
+    const sessionId = activeSessionIdRef.current;
     shouldRestartRecognitionRef.current = false;
     recognitionHoldRef.current = false;
     isSubmittingRef.current = false;
@@ -908,7 +957,10 @@ export default function VoiceConsole() {
     setVoiceMode("idle");
     setLiveTranscript("");
     setLastActionLabel("Gespräch beendet");
-  }, [closeRealtimeConnection]);
+    if (sessionId) {
+      await saveVoiceMemorySummary(sessionId);
+    }
+  }, [closeRealtimeConnection, saveVoiceMemorySummary]);
 
   const startVoiceMode = useCallback(async (sessionIdOverride?: string) => {
     const sessionId = sessionIdOverride ?? activeSessionIdRef.current;
@@ -986,18 +1038,32 @@ export default function VoiceConsole() {
       }));
     };
     dataChannel.onmessage = (event) => {
-      const eventType = getRealtimeEventType(event);
+      const realtimeEvent = parseRealtimeEvent(event);
+      const eventType = typeof realtimeEvent?.type === "string" ? realtimeEvent.type : getRealtimeEventType(event);
       if (!eventType) return;
 
       if (eventType === "input_audio_buffer.speech_started") {
         setVoiceMode("listening");
         setLiveTranscript("");
       }
+      if (eventType === "conversation.item.input_audio_transcription.completed") {
+        const transcript = realtimeEvent ? getRealtimeTranscriptPayload(realtimeEvent) : null;
+        if (transcript) {
+          setLiveTranscript(transcript);
+          void recordRealtimeTranscript(sessionId, "user", transcript, { realtimeEvent: eventType });
+        }
+      }
       if (eventType === "response.created") {
         setVoiceMode("thinking");
       }
-      if (eventType === "response.audio.delta") {
+      if (eventType === "response.audio.delta" || eventType === "response.output_audio.delta") {
         setVoiceMode("speaking");
+      }
+      if (eventType === "response.audio_transcript.done" || eventType === "response.output_audio_transcript.done") {
+        const transcript = realtimeEvent ? getRealtimeTranscriptPayload(realtimeEvent) : null;
+        if (transcript) {
+          void recordRealtimeTranscript(sessionId, "assistant", transcript, { realtimeEvent: eventType });
+        }
       }
       if (eventType === "response.done") {
         setVoiceMode("listening");
@@ -1062,11 +1128,11 @@ export default function VoiceConsole() {
 
     setLastActionLabel("Realtime verbunden");
     setIsSubmitting(false);
-  }, [closeRealtimeConnection, loadSessionDetail]);
+  }, [closeRealtimeConnection, loadSessionDetail, recordRealtimeTranscript]);
 
   const toggleVoiceMode = useCallback(async () => {
     if (isVoiceModeEnabled) {
-      stopVoiceMode();
+      await stopVoiceMode();
       return;
     }
     try {

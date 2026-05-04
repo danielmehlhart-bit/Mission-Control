@@ -8,6 +8,9 @@ export type RealtimeSessionConfig = {
   output_modalities: ["audio"];
   audio: {
     input: {
+      transcription: {
+        model: string;
+      };
       turn_detection: {
         type: "semantic_vad";
         eagerness: "auto";
@@ -143,6 +146,9 @@ export function buildRealtimeSessionConfig(context: RealtimeSessionContext): Rea
     output_modalities: ["audio"],
     audio: {
       input: {
+        transcription: {
+          model: process.env.MC_VOICE_TRANSCRIPTION_MODEL?.trim() || "gpt-4o-mini-transcribe",
+        },
         turn_detection: {
           type: "semantic_vad",
           eagerness: "auto",

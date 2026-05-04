@@ -18,6 +18,7 @@ import { runVoiceHooks } from "./hooks";
 import { generateDefaultVoiceReply } from "./providers";
 import type { ResolvedVoiceContext, VoiceProfile, VoiceProfileSlug, VoiceSession, VoiceTurn, VoiceTransport } from "./types";
 import type { CalendarEvent } from "@/lib/google-calendar";
+import { appendDailyMemoryEntry } from "@/lib/fs";
 
 export type VoiceServiceCalendarProvider = (days?: number) => Promise<CalendarEvent[]>;
 
@@ -54,6 +55,13 @@ export type SwitchSessionContextInput = {
 export type EndSessionInput = {
   sessionId: string;
   reason?: string;
+};
+
+export type RecordRealtimeTurnInput = {
+  sessionId: string;
+  speaker: "user" | "assistant";
+  text: string;
+  metadata?: Record<string, unknown>;
 };
 
 const ALLOWED_TRANSPORTS = new Set<VoiceTransport>(["web", "telegram", "internal"]);
@@ -593,4 +601,85 @@ export async function endSession(input: EndSessionInput): Promise<VoiceSession> 
   session = persistResolvedContext(session.id, session, afterEnd.patch.resolvedContext);
   session = transitionSession(session, "completed", input.reason ?? "session-completed");
   return session;
+}
+
+export async function recordRealtimeTurn(input: RecordRealtimeTurnInput): Promise<{ session: VoiceSession; turn: VoiceTurn }> {
+  const session = requireSession(input.sessionId);
+  ensureSessionState(session, ["ready", "listening", "awaiting_user", "thinking", "speaking", "failed"]);
+  const text = input.text.trim();
+  if (!text) {
+    throw new Error("Realtime turn text required");
+  }
+
+  const turn = appendVoiceTurn({
+    sessionId: session.id,
+    speaker: input.speaker,
+    text,
+    source: "openai-realtime",
+    metadata: input.metadata ?? {},
+  });
+  const nextSession = input.speaker === "user"
+    ? updateVoiceSessionTranscript(session.id, text)
+    : updateVoiceSessionAssistantText(session.id, text);
+
+  appendVoiceEvent({
+    sessionId: session.id,
+    eventType: "voice.realtime_turn_recorded",
+    fromState: session.state,
+    toState: nextSession.state,
+    payload: {
+      speaker: input.speaker,
+      turnId: turn.id,
+      sequenceNo: turn.sequenceNo,
+    },
+  });
+
+  return { session: nextSession, turn };
+}
+
+function buildVoiceMemoryMarkdown(session: VoiceSession, profile: VoiceProfile, turns: VoiceTurn[]): string {
+  const transcript = turns
+    .filter((turn) => turn.speaker === "user" || turn.speaker === "assistant")
+    .map((turn) => `- **${turn.speaker === "user" ? "Daniel" : "Hermes"}:** ${turn.text}`)
+    .join("\n");
+  const userTurns = turns.filter((turn) => turn.speaker === "user").map((turn) => turn.text);
+  const assistantTurns = turns.filter((turn) => turn.speaker === "assistant").map((turn) => turn.text);
+
+  return [
+    `**Channel:** ${profile.label} (${profile.slug})`,
+    `**Voice Session:** ${session.id}`,
+    "",
+    "### Kurzfassung",
+    userTurns.length
+      ? `Daniel hat im Voice-Call ueber Folgendes gesprochen: ${userTurns.slice(0, 4).join(" / ")}`
+      : "Es wurden keine Daniel-Turns transkribiert.",
+    assistantTurns.length
+      ? `Hermes hat dazu geantwortet bzw. eingeordnet: ${assistantTurns.slice(-3).join(" / ")}`
+      : "Es wurden keine Hermes-Antworten transkribiert.",
+    "",
+    "### Transcript",
+    transcript || "_Kein Transcript vorhanden._",
+  ].join("\n");
+}
+
+export async function persistVoiceSessionMemorySummary(input: EndSessionInput): Promise<{ session: VoiceSession; memoryPath: string; summary: string }> {
+  const session = requireSession(input.sessionId);
+  const profile = requireProfile(session.profileId);
+  const turns = listVoiceTurns(session.id, 300);
+  const summary = buildVoiceMemoryMarkdown(session, profile, turns);
+  const memory = await appendDailyMemoryEntry(`Voice Call - ${profile.label}`, summary);
+
+  appendVoiceEvent({
+    sessionId: session.id,
+    eventType: "voice.memory_summary_written",
+    fromState: session.state,
+    toState: session.state,
+    payload: {
+      memoryPath: memory.path,
+      turnCount: turns.length,
+      reason: input.reason ?? "voice-ended",
+    },
+  });
+
+  return { session, memoryPath: memory.path, summary };
 }
