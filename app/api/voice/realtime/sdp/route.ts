@@ -10,7 +10,11 @@ export async function POST(request: Request) {
     const { searchParams } = new URL(request.url);
     const sessionId = requireString(searchParams.get("sessionId"), "sessionId");
     const sdp = await request.text();
-    const answer = await createRealtimeSdpAnswer({ sessionId, sdp });
+    const answer = await createRealtimeSdpAnswer({
+      sessionId,
+      sdp,
+      requestContentType: request.headers.get("content-type"),
+    });
 
     return new NextResponse(answer, {
       status: 200,

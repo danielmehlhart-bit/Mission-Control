@@ -922,7 +922,7 @@ export default function VoiceConsole() {
     const offer = await peerConnection.createOffer();
     await peerConnection.setLocalDescription(offer);
     await waitForIceGatheringComplete(peerConnection);
-    const localSdp = peerConnection.localDescription?.sdp?.trim() ?? "";
+    const localSdp = peerConnection.localDescription?.sdp ?? "";
     if (!localSdp.startsWith("v=0")) {
       throw new Error("Browser hat kein gültiges SDP-Angebot erzeugt.");
     }

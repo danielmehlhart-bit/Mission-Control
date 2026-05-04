@@ -25,6 +25,7 @@ export type RealtimeSessionConfig = {
 export type CreateRealtimeSdpAnswerInput = {
   sessionId: string;
   sdp: string;
+  requestContentType?: string | null;
   fetchImpl?: typeof fetch;
 };
 
@@ -145,6 +146,19 @@ export async function createRealtimeSdpAnswer(input: CreateRealtimeSdpAnswerInpu
 
   const context = requireRealtimeSessionContext(input.sessionId);
   const realtimeConfig = buildRealtimeSessionConfig(context);
+  const sdpDiagnostics = {
+    sdpLength: normalizedSdp.length,
+    sdpFirstLine: normalizedSdp.split(/\r?\n/, 1)[0] ?? "",
+    requestContentType: input.requestContentType ?? null,
+  };
+  appendVoiceEvent({
+    sessionId: context.session.id,
+    eventType: "voice.realtime_sdp_received",
+    fromState: context.session.state,
+    toState: context.session.state,
+    payload: sdpDiagnostics,
+  });
+
   const formData = new FormData();
   formData.set("sdp", normalizedSdp);
   formData.set("session", JSON.stringify(realtimeConfig));
@@ -159,7 +173,9 @@ export async function createRealtimeSdpAnswer(input: CreateRealtimeSdpAnswerInpu
 
   const answer = await response.text();
   if (!response.ok) {
-    throw new Error(`OpenAI realtime SDP failed (${response.status}): ${answer.slice(0, 240)}`);
+    throw new Error(
+      `OpenAI realtime SDP failed (${response.status}, local ${sdpDiagnostics.sdpLength} chars, ${sdpDiagnostics.sdpFirstLine}): ${answer.slice(0, 240)}`,
+    );
   }
   if (!answer.trim()) {
     throw new Error("OpenAI realtime SDP answer was empty");
