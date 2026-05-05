@@ -143,6 +143,18 @@ export type MemFile = {
   desc?: string;
 };
 
+export type MemoryDiagnostics = {
+  memoryDir: string;
+  layout: "hetzner" | "pi";
+  memRoot: string;
+  coreRoot: string;
+  writable: boolean;
+  writeError: string | null;
+  fileCount: number;
+  newestFiles: MemFile[];
+  recentVoiceCalls: Array<{ file: string; modified: string; preview: string }>;
+};
+
 async function detectLayout(memoryDir: string): Promise<"hetzner" | "pi"> {
   try {
     await fs.stat(path.join(memoryDir, "core"));
@@ -290,6 +302,58 @@ export async function appendDailyMemoryEntry(title: string, body: string): Promi
   return {
     path: `mem:${today}.md`,
     content: entry,
+  };
+}
+
+export async function getMemoryDiagnostics(): Promise<MemoryDiagnostics> {
+  const memoryDir = ROOTS.memory;
+  const layout = await detectLayout(memoryDir);
+  const memRoot = layout === "hetzner" ? memoryDir : path.join(memoryDir, MEMORY_SUBDIR);
+  const coreRoot = layout === "hetzner" ? path.join(memoryDir, "core") : memoryDir;
+  let writable = false;
+  let writeError: string | null = null;
+  const probePath = path.join(memRoot, `.mc-write-probe-${Date.now()}.tmp`);
+
+  try {
+    await fs.mkdir(memRoot, { recursive: true });
+    await fs.writeFile(probePath, "ok", "utf8");
+    await fs.unlink(probePath);
+    writable = true;
+  } catch (error) {
+    writeError = error instanceof Error ? error.message : String(error);
+  }
+
+  const byCategory = await listMemoryByCategory();
+  const allFiles = byCategory.flatMap((category) => category.files);
+  const newestFiles = [...allFiles].sort((a, b) => b.modified.localeCompare(a.modified)).slice(0, 12);
+  const recentVoiceCalls: MemoryDiagnostics["recentVoiceCalls"] = [];
+
+  for (const file of newestFiles.slice(0, 20)) {
+    try {
+      const content = await readMemoryFile(file.path);
+      const markerIndex = content.lastIndexOf("VOICE_CALL_MEMORY_V1");
+      if (markerIndex >= 0) {
+        recentVoiceCalls.push({
+          file: file.path,
+          modified: file.modified,
+          preview: content.slice(Math.max(0, markerIndex - 120), markerIndex + 700),
+        });
+      }
+    } catch {
+      // best effort diagnostics
+    }
+  }
+
+  return {
+    memoryDir,
+    layout,
+    memRoot,
+    coreRoot,
+    writable,
+    writeError,
+    fileCount: allFiles.length,
+    newestFiles,
+    recentVoiceCalls,
   };
 }
 

@@ -923,9 +923,11 @@ export default function VoiceConsole() {
         body: JSON.stringify({ reason: "voice-ended" }),
       });
       setLastActionLabel(`Gespräch gespeichert: ${result.memoryPath}`);
+      setError(null);
     } catch (nextError) {
+      const message = nextError instanceof Error ? nextError.message : String(nextError);
       setLastActionLabel("Gespräch beendet, Memory-Speicherung fehlgeschlagen");
-      setError(nextError instanceof Error ? nextError.message : String(nextError));
+      setError(`Memory-Speicherung fehlgeschlagen: ${message}`);
     }
   }, []);
 

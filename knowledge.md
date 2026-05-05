@@ -158,5 +158,5 @@ Pi /home/hartner/mission-control/briefings/ (neue HTML-Dateien)
 - Rate Limiter ist in-memory (kein Redis) → verliert State bei Restart
 - Middleware redirected API-Routes zu `/login` statt JSON-401 (pragmatisch, nicht RESTful)
 - Next.js 14.x hat offene CVEs → Update auf 15.x empfohlen, noch nicht gemacht
-- Briefings noch im Image gebacken (Volume-Architektur steht aus, SSH-Key-Blocker)
+- Briefings/Memory sollten als writable Volume gemountet sein, damit Voice-Call-Summaries sofort in MD-Memory landen
 - `/cron`-Route ist experimentell
