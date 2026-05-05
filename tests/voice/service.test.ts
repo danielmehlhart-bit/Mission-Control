@@ -105,6 +105,48 @@ test("createSessionForProfile creates, hydrates, and readies a new voice session
   assert.equal(events.some((event) => event.eventType === "voice.state_changed" && event.toState === "ready"), true);
 });
 
+test("createSessionForProfile accepts extra bindings and handoff metadata for hydrated context", async () => {
+  await seedVoiceFixtures();
+  const { serviceModule, hooksModule } = await loadModules();
+  const { createSessionForProfile } = serviceModule;
+  const { clearVoiceHookRegistry } = hooksModule;
+
+  clearVoiceHookRegistry();
+  const session = await createSessionForProfile({
+    profileSlug: "main",
+    transport: "web",
+    extraBindings: {
+      accountId: "acc_luma",
+      projectId: "proj_luma",
+      projectSlug: "luma",
+    },
+    contextMetadata: {
+      handoffSource: {
+        type: "telegram",
+        chatId: "-100123",
+        threadId: "23",
+      },
+    },
+    calendarProvider: async () => [],
+  });
+
+  const resolvedContext = session.resolvedContext as Record<string, unknown>;
+  const bindings = resolvedContext.bindings as Record<string, unknown>;
+  const metadata = resolvedContext.metadata as Record<string, unknown>;
+  const handoffSource = resolvedContext.handoffSource as Record<string, unknown>;
+
+  assert.equal(bindings.accountId, "acc_luma");
+  assert.equal(bindings.projectId, "proj_luma");
+  assert.equal(bindings.projectSlug, "luma");
+  assert.equal(bindings.accountName, "LUMA GmbH");
+  assert.equal(bindings.projectName, "LUMA");
+  assert.equal(metadata.accountName, "LUMA GmbH");
+  assert.equal(metadata.projectName, "LUMA");
+  assert.equal(handoffSource.type, "telegram");
+  assert.equal(handoffSource.chatId, "-100123");
+  assert.equal(handoffSource.threadId, "23");
+});
+
 test("createSessionForProfile rejects inactive profiles", async () => {
   await seedVoiceFixtures();
   const { dbModule, serviceModule, hooksModule } = await loadModules();

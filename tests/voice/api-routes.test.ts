@@ -21,6 +21,7 @@ async function loadModules() {
   const completeTurnRouteModule = await import("../../app/api/voice/sessions/[id]/complete-turn/route.ts");
   const contextSwitchRouteModule = await import("../../app/api/voice/sessions/[id]/context-switch/route.ts");
   const eventsRouteModule = await import("../../app/api/voice/sessions/[id]/events/route.ts");
+  const telegramHandoffRouteModule = await import("../../app/api/voice/handoffs/telegram/route.ts");
 
   return {
     dbModule,
@@ -33,6 +34,7 @@ async function loadModules() {
     completeTurnRouteModule,
     contextSwitchRouteModule,
     eventsRouteModule,
+    telegramHandoffRouteModule,
   };
 }
 
@@ -415,4 +417,75 @@ test("POST /api/voice/sessions/[id]/context-switch rejects inactive target profi
   assert.equal(switchResponse.status, 400);
   const payload = await switchResponse.json();
   assert.equal(payload.error, "Voice profile inactive: luma");
+});
+
+test("POST /api/voice/handoffs/telegram creates a hydrated session and persists bridge routing", async () => {
+  await seedVoiceFixtures();
+  const { telegramHandoffRouteModule, dbModule } = await loadModules();
+  const { getDb } = dbModule;
+
+  const response = await telegramHandoffRouteModule.POST(
+    makeRequest("http://localhost/api/voice/handoffs/telegram", {
+      method: "POST",
+      body: JSON.stringify({
+        telegramChatId: "-100123",
+        telegramThreadId: "23",
+        profileSlug: "luma",
+        projectId: "proj_luma",
+        accountId: "acc_luma",
+        metadata: { origin: "telegram-test" },
+      }),
+    }),
+  );
+
+  assert.equal(response.status, 201);
+  const payload = await response.json();
+  assert.equal(payload.profile.slug, "luma");
+  assert.equal(payload.session.transport, "web");
+  assert.equal(payload.session.state, "awaiting_user");
+  assert.equal(payload.handoff.source, "telegram");
+  assert.equal(payload.handoff.telegramChatId, "-100123");
+  assert.equal(payload.handoff.telegramThreadId, "23");
+  assert.equal(payload.handoff.matchedExistingBridge, false);
+  assert.equal(payload.turns[0]?.speaker, "assistant");
+
+  const bridge = getDb().prepare(
+    "SELECT * FROM voice_telegram_bridges WHERE telegram_chat_id = ? AND telegram_thread_id = ?",
+  ).get("-100123", "23") as { profile_slug: string; project_id: string | null; account_id: string | null; metadata_json: string } | undefined;
+  assert.ok(bridge);
+  assert.equal(bridge?.profile_slug, "luma");
+  assert.equal(bridge?.project_id, "proj_luma");
+  assert.equal(bridge?.account_id, "acc_luma");
+  assert.equal(JSON.parse(bridge?.metadata_json ?? "{}").origin, "telegram-test");
+});
+
+test("POST /api/voice/handoffs/telegram reuses a stored bridge when only chat/thread is provided", async () => {
+  await seedVoiceFixtures();
+  const { telegramHandoffRouteModule, dbModule } = await loadModules();
+  const { getDb } = dbModule;
+
+  getDb().prepare(
+    `INSERT INTO voice_telegram_bridges (
+      id, telegram_chat_id, telegram_thread_id, profile_slug, label, account_id, deal_id, project_id, project_slug, metadata_json, created_at, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))`,
+  ).run("vtb_seed", "-100999", "42", "sales_support", "Sales Topic", "acc_luma", "deal_luma", null, null, JSON.stringify({ seeded: true }));
+
+  const response = await telegramHandoffRouteModule.POST(
+    makeRequest("http://localhost/api/voice/handoffs/telegram", {
+      method: "POST",
+      body: JSON.stringify({
+        telegramChatId: "-100999",
+        telegramThreadId: "42",
+        autoGreeting: false,
+      }),
+    }),
+  );
+
+  assert.equal(response.status, 201);
+  const payload = await response.json();
+  assert.equal(payload.profile.slug, "sales_support");
+  assert.equal(payload.session.state, "ready");
+  assert.equal(payload.handoff.matchedExistingBridge, true);
+  assert.equal(payload.handoff.bridgeId, "vtb_seed");
+  assert.deepEqual(payload.turns, []);
 });

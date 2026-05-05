@@ -195,6 +195,21 @@ function initSchema(db: Database.Database): void {
       metadata_json TEXT NOT NULL DEFAULT '{}',
       created_at    TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS voice_telegram_bridges (
+      id                TEXT PRIMARY KEY,
+      telegram_chat_id  TEXT NOT NULL,
+      telegram_thread_id TEXT,
+      profile_slug      TEXT NOT NULL,
+      label             TEXT,
+      account_id        TEXT,
+      deal_id           TEXT,
+      project_id        TEXT,
+      project_slug      TEXT,
+      metadata_json     TEXT NOT NULL DEFAULT '{}',
+      created_at        TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at        TEXT NOT NULL DEFAULT (datetime('now'))
+    );
   `);
 
   // Spalten nachträglich hinzufügen (ALTER TABLE IF NOT EXISTS column nicht in SQLite → try/catch)
@@ -230,6 +245,10 @@ function initSchema(db: Database.Database): void {
       ON voice_turns(session_id, sequence_no ASC);
     CREATE INDEX IF NOT EXISTS idx_voice_profile_bindings_profile_type
       ON voice_profile_bindings(profile_id, binding_type);
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_voice_telegram_bridges_chat_thread
+      ON voice_telegram_bridges(telegram_chat_id, COALESCE(telegram_thread_id, ''));
+    CREATE INDEX IF NOT EXISTS idx_voice_telegram_bridges_profile
+      ON voice_telegram_bridges(profile_slug, updated_at DESC);
   `);
   db.exec("SELECT 1"); // flush
 

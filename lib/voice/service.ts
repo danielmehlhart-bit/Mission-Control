@@ -16,6 +16,7 @@ import { resolveVoiceContextSwitch, resolveVoiceProfileContext } from "./context
 import { assertTransition } from "./state-machine";
 import { runVoiceHooks } from "./hooks";
 import { generateDefaultVoiceReply } from "./providers";
+import type { VoiceContextBindings } from "./context-sources";
 import type { ResolvedVoiceContext, VoiceProfile, VoiceProfileSlug, VoiceSession, VoiceTurn, VoiceTransport } from "./types";
 import type { CalendarEvent } from "@/lib/google-calendar";
 import { appendDailyMemoryEntry } from "@/lib/fs";
@@ -26,6 +27,8 @@ export type CreateSessionForProfileInput = {
   profileSlug: VoiceProfileSlug;
   transport?: VoiceTransport;
   calendarProvider?: VoiceServiceCalendarProvider;
+  extraBindings?: Partial<VoiceContextBindings>;
+  contextMetadata?: Record<string, unknown>;
 };
 
 export type CommitUserTurnInput = {
@@ -79,6 +82,33 @@ function mergeContext(
     ...asObject(base),
     ...(patch ?? {}),
   };
+}
+
+function applyContextMetadata(
+  base: Record<string, unknown> | ResolvedVoiceContext | undefined,
+  contextMetadata?: Record<string, unknown>,
+): Record<string, unknown> {
+  if (!contextMetadata || Object.keys(contextMetadata).length === 0) {
+    return asObject(base);
+  }
+
+  const current = asObject(base);
+  const next: Record<string, unknown> = {
+    ...current,
+    ...contextMetadata,
+  };
+
+  if (
+    current.metadata && typeof current.metadata === "object" && !Array.isArray(current.metadata) &&
+    contextMetadata.metadata && typeof contextMetadata.metadata === "object" && !Array.isArray(contextMetadata.metadata)
+  ) {
+    next.metadata = {
+      ...(current.metadata as Record<string, unknown>),
+      ...(contextMetadata.metadata as Record<string, unknown>),
+    };
+  }
+
+  return next;
 }
 
 function requireSession(sessionId: string): VoiceSession {
@@ -173,6 +203,7 @@ async function hydrateSessionContext(
   session: VoiceSession,
   profile: VoiceProfile,
   calendarProvider?: VoiceServiceCalendarProvider,
+  options: { extraBindings?: Partial<VoiceContextBindings>; contextMetadata?: Record<string, unknown> } = {},
 ): Promise<VoiceSession> {
   let currentSession = session;
 
@@ -185,6 +216,7 @@ async function hydrateSessionContext(
 
   const resolvedContext = await resolveVoiceProfileContext(profile.slug, {
     calendarProvider,
+    extraBindings: options.extraBindings,
   });
 
   const profileHydration = await runVoiceHooks("hydrateProfileContext", {
@@ -208,7 +240,7 @@ async function hydrateSessionContext(
   });
   const finalResolvedContext = mergeContext(mergedFreshContext, afterHydration.patch.resolvedContext);
 
-  return updateVoiceSessionContext(currentSession.id, finalResolvedContext);
+  return updateVoiceSessionContext(currentSession.id, applyContextMetadata(finalResolvedContext, options.contextMetadata));
 }
 
 export async function createSessionForProfile(input: CreateSessionForProfileInput): Promise<VoiceSession> {
@@ -264,7 +296,10 @@ export async function createSessionForProfile(input: CreateSessionForProfileInpu
       payload: { profileSlug: profile.slug },
     });
 
-    session = await hydrateSessionContext(session, profile, input.calendarProvider);
+    session = await hydrateSessionContext(session, profile, input.calendarProvider, {
+      extraBindings: input.extraBindings,
+      contextMetadata: input.contextMetadata,
+    });
     appendVoiceEvent({
       sessionId: session.id,
       eventType: "voice.hydration_completed",
