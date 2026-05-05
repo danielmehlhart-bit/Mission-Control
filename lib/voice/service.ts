@@ -638,6 +638,8 @@ export async function recordRealtimeTurn(input: RecordRealtimeTurnInput): Promis
 }
 
 function buildVoiceMemoryMarkdown(session: VoiceSession, profile: VoiceProfile, turns: VoiceTurn[]): string {
+  const startedAt = session.startedAt;
+  const endedAt = new Date().toISOString();
   const transcript = turns
     .filter((turn) => turn.speaker === "user" || turn.speaker === "assistant")
     .map((turn) => `- **${turn.speaker === "user" ? "Daniel" : "Hermes"}:** ${turn.text}`)
@@ -646,8 +648,18 @@ function buildVoiceMemoryMarkdown(session: VoiceSession, profile: VoiceProfile, 
   const assistantTurns = turns.filter((turn) => turn.speaker === "assistant").map((turn) => turn.text);
 
   return [
+    "<!-- VOICE_CALL_MEMORY_V1 -->",
+    `type: voice_call`,
+    `channel: ${profile.slug}`,
+    `channel_label: ${profile.label}`,
+    `session_id: ${session.id}`,
+    `started_at: ${startedAt}`,
+    `ended_at: ${endedAt}`,
+    `turn_count: ${turns.length}`,
+    "",
     `**Channel:** ${profile.label} (${profile.slug})`,
     `**Voice Session:** ${session.id}`,
+    `**Zeitraum:** ${startedAt} bis ${endedAt}`,
     "",
     "### Kurzfassung",
     userTurns.length
@@ -659,6 +671,9 @@ function buildVoiceMemoryMarkdown(session: VoiceSession, profile: VoiceProfile, 
     "",
     "### Transcript",
     transcript || "_Kein Transcript vorhanden._",
+    "",
+    "### Anschluss fuer Telegram-Hermes",
+    "Wenn Daniel spaeter nach diesem Voice-Call, dem Gespraech von eben, gestern Abend oder diesem Channel fragt, nutze diesen Eintrag als primaeren Kontext.",
   ].join("\n");
 }
 

@@ -206,19 +206,31 @@ async function loadCalendarContext(
   }
 }
 
-async function loadGlobalMemoryContext(limit = 12) {
+async function loadGlobalMemoryContext(bindings: VoiceContextBindings, limit = 16) {
   try {
     const categories = await listMemoryByCategory();
     const corePriority = ["MEMORY.md", "SOUL.md", "USER.md", "IDENTITY.md", "RULES.md", "PROJECTS.md", "TOOLS.md"];
     const allFiles = categories.flatMap((category) => category.files);
+    const mode = typeof (bindings as Record<string, unknown>).mode === "string" ? String((bindings as Record<string, unknown>).mode) : "";
     const coreFiles = corePriority
       .map((name) => allFiles.find((file) => file.name === name))
       .filter((file): file is NonNullable<typeof file> => Boolean(file));
+    const modeFiles = allFiles
+      .filter((file) => {
+        const haystack = `${file.category} ${file.name} ${file.desc ?? ""} ${file.path}`.toLowerCase();
+        if (mode === "fitness") return haystack.includes("fitness") || haystack.includes("training") || haystack.includes("sport") || haystack.includes("ratawo");
+        if (mode === "luma") return haystack.includes("luma");
+        if (mode === "sales_support") return haystack.includes("sales") || haystack.includes("discovery") || haystack.includes("pipeline") || haystack.includes("account");
+        return false;
+      })
+      .sort((a, b) => b.modified.localeCompare(a.modified))
+      .slice(0, 5);
     const recentFiles = allFiles
       .filter((file) => !coreFiles.some((coreFile) => coreFile.path === file.path))
+      .filter((file) => !modeFiles.some((modeFile) => modeFile.path === file.path))
       .sort((a, b) => b.modified.localeCompare(a.modified))
-      .slice(0, Math.max(0, limit - coreFiles.length));
-    const files = [...coreFiles, ...recentFiles].slice(0, limit);
+      .slice(0, Math.max(0, limit - coreFiles.length - modeFiles.length));
+    const files = [...coreFiles, ...modeFiles, ...recentFiles].slice(0, limit);
 
     const hydrated = await Promise.all(files.map(async (file) => {
       try {
@@ -270,7 +282,7 @@ export async function loadVoiceContextSources(
     : [];
   const briefings = sourceNames.includes("briefings") ? await loadBriefingsContext(options.bindings, Math.min(limit, 5)) : [];
   const calendar = sourceNames.includes("calendar") ? await loadCalendarContext(options.bindings, calendarProvider, Math.min(limit, 5)) : [];
-  const globalMemory = sourceNames.includes("global_memory") ? await loadGlobalMemoryContext(Math.max(limit, 12)) : [];
+  const globalMemory = sourceNames.includes("global_memory") ? await loadGlobalMemoryContext(options.bindings, Math.max(limit, 16)) : [];
   const notes = sourceNames.includes("notes") ? await loadAccountNotesContext(options.bindings) : { content: null, updatedAt: null };
 
   return {
