@@ -229,6 +229,43 @@ function getRealtimeTranscriptPayload(event: Record<string, unknown>): string | 
   return null;
 }
 
+type RealtimeFunctionCall = {
+  callId: string;
+  name: string;
+  arguments: string;
+};
+
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+function extractRealtimeFunctionCalls(event: Record<string, unknown>): RealtimeFunctionCall[] {
+  const response = asRecord(event.response);
+  const output = Array.isArray(response?.output) ? response.output : [];
+  const calls: RealtimeFunctionCall[] = [];
+
+  for (const item of output) {
+    const record = asRecord(item);
+    if (!record || record.type !== "function_call") continue;
+    const callId = typeof record.call_id === "string" ? record.call_id : "";
+    const name = typeof record.name === "string" ? record.name : "";
+    const args = typeof record.arguments === "string" ? record.arguments : "{}";
+    if (callId && name) {
+      calls.push({ callId, name, arguments: args });
+    }
+  }
+
+  return calls;
+}
+
+function sendRealtimeEvent(dataChannel: RTCDataChannel, event: Record<string, unknown>) {
+  if (dataChannel.readyState !== "open") return false;
+  dataChannel.send(JSON.stringify(event));
+  return true;
+}
+
 function waitForIceGatheringComplete(peerConnection: RTCPeerConnection): Promise<void> {
   if (peerConnection.iceGatheringState === "complete") {
     return Promise.resolve();
@@ -943,6 +980,63 @@ export default function VoiceConsole() {
     realtimeAudioElementRef.current = null;
   }, []);
 
+  const handleRealtimeFunctionCalls = useCallback(async (
+    sessionId: string,
+    calls: RealtimeFunctionCall[],
+  ) => {
+    const dataChannel = realtimeDataChannelRef.current;
+    if (!dataChannel || dataChannel.readyState !== "open" || calls.length === 0) return;
+
+    setVoiceMode("thinking");
+    setLastActionLabel("Hermes schaut in den Memories nach");
+
+    for (const call of calls) {
+      try {
+        const toolResponse = await readJson<{ output: string; result?: unknown }>(
+          `/api/voice/sessions/${sessionId}/tools/execute`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              toolName: call.name,
+              callId: call.callId,
+              arguments: call.arguments,
+            }),
+          },
+        );
+
+        sendRealtimeEvent(dataChannel, {
+          type: "conversation.item.create",
+          item: {
+            type: "function_call_output",
+            call_id: call.callId,
+            output: toolResponse.output,
+          },
+        });
+      } catch (nextError) {
+        sendRealtimeEvent(dataChannel, {
+          type: "conversation.item.create",
+          item: {
+            type: "function_call_output",
+            call_id: call.callId,
+            output: JSON.stringify({
+              answerable: false,
+              error: nextError instanceof Error ? nextError.message : String(nextError),
+            }),
+          },
+        });
+      }
+    }
+
+    sendRealtimeEvent(dataChannel, {
+      type: "response.create",
+      response: {
+        instructions: "Antworte jetzt auf Basis der Tool-Ergebnisse. Wenn keine Quelle gefunden wurde, sage das klar und erfinde nichts.",
+      },
+    });
+    setLastActionLabel("Hermes verarbeitet Memory-Ergebnis");
+    void loadSessionDetail(sessionId).catch(() => {});
+  }, [loadSessionDetail]);
+
   const stopVoiceMode = useCallback(async () => {
     const sessionId = activeSessionIdRef.current;
     shouldRestartRecognitionRef.current = false;
@@ -1068,6 +1162,11 @@ export default function VoiceConsole() {
         }
       }
       if (eventType === "response.done") {
+        const functionCalls = realtimeEvent ? extractRealtimeFunctionCalls(realtimeEvent) : [];
+        if (functionCalls.length > 0) {
+          void handleRealtimeFunctionCalls(sessionId, functionCalls);
+          return;
+        }
         setVoiceMode("listening");
         setLastActionLabel("Hermes hört weiter zu");
         void loadSessionDetail(sessionId).catch(() => {});
@@ -1130,7 +1229,7 @@ export default function VoiceConsole() {
 
     setLastActionLabel("Realtime verbunden");
     setIsSubmitting(false);
-  }, [closeRealtimeConnection, loadSessionDetail, recordRealtimeTranscript]);
+  }, [closeRealtimeConnection, handleRealtimeFunctionCalls, loadSessionDetail, recordRealtimeTranscript]);
 
   const toggleVoiceMode = useCallback(async () => {
     if (isVoiceModeEnabled) {

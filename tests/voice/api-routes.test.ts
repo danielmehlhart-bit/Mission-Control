@@ -22,6 +22,7 @@ async function loadModules() {
   const contextSwitchRouteModule = await import("../../app/api/voice/sessions/[id]/context-switch/route.ts");
   const eventsRouteModule = await import("../../app/api/voice/sessions/[id]/events/route.ts");
   const telegramHandoffRouteModule = await import("../../app/api/voice/handoffs/telegram/route.ts");
+  const toolsExecuteRouteModule = await import("../../app/api/voice/sessions/[id]/tools/execute/route.ts");
 
   return {
     dbModule,
@@ -35,6 +36,7 @@ async function loadModules() {
     contextSwitchRouteModule,
     eventsRouteModule,
     telegramHandoffRouteModule,
+    toolsExecuteRouteModule,
   };
 }
 
@@ -47,6 +49,23 @@ async function seedVoiceFixtures() {
   await fsp.mkdir(process.env.BRIEFINGS_DIR!, { recursive: true });
   await fsp.mkdir(path.join(process.env.MEMORY_DIR!, "core"), { recursive: true });
   await fsp.writeFile(path.join(process.env.MEMORY_DIR!, "2026-04-29.md"), "# Voice Memory\nMission Control voice session.", "utf8");
+  await fsp.writeFile(
+    path.join(process.env.MEMORY_DIR!, "2026-05-05.md"),
+    [
+      "# 2026-05-05",
+      "",
+      "<!-- VOICE_CALL_MEMORY_V1 -->",
+      "type: voice_call",
+      "channel: luma",
+      "channel_label: Call LUMA",
+      "",
+      "Daniel fragte, ob Microsoft Authentication Postmark ersetzen kann.",
+      "Antwort-Kontext: Microsoft Auth ersetzt nicht automatisch Postmark fuer transaktionale E-Mails; Postmark bleibt fuer Versand und Zustellbarkeit relevant.",
+      "",
+      "Fitness-Notiz: Die letzte Ratawo wurde nicht eindeutig dokumentiert.",
+    ].join("\n"),
+    "utf8",
+  );
   await fsp.writeFile(path.join(process.env.BRIEFINGS_DIR!, "2026-04-29-luma-voice.html"), "<html><body>LUMA voice briefing</body></html>", "utf8");
 
   db.prepare("INSERT OR REPLACE INTO accounts (id, name, domain, status, color, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))")
@@ -488,4 +507,85 @@ test("POST /api/voice/handoffs/telegram reuses a stored bridge when only chat/th
   assert.equal(payload.handoff.matchedExistingBridge, true);
   assert.equal(payload.handoff.bridgeId, "vtb_seed");
   assert.deepEqual(payload.turns, []);
+});
+
+test("POST /api/voice/sessions/[id]/tools/execute searches memories with sources", async () => {
+  await seedVoiceFixtures();
+  const { sessionsRouteModule, toolsExecuteRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug, listVoiceSessionEvents } = sessionStoreModule;
+  const lumaProfile = getVoiceProfileBySlug("luma");
+  assert.ok(lumaProfile);
+
+  const createdResponse = await sessionsRouteModule.POST(
+    makeRequest("http://localhost/api/voice/sessions", {
+      method: "POST",
+      body: JSON.stringify({ profileId: lumaProfile!.id, transport: "web", autoGreeting: false }),
+    }),
+  );
+  const created = await createdResponse.json();
+
+  const response = await toolsExecuteRouteModule.POST(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/tools/execute`, {
+      method: "POST",
+      body: JSON.stringify({
+        toolName: "hermes_memory_search",
+        callId: "call_test",
+        arguments: JSON.stringify({
+          query: "Microsoft Auth Postmark",
+          channel: "luma",
+          timeRange: "all",
+        }),
+      }),
+    }),
+    { params: { id: created.session.id } },
+  );
+
+  assert.equal(response.status, 200);
+  const payload = await response.json();
+  assert.equal(payload.toolName, "hermes_memory_search");
+  assert.equal(payload.callId, "call_test");
+  assert.equal(payload.result.answerable, true);
+  assert.equal(payload.result.sources[0].path, "mem:2026-05-05.md");
+  assert.match(payload.output, /Postmark/);
+  assert.equal(
+    listVoiceSessionEvents(created.session.id).some((event: { eventType: string }) => event.eventType === "voice.tool_call_completed"),
+    true,
+  );
+});
+
+test("POST /api/voice/sessions/[id]/tools/execute returns not found without inventing", async () => {
+  await seedVoiceFixtures();
+  const { sessionsRouteModule, toolsExecuteRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const fitnessProfile = getVoiceProfileBySlug("fitness");
+  assert.ok(fitnessProfile);
+
+  const createdResponse = await sessionsRouteModule.POST(
+    makeRequest("http://localhost/api/voice/sessions", {
+      method: "POST",
+      body: JSON.stringify({ profileId: fitnessProfile!.id, transport: "web", autoGreeting: false }),
+    }),
+  );
+  const created = await createdResponse.json();
+
+  const response = await toolsExecuteRouteModule.POST(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/tools/execute`, {
+      method: "POST",
+      body: JSON.stringify({
+        toolName: "hermes_memory_search",
+        arguments: {
+          query: "phantom marathon wattage protocol",
+          channel: "fitness",
+          timeRange: "all",
+        },
+      }),
+    }),
+    { params: { id: created.session.id } },
+  );
+
+  assert.equal(response.status, 200);
+  const payload = await response.json();
+  assert.equal(payload.result.answerable, false);
+  assert.deepEqual(payload.result.sources, []);
+  assert.match(payload.result.summary, /keine belastbare Quelle/i);
 });

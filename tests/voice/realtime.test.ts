@@ -32,9 +32,12 @@ test("buildRealtimeSessionConfig creates German speech-to-speech config with pro
   assert.equal(config.audio.input.turn_detection.type, "semantic_vad");
   assert.equal(config.audio.input.turn_detection.create_response, true);
   assert.equal(config.audio.output.voice, "cedar");
+  assert.equal(config.tool_choice, "auto");
+  assert.equal(config.tools.some((tool) => tool.name === "hermes_memory_search"), true);
   assert.match(config.instructions, /Call Hermes|Hermes/i);
   assert.match(config.instructions, /Mission Control/i);
   assert.match(config.instructions, /maennlich|Hermes-Charakter/i);
+  assert.match(config.instructions, /hermes_memory_search/);
 });
 
 test("createRealtimeSdpAnswer posts multipart SDP and session config to OpenAI", async () => {

@@ -1,11 +1,14 @@
 import { appendVoiceEvent, getVoiceProfileById, getVoiceSession } from "./session-store";
 import type { VoiceProfile, VoiceSession } from "./types";
+import { VOICE_REALTIME_TOOLS, type VoiceRealtimeToolDefinition } from "./tools";
 
 export type RealtimeSessionConfig = {
   type: "realtime";
   model: string;
   instructions: string;
   output_modalities: ["audio"];
+  tools: VoiceRealtimeToolDefinition[];
+  tool_choice: "auto";
   audio: {
     input: {
       transcription: {
@@ -129,6 +132,9 @@ export function buildRealtimeInstructions(context: RealtimeSessionContext): stri
     "Evidence-Regel: Beantworte konkrete Fragen zu Daniels Vergangenheit, Trainings, Calls, Kunden, Zahlen oder Status nur aus dem Kontextdaten-Auszug oder aus dem laufenden Gespraech.",
     "Wenn eine Information nicht im Kontext steht, sage klar: 'Das sehe ich gerade nicht im Memory.' Erfinde keine Ratawo, Trainingsdaten, Deal-Staende, Meetings, Personen, Zahlen oder To-dos.",
     "Wenn du unsicher bist, nenne deine Unsicherheit kurz und frage nach einem Stichwort oder biete an, im passenden Memory/Channel nachzusehen.",
+    "Wenn Daniel dich bittet, etwas in Memories nachzusehen, einen alten Call zusammenzufassen, eine letzte Trainingseinheit/Ratawo zu finden oder 'researchen' sagt, nutze zuerst das Tool hermes_memory_search. Antworte erst nach dem Tool-Ergebnis faktisch.",
+    "Wenn hermes_memory_search keine Quellen findet, sage das klar. Nutze dann keine Vermutung als Ersatz.",
+    "Wenn ein Tool Quellen liefert, nenne die Antwort knapp und fuehre ein bis zwei relevante Quellenpfade natuerlich mit an.",
     "Nutze den aktuellen Mission-Control-Kontext aktiv, aber erfinde keine Daten.",
     buildProfileInstruction(context.profile),
     "Wenn Daniel zwischen Kontexten wie Sales Support, LUMA oder Fitness wechseln will, bestaetige kurz und bitte ihn, den Kontextbutton zu nutzen, falls der Wechsel nicht schon erfolgt ist.",
@@ -147,6 +153,8 @@ export function buildRealtimeSessionConfig(context: RealtimeSessionContext): Rea
     model: process.env.MC_VOICE_REALTIME_MODEL?.trim() || "gpt-realtime",
     instructions: buildRealtimeInstructions(context),
     output_modalities: ["audio"],
+    tools: VOICE_REALTIME_TOOLS,
+    tool_choice: "auto",
     audio: {
       input: {
         transcription: {
