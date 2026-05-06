@@ -589,3 +589,40 @@ test("POST /api/voice/sessions/[id]/tools/execute returns not found without inve
   assert.deepEqual(payload.result.sources, []);
   assert.match(payload.result.summary, /keine belastbare Quelle/i);
 });
+
+test("POST /api/voice/sessions/[id]/tools/execute does not treat generic fresh chat wording as evidence", async () => {
+  await seedVoiceFixtures();
+  const { sessionsRouteModule, toolsExecuteRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const mainProfile = getVoiceProfileBySlug("main");
+  assert.ok(mainProfile);
+
+  const createdResponse = await sessionsRouteModule.POST(
+    makeRequest("http://localhost/api/voice/sessions", {
+      method: "POST",
+      body: JSON.stringify({ profileId: mainProfile!.id, transport: "web", autoGreeting: false }),
+    }),
+  );
+  const created = await createdResponse.json();
+
+  const response = await toolsExecuteRouteModule.POST(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/tools/execute`, {
+      method: "POST",
+      body: JSON.stringify({
+        toolName: "hermes_memory_search",
+        arguments: {
+          query: "Was haben wir in den letzten zwei Stunden im Chat besprochen?",
+          channel: "main",
+          timeRange: "today",
+        },
+      }),
+    }),
+    { params: { id: created.session.id } },
+  );
+
+  assert.equal(response.status, 200);
+  const payload = await response.json();
+  assert.equal(payload.result.answerable, false);
+  assert.deepEqual(payload.result.sources, []);
+  assert.match(payload.result.summary, /Live-Chat-History/i);
+});

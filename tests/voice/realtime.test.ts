@@ -38,6 +38,7 @@ test("buildRealtimeSessionConfig creates German speech-to-speech config with pro
   assert.match(config.instructions, /Mission Control/i);
   assert.match(config.instructions, /maennlich|Hermes-Charakter/i);
   assert.match(config.instructions, /hermes_memory_search/);
+  assert.match(config.instructions, /Live-Chat-History/);
 });
 
 test("createRealtimeSdpAnswer posts multipart SDP and session config to OpenAI", async () => {

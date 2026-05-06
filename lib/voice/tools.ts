@@ -56,6 +56,51 @@ export type VoiceToolResult = VoiceMemorySearchResult | VoiceMemoryReadResult;
 const MAX_SEARCH_FILES = 90;
 const MAX_CONTENT_CHARS = 140_000;
 const MAX_EXCERPT_CHARS = 520;
+const QUERY_STOPWORDS = new Set([
+  "aber",
+  "about",
+  "alles",
+  "bitte",
+  "chat",
+  "chats",
+  "dann",
+  "das",
+  "den",
+  "der",
+  "die",
+  "dir",
+  "doch",
+  "eine",
+  "einen",
+  "einer",
+  "etwas",
+  "fuer",
+  "für",
+  "gehabt",
+  "gesagt",
+  "gerade",
+  "haben",
+  "hatten",
+  "ich",
+  "letzte",
+  "letzten",
+  "letzter",
+  "mal",
+  "mich",
+  "mir",
+  "mit",
+  "noch",
+  "schau",
+  "stunden",
+  "telegram",
+  "ueber",
+  "über",
+  "und",
+  "uns",
+  "was",
+  "wir",
+  "zwei",
+]);
 
 export const VOICE_REALTIME_TOOLS: VoiceRealtimeToolDefinition[] = [
   {
@@ -143,7 +188,9 @@ function tokenize(text: string): string[] {
     .normalize("NFKD")
     .replace(/[\u0300-\u036f]/g, "");
   const matches = normalized.match(/[a-z0-9äöüß]{3,}/gi) ?? [];
-  return Array.from(new Set(matches.map((token) => token.toLowerCase()))).slice(0, 16);
+  return Array.from(new Set(matches.map((token) => token.toLowerCase())))
+    .filter((token) => !QUERY_STOPWORDS.has(token))
+    .slice(0, 16);
 }
 
 function fileDate(file: MemFile): Date | null {
@@ -215,7 +262,7 @@ function scoreContent(file: MemFile, content: string, query: string, tokens: str
 
 function summarizeSearch(query: string, sources: VoiceToolSource[]): string {
   if (sources.length === 0) {
-    return `Ich habe in den Memory-Dateien nach "${query}" gesucht, aber keine belastbare Quelle gefunden.`;
+    return `Ich habe in den Memory-Dateien nach "${query}" gesucht, aber keine belastbare Quelle gefunden. Falls es um die letzten Stunden im Telegram-Chat geht: Diese Live-Chat-History ist nur verfuegbar, wenn sie bereits in Memory oder Handoff-Kontext synchronisiert wurde.`;
   }
   const top = sources[0];
   return `Ich habe ${sources.length} relevante Memory-Treffer zu "${query}" gefunden. Staerkster Treffer: ${top.path}.`;
