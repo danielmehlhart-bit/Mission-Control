@@ -1,5 +1,6 @@
 import { listMemoryByCategory, readMemoryFile, type MemFile } from "@/lib/fs";
 import { appendVoiceEvent, getVoiceProfileById, getVoiceSession } from "./session-store";
+import { listVoiceTelegramRecentContexts } from "./telegram-bridge";
 import type { VoiceProfileSlug, VoiceSession } from "./types";
 
 export type VoiceRealtimeToolDefinition = {
@@ -237,6 +238,13 @@ function findExcerpt(content: string, tokens: string[], focus?: string | null): 
     .trim();
 }
 
+function isFreshChatReviewQuery(query: string): boolean {
+  const normalized = query.toLowerCase();
+  const hasRecentWindow = /\b(gerade|eben|letzte[ nrs]?|letzten|halb(?:e|en)? stunde|halben stunde|stunde|stunden|heute)\b/.test(normalized);
+  const hasChatReference = /\b(chat|telegram|verlauf|besprochen|gesprochen|diskutiert|zusammenfass|zusammenfassen)\b/.test(normalized);
+  return hasRecentWindow && hasChatReference;
+}
+
 function scoreContent(file: MemFile, content: string, query: string, tokens: string[], channel: VoiceProfileSlug | "auto"): number {
   const haystack = `${file.path}\n${file.name}\n${file.desc ?? ""}\n${content}`.toLowerCase();
   let score = 0;
@@ -268,12 +276,76 @@ function summarizeSearch(query: string, sources: VoiceToolSource[]): string {
   return `Ich habe ${sources.length} relevante Memory-Treffer zu "${query}" gefunden. Staerkster Treffer: ${top.path}.`;
 }
 
+function resolvedContextObject(session: VoiceSession): Record<string, unknown> {
+  return session.resolvedContext && typeof session.resolvedContext === "object" && !Array.isArray(session.resolvedContext)
+    ? (session.resolvedContext as Record<string, unknown>)
+    : {};
+}
+
+function getHandoffSource(session: VoiceSession): { chatId?: string; threadId?: string } {
+  const context = resolvedContextObject(session);
+  const handoffSource = context.handoffSource && typeof context.handoffSource === "object" && !Array.isArray(context.handoffSource)
+    ? (context.handoffSource as Record<string, unknown>)
+    : {};
+  return {
+    ...(typeof handoffSource.chatId === "string" ? { chatId: handoffSource.chatId } : {}),
+    ...(typeof handoffSource.threadId === "string" ? { threadId: handoffSource.threadId } : {}),
+  };
+}
+
+function recentContextText(context: ReturnType<typeof listVoiceTelegramRecentContexts>[number]): string {
+  const messages = context.messages
+    .map((message) => `${message.author ?? message.role ?? "chat"}: ${message.text}`)
+    .join("\n");
+  return [
+    context.label ? `Label: ${context.label}` : "",
+    context.summary,
+    messages,
+  ].filter(Boolean).join("\n");
+}
+
+function scoreRecentContext(
+  context: ReturnType<typeof listVoiceTelegramRecentContexts>[number],
+  query: string,
+  tokens: string[],
+  channel: VoiceProfileSlug | "auto",
+): VoiceToolSource | null {
+  const content = recentContextText(context);
+  const pseudoFile: MemFile = {
+    name: context.label ?? "telegram-recent-context",
+    path: `telegram:${context.id}`,
+    category: "telegram_recent",
+    modified: context.updatedAt,
+    ...(context.label ? { desc: context.label } : {}),
+  };
+  if (isFreshChatReviewQuery(query)) {
+    return {
+      path: pseudoFile.path,
+      name: pseudoFile.name,
+      category: pseudoFile.category,
+      modified: context.updatedAt,
+      excerpt: findExcerpt(content, tokens, context.label ?? context.summary),
+      score: 30,
+    };
+  }
+  const score = scoreContent(pseudoFile, content, query, tokens, channel);
+  if (score <= 0) return null;
+  return {
+    path: pseudoFile.path,
+    name: pseudoFile.name,
+    category: pseudoFile.category,
+    modified: context.updatedAt,
+    excerpt: findExcerpt(content, tokens, query),
+    score: score + 12,
+  };
+}
+
 async function searchMemory(sessionId: string, args: Record<string, unknown>): Promise<VoiceMemorySearchResult> {
   const query = stringArg(args, "query");
   if (!query) {
     throw new Error("query required");
   }
-  const { channel: sessionChannel } = requireVoiceToolSession(sessionId);
+  const { session, channel: sessionChannel } = requireVoiceToolSession(sessionId);
   const channel = normalizeChannel(stringArg(args, "channel"), sessionChannel);
   const timeRange = stringArg(args, "timeRange") ?? "last_30_days";
   const includeVoiceCalls = boolArg(args, "includeVoiceCalls", true);
@@ -285,6 +357,27 @@ async function searchMemory(sessionId: string, args: Record<string, unknown>): P
     .slice(0, MAX_SEARCH_FILES);
 
   const hits: VoiceToolSource[] = [];
+  const handoff = getHandoffSource(session);
+  const recentContexts = [
+    ...listVoiceTelegramRecentContexts({
+      telegramChatId: handoff.chatId,
+      telegramThreadId: handoff.threadId,
+      profileSlug: channel === "auto" ? sessionChannel : channel,
+      limit: 6,
+    }),
+    ...(!handoff.chatId ? listVoiceTelegramRecentContexts({
+      profileSlug: channel === "auto" ? sessionChannel : channel,
+      limit: 6,
+    }) : []),
+  ];
+  const seenRecentContextIds = new Set<string>();
+  for (const context of recentContexts) {
+    if (seenRecentContextIds.has(context.id)) continue;
+    seenRecentContextIds.add(context.id);
+    const hit = scoreRecentContext(context, query, tokens, channel);
+    if (hit) hits.push(hit);
+  }
+
   for (const file of files) {
     try {
       const content = (await readMemoryFile(file.path)).slice(0, MAX_CONTENT_CHARS);
@@ -316,8 +409,8 @@ async function searchMemory(sessionId: string, args: Record<string, unknown>): P
     channel,
     sources,
     searched: {
-      fileCount: files.length,
-      categories: Array.from(new Set(files.map((file) => file.category))),
+      fileCount: files.length + seenRecentContextIds.size,
+      categories: Array.from(new Set([...files.map((file) => file.category), ...(seenRecentContextIds.size ? ["telegram_recent"] : [])])),
     },
   };
 }

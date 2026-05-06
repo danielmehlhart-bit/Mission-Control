@@ -22,6 +22,7 @@ async function loadModules() {
   const contextSwitchRouteModule = await import("../../app/api/voice/sessions/[id]/context-switch/route.ts");
   const eventsRouteModule = await import("../../app/api/voice/sessions/[id]/events/route.ts");
   const telegramHandoffRouteModule = await import("../../app/api/voice/handoffs/telegram/route.ts");
+  const telegramContextRouteModule = await import("../../app/api/voice/handoffs/telegram/context/route.ts");
   const toolsExecuteRouteModule = await import("../../app/api/voice/sessions/[id]/tools/execute/route.ts");
 
   return {
@@ -36,6 +37,7 @@ async function loadModules() {
     contextSwitchRouteModule,
     eventsRouteModule,
     telegramHandoffRouteModule,
+    telegramContextRouteModule,
     toolsExecuteRouteModule,
   };
 }
@@ -507,6 +509,60 @@ test("POST /api/voice/handoffs/telegram reuses a stored bridge when only chat/th
   assert.equal(payload.handoff.matchedExistingBridge, true);
   assert.equal(payload.handoff.bridgeId, "vtb_seed");
   assert.deepEqual(payload.turns, []);
+});
+
+test("POST /api/voice/handoffs/telegram/context stores recent chat context for voice search", async () => {
+  await seedVoiceFixtures();
+  const { telegramContextRouteModule, sessionsRouteModule, toolsExecuteRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+
+  const contextResponse = await telegramContextRouteModule.POST(
+    makeRequest("http://localhost/api/voice/handoffs/telegram/context", {
+      method: "POST",
+      body: JSON.stringify({
+        telegramChatId: "-100az",
+        profileSlug: "sales_support",
+        label: "A bis Z Architekten",
+        summary: "In den letzten 30 Minuten ging es um den Kunden A bis Z Architekten, Sales Support, naechste Schritte und Einordnung des Kundenkontexts.",
+        messages: [
+          { author: "Daniel", text: "Wir sprechen gerade ueber A bis Z Architekten." },
+          { author: "Hermes", text: "Sales-Kontext: A bis Z Architekten ist der konkrete Kunde." },
+        ],
+      }),
+    }),
+  );
+  assert.equal(contextResponse.status, 201);
+
+  const salesProfile = getVoiceProfileBySlug("sales_support");
+  assert.ok(salesProfile);
+  const createdResponse = await sessionsRouteModule.POST(
+    makeRequest("http://localhost/api/voice/sessions", {
+      method: "POST",
+      body: JSON.stringify({ profileId: salesProfile!.id, transport: "web", autoGreeting: false }),
+    }),
+  );
+  const created = await createdResponse.json();
+
+  const searchResponse = await toolsExecuteRouteModule.POST(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/tools/execute`, {
+      method: "POST",
+      body: JSON.stringify({
+        toolName: "hermes_memory_search",
+        arguments: {
+          query: "Was haben wir gerade eben in der letzten halben Stunde im Chat besprochen?",
+          channel: "sales_support",
+          timeRange: "today",
+        },
+      }),
+    }),
+    { params: { id: created.session.id } },
+  );
+
+  assert.equal(searchResponse.status, 200);
+  const payload = await searchResponse.json();
+  assert.equal(payload.result.answerable, true);
+  assert.equal(payload.result.sources[0].category, "telegram_recent");
+  assert.match(payload.output, /A bis Z Architekten/);
 });
 
 test("POST /api/voice/sessions/[id]/tools/execute searches memories with sources", async () => {

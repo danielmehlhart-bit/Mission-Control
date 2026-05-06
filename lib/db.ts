@@ -210,6 +210,21 @@ function initSchema(db: Database.Database): void {
       created_at        TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at        TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS voice_telegram_recent_contexts (
+      id                 TEXT PRIMARY KEY,
+      telegram_chat_id   TEXT NOT NULL,
+      telegram_thread_id TEXT,
+      profile_slug       TEXT,
+      label              TEXT,
+      summary            TEXT NOT NULL DEFAULT '',
+      messages_json      TEXT NOT NULL DEFAULT '[]',
+      metadata_json      TEXT NOT NULL DEFAULT '{}',
+      observed_from      TEXT,
+      observed_to        TEXT,
+      created_at         TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at         TEXT NOT NULL DEFAULT (datetime('now'))
+    );
   `);
 
   // Spalten nachträglich hinzufügen (ALTER TABLE IF NOT EXISTS column nicht in SQLite → try/catch)
@@ -249,6 +264,10 @@ function initSchema(db: Database.Database): void {
       ON voice_telegram_bridges(telegram_chat_id, COALESCE(telegram_thread_id, ''));
     CREATE INDEX IF NOT EXISTS idx_voice_telegram_bridges_profile
       ON voice_telegram_bridges(profile_slug, updated_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_voice_telegram_recent_contexts_chat_thread
+      ON voice_telegram_recent_contexts(telegram_chat_id, COALESCE(telegram_thread_id, ''), updated_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_voice_telegram_recent_contexts_profile
+      ON voice_telegram_recent_contexts(profile_slug, updated_at DESC);
   `);
   db.exec("SELECT 1"); // flush
 

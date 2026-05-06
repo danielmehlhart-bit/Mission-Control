@@ -19,6 +19,21 @@ type VoiceTelegramBridgeRow = {
   updated_at: string;
 };
 
+type VoiceTelegramRecentContextRow = {
+  id: string;
+  telegram_chat_id: string;
+  telegram_thread_id: string | null;
+  profile_slug: string | null;
+  label: string | null;
+  summary: string;
+  messages_json: string;
+  metadata_json: string;
+  observed_from: string | null;
+  observed_to: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export type VoiceTelegramBridge = {
   id: string;
   telegramChatId: string;
@@ -34,6 +49,28 @@ export type VoiceTelegramBridge = {
   updatedAt: string;
 };
 
+export type VoiceTelegramRecentContextMessage = {
+  role?: string;
+  author?: string;
+  text: string;
+  createdAt?: string;
+};
+
+export type VoiceTelegramRecentContext = {
+  id: string;
+  telegramChatId: string;
+  telegramThreadId?: string;
+  profileSlug?: VoiceProfileSlug;
+  label?: string;
+  summary: string;
+  messages: VoiceTelegramRecentContextMessage[];
+  metadata: Record<string, unknown>;
+  observedFrom?: string;
+  observedTo?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type UpsertVoiceTelegramBridgeInput = {
   telegramChatId: string;
   telegramThreadId?: string;
@@ -44,6 +81,18 @@ export type UpsertVoiceTelegramBridgeInput = {
   projectId?: string;
   projectSlug?: string;
   metadata?: Record<string, unknown>;
+};
+
+export type UpsertVoiceTelegramRecentContextInput = {
+  telegramChatId: string;
+  telegramThreadId?: string;
+  profileSlug?: VoiceProfileSlug;
+  label?: string;
+  summary: string;
+  messages?: VoiceTelegramRecentContextMessage[];
+  metadata?: Record<string, unknown>;
+  observedFrom?: string;
+  observedTo?: string;
 };
 
 export type CreateTelegramVoiceHandoffInput = {
@@ -94,6 +143,45 @@ function mapBridge(row: VoiceTelegramBridgeRow): VoiceTelegramBridge {
     ...(row.project_id ? { projectId: row.project_id } : {}),
     ...(row.project_slug ? { projectSlug: row.project_slug } : {}),
     metadata: parseJsonObject(row.metadata_json),
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+function parseMessages(value: string | null | undefined): VoiceTelegramRecentContextMessage[] {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .map((message) => message && typeof message === "object" && !Array.isArray(message)
+        ? (message as Record<string, unknown>)
+        : null)
+      .filter((message): message is Record<string, unknown> => !!message)
+      .map((message) => ({
+        ...(typeof message.role === "string" ? { role: message.role } : {}),
+        ...(typeof message.author === "string" ? { author: message.author } : {}),
+        text: typeof message.text === "string" ? message.text : "",
+        ...(typeof message.createdAt === "string" ? { createdAt: message.createdAt } : {}),
+      }))
+      .filter((message) => message.text.trim());
+  } catch {
+    return [];
+  }
+}
+
+function mapRecentContext(row: VoiceTelegramRecentContextRow): VoiceTelegramRecentContext {
+  return {
+    id: row.id,
+    telegramChatId: row.telegram_chat_id,
+    ...(row.telegram_thread_id ? { telegramThreadId: row.telegram_thread_id } : {}),
+    ...(row.profile_slug ? { profileSlug: row.profile_slug as VoiceProfileSlug } : {}),
+    ...(row.label ? { label: row.label } : {}),
+    summary: row.summary,
+    messages: parseMessages(row.messages_json),
+    metadata: parseJsonObject(row.metadata_json),
+    ...(row.observed_from ? { observedFrom: row.observed_from } : {}),
+    ...(row.observed_to ? { observedTo: row.observed_to } : {}),
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -197,6 +285,66 @@ export function upsertVoiceTelegramBridge(input: UpsertVoiceTelegramBridgeInput)
 
   const row = db.prepare("SELECT * FROM voice_telegram_bridges WHERE id = ?").get(id) as VoiceTelegramBridgeRow;
   return mapBridge(row);
+}
+
+export function upsertVoiceTelegramRecentContext(input: UpsertVoiceTelegramRecentContextInput): VoiceTelegramRecentContext {
+  const db = getDb();
+  const id = generateId("vtrc");
+  db.prepare(
+    `INSERT INTO voice_telegram_recent_contexts (
+      id, telegram_chat_id, telegram_thread_id, profile_slug, label,
+      summary, messages_json, metadata_json, observed_from, observed_to, created_at, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))`,
+  ).run(
+    id,
+    input.telegramChatId,
+    input.telegramThreadId ?? null,
+    input.profileSlug ?? null,
+    input.label ?? null,
+    input.summary.trim(),
+    JSON.stringify((input.messages ?? []).slice(-80)),
+    JSON.stringify(input.metadata ?? {}),
+    input.observedFrom ?? null,
+    input.observedTo ?? null,
+  );
+
+  const row = db.prepare("SELECT * FROM voice_telegram_recent_contexts WHERE id = ?").get(id) as VoiceTelegramRecentContextRow;
+  return mapRecentContext(row);
+}
+
+export function listVoiceTelegramRecentContexts(input: {
+  telegramChatId?: string;
+  telegramThreadId?: string;
+  profileSlug?: VoiceProfileSlug;
+  limit?: number;
+} = {}): VoiceTelegramRecentContext[] {
+  const db = getDb();
+  const limit = Math.max(1, Math.min(input.limit ?? 8, 20));
+  const clauses: string[] = [];
+  const params: unknown[] = [];
+
+  if (input.telegramChatId) {
+    clauses.push("telegram_chat_id = ?");
+    params.push(input.telegramChatId);
+    if (input.telegramThreadId) {
+      clauses.push("telegram_thread_id = ?");
+      params.push(input.telegramThreadId);
+    }
+  }
+  if (input.profileSlug) {
+    clauses.push("(profile_slug = ? OR profile_slug IS NULL)");
+    params.push(input.profileSlug);
+  }
+
+  const where = clauses.length ? `WHERE ${clauses.join(" AND ")}` : "";
+  const rows = db.prepare(
+    `SELECT * FROM voice_telegram_recent_contexts
+     ${where}
+     ORDER BY updated_at DESC
+     LIMIT ?`,
+  ).all(...params, limit) as VoiceTelegramRecentContextRow[];
+
+  return rows.map(mapRecentContext);
 }
 
 export async function createTelegramVoiceHandoff(

@@ -17,7 +17,7 @@ export type RealtimeSessionConfig = {
       turn_detection: {
         type: "semantic_vad";
         eagerness: "auto";
-        create_response: true;
+        create_response: boolean;
         interrupt_response: true;
       };
     };
@@ -164,7 +164,7 @@ export function buildRealtimeSessionConfig(context: RealtimeSessionContext): Rea
         turn_detection: {
           type: "semantic_vad",
           eagerness: "auto",
-          create_response: true,
+          create_response: false,
           interrupt_response: true,
         },
       },

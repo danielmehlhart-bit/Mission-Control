@@ -266,6 +266,13 @@ function sendRealtimeEvent(dataChannel: RTCDataChannel, event: Record<string, un
   return true;
 }
 
+function needsFreshChatContextPreflight(text: string): boolean {
+  const normalized = text.toLowerCase();
+  const hasRecentWindow = /\b(gerade|eben|letzte[ nrs]?|letzten|halb(?:e|en)? stunde|halben stunde|stunde|stunden|heute)\b/.test(normalized);
+  const hasChatReference = /\b(chat|telegram|verlauf|besprochen|gesprochen|diskutiert|zusammenfass|zusammenfassen)\b/.test(normalized);
+  return hasRecentWindow && hasChatReference;
+}
+
 function waitForIceGatheringComplete(peerConnection: RTCPeerConnection): Promise<void> {
   if (peerConnection.iceGatheringState === "complete") {
     return Promise.resolve();
@@ -1037,6 +1044,61 @@ export default function VoiceConsole() {
     void loadSessionDetail(sessionId).catch(() => {});
   }, [loadSessionDetail]);
 
+  const createRealtimeResponseForTranscript = useCallback(async (sessionId: string, transcript: string) => {
+    const dataChannel = realtimeDataChannelRef.current;
+    if (!dataChannel || dataChannel.readyState !== "open") return;
+
+    if (!needsFreshChatContextPreflight(transcript)) {
+      sendRealtimeEvent(dataChannel, { type: "response.create" });
+      return;
+    }
+
+    setVoiceMode("thinking");
+    setLastActionLabel("Hermes prüft frischen Chat-Kontext");
+
+    try {
+      const toolResponse = await readJson<{ output: string; result?: { answerable?: boolean } }>(
+        `/api/voice/sessions/${sessionId}/tools/execute`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            toolName: "hermes_memory_search",
+            arguments: {
+              query: transcript,
+              timeRange: "today",
+              includeVoiceCalls: true,
+            },
+          }),
+        },
+      );
+
+      const answerable = toolResponse.result?.answerable === true;
+      sendRealtimeEvent(dataChannel, {
+        type: "response.create",
+        response: {
+          instructions: answerable
+            ? [
+                "Beantworte Daniels frische Chat-Rueckblick-Frage ausschliesslich anhand dieses Preflight-Kontexts.",
+                "Wenn der Kontext A bis Z Architekten oder andere konkrete Kunden nennt, nenne genau diese und keine anderen.",
+                `Preflight-Kontext: ${toolResponse.output}`,
+              ].join("\n")
+            : [
+                "Antworte kurz und exakt: Ich sehe den frischen Telegram-/Chat-Verlauf der letzten halben Stunde im Voice-Call gerade nicht belegt. Ich will da nichts erfinden.",
+                "Fuege danach hinzu: Wenn Hermes/Gateway mir den Recent-Chat-Kontext per Handoff uebergibt, kann ich ihn hier direkt zusammenfassen.",
+                `Preflight-Kontext ohne Treffer: ${toolResponse.output}`,
+              ].join("\n"),
+        },
+      });
+    } catch {
+      sendRealtimeEvent(dataChannel, {
+        type: "response.create",
+        response: {
+          instructions: "Antworte kurz: Ich konnte den frischen Chat-Kontext gerade technisch nicht laden und will dazu nichts erfinden.",
+        },
+      });
+    }
+  }, []);
+
   const stopVoiceMode = useCallback(async () => {
     const sessionId = activeSessionIdRef.current;
     shouldRestartRecognitionRef.current = false;
@@ -1147,6 +1209,7 @@ export default function VoiceConsole() {
         if (transcript) {
           setLiveTranscript(transcript);
           void recordRealtimeTranscript(sessionId, "user", transcript, { realtimeEvent: eventType });
+          void createRealtimeResponseForTranscript(sessionId, transcript);
         }
       }
       if (eventType === "response.created") {
@@ -1229,7 +1292,7 @@ export default function VoiceConsole() {
 
     setLastActionLabel("Realtime verbunden");
     setIsSubmitting(false);
-  }, [closeRealtimeConnection, handleRealtimeFunctionCalls, loadSessionDetail, recordRealtimeTranscript]);
+  }, [closeRealtimeConnection, createRealtimeResponseForTranscript, handleRealtimeFunctionCalls, loadSessionDetail, recordRealtimeTranscript]);
 
   const toggleVoiceMode = useCallback(async () => {
     if (isVoiceModeEnabled) {
