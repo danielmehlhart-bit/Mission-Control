@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMA Agentic Sales Ops — Briefing</title>
+  <style>
+    *{box-sizing:border-box} body{margin:0;background:#141720;color:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.55} a{color:#8bd3ff;text-decoration:none} .hero{padding:52px 22px 34px;background:radial-gradient(circle at 10% 0%,#7c3aed55,transparent 34%),linear-gradient(135deg,#151a27 0%,#242b3d 60%,#10131c 100%);border-bottom:1px solid #2b3347}.wrap{max-width:1080px;margin:0 auto;padding:0 20px}.label{color:#a6b0c3;text-transform:uppercase;letter-spacing:.16em;font-size:12px;font-weight:800}.hero h1{font-size:clamp(30px,5vw,58px);line-height:1.02;margin:14px 0 16px}.hero p{max-width:820px;color:#cbd5e1;font-size:18px}.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.pill{border:1px solid #364159;background:#1a2030;border-radius:999px;padding:7px 11px;color:#cbd5e1;font-size:13px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}.card{background:#1a2030;border:1px solid #2b3347;border-radius:18px;padding:20px;box-shadow:0 10px 30px #00000022}.card h3{margin:0 0 8px;font-size:17px}.card p,.card li{color:#c5cede;font-size:14px}.card ul{padding-left:18px;margin:8px 0 0}.section{padding:32px 0}.section h2{font-size:25px;margin:0 0 14px}.tldr{margin-top:-18px;background:#f8fafc;color:#101827;border-radius:20px;padding:22px;border:1px solid #fff}.tldr li{margin:7px 0}.badge{display:inline-block;border-radius:999px;padding:3px 9px;font-weight:800;font-size:12px}.green{background:#123c2a;color:#7ef0b2;border:1px solid #236744}.yellow{background:#44350d;color:#ffd76a;border:1px solid #7a5b16}.red{background:#4b1620;color:#ff9aaa;border:1px solid #783041}.blue{background:#12324a;color:#8bd3ff;border:1px solid #275676}.table{overflow:auto;border-radius:18px;border:1px solid #2b3347;background:#1a2030}table{width:100%;border-collapse:collapse;min-width:780px}th,td{text-align:left;vertical-align:top;padding:13px 14px;border-bottom:1px solid #2b3347;font-size:14px}th{color:#a6b0c3;background:#151a27;text-transform:uppercase;font-size:12px;letter-spacing:.08em}td{color:#dbe5f3}.steps{counter-reset:step;display:grid;gap:13px}.step{display:grid;grid-template-columns:42px 1fr;gap:14px;align-items:start;background:#1a2030;border:1px solid #2b3347;border-radius:18px;padding:16px}.step:before{counter-increment:step;content:counter(step);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#7c3aed;color:#fff;font-weight:900}.step h3{margin:0 0 5px;font-size:16px}.step p{margin:0;color:#c5cede;font-size:14px}.quote{border-left:4px solid #8bd3ff;background:#172233;border-radius:14px;padding:16px;color:#dbeafe}.warn{border-color:#7a5b16;background:#211c12}.danger{border-color:#783041;background:#241820}.small{font-size:13px;color:#a6b0c3}.sources{border-top:1px solid #2b3347;margin-top:28px;padding-top:20px}.sources li{margin:8px 0;color:#c5cede}.footer{padding:36px 0;color:#7e899c;text-align:center;font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="hero"><div class="wrap">
+    <div class="label">LUMA · Agentic Sales Ops · 07.05.2026</div>
+    <h1>Von Reminder-Crons zu einem echten GTM-Agenten-System</h1>
+    <p>Kurze Sichtung deiner bestehenden Sales-Support-Workflows plus externer Horizont: Wie LUMA-Vertrieb, Pilot-Activation und Mission-Control-Pflege deutlich agentischer werden können.</p>
+    <div class="meta"><span class="pill">Sales Support Channel / Topic 23</span><span class="pill">Mailbox daniel@luma-app.io</span><span class="pill">Mission Control</span><span class="pill">Usage Telemetry</span></div>
+  </div></div>
+
+  <main class="wrap">
+    <section class="section"><div class="tldr">
+      <h2>⚡ TL;DR</h2>
+      <ul>
+        <li><strong>Du hast die richtigen Bausteine bereits:</strong> Mailbox-Monitoring, Usage Reports, MC-Updates, Tracker-State, tägliche Mini-Briefings.</li>
+        <li><strong>Der Engpass ist nicht Tooling, sondern Orchestrierung:</strong> mehrere Jobs sind pausiert oder liefern Fehlerstatus; der aktive Mail-State-Monitor läuft alle 10 Minuten, meldet aber aktuell Fehler im Scheduler trotz lokal lauffähigem Script.</li>
+        <li><strong>Der nächste Sprung:</strong> nicht mehr „mehr Reminder“, sondern ein zentraler <em>Deal-Radar</em>, der Mail, Usage, Kalender, MC und Lead-Signale zu einer priorisierten Next-Best-Action verbindet.</li>
+        <li><strong>Der Markt läuft genau in diese Richtung:</strong> Common Room, Clay, HubSpot, Salesforce und Lindy positionieren AI Agents für Prospecting, CRM-Hygiene, Signal-Erkennung und Sales-Actions.</li>
+        <li><strong>Empfehlung:</strong> erst Stabilisierung, dann 3 Agenten bauen: Deal-Radar, Pilot-Health, Reply/Draft-Agent. Danach erst autonome MC-/Mail-Aktionen mit Guardrails.</li>
+      </ul>
+    </div></section>
+
+    <section class="section">
+      <h2>1. Ist-Zustand deiner LUMA-Workflows</h2>
+      <div class="grid">
+        <div class="card"><h3>✅ Was schon stark ist</h3><p>Du hast bereits ein echtes Operations-Gerüst, nicht nur Chat-Erinnerungen.</p><ul><li>Weekly Usage Report freitags 09:00 in <code>telegram:-1003998265477:23</code></li><li>Weekly GTM Pulse freitags 18:00 im selben Sales-Topic</li><li>Daily Mini Briefing für PE Stab, Studio Pampa, A-Z Architekten</li><li>Mailbox-Scripts können LUMA-Mailbox, MC und Tracker zusammenführen</li></ul></div>
+        <div class="card"><h3>⚠️ Fragile Stellen</h3><p>Die Architektur ist schon agentisch gedacht, aber noch nicht robust orchestriert.</p><ul><li>Mehrere Legacy-Jobs sind pausiert: Inbox 09/13/17:30, Commitment Reminder, Open-Todo Digest</li><li><code>LUMA Unified Sales Sync</code> und <code>Sent Mail Commitments Sync</code> sind pausiert mit letztem Fehlerstatus</li><li>Aktiver <code>LUMA Unified Mail State Monitor</code> läuft alle 10 Min, hat aber <code>last_status: error</code></li><li>Tracker enthält nur wenige priorisierte Accounts; MC hat 127 Accounts / 140 People</li></ul></div>
+        <div class="card"><h3>🔥 Hidden Gold</h3><p>Das lokale Script <code>luma_mail_state.py</code> läuft manuell erfolgreich und erkennt bereits hochwertige Signale.</p><ul><li>35 getrackte Threads</li><li>15 offene Reply-Threads</li><li>2 offene Commitments</li><li>1 stale Commitment</li><li>1 unmatched reply thread</li></ul></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>2. Diagnose: Wo du heute Zeit verlierst</h2>
+      <div class="table"><table><thead><tr><th>Bereich</th><th>Heute</th><th>Agentischer Zielzustand</th><th>Priorität</th></tr></thead><tbody>
+        <tr><td><strong>Inbox</strong></td><td>Thread-Erkennung vorhanden, aber Ausgabe/Status noch instabil.</td><td>Nur echte Deltas: „Dieser Kunde braucht heute Antwort — hier ist Draft + Begründung.“</td><td><span class="badge red">P0</span></td></tr>
+        <tr><td><strong>Usage</strong></td><td>Wöchentlicher Report getrennt von Sales-Mail-Kontext.</td><td>Usage-Änderung triggert konkrete Sales-Aktion: Reaktivierung, Upsell, Check-in, Onboarding-Hilfe.</td><td><span class="badge red">P0</span></td></tr>
+        <tr><td><strong>Mission Control</strong></td><td>MC kann per API aktualisiert werden; Sync ist aber noch vorsichtig/teilweise pausiert.</td><td>MC wird zum Single Source of Truth: Agent schreibt Fakten, Aktivitäten, nächste Schritte, aber keine spekulativen Stage-Wechsel.</td><td><span class="badge yellow">P1</span></td></tr>
+        <tr><td><strong>Lead Sourcing</strong></td><td>Instantly-Kampagne läuft; Research vermutlich separat.</td><td>Signal-Agent beobachtet Architekturbüros nach Triggern: neue Projekte, Stellen, Awards, Website-Änderungen, Social Posts.</td><td><span class="badge yellow">P1</span></td></tr>
+        <tr><td><strong>Founder Attention</strong></td><td>Viele Telegram-Pings, einige Reminder, mehrere Threads.</td><td>Ein tägliches GTM-Cockpit: Top 3 Aktionen, Antwortentwürfe, Risiken, „heute nicht anfassen“.</td><td><span class="badge green">Quick Win</span></td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section class="section">
+      <h2>3. Was draußen passiert</h2>
+      <div class="grid">
+        <div class="card"><h3>Common Room: Buyer Intelligence + Actions</h3><p>Positioniert GTM rund um Signale, Dark Funnel, Product-led Sales, Prospector, DataAgent und automatisierte Actions. Spannend für LUMA: „CRM aligned with reality“ als Leitmotiv.</p></div>
+        <div class="card"><h3>Clay: Daten + Agenten + Sequencing</h3><p>Clay bündelt Enrichment, Signals/Intent, „Claygent“, native Sequencer und natürliche Sprache für GTM-Workflows. Für LUMA relevant: kleine, hochpersonalisierte Architekten-Listen statt Massen-SDR.</p></div>
+        <div class="card"><h3>HubSpot/Salesforce: AI Sales Agents werden Standard</h3><p>HubSpot bietet einen Prospecting Agent; Salesforce beschreibt Agentforce für Prospecting, Lead Engagement, Pipeline Management und Account Growth.</p></div>
+        <div class="card"><h3>Lindy/Zapier-Klasse: Workflow-Agenten</h3><p>Agenten bauen Listen, senden Outreach, coachen Sales und halten CRM aktuell. Für dich eher Inspiration als zwingende Tool-Wahl, weil du mit Hermes/MC/GWS schon eine eigene Agentenfläche hast.</p></div>
+      </div>
+      <p class="small">X/Twitter-Recherche via Grok lieferte vor allem das erwartbare Markt-Narrativ: AI SDR, RevOps Agents, Clay/Common Room/Unify-Stack, starke Begeisterung plus Skepsis bei Halluzinationen. Einzelne Tweet-Details wirkten nicht belastbar genug für harte Quellen; ich würde sie nur als Stimmungsbild, nicht als Faktengrundlage verwenden.</p>
+    </section>
+
+    <section class="section">
+      <h2>4. Ideen über den Horizont</h2>
+      <div class="steps">
+        <div class="step"><div><h3>Deal-Radar-Agent</h3><p>Jeden Morgen: kombiniert MC, Gmail, Usage, Kalender und Tracker. Output: „Top 5 Accounts heute“, jeweils mit Grund, Risiko, vorgeschlagener Aktion und fertigem Draft.</p></div></div>
+        <div class="step"><div><h3>Pilot-Health-Agent</h3><p>Für Weber, HAMM, PE Stab, Studio Pampa, A-Z: bewertet Adoption nicht nur nach Logins, sondern nach Zeit seit letztem Signal, aktiven Nutzern, Aufgaben, Mailreaktion und Produkt-Blockern.</p></div></div>
+        <div class="step"><div><h3>Reply-or-Ignore-Agent</h3><p>Jeder offene Reply-Thread wird klassifiziert: Antwort nötig, später erinnern, schließen, MC aktualisieren. Bei Antwort nötig: Draft in Daniel-Stimme + klare Freigabe-Frage.</p></div></div>
+        <div class="step"><div><h3>Account-Dossier vor jedem Call</h3><p>30 Minuten vor LUMA-Terminen: Mini-Briefing mit Kontaktrolle, letzter Mail, Usage, offenen Todos, wahrscheinlichstem Pain, Demo-Fokus und 3 Fragen.</p></div></div>
+        <div class="step"><div><h3>Architecture-Firm Signal Scout</h3><p>Wöchentlich für Hessen: neue Stellenanzeigen, Wettbewerbsgewinne, Bauprojekte, Presse, Website-Änderungen. Daraus konkrete Trigger-Mails an 5–10 Büros statt generischer Cold Outreach.</p></div></div>
+        <div class="step"><div><h3>Activation Playbook Agent</h3><p>Wenn ein Pilot 3–5 Tage keine Nutzung zeigt: automatische Diagnose und eine passende Intervention: Kurzvideo, Mail, Call-Vorschlag, Feature-Hinweis oder interne Bug-/UX-Aufgabe.</p></div></div>
+        <div class="step"><div><h3>MC Data Steward</h3><p>Ein Agent hält Account-Notes, People, Deals, Activities sauber. Guardrail: Fakten aus Mail/Call/Usage ja; Stage/Probability nur bei hoher Evidenz oder Daniels OK.</p></div></div>
+        <div class="step"><div><h3>Founder Voice Digest</h3><p>Täglich 18:10: 4 Minuten Audio: Was ist passiert, was ist riskant, was muss Daniel morgen tun, welche Dinge kann er ignorieren.</p></div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>5. Roadmap: 3 Level</h2>
+      <div class="grid">
+        <div class="card"><span class="badge blue">Level 1 · Stabilisieren</span><h3>1–2 Tage</h3><ul><li>Fehlerstatus beim aktiven <code>LUMA Unified Mail State Monitor</code> fixen</li><li>Pausierte Jobs endgültig konsolidieren statt Zombie-Jobs behalten</li><li>Ein klares Sales-State-JSON als Quelle: Account, State, next_check, last_signal, open_threads, usage_health</li><li>Telegram-Ausgabe: nur Deltas, sonst <code>[SILENT]</code></li></ul></div>
+        <div class="card"><span class="badge yellow">Level 2 · Augmentieren</span><h3>1 Woche</h3><ul><li>Deal-Radar Daily um 08:15</li><li>Reply-or-Ignore Klassifikation für offene Threads</li><li>Usage Report mit Next-Best-Action verbinden</li><li>Call-Prep automatisch aus Kalender + MC + Gmail</li></ul></div>
+        <div class="card"><span class="badge green">Level 3 · Autonomisieren</span><h3>2–4 Wochen</h3><ul><li>MC-Aktivitäten automatisch schreiben</li><li>Follow-up-Drafts automatisch vorbereiten</li><li>Lead-Signal-Scout für Hessen</li><li>Autonome Low-Risk-Actions: Erinnerungen setzen, CRM-Hygiene, Briefings erstellen</li></ul></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>6. Konkrete nächste Builds</h2>
+      <div class="quote"><strong>Meine Empfehlung:</strong> Nicht direkt 10 neue Agenten bauen. Erst den bestehenden Mail-State-Monitor zum zuverlässigen Deal-Radar ausbauen. Das ist der Hebel, weil er schon Gmail + MC + Labels + Commitments sieht.</div>
+      <div class="steps" style="margin-top:16px">
+        <div class="step"><div><h3>P0: Scheduler-Fehler reproduzieren/fixen</h3><p>Manuell laufen <code>luma_mail_state.py</code> und <code>luma_sales_unified_sync_context.py</code>. Der Cron zeigt trotzdem Fehler. Ursache dürfte Prompt/Toolset/Output-Verarbeitung oder Schreibrechte/Timeout sein.</p></div></div>
+        <div class="step"><div><h3>P0: Deal-Radar Output definieren</h3><p>Ein kompaktes Schema: Account, why_now, evidence, recommended_action, draft_needed, mc_update_needed, urgency.</p></div></div>
+        <div class="step"><div><h3>P1: Usage + Mail verknüpfen</h3><p>Wenn 0 Logins + offene Antwort: anderer Follow-up als bei hoher Nutzung + stillem Champion. Das macht LUMA-Sales plötzlich sehr scharf.</p></div></div>
+        <div class="step"><div><h3>P1: Täglicher Voice-Digest</h3><p>18:10 als Audio statt weiterer Text-Wand: Fokus auf Top 3 Entscheidungen für morgen.</p></div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>7. Guardrails</h2>
+      <div class="grid">
+        <div class="card warn"><h3>⚖️ Human approval für externe Mails</h3><p>Der Agent darf Drafts schreiben, aber keine Kundenmail ohne Daniels OK versenden.</p></div>
+        <div class="card warn"><h3>🧾 Faktenpflicht für MC</h3><p>MC-Updates nur aus Mail, Call, Usage oder expliziter Notiz. Keine weichen Vermutungen als CRM-Fakt.</p></div>
+        <div class="card danger"><h3>🚫 Kein Reminder-Spam</h3><p>Wenn kein echter Delta, dann exakt <code>[SILENT]</code>. Daniel braucht weniger Noise, nicht mehr.</p></div>
+      </div>
+    </section>
+
+    <section class="sources">
+      <h2>Quellen & geprüfte Signale</h2>
+      <ol>
+        <li><a href="https://www.commonroom.io/">Common Room — Pipeline powered by buyer intelligence</a></li>
+        <li><a href="https://www.clay.com/">Clay — GTM workflows, Claygent, Signals, Sequencer</a></li>
+        <li><a href="https://www.hubspot.com/products/sales/ai-prospecting-agent">HubSpot — Breeze Prospecting Agent</a></li>
+        <li><a href="https://www.salesforce.com/sales/ai-sales-agent/">Salesforce — Agentforce Sales / AI Sales Agent</a></li>
+        <li><a href="https://www.lindy.ai/solutions/sales">Lindy — AI Sales Agents</a></li>
+        <li><a href="https://www.gartner.com/en/newsroom/press-releases/2025-08-26-gartner-predicts-40-percent-of-enterprise-apps-will-feature-task-specific-ai-agents-by-2026-up-from-less-than-5-percent-in-2025">Gartner — Task-specific AI agents in enterprise apps</a></li>
+        <li><a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai">McKinsey — State of AI / agent experimentation</a></li>
+        <li>Lokale Hermes-Sichtung: Cronjob-Liste, <code>luma_mail_state.py</code>, <code>luma_sales_unified_sync_context.py</code>, <code>sales_post_onboarding_tracker.json</code> am 07.05.2026.</li>
+      </ol>
+    </section>
+  </main>
+  <div class="footer">Briefing erstellt von Hatti · LUMA GTM · 07.05.2026</div>
+</body>
+</html>
