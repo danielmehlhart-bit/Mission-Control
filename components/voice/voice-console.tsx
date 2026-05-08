@@ -433,6 +433,7 @@ export type VoiceConsoleViewProps = {
   onReplayAssistant: () => void;
 };
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 function LegacyVoiceConsoleView({
   profiles,
   sessions,
@@ -827,6 +828,7 @@ function LegacyVoiceConsoleView({
     </div>
   );
 }
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 export function VoiceConsoleView({
   profiles,
