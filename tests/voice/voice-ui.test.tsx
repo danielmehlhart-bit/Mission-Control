@@ -18,6 +18,8 @@ function renderVoiceView(overrides: Partial<VoiceConsoleViewProps> = {}) {
     contextSummary: null,
     turns: [],
     switchTargets: [],
+    workOrders: [],
+    handoff: null,
     draft: "",
     isBooting: false,
     isSubmitting: false,
@@ -172,6 +174,73 @@ test("VoiceConsoleView renders persistent mute as a call overlay", () => {
   assert.match(html, /Gemutet/);
   assert.match(html, /Unmute/);
   assert.doesNotMatch(html, /Text-Fallback/);
+});
+
+test("VoiceConsoleView renders a structured prepared handoff for ended calls", () => {
+  const html = renderVoiceView({
+    activeProfile: { id: "vp_luma", slug: "luma", label: "Call LUMA", color: "#10b981", description: "LUMA", telegramBinding: { chatId: "-1003998265477", threadId: "24", label: "LUMA Telegram", handoffUrl: "https://t.me/c/3998265477/24" } },
+    activeSession: {
+      id: "vs_handoff",
+      profileId: "vp_luma",
+      state: "completed",
+      isMuted: false,
+      transport: "web",
+      lastUserTranscript: "Mach daraus ein Review-Dokument.",
+      lastAssistantText: "Work Order angelegt.",
+      lastError: null,
+      startedAt: "2026-05-08T10:00:00.000Z",
+      endedAt: "2026-05-08T10:12:00.000Z",
+      updatedAt: "2026-05-08T10:12:00.000Z",
+    },
+    turns: [
+      { id: "turn_handoff_user", sessionId: "vs_handoff", sequence: 1, speaker: "user", text: "Mach daraus ein Review-Dokument.", source: "complete-turn", createdAt: "2026-05-08T10:01:00.000Z", metadata: null },
+      { id: "turn_handoff_assistant", sessionId: "vs_handoff", sequence: 2, speaker: "assistant", text: "Work Order angelegt.", source: "assistant", createdAt: "2026-05-08T10:01:05.000Z", metadata: null },
+    ],
+    workOrders: [
+      {
+        id: "vwo_1",
+        sessionId: "vs_handoff",
+        profileSlug: "luma",
+        title: "LUMA Review-Dokument",
+        goal: "Review-Dokument spaeter ausarbeiten.",
+        requestedOutput: "review_document",
+        status: "created",
+        priority: "normal",
+        createdAt: "2026-05-08T10:01:10.000Z",
+        updatedAt: "2026-05-08T10:01:10.000Z",
+      },
+    ],
+    handoff: {
+      id: "vh_1",
+      sessionId: "vs_handoff",
+      profileSlug: "luma",
+      status: "prepared",
+      title: "Call LUMA Handoff",
+      summary: "Daniel requested a review document.",
+      memoryPath: "mem:2026-05-08-luma-call.md",
+      telegramTarget: { chatId: "-1003998265477", threadId: "24", url: "https://t.me/c/3998265477/24" },
+      telegramSendStatus: "not_supported",
+      decisions: [],
+      produces: ["review_document: LUMA Review-Dokument"],
+      workOrderIds: ["vwo_1"],
+      tags: ["voice_call", "luma", "work_order"],
+      errorMessage: null,
+      createdAt: "2026-05-08T10:12:00.000Z",
+      updatedAt: "2026-05-08T10:12:00.000Z",
+      sentAt: null,
+    },
+  });
+
+  assert.match(html, /Handoff bereit/);
+  assert.match(html, /Status: prepared/);
+  assert.match(html, /mem:2026-05-08-luma-call\.md/);
+  assert.match(html, /LUMA Review-Dokument/);
+  assert.match(html, /created/);
+  assert.match(html, /review_document/);
+  assert.match(html, /Telegram öffnen/);
+  assert.match(html, /vorbereitet, nicht gesendet/);
+  assert.match(html, /Automatisches Senden nach Telegram ist in dieser Version nicht aktiv/);
+  assert.doesNotMatch(html, /VOICE_CALL_MEMORY_V1/);
 });
 
 test("VoiceConsoleView renders loading and error states", () => {

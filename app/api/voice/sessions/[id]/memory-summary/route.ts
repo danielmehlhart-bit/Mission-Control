@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { parseJsonBody, voiceErrorResponse } from "@/lib/voice/api";
+import { serializeVoiceHandoff } from "@/lib/voice/handoffs";
 import { persistVoiceSessionMemorySummary } from "@/lib/voice/service";
 
 export const dynamic = "force-dynamic";
@@ -16,6 +17,7 @@ export async function POST(request: Request, context: { params: { id: string } }
     return NextResponse.json({
       memoryPath: result.memoryPath,
       summary: result.summary,
+      handoff: serializeVoiceHandoff(result.handoff),
     });
   } catch (error) {
     return voiceErrorResponse(error);

@@ -50,12 +50,51 @@ type VoiceSessionListItem = {
   contextSummary: string;
 };
 
+type VoiceWorkOrderSummary = {
+  id: string;
+  sessionId: string;
+  profileSlug: string;
+  title: string;
+  goal: string;
+  requestedOutput: string;
+  status: string;
+  priority: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type VoiceHandoffSummary = {
+  id: string;
+  sessionId: string;
+  profileSlug: string;
+  status: "prepared" | "failed" | "not_supported" | "sent" | string;
+  title: string;
+  summary: string;
+  memoryPath: string | null;
+  telegramTarget: {
+    chatId: string;
+    threadId: string | null;
+    url: string | null;
+  } | null;
+  telegramSendStatus: "sent" | "not_supported" | string;
+  decisions: string[];
+  produces: string[];
+  workOrderIds: string[];
+  tags: string[];
+  errorMessage: string | null;
+  createdAt: string;
+  updatedAt: string;
+  sentAt: string | null;
+};
+
 type VoiceSessionEnvelope = {
   session: VoiceSessionSummary;
   profile: VoiceProfileSummary;
   turns: VoiceTurn[];
   contextSummary: string;
   switchTargets: string[];
+  workOrders: VoiceWorkOrderSummary[];
+  handoff: VoiceHandoffSummary | null;
   lastError: string | null;
 };
 
@@ -407,6 +446,8 @@ export type VoiceConsoleViewProps = {
   contextSummary: string | null;
   turns: VoiceTurn[];
   switchTargets: string[];
+  workOrders: VoiceWorkOrderSummary[];
+  handoff: VoiceHandoffSummary | null;
   draft: string;
   isBooting: boolean;
   isSubmitting: boolean;
@@ -442,6 +483,8 @@ function LegacyVoiceConsoleView({
   contextSummary,
   turns,
   switchTargets,
+  workOrders,
+  handoff,
   draft,
   isBooting,
   isSubmitting,
@@ -838,6 +881,8 @@ export function VoiceConsoleView({
   contextSummary,
   turns,
   switchTargets,
+  workOrders,
+  handoff,
   draft,
   isBooting,
   isSubmitting,
@@ -1079,11 +1124,45 @@ export function VoiceConsoleView({
         </section>
 
         {callEnded && (
-          <section style={{ borderRadius: 8, border: "1px solid #1f6f4a", background: "#0f1f1a", padding: 16, display: "grid", gap: 8 }}>
-            <strong>Handoff bereit</strong>
-            <div style={{ color: "#a1a6b3", fontSize: 13 }}>
-              Die aktuelle Implementierung schreibt den Call als `VOICE_CALL_MEMORY_V1` in die Memory-Zusammenfassung. Entscheidungen, Produces und Tags sind als erweiterte Extraktion im Plan markiert.
+          <section style={{ borderRadius: 8, border: "1px solid #1f6f4a", background: "#0f1f1a", padding: 16, display: "grid", gap: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
+              <strong>{handoff ? "Handoff bereit" : "Handoff nicht vorbereitet"}</strong>
+              <span style={{ color: handoff?.status === "prepared" ? "#10B981" : "#f59e0b", fontSize: 12, fontWeight: 800 }}>
+                Status: {handoff?.status ?? "fehlt"}
+              </span>
             </div>
+            {handoff ? (
+              <div style={{ display: "grid", gap: 8, color: "#c8ccd6", fontSize: 13 }}>
+                <div><span style={{ color: "#8b90a0" }}>Memory:</span> {handoff.memoryPath ?? "nicht gespeichert"}</div>
+                <div><span style={{ color: "#8b90a0" }}>Work Orders:</span> {workOrders.length}</div>
+                {workOrders.length > 0 && (
+                  <div style={{ display: "grid", gap: 6 }}>
+                    {workOrders.map((order) => (
+                      <div key={order.id} style={{ borderRadius: 8, border: "1px solid #1f6f4a55", padding: "8px 10px", background: "#10261d" }}>
+                        <strong>{order.title}</strong>
+                        <span style={{ color: "#8b90a0" }}> · {order.status} · {order.requestedOutput}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <div>
+                  <span style={{ color: "#8b90a0" }}>Telegram:</span>{" "}
+                  {handoff.telegramTarget?.url ? (
+                    <a href={handoff.telegramTarget.url} target="_blank" rel="noreferrer" style={{ color: "#93c5fd" }}>
+                      Telegram öffnen
+                    </a>
+                  ) : "kein direkter Link"}
+                  <span style={{ color: "#8b90a0" }}> · vorbereitet, nicht gesendet</span>
+                </div>
+                <div style={{ color: "#a1a6b3" }}>
+                  Automatisches Senden nach Telegram ist in dieser Version nicht aktiv.
+                </div>
+              </div>
+            ) : (
+              <div style={{ color: "#fcd34d", fontSize: 13 }}>
+                Der Call ist beendet, aber kein verifizierbares Handoff-Paket wurde gefunden.
+              </div>
+            )}
           </section>
         )}
 
@@ -1322,11 +1401,11 @@ export default function VoiceConsole() {
 
   const saveVoiceMemorySummary = useCallback(async (sessionId: string) => {
     try {
-      const result = await readJson<{ memoryPath: string }>(`/api/voice/sessions/${sessionId}/memory-summary`, {
+      const result = await readJson<{ memoryPath: string; handoff: VoiceHandoffSummary }>(`/api/voice/sessions/${sessionId}/memory-summary`, {
         method: "POST",
         body: JSON.stringify({ reason: "voice-ended" }),
       });
-      setLastActionLabel(`Gespräch gespeichert: ${result.memoryPath}`);
+      setLastActionLabel(`Handoff vorbereitet: ${result.memoryPath}`);
       setError(null);
     } catch (nextError) {
       const message = nextError instanceof Error ? nextError.message : String(nextError);
@@ -1879,6 +1958,8 @@ export default function VoiceConsole() {
   const contextSummary = active?.contextSummary ?? null;
   const turns = useMemo(() => active?.turns ?? [], [active?.turns]);
   const switchTargets = active?.switchTargets ?? [];
+  const workOrders = active?.workOrders ?? [];
+  const handoff = active?.handoff ?? null;
 
   return (
     <VoiceConsoleView
@@ -1889,6 +1970,8 @@ export default function VoiceConsole() {
       contextSummary={contextSummary}
       turns={turns}
       switchTargets={switchTargets}
+      workOrders={workOrders}
+      handoff={handoff}
       draft={draft}
       isBooting={isBooting}
       isSubmitting={isSubmitting}

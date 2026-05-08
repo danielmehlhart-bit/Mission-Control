@@ -20,6 +20,7 @@ import type { VoiceContextBindings } from "./context-sources";
 import type { ResolvedVoiceContext, VoiceProfile, VoiceProfileSlug, VoiceSession, VoiceTurn, VoiceTransport } from "./types";
 import type { CalendarEvent } from "@/lib/google-calendar";
 import { appendDailyMemoryEntry } from "@/lib/fs";
+import { prepareVoiceHandoff, type VoiceHandoff } from "./handoffs";
 
 export type VoiceServiceCalendarProvider = (days?: number) => Promise<CalendarEvent[]>;
 
@@ -712,7 +713,7 @@ function buildVoiceMemoryMarkdown(session: VoiceSession, profile: VoiceProfile, 
   ].join("\n");
 }
 
-export async function persistVoiceSessionMemorySummary(input: EndSessionInput): Promise<{ session: VoiceSession; memoryPath: string; summary: string }> {
+export async function persistVoiceSessionMemorySummary(input: EndSessionInput): Promise<{ session: VoiceSession; memoryPath: string; summary: string; handoff: VoiceHandoff }> {
   const session = requireSession(input.sessionId);
   const profile = requireProfile(session.profileId);
   const turns = listVoiceTurns(session.id, 300);
@@ -731,5 +732,11 @@ export async function persistVoiceSessionMemorySummary(input: EndSessionInput): 
     },
   });
 
-  return { session, memoryPath: memory.path, summary };
+  const handoff = prepareVoiceHandoff({
+    sessionId: session.id,
+    memoryPath: memory.path,
+    summary,
+  });
+
+  return { session, memoryPath: memory.path, summary, handoff };
 }

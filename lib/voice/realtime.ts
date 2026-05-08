@@ -1,6 +1,7 @@
 import { appendVoiceEvent, getVoiceProfileById, getVoiceSession } from "./session-store";
 import type { VoiceProfile, VoiceSession } from "./types";
 import { VOICE_REALTIME_TOOLS, type VoiceRealtimeToolDefinition } from "./tools";
+import { buildVoiceCapabilityInstructions } from "./capabilities";
 
 export type RealtimeSessionConfig = {
   type: "realtime";
@@ -136,6 +137,7 @@ export function buildRealtimeInstructions(context: RealtimeSessionContext): stri
     "Wenn Daniel dich bittet, etwas in Memories nachzusehen, einen alten Call zusammenzufassen, eine letzte Trainingseinheit/Ratawo zu finden oder 'researchen' sagt, nutze zuerst das Tool hermes_memory_search. Antworte erst nach dem Tool-Ergebnis faktisch.",
     "Wenn hermes_memory_search keine Quellen findet, sage das klar. Nutze dann keine Vermutung als Ersatz.",
     "Wenn ein Tool Quellen liefert, nenne die Antwort knapp und fuehre ein bis zwei relevante Quellenpfade natuerlich mit an.",
+    buildVoiceCapabilityInstructions(),
     "Nutze den aktuellen Mission-Control-Kontext aktiv, aber erfinde keine Daten.",
     buildProfileInstruction(context.profile),
     "Wenn Daniel zwischen Kontexten wie Sales Support, LUMA oder Fitness wechseln will, bestaetige kurz und bitte ihn, den Kontextbutton zu nutzen, falls der Wechsel nicht schon erfolgt ist.",

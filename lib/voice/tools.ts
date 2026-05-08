@@ -2,6 +2,13 @@ import { listMemoryByCategory, readMemoryFile, type MemFile } from "@/lib/fs";
 import { appendVoiceEvent, getVoiceProfileById, getVoiceSession } from "./session-store";
 import { listVoiceTelegramRecentContexts } from "./telegram-bridge";
 import type { VoiceProfileSlug, VoiceSession } from "./types";
+import {
+  createVoiceWorkOrder,
+  VOICE_WORK_ORDER_OUTPUTS,
+  VOICE_WORK_ORDER_PRIORITIES,
+  type VoiceWorkOrderPriority,
+  type VoiceWorkOrderRequestedOutput,
+} from "./work-orders";
 
 export type VoiceRealtimeToolDefinition = {
   type: "function";
@@ -52,7 +59,17 @@ export type VoiceMemoryReadResult = {
   sources: VoiceToolSource[];
 };
 
-export type VoiceToolResult = VoiceMemorySearchResult | VoiceMemoryReadResult;
+export type VoiceCreateWorkOrderResult = {
+  tool: "voice_create_work_order";
+  created: true;
+  workOrderId: string;
+  status: "created";
+  title: string;
+  requestedOutput: VoiceWorkOrderRequestedOutput;
+  message: string;
+};
+
+export type VoiceToolResult = VoiceMemorySearchResult | VoiceMemoryReadResult | VoiceCreateWorkOrderResult;
 
 const MAX_SEARCH_FILES = 90;
 const MAX_CONTENT_CHARS = 140_000;
@@ -154,6 +171,40 @@ export const VOICE_REALTIME_TOOLS: VoiceRealtimeToolDefinition[] = [
       additionalProperties: false,
     },
   },
+  {
+    type: "function",
+    name: "voice_create_work_order",
+    description: "Persist a Voice Work Order for a longer deliverable request. This creates an instruction packet only; it does not create a finished document, send Telegram, or complete the requested output.",
+    parameters: {
+      type: "object",
+      properties: {
+        title: {
+          type: "string",
+          description: "Short human-readable title for the work order.",
+        },
+        goal: {
+          type: "string",
+          description: "What Daniel wants accomplished later. Include enough detail to act on it after the call.",
+        },
+        requestedOutput: {
+          type: "string",
+          enum: [...VOICE_WORK_ORDER_OUTPUTS],
+          description: "The requested output type.",
+        },
+        priority: {
+          type: "string",
+          enum: [...VOICE_WORK_ORDER_PRIORITIES],
+          description: "Optional priority. Default normal.",
+        },
+        sourceUserText: {
+          type: "string",
+          description: "Optional original user wording that triggered the work order.",
+        },
+      },
+      required: ["title", "goal", "requestedOutput"],
+      additionalProperties: false,
+    },
+  },
 ];
 
 function requireVoiceToolSession(sessionId: string): { session: VoiceSession; channel: VoiceProfileSlug } {
@@ -175,6 +226,16 @@ function stringArg(args: Record<string, unknown>, key: string): string | null {
 
 function boolArg(args: Record<string, unknown>, key: string, fallback: boolean): boolean {
   return typeof args[key] === "boolean" ? args[key] : fallback;
+}
+
+function enumArg<T extends string>(args: Record<string, unknown>, key: string, values: readonly T[], fallback?: T): T {
+  const value = stringArg(args, key);
+  if (!value) {
+    if (fallback) return fallback;
+    throw new Error(`${key} required`);
+  }
+  if (values.includes(value as T)) return value as T;
+  throw new Error(`Invalid ${key}`);
 }
 
 function normalizeChannel(value: string | null, fallback: VoiceProfileSlug): VoiceProfileSlug | "auto" {
@@ -441,6 +502,41 @@ async function readMemoryPath(args: Record<string, unknown>): Promise<VoiceMemor
   };
 }
 
+function createWorkOrderFromTool(sessionId: string, args: Record<string, unknown>): VoiceCreateWorkOrderResult {
+  const { session } = requireVoiceToolSession(sessionId);
+  try {
+    const order = createVoiceWorkOrder({
+      sessionId,
+      title: stringArg(args, "title") ?? "",
+      goal: stringArg(args, "goal") ?? "",
+      requestedOutput: enumArg(args, "requestedOutput", VOICE_WORK_ORDER_OUTPUTS),
+      priority: enumArg(args, "priority", VOICE_WORK_ORDER_PRIORITIES, "normal") as VoiceWorkOrderPriority,
+      sourceUserText: stringArg(args, "sourceUserText") ?? undefined,
+    });
+
+    return {
+      tool: "voice_create_work_order",
+      created: true,
+      workOrderId: order.id,
+      status: "created",
+      title: order.title,
+      requestedOutput: order.requestedOutput,
+      message: "Work Order angelegt. Es wurde noch kein finales Dokument, Link oder Telegram-Post erstellt.",
+    };
+  } catch (error) {
+    appendVoiceEvent({
+      sessionId: session.id,
+      eventType: "voice.work_order_create_failed",
+      fromState: session.state,
+      toState: session.state,
+      payload: {
+        message: error instanceof Error ? error.message : String(error),
+      },
+    });
+    throw error;
+  }
+}
+
 export async function executeVoiceToolCall(input: VoiceToolCallInput): Promise<VoiceToolResult> {
   const { session } = requireVoiceToolSession(input.sessionId);
   appendVoiceEvent({
@@ -460,29 +556,42 @@ export async function executeVoiceToolCall(input: VoiceToolCallInput): Promise<V
       ? await searchMemory(input.sessionId, input.arguments)
       : input.toolName === "hermes_memory_read"
         ? await readMemoryPath(input.arguments)
+        : input.toolName === "voice_create_work_order"
+          ? createWorkOrderFromTool(input.sessionId, input.arguments)
         : null;
 
     if (!result) {
       throw new Error(`Voice tool not allowed: ${input.toolName}`);
     }
 
+    const completionPayload = result.tool === "voice_create_work_order"
+      ? {
+          toolName: input.toolName,
+          callId: input.callId ?? null,
+          created: result.created,
+          workOrderId: result.workOrderId,
+          status: result.status,
+          requestedOutput: result.requestedOutput,
+        }
+      : {
+          toolName: input.toolName,
+          callId: input.callId ?? null,
+          answerable: result.answerable,
+          sourceCount: result.sources.length,
+          sources: result.sources.map((source) => ({
+            path: source.path,
+            category: source.category,
+            modified: source.modified,
+            score: source.score,
+          })),
+        };
+
     appendVoiceEvent({
       sessionId: session.id,
       eventType: "voice.tool_call_completed",
       fromState: session.state,
       toState: session.state,
-      payload: {
-        toolName: input.toolName,
-        callId: input.callId ?? null,
-        answerable: result.answerable,
-        sourceCount: result.sources.length,
-        sources: result.sources.map((source) => ({
-          path: source.path,
-          category: source.category,
-          modified: source.modified,
-          score: source.score,
-        })),
-      },
+      payload: completionPayload,
     });
     return result;
   } catch (error) {

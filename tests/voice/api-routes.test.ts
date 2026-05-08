@@ -26,6 +26,9 @@ async function loadModules() {
   const telegramHandoffRouteModule = await import("../../app/api/voice/handoffs/telegram/route.ts");
   const telegramContextRouteModule = await import("../../app/api/voice/handoffs/telegram/context/route.ts");
   const toolsExecuteRouteModule = await import("../../app/api/voice/sessions/[id]/tools/execute/route.ts");
+  const workOrdersRouteModule = await import("../../app/api/voice/sessions/[id]/work-orders/route.ts");
+  const handoffRouteModule = await import("../../app/api/voice/sessions/[id]/handoff/route.ts");
+  const memorySummaryRouteModule = await import("../../app/api/voice/sessions/[id]/memory-summary/route.ts");
 
   return {
     dbModule,
@@ -43,6 +46,9 @@ async function loadModules() {
     telegramHandoffRouteModule,
     telegramContextRouteModule,
     toolsExecuteRouteModule,
+    workOrdersRouteModule,
+    handoffRouteModule,
+    memorySummaryRouteModule,
   };
 }
 
@@ -679,6 +685,222 @@ test("POST /api/voice/sessions/[id]/tools/execute searches memories with sources
     listVoiceSessionEvents(created.session.id).some((event: { eventType: string }) => event.eventType === "voice.tool_call_completed"),
     true,
   );
+});
+
+test("POST and GET /api/voice/sessions/[id]/work-orders persist safe work order summaries", async () => {
+  await seedVoiceFixtures();
+  const { sessionsRouteModule, workOrdersRouteModule, eventsRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const lumaProfile = getVoiceProfileBySlug("luma");
+  assert.ok(lumaProfile);
+
+  const createdResponse = await sessionsRouteModule.POST(
+    makeRequest("http://localhost/api/voice/sessions", {
+      method: "POST",
+      body: JSON.stringify({ profileId: lumaProfile!.id, transport: "web", autoGreeting: false }),
+    }),
+  );
+  const created = await createdResponse.json();
+
+  const createResponse = await workOrdersRouteModule.POST(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/work-orders`, {
+      method: "POST",
+      body: JSON.stringify({
+        title: "LUMA Review-Dokument",
+        goal: "Erstelle spaeter ein Review-Dokument aus dem Voice-Kontext.",
+        requestedOutput: "review_document",
+        priority: "normal",
+        sourceUserText: "Mach mir daraus bitte ein Review-Dokument.",
+      }),
+    }),
+    { params: { id: created.session.id } },
+  );
+
+  assert.equal(createResponse.status, 201);
+  const createPayload = await createResponse.json();
+  assert.equal(createPayload.workOrder.title, "LUMA Review-Dokument");
+  assert.equal(createPayload.workOrder.status, "created");
+  assert.equal(createPayload.workOrder.requestedOutput, "review_document");
+  assert.equal("context" in createPayload.workOrder, false);
+  assert.equal("result" in createPayload.workOrder, false);
+  assert.equal(JSON.stringify(createPayload).includes("baseSessionKey"), false);
+  assert.equal(JSON.stringify(createPayload).includes("resolvedContext"), false);
+
+  const listResponse = await workOrdersRouteModule.GET(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/work-orders`),
+    { params: { id: created.session.id } },
+  );
+  assert.equal(listResponse.status, 200);
+  const listPayload = await listResponse.json();
+  assert.equal(listPayload.workOrders.length, 1);
+  assert.equal(listPayload.workOrders[0].id, createPayload.workOrder.id);
+  assert.equal(JSON.stringify(listPayload).includes("baseSessionKey"), false);
+  assert.equal(JSON.stringify(listPayload).includes("resolvedContext"), false);
+
+  const eventsResponse = await eventsRouteModule.GET(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/events`),
+    { params: { id: created.session.id } },
+  );
+  const eventsPayload = await eventsResponse.json();
+  assert.equal(eventsPayload.events.some((event: { eventType: string }) => event.eventType === "voice.work_order_created"), true);
+});
+
+test("voice_create_work_order tool creates a persisted work order and does not claim final output", async () => {
+  await seedVoiceFixtures();
+  const { sessionsRouteModule, toolsExecuteRouteModule, eventsRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const lumaProfile = getVoiceProfileBySlug("luma");
+  assert.ok(lumaProfile);
+
+  const createdResponse = await sessionsRouteModule.POST(
+    makeRequest("http://localhost/api/voice/sessions", {
+      method: "POST",
+      body: JSON.stringify({ profileId: lumaProfile!.id, transport: "web", autoGreeting: false }),
+    }),
+  );
+  const created = await createdResponse.json();
+
+  const response = await toolsExecuteRouteModule.POST(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/tools/execute`, {
+      method: "POST",
+      body: JSON.stringify({
+        toolName: "voice_create_work_order",
+        callId: "call_work_order",
+        arguments: JSON.stringify({
+          title: "Follow-up Paket",
+          goal: "Bereite spaeter ein Follow-up-Paket fuer LUMA vor.",
+          requestedOutput: "telegram_draft",
+          priority: "high",
+          sourceUserText: "Bereite das als Telegram-Entwurf vor.",
+        }),
+      }),
+    }),
+    { params: { id: created.session.id } },
+  );
+
+  assert.equal(response.status, 200);
+  const payload = await response.json();
+  assert.equal(payload.toolName, "voice_create_work_order");
+  assert.equal(payload.callId, "call_work_order");
+  assert.equal(payload.result.created, true);
+  assert.equal(payload.result.status, "created");
+  assert.equal(payload.result.requestedOutput, "telegram_draft");
+  assert.match(payload.result.message, /noch kein finales Dokument/i);
+  assert.match(payload.output, /Work Order angelegt/);
+
+  const eventsResponse = await eventsRouteModule.GET(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/events`),
+    { params: { id: created.session.id } },
+  );
+  const eventsPayload = await eventsResponse.json();
+  assert.equal(eventsPayload.events.some((event: { eventType: string }) => event.eventType === "voice.work_order_created"), true);
+  assert.equal(eventsPayload.events.some((event: { eventType: string }) => event.eventType === "voice.tool_call_completed"), true);
+});
+
+test("POST and GET /api/voice/sessions/[id]/handoff prepare a structured safe handoff", async () => {
+  await seedVoiceFixtures();
+  const { sessionsRouteModule, workOrdersRouteModule, handoffRouteModule, eventsRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const lumaProfile = getVoiceProfileBySlug("luma");
+  assert.ok(lumaProfile);
+
+  const createdResponse = await sessionsRouteModule.POST(
+    makeRequest("http://localhost/api/voice/sessions", {
+      method: "POST",
+      body: JSON.stringify({ profileId: lumaProfile!.id, transport: "web", autoGreeting: false }),
+    }),
+  );
+  const created = await createdResponse.json();
+
+  const workOrderResponse = await workOrdersRouteModule.POST(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/work-orders`, {
+      method: "POST",
+      body: JSON.stringify({
+        title: "LUMA Review",
+        goal: "Review-Unterlage fuer spaetere Ausarbeitung vorbereiten.",
+        requestedOutput: "review_document",
+      }),
+    }),
+    { params: { id: created.session.id } },
+  );
+  const workOrderPayload = await workOrderResponse.json();
+
+  const createResponse = await handoffRouteModule.POST(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/handoff`, {
+      method: "POST",
+      body: JSON.stringify({
+        memoryPath: "mem:2026-05-08-luma-call.md",
+        summary: "### Kurzfassung\nDaniel will ein belastbares LUMA Review mit spaeterem Telegram-Handoff.\n### Details\nMehr Text.",
+      }),
+    }),
+    { params: { id: created.session.id } },
+  );
+
+  assert.equal(createResponse.status, 201);
+  const createPayload = await createResponse.json();
+  assert.equal(createPayload.handoff.status, "prepared");
+  assert.equal(createPayload.handoff.memoryPath, "mem:2026-05-08-luma-call.md");
+  assert.equal(createPayload.handoff.telegramTarget.chatId, "-1003998265477");
+  assert.equal(createPayload.handoff.telegramTarget.threadId, "24");
+  assert.equal(createPayload.handoff.telegramSendStatus, "not_supported");
+  assert.deepEqual(createPayload.handoff.workOrderIds, [workOrderPayload.workOrder.id]);
+  assert.match(createPayload.handoff.summary, /Daniel will ein belastbares LUMA Review/);
+  assert.equal(JSON.stringify(createPayload).includes("payload"), false);
+  assert.equal(JSON.stringify(createPayload).includes("baseSessionKey"), false);
+  assert.equal(JSON.stringify(createPayload).includes("resolvedContext"), false);
+
+  const getResponse = await handoffRouteModule.GET(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/handoff`),
+    { params: { id: created.session.id } },
+  );
+  const getPayload = await getResponse.json();
+  assert.equal(getPayload.handoff.id, createPayload.handoff.id);
+
+  const eventsResponse = await eventsRouteModule.GET(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/events`),
+    { params: { id: created.session.id } },
+  );
+  const eventsPayload = await eventsResponse.json();
+  assert.equal(eventsPayload.events.some((event: { eventType: string }) => event.eventType === "voice.handoff_prepared"), true);
+  assert.equal(eventsPayload.events.some((event: { eventType: string }) => event.eventType === "voice.telegram_handoff_sent"), false);
+  assert.equal(eventsPayload.events.some((event: { eventType: string }) => event.eventType === "voice.telegram_handoff_failed"), false);
+});
+
+test("POST /api/voice/sessions/[id]/memory-summary prepares and exposes a persisted handoff", async () => {
+  await seedVoiceFixtures();
+  const { sessionsRouteModule, memorySummaryRouteModule, handoffRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const lumaProfile = getVoiceProfileBySlug("luma");
+  assert.ok(lumaProfile);
+
+  const createdResponse = await sessionsRouteModule.POST(
+    makeRequest("http://localhost/api/voice/sessions", {
+      method: "POST",
+      body: JSON.stringify({ profileId: lumaProfile!.id, transport: "web", autoGreeting: false }),
+    }),
+  );
+  const created = await createdResponse.json();
+
+  const summaryResponse = await memorySummaryRouteModule.POST(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/memory-summary`, {
+      method: "POST",
+      body: JSON.stringify({ reason: "voice-ended" }),
+    }),
+    { params: { id: created.session.id } },
+  );
+
+  assert.equal(summaryResponse.status, 200);
+  const summaryPayload = await summaryResponse.json();
+  assert.match(summaryPayload.memoryPath, /^mem:/);
+  assert.equal(summaryPayload.handoff.status, "prepared");
+  assert.equal(summaryPayload.handoff.memoryPath, summaryPayload.memoryPath);
+
+  const handoffResponse = await handoffRouteModule.GET(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/handoff`),
+    { params: { id: created.session.id } },
+  );
+  const handoffPayload = await handoffResponse.json();
+  assert.equal(handoffPayload.handoff.id, summaryPayload.handoff.id);
 });
 
 test("POST /api/voice/sessions/[id]/tools/execute returns not found without inventing", async () => {

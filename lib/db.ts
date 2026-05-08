@@ -226,6 +226,46 @@ function initSchema(db: Database.Database): void {
       created_at         TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at         TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS voice_work_orders (
+      id               TEXT PRIMARY KEY,
+      session_id       TEXT NOT NULL,
+      profile_slug     TEXT NOT NULL,
+      title            TEXT NOT NULL,
+      goal             TEXT NOT NULL,
+      requested_output TEXT,
+      status           TEXT NOT NULL DEFAULT 'created',
+      priority         TEXT NOT NULL DEFAULT 'normal',
+      source_turn_id   TEXT,
+      context_json     TEXT NOT NULL DEFAULT '{}',
+      result_json      TEXT NOT NULL DEFAULT '{}',
+      error_message    TEXT,
+      created_at       TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at       TEXT NOT NULL DEFAULT (datetime('now')),
+      completed_at     TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS voice_handoffs (
+      id                  TEXT PRIMARY KEY,
+      session_id          TEXT NOT NULL,
+      profile_slug        TEXT NOT NULL,
+      status              TEXT NOT NULL DEFAULT 'prepared',
+      title               TEXT NOT NULL,
+      summary             TEXT NOT NULL,
+      memory_path         TEXT,
+      telegram_chat_id    TEXT,
+      telegram_thread_id  TEXT,
+      telegram_url        TEXT,
+      decisions_json      TEXT NOT NULL DEFAULT '[]',
+      produces_json       TEXT NOT NULL DEFAULT '[]',
+      work_order_ids_json TEXT NOT NULL DEFAULT '[]',
+      tags_json           TEXT NOT NULL DEFAULT '[]',
+      payload_json        TEXT NOT NULL DEFAULT '{}',
+      error_message       TEXT,
+      created_at          TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at          TEXT NOT NULL DEFAULT (datetime('now')),
+      sent_at             TEXT
+    );
   `);
 
   // Spalten nachträglich hinzufügen (ALTER TABLE IF NOT EXISTS column nicht in SQLite → try/catch)
@@ -270,6 +310,14 @@ function initSchema(db: Database.Database): void {
       ON voice_telegram_recent_contexts(telegram_chat_id, COALESCE(telegram_thread_id, ''), updated_at DESC);
     CREATE INDEX IF NOT EXISTS idx_voice_telegram_recent_contexts_profile
       ON voice_telegram_recent_contexts(profile_slug, updated_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_voice_work_orders_session_created
+      ON voice_work_orders(session_id, created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_voice_work_orders_status_created
+      ON voice_work_orders(status, created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_voice_handoffs_session_created
+      ON voice_handoffs(session_id, created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_voice_handoffs_status_created
+      ON voice_handoffs(status, created_at DESC);
   `);
   db.exec("SELECT 1"); // flush
 

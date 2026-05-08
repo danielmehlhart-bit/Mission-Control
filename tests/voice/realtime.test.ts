@@ -34,10 +34,17 @@ test("buildRealtimeSessionConfig creates German speech-to-speech config with pro
   assert.equal(config.audio.output.voice, "cedar");
   assert.equal(config.tool_choice, "auto");
   assert.equal(config.tools.some((tool) => tool.name === "hermes_memory_search"), true);
+  assert.equal(config.tools.some((tool) => tool.name === "voice_create_work_order"), true);
   assert.match(config.instructions, /Call Hermes|Hermes/i);
   assert.match(config.instructions, /Mission Control/i);
   assert.match(config.instructions, /maennlich|Hermes-Charakter/i);
   assert.match(config.instructions, /hermes_memory_search/);
+  assert.match(config.instructions, /voice_create_work_order/);
+  assert.match(config.instructions, /Capability truth rule/);
+  assert.match(config.instructions, /never claim/i);
+  assert.match(config.instructions, /Do not say a final document/i);
+  assert.match(config.instructions, /live_web_research/);
+  assert.match(config.instructions, /not_implemented/);
   assert.match(config.instructions, /Live-Chat-History/);
 });
 

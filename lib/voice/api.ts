@@ -10,6 +10,8 @@ import {
 } from "./session-store";
 import type { VoiceProfile, VoiceSession, VoiceTransport } from "./types";
 import { getCallModeTelegramBinding, isCallModeProfileSlug } from "./call-mode";
+import { getVoiceHandoffForSession, serializeVoiceHandoff } from "./handoffs";
+import { listVoiceWorkOrdersForSession, serializeVoiceWorkOrder } from "./work-orders";
 
 const ALLOWED_TRANSPORTS = new Set<VoiceTransport>(["web", "telegram", "internal"]);
 
@@ -156,6 +158,8 @@ export function buildSessionEnvelope(sessionId: string, turnLimit = 50) {
   const profile = requireProfileById(session.profileId);
   const turns = listVoiceTurns(session.id, turnLimit);
   const resolvedContext = session.resolvedContext as Record<string, unknown>;
+  const workOrders = listVoiceWorkOrdersForSession(session.id).map(serializeVoiceWorkOrder);
+  const handoff = getVoiceHandoffForSession(session.id);
 
   return {
     session: serializeVoiceSession(session),
@@ -163,6 +167,8 @@ export function buildSessionEnvelope(sessionId: string, turnLimit = 50) {
     turns,
     contextSummary: typeof resolvedContext.contextSummary === "string" ? resolvedContext.contextSummary : profile.label,
     switchTargets: Array.isArray(resolvedContext.switchTargets) ? resolvedContext.switchTargets : profile.allowedSwitchTargets,
+    workOrders,
+    handoff: handoff ? serializeVoiceHandoff(handoff) : null,
     lastError: sanitizeVoiceErrorDetail(session.lastError ?? null),
   };
 }
