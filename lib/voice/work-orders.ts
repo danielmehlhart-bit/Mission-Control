@@ -40,6 +40,13 @@ export type CreateVoiceWorkOrderInput = {
   sourceUserText?: string;
 };
 
+export type UpdateVoiceWorkOrderStatusInput = {
+  id: string;
+  status: VoiceWorkOrderStatus;
+  result?: Record<string, unknown>;
+  errorMessage?: string | null;
+};
+
 type VoiceWorkOrderRow = {
   id: string;
   session_id: string;
@@ -94,6 +101,13 @@ function normalizePriority(value: string | undefined): VoiceWorkOrderPriority {
     return value as VoiceWorkOrderPriority;
   }
   throw new Error("Invalid priority");
+}
+
+function normalizeStatus(value: string): VoiceWorkOrderStatus {
+  if ((VOICE_WORK_ORDER_STATUSES as readonly string[]).includes(value)) {
+    return value as VoiceWorkOrderStatus;
+  }
+  throw new Error("Invalid status");
 }
 
 function mapVoiceWorkOrder(row: VoiceWorkOrderRow): VoiceWorkOrder {
@@ -244,4 +258,45 @@ export function listVoiceWorkOrdersForSession(sessionId: string): VoiceWorkOrder
     .prepare("SELECT * FROM voice_work_orders WHERE session_id = ? ORDER BY created_at DESC")
     .all(sessionId) as VoiceWorkOrderRow[];
   return rows.map(mapVoiceWorkOrder);
+}
+
+export function updateVoiceWorkOrderStatus(input: UpdateVoiceWorkOrderStatusInput): VoiceWorkOrder {
+  const status = normalizeStatus(input.status);
+  const db = getDb();
+  const existingRow = db.prepare("SELECT * FROM voice_work_orders WHERE id = ?").get(input.id) as VoiceWorkOrderRow | undefined;
+  if (!existingRow) throw new Error(`Voice work order not found: ${input.id}`);
+
+  const existing = mapVoiceWorkOrder(existingRow);
+  const result = input.result ?? existing.result;
+  const errorMessage = input.errorMessage === undefined ? existing.errorMessage ?? null : input.errorMessage;
+  db.prepare(`
+    UPDATE voice_work_orders
+    SET status = ?,
+        result_json = ?,
+        error_message = ?,
+        updated_at = datetime('now'),
+        completed_at = CASE
+          WHEN ? IN ('done', 'failed', 'cancelled') THEN COALESCE(completed_at, datetime('now'))
+          ELSE NULL
+        END
+    WHERE id = ?
+  `).run(status, JSON.stringify(result), errorMessage, status, input.id);
+
+  const row = db.prepare("SELECT * FROM voice_work_orders WHERE id = ?").get(input.id) as VoiceWorkOrderRow;
+  const order = mapVoiceWorkOrder(row);
+  const session = getVoiceSession(order.sessionId);
+  if (session) {
+    appendVoiceEvent({
+      sessionId: order.sessionId,
+      eventType: "voice.work_order_status_changed",
+      fromState: session.state,
+      toState: session.state,
+      payload: {
+        workOrderId: order.id,
+        status: order.status,
+        previousStatus: existing.status,
+      },
+    });
+  }
+  return order;
 }
