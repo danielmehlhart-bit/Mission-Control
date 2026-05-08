@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LUMA Pricing Briefing · AI Pricing Framework</title>
+  <style>
+    :root{
+      --bg:#f7f3ff;
+      --paper:#ffffff;
+      --ink:#171321;
+      --muted:#685f76;
+      --purple:#7c3aed;
+      --purple2:#a855f7;
+      --line:#e7dcff;
+      --soft:#fbf8ff;
+      --green:#16a34a;
+      --amber:#d97706;
+      --red:#dc2626;
+      --blue:#2563eb;
+      --shadow:0 20px 60px rgba(54,25,98,.13);
+      --radius:28px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:radial-gradient(circle at 20% 0%,#efe4ff 0,#f7f3ff 34%,#fff 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);line-height:1.45}
+    .wrap{max-width:1180px;margin:0 auto;padding:42px 24px 80px}
+    .hero{background:linear-gradient(135deg,#211236 0%,#5b21b6 58%,#8b5cf6 100%);color:#fff;border-radius:36px;padding:44px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+    .hero:after{content:"";position:absolute;right:-120px;top:-140px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.12)}
+    .eyebrow{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:8px 12px;font-size:13px;font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+    h1{font-size:clamp(36px,5vw,66px);line-height:.95;margin:24px 0 18px;max-width:850px;letter-spacing:-.055em}
+    .hero p{font-size:20px;color:#efe7ff;max-width:840px;margin:0}
+    .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}.pill{border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.1);border-radius:999px;padding:9px 13px;font-size:14px;color:#fff}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin-top:22px}.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:0 12px 34px rgba(45,20,80,.07)}
+    .span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-6{grid-column:span 6}.span-7{grid-column:span 7}.span-8{grid-column:span 8}.span-12{grid-column:span 12}
+    h2{font-size:30px;line-height:1.05;letter-spacing:-.035em;margin:0 0 16px}h3{font-size:20px;margin:0 0 10px;letter-spacing:-.02em}.muted{color:var(--muted)}
+    .kicker{font-size:13px;color:var(--purple);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}.big{font-size:26px;font-weight:850;letter-spacing:-.035em;line-height:1.1}.quote{border-left:5px solid var(--purple);padding:14px 0 14px 18px;background:var(--soft);border-radius:18px;color:#352543}
+    .matrix{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:22px;border:1px solid var(--line)}.matrix th,.matrix td{padding:16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}.matrix th{background:#f1e9ff;color:#321854;font-size:13px;text-transform:uppercase;letter-spacing:.05em}.matrix tr:last-child td{border-bottom:0}.tag{display:inline-flex;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:800}.yes{background:#dcfce7;color:#166534}.warn{background:#fef3c7;color:#92400e}.no{background:#fee2e2;color:#991b1b}.info{background:#dbeafe;color:#1e40af}
+    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.plan{border:1px solid var(--line);border-radius:24px;padding:22px;background:#fff;position:relative}.plan.featured{border:2px solid var(--purple);box-shadow:0 18px 45px rgba(124,58,237,.16)}.price{font-size:38px;font-weight:900;letter-spacing:-.05em;margin:12px 0 0}.per{color:var(--muted);font-size:14px}.plan ul{padding-left:18px;margin:18px 0 0}.plan li{margin:8px 0}.badge{position:absolute;right:18px;top:18px;background:var(--purple);color:#fff;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800}
+    .calc{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.num{background:var(--soft);border:1px solid var(--line);border-radius:20px;padding:18px}.num strong{font-size:26px;display:block;letter-spacing:-.04em}.num span{font-size:13px;color:var(--muted)}
+    .decision{background:#171321;color:#fff;border-color:#171321}.decision h2,.decision .kicker{color:#fff}.decision .muted{color:#c9bfd8}.decision li{margin:10px 0}.footer{margin-top:28px;color:#7b7289;font-size:13px;text-align:center}
+    @media(max-width:900px){.span-4,.span-5,.span-6,.span-7,.span-8{grid-column:span 12}.plans,.calc{grid-template-columns:1fr}.hero{padding:30px}.wrap{padding:24px 14px 60px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="eyebrow">LUMA Pricing Briefing · 08.05.2026</div>
+      <h1>Pricing für LUMA nach dem Stripe AI Framework</h1>
+      <p>Auswertung des PDFs <strong>“Pricing AI Products: Lessons from leading AI companies”</strong> plus LUMA-Kundenfeedback. Ziel: ein Preis- und Packaging-Modell, das Wert, Adoption und AI-Kosten sauber zusammenbringt.</p>
+      <div class="meta">
+        <span class="pill">Quelle: Stripe AI Pricing PDF</span>
+        <span class="pill">Kontext: LUMA GTM Phase 1</span>
+        <span class="pill">ICP: 5–10 MA Architekturbüros</span>
+        <span class="pill">Empfehlung: Hybrid statt reines Seat Pricing</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card span-7">
+        <div class="kicker">Korrektur</div>
+        <h2>Das vorherige Briefing nutzte nicht dieses PDF.</h2>
+        <p>Vorher wurde ein anderer Stripe-Webartikel zu SaaS Pricing & Packaging verwendet. Das neue PDF ist spezifischer für <strong>AI-Produkte</strong> und betont stärker: variable AI-Kosten, Charge Metrics, Guardrails und Pricing-Iteration.</p>
+        <div class="quote"><strong>Wichtigster Unterschied:</strong> Das PDF empfiehlt nicht nur Plan-/Tier-Logik, sondern ein bewusstes Zusammenspiel aus <strong>Value Metric</strong>, <strong>Charge Metric</strong>, <strong>Pricing Model</strong>, <strong>Guardrails</strong> und laufender Iteration.</div>
+      </div>
+      <div class="card span-5">
+        <div class="kicker">Executive Take</div>
+        <div class="big">LUMA sollte nicht als “10 User für 349€” verkauft werden, sondern als Büro-Betriebssystem mit inkludierter AI-/Workflow-Nutzung.</div>
+        <p class="muted">User bleiben einfache Orientierung. Der eigentliche Wert liegt in Workflows: Bautagebuch, Voice Capture, Aufgaben, E-Mail-Agent, Zeit/Budget und Projektüberblick.</p>
+      </div>
+
+      <div class="card span-12">
+        <div class="kicker">Stripe Framework</div>
+        <h2>Die fünf Pricing-Fragen aus dem PDF — übersetzt auf LUMA</h2>
+        <table class="matrix">
+          <thead><tr><th>Stripe Schritt</th><th>Bedeutung</th><th>LUMA-Übersetzung</th><th>Implikation</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1. Value Metric</strong></td><td>Welchen Kundennutzen erzeugt das Produkt?</td><td>Zeitersparnis, weniger Nacharbeit, bessere Projektklarheit, weniger E-Mail-/Zettel-Chaos.</td><td><span class="tag yes">Outcome zuerst</span></td></tr>
+            <tr><td><strong>2. Charge Metric</strong></td><td>Woran wird abgerechnet?</td><td>Nicht Token. Nicht Projekt. Besser: Büro-/Teamplan mit inkludierter AI-/Workflow-Nutzung.</td><td><span class="tag info">Einfach halten</span></td></tr>
+            <tr><td><strong>3. Pricing Model</strong></td><td>Subscription, usage, credits, hybrid?</td><td>Hybrid: fixer Büro-Basispreis + Fair-Use/AI-Kontingente + optionale Add-ons später.</td><td><span class="tag yes">Hybrid</span></td></tr>
+            <tr><td><strong>4. Guardrails</strong></td><td>Wie schützt man Margen und Kunden vor Überraschungen?</td><td>Soft Limits, Fair Use, Alerts, höhere Kontingente in Pro/Business. Keine Token-Rechnung im Sales.</td><td><span class="tag warn">Kontrollieren</span></td></tr>
+            <tr><td><strong>5. Iteration</strong></td><td>Pricing bleibt Experiment, besonders bei AI.</td><td>Neue Preise zuerst für neue Kunden testen; Piloten grandfathern; Pricing nach Usage lernen.</td><td><span class="tag yes">Lernen</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card span-6">
+        <div class="kicker">Daniels Einwand</div>
+        <h2>“349€ für 10 User sind nur 34,90€/User.”</h2>
+        <div class="calc">
+          <div class="num"><strong>34,90€</strong><span>349€ / 10 User</span></div>
+          <div class="num"><strong>49,86€</strong><span>349€ / 7 User</span></div>
+          <div class="num"><strong>29,80€</strong><span>149€ / 5 User</span></div>
+          <div class="num"><strong>149€</strong><span>149€ / 1 User</span></div>
+        </div>
+        <p class="muted">Der Einwand ist berechtigt — aber nur, wenn LUMA mental als “Preis pro User” gerahmt wird. Besser ist: <strong>Preis pro Büro-Workflow</strong>. Für ein 7-Personen-Büro sind 349€/Monat ca. 50€/User und kaufpsychologisch ein plausibler B2B-SaaS-Preis.</p>
+      </div>
+      <div class="card span-6">
+        <div class="kicker">Solo-Frage</div>
+        <h2>Solo-Architekt:innen nicht als Haupt-ICP.</h2>
+        <p>Einzelkämpfer haben weniger Delegations-, Transparenz- und Teamkoordination-Pain. 149€/Monat fühlt sich für sie schnell hoch an.</p>
+        <table class="matrix">
+          <tbody>
+            <tr><td><span class="tag no">Nicht fokussieren</span></td><td>Solo-Leute nicht aktiv als Kernzielgruppe bepreisen.</td></tr>
+            <tr><td><span class="tag warn">Optional später</span></td><td>Solo-Light für 49–79€/Monat, stark limitiert, wenn Nachfrage organisch kommt.</td></tr>
+            <tr><td><span class="tag yes">Fokus jetzt</span></td><td>5–10 Mitarbeitende, echte Projekt- und Teamreibung, hoher Workflow-Wert.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card span-12">
+        <div class="kicker">Empfohlenes Packaging</div>
+        <h2>Preise behalten — aber als Workflow-Pakete statt User-Pakete verkaufen</h2>
+        <div class="plans">
+          <div class="plan">
+            <h3>Starter</h3>
+            <div class="price">149€</div>
+            <div class="per">/ Monat · kleine Büros bis ca. 5 Nutzer</div>
+            <p><strong>Für Büros, die Aufgaben und Bautagebuch zentral und leichtgewichtig organisieren wollen.</strong></p>
+            <ul>
+              <li>Projekte, Aufgaben, Teamzuordnung</li>
+              <li>Voice Capture</li>
+              <li>Bautagebuch</li>
+              <li>Basis-Notifications</li>
+              <li>normale AI-/Voice-Nutzung inklusive</li>
+            </ul>
+          </div>
+          <div class="plan featured">
+            <div class="badge">Zielplan</div>
+            <h3>Professional</h3>
+            <div class="price">349€</div>
+            <div class="per">/ Monat · 6–10 Nutzer</div>
+            <p><strong>Für Büros, die LUMA als tägliche Projektzentrale nutzen wollen.</strong></p>
+            <ul>
+              <li>alles aus Starter</li>
+              <li>E-Mail-/Inbox-Agent</li>
+              <li>Zeit & Budget</li>
+              <li>Projekt-/Monatsreports</li>
+              <li>Workflow-Templates</li>
+              <li>höhere AI-/E-Mail-Kontingente</li>
+            </ul>
+          </div>
+          <div class="plan">
+            <h3>Business</h3>
+            <div class="price">599€</div>
+            <div class="per">/ Monat · 10–20 Nutzer / komplexer</div>
+            <p><strong>Für Büros mit mehreren Teams, Firmen oder erweitertem Steuerungsbedarf.</strong></p>
+            <ul>
+              <li>alles aus Professional</li>
+              <li>Rollen/Rechte</li>
+              <li>Multi-Company / mehrere Teams</li>
+              <li>erweitertes Reporting</li>
+              <li>höhere Limits</li>
+              <li>priorisiertes Onboarding</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card span-6">
+        <div class="kicker">Customer Evidence</div>
+        <h2>Was echtes LUMA-Feedback stützt</h2>
+        <table class="matrix">
+          <tbody>
+            <tr><td><strong>Weber</strong></td><td>Voice/Bautagebuch, Zentralisierung, Aufgabenüberblick liefern echten Wert.</td></tr>
+            <tr><td><strong>HAMM</strong></td><td>Bautagebuch sticky; E-Mail ist künftiges Nervensystem; Priorisierung wichtiger als Feature-Breite.</td></tr>
+            <tr><td><strong>A-Z</strong></td><td>Muss leichter als Post-it sein; Capmo zu teuer; Pocasio kostenlos als Benchmark.</td></tr>
+            <tr><td><strong>Pampa</strong></td><td>Zeit/Budget/Excel-Controlling ist wirtschaftlicher Schmerz, nicht Nice-to-have.</td></tr>
+            <tr><td><strong>SSR</strong></td><td>Zahlt für PlanRadar, aber hasst “1000 Sachen, die ich nicht brauche”.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card span-6">
+        <div class="kicker">AI Guardrails</div>
+        <h2>AI nicht technisch bepreisen — aber kaufmännisch absichern.</h2>
+        <p>Architekturbüros sollen nicht über Tokens, Credits oder Modelkosten nachdenken. Trotzdem muss LUMA intern die variable AI-Nutzung kontrollieren.</p>
+        <ul>
+          <li><strong>Keine Tokenpreise</strong> auf Pricing-Seite.</li>
+          <li><strong>Fair Use</strong> je Plan im Hintergrund.</li>
+          <li><strong>Soft Limits / Alerts</strong> bei ungewöhnlich hoher Nutzung.</li>
+          <li><strong>Mehr Kontingent</strong> in Pro/Business als natürlicher Upgrade-Pfad.</li>
+          <li><strong>Später Add-ons</strong> für Heavy E-Mail-Agent oder Automatisierung.</li>
+        </ul>
+      </div>
+
+      <div class="card span-12 decision">
+        <div class="kicker">Entscheidungsvorschlag</div>
+        <h2>Klare Empfehlung für LUMA GTM Phase 1</h2>
+        <ul>
+          <li><strong>Preise erstmal nicht senken.</strong> 149€ / 349€ / 599€ bleiben gute Anker.</li>
+          <li><strong>Solo nicht aktiv targeten.</strong> Optional später ein limitiertes Solo-Light für 49–79€, aber nicht jetzt.</li>
+          <li><strong>Professional als Zielplan verkaufen.</strong> Nicht “10 User”, sondern “E-Mail + Zeit/Budget + Projektsteuerung”.</li>
+          <li><strong>Core Value nicht gaten.</strong> Voice und Bautagebuch gehören in Starter, weil sie Adoption erzeugen.</li>
+          <li><strong>AI-Kosten mit Guardrails absichern.</strong> Fair Use statt Token-Abrechnung.</li>
+          <li><strong>Pricing weiter testen.</strong> Neue Kunden als Pricing-Kohorte; bestehende Piloten nicht brechen.</li>
+        </ul>
+        <p class="muted"><strong>Sales-Satz:</strong> “Der Einstieg ist nicht noch ein PM-Tool. Der Einstieg ist ein echter Workflow, der heute nervt — Bautagebuch, Aufgaben aus Zuruf/Zettel/E-Mail oder Zeit/Budget. Wenn dieser Workflow nach 14 Tagen nicht spürbar leichter ist, passt LUMA noch nicht.”</p>
+      </div>
+    </section>
+
+    <div class="footer">Erstellt für Daniel · LUMA Sales & Pricing · Quelle: Stripe “Pricing AI Products” PDF + LUMA Discovery-/Review-Feedback</div>
+  </main>
+</body>
+</html>
