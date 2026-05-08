@@ -1766,11 +1766,12 @@ export default function VoiceConsole() {
   }, [refreshAll]);
 
   useEffect(() => {
+    const recognition = recognitionRef.current;
     return () => {
       shouldRestartRecognitionRef.current = false;
       recognitionHoldRef.current = false;
       isSubmittingRef.current = false;
-      recognitionRef.current?.stop();
+      recognition?.stop();
       closeRealtimeConnection();
       assistantAudioRef.current?.pause();
       assistantAudioRef.current = null;
