@@ -12,6 +12,7 @@ import {
   validateTransport,
   voiceErrorResponse,
 } from "@/lib/voice/api";
+import { isCallModeProfileSlug } from "@/lib/voice/call-mode";
 
 export const dynamic = "force-dynamic";
 
@@ -44,6 +45,9 @@ export async function POST(request: Request) {
     const transport = body.transport === undefined ? "web" : validateTransport(body.transport);
     const autoGreeting = body.autoGreeting !== false;
     const profile = requireActiveProfileById(profileId);
+    if (!isCallModeProfileSlug(profile.slug)) {
+      throw new Error(`Voice profile not allowed in Call Mode: ${profile.slug}`);
+    }
     const session = await createSessionForProfile({ profileSlug: profile.slug, transport });
     if (autoGreeting) {
       await generateAssistantTurn({ sessionId: session.id });

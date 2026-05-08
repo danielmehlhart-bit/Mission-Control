@@ -81,6 +81,13 @@ export type ResolvedVoiceContext = {
   sources: Array<{ type: string; count?: number; label?: string }>;
   contextSummary?: string;
   switchTargets: VoiceProfileSlug[];
+  telegramBinding?: {
+    chatId: string;
+    threadId?: string;
+    label: string;
+    handoffUrl?: string;
+  };
+  handoffSource?: Record<string, unknown>;
   metadata?: Record<string, unknown>;
 };
 
@@ -88,6 +95,7 @@ export type VoiceSession = {
   id: string;
   profileId: string;
   state: VoiceSessionState;
+  isMuted: boolean;
   transport: VoiceTransport;
   baseSessionKey: string;
   resolvedContext: ResolvedVoiceContext | Record<string, unknown>;
@@ -141,6 +149,11 @@ export type UpdateVoiceSessionStateInput = {
   state: VoiceSessionState;
   lastError?: string | null;
   endedAt?: string | null;
+};
+
+export type UpdateVoiceSessionMuteInput = {
+  sessionId: string;
+  isMuted: boolean;
 };
 
 export type AppendVoiceEventInput = {

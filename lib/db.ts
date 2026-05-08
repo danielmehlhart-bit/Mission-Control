@@ -155,6 +155,7 @@ function initSchema(db: Database.Database): void {
       id                    TEXT PRIMARY KEY,
       profile_id            TEXT NOT NULL,
       state                 TEXT NOT NULL,
+      is_muted              INTEGER NOT NULL DEFAULT 0,
       transport             TEXT NOT NULL DEFAULT 'web',
       base_session_key      TEXT NOT NULL,
       resolved_context_json TEXT NOT NULL DEFAULT '{}',
@@ -237,6 +238,7 @@ function initSchema(db: Database.Database): void {
   addCol("ALTER TABLE people ADD COLUMN contact_role TEXT DEFAULT 'contact'");
   addCol("ALTER TABLE meetings ADD COLUMN account_id TEXT");
   addCol("ALTER TABLE meetings ADD COLUMN deal_id TEXT");
+  addCol("ALTER TABLE voice_sessions ADD COLUMN is_muted INTEGER NOT NULL DEFAULT 0");
 
   db.exec(`
     CREATE TABLE IF NOT EXISTS meeting_notes (

@@ -10,6 +10,7 @@ function renderVoiceView(overrides: Partial<VoiceConsoleViewProps> = {}) {
     profiles: [
       { id: "vp_main", slug: "main", label: "Call Hermes", color: "#10B981", description: "General command bridge" },
       { id: "vp_sales", slug: "sales_support", label: "Call Sales Support", color: "#6366F1", description: "Pipeline and outreach" },
+      { id: "vp_luma", slug: "luma", label: "Call LUMA", color: "#10b981", description: "LUMA", telegramBinding: { chatId: "-1003998265477", threadId: "24", label: "LUMA Telegram", handoffUrl: "https://t.me/c/3998265477/24" } },
     ],
     sessions: [],
     activeSession: null,
@@ -28,6 +29,8 @@ function renderVoiceView(overrides: Partial<VoiceConsoleViewProps> = {}) {
     isVoiceModeEnabled: false,
     layoutMode: "desktop",
     canReplayAssistant: false,
+    textFallbackOpen: false,
+    detailsOpen: false,
     onDraftChange: () => {},
     onCreateSession: () => {},
     onSelectSession: () => {},
@@ -35,6 +38,9 @@ function renderVoiceView(overrides: Partial<VoiceConsoleViewProps> = {}) {
     onSubmitTurn: () => {},
     onSwitchContext: () => {},
     onToggleVoiceMode: () => {},
+    onToggleMute: () => {},
+    onToggleTextFallback: () => {},
+    onToggleDetails: () => {},
     onReplayAssistant: () => {},
     ...overrides,
   };
@@ -61,10 +67,10 @@ test("extractRecognitionTranscripts collapses duplicate final results into one f
 test("VoiceConsoleView renders headline and profile launch buttons in empty state", () => {
   const html = renderVoiceView();
 
-  assert.match(html, /Mission Control Voice/i);
-  assert.match(html, /Call Hermes/);
-  assert.match(html, /Call Sales Support/);
-  assert.match(html, /Wähle, wen du anrufen willst/);
+  assert.match(html, /Hermes Call/i);
+  assert.match(html, /Hermes/);
+  assert.match(html, /Sales Support/);
+  assert.match(html, /Kontext/);
   assert.match(html, /Gespräch starten/);
 });
 
@@ -75,6 +81,7 @@ test("VoiceConsoleView renders active session transcript, context summary, and s
       id: "vs_1",
       profileId: "vp_sales",
       state: "awaiting_user",
+      isMuted: false,
       transport: "web",
       lastUserTranscript: "Wie ist der Stand bei LUMA?",
       lastAssistantText: "LUMA ist in der Angebotsphase.",
@@ -94,15 +101,16 @@ test("VoiceConsoleView renders active session transcript, context summary, and s
     voiceMode: "listening",
     liveTranscript: "Sag mir den nächsten Schritt",
     canReplayAssistant: true,
+    textFallbackOpen: true,
+    detailsOpen: true,
   });
 
   assert.match(html, /LUMA GmbH/);
   assert.match(html, /Wie ist der Stand bei LUMA\?/);
   assert.match(html, /LUMA ist in der Angebotsphase\./);
-  assert.match(html, /Zu LUMA wechseln/);
-  assert.match(html, /Text senden/);
-  assert.match(html, /Live Call/);
-  assert.match(html, /Mikrofon läuft/);
+  assert.match(html, /Zu LUMA/);
+  assert.match(html, /Senden/);
+  assert.match(html, /Ich höre zu/);
   assert.match(html, /Sag mir den nächsten Schritt/);
   assert.match(html, /Gespräch beenden/);
   assert.match(html, /Nochmal abspielen/);
@@ -116,6 +124,7 @@ test("VoiceConsoleView renders a minimal mobile call layout", () => {
       id: "vs_mobile",
       profileId: "vp_main",
       state: "awaiting_user",
+      isMuted: false,
       transport: "web",
       lastUserTranscript: "Hörst du mich?",
       lastAssistantText: "Ja, ich höre dich.",
@@ -133,10 +142,11 @@ test("VoiceConsoleView renders a minimal mobile call layout", () => {
 
   assert.match(html, /Hermes/);
   assert.match(html, /Sales Support/);
-  assert.match(html, /GesprÃ¤ch starten/);
+  assert.match(html, /Gespr/);
+  assert.match(html, /Mute/);
   assert.doesNotMatch(html, /Nochmal abspielen/);
   assert.doesNotMatch(html, /Session Snapshot/);
-  assert.doesNotMatch(html, /Text senden/);
+  assert.doesNotMatch(html, /Senden/);
 });
 
 test("VoiceConsoleView renders loading and error states", () => {
@@ -149,6 +159,5 @@ test("VoiceConsoleView renders loading and error states", () => {
 
   assert.match(html, /Session wird aufgebaut/);
   assert.match(html, /Voice API nicht erreichbar/);
-  assert.match(html, /Lade Voice-Kontext/);
-  assert.match(html, /WebRTC und Mikrofonzugriff/);
+  assert.match(html, /Call Mode/);
 });

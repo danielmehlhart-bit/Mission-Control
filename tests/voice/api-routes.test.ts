@@ -21,6 +21,8 @@ async function loadModules() {
   const completeTurnRouteModule = await import("../../app/api/voice/sessions/[id]/complete-turn/route.ts");
   const contextSwitchRouteModule = await import("../../app/api/voice/sessions/[id]/context-switch/route.ts");
   const eventsRouteModule = await import("../../app/api/voice/sessions/[id]/events/route.ts");
+  const muteRouteModule = await import("../../app/api/voice/sessions/[id]/mute/route.ts");
+  const endRouteModule = await import("../../app/api/voice/sessions/[id]/end/route.ts");
   const telegramHandoffRouteModule = await import("../../app/api/voice/handoffs/telegram/route.ts");
   const telegramContextRouteModule = await import("../../app/api/voice/handoffs/telegram/context/route.ts");
   const toolsExecuteRouteModule = await import("../../app/api/voice/sessions/[id]/tools/execute/route.ts");
@@ -36,6 +38,8 @@ async function loadModules() {
     completeTurnRouteModule,
     contextSwitchRouteModule,
     eventsRouteModule,
+    muteRouteModule,
+    endRouteModule,
     telegramHandoffRouteModule,
     telegramContextRouteModule,
     toolsExecuteRouteModule,
@@ -116,14 +120,16 @@ test("GET /api/voice/profiles returns active button-ready profiles ordered by so
 
   const payload = await response.json();
   assert.equal(Array.isArray(payload.profiles), true);
-  assert.equal(payload.profiles.length >= 4, true);
-  assert.deepEqual(payload.profiles.map((profile: { slug: string }) => profile.slug).slice(0, 4), [
+  assert.deepEqual(payload.profiles.map((profile: { slug: string }) => profile.slug), [
     "main",
     "sales_support",
     "luma",
-    "fitness",
   ]);
-  assert.deepEqual(Object.keys(payload.profiles[0]).sort(), ["color", "description", "icon", "id", "label", "slug", "status"]);
+  assert.deepEqual(Object.keys(payload.profiles[0]).sort(), ["color", "description", "icon", "id", "label", "slug", "status", "telegramBinding"]);
+  assert.equal(payload.profiles[0].telegramBinding.chatId, "485318478");
+  assert.equal(payload.profiles[1].telegramBinding.chatId, "-1003998265477");
+  assert.equal(payload.profiles[1].telegramBinding.threadId, "23");
+  assert.equal(payload.profiles[2].telegramBinding.threadId, "24");
 });
 
 test("POST /api/voice/sessions validates transport and creates a hydrated session envelope with auto greeting", async () => {
@@ -178,7 +184,73 @@ test("POST /api/voice/sessions allows disabling the auto greeting", async () => 
   assert.equal(response.status, 201);
   const payload = await response.json();
   assert.equal(payload.session.state, "ready");
+  assert.equal(payload.session.isMuted, false);
   assert.deepEqual(payload.turns, []);
+});
+
+test("POST /api/voice/sessions/[id]/mute persists mute as an overlay flag", async () => {
+  await seedVoiceFixtures();
+  const { sessionsRouteModule, muteRouteModule, eventsRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const mainProfile = getVoiceProfileBySlug("main");
+  assert.ok(mainProfile);
+
+  const createdResponse = await sessionsRouteModule.POST(
+    makeRequest("http://localhost/api/voice/sessions", {
+      method: "POST",
+      body: JSON.stringify({ profileId: mainProfile!.id, transport: "web", autoGreeting: false }),
+    }),
+  );
+  const created = await createdResponse.json();
+
+  const muteResponse = await muteRouteModule.POST(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/mute`, {
+      method: "POST",
+      body: JSON.stringify({ isMuted: true }),
+    }),
+    { params: { id: created.session.id } },
+  );
+
+  assert.equal(muteResponse.status, 200);
+  const mutePayload = await muteResponse.json();
+  assert.equal(mutePayload.session.isMuted, true);
+  assert.equal(mutePayload.session.state, "ready");
+
+  const eventsResponse = await eventsRouteModule.GET(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/events`),
+    { params: { id: created.session.id } },
+  );
+  const eventsPayload = await eventsResponse.json();
+  assert.equal(eventsPayload.events.some((event: { eventType: string }) => event.eventType === "audio.mute_enabled"), true);
+});
+
+test("POST /api/voice/sessions/[id]/end completes the session for handoff preparation", async () => {
+  await seedVoiceFixtures();
+  const { sessionsRouteModule, endRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const lumaProfile = getVoiceProfileBySlug("luma");
+  assert.ok(lumaProfile);
+
+  const createdResponse = await sessionsRouteModule.POST(
+    makeRequest("http://localhost/api/voice/sessions", {
+      method: "POST",
+      body: JSON.stringify({ profileId: lumaProfile!.id, transport: "web", autoGreeting: false }),
+    }),
+  );
+  const created = await createdResponse.json();
+
+  const endResponse = await endRouteModule.POST(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/end`, {
+      method: "POST",
+      body: JSON.stringify({ reason: "test-end" }),
+    }),
+    { params: { id: created.session.id } },
+  );
+
+  assert.equal(endResponse.status, 200);
+  const endPayload = await endResponse.json();
+  assert.equal(endPayload.session.state, "completed");
+  assert.ok(endPayload.session.endedAt);
 });
 
 test("POST /api/voice/sessions rejects inactive profiles", async () => {
@@ -613,13 +685,13 @@ test("POST /api/voice/sessions/[id]/tools/execute returns not found without inve
   await seedVoiceFixtures();
   const { sessionsRouteModule, toolsExecuteRouteModule, sessionStoreModule } = await loadModules();
   const { getVoiceProfileBySlug } = sessionStoreModule;
-  const fitnessProfile = getVoiceProfileBySlug("fitness");
-  assert.ok(fitnessProfile);
+  const mainProfile = getVoiceProfileBySlug("main");
+  assert.ok(mainProfile);
 
   const createdResponse = await sessionsRouteModule.POST(
     makeRequest("http://localhost/api/voice/sessions", {
       method: "POST",
-      body: JSON.stringify({ profileId: fitnessProfile!.id, transport: "web", autoGreeting: false }),
+      body: JSON.stringify({ profileId: mainProfile!.id, transport: "web", autoGreeting: false }),
     }),
   );
   const created = await createdResponse.json();
@@ -631,7 +703,7 @@ test("POST /api/voice/sessions/[id]/tools/execute returns not found without inve
         toolName: "hermes_memory_search",
         arguments: {
           query: "phantom marathon wattage protocol",
-          channel: "fitness",
+          channel: "main",
           timeRange: "all",
         },
       }),

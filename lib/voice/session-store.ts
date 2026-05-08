@@ -4,6 +4,7 @@ import type {
   AppendVoiceTurnInput,
   CreateVoiceSessionInput,
   ResolvedVoiceContext,
+  UpdateVoiceSessionMuteInput,
   UpdateVoiceSessionStateInput,
   UpsertVoiceProfileBindingInput,
   VoiceProfile,
@@ -65,6 +66,7 @@ type VoiceSessionRow = {
   id: string;
   profile_id: string;
   state: string;
+  is_muted: number;
   transport: string;
   base_session_key: string;
   resolved_context_json: string;
@@ -135,6 +137,7 @@ function mapVoiceSession(row: VoiceSessionRow): VoiceSession {
     id: row.id,
     profileId: row.profile_id,
     state: row.state as VoiceSessionState,
+    isMuted: row.is_muted === 1,
     transport: row.transport as VoiceTransport,
     baseSessionKey: row.base_session_key,
     resolvedContext: parseJsonObject(row.resolved_context_json) as ResolvedVoiceContext,
@@ -255,9 +258,9 @@ export function createVoiceSession(input: CreateVoiceSessionInput): VoiceSession
 
   db.prepare(`
     INSERT INTO voice_sessions (
-      id, profile_id, state, transport, base_session_key, resolved_context_json,
+      id, profile_id, state, is_muted, transport, base_session_key, resolved_context_json,
       last_user_transcript, last_assistant_text, last_error, started_at, ended_at, updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, NULL, NULL, NULL, datetime('now'), NULL, datetime('now'))
+    ) VALUES (?, ?, ?, 0, ?, ?, ?, NULL, NULL, NULL, datetime('now'), NULL, datetime('now'))
   `).run(
     id,
     input.profileId,
@@ -295,6 +298,21 @@ export function updateVoiceSessionState(input: UpdateVoiceSessionStateInput): Vo
         updated_at = datetime('now')
     WHERE id = ?
   `).run(input.state, input.lastError ?? null, input.endedAt ?? null, input.sessionId);
+
+  const row = db.prepare("SELECT * FROM voice_sessions WHERE id = ?").get(input.sessionId) as VoiceSessionRow | undefined;
+  if (!row) {
+    throw new Error(`Voice session not found: ${input.sessionId}`);
+  }
+  return mapVoiceSession(row);
+}
+
+export function updateVoiceSessionMute(input: UpdateVoiceSessionMuteInput): VoiceSession {
+  const db = getDb();
+  db.prepare(`
+    UPDATE voice_sessions
+    SET is_muted = ?, updated_at = datetime('now')
+    WHERE id = ?
+  `).run(input.isMuted ? 1 : 0, input.sessionId);
 
   const row = db.prepare("SELECT * FROM voice_sessions WHERE id = ?").get(input.sessionId) as VoiceSessionRow | undefined;
   if (!row) {

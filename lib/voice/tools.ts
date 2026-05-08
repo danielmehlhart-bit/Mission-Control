@@ -365,10 +365,10 @@ async function searchMemory(sessionId: string, args: Record<string, unknown>): P
       profileSlug: channel === "auto" ? sessionChannel : channel,
       limit: 6,
     }),
-    ...(!handoff.chatId ? listVoiceTelegramRecentContexts({
+    ...listVoiceTelegramRecentContexts({
       profileSlug: channel === "auto" ? sessionChannel : channel,
       limit: 6,
-    }) : []),
+    }),
   ];
   const seenRecentContextIds = new Set<string>();
   for (const context of recentContexts) {

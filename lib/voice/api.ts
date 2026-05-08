@@ -9,6 +9,7 @@ import {
   appendVoiceEvent,
 } from "./session-store";
 import type { VoiceProfile, VoiceSession, VoiceTransport } from "./types";
+import { getCallModeTelegramBinding, isCallModeProfileSlug } from "./call-mode";
 
 const ALLOWED_TRANSPORTS = new Set<VoiceTransport>(["web", "telegram", "internal"]);
 
@@ -49,6 +50,7 @@ export function validateTransport(value: unknown): VoiceTransport {
 }
 
 export function serializeVoiceProfile(profile: VoiceProfile) {
+  const telegramBinding = getCallModeTelegramBinding(profile.slug);
   return {
     id: profile.id,
     slug: profile.slug,
@@ -57,6 +59,14 @@ export function serializeVoiceProfile(profile: VoiceProfile) {
     color: profile.color ?? null,
     icon: profile.icon ?? null,
     status: profile.status,
+    telegramBinding: telegramBinding
+      ? {
+          chatId: telegramBinding.chatId,
+          threadId: telegramBinding.threadId ?? null,
+          label: telegramBinding.label,
+          handoffUrl: telegramBinding.handoffUrl ?? null,
+        }
+      : null,
   };
 }
 
@@ -120,7 +130,9 @@ function serializeVoiceEvent(event: ReturnType<typeof listVoiceSessionEvents>[nu
 }
 
 export function listButtonReadyProfiles() {
-  return listActiveVoiceProfiles().map(serializeVoiceProfile);
+  return listActiveVoiceProfiles()
+    .filter((profile) => isCallModeProfileSlug(profile.slug))
+    .map(serializeVoiceProfile);
 }
 
 export function serializeVoiceSession(session: VoiceSession) {
@@ -128,6 +140,7 @@ export function serializeVoiceSession(session: VoiceSession) {
     id: session.id,
     profileId: session.profileId,
     state: session.state,
+    isMuted: session.isMuted,
     transport: session.transport,
     lastUserTranscript: session.lastUserTranscript ?? null,
     lastAssistantText: session.lastAssistantText ?? null,

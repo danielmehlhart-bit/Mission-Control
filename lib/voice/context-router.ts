@@ -2,6 +2,7 @@ import { getVoiceProfileBySlug, listVoiceProfileBindings } from "./session-store
 import type { ResolvedVoiceContext, VoiceProfileSlug } from "./types";
 import { inferBindingNames, loadVoiceContextSources, type VoiceContextBindings } from "./context-sources";
 import type { CalendarEvent } from "@/lib/google-calendar";
+import { getCallModeTelegramBinding } from "./call-mode";
 
 export type ResolveVoiceProfileContextOptions = {
   calendarProvider?: (days?: number) => Promise<CalendarEvent[]>;
@@ -77,6 +78,7 @@ export async function resolveVoiceProfileContext(
     bindings: hydratedBindings,
     calendarProvider: options.calendarProvider,
   });
+  const telegramBinding = getCallModeTelegramBinding(profile.slug);
 
   return {
     profile: {
@@ -85,14 +87,33 @@ export async function resolveVoiceProfileContext(
       label: profile.label,
     },
     bindings: hydratedBindings,
-    sources: buildSourceCounts(loaded),
-    contextSummary: buildContextSummary(profile.label, hydratedBindings, loaded),
+    sources: [
+      ...buildSourceCounts(loaded),
+      ...(telegramBinding ? [{ type: "telegram", count: 1, label: telegramBinding.label }] : []),
+    ],
+    contextSummary: [
+      buildContextSummary(profile.label, hydratedBindings, loaded),
+      telegramBinding ? telegramBinding.label : "",
+    ].filter(Boolean).join(" · "),
     switchTargets: profile.allowedSwitchTargets,
     metadata: {
       accountName: hydratedBindings.accountName,
       projectName: hydratedBindings.projectName,
+      ...(telegramBinding ? { telegramBinding } : {}),
       sourceData: loaded,
     },
+    ...(telegramBinding
+      ? {
+          telegramBinding,
+          handoffSource: {
+            type: "telegram",
+            chatId: telegramBinding.chatId,
+            ...(telegramBinding.threadId ? { threadId: telegramBinding.threadId } : {}),
+            profileSlug: profile.slug,
+            label: telegramBinding.label,
+          },
+        }
+      : {}),
   };
 }
 

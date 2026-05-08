@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ExternalLink, MessageSquareText, Mic, MicOff, MoreHorizontal, Phone, PhoneOff, RefreshCw, RotateCcw, Send, Volume2 } from "lucide-react";
 
 import { pickPreferredSpeechSynthesisVoice } from "@/lib/voice/browser-voice";
 
@@ -10,12 +11,19 @@ type VoiceProfileSummary = {
   label: string;
   description: string | null;
   color: string | null;
+  telegramBinding?: {
+    chatId: string;
+    threadId: string | null;
+    label: string;
+    handoffUrl: string | null;
+  } | null;
 };
 
 type VoiceSessionSummary = {
   id: string;
   profileId: string;
   state: string;
+  isMuted: boolean;
   transport: string;
   lastUserTranscript: string | null;
   lastAssistantText: string | null;
@@ -203,6 +211,64 @@ function getVoiceModeLabel(mode: BrowserVoiceMode) {
   }
 }
 
+function getVisibleCallStatus(
+  activeSession: VoiceSessionSummary | null,
+  voiceMode: BrowserVoiceMode,
+  isVoiceModeEnabled: boolean,
+): { label: string; subline: string; tone: "idle" | "listening" | "thinking" | "speaking" | "muted" | "ended" | "error" } {
+  if (!activeSession) {
+    return { label: "Bereit für Call", subline: "Wähle einen Kontext und starte den Hermes-Call.", tone: "idle" };
+  }
+  if (activeSession.lastError || voiceMode === "error" || activeSession.state === "failed") {
+    return { label: "Etwas ist schiefgelaufen", subline: "Text-Fallback und Details bleiben verfügbar.", tone: "error" };
+  }
+  if (activeSession.state === "completed" || activeSession.endedAt) {
+    return { label: "Handoff bereit", subline: "Transcript und Memory-Zusammenfassung werden für Folgearbeit genutzt.", tone: "ended" };
+  }
+  if (activeSession.state === "ending") {
+    return { label: "Ich speichere den Call", subline: "Transcript und Handoff werden vorbereitet.", tone: "thinking" };
+  }
+  if (activeSession.isMuted) {
+    return { label: "Gemutet", subline: "Ich höre dich gerade nicht.", tone: "muted" };
+  }
+  if (voiceMode === "speaking" || activeSession.state === "speaking") {
+    return { label: "Hermes spricht", subline: "Du kannst reinreden; ich stoppe die Antwort so gut der Browser es zulässt.", tone: "speaking" };
+  }
+  if (voiceMode === "thinking" || activeSession.state === "thinking" || activeSession.state === "hydrating_context") {
+    return { label: "Ich schau kurz nach", subline: "Kontext und Quellen werden geprüft.", tone: "thinking" };
+  }
+  if (isVoiceModeEnabled || voiceMode === "listening" || activeSession.state === "listening" || activeSession.state === "awaiting_user") {
+    return { label: "Ich höre zu", subline: "Sprich einfach los.", tone: "listening" };
+  }
+  if (voiceMode === "connecting" || activeSession.state === "booting" || activeSession.state === "ready") {
+    return { label: "Call startet", subline: "Hermes verbindet und lädt den Kontext.", tone: "thinking" };
+  }
+  return { label: "Bereit", subline: "Starte den Call, um hands-free zu sprechen.", tone: "idle" };
+}
+
+function toneColor(tone: ReturnType<typeof getVisibleCallStatus>["tone"], activeColor: string) {
+  switch (tone) {
+    case "listening":
+      return activeColor;
+    case "speaking":
+      return "#60a5fa";
+    case "thinking":
+      return "#f59e0b";
+    case "muted":
+      return "#f97316";
+    case "ended":
+      return "#10b981";
+    case "error":
+      return "#ef4444";
+    default:
+      return "#8b90a0";
+  }
+}
+
+function isTerminalSession(session: VoiceSessionSummary | null) {
+  return Boolean(session && (session.state === "completed" || session.state === "failed" || session.endedAt));
+}
+
 function getRealtimeEventType(event: MessageEvent<string>): string | null {
   try {
     const parsed = JSON.parse(event.data);
@@ -352,6 +418,8 @@ export type VoiceConsoleViewProps = {
   isVoiceModeEnabled: boolean;
   layoutMode: VoiceConsoleLayoutMode;
   canReplayAssistant: boolean;
+  textFallbackOpen: boolean;
+  detailsOpen: boolean;
   onDraftChange: (value: string) => void;
   onCreateSession: (profileId: string) => void;
   onSelectSession: (sessionId: string) => void;
@@ -359,10 +427,13 @@ export type VoiceConsoleViewProps = {
   onSubmitTurn: () => void;
   onSwitchContext: (targetProfileSlug: string) => void;
   onToggleVoiceMode: () => void;
+  onToggleMute: () => void;
+  onToggleTextFallback: () => void;
+  onToggleDetails: () => void;
   onReplayAssistant: () => void;
 };
 
-export function VoiceConsoleView({
+function LegacyVoiceConsoleView({
   profiles,
   sessions,
   activeSession,
@@ -381,6 +452,8 @@ export function VoiceConsoleView({
   isVoiceModeEnabled,
   layoutMode,
   canReplayAssistant,
+  textFallbackOpen,
+  detailsOpen,
   onDraftChange,
   onCreateSession,
   onSelectSession,
@@ -388,6 +461,9 @@ export function VoiceConsoleView({
   onSubmitTurn,
   onSwitchContext,
   onToggleVoiceMode,
+  onToggleMute,
+  onToggleTextFallback,
+  onToggleDetails,
   onReplayAssistant,
 }: VoiceConsoleViewProps) {
   const activeColor = activeProfile?.color ?? "#10B981";
@@ -752,6 +828,284 @@ export function VoiceConsoleView({
   );
 }
 
+export function VoiceConsoleView({
+  profiles,
+  sessions,
+  activeSession,
+  activeProfile,
+  contextSummary,
+  turns,
+  switchTargets,
+  draft,
+  isBooting,
+  isSubmitting,
+  error,
+  lastActionLabel,
+  voiceMode,
+  browserVoiceSupported,
+  liveTranscript,
+  isVoiceModeEnabled,
+  layoutMode,
+  canReplayAssistant,
+  textFallbackOpen,
+  detailsOpen,
+  onDraftChange,
+  onCreateSession,
+  onSelectSession,
+  onRefresh,
+  onSubmitTurn,
+  onSwitchContext,
+  onToggleVoiceMode,
+  onToggleMute,
+  onToggleTextFallback,
+  onToggleDetails,
+  onReplayAssistant,
+}: VoiceConsoleViewProps) {
+  const activeColor = activeProfile?.color ?? "#10B981";
+  const status = getVisibleCallStatus(activeSession, voiceMode, isVoiceModeEnabled);
+  const statusColor = toneColor(status.tone, activeColor);
+  const callEnded = isTerminalSession(activeSession);
+  const hasActiveCall = Boolean(activeSession && activeProfile && !callEnded);
+  const profileBinding = activeProfile?.telegramBinding ?? null;
+  const shellMaxWidth = layoutMode === "mobile" ? 560 : 980;
+  const latestAssistant = turns.filter((turn) => turn.speaker === "assistant").slice(-1)[0] ?? null;
+
+  const iconButtonStyle: React.CSSProperties = {
+    minHeight: 44,
+    borderRadius: 8,
+    border: "1px solid #242936",
+    background: "#1a1d27",
+    color: "#f0f2f5",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    padding: "0 12px",
+    fontSize: 13,
+    fontWeight: 700,
+    cursor: isSubmitting ? "default" : "pointer",
+  };
+
+  return (
+    <main style={{ minHeight: "100vh", background: "#141720", color: "#f0f2f5", padding: layoutMode === "mobile" ? "14px 12px 94px" : "24px 24px 72px" }}>
+      <div style={{ maxWidth: shellMaxWidth, margin: "0 auto", display: "grid", gap: 18 }}>
+        <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+          <div>
+            <div style={{ color: "#10B981", fontSize: 12, fontWeight: 800, textTransform: "uppercase" }}>Call Mode</div>
+            <h1 style={{ margin: "4px 0 0", fontSize: layoutMode === "mobile" ? 24 : 30, lineHeight: 1.1 }}>Hermes Call</h1>
+          </div>
+          <button onClick={onRefresh} style={{ ...iconButtonStyle, width: 44, padding: 0 }} aria-label="Aktualisieren" title="Aktualisieren">
+            <RefreshCw size={18} />
+          </button>
+        </header>
+
+        {(error || isBooting || !browserVoiceSupported) && (
+          <section style={{ borderRadius: 8, border: `1px solid ${error ? "#ef444455" : "#2a2f3d"}`, background: error ? "#2a1115" : "#10131b", padding: 12, color: error ? "#fecaca" : "#c8ccd6", fontSize: 13 }}>
+            {error ?? (isBooting ? "Kontext wird geladen..." : "Realtime-WebRTC oder Mikrofonzugriff ist in diesem Browser nicht verfügbar.")}
+          </section>
+        )}
+
+        <section style={{ display: "grid", gap: 10 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+            <div style={{ color: "#8b90a0", fontSize: 12, fontWeight: 700 }}>Kontext</div>
+            {lastActionLabel && <div style={{ color: "#8b90a0", fontSize: 12 }}>{lastActionLabel}</div>}
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: layoutMode === "mobile" ? "1fr" : "repeat(3, minmax(0, 1fr))", gap: 10 }}>
+            {profiles.map((profile) => {
+              const selected = activeProfile?.id === profile.id;
+              return (
+                <button
+                  key={profile.id}
+                  onClick={() => onCreateSession(profile.id)}
+                  disabled={isSubmitting}
+                  style={{
+                    borderRadius: 8,
+                    border: `1px solid ${selected ? profile.color ?? "#10B981" : "#242936"}`,
+                    background: selected ? `${profile.color ?? "#10B981"}22` : "#10131b",
+                    color: "#f0f2f5",
+                    textAlign: "left",
+                    padding: 14,
+                    minHeight: 86,
+                    cursor: isSubmitting ? "default" : "pointer",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                    <strong style={{ fontSize: 15 }}>{slugLabel(profile.slug)}</strong>
+                    <Phone size={17} color={profile.color ?? "#10B981"} />
+                  </div>
+                  <div style={{ marginTop: 6, color: "#a1a6b3", fontSize: 12, lineHeight: 1.35 }}>{profile.telegramBinding?.label ?? profile.description ?? "Mission-Control-Kontext"}</div>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        <section style={{ borderRadius: 8, border: "1px solid #242936", background: "#10131b", padding: layoutMode === "mobile" ? 18 : 24, display: "grid", gap: 18 }}>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
+            <div>
+              <div style={{ color: "#8b90a0", fontSize: 12 }}>{activeProfile ? slugLabel(activeProfile.slug) : "Kein Profil gewählt"}</div>
+              <div style={{ marginTop: 4, fontSize: 15, color: "#c8ccd6" }}>{contextSummary ?? "Mission Control bleibt die primäre Call-Oberfläche."}</div>
+            </div>
+            {profileBinding && (
+              <span style={{ borderRadius: 999, border: "1px solid #2a2f3d", padding: "6px 10px", color: "#c8ccd6", fontSize: 12 }}>
+                {profileBinding.label}
+              </span>
+            )}
+          </div>
+
+          <div style={{ display: "grid", placeItems: "center", gap: 16, padding: layoutMode === "mobile" ? "12px 0" : "22px 0" }}>
+            <div
+              aria-label={status.label}
+              style={{
+                width: layoutMode === "mobile" ? 184 : 236,
+                aspectRatio: "1 / 1",
+                borderRadius: "50%",
+                display: "grid",
+                placeItems: "center",
+                background: `radial-gradient(circle at 50% 42%, ${statusColor}33 0, ${statusColor}1a 44%, #151923 72%)`,
+                border: `1px solid ${statusColor}66`,
+                boxShadow: hasActiveCall ? `0 0 0 8px ${statusColor}14, 0 0 48px ${statusColor}22` : "none",
+              }}
+            >
+              <div style={{ textAlign: "center" }}>
+                {activeSession?.isMuted ? <MicOff size={44} color={statusColor} /> : status.tone === "speaking" ? <Volume2 size={44} color={statusColor} /> : <Mic size={44} color={statusColor} />}
+                <div style={{ marginTop: 10, fontSize: 13, color: "#c8ccd6" }}>{activeSession ? stateLabel(activeSession.state) : "Idle"}</div>
+              </div>
+            </div>
+            <div style={{ textAlign: "center", display: "grid", gap: 5 }}>
+              <div style={{ fontSize: layoutMode === "mobile" ? 24 : 30, fontWeight: 850 }}>{status.label}</div>
+              <div style={{ color: "#a1a6b3", fontSize: 14 }}>{status.subline}</div>
+              {liveTranscript && (
+                <div style={{ marginTop: 6, color: "#dbeafe", fontSize: 13, maxWidth: 520 }}>
+                  {liveTranscript}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: layoutMode === "mobile" ? "1fr 1fr" : "repeat(5, minmax(0, 1fr))", gap: 10 }}>
+            <button
+              onClick={onToggleVoiceMode}
+              disabled={!activeSession || !browserVoiceSupported || isSubmitting}
+              style={{
+                ...iconButtonStyle,
+                background: isVoiceModeEnabled || hasActiveCall ? "#ef4444" : "#10B981",
+                border: "none",
+                gridColumn: layoutMode === "mobile" ? "span 2" : undefined,
+              }}
+            >
+              {isVoiceModeEnabled || hasActiveCall ? <PhoneOff size={18} /> : <Phone size={18} />}
+              {isVoiceModeEnabled || hasActiveCall ? "Gespräch beenden" : "Gespräch starten"}
+            </button>
+            <button onClick={onToggleMute} disabled={!activeSession || callEnded || isSubmitting} style={{ ...iconButtonStyle, background: activeSession?.isMuted ? "#f97316" : "#1a1d27" }}>
+              {activeSession?.isMuted ? <MicOff size={18} /> : <Mic size={18} />}
+              {activeSession?.isMuted ? "Unmute" : "Mute"}
+            </button>
+            <button onClick={onToggleTextFallback} disabled={!activeSession} style={iconButtonStyle}>
+              <MessageSquareText size={18} />
+              Text
+            </button>
+            <button onClick={onToggleDetails} disabled={!activeSession} style={iconButtonStyle}>
+              <MoreHorizontal size={18} />
+              Details
+            </button>
+            {profileBinding?.handoffUrl ? (
+              <a href={profileBinding.handoffUrl} target="_blank" rel="noreferrer" style={{ ...iconButtonStyle, textDecoration: "none" }}>
+                <ExternalLink size={18} />
+                Telegram
+              </a>
+            ) : (
+              <button disabled style={{ ...iconButtonStyle, opacity: 0.55 }}>
+                <ExternalLink size={18} />
+                Telegram
+              </button>
+            )}
+          </div>
+
+          {textFallbackOpen && (
+            <section style={{ borderTop: "1px solid #242936", paddingTop: 16, display: "grid", gap: 10 }}>
+              <div style={{ color: "#8b90a0", fontSize: 12, fontWeight: 700 }}>Text-Fallback</div>
+              <textarea
+                value={draft}
+                onChange={(event) => onDraftChange(event.target.value)}
+                placeholder="Fallback nur falls Audio oder Umgebung nicht passt."
+                style={{ width: "100%", minHeight: 88, resize: "vertical", borderRadius: 8, border: "1px solid #242936", background: "#141720", color: "#f0f2f5", padding: 12, fontSize: 14, outline: "none", boxSizing: "border-box" }}
+              />
+              <button onClick={onSubmitTurn} disabled={isSubmitting || draft.trim().length === 0} style={{ ...iconButtonStyle, justifySelf: "end", background: "#10B981", border: "none" }}>
+                <Send size={18} />
+                {isSubmitting ? "Sende..." : "Senden"}
+              </button>
+            </section>
+          )}
+
+          {detailsOpen && (
+            <section style={{ borderTop: "1px solid #242936", paddingTop: 16, display: "grid", gap: 14 }}>
+              <div style={{ display: "grid", gap: 6, color: "#c8ccd6", fontSize: 13 }}>
+                <div><span style={{ color: "#8b90a0" }}>Session:</span> {activeSession?.id.slice(0, 12) ?? "-"}</div>
+                <div><span style={{ color: "#8b90a0" }}>Letzter User-Turn:</span> {activeSession?.lastUserTranscript ?? "-"}</div>
+                <div><span style={{ color: "#8b90a0" }}>Letzte Hermes-Antwort:</span> {latestAssistant?.text ?? activeSession?.lastAssistantText ?? "-"}</div>
+              </div>
+              {canReplayAssistant && (
+                <button onClick={onReplayAssistant} disabled={isSubmitting} style={{ ...iconButtonStyle, justifySelf: "start" }}>
+                  <RotateCcw size={18} />
+                  Nochmal abspielen
+                </button>
+              )}
+              <div style={{ display: "grid", gap: 8, maxHeight: 260, overflowY: "auto" }}>
+                {turns.length === 0 ? (
+                  <div style={{ color: "#8b90a0", fontSize: 13 }}>Noch kein Transcript.</div>
+                ) : turns.map((turn) => (
+                  <div key={turn.id} style={{ borderRadius: 8, border: "1px solid #242936", padding: 10, background: turn.speaker === "assistant" ? "#10261d" : "#1a1d27" }}>
+                    <div style={{ color: turn.speaker === "assistant" ? "#10B981" : "#93c5fd", fontSize: 11, fontWeight: 800, marginBottom: 4 }}>
+                      {turn.speaker === "assistant" ? "Hermes" : turn.speaker === "user" ? "Du" : "System"}
+                    </div>
+                    <div style={{ color: "#f0f2f5", fontSize: 13, lineHeight: 1.45, whiteSpace: "pre-wrap" }}>{turn.text}</div>
+                  </div>
+                ))}
+              </div>
+              {switchTargets.length > 0 && (
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  {switchTargets.map((slug) => (
+                    <button key={slug} onClick={() => onSwitchContext(slug)} style={{ ...iconButtonStyle, minHeight: 38 }}>
+                      Zu {slugLabel(slug)}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </section>
+          )}
+        </section>
+
+        {callEnded && (
+          <section style={{ borderRadius: 8, border: "1px solid #1f6f4a", background: "#0f1f1a", padding: 16, display: "grid", gap: 8 }}>
+            <strong>Handoff bereit</strong>
+            <div style={{ color: "#a1a6b3", fontSize: 13 }}>
+              Die aktuelle Implementierung schreibt den Call als `VOICE_CALL_MEMORY_V1` in die Memory-Zusammenfassung. Entscheidungen, Produces und Tags sind als erweiterte Extraktion im Plan markiert.
+            </div>
+          </section>
+        )}
+
+        {sessions.length > 0 && !hasActiveCall && (
+          <section style={{ display: "grid", gap: 8 }}>
+            <div style={{ color: "#8b90a0", fontSize: 12, fontWeight: 700 }}>Letzte Calls</div>
+            <div style={{ display: "grid", gap: 8 }}>
+              {sessions.slice(0, 4).map((entry) => (
+                <button key={entry.session.id} onClick={() => onSelectSession(entry.session.id)} style={{ borderRadius: 8, border: "1px solid #242936", background: "#10131b", color: "#f0f2f5", textAlign: "left", padding: 12, cursor: "pointer" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", gap: 10 }}>
+                    <strong>{slugLabel(entry.profile.slug)}</strong>
+                    <span style={{ color: stateColor(entry.session.state), fontSize: 12 }}>{stateLabel(entry.session.state)}</span>
+                  </div>
+                  <div style={{ marginTop: 5, color: "#8b90a0", fontSize: 12 }}>{entry.contextSummary}</div>
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+    </main>
+  );
+}
+
 export default function VoiceConsole() {
   const [profiles, setProfiles] = useState<VoiceProfileSummary[]>([]);
   const [sessions, setSessions] = useState<VoiceSessionListItem[]>([]);
@@ -765,6 +1119,8 @@ export default function VoiceConsole() {
   const [browserVoiceSupported, setBrowserVoiceSupported] = useState(true);
   const [liveTranscript, setLiveTranscript] = useState("");
   const [isVoiceModeEnabled, setIsVoiceModeEnabled] = useState(false);
+  const [textFallbackOpen, setTextFallbackOpen] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [layoutMode, setLayoutMode] = useState<VoiceConsoleLayoutMode>(() => {
     if (typeof window === "undefined") return "desktop";
     return window.innerWidth <= 900 ? "mobile" : "desktop";
@@ -780,6 +1136,8 @@ export default function VoiceConsole() {
   const realtimeAudioElementRef = useRef<HTMLAudioElement | null>(null);
   const activeSessionIdRef = useRef<string | null>(null);
   const isSubmittingRef = useRef(false);
+  const isMutedRef = useRef(false);
+  const assistantSpeakingRef = useRef(false);
 
   const loadProfiles = useCallback(async () => {
     const data = await readJson<{ profiles: VoiceProfileSummary[] }>("/api/voice/profiles");
@@ -985,6 +1343,14 @@ export default function VoiceConsole() {
     realtimeMediaStreamRef.current = null;
     realtimeAudioElementRef.current?.pause();
     realtimeAudioElementRef.current = null;
+    assistantSpeakingRef.current = false;
+  }, []);
+
+  const applyRealtimeMute = useCallback((isMuted: boolean) => {
+    isMutedRef.current = isMuted;
+    realtimeMediaStreamRef.current?.getAudioTracks().forEach((track) => {
+      track.enabled = !isMuted;
+    });
   }, []);
 
   const handleRealtimeFunctionCalls = useCallback(async (
@@ -1114,11 +1480,20 @@ export default function VoiceConsole() {
     setIsVoiceModeEnabled(false);
     setVoiceMode("idle");
     setLiveTranscript("");
-    setLastActionLabel("Gespräch beendet");
+    setLastActionLabel("Gespräch wird gespeichert");
     if (sessionId) {
+      try {
+        await readJson<{ session: VoiceSessionSummary }>(`/api/voice/sessions/${sessionId}/end`, {
+          method: "POST",
+          body: JSON.stringify({ reason: "voice-ended" }),
+        });
+      } catch {
+        // A completed/failed session may already be closed; memory persistence still gets a best-effort run.
+      }
       await saveVoiceMemorySummary(sessionId);
+      await Promise.all([loadSessions(), loadSessionDetail(sessionId)]).catch(() => {});
     }
-  }, [closeRealtimeConnection, saveVoiceMemorySummary]);
+  }, [closeRealtimeConnection, loadSessionDetail, loadSessions, saveVoiceMemorySummary]);
 
   const startVoiceMode = useCallback(async (sessionIdOverride?: string) => {
     const sessionId = sessionIdOverride ?? activeSessionIdRef.current;
@@ -1181,6 +1556,9 @@ export default function VoiceConsole() {
       },
     });
     realtimeMediaStreamRef.current = stream;
+    stream.getAudioTracks().forEach((track) => {
+      track.enabled = !isMutedRef.current;
+    });
     peerConnection.addTrack(stream.getAudioTracks()[0], stream);
 
     const dataChannel = peerConnection.createDataChannel("oai-events");
@@ -1201,6 +1579,14 @@ export default function VoiceConsole() {
       if (!eventType) return;
 
       if (eventType === "input_audio_buffer.speech_started") {
+        if (isMutedRef.current) return;
+        if (assistantSpeakingRef.current) {
+          // Browser-level barge-in approximation: OpenAI Realtime is configured with interrupt_response=true,
+          // and this explicit cancel catches providers/browsers that keep emitting audio briefly.
+          sendRealtimeEvent(dataChannel, { type: "response.cancel" });
+          assistantSpeakingRef.current = false;
+          setLastActionLabel("Unterbrochen, ich höre zu");
+        }
         setVoiceMode("listening");
         setLiveTranscript("");
       }
@@ -1216,6 +1602,7 @@ export default function VoiceConsole() {
         setVoiceMode("thinking");
       }
       if (eventType === "response.audio.delta" || eventType === "response.output_audio.delta") {
+        assistantSpeakingRef.current = true;
         setVoiceMode("speaking");
       }
       if (eventType === "response.audio_transcript.done" || eventType === "response.output_audio_transcript.done") {
@@ -1231,6 +1618,7 @@ export default function VoiceConsole() {
           return;
         }
         setVoiceMode("listening");
+        assistantSpeakingRef.current = false;
         setLastActionLabel("Hermes hört weiter zu");
         void loadSessionDetail(sessionId).catch(() => {});
       }
@@ -1365,7 +1753,11 @@ export default function VoiceConsole() {
 
   useEffect(() => {
     activeSessionIdRef.current = active?.session.id ?? null;
-  }, [active?.session.id]);
+    isMutedRef.current = active?.session.isMuted ?? false;
+    realtimeMediaStreamRef.current?.getAudioTracks().forEach((track) => {
+      track.enabled = !(active?.session.isMuted ?? false);
+    });
+  }, [active?.session.id, active?.session.isMuted]);
 
   useEffect(() => {
     refreshAll();
@@ -1397,6 +1789,8 @@ export default function VoiceConsole() {
       });
       setActive(data);
       setDraft("");
+      setTextFallbackOpen(false);
+      setDetailsOpen(false);
       await loadSessions();
       setLastActionLabel(`Verbunden mit ${data.profile.label}`);
       await startVoiceMode(data.session.id);
@@ -1432,6 +1826,31 @@ export default function VoiceConsole() {
     if (!lastAssistantText) return;
     void playAssistantResponse(lastAssistantText);
   }, [active?.session.lastAssistantText, playAssistantResponse]);
+
+  const toggleMute = useCallback(async () => {
+    if (!active?.session.id) return;
+    const nextMuted = !active.session.isMuted;
+    applyRealtimeMute(nextMuted);
+    setLastActionLabel(nextMuted ? "Gemutet" : "Mikrofon wieder aktiv");
+    setActive((current) => current
+      ? { ...current, session: { ...current.session, isMuted: nextMuted } }
+      : current);
+    try {
+      const result = await readJson<{ session: VoiceSessionSummary }>(`/api/voice/sessions/${active.session.id}/mute`, {
+        method: "POST",
+        body: JSON.stringify({ isMuted: nextMuted }),
+      });
+      setActive((current) => current
+        ? { ...current, session: { ...current.session, ...result.session } }
+        : current);
+    } catch (nextError) {
+      applyRealtimeMute(active.session.isMuted);
+      setActive((current) => current
+        ? { ...current, session: { ...current.session, isMuted: active.session.isMuted } }
+        : current);
+      setError(nextError instanceof Error ? nextError.message : String(nextError));
+    }
+  }, [active?.session.id, active?.session.isMuted, applyRealtimeMute]);
 
   const switchContext = useCallback(async (targetProfileSlug: string) => {
     if (!active?.session.id) return;
@@ -1478,6 +1897,8 @@ export default function VoiceConsole() {
       isVoiceModeEnabled={isVoiceModeEnabled}
       layoutMode={layoutMode}
       canReplayAssistant={Boolean(activeSession?.lastAssistantText?.trim())}
+      textFallbackOpen={textFallbackOpen}
+      detailsOpen={detailsOpen}
       onDraftChange={setDraft}
       onCreateSession={createSession}
       onSelectSession={selectSession}
@@ -1485,6 +1906,9 @@ export default function VoiceConsole() {
       onSubmitTurn={submitTurn}
       onSwitchContext={switchContext}
       onToggleVoiceMode={toggleVoiceMode}
+      onToggleMute={toggleMute}
+      onToggleTextFallback={() => setTextFallbackOpen((open) => !open)}
+      onToggleDetails={() => setDetailsOpen((open) => !open)}
       onReplayAssistant={replayAssistant}
     />
   );
