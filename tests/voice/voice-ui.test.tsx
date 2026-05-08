@@ -149,6 +149,31 @@ test("VoiceConsoleView renders a minimal mobile call layout", () => {
   assert.doesNotMatch(html, /Senden/);
 });
 
+test("VoiceConsoleView renders persistent mute as a call overlay", () => {
+  const html = renderVoiceView({
+    activeProfile: { id: "vp_main", slug: "main", label: "Call Hermes", color: "#10B981", description: "General command bridge" },
+    activeSession: {
+      id: "vs_muted",
+      profileId: "vp_main",
+      state: "listening",
+      isMuted: true,
+      transport: "web",
+      lastUserTranscript: null,
+      lastAssistantText: null,
+      lastError: null,
+      startedAt: "2026-04-30T10:00:00.000Z",
+      endedAt: null,
+      updatedAt: "2026-04-30T10:01:00.000Z",
+    },
+    isVoiceModeEnabled: true,
+    voiceMode: "listening",
+  });
+
+  assert.match(html, /Gemutet/);
+  assert.match(html, /Unmute/);
+  assert.doesNotMatch(html, /Text-Fallback/);
+});
+
 test("VoiceConsoleView renders loading and error states", () => {
   const html = renderVoiceView({
     isBooting: true,
