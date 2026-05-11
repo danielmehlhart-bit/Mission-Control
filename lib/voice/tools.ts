@@ -2,7 +2,7 @@ import { listMemoryByCategory, readMemoryFile, type MemFile } from "@/lib/fs";
 import { appendVoiceEvent, getVoiceProfileById, getVoiceSession } from "./session-store";
 import { listVoiceTelegramRecentContexts } from "./telegram-bridge";
 import type { VoiceProfileSlug, VoiceSession } from "./types";
-import { runVoiceWebSearch } from "./web-search";
+import { runVoiceWebSearch, type VoiceWebSearchContextSize } from "./web-search";
 import {
   createVoiceWorkOrder,
   VOICE_WORK_ORDER_OUTPUTS,
@@ -577,7 +577,7 @@ async function webSearchFromTool(sessionId: string, args: Record<string, unknown
 
   const searchResult = await runVoiceWebSearch({
     query,
-    searchContextSize: enumArg(args, "searchContextSize", ["low", "medium", "high"], "medium"),
+    searchContextSize: enumArg(args, "searchContextSize", ["low", "medium", "high"], "medium") as VoiceWebSearchContextSize,
     allowedDomains: sourceListArg(args, "allowedDomains"),
     blockedDomains: sourceListArg(args, "blockedDomains"),
   });
