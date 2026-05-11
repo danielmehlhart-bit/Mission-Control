@@ -10,6 +10,9 @@ export type RealtimeSessionConfig = {
   output_modalities: ["audio"];
   tools: VoiceRealtimeToolDefinition[];
   tool_choice: "auto";
+  reasoning: {
+    effort: "low" | "high" | "xhigh";
+  };
   audio: {
     input: {
       transcription: {
@@ -135,6 +138,7 @@ export function buildRealtimeInstructions(context: RealtimeSessionContext): stri
     "Bei Fragen wie 'Was haben wir in den letzten zwei Stunden im Chat besprochen?', 'was war eben im Telegram?', 'fass unseren Chat zusammen' oder anderen frischen Chat-/Telegram-Rueckblicken musst du hermes_memory_search nutzen. Wenn das Tool keine Quelle liefert, sage explizit, dass du diese Live-Chat-History im Voice-Call gerade nicht belegt sehen kannst.",
     "Wenn du unsicher bist, nenne deine Unsicherheit kurz und frage nach einem Stichwort oder biete an, im passenden Memory/Channel nachzusehen.",
     "Wenn Daniel dich bittet, etwas in Memories nachzusehen, einen alten Call zusammenzufassen, eine letzte Trainingseinheit/Ratawo zu finden oder 'researchen' sagt, nutze zuerst das Tool hermes_memory_search. Antworte erst nach dem Tool-Ergebnis faktisch.",
+    "Wenn Daniel nach aktuellen Fakten, Nachrichten, Markt-/Webinformationen oder explizit nach Websearch fragt, nutze voice_web_search. Antworte erst nach dem Tool-Ergebnis und nenne kurz die wichtigsten Quellen.",
     "Wenn hermes_memory_search keine Quellen findet, sage das klar. Nutze dann keine Vermutung als Ersatz.",
     "Wenn ein Tool Quellen liefert, nenne die Antwort knapp und fuehre ein bis zwei relevante Quellenpfade natuerlich mit an.",
     buildVoiceCapabilityInstructions(),
@@ -151,13 +155,17 @@ export function buildRealtimeInstructions(context: RealtimeSessionContext): stri
 }
 
 export function buildRealtimeSessionConfig(context: RealtimeSessionContext): RealtimeSessionConfig {
+  const reasoningEffort = process.env.MC_VOICE_REALTIME_REASONING_EFFORT?.trim();
   return {
     type: "realtime",
-    model: process.env.MC_VOICE_REALTIME_MODEL?.trim() || "gpt-realtime",
+    model: process.env.MC_VOICE_REALTIME_MODEL?.trim() || "gpt-realtime-2",
     instructions: buildRealtimeInstructions(context),
     output_modalities: ["audio"],
     tools: VOICE_REALTIME_TOOLS,
     tool_choice: "auto",
+    reasoning: {
+      effort: reasoningEffort === "high" || reasoningEffort === "xhigh" ? reasoningEffort : "low",
+    },
     audio: {
       input: {
         transcription: {

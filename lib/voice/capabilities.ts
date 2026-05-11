@@ -35,8 +35,9 @@ const CAPABILITIES: VoiceCapability[] = [
   {
     key: "live_web_research",
     label: "Live web research",
-    status: "not_implemented",
-    safeFallback: "Live-Web-Recherche kann ich in diesem Voice Call noch nicht. Ich kann nur Memory und vorhandenen Kontext prüfen.",
+    status: "available",
+    toolName: "voice_web_search",
+    safeFallback: "Ich kann Live-Web-Recherche ausführen, wenn voice_web_search erfolgreich Quellen liefert. Ohne Quellen sage ich klar, dass die Recherche nicht belegbar war.",
   },
   {
     key: "document_creation",
@@ -71,8 +72,13 @@ export function buildVoiceCapabilityInstructions(): string {
     .filter((capability) => capability.status === "not_implemented")
     .map((capability) => `${capability.key} (${capability.status}, ${capability.label}): ${capability.safeFallback}`);
 
+  const availableDescriptions = capabilities
+    .filter((capability) => capability.status === "available")
+    .map((capability) => `${capability.key} (${capability.label})${capability.toolName ? ` via ${capability.toolName}` : ""}`);
+
   return [
     `Current voice tools available: ${availableTools.length ? availableTools.join(", ") : "none"}.`,
+    availableDescriptions.length ? `Available capabilities: ${availableDescriptions.join(" | ")}.` : "",
     "Capability truth rule: never claim to have sent, created, posted, scheduled, researched, or completed anything unless the corresponding tool/API call succeeded and returned a persisted result.",
     "For long deliverables such as review documents, follow-up texts, task drafts, or later output packages, call voice_create_work_order when available. Only say 'Work Order angelegt' after the tool result says created=true.",
     "Do not say a final document, file, link, Telegram post, or live research result exists unless a real tool produced it.",

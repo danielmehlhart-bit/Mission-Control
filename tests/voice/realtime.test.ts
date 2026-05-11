@@ -28,23 +28,26 @@ test("buildRealtimeSessionConfig creates German speech-to-speech config with pro
   const config = buildRealtimeSessionConfig(requireRealtimeSessionContext(session.id));
 
   assert.equal(config.type, "realtime");
-  assert.equal(config.model, "gpt-realtime");
+  assert.equal(config.model, "gpt-realtime-2");
+  assert.deepEqual(config.reasoning, { effort: "low" });
   assert.equal(config.audio.input.turn_detection.type, "semantic_vad");
   assert.equal(config.audio.input.turn_detection.create_response, false);
   assert.equal(config.audio.output.voice, "cedar");
   assert.equal(config.tool_choice, "auto");
   assert.equal(config.tools.some((tool) => tool.name === "hermes_memory_search"), true);
+  assert.equal(config.tools.some((tool) => tool.name === "voice_web_search"), true);
   assert.equal(config.tools.some((tool) => tool.name === "voice_create_work_order"), true);
   assert.match(config.instructions, /Call Hermes|Hermes/i);
   assert.match(config.instructions, /Mission Control/i);
   assert.match(config.instructions, /maennlich|Hermes-Charakter/i);
   assert.match(config.instructions, /hermes_memory_search/);
+  assert.match(config.instructions, /voice_web_search/);
   assert.match(config.instructions, /voice_create_work_order/);
   assert.match(config.instructions, /Capability truth rule/);
   assert.match(config.instructions, /never claim/i);
   assert.match(config.instructions, /Do not say a final document/i);
   assert.match(config.instructions, /live_web_research/);
-  assert.match(config.instructions, /not_implemented/);
+  assert.doesNotMatch(config.instructions, /live_web_research \(not_implemented/);
   assert.match(config.instructions, /Live-Chat-History/);
 });
 
@@ -110,7 +113,7 @@ test("createRealtimeClientSecret posts session config to the client secrets endp
   assert.equal(token.value, "ek_test");
   assert.equal(capturedUrl, "https://api.openai.com/v1/realtime/client_secrets");
   assert.match(capturedBody, /"session"/);
-  assert.match(capturedBody, /"gpt-realtime"/);
+  assert.match(capturedBody, /"gpt-realtime-2"/);
   assert.equal(listVoiceSessionEvents(session.id).some((event) => event.eventType === "voice.realtime_client_secret_created"), true);
 
   if (previousApiKey === undefined) {

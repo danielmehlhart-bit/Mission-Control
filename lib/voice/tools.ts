@@ -2,6 +2,7 @@ import { listMemoryByCategory, readMemoryFile, type MemFile } from "@/lib/fs";
 import { appendVoiceEvent, getVoiceProfileById, getVoiceSession } from "./session-store";
 import { listVoiceTelegramRecentContexts } from "./telegram-bridge";
 import type { VoiceProfileSlug, VoiceSession } from "./types";
+import { runVoiceWebSearch } from "./web-search";
 import {
   createVoiceWorkOrder,
   VOICE_WORK_ORDER_OUTPUTS,
@@ -69,7 +70,16 @@ export type VoiceCreateWorkOrderResult = {
   message: string;
 };
 
-export type VoiceToolResult = VoiceMemorySearchResult | VoiceMemoryReadResult | VoiceCreateWorkOrderResult;
+export type VoiceWebSearchResult = {
+  tool: "voice_web_search";
+  answerable: boolean;
+  summary: string;
+  query: string;
+  sources: VoiceToolSource[];
+  searchedAt: string;
+};
+
+export type VoiceToolResult = VoiceMemorySearchResult | VoiceMemoryReadResult | VoiceCreateWorkOrderResult | VoiceWebSearchResult;
 
 const MAX_SEARCH_FILES = 90;
 const MAX_CONTENT_CHARS = 140_000;
@@ -168,6 +178,37 @@ export const VOICE_REALTIME_TOOLS: VoiceRealtimeToolDefinition[] = [
         },
       },
       required: ["path"],
+      additionalProperties: false,
+    },
+  },
+  {
+    type: "function",
+    name: "voice_web_search",
+    description: "Search the live web for current information and return a short sourced result. Use only when Daniel asks for web search, current news, current facts, or explicit research beyond Mission Control memory.",
+    parameters: {
+      type: "object",
+      properties: {
+        query: {
+          type: "string",
+          description: "Concrete search query in Daniel's words. Include relevant entities and date context.",
+        },
+        searchContextSize: {
+          type: "string",
+          enum: ["low", "medium", "high"],
+          description: "Use low for quick checks, medium by default, high for nuanced topics.",
+        },
+        allowedDomains: {
+          type: "array",
+          items: { type: "string" },
+          description: "Optional preferred domains without https://, e.g. reuters.com or destatis.de.",
+        },
+        blockedDomains: {
+          type: "array",
+          items: { type: "string" },
+          description: "Optional domains to exclude without https://.",
+        },
+      },
+      required: ["query"],
       additionalProperties: false,
     },
   },
@@ -517,6 +558,62 @@ async function readMemoryPath(args: Record<string, unknown>): Promise<VoiceMemor
   };
 }
 
+function sourceListArg(args: Record<string, unknown>, key: string): string[] | undefined {
+  const value = args[key];
+  if (!Array.isArray(value)) return undefined;
+  const domains = value
+    .filter((item): item is string => typeof item === "string" && item.trim().length > 0)
+    .map((item) => item.trim())
+    .slice(0, 12);
+  return domains.length ? domains : undefined;
+}
+
+async function webSearchFromTool(sessionId: string, args: Record<string, unknown>): Promise<VoiceWebSearchResult> {
+  const { session } = requireVoiceToolSession(sessionId);
+  const query = stringArg(args, "query");
+  if (!query) {
+    throw new Error("query required");
+  }
+
+  const searchResult = await runVoiceWebSearch({
+    query,
+    searchContextSize: enumArg(args, "searchContextSize", ["low", "medium", "high"], "medium"),
+    allowedDomains: sourceListArg(args, "allowedDomains"),
+    blockedDomains: sourceListArg(args, "blockedDomains"),
+  });
+
+  const sources: VoiceToolSource[] = searchResult.sources.map((source, index) => ({
+    path: source.url,
+    name: source.title,
+    category: "web_search",
+    modified: searchResult.searchedAt,
+    excerpt: source.url,
+    score: Math.max(0.1, 1 - index * 0.05),
+  }));
+
+  appendVoiceEvent({
+    sessionId: session.id,
+    eventType: "voice.web_search_completed",
+    fromState: session.state,
+    toState: session.state,
+    payload: {
+      query: searchResult.query,
+      answerable: searchResult.answerable,
+      sourceCount: sources.length,
+      sources: sources.map((source) => ({ path: source.path, name: source.name, category: source.category })),
+    },
+  });
+
+  return {
+    tool: "voice_web_search",
+    answerable: searchResult.answerable,
+    summary: searchResult.summary,
+    query: searchResult.query,
+    sources,
+    searchedAt: searchResult.searchedAt,
+  };
+}
+
 function createWorkOrderFromTool(sessionId: string, args: Record<string, unknown>): VoiceCreateWorkOrderResult {
   const { session } = requireVoiceToolSession(sessionId);
   try {
@@ -571,8 +668,10 @@ export async function executeVoiceToolCall(input: VoiceToolCallInput): Promise<V
       ? await searchMemory(input.sessionId, input.arguments)
       : input.toolName === "hermes_memory_read"
         ? await readMemoryPath(input.arguments)
-        : input.toolName === "voice_create_work_order"
-          ? createWorkOrderFromTool(input.sessionId, input.arguments)
+        : input.toolName === "voice_web_search"
+          ? await webSearchFromTool(input.sessionId, input.arguments)
+          : input.toolName === "voice_create_work_order"
+            ? createWorkOrderFromTool(input.sessionId, input.arguments)
         : null;
 
     if (!result) {
