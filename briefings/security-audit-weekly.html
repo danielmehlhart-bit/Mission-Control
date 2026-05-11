@@ -17,8 +17,6 @@
       --green-bg: #edfdf3;
       --yellow: #d97706;
       --yellow-bg: #fff7ed;
-      --red: #dc2626;
-      --red-bg: #fef2f2;
       --blue: #2563eb;
       --blue-bg: #eff6ff;
     }
@@ -30,11 +28,7 @@
       color: var(--text);
       line-height: 1.5;
     }
-    .wrap {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 32px 20px 64px;
-    }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 32px 20px 64px; }
     .hero, .card {
       background: var(--panel);
       border: 1px solid rgba(229, 231, 235, .9);
@@ -83,15 +77,9 @@
       margin: 10px 8px 0 0;
       border: 1px solid transparent;
     }
-    .red { background: var(--red-bg); color: var(--red); border-color: rgba(220,38,38,.18); }
-    .yellow { background: var(--yellow-bg); color: var(--yellow); border-color: rgba(217,119,6,.18); }
     .green { background: var(--green-bg); color: var(--green); border-color: rgba(22,163,74,.18); }
-    .blue { background: var(--blue-bg); color: var(--blue); border-color: rgba(37,99,235,.18); }
-    .two-col {
-      display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 18px;
-    }
+    .yellow { background: var(--yellow-bg); color: var(--yellow); border-color: rgba(217,119,6,.18); }
+    .two-col { display: grid; grid-template-columns: 1.2fr .8fr; gap: 18px; }
     .issue {
       border: 1px solid var(--line);
       border-radius: 18px;
@@ -99,55 +87,24 @@
       background: #fff;
       margin-top: 12px;
     }
-    .issue.red-accent { box-shadow: inset 4px 0 0 var(--red); }
-    .issue.yellow-accent { box-shadow: inset 4px 0 0 var(--yellow); }
     .issue.green-accent { box-shadow: inset 4px 0 0 var(--green); }
+    .issue.yellow-accent { box-shadow: inset 4px 0 0 var(--yellow); }
     ul { margin: 8px 0 0 18px; padding: 0; }
     li { margin: 6px 0; }
     table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-      margin-top: 10px;
+      width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px;
     }
     th, td {
-      text-align: left;
-      vertical-align: top;
-      padding: 12px 10px;
-      border-bottom: 1px solid var(--line);
+      text-align: left; vertical-align: top; padding: 12px 10px; border-bottom: 1px solid var(--line);
     }
     th {
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .06em;
+      color: var(--muted); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .06em;
     }
-    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
     code {
-      background: #f3f4f6;
-      border-radius: 8px;
-      padding: 2px 6px;
-      font-size: 12px;
-    }
-    pre {
-      white-space: pre-wrap;
-      word-break: break-word;
-      margin: 0;
-      font-size: 12px;
-      line-height: 1.55;
-      background: #0f172a;
-      color: #e2e8f0;
-      border-radius: 18px;
-      padding: 16px;
-      overflow: auto;
+      background: #f3f4f6; border-radius: 8px; padding: 2px 6px; font-size: 12px;
     }
     .small { font-size: 13px; }
-    .footer {
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 12px;
-    }
+    .footer { margin-top: 18px; color: var(--muted); font-size: 12px; }
     @media (max-width: 900px) {
       .two-col { grid-template-columns: 1fr; }
       h1 { font-size: 28px; }
@@ -158,18 +115,18 @@
   <div class="wrap">
     <section class="hero">
       <h1>🔒 Weekly Security Audit</h1>
-      <p class="muted">Host: Mission Control · erstellt am 2026-05-04 10:01 CEST</p>
+      <p class="muted">Host: Mission Control · erstellt am 2026-05-11 10:01 CEST</p>
       <div class="grid">
         <div class="stat"><div class="k">Gesamtstatus</div><div class="v" style="color: var(--yellow);">Gelb</div></div>
         <div class="stat"><div class="k">Offene TCP-Listener</div><div class="v">5</div></div>
-        <div class="stat"><div class="k">Upgradable Packages</div><div class="v">19+</div></div>
+        <div class="stat"><div class="k">Upgradable Packages</div><div class="v">1</div></div>
         <div class="stat"><div class="k">SSH-Fehlerlog</div><div class="v">0</div></div>
       </div>
       <div>
         <span class="pill green">UFW aktiv · default deny incoming</span>
         <span class="pill green">Fail2Ban läuft</span>
-        <span class="pill green">Unattended-Updates aktiv</span>
-        <span class="pill yellow">`last` auf diesem Host nicht verfügbar</span>
+        <span class="pill green">Unattended-Upgrades aktiv</span>
+        <span class="pill yellow">`last -10` auf diesem Host nicht verfügbar</span>
       </div>
     </section>
 
@@ -177,17 +134,17 @@
       <div>
         <div class="card">
           <h2>Kurzfazit</h2>
-          <p>Der Host wirkt insgesamt ordentlich abgesichert: Firewall aktiv, SSH-Log der letzten 7 Tage ohne gefundene <code>failed</code>/<code>invalid</code>-Einträge, Fail2Ban und unattended-upgrades laufen. Der Status ist trotzdem <strong>Gelb</strong>, weil mehrere Pakete ausstehen und ein Teil des Login-Historien-Checks wegen fehlendem <code>last</code> nicht vollständig war.</p>
+          <p>Der Host wirkt insgesamt solide abgesichert: Firewall aktiv, SSH-Log der letzten 7 Tage ohne gefundene <code>failed</code>/<code>invalid</code>-Einträge, Fail2Ban und unattended-upgrades laufen, die Root-Partition ist entspannt belegt. Trotzdem bleibt der Status <strong>Gelb</strong>, weil ein Paket-Update aussteht und der Login-Historien-Check mit <code>last</code> nicht möglich war.</p>
           <div class="issue yellow-accent">
             <h3>Wichtigste Handlung</h3>
-            <p>Pakete zeitnah aktualisieren, insbesondere sicherheitsrelevante Komponenten wie <code>openssl</code>, <code>libssl3t64</code>, <code>firefox</code>, <code>chromium</code> und <code>nodejs</code>. Danach den Login-Historien-Check nachziehen bzw. <code>last</code> verfügbar machen, falls das auf dem Host erwartet ist.</p>
+            <p>Das ausstehende Update für <code>azure-cli</code> zeitnah einspielen und bei Bedarf den fehlenden <code>last</code>-Befehl nachinstallieren bzw. verfügbar machen, damit der Audit künftig vollständig ist.</p>
           </div>
         </div>
 
         <div class="card">
           <h2>Top-Findings</h2>
           <div class="issue green-accent">
-            <h3>1. UFW ist aktiv und inbound stark begrenzt</h3>
+            <h3>1. UFW ist aktiv und inbound restriktiv</h3>
             <p class="small">Default: deny incoming, allow outgoing. Freigegeben sind nur <code>8080/tcp</code> und <code>18789/tcp</code> für <code>192.168.0.0/16</code>.</p>
           </div>
           <div class="issue green-accent">
@@ -195,16 +152,16 @@
             <p class="small">Im SSH-Journal wurden keine passenden <code>failed</code>- oder <code>invalid</code>-Einträge gefunden.</p>
           </div>
           <div class="issue yellow-accent">
-            <h3>3. Mehrere Updates stehen aus</h3>
-            <p class="small">Unter anderem betroffen: <code>openssl</code>, <code>libssl3t64</code>, <code>chromium</code>, <code>firefox</code>, <code>nodejs</code>, <code>raspi-firmware</code>.</p>
+            <h3>3. Ein Update steht aus</h3>
+            <p class="small">Aktuell ist nur <code>azure-cli</code> als upgradebar sichtbar.</p>
           </div>
           <div class="issue yellow-accent">
-            <h3>4. <code>last</code> nicht vorhanden</h3>
-            <p class="small">Der Befehl <code>last -10</code> lieferte <code>not found</code>. Damit konnte die Login-Historie nicht geprüft werden.</p>
+            <h3>4. <code>last</code> nicht verfügbar</h3>
+            <p class="small">Der Befehl <code>last -10</code> lieferte <code>command not found</code>. Die Login-Historie konnte deshalb nicht geprüft werden.</p>
           </div>
           <div class="issue green-accent">
             <h3>5. Laufende Schutzdienste sind aktiv</h3>
-            <p class="small"><code>fail2ban</code> und <code>unattended-upgrades</code> laufen, außerdem diverse Standarddienste und das Mission-Control-spezifische <code>mc-watcher</code>.</p>
+            <p class="small"><code>fail2ban</code>, <code>unattended-upgrades</code> und weitere Standarddienste laufen normal.</p>
           </div>
         </div>
       </div>
@@ -214,13 +171,13 @@
           <h2>Check-Auszug</h2>
           <table>
             <tr><th>Prüfung</th><th>Ergebnis</th></tr>
-            <tr><td><code>ss -ltnp</code></td><td>Listener auf <code>8080</code>, <code>18789</code>, lokaler <code>gws</code>-Port sowie 2 weitere interne Sockets.</td></tr>
+            <tr><td><code>ss -ltnp</code></td><td>Listener auf <code>8080</code>, <code>18789</code>, lokaler Port <code>18791</code> plus 2 interne Sockets.</td></tr>
             <tr><td><code>sudo ufw status verbose</code></td><td>Aktiv, inbound deny, outbound allow.</td></tr>
             <tr><td><code>journalctl ssh</code></td><td>Keine Treffer für <code>failed</code>/<code>invalid</code>.</td></tr>
             <tr><td><code>systemctl ... running</code></td><td>25 laufende Services.</td></tr>
-            <tr><td><code>df -h</code></td><td>Root-Partition bei ca. 33% belegt.</td></tr>
+            <tr><td><code>df -h</code></td><td>Root-Partition bei ca. 35% belegt.</td></tr>
             <tr><td><code>last -10</code></td><td>Nicht verfügbar.</td></tr>
-            <tr><td><code>apt list --upgradable</code></td><td>Mehrere Updates ausstehend.</td></tr>
+            <tr><td><code>apt list --upgradable</code></td><td>Ein Update ausstehend: <code>azure-cli</code>.</td></tr>
           </table>
         </div>
 
@@ -228,9 +185,9 @@
           <h2>Handlungsempfehlung</h2>
           <div class="issue blue-accent">
             <ul>
-              <li>Updates einspielen und danach neu prüfen.</li>
-              <li>Falls <code>8080</code>/<code>18789</code> nicht bewusst LAN-exponiert sein sollen: weiter einschränken.</li>
-              <li>Wenn Login-Audits gewünscht sind: <code>last</code> bzw. das zugrunde liegende Paket wieder verfügbar machen.</li>
+              <li><strong>Pflicht:</strong> <code>azure-cli</code> aktualisieren.</li>
+              <li>Wenn Login-Audits wichtig sind: <code>last</code> bzw. das zugrunde liegende Paket nachziehen.</li>
+              <li>Falls <code>8080</code>/<code>18789</code> nicht bewusst LAN-exponiert sein sollen: Firewall/Bind-Adresse weiter einschränken.</li>
             </ul>
           </div>
         </div>
@@ -238,7 +195,7 @@
         <div class="card">
           <h2>Daniel-Short-Note</h2>
           <p><strong>Gesamtstatus:</strong> Gelb.</p>
-          <p><strong>Kurz:</strong> Keine akuten SSH-Auffälligkeiten, Firewall und Schutzdienste sind in Ordnung. Es stehen aber einige Updates aus, und <code>last</code> war auf dem Host nicht verfügbar. Bitte zeitnah patchen.</p>
+          <p><strong>Kurz:</strong> Keine akuten SSH-Auffälligkeiten, Firewall und Schutzdienste sind in Ordnung. Ein Update steht noch aus und <code>last</code> war auf dem Host nicht verfügbar. Bitte zeitnah patchen.</p>
         </div>
       </div>
     </section>
