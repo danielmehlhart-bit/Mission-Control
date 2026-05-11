@@ -589,14 +589,29 @@ test("POST /api/voice/handoffs/telegram reuses a stored bridge when only chat/th
   assert.deepEqual(payload.turns, []);
 });
 
-test("POST /api/voice/handoffs/telegram/context stores recent chat context for voice search", async () => {
+test("POST /api/voice/handoffs/telegram/context requires bridge token and stores recent chat context for voice search", async () => {
   await seedVoiceFixtures();
+  process.env.MC_VOICE_BRIDGE_TOKEN = "test-bridge-token";
   const { telegramContextRouteModule, sessionsRouteModule, toolsExecuteRouteModule, sessionStoreModule } = await loadModules();
   const { getVoiceProfileBySlug } = sessionStoreModule;
+
+  const unauthorizedResponse = await telegramContextRouteModule.POST(
+    makeRequest("http://localhost/api/voice/handoffs/telegram/context", {
+      method: "POST",
+      body: JSON.stringify({
+        telegramChatId: "-100az",
+        profileSlug: "sales_support",
+        label: "A bis Z Architekten",
+        summary: "Unauthorized context should not be stored.",
+      }),
+    }),
+  );
+  assert.equal(unauthorizedResponse.status, 401);
 
   const contextResponse = await telegramContextRouteModule.POST(
     makeRequest("http://localhost/api/voice/handoffs/telegram/context", {
       method: "POST",
+      headers: { authorization: "Bearer test-bridge-token" },
       body: JSON.stringify({
         telegramChatId: "-100az",
         profileSlug: "sales_support",
@@ -975,4 +990,55 @@ test("POST /api/voice/sessions/[id]/tools/execute does not treat generic fresh c
   assert.equal(payload.result.answerable, false);
   assert.deepEqual(payload.result.sources, []);
   assert.match(payload.result.summary, /Live-Chat-History/i);
+});
+
+test("POST /api/voice/sessions/[id]/tools/execute refuses stale memory fallback for fresh Telegram questions", async () => {
+  await seedVoiceFixtures();
+  const { dbModule } = await loadModules();
+  dbModule.getDb().prepare("DELETE FROM voice_telegram_recent_contexts").run();
+  await fsp.mkdir(path.join(process.env.MEMORY_DIR!, "memory", "projects", "luma"), { recursive: true });
+  await fsp.writeFile(
+    path.join(process.env.MEMORY_DIR!, "memory", "projects", "luma", "gtm-playbook-april-2026.md"),
+    [
+      "# LUMA GTM Playbook April 2026",
+      "",
+      "Telegram Chat als Letztes gesehen: altes April Playbook, das bei frischen Telegram-Rueckfragen nie als aktueller Chat-Kontext gelten darf.",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const { sessionsRouteModule, toolsExecuteRouteModule, sessionStoreModule } = await loadModules();
+  const { getVoiceProfileBySlug } = sessionStoreModule;
+  const salesProfile = getVoiceProfileBySlug("sales_support");
+  assert.ok(salesProfile);
+
+  const createdResponse = await sessionsRouteModule.POST(
+    makeRequest("http://localhost/api/voice/sessions", {
+      method: "POST",
+      body: JSON.stringify({ profileId: salesProfile!.id, transport: "web", autoGreeting: false }),
+    }),
+  );
+  const created = await createdResponse.json();
+
+  const response = await toolsExecuteRouteModule.POST(
+    makeRequest(`http://localhost/api/voice/sessions/${created.session.id}/tools/execute`, {
+      method: "POST",
+      body: JSON.stringify({
+        toolName: "hermes_memory_search",
+        arguments: {
+          query: "Was hast du denn im Telegram-Chat als Letztes gesehen?",
+          channel: "sales_support",
+          timeRange: "today",
+        },
+      }),
+    }),
+    { params: { id: created.session.id } },
+  );
+
+  assert.equal(response.status, 200);
+  const payload = await response.json();
+  assert.equal(payload.result.answerable, false);
+  assert.deepEqual(payload.result.sources, []);
+  assert.match(payload.result.summary, /kein aktueller Telegram-Kontext|Live-Chat-History/i);
+  assert.equal(JSON.stringify(payload).includes("gtm-playbook-april-2026"), false);
 });

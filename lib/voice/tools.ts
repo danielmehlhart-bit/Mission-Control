@@ -439,6 +439,21 @@ async function searchMemory(sessionId: string, args: Record<string, unknown>): P
     if (hit) hits.push(hit);
   }
 
+  if (isFreshChatReviewQuery(query) && hits.length === 0) {
+    return {
+      tool: "hermes_memory_search",
+      answerable: false,
+      summary: `Ich habe keinen aktuellen Telegram-Kontext fuer "${query}" in der Voice-Session gefunden. Diese Live-Chat-History ist nur belastbar, wenn sie vorher aus Telegram in den Voice-Kontext synchronisiert wurde.`,
+      query,
+      channel,
+      sources: [],
+      searched: {
+        fileCount: seenRecentContextIds.size,
+        categories: seenRecentContextIds.size ? ["telegram_recent"] : [],
+      },
+    };
+  }
+
   for (const file of files) {
     try {
       const content = (await readMemoryFile(file.path)).slice(0, MAX_CONTENT_CHARS);

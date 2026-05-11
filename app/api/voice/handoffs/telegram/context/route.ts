@@ -6,6 +6,13 @@ import { VOICE_PROFILE_SLUGS, type VoiceProfileSlug } from "@/lib/voice/types";
 
 export const dynamic = "force-dynamic";
 
+function isAuthorizedBridgeRequest(request: Request): boolean {
+  const expected = process.env.MC_VOICE_BRIDGE_TOKEN?.trim();
+  if (!expected) return false;
+  const auth = request.headers.get("authorization") ?? "";
+  return auth === `Bearer ${expected}`;
+}
+
 function optionalString(value: unknown): string | undefined {
   return typeof value === "string" && value.trim() ? value.trim() : undefined;
 }
@@ -32,6 +39,10 @@ function parseMessages(value: unknown): VoiceTelegramRecentContextMessage[] {
 }
 
 export async function POST(request: Request) {
+  if (!isAuthorizedBridgeRequest(request)) {
+    return NextResponse.json({ error: "Unauthorized voice bridge request" }, { status: 401 });
+  }
+
   try {
     const body = await parseJsonBody(request);
     const telegramChatId = requireString(body.telegramChatId, "telegramChatId");

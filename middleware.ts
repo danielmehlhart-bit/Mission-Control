@@ -11,6 +11,13 @@ if (!jwtSecret) {
 const SECRET = new TextEncoder().encode(jwtSecret ?? "");
 
 const PUBLIC_PATHS = ["/login", "/api/auth/login"];
+const VOICE_BRIDGE_TOKEN_PATHS = ["/api/voice/handoffs/telegram/context"];
+
+function hasValidVoiceBridgeToken(request: NextRequest): boolean {
+  const expected = process.env.MC_VOICE_BRIDGE_TOKEN?.trim();
+  if (!expected) return false;
+  return request.headers.get("authorization") === `Bearer ${expected}`;
+}
 
 function withSecurityHeaders(response: NextResponse) {
   for (const header of SECURITY_HEADERS) {
@@ -27,6 +34,13 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/_next/") ||
     pathname.startsWith("/favicon") ||
     PUBLIC_PATHS.some(p => pathname.startsWith(p))
+  ) {
+    return withSecurityHeaders(NextResponse.next());
+  }
+
+  if (
+    VOICE_BRIDGE_TOKEN_PATHS.some(p => pathname === p) &&
+    hasValidVoiceBridgeToken(request)
   ) {
     return withSecurityHeaders(NextResponse.next());
   }
