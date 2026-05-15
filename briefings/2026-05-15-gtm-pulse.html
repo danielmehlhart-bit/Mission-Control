@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weekly GTM Pulse — 2026-05-15</title>
+  <style>
+    :root{
+      --bg:#141720; --card:#1a2030; --card2:#111623; --line:#273149;
+      --text:#e5e7eb; --muted:#9ca3af; --good:#22c55e; --warn:#f59e0b; --blue:#60a5fa;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#0f131c, var(--bg) 28%, #101521);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    .wrap{max-width:980px;margin:0 auto;padding:16px}
+    .hero,.section,.tile,.card{border:1px solid var(--line);background:rgba(26,32,48,.92);border-radius:16px;box-shadow:0 14px 32px rgba(0,0,0,.18)}
+    .hero{padding:18px 18px 14px}
+    h1{margin:0 0 8px;font-size:24px;line-height:1.1}
+    .sub{color:var(--muted);font-size:13px;line-height:1.45}
+    .grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:12px 0}
+    .tile{padding:12px 12px 11px;background:linear-gradient(180deg, rgba(17,22,35,.95), rgba(26,32,48,.92))}
+    .k{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+    .v{margin-top:6px;font-size:26px;font-weight:800}
+    .s{margin-top:4px;font-size:12px;color:var(--muted);line-height:1.35}
+    .section{margin-top:12px;padding:14px}
+    .section h2{margin:0 0 10px;font-size:15px}
+    .list{margin:0;padding-left:18px}
+    .list li{margin:7px 0;color:#e2e8f0;font-size:13px;line-height:1.42}
+    .status-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .mini{padding:10px;border-radius:12px;background:var(--card2);border:1px solid var(--line)}
+    .mini b{display:block;font-size:18px;color:#fff;margin-bottom:3px}
+    .mini span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+    .card{padding:12px;background:linear-gradient(180deg, rgba(17,22,35,.96), rgba(26,32,48,.92))}
+    .row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .name{font-weight:800;font-size:14px}
+    .tag{font-size:11px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+    .tag.green{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.3);color:#86efac}
+    .tag.yellow{background:rgba(245,158,11,.14);border-color:rgba(245,158,11,.3);color:#fcd34d}
+    .tag.blue{background:rgba(96,165,250,.14);border-color:rgba(96,165,250,.3);color:#bfdbfe}
+    .meta{margin-top:8px;font-size:12px;color:var(--muted);line-height:1.45}
+    .note{margin-top:10px;font-size:11px;color:var(--muted);line-height:1.45}
+    .foot{margin-top:12px;font-size:11px;color:var(--muted)}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.95em}
+    @media (max-width:860px){
+      .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .status-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>Weekly GTM Pulse</h1>
+      <div class="sub">Freitags-Report · Stand: 2026-05-15 · Datenquelle: Mission Control API + Google Calendar via gws</div>
+    </div>
+
+    <div class="grid">
+      <div class="tile"><div class="k">Accounts gesamt</div><div class="v">397</div><div class="s">Live CRM-Snapshot</div></div>
+      <div class="tile"><div class="k">Pipeline Value</div><div class="v">€2,000</div><div class="s">offene Deals</div></div>
+      <div class="tile"><div class="k">Neue People</div><div class="v">0</div><div class="s">diese Woche</div></div>
+      <div class="tile"><div class="k">MRR</div><div class="v">€298</div><div class="s">2 aktive Paying Customers · konservativ Starter</div></div>
+      <div class="tile"><div class="k">Calls nächste Woche</div><div class="v">1</div><div class="s">Discovery / LUMA / Demo / Onboarding</div></div>
+    </div>
+
+    <div class="section">
+      <h2>1) Accounts nach Status</h2>
+      <div class="status-grid">
+        <div class="mini"><b>388</b><span>Neu</span></div>
+        <div class="mini"><b>6</b><span>Kontaktiert</span></div>
+        <div class="mini"><b>0</b><span>Reply</span></div>
+        <div class="mini"><b>0</b><span>Call geplant</span></div>
+        <div class="mini"><b>0</b><span>Trial</span></div>
+        <div class="mini"><b>3</b><span>Zahlend</span></div>
+        <div class="mini"><b>0</b><span>Lost</span></div>
+        <div class="mini"><b>—</b><span>Mapping</span></div>
+      </div>
+      <div class="note">
+        Rohstatus im CRM waren <b>prospect</b> (388), <b>qualification</b>/<b>Qualification</b> (6) und <b>active</b> (3).
+        Für den Report wurden sie konservativ auf Neu, Kontaktiert und Zahlend gemappt.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>2) Pipeline-Value</h2>
+      <ul class="list">
+        <li>Offene Deals summieren sich auf <b>€2,000</b>.</li>
+        <li>Der Wert steckt aktuell ausschließlich im <b>Studio Pampa — LUMA Usage</b> Proposal-Deal.</li>
+        <li>Deals ohne Wert wurden konservativ mit <b>0</b> gerechnet.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>3) Neue People diese Woche</h2>
+      <ul class="list">
+        <li><b>0</b> neue People im aktuellen Wochenfenster.</li>
+        <li>Die People-API liefert keine zuverlässigen createdAt-Felder; ich habe deshalb timestamp-artige IDs bzw. vorhandene Zeitstempel ausgewertet.</li>
+        <li>Der jüngste People-Eintrag liegt am <b>2026-05-08</b> — also vor dem aktuellen Wochenfenster.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>4) MRR</h2>
+      <div class="card">
+        <div class="row"><div class="name">Aktive zahlende Accounts</div><div class="tag green">active</div></div>
+        <div class="meta">HAMM Architekten · Weber Architekten · Intern</div>
+        <div class="meta">Intern wurde für die Berechnung ausgeschlossen.</div>
+      </div>
+      <ul class="list">
+        <li><b>2</b> aktive Paying Customers × konservativ <b>Starter (149€)</b> = <b>€298</b> MRR.</li>
+        <li>Im Live-API-Snapshot ist kein verlässliches Plan-/Tier-Feld vorhanden; deshalb ist das eine Mindestannahme.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>5) Geplante Calls nächste Woche</h2>
+      <ul class="list">
+        <li><b>1</b> passendes Event auf dem sichtbaren Kalender.</li>
+        <li>Shared Calendar <code>v2t5gsi2laiac6kts250j5241o@group.calendar.google.com</code> war in der LUMA-Profilebene nicht sichtbar und lieferte per Direktaufruf <b>404 Not Found</b>.</li>
+        <li>Fallback: Primary Calendar <code>daniel@luma-app.io</code> geprüft; dort liegt am <b>2026-05-20 14:30</b> das Event <b>LUMA Austausch – Pascal Lurk</b>.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Next Steps</h2>
+      <ul class="list">
+        <li>LUMA Austausch sauber vorbereiten: Ziel, nächster Schritt und erwarteter Deal-Impact vor dem Termin festziehen.</li>
+        <li>Die 6 Kontaktiert-Accounts mit einem knappen Follow-up anstoßen, um Reply-Rate und Terminvolumen zu erhöhen.</li>
+        <li>Studio Pampa aktiv nachfassen und den Proposal-Deal auf einen klaren Entscheidungszeitpunkt ziehen.</li>
+        <li>Die 388 Prospect-Accounts in kleine Follow-up-Batches aufteilen, damit die Pipeline wieder mehr Bewegung bekommt.</li>
+      </ul>
+      <div class="foot">Knappe Lage: stabile Pipeline, aber nur ein gebuchter Call in der nächsten Woche. Besonders wichtig sind jetzt Terminfixierung und konsequente Follow-ups.</div>
+    </div>
+  </div>
+</body>
+</html>
