@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LUMA Weekly Usage Report</title>
+<style>
+:root{color-scheme:dark;--bg:#141720;--panel:#1b2030;--text:#e8ecf3;--muted:#9aa6b2;--line:#2a3142;--accent:#7c3aed;}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:14px/1.4 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:16px}
+.main{max-width:900px;margin:0 auto} h1{font-size:20px;line-height:1.2;margin:0 0 4px} .sub{color:var(--muted);font-size:12px;margin-bottom:12px}
+.hero{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0} .stat,.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px}
+.stat b{display:block;font-size:22px;line-height:1.1;margin-bottom:4px} .stat small,.card small{color:var(--muted)}
+.section{margin-top:14px} .section h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#cbd5e1;margin:0 0 8px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px} .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.grid3 div{background:#131826;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center} .grid3 b{display:block;font-size:18px} .grid3 small{display:block;margin-top:2px}
+.pill,.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 8px;font-size:12px;color:var(--muted);background:#131826}
+.list{margin:0;padding-left:18px} .list li{margin:6px 0} .meta{color:var(--muted);font-size:12px;margin-top:8px} .muted{color:var(--muted)}
+.footer{margin-top:12px;color:var(--muted);font-size:12px} @media (max-width:720px){.hero{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div class="main">
+  <h1>LUMA Usage Report</h1>
+  <div class="sub">Zeitraum: 08.05.2026 07:02 UTC bis jetzt</div>
+
+  <div class="hero">
+    <div class="stat"><b>88</b><small>Logins</small></div>
+    <div class="stat"><b>12</b><small>aktive Nutzer</small></div>
+    <div class="stat"><b>35</b><small>neue Tasks</small></div>
+    <div class="stat"><b>100%</b><small>Anteil der 2 aktivsten Accounts</small></div>
+  </div>
+
+  <div class="section">
+    <h2>Task-Status</h2>
+    <div class="card"><span class="chip">erledigt: 8</span><span class="chip">offen: 24</span><span class="chip">review: 1</span><span class="chip">in_bearbeitung: 2</span></div>
+  </div>
+
+  <div class="section">
+    <h2>Fazit</h2>
+    <div class="card"><ul class="list"><li>Hamm Architekten ist der stärkste Account mit 62 Logins und 8 aktiven Nutzern.</li><li>Warnsignal: pe-stab hatte/n 0 Logins in den letzten 7 Tagen.</li><li>Die 2 aktivsten Accounts bündeln 100% der gesamten Telemetrie — klare Konzentration.</li></ul></div>
+  </div>
+
+  <div class="section">
+    <h2>Accounts</h2>
+    
+    <section class="card">
+      <div class="row"><strong>Hamm Architekten</strong><span class="pill" style="background:#22c55e22;color:#22c55e;border-color:#22c55e55">grün</span></div>
+      <div class="grid3"><div><b>8</b><small>aktive Nutzer</small></div><div><b>62</b><small>Logins</small></div><div><b>29</b><small>Tasks</small></div></div>
+      <div class="meta"><b>Features:</b> feature_use, heute_viewed, login, session_start</div>
+      <div class="meta"><b>Top People:</b> a.hamm@hammarchitekten.de (240) · s.ravee@hammarchitekten.de (135) · a.ziegenhagel@hammarchitekten.de (80)</div>
+    </section>
+    <section class="card">
+      <div class="row"><strong>Weber Architekten &amp; Partner</strong><span class="pill" style="background:#22c55e22;color:#22c55e;border-color:#22c55e55">grün</span></div>
+      <div class="grid3"><div><b>4</b><small>aktive Nutzer</small></div><div><b>26</b><small>Logins</small></div><div><b>6</b><small>Tasks</small></div></div>
+      <div class="meta"><b>Features:</b> feature_use, heute_viewed, login, session_start</div>
+      <div class="meta"><b>Top People:</b> pt@weberarchitekten-partner.de (81) · dc@weberarchitekten-partner.de (74) · kw@weberarchitekten-partner.de (53)</div>
+    </section>
+    <section class="card">
+      <div class="row"><strong>pe-stab</strong><span class="pill" style="background:#ef444422;color:#ef4444;border-color:#ef444455">rot</span></div>
+      <div class="grid3"><div><b>0</b><small>aktive Nutzer</small></div><div><b>0</b><small>Logins</small></div><div><b>0</b><small>Tasks</small></div></div>
+      <div class="meta"><b>Features:</b> —</div>
+      <div class="meta"><b>Top People:</b> —</div>
+    </section>
+  </div>
+
+  <div class="section">
+    <h2>Nächste Schritte</h2>
+    <div class="card"><ul class="list"><li>Roten Account sofort kontaktieren und Nutzungshürde klären.</li><li>Onboarding und Aktivierung für die schwächeren Accounts nachziehen.</li><li>Offene Tasks pro Account kurz nachfassen und nächste Woche auf Statusänderungen prüfen.</li></ul></div>
+  </div>
+
+  <div class="footer">Live aus Supabase · Telemetrie paginiert · nur echte LUMA-Accounts</div>
+</div>
+</body>
+</html>
