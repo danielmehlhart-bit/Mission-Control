@@ -5,7 +5,7 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <title>LUMA Weekly Usage Report</title>
 <style>
-:root{--bg:#141720;--panel:#1b2030;--text:#edf2f7;--muted:#9aa6b2;--line:#2b3243;--accent:#7c3aed;}
+:root{--bg:#141720;--panel:#1b2030;--text:#edf2f7;--muted:#9aa6b2;--line:#2b3243;}
 *{box-sizing:border-box} body{margin:0;padding:14px;background:var(--bg);color:var(--text);font:14px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 .wrap{max-width:900px;margin:0 auto} h1{margin:0 0 4px;font-size:20px;line-height:1.15} .sub{color:var(--muted);font-size:12px;margin-bottom:12px}
 .hero{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px} .stat,.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px}
@@ -20,40 +20,28 @@ ul{margin:0;padding-left:18px} li{margin:6px 0} .mini{font-size:12px;margin-top:
 <body>
 <div class='wrap'>
   <h1>LUMA Usage Report</h1>
-  <div class='sub'>Zeitraum: 08.05.2026 07:04 UTC bis jetzt · realer Scope: HAMM, Weber, pe-stab, SSR</div>
-
+  <div class='sub'>Zeitraum: 08.05.2026 07:05 UTC bis jetzt · Scope: HAMM, Weber, pe-stab, SSR</div>
   <div class='hero'>
-    <div class='stat'><b>0</b><small>Logins</small></div>
-    <div class='stat'><b>0</b><small>aktive Nutzer</small></div>
+    <div class='stat'><b>88</b><small>Logins</small></div>
+    <div class='stat'><b>12</b><small>aktive Nutzer</small></div>
     <div class='stat'><b>35</b><small>neue Tasks</small></div>
-    <div class='stat'><b>0%</b><small>Anteil der 2 aktivsten Accounts</small></div>
+    <div class='stat'><b>100%</b><small>Anteil der 2 aktivsten Accounts</small></div>
   </div>
-
-  <div class='section'>
-    <h2>Task-Status</h2>
-    <div class='card'><span class='chip'>erledigt: 8</span><span class='chip'>offen: 24</span><span class='chip'>review: 1</span><span class='chip'>in_bearbeitung: 2</span></div>
-  </div>
-
-  <div class='section'>
-    <h2>Fazit</h2>
-    <div class='card'><ul><li>Hamm Architekten ist klar am aktivsten (0 Logins, 0 Nutzer).</li><li>Churn-Risiko: Hamm Architekten, Weber Architekten &amp; Partner, pe-stab, SSR Architekten / architekten-ssr.de hat/ haben 0 Logins in 7 Tagen.</li><li>Die 2 aktivsten Accounts bündeln 0% der Telemetrie.</li></ul></div>
-  </div>
-
-  <div class='section'>
-    <h2>Accounts</h2>
-    
+  <div class='section'><h2>Task-Status</h2><div class='card'><span class='chip'>erledigt: 8</span><span class='chip'>offen: 24</span><span class='chip'>review: 1</span><span class='chip'>in_bearbeitung: 2</span></div></div>
+  <div class='section'><h2>Fazit</h2><div class='card'><ul><li>Hamm Architekten ist klar am aktivsten (62 Logins, 8 aktive Nutzer).</li><li>Churn-Risiko: pe-stab, SSR Architekten / architekten-ssr.de mit 0 Logins in 7 Tagen.</li><li>Die 2 aktivsten Accounts bündeln 100% der Telemetrie.</li></ul></div></div>
+  <div class='section'><h2>Accounts</h2>
     <section class='card'>
-      <div class='head'><strong>Hamm Architekten</strong><span class='pill' style='color:#ef4444;border-color:#ef444455;background:#ef444418'>rot</span></div>
-      <div class='stats'><div><b>0</b><small>aktive Nutzer</small></div><div><b>0</b><small>Logins</small></div><div><b>29</b><small>Tasks</small></div></div>
-      <div class='mini'><b>Top-Signale:</b> —</div>
-      <div class='mini'><b>Top-Personen:</b> —</div>
+      <div class='head'><strong>Hamm Architekten</strong><span class='pill' style='color:#22c55e;border-color:#22c55e55;background:#22c55e18'>grün</span></div>
+      <div class='stats'><div><b>8</b><small>aktive Nutzer</small></div><div><b>62</b><small>Logins</small></div><div><b>29</b><small>Tasks</small></div></div>
+      <div class='mini'><b>Top-Signale:</b> Feature: heute_viewed · Login · Seite: /aufgaben · Feature: task_completed</div>
+      <div class='mini'><b>Top-Personen:</b> Alexander Hamm (240) · Suhandhan Ravee (135) · Alex Ziegenhagel (80)</div>
       
     </section>
     <section class='card'>
-      <div class='head'><strong>Weber Architekten &amp; Partner</strong><span class='pill' style='color:#ef4444;border-color:#ef444455;background:#ef444418'>rot</span></div>
-      <div class='stats'><div><b>0</b><small>aktive Nutzer</small></div><div><b>0</b><small>Logins</small></div><div><b>6</b><small>Tasks</small></div></div>
-      <div class='mini'><b>Top-Signale:</b> —</div>
-      <div class='mini'><b>Top-Personen:</b> —</div>
+      <div class='head'><strong>Weber Architekten &amp; Partner</strong><span class='pill' style='color:#22c55e;border-color:#22c55e55;background:#22c55e18'>grün</span></div>
+      <div class='stats'><div><b>4</b><small>aktive Nutzer</small></div><div><b>26</b><small>Logins</small></div><div><b>6</b><small>Tasks</small></div></div>
+      <div class='mini'><b>Top-Signale:</b> Feature: heute_viewed · Login · Seite: /projekte · Seite: /aufgaben</div>
+      <div class='mini'><b>Top-Personen:</b> Paul Teichler (81) · Dinah Clauß (74) · Kim Weber (53)</div>
       
     </section>
     <section class='card'>
@@ -69,17 +57,9 @@ ul{margin:0;padding-left:18px} li{margin:6px 0} .mini{font-size:12px;margin-top:
       <div class='mini'><b>Top-Signale:</b> kein Tenant im Live-Datensatz gefunden</div>
       <div class='mini'><b>Top-Personen:</b> —</div>
       <div class='note'>im Datensatz nicht vorhanden</div>
-    </section>
-  </div>
-
-  <div class='section'>
-    <h2>Nächste Schritte</h2>
-    <div class='card'><ul><li>Rote Accounts sofort aktivieren: Login-Hürde, Kontakt, kurzer Check-in.</li><li>Offene Tasks pro Tenant im Blick behalten und nächste Woche Status-Shift prüfen.</li></ul></div>
-  </div>
-
-  <div class='section foot'>
-    Supabase REST · paginierte Telemetrie · Raab/DEMO/Empty Demo ignoriert
-  </div>
+    </section></div>
+  <div class='section'><h2>Nächste Schritte</h2><div class='card'><ul><li>Rote Accounts sofort aktivieren: Login-Hürde, Kontakt, kurzer Check-in.</li><li>Schwächere Accounts mit gezielter Onboarding-/Reminder-Session nachziehen.</li><li>Offene Tasks pro Tenant im Blick behalten und nächste Woche Status-Shift prüfen.</li></ul></div></div>
+  <div class='section foot'>Supabase REST · Telemetrie paginiert · Raab/DEMO/Empty Demo ignoriert</div>
 </div>
 </body>
 </html>
