@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LUMA × Hermes Automation Audit → Drooms AI Transformation Blueprint</title>
+  <style>
+    :root{
+      --bg:#fbf8f3;
+      --paper:#fffdf9;
+      --ink:#21172f;
+      --muted:#72687d;
+      --soft:#efe8f7;
+      --line:#e6ddee;
+      --purple:#7c3aed;
+      --purple-dark:#4c1d95;
+      --lav:#c4b5fd;
+      --rose:#fb7185;
+      --amber:#f59e0b;
+      --green:#10b981;
+      --blue:#3b82f6;
+      --shadow:0 24px 70px rgba(49,28,87,.12);
+      --radius:28px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 5% -10%, rgba(124,58,237,.18), transparent 34rem),
+        radial-gradient(circle at 95% 4%, rgba(251,113,133,.13), transparent 30rem),
+        linear-gradient(180deg,#fffaf2 0%, var(--bg) 42%, #f7f1ff 100%);
+      line-height:1.55;
+    }
+    a{color:inherit}
+    .wrap{width:min(1180px, calc(100% - 36px)); margin:0 auto}
+    .hero{padding:58px 0 34px}
+    .topbar{display:flex; align-items:center; justify-content:space-between; gap:20px; margin-bottom:54px}
+    .brand{display:flex; align-items:center; gap:14px; font-weight:850; letter-spacing:-.04em; font-size:24px}
+    .mark{width:44px; height:44px; border-radius:14px; display:grid; place-items:center; color:white; background:linear-gradient(135deg,var(--purple),#a855f7 55%,#ec4899); box-shadow:0 12px 30px rgba(124,58,237,.28); font-weight:950}
+    .claim{font-size:14px; color:var(--muted); font-weight:720; letter-spacing:.02em}
+    .pillrow{display:flex; flex-wrap:wrap; gap:10px; margin:22px 0 0}
+    .pill{display:inline-flex; align-items:center; gap:8px; border:1px solid rgba(124,58,237,.18); background:rgba(255,255,255,.7); color:#4c1d95; padding:9px 13px; border-radius:999px; font-size:13px; font-weight:760; backdrop-filter:blur(10px)}
+    .hero-grid{display:grid; grid-template-columns: 1.16fr .84fr; gap:30px; align-items:stretch}
+    .hero-card{background:rgba(255,253,249,.78); border:1px solid rgba(124,58,237,.12); border-radius:36px; box-shadow:var(--shadow); padding:42px; backdrop-filter:blur(18px)}
+    .eyebrow{text-transform:uppercase; color:var(--purple); font-weight:900; font-size:13px; letter-spacing:.14em; margin:0 0 14px}
+    h1{font-size:clamp(42px,7vw,82px); line-height:.92; margin:0; letter-spacing:-.075em; max-width:920px}
+    .subtitle{font-size:20px; color:#594d67; max-width:760px; margin:24px 0 0}
+    .metric-stack{display:grid; gap:14px}
+    .metric{background:var(--paper); border:1px solid var(--line); border-radius:24px; padding:22px; box-shadow:0 12px 35px rgba(49,28,87,.07)}
+    .metric .num{font-size:34px; line-height:1; font-weight:950; letter-spacing:-.06em; color:var(--purple-dark)}
+    .metric .label{font-size:13px; color:var(--muted); font-weight:760; margin-top:6px}
+    .section{padding:34px 0}
+    .section-head{display:flex; justify-content:space-between; gap:24px; align-items:end; margin-bottom:20px}
+    h2{font-size:clamp(28px,4vw,48px); letter-spacing:-.055em; line-height:1; margin:0}
+    .section-note{color:var(--muted); max-width:560px; margin:0}
+    .grid{display:grid; gap:18px}
+    .cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .card{background:rgba(255,253,249,.86); border:1px solid var(--line); border-radius:var(--radius); padding:24px; box-shadow:0 14px 42px rgba(49,28,87,.08)}
+    .card h3{font-size:22px; margin:0 0 10px; letter-spacing:-.035em; line-height:1.12}
+    .card p{margin:0; color:var(--muted)}
+    .tag{display:inline-flex; font-size:12px; font-weight:850; color:#4c1d95; background:#f2eaff; border:1px solid #dfcffd; border-radius:999px; padding:6px 10px; margin-bottom:14px}
+    .workflow{position:relative; overflow:hidden}
+    .workflow:before{content:""; position:absolute; inset:0 auto 0 0; width:6px; background:linear-gradient(var(--purple),#ec4899)}
+    .workflow .meta{display:flex; gap:8px; flex-wrap:wrap; margin:14px 0}
+    .chip{font-size:12px; font-weight:800; color:#5b5167; background:#f6f0fb; border:1px solid #e7dcef; padding:5px 9px; border-radius:999px}
+    .auto-high{color:#047857;background:#ecfdf5;border-color:#a7f3d0}.auto-med{color:#92400e;background:#fffbeb;border-color:#fde68a}.auto-exp{color:#9f1239;background:#fff1f2;border-color:#fecdd3}
+    .matrix{display:grid; grid-template-columns:280px repeat(4,1fr); overflow:hidden; border:1px solid var(--line); border-radius:28px; background:var(--paper); box-shadow:0 14px 42px rgba(49,28,87,.08)}
+    .cell{padding:16px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); min-height:72px; font-size:14px}
+    .cell:nth-child(5n){border-right:0}.cell.head{font-weight:900; color:#4c1d95; background:#f4edff}.cell strong{display:block; font-size:14px; margin-bottom:4px}.dot{display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:7px}.g{background:var(--green)}.y{background:var(--amber)}.r{background:var(--rose)}.b{background:var(--blue)}
+    .pilot{display:grid; grid-template-columns:56px 1fr; gap:16px; align-items:start}.pilot-no{width:52px;height:52px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--purple),#ec4899);color:white;font-weight:950;font-size:22px;box-shadow:0 14px 30px rgba(124,58,237,.25)}
+    .quote{font-size:clamp(26px,4vw,46px); line-height:1.05; letter-spacing:-.055em; margin:0; font-weight:900}.quote-card{background:linear-gradient(135deg,#2e1065,#5b21b6 55%,#be185d);color:white;border:0}.quote-card p{color:rgba(255,255,255,.82)}
+    .risk-list{display:grid; gap:10px; margin-top:14px}.risk-item{display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-top:1px solid rgba(230,221,238,.8)}
+    .footer{padding:44px 0 80px; color:var(--muted); font-size:13px}.small{font-size:13px;color:var(--muted)}
+    .nav{position:sticky; top:14px; z-index:5; margin:-16px 0 28px; display:flex; gap:8px; overflow:auto; padding:8px; border:1px solid rgba(124,58,237,.14); background:rgba(255,253,249,.78); border-radius:999px; backdrop-filter:blur(15px); box-shadow:0 12px 34px rgba(49,28,87,.08)}
+    .nav a{white-space:nowrap; text-decoration:none; color:#5b5167; font-size:13px; font-weight:850; padding:8px 12px; border-radius:999px}.nav a:hover{background:#f2eaff;color:#4c1d95}
+    @media (max-width:900px){.hero-grid,.cols-2,.cols-3,.cols-4{grid-template-columns:1fr}.hero-card{padding:28px}.section-head{display:block}.section-note{margin-top:10px}.matrix{grid-template-columns:1fr}.cell{border-right:0}.cell.head:not(:first-child){display:none}.cell{min-height:auto}.topbar{align-items:flex-start; flex-direction:column}}
+    @media print{body{background:white}.nav{display:none}.card,.hero-card,.matrix{box-shadow:none}.section{break-inside:avoid}}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand"><div class="mark">L</div><div>LUMA <span style="color:var(--purple)">×</span> Hermes</div></div>
+        <div class="claim">besser bauen! · Automation Audit · 16.05.2026</div>
+      </div>
+      <div class="hero-grid">
+        <div class="hero-card">
+          <p class="eyebrow">Drooms AI Transformation Blueprint</p>
+          <h1>Von LUMA-Automationen zu Enterprise AI Transformation.</h1>
+          <p class="subtitle">Ein strukturierter Audit der bestehenden Hermes-/LUMA-Workflows — mit Transferbewertung für Drooms, konservativer GDPR-Einschätzung und konkreten Pilotideen.</p>
+          <div class="pillrow">
+            <span class="pill">Sales Ops</span><span class="pill">Customer Success</span><span class="pill">GTM Reporting</span><span class="pill">CRM Hygiene</span><span class="pill">Usage Monitoring</span><span class="pill">Research & Enablement</span>
+          </div>
+        </div>
+        <div class="metric-stack">
+          <div class="metric"><div class="num">18</div><div class="label">identifizierte Workflow-Muster</div></div>
+          <div class="metric"><div class="num">5</div><div class="label">Drooms-Piloten mit hoher Story-Kraft</div></div>
+          <div class="metric"><div class="num">1.2–1.8k€</div><div class="label">realistischer externer AI-Transformation-Tagessatz</div></div>
+          <div class="metric"><div class="num">Private-first</div><div class="label">empfohlene Architektur für Drooms-Daten</div></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="nav">
+      <a href="#summary">Summary</a><a href="#workflows">Workflows</a><a href="#clusters">Cluster</a><a href="#transfer">Transfer</a><a href="#gdpr">GDPR</a><a href="#pilots">Piloten</a><a href="#narrative">Narrative</a><a href="#pricing">Tagessatz</a>
+    </nav>
+
+    <section class="section" id="summary">
+      <div class="section-head"><h2>Executive Summary</h2><p class="section-note">Der Audit trennt belegte bestehende Workflows von Transferideen. Voice-Call-Memory war nicht vorhanden und wurde nicht verwendet.</p></div>
+      <div class="grid cols-3">
+        <div class="card"><span class="tag">Kernaussage</span><h3>Mehr als AI-Spielerei</h3><p>Hermes/LUMA ist bereits ein operativer Layer für Sales, CS, Reporting, CRM, Research und Follow-up — mit echten Cronjobs, Scripts, State-Dateien und HTML-Artefakten.</p></div>
+        <div class="card"><span class="tag">Drooms Fit</span><h3>Übertragbar, aber nicht 1:1</h3><p>Die Muster sind wertvoll für Drooms, benötigen aber eine Enterprise-Architektur: EU-/Private-LLM, Rollenrechte, Audit Logs, Human Approval und klare Datenklassifikation.</p></div>
+        <div class="card"><span class="tag">Rollenargument</span><h3>VP AI Transformation glaubwürdig</h3><p>Die Story ist nicht „ich kenne AI“, sondern: Ich habe AI in echte operative Prozesse eingebaut — inklusive Governance, Fehlerfällen und Lessons Learned.</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="workflows">
+      <div class="section-head"><h2>Workflow Landscape</h2><p class="section-note">Belegte bestehende Workflows aus Memory, Session Search, Skills, Cronjobs und Mission-Control-Artefakten.</p></div>
+      <div class="grid cols-3">
+        <div class="card workflow"><h3>LUMA Weekly / Monthly Usage Reports</h3><p>Supabase Telemetry, Tenants, Profiles, Tasks und Projects werden zu Customer-Health-, Churn- und Upsell-Reports verdichtet.</p><div class="meta"><span class="chip auto-high">hoch automatisiert</span><span class="chip">CS</span><span class="chip">Usage</span></div></div>
+        <div class="card workflow"><h3>Weekly GTM Pulse</h3><p>Mission Control CRM + Kalender werden zu Pipeline-, MRR-, People- und Next-Step-Reporting für den wöchentlichen GTM-Rhythmus.</p><div class="meta"><span class="chip auto-high">hoch automatisiert</span><span class="chip">GTM</span><span class="chip">Leadership</span></div></div>
+        <div class="card workflow"><h3>Reply Ping / Mail State Monitor</h3><p>Gmail Inbox + Sent werden zu Thread-State, Reply-needed Signalen, Noise-Filtern und Telegram-Pings bei echten Deltas.</p><div class="meta"><span class="chip auto-high">hoch automatisiert</span><span class="chip">Sales</span><span class="chip">Mailbox</span></div></div>
+        <div class="card workflow"><h3>Deal-Radar Monitor</h3><p>Ein no-agent Python Radar mit Evidence, Priority, Suppression und Phase-1 Accounts erkennt Reply-, Activation- und Account-Risiken.</p><div class="meta"><span class="chip auto-high">hoch automatisiert</span><span class="chip">Sales Ops</span><span class="chip">Account Radar</span></div></div>
+        <div class="card workflow"><h3>Sales Review → Tracker + CRM</h3><p>Interne Review-HTMLs werden operationalisiert: offene Todos, MC Account-/Deal-Notes, Activities und verifizierte CRM Updates.</p><div class="meta"><span class="chip auto-med">semi-automatisch</span><span class="chip">CRM</span><span class="chip">Follow-up</span></div></div>
+        <div class="card workflow"><h3>Onboarding / Value Review HTMLs</h3><p>Transkripte und Call-Kontext werden zu SPICED Snapshots, Decisions, Todos, Open Questions und Coaching für Daniel.</p><div class="meta"><span class="chip auto-med">semi-automatisch</span><span class="chip">Sales</span><span class="chip">CS</span></div></div>
+        <div class="card workflow"><h3>Commitment Reminder</h3><p>Outbound-Mails werden auf explizite Zusagen geprüft: „ich schicke dir“, „ich kümmere mich“, „ich melde mich“ — aktuell als Legacy pausiert.</p><div class="meta"><span class="chip auto-exp">gebaut / pausiert</span><span class="chip">Follow-up</span></div></div>
+        <div class="card workflow"><h3>Research / Battlecards</h3><p>Public Research, Competitor Pages, PDFs und strategische Inputs werden zu Briefings, Battlecards, Pricing- und Roadmap-Entscheidungsvorlagen.</p><div class="meta"><span class="chip auto-med">assistiert</span><span class="chip">Enablement</span><span class="chip">Research</span></div></div>
+        <div class="card workflow"><h3>Security & Ops Monitoring</h3><p>System-, Port-, UFW-, SSH- und Update-Checks erzeugen regelmäßige Security-/Health-Berichte für Mission Control.</p><div class="meta"><span class="chip auto-high">hoch automatisiert</span><span class="chip">Ops</span><span class="chip">Security</span></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="clusters">
+      <div class="section-head"><h2>Cluster</h2><p class="section-note">Die vorhandenen Workflows bilden bereits eine kleine AI-enabled SaaS Operations Organisation.</p></div>
+      <div class="grid cols-4">
+        <div class="card"><span class="tag">Sales</span><h3>Signal → Aktion</h3><p>Reply-Pings, Deal-Radar, Commitment-Erkennung, CRM Updates, Cold-Outreach-Triage.</p></div>
+        <div class="card"><span class="tag">Customer Success</span><h3>Usage → Health</h3><p>Usage Reports, Pilot Health, Post-Onboarding-Todos, Value Reviews, Activation Impulse.</p></div>
+        <div class="card"><span class="tag">Operations</span><h3>State → Verlässlichkeit</h3><p>Cronjobs, lokale JSON-State-Dateien, MC als Source of Truth, Security Checks, Deploy-Flows.</p></div>
+        <div class="card"><span class="tag">Leadership</span><h3>Daten → Entscheidungen</h3><p>Weekly GTM Pulse, Deal-Radar Cockpits, HTML Briefings, Pricing- und Strategie-Artefakte.</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="transfer">
+      <div class="section-head"><h2>Drooms Transfer Matrix</h2><p class="section-note">Konservativ bewertet: Drooms hat harte Datenschutz- und Compliance-Anforderungen.</p></div>
+      <div class="matrix">
+        <div class="cell head">Workflow-Muster</div><div class="cell head">Direkt</div><div class="cell head">Angepasst</div><div class="cell head">Private/On-Prem</div><div class="cell head">Nicht als Startpunkt</div>
+        <div class="cell"><strong>Research / Battlecards</strong>Öffentliche Quellen, Enablement, Wettbewerber</div><div class="cell"><span class="dot g"></span>Ja</div><div class="cell">—</div><div class="cell">bei internen Docs</div><div class="cell">—</div>
+        <div class="cell"><strong>Leadership Pulse</strong>Aggregierte Reports, AI Transformation Cockpit</div><div class="cell"><span class="dot g"></span>Ja</div><div class="cell">mit Drooms-Datenmodell</div><div class="cell">bei sensiblen KPIs</div><div class="cell">—</div>
+        <div class="cell"><strong>Usage / Adoption</strong>Account Health, Produktnutzung, Renewal Risk</div><div class="cell">—</div><div class="cell"><span class="dot y"></span>Ja, aggregiert</div><div class="cell"><span class="dot r"></span>User-Level</div><div class="cell">Mitarbeiter-Scoring</div>
+        <div class="cell"><strong>Mailbox / Reply Radar</strong>Inbound, Shared Inbox, Follow-ups</div><div class="cell">—</div><div class="cell">nur Team-Postfach</div><div class="cell"><span class="dot r"></span>persönliche Mailbox</div><div class="cell">breite Mailüberwachung</div>
+        <div class="cell"><strong>Meeting Intelligence</strong>Transkripte, Summaries, Action Items</div><div class="cell">interne Meetings</div><div class="cell"><span class="dot y"></span>mit Consent</div><div class="cell"><span class="dot r"></span>Kundencalls</div><div class="cell">ohne Zustimmung</div>
+      </div>
+    </section>
+
+    <section class="section" id="gdpr">
+      <div class="section-head"><h2>GDPR / Architektur</h2><p class="section-note">Die wichtigste Drooms-Leitplanke: nicht „alles in ChatGPT“, sondern kontrollierte, auditierbare AI Ops.</p></div>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>Empfohlene Leitplanken</h3>
+          <div class="risk-list">
+            <div class="risk-item"><span class="dot g"></span><div><strong>Data first, model second</strong><br><span class="small">Vor jedem Pilot: Datenarten klassifizieren.</span></div></div>
+            <div class="risk-item"><span class="dot g"></span><div><strong>Human-in-the-loop</strong><br><span class="small">Keine externe Kommunikation oder CRM-Mutation ohne Freigabe.</span></div></div>
+            <div class="risk-item"><span class="dot y"></span><div><strong>Minimierung</strong><br><span class="small">Metadaten vor Snippets, Snippets vor Volltext, Aggregation vor Rohdaten.</span></div></div>
+            <div class="risk-item"><span class="dot r"></span><div><strong>Private Processing</strong><br><span class="small">Kunden-, Mail-, Voice- und Transkriptdaten nur EU/private/on-prem.</span></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Was Drooms vermeiden sollte</h3>
+          <div class="risk-list">
+            <div class="risk-item"><span class="dot r"></span><div><strong>Persönliche Mailbox-Überwachung</strong><br><span class="small">Als erster Pilot zu sensibel; besser Shared Inbox / freiwillige Nutzung.</span></div></div>
+            <div class="risk-item"><span class="dot r"></span><div><strong>Public LLM für Kundendaten</strong><br><span class="small">Für Drooms-Kontext konservativ nicht geeignet.</span></div></div>
+            <div class="risk-item"><span class="dot r"></span><div><strong>Automatische externe Antworten</strong><br><span class="small">Nur Entwurf + Approval, keine Autopilot-Kommunikation.</span></div></div>
+            <div class="risk-item"><span class="dot y"></span><div><strong>Shadow CRM</strong><br><span class="small">AI darf assistieren; offizielle Systeme bleiben Source of Truth.</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pilots">
+      <div class="section-head"><h2>Top 5 Drooms Piloten</h2><p class="section-note">Startfähig, story-stark und mit sinnvollem Risiko-/Nutzen-Verhältnis.</p></div>
+      <div class="grid cols-2">
+        <div class="card pilot"><div class="pilot-no">1</div><div><h3>Meeting-to-Action Assistant</h3><p>Aus Meeting Notes oder Transkripten werden Summary, Decisions, Action Items und CRM-Update-Vorschläge — immer mit Human Approval.</p></div></div>
+        <div class="card pilot"><div class="pilot-no">2</div><div><h3>Customer Health / Adoption Pulse</h3><p>Aggregierte Nutzungsdaten zeigen Account Health, sinkende Aktivität, Adoption und Renewal-/Expansion-Signale.</p></div></div>
+        <div class="card pilot"><div class="pilot-no">3</div><div><h3>Sales Knowledge Change Monitor</h3><p>Confluence-Änderungen werden als Sales-Bot-/Enablement-relevant klassifiziert und als Review Package vorbereitet.</p></div></div>
+        <div class="card pilot"><div class="pilot-no">4</div><div><h3>Deal / Account Radar</h3><p>CRM, offene Actions, Termine und CS-Signale werden zu P0/P1/P2 Empfehlungen für Key Accounts.</p></div></div>
+        <div class="card pilot"><div class="pilot-no">5</div><div><h3>AI Transformation Cockpit</h3><p>Ein Führungs-Cockpit für AI-Piloten: Status, Nutzenhypothese, Risiken, Datenschutzstatus, Blocker und nächste Entscheidungen.</p></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="narrative">
+      <div class="card quote-card">
+        <p class="eyebrow" style="color:#ddd6fe">VP AI Transformation Narrative</p>
+        <p class="quote">„Ich komme nicht mit AI-Theorie, sondern mit operativ bewiesenen Workflows — inklusive Governance, Datenschutz und Lessons Learned.“</p>
+        <p style="margin-top:22px; max-width:860px">Die stärkste Story: Daniel hat AI nicht als isolierten Chatbot benutzt, sondern in echte Prozesse eingebettet — Sales, CS, CRM, Reporting, Research und Follow-up. Genau diese Fähigkeit ist der Kern einer glaubwürdigen AI-Transformation-Rolle.</p>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="section-head"><h2>Externe Beratungslogik</h2><p class="section-note">Markt- und Gehaltslogik aus dem Brainstorming: nicht als finaler Preiszettel, sondern als Positionierungsanker.</p></div>
+      <div class="grid cols-3">
+        <div class="card"><span class="tag">Einstieg</span><h3>1.200–1.500 €/Tag</h3><p>Für Advisory, Workshops, Use-Case-Scoping und erste Transformationstage. Nicht unter 1.200 € starten.</p></div>
+        <div class="card"><span class="tag">Zielkorridor</span><h3>1.500–1.800 €/Tag</h3><p>Für echte AI Transformation mit Operating Model, Pilotsteuerung, Sales-/CS-Prozessautomatisierung und Management-Verantwortung.</p></div>
+        <div class="card"><span class="tag">Premium</span><h3>2.000 €+ / Tag</h3><p>Für C-Level-Sprints, strategische Transformation oder sehr klar verpackte High-Impact Programme.</p></div>
+      </div>
+      <div class="grid cols-3" style="margin-top:18px">
+        <div class="card"><h3>Audit Paket</h3><p>7.500–12.000 € für AI Opportunity, Prozesslandkarte, Daten-/Risiko-Check und Pilot-Roadmap.</p></div>
+        <div class="card"><h3>Pilot Sprint</h3><p>15.000–25.000 € für 2–3 Wochen: Use Case, Prototyp, Governance, Business Case, Rollout-Plan.</p></div>
+        <div class="card"><h3>Retainer</h3><p>3.000–7.500 €/Monat für AI Transformation Office, Pilotsteuerung, Enablement und Reporting.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2>Quellenbasis</h2><p class="section-note">Audit-Entwurf basiert auf internen Hermes-/LUMA-Nachweisen, nicht auf erfundenen Voice- oder Drooms-Systemdaten.</p></div>
+      <div class="grid cols-2">
+        <div class="card"><h3>Geprüft</h3><p>Memory, Session Search, Skills, Cronjob-Liste, Mission-Control-Briefings, Hermes Scripts und dokumentierte Workflow-Referenzen.</p></div>
+        <div class="card"><h3>Nicht behauptet</h3><p>Keine Live-Drooms-Systeme, keine Drooms-Kundendaten, kein Voice-Call-Memory, keine Freigabe für konkrete Drooms-Architektur.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <strong>LUMA × Hermes Automation Audit</strong><br>
+    Interner Strategie-Entwurf für Daniel · Erstellt als Mission-Control HTML Briefing · Drooms Transfer konservativ bewertet.
+  </footer>
+</body>
+</html>
