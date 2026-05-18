@@ -3,56 +3,53 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Weekly Security Audit</title>
+  <title>Weekly Security Audit · 2026-05-18</title>
   <style>
     :root {
-      --bg: #f6f7fb;
+      --bg: #f4f6fb;
       --panel: #ffffff;
-      --panel-soft: #fbfcff;
       --text: #1f2937;
       --muted: #6b7280;
       --line: #e5e7eb;
-      --shadow: 0 18px 40px rgba(15, 23, 42, .08);
       --green: #16a34a;
-      --green-bg: #edfdf3;
       --yellow: #d97706;
-      --yellow-bg: #fff7ed;
-      --blue: #2563eb;
-      --blue-bg: #eff6ff;
+      --red: #dc2626;
+      --accent: #2563eb;
+      --shadow: 0 18px 40px rgba(15, 23, 42, .08);
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: linear-gradient(180deg, #f8fafc 0%, #f3f4f6 100%);
+      background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
       color: var(--text);
       line-height: 1.5;
     }
-    .wrap { max-width: 1120px; margin: 0 auto; padding: 32px 20px 64px; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 20px 56px; }
     .hero, .card {
       background: var(--panel);
-      border: 1px solid rgba(229, 231, 235, .9);
-      border-radius: 24px;
+      border: 1px solid rgba(229, 231, 235, .95);
+      border-radius: 22px;
       box-shadow: var(--shadow);
     }
-    .hero { padding: 28px; margin-bottom: 20px; }
-    .card { padding: 22px; margin-top: 18px; }
+    .hero { padding: 28px; margin-bottom: 18px; }
+    .card { padding: 22px; margin-top: 16px; }
     h1, h2, h3 { margin: 0; }
-    h1 { font-size: 34px; line-height: 1.1; }
-    h2 { font-size: 22px; margin-bottom: 12px; }
-    h3 { font-size: 17px; margin-bottom: 10px; }
+    h1 { font-size: 32px; line-height: 1.15; }
+    h2 { font-size: 20px; margin-bottom: 10px; }
+    h3 { font-size: 16px; margin-bottom: 8px; }
     p { margin: 8px 0 0; }
     .muted { color: var(--muted); }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
       margin-top: 18px;
     }
     .stat {
-      padding: 18px;
-      border-radius: 18px;
-      background: var(--panel-soft);
+      padding: 16px;
+      border-radius: 16px;
+      background: #fafbfe;
       border: 1px solid var(--line);
     }
     .stat .k {
@@ -61,11 +58,7 @@
       text-transform: uppercase;
       letter-spacing: .08em;
     }
-    .stat .v {
-      font-size: 28px;
-      font-weight: 700;
-      margin-top: 6px;
-    }
+    .stat .v { font-size: 26px; font-weight: 750; margin-top: 6px; }
     .pill {
       display: inline-flex;
       align-items: center;
@@ -77,39 +70,41 @@
       margin: 10px 8px 0 0;
       border: 1px solid transparent;
     }
-    .green { background: var(--green-bg); color: var(--green); border-color: rgba(22,163,74,.18); }
-    .yellow { background: var(--yellow-bg); color: var(--yellow); border-color: rgba(217,119,6,.18); }
-    .blue { background: var(--blue-bg); color: var(--blue); border-color: rgba(37,99,235,.18); }
-    .two-col { display: grid; grid-template-columns: 1.2fr .8fr; gap: 18px; }
+    .green { background: #edfdf3; color: var(--green); border-color: rgba(22,163,74,.18); }
+    .yellow { background: #fff7ed; color: var(--yellow); border-color: rgba(217,119,6,.18); }
+    .red { background: #fef2f2; color: var(--red); border-color: rgba(220,38,38,.18); }
+    .two-col { display: grid; grid-template-columns: 1.15fr .85fr; gap: 16px; }
     .issue {
       border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 16px;
+      border-radius: 16px;
+      padding: 14px 15px;
       background: #fff;
-      margin-top: 12px;
+      margin-top: 10px;
     }
     .issue.green-accent { box-shadow: inset 4px 0 0 var(--green); }
     .issue.yellow-accent { box-shadow: inset 4px 0 0 var(--yellow); }
-    .issue.blue-accent { box-shadow: inset 4px 0 0 var(--blue); }
+    .issue.red-accent { box-shadow: inset 4px 0 0 var(--red); }
     ul { margin: 8px 0 0 18px; padding: 0; }
     li { margin: 6px 0; }
-    table {
-      width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px;
-    }
-    th, td {
-      text-align: left; vertical-align: top; padding: 12px 10px; border-bottom: 1px solid var(--line);
-    }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+    th, td { text-align: left; vertical-align: top; padding: 10px 8px; border-bottom: 1px solid var(--line); }
     th {
-      color: var(--muted); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .06em;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
     }
     code {
-      background: #f3f4f6; border-radius: 8px; padding: 2px 6px; font-size: 12px;
+      background: #f3f4f6;
+      border-radius: 7px;
+      padding: 2px 6px;
+      font-size: 12px;
     }
-    .small { font-size: 13px; }
-    .footer { margin-top: 18px; color: var(--muted); font-size: 12px; }
+    .footer { margin-top: 16px; color: var(--muted); font-size: 12px; }
     @media (max-width: 900px) {
       .two-col { grid-template-columns: 1fr; }
-      h1 { font-size: 28px; }
+      h1 { font-size: 27px; }
     }
   </style>
 </head>
@@ -117,18 +112,18 @@
   <div class="wrap">
     <section class="hero">
       <h1>🔒 Weekly Security Audit</h1>
-      <p class="muted">Host: Mission Control · erstellt am 2026-05-11 10:01 CEST</p>
+      <p class="muted">Host: Mission Control · erstellt am 2026-05-18 10:01 CEST</p>
       <div class="grid">
         <div class="stat"><div class="k">Gesamtstatus</div><div class="v" style="color: var(--yellow);">Gelb</div></div>
-        <div class="stat"><div class="k">Offene TCP-Listener</div><div class="v">5</div></div>
-        <div class="stat"><div class="k">Upgradable Packages</div><div class="v">1</div></div>
-        <div class="stat"><div class="k">SSH-Fehlerlog</div><div class="v">0</div></div>
+        <div class="stat"><div class="k">Upgradable Packages</div><div class="v">31</div></div>
+        <div class="stat"><div class="k">Rote Flags</div><div class="v">0</div></div>
+        <div class="stat"><div class="k">SSH-Auth-Fehler</div><div class="v">0</div></div>
       </div>
       <div>
         <span class="pill green">UFW aktiv · default deny incoming</span>
-        <span class="pill green">Fail2Ban läuft</span>
-        <span class="pill green">Unattended-Upgrades aktiv</span>
-        <span class="pill yellow">`last -10` auf diesem Host nicht verfügbar</span>
+        <span class="pill green">Fail2Ban & unattended-upgrades laufen</span>
+        <span class="pill yellow">`last -10` nicht installiert/verfügbar</span>
+        <span class="pill yellow">Mehrere Updates ausstehend, inkl. Kernel</span>
       </div>
     </section>
 
@@ -136,34 +131,34 @@
       <div>
         <div class="card">
           <h2>Kurzfazit</h2>
-          <p>Der Host wirkt insgesamt solide abgesichert: Firewall aktiv, SSH-Log der letzten 7 Tage ohne gefundene <code>failed</code>/<code>invalid</code>-Einträge, Fail2Ban und unattended-upgrades laufen, die Root-Partition ist entspannt belegt. Trotzdem bleibt der Status <strong>Gelb</strong>, weil ein Paket-Update aussteht und der Login-Historien-Check mit <code>last</code> nicht möglich war.</p>
+          <p>Der Host wirkt insgesamt ordentlich abgesichert: Firewall aktiv, SSH-Logs der letzten 7 Tage ohne gefundene <code>failed</code>/<code>invalid</code>-Auth-Muster, Schutzdienste laufen und die Platte ist entspannt. Der Status bleibt aber <strong>Gelb</strong>, weil <strong>31 Pakete</strong> aktualisierbar sind und <code>last</code> für den Login-Check nicht zur Verfügung steht.</p>
           <div class="issue yellow-accent">
             <h3>Wichtigste Handlung</h3>
-            <p>Das ausstehende Update für <code>azure-cli</code> zeitnah einspielen und bei Bedarf den fehlenden <code>last</code>-Befehl nachinstallieren bzw. verfügbar machen, damit der Audit künftig vollständig ist.</p>
+            <p>Updates zeitnah einspielen; zusätzlich den Listener <code>python</code> auf <code>0.0.0.0:9119</code> prüfen und falls nicht bewusst, auf <code>localhost</code> begrenzen.</p>
           </div>
         </div>
 
         <div class="card">
-          <h2>Top-Findings</h2>
+          <h2>Wichtigste Findings</h2>
           <div class="issue green-accent">
-            <h3>1. UFW ist aktiv und inbound restriktiv</h3>
-            <p class="small">Default: deny incoming, allow outgoing. Freigegeben sind nur <code>8080/tcp</code> und <code>18789/tcp</code> für <code>192.168.0.0/16</code>.</p>
-          </div>
-          <div class="issue green-accent">
-            <h3>2. Keine auffälligen SSH-Fehler der letzten 7 Tage</h3>
-            <p class="small">Im SSH-Journal wurden keine passenden <code>failed</code>- oder <code>invalid</code>-Einträge gefunden.</p>
+            <h3>1. Firewall sauber konfiguriert</h3>
+            <p class="small">UFW ist aktiv, Standard ist <code>deny incoming</code>. Freigaben gibt es nur für <code>8080/tcp</code> und <code>18789/tcp</code> aus <code>192.168.0.0/16</code>.</p>
           </div>
           <div class="issue yellow-accent">
-            <h3>3. Ein Update steht aus</h3>
-            <p class="small">Aktuell ist nur <code>azure-cli</code> als upgradebar sichtbar.</p>
-          </div>
-          <div class="issue yellow-accent">
-            <h3>4. <code>last</code> nicht verfügbar</h3>
-            <p class="small">Der Befehl <code>last -10</code> lieferte <code>command not found</code>. Die Login-Historie konnte deshalb nicht geprüft werden.</p>
+            <h3>2. Offener Listener auf <code>0.0.0.0:9119</code></h3>
+            <p class="small">Ein <code>python</code>-Prozess lauscht auf allen Interfaces. Durch UFW derzeit vermutlich extern blockiert, aber Bind-Adresse und Zweck sollten geprüft werden.</p>
           </div>
           <div class="issue green-accent">
-            <h3>5. Laufende Schutzdienste sind aktiv</h3>
-            <p class="small"><code>fail2ban</code>, <code>unattended-upgrades</code> und weitere Standarddienste laufen normal.</p>
+            <h3>3. Keine SSH-Login-Auffälligkeiten</h3>
+            <p class="small">Im SSH-Journal gab es keine Treffer auf <code>failed</code>/<code>invalid</code>. Der einzige Treffer war ein <code>sshd</code>-Startfehler wegen Port-Konflikt auf <code>22</code>.</p>
+          </div>
+          <div class="issue yellow-accent">
+            <h3>4. Viele Updates ausstehend</h3>
+            <p class="small">Unter anderem <code>firefox</code>, <code>azure-cli</code>, mehrere <code>linux-*</code>-Pakete, <code>initramfs-tools</code> und <code>libcamera</code>/<code>libpisp</code>.</p>
+          </div>
+          <div class="issue green-accent">
+            <h3>5. Systemressourcen unkritisch</h3>
+            <p class="small">Root-Dateisystem bei ca. 39&nbsp;% belegt, Boot-Partition bei 16&nbsp;%. Keine Kapazitätsprobleme sichtbar.</p>
           </div>
         </div>
       </div>
@@ -173,23 +168,23 @@
           <h2>Check-Auszug</h2>
           <table>
             <tr><th>Prüfung</th><th>Ergebnis</th></tr>
-            <tr><td><code>ss -ltnp</code></td><td>Listener auf <code>8080</code>, <code>18789</code>, lokaler Port <code>18791</code> plus 2 interne Sockets.</td></tr>
+            <tr><td><code>ss -ltnp</code></td><td>Listener u.a. auf <code>8080</code>, <code>18789</code>, <code>9119</code>, SSH <code>22</code> und einige interne/ohne Prozessinfos.</td></tr>
             <tr><td><code>sudo ufw status verbose</code></td><td>Aktiv, inbound deny, outbound allow.</td></tr>
-            <tr><td><code>journalctl ssh</code></td><td>Keine Treffer für <code>failed</code>/<code>invalid</code>.</td></tr>
-            <tr><td><code>systemctl ... running</code></td><td>25 laufende Services.</td></tr>
-            <tr><td><code>df -h</code></td><td>Root-Partition bei ca. 35% belegt.</td></tr>
+            <tr><td><code>journalctl ssh</code></td><td>Keine Auth-Fehler; 1 Startfehler wegen Port-Konflikt.</td></tr>
+            <tr><td><code>systemctl ... running</code></td><td>25 laufende Services, inkl. <code>fail2ban</code> und <code>unattended-upgrades</code>.</td></tr>
+            <tr><td><code>df -h</code></td><td>Genug Platz auf Root und Boot.</td></tr>
             <tr><td><code>last -10</code></td><td>Nicht verfügbar.</td></tr>
-            <tr><td><code>apt list --upgradable</code></td><td>Ein Update ausstehend: <code>azure-cli</code>.</td></tr>
+            <tr><td><code>apt list --upgradable</code></td><td>31 Pakete aktualisierbar.</td></tr>
           </table>
         </div>
 
         <div class="card">
-          <h2>Handlungsempfehlung</h2>
+          <h2>Konkrete Aktion</h2>
           <div class="issue blue-accent">
             <ul>
-              <li><strong>Pflicht:</strong> <code>azure-cli</code> aktualisieren.</li>
-              <li>Wenn Login-Audits wichtig sind: <code>last</code> bzw. das zugrunde liegende Paket nachziehen.</li>
-              <li>Falls <code>8080</code>/<code>18789</code> nicht bewusst LAN-exponiert sein sollen: Firewall/Bind-Adresse weiter einschränken.</li>
+              <li><strong>Jetzt:</strong> Paket-Updates einplanen bzw. ausführen.</li>
+              <li><strong>Prüfen:</strong> Zweck von <code>python:9119</code> und ggf. auf localhost binden.</li>
+              <li><strong>Optional:</strong> <code>last</code>/util-linux nachziehen, wenn Login-Audits gewünscht sind.</li>
             </ul>
           </div>
         </div>
@@ -197,12 +192,12 @@
         <div class="card">
           <h2>Daniel-Short-Note</h2>
           <p><strong>Gesamtstatus:</strong> Gelb.</p>
-          <p><strong>Kurz:</strong> Keine akuten SSH-Auffälligkeiten, Firewall und Schutzdienste sind in Ordnung. Ein Update steht noch aus und <code>last</code> war auf dem Host nicht verfügbar. Bitte zeitnah patchen.</p>
+          <p><strong>Kurz:</strong> Keine akuten SSH-Attacken oder Speicherprobleme. Wichtigster Punkt sind 31 ausstehende Updates und ein zu prüfender Listener auf 9119.</p>
         </div>
       </div>
     </section>
 
-    <div class="footer">Report generiert automatisch im Rahmen des wöchentlichen Security Audits.</div>
+    <div class="footer">Automatischer Wochenreport Security Audit · Mission Control</div>
   </div>
 </body>
 </html>
